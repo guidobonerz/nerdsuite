@@ -1,0 +1,2573 @@
+{
+	"cpuInstructionList": 
+	[
+		{
+			"id": "adc",
+			"type": "mod",
+			"description": "add M to A with carry",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "69",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "65",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "75",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "6d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "7d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "79",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "61",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "71",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "ahx",
+			"type": "mod",
+			"alias": 
+			[
+				"sha"
+			],
+
+			"description": "???",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "izpy",
+					"hex": "93",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "9f",
+					"cycles": 0,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true,
+			"stable": false
+		},
+
+		{
+			"id": "alr",
+			"type": "mod",
+			"alias": 
+			[
+				"asr"
+			],
+
+			"description": "'AND' A with immediate value and 'lsr' the result",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "4b",
+					"cycles": 0,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "anc",
+			"type": "mod",
+			"description": "???",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "0b",
+					"cycles": 0,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "anc2",
+			"type": "mod",
+			"description": "???",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "2b",
+					"cycles": 0,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "and",
+			"type": "mod",
+			"description": "'AND' M with A",
+			"flags": "SZ",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "29",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "25",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "35",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "2d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "3d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "39",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "21",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "31",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "arr",
+			"type": "mod",
+			"description": "'AND' A with immediate value and 'ror' the result",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "6b",
+					"cycles": 0,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "asl",
+			"type": "mod",
+			"description": "arithmetic shift left one bit (M or A)",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "0a",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "06",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "16",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "0e",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "1e",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "axs",
+			"type": "mod",
+			"alias": 
+			[
+				"sbx"
+			],
+
+			"description": "?",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "cb",
+					"cycles": 0,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "bcc",
+			"type": "branch",
+			"description": "branch on carry clear",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "rel",
+					"hex": "90",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "bcs",
+			"type": "branch",
+			"description": "branch on carry set",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "rel",
+					"hex": "b0",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "beq",
+			"type": "branch",
+			"description": "branch on result equal to zero",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "rel",
+					"hex": "f0",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "bit",
+			"type": "mod",
+			"description": "test bits in M with A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "24",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "2c",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "bmi",
+			"type": "branch",
+			"description": "branch on result minus",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "rel",
+					"hex": "30",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "bne",
+			"type": "branch",
+			"description": "branch on result not equal to zero",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "rel",
+					"hex": "d0",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "bpl",
+			"type": "branch",
+			"description": "branch on result plus",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "rel",
+					"hex": "10",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "brk",
+			"description": "force break",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "00",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "bvc",
+			"type": "branch",
+			"description": "branch on overflow clear",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "rel",
+					"hex": "50",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "bvs",
+			"type": "branch",
+			"description": "branch on overflow set",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "rel",
+					"hex": "70",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "clc",
+			"description": "clear carry flag",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "18",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "cld",
+			"description": "clear decimal mode",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "d8",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "cli",
+			"description": "clear interrupt disable bit",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "58",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "clv",
+			"description": "clear overflow flag",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "b8",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": false,
+			"stable": true
+		},
+
+		{
+			"id": "cmp",
+			"type": "mod",
+			"description": "compare M and A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "c9",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "c5",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "d5",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "cd",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "dd",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "d9",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "c1",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "d1",
+					"cycles": 5
+				}
+			]
+		},
+
+		{
+			"id": "cpx",
+			"type": "mod",
+			"description": "compare M and X",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "e0",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "e4",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "ec",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "cpy",
+			"type": "mod",
+			"description": "compare M and Y",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "c0",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "c4",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "cc",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "dcp",
+			"type": "mod",
+			"description": "decrement M, cmp M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "c7",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "d7",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "cf",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "df",
+					"cycles": 7,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "db",
+					"cycles": 7,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "c3",
+					"cycles": 8,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "d3",
+					"cycles": 8
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "dec",
+			"type": "mod",
+			"description": "decrement M by one",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "c6",
+					"cycles": 5
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "d6",
+					"cycles": 6
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "ce",
+					"cycles": 6
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "de",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "dex",
+			"type": "mod",
+			"description": "decrement X by one",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "ca",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "dey",
+			"type": "mod",
+			"description": "decrement Y by one",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "88",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "eor",
+			"type": "mod",
+			"description": "'XOR' M and A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "49",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "45",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "55",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "4d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "5d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "59",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "41",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "51",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "inc",
+			"type": "mod",
+			"description": "increment M by one",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "e6",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "f6",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "ee",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "fe",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "inx",
+			"type": "mod",
+			"description": "increment X by one",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "e8",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "iny",
+			"type": "mod",
+			"description": "increment Y by one",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "c8",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "isb",
+			"type": "mod",
+			"alias": 
+			[
+				"isc"
+			],
+
+			"description": "increment M , sbc M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "e7",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "f7",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "ef",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "ff",
+					"cycles": 7,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "fb",
+					"cycles": 7,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "e3",
+					"cycles": 8,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "f3",
+					"cycles": 8,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "jam",
+			"alias": 
+			[
+				"crs",
+				"kil",
+				"hlt"
+			],
+
+			"description": "Locks up the machine",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "02",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "12",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "22",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "32",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "42",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "52",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "62",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "72",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "92",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "b2",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "d2",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "f2",
+					"cycles": 0,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "jmp",
+			"type": "branch",
+			"description": "jump to address",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "abs",
+					"hex": "4c",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "ind",
+					"hex": "6c",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "jsr",
+			"type": "branch",
+			"description": "jump to subroutine",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "abs",
+					"hex": "20",
+					"cycles": 6,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "las",
+			"type": "mod",
+			"alias": 
+			[
+				"lae",
+				"lar"
+			],
+
+			"description": "???",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "absy",
+					"hex": "bb",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "lax",
+			"type": "mod",
+			"description": "load both A and X from M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "ab",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "a7",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpy",
+					"hex": "b7",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "a3",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "b3",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "af",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "bf",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "lda",
+			"type": "mod",
+			"description": "load A with M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "a9",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "a5",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "b5",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "ad",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "bd",
+					"cycles": 4
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "b9",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "a1",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "b1",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "ldx",
+			"type": "mod",
+			"description": "load X with M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "a2",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "a6",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpy",
+					"hex": "b6",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "ae",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "be",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "ldy",
+			"type": "mod",
+			"description": "load Y with M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "a0",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "a4",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "b4",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "ac",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "bc",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "lsr",
+			"type": "mod",
+			"description": "logical shift right one bit (M or A)",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "4a",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "46",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "56",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "4e",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "5e",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "nop",
+			"description": "no operation",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "04",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "0c",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "14",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "1a",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "1c",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "34",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "3a",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "3c",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "44",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "54",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "5a",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "5c",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "64",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "74",
+					"cycles": 2
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "7a",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "7c",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imm",
+					"hex": "80",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imm",
+					"hex": "82",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imm",
+					"hex": "89",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imm",
+					"hex": "c2",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "d4",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "da",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "dc",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imm",
+					"hex": "e2",
+					"cycles": 2
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "ea",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "f4",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "imp",
+					"hex": "fa",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "fc",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "ora",
+			"type": "mod",
+			"description": "'OR' M with A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "09",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "05",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "15",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "0d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "1d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "19",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "01",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "11",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "pha",
+			"description": "push A on stack",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "48",
+					"cycles": 3,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "php",
+			"description": "push processor status on stack",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "08",
+					"cycles": 3,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "pla",
+			"description": "pull A from stack",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "68",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "plp",
+			"description": "pull processor status from stack",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "28",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "rla",
+			"type": "mod",
+			"description": "'rol' and 'AND' the result with A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "27",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "37",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "23",
+					"cycles": 8,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "33",
+					"cycles": 8,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "2f",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "3f",
+					"cycles": 7,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "3b",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "rol",
+			"type": "mod",
+			"description": "rotate left one bit (M or A)",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "2a",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "26",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "36",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "2e",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "3e",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "ror",
+			"type": "mod",
+			"description": "rotate right one bit (M or A)",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "6a",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "66",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "76",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "6e",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "7e",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "rra",
+			"type": "mod",
+			"description": "'ror' and 'adc' the result with A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "67",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "77",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "63",
+					"cycles": 8,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "73",
+					"cycles": 8,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "6f",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "7f",
+					"cycles": 7,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "7b",
+					"cycles": 7,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "rti",
+			"description": "return from interrupt",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "40",
+					"cycles": 6,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "rts",
+			"description": "return from subroutine. after 'jsr'",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "60",
+					"cycles": 6,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "sax",
+			"type": "mod",
+			"description": "'AND' the contents of A and X and stores the result to M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "87",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpy",
+					"hex": "97",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "83",
+					"cycles": 0,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "8f",
+					"cycles": 0,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "sbc",
+			"type": "mod",
+			"description": "substract M from A with carry",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "e9",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zp",
+					"hex": "e5",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "f5",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "ed",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "fd",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "f9",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "e1",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "f1",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "sbc2",
+			"type": "mod",
+			"description": "substract M from A with carry",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "eb",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "sec",
+			"description": "set carry flag",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "38",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "sed",
+			"description": "set decimal mode",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "f8",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "sei",
+			"description": "set interrupt disable status",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "78",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "shx",
+			"description": "???",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "absy",
+					"hex": "9e",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true,
+			"stable": false
+		},
+
+		{
+			"id": "shy",
+			"description": "???",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "absx",
+					"hex": "9c",
+					"cycles": 5,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true,
+			"stable": false
+		},
+
+		{
+			"id": "slo",
+			"type": "mod",
+			"alias": 
+			[
+				"aso"
+			],
+
+			"description": "'asl' and 'OR' the result with A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "07",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "17",
+					"cycles": 2
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "03",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "13",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "0f",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "1f",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "1b",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "sre",
+			"type": "mod",
+			"alias": 
+			[
+				"lse"
+			],
+
+			"description": "'lsr' and 'EOR' the result with A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "47",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "57",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "43",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "53",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "4f",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "5f",
+					"cycles": 2,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "5b",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true
+		},
+
+		{
+			"id": "sta",
+			"type": "mod",
+			"description": "store A in M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "85",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "95",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "8d",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absx",
+					"hex": "9d",
+					"cycles": 5,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "absy",
+					"hex": "99",
+					"cycles": 5
+				},
+
+				{
+					"addressingModeId": "izpx",
+					"hex": "81",
+					"cycles": 6,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "izpy",
+					"hex": "91",
+					"cycles": 6,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "stx",
+			"type": "mod",
+			"description": "Store X in M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "86",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpy",
+					"hex": "96",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "8e",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "sty",
+			"type": "mod",
+			"description": "store Y in M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "zp",
+					"hex": "84",
+					"cycles": 3,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "zpx",
+					"hex": "94",
+					"cycles": 4,
+					"flags": "-------"
+				},
+
+				{
+					"addressingModeId": "abs",
+					"hex": "8c",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "tas",
+			"type": "mod",
+			"alias": 
+			[
+				"shs"
+			],
+
+			"description": "'AND' A and X, move result to SP. 'AND' result with HB value+1 to M",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "absy",
+					"hex": "9b",
+					"cycles": 4,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true,
+			"stable": false
+		},
+
+		{
+			"id": "tax",
+			"type": "mod",
+			"description": "transfer A to X",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "aa",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "tay",
+			"type": "mod",
+			"description": "transfer A to Y",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "a8",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "tsx",
+			"type": "mod",
+			"description": "transfer SP to A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "ba",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "txa",
+			"type": "mod",
+			"description": "transfer X to A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "8a",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "txs",
+			"type": "mod",
+			"description": "transfer X to SP",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "9a",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "tya",
+			"type": "mod",
+			"description": "transfer Y to A",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imp",
+					"hex": "98",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			]
+		},
+
+		{
+			"id": "xaa",
+			"type": "mod",
+			"alias": 
+			[
+				"ane"
+			],
+
+			"description": "move X to A and 'AND' A with immediate value",
+			"opcodeList": 
+			[
+				{
+					"addressingModeId": "imm",
+					"hex": "8b",
+					"cycles": 2,
+					"flags": "-------"
+				}
+			],
+
+			"illegal": true,
+			"stable": false
+		}
+	],
+
+	"addressingModeList": 
+	[
+		{
+			"id": "imm",
+			"addressingMode": "Immediate",
+			"argumentTemplate": "#{value}",
+			"len": 2
+		},
+
+		{
+			"id": "zp",
+			"addressingMode": "Zero Page",
+			"argumentTemplate": "{value}",
+			"len": 2
+		},
+
+		{
+			"id": "zpx",
+			"addressingMode": "Zero Page, X",
+			"argumentTemplate": "{value},X",
+			"len": 2
+		},
+
+		{
+			"id": "zpy",
+			"addressingMode": "Zero Page, Y",
+			"argumentTemplate": "{value},X",
+			"len": 2
+		},
+
+		{
+			"id": "izpx",
+			"addressingMode": "(Indirect Zero Page, X)",
+			"argumentTemplate": "({value},X)",
+			"len": 2
+		},
+
+		{
+			"id": "izpy",
+			"addressingMode": "(Indirect Zero Page), Y",
+			"argumentTemplate": "({value}),Y",
+			"len": 2
+		},
+
+		{
+			"id": "abs",
+			"addressingMode": "Absolute",
+			"argumentTemplate": "{value}",
+			"len": 3
+		},
+
+		{
+			"id": "absx",
+			"addressingMode": "Absolute, X",
+			"argumentTemplate": "{value},X",
+			"len": 3
+		},
+
+		{
+			"id": "absy",
+			"addressingMode": "Absolute, Y",
+			"argumentTemplate": "{value},Y",
+			"len": 3
+		},
+
+		{
+			"id": "rel",
+			"addressingMode": "Relative",
+			"argumentTemplate": "{value}",
+			"len": 2
+		},
+
+		{
+			"id": "ind",
+			"addressingMode": "Indirect",
+			"argumentTemplate": "({value})",
+			"len": 3
+		},
+
+		{
+			"id": "imp",
+			"addressingMode": "No Argument",
+			"argumentTemplate": "",
+			"len": 1
+		}
+	]
+}

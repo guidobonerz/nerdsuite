@@ -1,0 +1,234 @@
+package de.drazil.nerdsuite.disassembler.cpu;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.disassembler.InstructionLine;
+import de.drazil.nerdsuite.disassembler.NumericConverter;
+import de.drazil.nerdsuite.disassembler.Range;
+import de.drazil.nerdsuite.disassembler.ReferenceType;
+import de.drazil.nerdsuite.disassembler.Type;
+import de.drazil.nerdsuite.disassembler.Value;
+import de.drazil.nerdsuite.model.Address;
+import de.drazil.nerdsuite.model.Opcode;
+import de.drazil.nerdsuite.model.PlatformData;
+
+public abstract class AbstractCPU implements ICPU {
+
+	private static ICPU cpu = null;
+	private static byte byteArray0[] = null;
+	private List<InstructionLine> instructionLineList = null;
+
+	public AbstractCPU() {
+		cpu = this;
+		instructionLineList = new ArrayList<InstructionLine>();
+	}
+
+	public static ICPU getCPU() {
+		return cpu;
+	}
+
+	public static void setByteArray(byte byteArray[]) {
+		byteArray0 = byteArray;
+	}
+
+	public static byte[] getByteArray() {
+		return byteArray0;
+	}
+
+	@Override
+	public int getByte(byte byteArray[], int offset) {
+		return NumericConverter.getByteAsInt(byteArray, offset);
+	}
+
+	@Override
+	public Opcode getOpcodeByIndex(byte byteArray[], int offset) {
+		return getOpcodeById(NumericConverter.toInt(byteArray[(int) offset]));
+	}
+
+	@Override
+	public Opcode getOpcodeById(int opcode) {
+		return InstructionSet.getOpcodeList().get(opcode);
+	}
+
+	@Override
+	public void addInstructionLine(InstructionLine instructionLine) {
+		instructionLineList.add(instructionLine);
+	}
+
+	@Override
+	public int getInstructionLength(byte[] byteArray, int offset) {
+		Opcode opcode = getOpcodeById(getByte(byteArray, offset));
+		int len = 1;
+
+		if (opcode != null) {
+			len = opcode.getAddressingMode().getLen();
+		}
+		return len;
+	}
+
+	@Override
+	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value len) {
+		return splitInstructionLine(instructionLine, basePc, len, Type.Unspecified, ReferenceType.NoReference);
+	}
+
+	@Override
+	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, Type type,
+			ReferenceType referenceType) {
+		Range range = instructionLine.getRange();
+		int oldLen = range.getLen();
+		int newLen = offset.sub(range.getOffset()).getValue();
+		if (oldLen == newLen) {
+			return null;
+		}
+
+		range.setLen(newLen);
+
+		InstructionLine newInstructionLine = new InstructionLine(basePc.add(range.getOffset() + newLen),
+				new Range(range.getOffset() + newLen, oldLen - newLen));
+		newInstructionLine.setType(type);
+		newInstructionLine.setReferenceType(referenceType);
+		instructionLineList.add(instructionLineList.indexOf(instructionLine) + 1, newInstructionLine);
+		return newInstructionLine;
+	}
+
+	@Override
+	public InstructionLine findInstructionLine(Value programmCounter) {
+		InstructionLine instructionLine = null;
+		for (InstructionLine il : instructionLineList) {
+			if (programmCounter.getValue() >= il.getProgramCounter().getValue()
+					&& programmCounter.getValue() <= (il.getProgramCounter().getValue() + il.getRange().getLen() - 1)) {
+				instructionLine = il;
+				break;
+			}
+		}
+		return instructionLine;
+	}
+
+	@Override
+	public InstructionLine findInstructionLineByOffset(Value offset) {
+		InstructionLine instructionLine = null;
+		for (InstructionLine il : instructionLineList) {
+			if (offset.getValue() >= il.getRange().getOffset()
+					&& offset.getValue() <= (il.getRange().getOffset() + il.getRange().getLen() - 1)) {
+				instructionLine = il;
+				break;
+			}
+		}
+		return instructionLine;
+	}
+
+	@Override
+	public InstructionLine getLastInstructionLine() {
+		return instructionLineList.get(instructionLineList.size() - 1);
+	}
+
+	@Override
+	public List<InstructionLine> getInstructionLineList() {
+		return instructionLineList;
+	}
+
+	@Override
+	public Value getInstructionValue(byte[] byteArray, Range range) {
+		int value = 0;
+		int len = range.getLen() - 1;
+		int offset = range.getOffset() + 1;
+		switch (len) {
+		case 1: {
+			value = getByte(byteArray, offset);
+			break;
+		}
+		case 2: {
+			value = getWord(byteArray, offset);
+			break;
+		}
+		}
+
+		return new Value(value);
+	}
+
+	@Override
+	public InstructionLine getInstructionLineByPC(Value programCounter) {
+		if (programCounter == null)
+			return null;
+		return getInstructionLineByPC(programCounter.getValue());
+	}
+
+	@Override
+	public InstructionLine getInstructionLineByPC(int programCounter) {
+		InstructionLine il = null;
+		for (InstructionLine il1 : instructionLineList) {
+			if (il1.getProgramCounter().getValue() == programCounter
+					|| programCounter >= il1.getProgramCounter().getValue()
+							&& programCounter < il1.getProgramCounter().getValue() + il1.getRange().getLen()) {
+				il = il1;
+				break;
+			}
+		}
+		return il;
+	}
+
+	@Override
+	public InstructionLine getInstructionLineByRef(Value reference) {
+		return getInstructionLineByRef(reference.getValue());
+	}
+
+	protected boolean isPlatFormAddress(PlatformData platformData, int value) {
+		boolean found = false;
+		for (Address address : platformData.getPlatformAddressList()) {
+			if (address.getAddress() == value) {
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
+
+	@Override
+	public InstructionLine getInstructionLineByRef(int reference) {
+		InstructionLine il = null;
+		for (InstructionLine il1 : instructionLineList) {
+			if (il1.hasValue()) {
+				if (il1.getRefValue().getValue() == reference) {
+					il = il1;
+					break;
+				}
+			}
+		}
+		return il;
+	}
+
+	@Override
+	public void packInstructionLines(InstructionLine instructionLine, int len) {
+		int lineIndex = getInstructionLineList().indexOf(instructionLine) + 1;
+		int i = 0;
+		while (i < len - 1) {
+			getInstructionLineList().remove(lineIndex);
+			i++;
+		}
+		instructionLine.getRange().setLen(len);
+	}
+
+	public static String getMnemonicArgument(Opcode opcode, Range range, byte byteArray[]) {
+		int len = range.getLen() - 1;
+		int offset = range.getOffset() + 1;
+		int value = 0;
+
+		String argument = opcode.getAddressingMode().getArgumentTemplate();
+
+		if (len > 0) {
+			if (len == 2) {
+				value = getCPU().getWord(byteArray, offset);
+			} else {
+				value = getCPU().getByte(byteArray, offset);
+			}
+			argument = argument.replace("{value}", "$" + NumericConverter.toHexString(value, (len * 2)));
+			if (!argument.endsWith(",X") && !argument.endsWith(",Y") && !argument.endsWith(",X)")) {
+				argument = argument + "  ";
+			}
+		}
+		return argument;
+	}
+
+}

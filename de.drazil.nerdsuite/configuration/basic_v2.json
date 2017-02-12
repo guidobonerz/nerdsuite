@@ -1,0 +1,536 @@
+{
+	"basicInstructionList": 
+	[
+		{
+			"command": "end",
+			"token": "80",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "for",
+			"token": "81",
+			"description": "",
+			"openBrace": false
+		},
+
+		{ 
+			"command": "next",
+			"token": "82",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "data",
+			"token": "83",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "input#",
+			"token": "84",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "input",
+			"token": "85",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "dim",
+			"token": "86",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "read",
+			"token": "87",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "let",
+			"token": "88",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "goto",
+			"token": "89",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "run",
+			"token": "8a",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "if",
+			"token": "8b",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "restore",
+			"token": "8c",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "gosub",
+			"token": "8d",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "return",
+			"token": "8e",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "rem",
+			"token": "8f",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "stop",
+			"token": "90",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "on",
+			"token": "91",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "wait",
+			"token": "92",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "load",
+			"token": "93",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "save",
+			"token": "94",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "verify",
+			"token": "95",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "def",
+			"token": "96",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "poke",
+			"token": "97",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "print#",
+			"token": "98",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "print",
+			"token": "99",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "cont",
+			"token": "9a",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "list",
+			"token": "9b",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "clr",
+			"token": "9c",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "cmd",
+			"token": "9d",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "sys",
+			"token": "9e",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "open",
+			"token": "9f",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "close",
+			"token": "a0",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "get",
+			"token": "a1",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "new",
+			"token": "a2",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "tab(",
+			"token": "a3",
+			"description": "",
+			"openBrace": true
+		},
+
+		{
+			"command": "to",
+			"token": "a4",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "fn",
+			"token": "a5",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "spc(",
+			"token": "a6",
+			"description": "",
+			"openBrace": true
+		},
+
+		{
+			"command": "then",
+			"token": "a7",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "not",
+			"token": "a8",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "step",
+			"token": "a9",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "+",
+			"token": "aa",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "-",
+			"token": "ab",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "*",
+			"token": "ac",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "/",
+			"token": "ad",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "^",
+			"token": "ae",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "and",
+			"token": "af",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "or",
+			"token": "b0",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "<",
+			"token": "b1",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "=",
+			"token": "b2",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": ">",
+			"token": "b3",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "sgn",
+			"token": "b4",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "int",
+			"token": "b5",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "abs",
+			"token": "b6",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "usr",
+			"token": "b7",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "fre",
+			"token": "b8",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "pos",
+			"token": "b9",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "sqr",
+			"token": "ba",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "rnd",
+			"token": "bb",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "log",
+			"token": "bc",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "exp",
+			"token": "bd",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "cos",
+			"token": "be",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "sin",
+			"token": "bf",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "tan",
+			"token": "c0",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "atn",
+			"token": "c1",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "peek",
+			"token": "c2",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "len",
+			"token": "c3",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "str$",
+			"token": "c4",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "val",
+			"token": "c5",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "asc",
+			"token": "c6",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "chr$",
+			"token": "c7",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "left$",
+			"token": "c8",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "right$",
+			"token": "c9",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "mid$",
+			"token": "ca",
+			"description": "",
+			"openBrace": false
+		},
+
+		{
+			"command": "go",
+			"token": "cb",
+			"description": "",
+			"openBrace": false
+		}
+	]
+}

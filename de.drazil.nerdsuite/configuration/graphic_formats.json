@@ -1,0 +1,94 @@
+[
+	{
+		"id": "KOALA",
+		"metaData": 
+		{
+			"width": 8,
+			"height": 8,
+			"rows": 25,
+			"columns": 40,
+			"multicolor": true
+		},
+
+		"content": 
+		{
+			"dataOffset": 2,
+			"bitmapOffset": 0,
+			"screenOffset": 8000,
+			"colorOffset": 9000,
+			"backgroundOffset": 10000
+		}
+	},
+
+	{
+		"id": "MONO_BITMAP",
+		"metaData": 
+		{
+			"width": 8,
+			"height": 8,
+			"rows": 25,
+			"columns": 40,
+			"multicolor": false
+		}
+	},
+
+	{
+		"id": "MONO_CHAR",
+		"metaData": 
+		{
+			"width": 8,
+			"height": 8,
+			"rows": 1,
+			"columns": 1,
+			"multicolor": false
+		}
+	},
+
+	{
+		"id": "MONO_SPRITE",
+		"metaData": 
+		{
+			"width": 8,
+			"height": 1,
+			"rows": 21,
+			"columns": 3,
+			"multicolor": false
+		}
+	},
+
+	{
+		"id": "MULTICOLOR_BITMAP",
+		"metaData": 
+		{
+			"width": 8,
+			"height": 8,
+			"rows": 25,
+			"columns": 40,
+			"multicolor": true
+		}
+	},
+
+	{
+		"id": "MULTICOLOR_CHAR",
+		"metaData": 
+		{
+			"width": 8,
+			"height": 8,
+			"rows": 1,
+			"columns": 1,
+			"multicolor": true
+		}
+	},
+
+	{
+		"id": "MULTICOLOR_SPRITE",
+		"metaData": 
+		{
+			"width": 8,
+			"height": 1,
+			"rows": 21,
+			"columns": 3,
+			"multicolor": true
+		}
+	}
+]

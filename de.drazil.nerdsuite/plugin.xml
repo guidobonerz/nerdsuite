@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            name="NerdSuite"
+            application="org.eclipse.e4.ui.workbench.swt.E4Application">
+         <property
+               name="applicationCSS"
+               value="platform:/plugin/de.drazil.nerdsuite/css/default.css">
+         </property>
+         <property
+               name="appName"
+               value="NerdSuite">
+         </property>
+         <property
+               name="lifeCycleURI"
+               value="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.configuration.Initializer">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.drazil.nerdsuite.widget.Test"
+            id="de.drazil.nerdsuite.widget.Test"
+            name="New EditorPart">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="dfgdfg"
+            id="dfgdfg"
+            name="New Perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="test"
+            id="test"
+            name="New ViewPart">
+      </view>
+      <view
+            class="de.drazil.form.Test"
+            id="de.drazil.form.Test"
+            name="New ViewPart">
+      </view>
+   </extension>
+
+</plugin>

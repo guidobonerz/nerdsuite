@@ -1,0 +1,46 @@
+"syntaxHighlightingRules":{
+		"multiLineRules":[
+			{
+				"patternA":"/*",
+				"patternB":"*/",
+				"token":"COMMENT"
+			}
+			
+		],
+		"singleLineRules":[
+			{
+				"patternA":"//",
+				"scanMode":"toLineEnd",
+				"token":"COMMENT"
+			},
+			{
+				"patternA":"\"",
+				"patternB":"\"",
+				"token":"STRING"
+			},
+			{
+				"patternA":"#",
+				"token":"DECIMAL_VALUE"
+			},
+			{
+				"patternA":"#$",
+				"token":"HEXADECIMAL_VALUE"
+			},
+			{
+				"patternA":"#%",
+				"token":"BINARY_VALUE"
+			},
+			{
+				"patternA":"$",
+				"token":"ADRESS"
+			}
+			,
+			{
+				"patternA":":",
+				"scanMode":"Reverse",
+				"token":"LABEL"
+			}
+			
+		]
+		
+	}

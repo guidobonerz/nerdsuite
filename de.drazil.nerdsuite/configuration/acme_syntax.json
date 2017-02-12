@@ -1,0 +1,448 @@
+{
+	"sourceRules": 
+	[
+		{
+			"prefix": "/*",
+			"suffix": "*/",
+			"type": "multiline",
+			"token": "comment"
+		},
+
+		{
+			"prefix": "//",
+			"type": "singleline",
+			"token": "comment"
+		},
+
+		{
+			"prefix": "\"",
+			"suffix": "\"",
+			"type": "singleline",
+			"token": "string"
+		},
+
+		{
+			"prefix": "#",
+			"type": "singleline",
+			"token": "decimal",
+			"content": "decimal"
+		},
+
+		{
+			"prefix": "#$",
+			"type": "singleline",
+			"token": "hexadecimal",
+			"content": "hexadecimal"
+		},
+
+		{
+			"prefix": "#%",
+			"type": "singleline",
+			"token": "binary",
+			"content": "binary"
+		},
+
+		{
+			"prefix": "$",
+			"type": "singleline",
+			"token": "adress",
+			"content": "hexadecimal"
+		},
+
+		{
+			"suffix": ":",
+			"type": "singleline",
+			"token": "label"
+		}
+	],
+
+	"directives": 
+	[
+		{
+			"id": "!to",
+			"alias": 
+			[
+				
+			],
+
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!source",
+			"alias": 
+			[
+				"!src"
+			],
+
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "*",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!initmem",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!byte",
+			"alias": 
+			[
+				"!by",
+				"!8"
+			],
+
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!word",
+			"alias": 
+			[
+				"!wo",
+				"!16"
+			],
+
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!24",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!32",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!align",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!fill",
+			"alias": 
+			[
+				"!fi"
+			],
+
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!convtab",
+			"alias": 
+			[
+				"!ct"
+			],
+
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!text",
+			"alias": 
+			[
+				"!tx"
+			],
+
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!pet",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!raw",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!scr",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!scrxor",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!zone",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!sl",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!if",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!ifdef",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!ifndef",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!for",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!set",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!do",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!endoffile",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!warn",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!error",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!serious",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!macro",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!pseudoopc",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!cpu",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!al",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!as",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!rl",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		},
+
+		{
+			"id": "!rs",
+			"param": null,
+			"nodename": null,
+			"description": "",
+			"pattern": "",
+			"matcher": "",
+			"hasOutline": false
+		}
+	]
+}

@@ -1,0 +1,25 @@
+
+	"formatter": 
+	{
+		"indentation": 
+		{
+			"policy": "spaces",
+			"count": 2,
+			"afterDirective": true
+		},
+
+		"braces": 
+		{
+			"afterDirective": 
+			[
+				"sameLine",
+				"nextLine",
+				"indentedLine"
+			]
+		},
+
+		"newLine": 
+		{
+			"afterLabel": true
+		}
+	}
