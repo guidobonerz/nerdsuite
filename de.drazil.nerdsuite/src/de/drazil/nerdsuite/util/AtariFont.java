@@ -19,7 +19,7 @@ public class AtariFont extends FontBase
 	@Override
 	public Font getFont()
 	{
-		return Constants.ATARI_FONT;
+		return Constants.Atari_Classic_FONT;
 	}
 
 	@Override

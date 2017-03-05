@@ -80,9 +80,20 @@ public class Constants
 
 	public final static Font DEFAULT_FONT = Display.getCurrent().getSystemFont();
 	public final static Font EDITOR_FONT = JFaceResources.getFont(JFaceResources.TEXT_FONT);
-	public final static Font C64_FONT = new Font(Display.getCurrent(), "C64 Pro Mono", 12, SWT.NORMAL);
-	public final static Font ATARI_FONT = new Font(Display.getCurrent(), "Atari Classic", 12, SWT.NORMAL);
+	public final static Font Ubuntu_Mono = new Font(Display.getCurrent(), "Ubuntu Mono", 20, SWT.NORMAL);
+	public final static Font DroidSans_Mono = new Font(Display.getCurrent(), "Droid Sans Mono", 10, SWT.NORMAL);
+	public final static Font PT_Mono = new Font(Display.getCurrent(), "PT Mono", 10, SWT.NORMAL);
+	public final static Font SourceCodePro_Mono = new Font(Display.getCurrent(), "Source Code Pro", 10, SWT.NORMAL);
+	public final static Font C64_Pro_Mono_FONT = new Font(Display.getCurrent(), "C64 Pro Mono", 6, SWT.NORMAL);
+	public final static Font Atari_Classic_FONT = new Font(Display.getCurrent(), "Atari Classic", 12, SWT.NORMAL);
+	public final static Font PetMe2Y_FONT = new Font(Display.getCurrent(), "Pet Me 2Y", 12, SWT.NORMAL);
+	public final static Font PetMe642Y_FONT = new Font(Display.getCurrent(), "Pet Me 64 2Y", 12, SWT.NORMAL);
 
+	
+	public final static TextStyle TEXTSTYLE_PetMe642Y_ASCII = new TextStyle(PetMe642Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_PetMe2Y_ASCII = new TextStyle(PetMe2Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_C64_ASCII = new TextStyle(C64_Pro_Mono_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_ATARI_ASCII = new TextStyle(Atari_Classic_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_STRING = new TextStyle(EDITOR_FONT, DEFAULT_STRING_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_COMMENT = new TextStyle(EDITOR_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_DECIMAL = new TextStyle(EDITOR_FONT, DEFAULT_DECIMAL_COLOR, BLACK);
@@ -95,6 +106,11 @@ public class Constants
 	public final static TextStyle TEXTSTYLE_UNSTABLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_CURLY_BRACES = new TextStyle(EDITOR_FONT, DEFAULT_CURLY_BRACES_COLOR, BLACK);
 
+	public final static String T_C64_BASIC_STRING = "C64BASIC_STRING";
+	public final static String T_Atari_BASIC_STRING = "Atari_BASIC_STRING";
+	public final static String T_PETME642YASCII = "PETME642YASCII";
+	public final static String T_PETME2YASCII = "PETME2YASCII";
+	public final static String T_C64ASCII = "C64ASCII";
 	public final static String T_COMMENT = "COMMENT";
 	public final static String T_DECIMAL = "DECIMAL";
 	public final static String T_BINARY = "BINARY";

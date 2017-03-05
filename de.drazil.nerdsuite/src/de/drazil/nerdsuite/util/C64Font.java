@@ -19,7 +19,7 @@ public class C64Font extends FontBase
 	@Override
 	public Font getFont()
 	{
-		return Constants.C64_FONT;
+		return Constants.C64_Pro_Mono_FONT;
 	}
 
 	@Override

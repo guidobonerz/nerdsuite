@@ -15,16 +15,20 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.model.AssemblerDirective;
 import de.drazil.nerdsuite.model.CpuInstruction;
+import de.drazil.nerdsuite.util.C64Font;
+import de.drazil.nerdsuite.util.IFont;
 
-public class SourceEditor implements IDocument
-{
+public class SourceEditor implements IDocument {
 
 	enum WordBounds {
 		Begin, End
@@ -34,26 +38,24 @@ public class SourceEditor implements IDocument
 	private DocumentStyler documentStyler;
 
 	@Inject
-	public SourceEditor()
-	{
-		documentStyler = new DocumentStyler(this);
+	public SourceEditor() {
 
+		documentStyler = new DocumentStyler(this);
 		documentStyler.addRule(new MultiLineRule("/*", "*/", new Token(Constants.T_COMMENT)));
 		documentStyler.addRule(new SingleLineRule("//", new Token(Constants.T_COMMENT)));
-		documentStyler.addRule(new SingleLineRule("\"", "\"", new Token(Constants.T_STRING)));
+		documentStyler.addRule(new SingleLineRule("\"", "\"", new Token(Constants.T_PETME642YASCII)));
 		documentStyler.addRule(new SingleLineRule("", ":", new Token(Constants.T_LABEL)));
 		documentStyler.addRule(new ValueRule("#", "d", 5, new Token(Constants.T_DECIMAL)));
 		documentStyler.addRule(new ValueRule("$", "h", 4, new Token(Constants.T_ADRESS)));
 		documentStyler.addRule(new ValueRule("#%", "b", 8, new Token(Constants.T_BINARY)));
 		documentStyler.addRule(new ValueRule("#$", "h", 2, new Token(Constants.T_HEXADECIMAL)));
 
-		for (AssemblerDirective directive : InstructionSet.getDirectiveList())
-		{
+		for (AssemblerDirective directive : InstructionSet.getDirectiveList()) {
 			documentStyler.addRule(new WordRule(directive.getId(), new Token(Constants.T_DIRECTIVE)));
 		}
-		for (CpuInstruction instruction : InstructionSet.getCpuInstructionList())
-		{
-			documentStyler.addRule(new WordRule(instruction.getId(), new Token(CPU_6510.getInstructionTokenKey(instruction.isIllegal(), !instruction.isStable()))));
+		for (CpuInstruction instruction : InstructionSet.getCpuInstructionList()) {
+			documentStyler.addRule(new WordRule(instruction.getId(),
+					new Token(CPU_6510.getInstructionTokenKey(instruction.isIllegal(), !instruction.isStable()))));
 		}
 
 		// --------------------- erstmal nicht
@@ -66,31 +68,28 @@ public class SourceEditor implements IDocument
 	 * Create contents of the view part.
 	 */
 	@PostConstruct
-	public void createControls(Composite parent)
-	{
+	public void createControls(Composite parent) {
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
-		styledText.setFont(Constants.EDITOR_FONT);
+		styledText.setFont(Constants.SourceCodePro_Mono);
 		styledText.addLineStyleListener(documentStyler);
 
-		styledText.addLineBackgroundListener(new LineBackgroundListener()
-		{
+		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
-			public void lineGetBackground(LineBackgroundEvent event)
-			{
-				event.lineBackground = (styledText.getLineAtOffset(styledText.getCaretOffset()) == styledText.getLineAtOffset(event.lineOffset) ? Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR
-						: Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
+			public void lineGetBackground(LineBackgroundEvent event) {
+				event.lineBackground = (styledText.getLineAtOffset(styledText.getCaretOffset()) == styledText
+						.getLineAtOffset(event.lineOffset) ? Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR
+								: Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 			}
 		});
 
-		styledText.addKeyListener(new KeyAdapter()
-		{
+		styledText.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				// if (e.keyCode == SWT.ARROW_UP || e.keyCode == SWT.ARROW_DOWN ||
+			public void keyPressed(KeyEvent e) {
+				// if (e.keyCode == SWT.ARROW_UP || e.keyCode == SWT.ARROW_DOWN
+				// ||
 				// e.keyCode == SWT.PAGE_DOWN || e.keyCode == SWT.PAGE_UP)
 				// {
 				styledText.redraw();
@@ -103,114 +102,120 @@ public class SourceEditor implements IDocument
 		 * styledText.addExtendedModifyListener(new ExtendedModifyListener() {
 		 * 
 		 * @Override public void modifyText(ExtendedModifyEvent event) {
-		 * System.out.println("Ext Modify Text"); // TODO Auto-generated method stub
-		 * } });
+		 * System.out.println("Ext Modify Text"); // TODO Auto-generated method
+		 * stub } });
 		 */
 
-		styledText.addModifyListener(new ModifyListener()
-		{
+		styledText.addModifyListener(new ModifyListener() {
 
 			@Override
-			public void modifyText(ModifyEvent e)
-			{
+			public void modifyText(ModifyEvent e) {
 				documentStyler.refreshMultilineComments(styledText.getText());
 				styledText.redraw();
 
 			}
 		});
 
+		Button button = new Button(parent, SWT.NONE);
+		button.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				IFont font = new C64Font();
+
+				// styledText.append(new
+				// String(Character.toChars(font.getUnicodePrefix() | ((int) 22
+				// & 0xff))));
+				//styledText.append(new String(Character.toChars(0xee57)));
+				styledText.append(new String(Character.toChars(0xe0d1)));
+
+			}
+		});
 		/*
-		 * styledText.getVerticalBar().addListener(SWT.Selection, new Listener() {
-		 * int lastIndex = styledText.getTopIndex();
+		 * FontData[] fD = styledText.getFont().getFontData();
+		 * fD[0].setHeight(12); styledText.setFont(new Font(parent.getDisplay(),
+		 * fD[0]));
+		 */
+		/*
+		 * styledText.getVerticalBar().addListener(SWT.Selection, new Listener()
+		 * { int lastIndex = styledText.getTopIndex();
 		 * 
-		 * public void handleEvent(Event e) { int index = styledText.getTopIndex();
-		 * if (index != lastIndex) { lastIndex = index; styledText.redraw(); } } });
+		 * public void handleEvent(Event e) { int index =
+		 * styledText.getTopIndex(); if (index != lastIndex) { lastIndex =
+		 * index; styledText.redraw(); } } });
 		 */
 	}
 
 	@Override
-	public String getText()
-	{
+	public String getText() {
 		return this.styledText.getText();
 	}
 
 	@Override
-	public int getCurrentCharOffset()
-	{
+	public int getCurrentCharOffset() {
 		return this.styledText.getCaretOffset();
 	}
 
 	@Override
-	public int getFirstVisibleLineOffset()
-	{
+	public int getFirstVisibleLineOffset() {
 		return this.styledText.getTopIndex();
 	}
 
 	@Override
-	public int getLineCount()
-	{
+	public int getLineCount() {
 		return this.styledText.getLineCount();
 	}
 
 	@Override
-	public int getVisibleLineCount()
-	{
+	public int getVisibleLineCount() {
 		int vlc = styledText.getClientArea().height / styledText.getLineHeight();
 		return vlc < getLineCount() ? getLineCount() : vlc;
 	}
 
 	@Override
-	public String getLineAtIndex(int index)
-	{
+	public String getLineAtIndex(int index) {
 		return this.styledText.getLine(index);
 	}
 
 	@Override
-	public int getLineAtOffset(int offset)
-	{
+	public int getLineAtOffset(int offset) {
 		return this.styledText.getLineAtOffset(offset);
 	}
 
 	@Override
-	public int getCurrentLineIndex()
-	{
+	public int getCurrentLineIndex() {
 		return this.styledText.getLineAtOffset(this.styledText.getCaretOffset());
 	}
 
 	@Override
-	public int getCharOffsetAtCurrentLine()
-	{
+	public int getCharOffsetAtCurrentLine() {
 		return getCharOffsetAtLine(getCurrentLineIndex());
 	}
 
 	@Override
-	public int getCharOffsetAtLine(int lineIndex)
-	{
+	public int getCharOffsetAtLine(int lineIndex) {
 		return styledText.getOffsetAtLine(lineIndex);
 	}
 
 	@Override
-	public void addOrReplaceStyleRanges(int start, int length, StyleRange[] styleRanges)
-	{
+	public void addOrReplaceStyleRanges(int start, int length, StyleRange[] styleRanges) {
 		styledText.replaceStyleRanges(start, length, styleRanges);
 	}
 
 	@Override
-	public void setStyleRanges(StyleRange[] styleRanges)
-	{
+	public void setStyleRanges(StyleRange[] styleRanges) {
 		styledText.setStyleRanges(styleRanges);
 	}
 
 	@Override
-	public void redraw()
-	{
+	public void redraw() {
 		styledText.redraw();
 	}
 
 	/*
 	 * private Bounds getWordBounds(String text, int caretOffset) { int
-	 * startOffset = caretOffset; int endOffset = caretOffset; int start = 0; int
-	 * end = 0; Bounds bounds = new Bounds(); char c;
+	 * startOffset = caretOffset; int endOffset = caretOffset; int start = 0;
+	 * int end = 0; Bounds bounds = new Bounds(); char c;
 	 * 
 	 * boolean whiteSpace = false; while (startOffset > 0) {
 	 * 
@@ -225,13 +230,11 @@ public class SourceEditor implements IDocument
 	 * bounds.setStart(start); bounds.setEnd(end); return bounds; }
 	 */
 	@PreDestroy
-	public void dispose()
-	{
+	public void dispose() {
 	}
 
 	@Focus
-	public void setFocus()
-	{
+	public void setFocus() {
 		// TODO Set the focus to control
 	}
 }
