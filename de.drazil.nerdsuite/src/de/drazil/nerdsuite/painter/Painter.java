@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.painter;
+ package de.drazil.nerdsuite.painter;
 
 import java.io.File;
 

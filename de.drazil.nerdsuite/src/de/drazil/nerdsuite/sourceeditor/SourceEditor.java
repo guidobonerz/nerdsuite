@@ -110,8 +110,9 @@ public class SourceEditor implements IDocument {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				documentStyler.refreshMultilineComments(styledText.getText());
-				styledText.redraw();
+				System.out.println("modify text");
+				//documentStyler.refreshMultilineComments(styledText.getText());
+				//styledText.redraw();
 
 			}
 		});

@@ -61,6 +61,7 @@ public class DocumentStyler implements LineStyleListener {
 
 	@Override
 	public void lineGetStyle(LineStyleEvent event) {
+		System.out.println("line style text");
 		this.lineTokenList = new ArrayList<Token>();
 		this.styleRangeList = new ArrayList<>();
 		Color backgroundColor = (document.getCurrentLineIndex() == document.getLineAtOffset(event.lineOffset)

@@ -12,24 +12,21 @@ import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.widget.BitmapPainter;
+import de.drazil.nerdsuite.widget.BitmapSelector;
 import de.drazil.nerdsuite.widget.IColorProvider;
 
-public class SpriteEditor implements IColorProvider
-{
+public class SpriteEditor implements IColorProvider {
 
 	@PostConstruct
-	public void postConstruct(Composite parent)
-	{
+	public void postConstruct(Composite parent) {
 		boolean multiColorMode = false;
 		byte binaryData[] = new byte[0xffff];
 		for (int i = 0; i < binaryData.length; i++)
 			binaryData[i] = 0;
 		parent.setLayout(new RowLayout(SWT.VERTICAL));
-		BitmapPainter singleSpritePainter = new BitmapPainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED)
-		{
+		BitmapPainter singleSpritePainter = new BitmapPainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED) {
 			@Override
-			public String getPainterName()
-			{
+			public String getPainterName() {
 				return "SpritePainter       ";
 			}
 		};
@@ -56,11 +53,9 @@ public class SpriteEditor implements IColorProvider
 		singleSpritePainter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(15).getColor());
 		singleSpritePainter.setSelectedColor(3);
 
-		BitmapPainter spriteSelector = new BitmapPainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED)
-		{
+		BitmapSelector spriteSelector = new BitmapSelector(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED) {
 			@Override
-			public String getPainterName()
-			{
+			public String getPainterName() {
 				return "SpritePainterPreview";
 			}
 		};
@@ -95,12 +90,10 @@ public class SpriteEditor implements IColorProvider
 
 		Button multicolor = new Button(parent, SWT.CHECK);
 		multicolor.setText("MultiColor");
-		multicolor.addListener(SWT.Selection, new Listener()
-		{
+		multicolor.addListener(SWT.Selection, new Listener() {
 
 			@Override
-			public void handleEvent(Event event)
-			{
+			public void handleEvent(Event event) {
 
 				singleSpritePainter.setMultiColorEnabled(multicolor.getSelection());
 				spriteSelector.setMultiColorEnabled(multicolor.getSelection());
@@ -110,8 +103,7 @@ public class SpriteEditor implements IColorProvider
 	}
 
 	@Override
-	public Color getColorByIndex(byte bitmapByte, byte bitmap[], int offset, int index)
-	{
+	public Color getColorByIndex(byte bitmapByte, byte bitmap[], int offset, int index) {
 		return InstructionSet.getPlatformData().getColorPalette().get(6).getColor();
 	}
 }
