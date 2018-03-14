@@ -85,8 +85,8 @@ public class SpriteEditor implements IColorProvider {
 		spriteSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(15).getColor());
 		spriteSelector.setSelectedColor(3);
 
-		singleSpritePainter.addDrawListener(spriteSelector);
-		spriteSelector.addDrawListener(singleSpritePainter);
+		//singleSpritePainter.addDrawListener(spriteSelector);
+		//spriteSelector.addDrawListener(singleSpritePainter);
 
 		Button multicolor = new Button(parent, SWT.CHECK);
 		multicolor.setText("MultiColor");

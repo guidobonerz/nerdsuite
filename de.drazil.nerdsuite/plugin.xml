@@ -15,6 +15,26 @@
                name="lifeCycleURI"
                value="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.configuration.Initializer">
          </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/nerdsuite32.png,icons/nerdsuite128.png,icons/nerdsuite256.png">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
       </product>
    </extension>
    <extension

@@ -203,7 +203,7 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		});
 	}
 
-	private void setCursorPosition(int x, int y) {
+	protected void setCursorPosition(int x, int y) {
 		cursorX = x / currentPixelWidth;
 		cursorY = y / currentPixelHeight;
 		tileX = x / (width * currentPixelWidth * tileColumns);
@@ -233,7 +233,7 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 	}
 
 	public void drawTileCursor(GC gc, boolean mouseIn) {
-		gc.setLineWidth(2);
+		gc.setLineWidth(1);
 		gc.setLineStyle(SWT.LINE_SOLID);
 
 		gc.setForeground(Constants.DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR);
@@ -577,7 +577,7 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		drawPixel();
 	}
 
-	private void drawPixel() {
+	protected void drawPixel() {
 		drawMode = SET_DRAW_PIXEL;
 		System.out.println(getPainterName() + ":   x:" + cursorX + "    y:" + cursorY);
 		int inset = isPixelGridEnabled() ? 1 : 0;

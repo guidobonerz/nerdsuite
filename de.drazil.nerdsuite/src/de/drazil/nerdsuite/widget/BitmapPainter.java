@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.widget;
 
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -11,11 +13,27 @@ public class BitmapPainter extends AbstractBitmapWidget implements IDrawListener
 
 	public BitmapPainter(Composite parent, int style) {
 		super(parent, style);
+		addMouseMoveListener(new MouseMoveListener() {
 
+			@Override
+			public void mouseMove(MouseEvent e) {
+
+				if (leftButtonMode == LEFT_BUTTON_PRESSED) {
+					setCursorPosition(e.x, e.y);
+
+					System.out.printf(
+							getPainterName()
+									+ ": mx:%3d  my:%3d | px:%3d  py:%3d | tx:%3d  ty:%3d | tcx:%3d  tcy:%3d %n",
+							e.x, e.y, cursorX, cursorY, tileX, tileY, tileCursorX, tileCursorY);
+					drawPixel();
+					// fireDrawAll();
+				}
+			}
+		});
 	}
 
 	public void paintControl(PaintEvent e) {
-		if ((drawMode & SET_DRAW_PIXEL) == SET_DRAW_PIXEL) {
+		if (drawMode == SET_DRAW_PIXEL) {
 			drawPixel(e.gc, cursorX, cursorY);
 		}
 		super.paintControl(e);
