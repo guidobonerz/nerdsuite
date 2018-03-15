@@ -177,7 +177,7 @@ public class DocumentStyler implements LineStyleListener {
 		Collections.sort(ruleList, new Comparator<IRule>() {
 			@Override
 			public int compare(IRule o1, IRule o2) {
-				return o1.getPrefix().compareToIgnoreCase(o2.getPrefix());
+				return Integer.compare(o1.getPriority(), o2.getPriority());
 			}
 		});
 	}

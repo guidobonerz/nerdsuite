@@ -12,4 +12,6 @@ public interface IRule
 	public boolean hasMatch(String text);
 
 	public void reset();
+	
+	public int getPriority();
 }
