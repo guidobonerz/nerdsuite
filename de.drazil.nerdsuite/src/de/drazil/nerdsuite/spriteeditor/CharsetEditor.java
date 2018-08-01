@@ -16,7 +16,7 @@ import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 
-public class SpriteEditor implements IColorProvider {
+public class CharsetEditor implements IColorProvider {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -28,8 +28,8 @@ public class SpriteEditor implements IColorProvider {
 		ImagingWidget singleSpritePainter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		singleSpritePainter.setWidgetName("SpritePainter :");
 		singleSpritePainter.setWidgetMode(WidgetMode.PAINTER);
-		singleSpritePainter.setWidth(24);
-		singleSpritePainter.setHeight(21);
+		singleSpritePainter.setWidth(8);
+		singleSpritePainter.setHeight(8);
 		singleSpritePainter.setPixelSize(20);
 		singleSpritePainter.setTileColumns(1);
 		singleSpritePainter.setTileRows(1);
@@ -52,13 +52,13 @@ public class SpriteEditor implements IColorProvider {
 		ImagingWidget spriteSelector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		spriteSelector.setWidgetName("SpriteSelector:");
 		spriteSelector.setWidgetMode(WidgetMode.SELECTOR);
-		spriteSelector.setWidth(24);
-		spriteSelector.setHeight(21);
+		spriteSelector.setWidth(8);
+		spriteSelector.setHeight(8);
 		spriteSelector.setTileColumns(1);
 		spriteSelector.setTileRows(1);
-		spriteSelector.setColumns(10);
-		spriteSelector.setRows(2);
-		spriteSelector.setPixelSize(4);
+		spriteSelector.setColumns(20);
+		spriteSelector.setRows(20);
+		spriteSelector.setPixelSize(2);
 		spriteSelector.setPixelGridEnabled(false);
 		spriteSelector.setTileGridEnabled(false);
 		spriteSelector.setTileSubGridEnabled(true);

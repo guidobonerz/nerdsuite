@@ -1,4 +1,4 @@
- package de.drazil.nerdsuite.painter;
+package de.drazil.nerdsuite.painter;
 
 import java.io.File;
 
@@ -23,27 +23,25 @@ import org.eclipse.swt.widgets.Text;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
-import de.drazil.nerdsuite.widget.BitmapPainter;
 import de.drazil.nerdsuite.widget.IColorProvider;
+import de.drazil.nerdsuite.widget.ImagingWidget;
 
-public class Painter implements IColorProvider
-{
+public class BitmapPainter implements IColorProvider {
 	private Text offsetField;
 
 	@Inject
-	public Painter()
-	{
+	public BitmapPainter() {
 		// TODO Your code here
 	}
 
 	@PostConstruct
-	public void postConstruct(Composite parent)
-	{
+	public void postConstruct(Composite parent) {
 		// byte binaryData[] = BinaryFileReader.readFile(new
 		// File("/Users/drazil/Downloads/dumprambo"));
 		byte binaryData[] = BinaryFileReader.readFile(new File("C:\\Users\\drazil\\Downloads\\pic rambo.prg"));
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
-		BitmapPainter painter = new BitmapPainter(parent, SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
+		ImagingWidget painter = new ImagingWidget(parent,
+				SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
 
 		painter.setWidth(8);
 		painter.setHeight(8);
@@ -53,8 +51,8 @@ public class Painter implements IColorProvider
 		painter.setPixelGridEnabled(false);
 		painter.setTileGridEnabled(true);
 		painter.setMultiColorEnabled(true);
-		painter.setReadOnly(false);
-		painter.setOffset(2);
+
+		painter.setSelectedTileOffset(2);
 		painter.setColorProvider(this);
 
 		painter.setContent(binaryData);
@@ -64,39 +62,32 @@ public class Painter implements IColorProvider
 		painter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(15).getColor());
 		painter.setSelectedColor(3);
 
-		painter.addKeyListener(new KeyListener()
-		{
+		painter.addKeyListener(new KeyListener() {
 
 			@Override
-			public void keyReleased(KeyEvent e)
-			{
+			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void keyPressed(KeyEvent e)
-			{
+			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 		});
-		painter.addMouseWheelListener(new MouseWheelListener()
-		{
+		painter.addMouseWheelListener(new MouseWheelListener() {
 			@Override
-			public void mouseScrolled(MouseEvent e)
-			{
-				int offset = painter.getOffset();
+			public void mouseScrolled(MouseEvent e) {
+				int offset = painter.getSelectedTileOffset();
 				offsetField.setText(Integer.toHexString(offset));
 
 			}
 		});
-		painter.getVerticalBar().addSelectionListener(new SelectionListener()
-		{
+		painter.getVerticalBar().addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				// painter.setOffset(painter.getVerticalBar().getSelection());
 				// int offset = painter.getOffset();
 				// offsetField.setText(Integer.toHexString(offset));
@@ -104,8 +95,7 @@ public class Painter implements IColorProvider
 			}
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
+			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 
 			}
@@ -115,12 +105,10 @@ public class Painter implements IColorProvider
 
 		Button multicolor = new Button(parent, SWT.CHECK);
 		multicolor.setText("MultiColor");
-		multicolor.addListener(SWT.Selection, new Listener()
-		{
+		multicolor.addListener(SWT.Selection, new Listener() {
 
 			@Override
-			public void handleEvent(Event event)
-			{
+			public void handleEvent(Event event) {
 
 				painter.setMultiColorEnabled(multicolor.getSelection());
 
@@ -133,35 +121,29 @@ public class Painter implements IColorProvider
 		shiftRight.setText("Shift Right");
 		Button shiftUp = new Button(parent, SWT.NONE);
 		shiftUp.setText("Shift Up");
-		shiftUp.addListener(SWT.Selection, new Listener()
-		{
+		shiftUp.addListener(SWT.Selection, new Listener() {
 			@Override
-			public void handleEvent(Event event)
-			{
-				int offset = painter.getOffset();
-				painter.setOffset(offset + painter.getWidth() / 8);
+			public void handleEvent(Event event) {
+				int offset = painter.getSelectedTileOffset();
+				painter.setSelectedTileOffset(offset + painter.getWidth() / 8);
 			}
 		});
 
 		Button shiftDown = new Button(parent, SWT.NONE);
 		shiftDown.setText("Shift Down");
-		shiftDown.addListener(SWT.Selection, new Listener()
-		{
+		shiftDown.addListener(SWT.Selection, new Listener() {
 			@Override
-			public void handleEvent(Event event)
-			{
-				int offset = painter.getOffset();
-				painter.setOffset(offset - painter.getWidth() / 8);
+			public void handleEvent(Event event) {
+				int offset = painter.getSelectedTileOffset();
+				painter.setSelectedTileOffset(offset - painter.getWidth() / 8);
 			}
 		});
 
 		Button addColumn = new Button(parent, SWT.NONE);
 		addColumn.setText("Add Column");
-		addColumn.addListener(SWT.Selection, new Listener()
-		{
+		addColumn.addListener(SWT.Selection, new Listener() {
 			@Override
-			public void handleEvent(Event event)
-			{
+			public void handleEvent(Event event) {
 				int columnCount = painter.getColumns();
 				painter.setColumns(columnCount + 1);
 				parent.layout();
@@ -169,14 +151,11 @@ public class Painter implements IColorProvider
 		});
 		Button removeColumn = new Button(parent, SWT.NONE);
 		removeColumn.setText("Remove Column");
-		removeColumn.addListener(SWT.Selection, new Listener()
-		{
+		removeColumn.addListener(SWT.Selection, new Listener() {
 			@Override
-			public void handleEvent(Event event)
-			{
+			public void handleEvent(Event event) {
 				int columnCount = painter.getColumns();
-				if (columnCount > 1)
-				{
+				if (columnCount > 1) {
 					painter.setColumns(columnCount - 1);
 					parent.layout();
 				}
@@ -190,20 +169,14 @@ public class Painter implements IColorProvider
 	}
 
 	@Override
-	public Color getColorByIndex(byte bitmapByte, byte bitmap[], int offset, int index)
-	{
+	public Color getColorByIndex(byte bitmapByte, byte bitmap[], int offset, int index) {
 		int colorIndex = 7;
 
-		if ((bitmapByte) == 1)
-		{
+		if ((bitmapByte) == 1) {
 			colorIndex = (bitmap[offset + 8000 + index] >> 4) & 0xf;
-		}
-		else if ((bitmapByte) == 2)
-		{
+		} else if ((bitmapByte) == 2) {
 			colorIndex = (bitmap[offset + 8000 + index] & 0xf);
-		}
-		else if ((bitmapByte) == 3)
-		{
+		} else if ((bitmapByte) == 3) {
 			colorIndex = (bitmap[offset + 9000 + index] & 0xf);
 		}
 

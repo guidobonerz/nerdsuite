@@ -43,13 +43,19 @@
           </children>
         </children>
       </children>
-      <children xsi:type="advanced:Perspective" xmi:id="__4FmgL60Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.perspective.imaging" label="Imaging ">
-        <children xsi:type="basic:InputPart" xmi:id="_fsTj8L9IEeOU-6uJVJ8W-w" elementId="de.drazil.nerdsuite.inputpart.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.spriteeditor.SpriteEditor" label="Painter" closeable="true">
+      <children xsi:type="advanced:Perspective" xmi:id="__4FmgL60Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.perspective.spriteeditor" label="SpriteEditor">
+        <children xsi:type="basic:InputPart" xmi:id="_fsTj8L9IEeOU-6uJVJ8W-w" elementId="de.drazil.nerdsuite.inputpart.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.spriteeditor.SpriteEditor" label="SpriteEditor" closeable="true">
           <menus xmi:id="_gDctYL76EeapDZJEicGLWg" elementId="de.drazil.nerdsuite.menu.painterMenu" label="painter menu">
             <children xsi:type="menu:HandledMenuItem" xmi:id="_8Lt_oL76EeapDZJEicGLWg" elementId="de.drazil.nerdsuite.handledmenuitem.rrtyrtyry" label="rrtyrtyry"/>
           </menus>
           <toolbar xmi:id="_nuUHUL76EeapDZJEicGLWg" elementId="de.drazil.nerdsuite.toolbar.3"/>
         </children>
+      </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_hqm8EJW1EeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.bigspriteeditor" label="BigSpriteEditor">
+        <children xsi:type="basic:Part" xmi:id="_qzU0EJW1EeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.bigspriteeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.spriteeditor.BigSpriteEditor" label="BigSpriteEditor"/>
+      </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.charseteditor" label="CharsetEditor">
+        <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.charseteditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.spriteeditor.CharsetEditor" label="CharsetEditor"/>
       </children>
     </children>
     <mainMenu xmi:id="_1r1OEKLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.0">
@@ -86,8 +92,10 @@
       </children>
       <children xsi:type="menu:Menu" xmi:id="_FUN4MKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.disassemble" label="Disassemble"/>
       <children xsi:type="menu:Menu" xmi:id="_r7g4cL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.menu.perspective" label="Perspective">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6UAA8L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.codingPerspective" label="Coding Perspective" command="_XZnhsL62Eeaij7VdtYSbPw"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_-VfgcL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.imagingPerspective" label="Imaging Perspective" command="_fxOF0L62Eeaij7VdtYSbPw"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6UAA8L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.CodingPerspective" label="Coding Perspective" command="_XZnhsL62Eeaij7VdtYSbPw"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_-VfgcL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.SpritePerspective" label="Sprite Perspective" command="_AT5rgJW0EeiXIq2xmOFdHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_8ziRMJW1EeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handledmenuitem.BigSpritePerspective" label="BigSpritePerspective" command="_fxOF0L62Eeaij7VdtYSbPw"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_iT-AIJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handledmenuitem.CharsetPerspective" label="CharsetPerspective" command="_Uw3ngJXLEeiXIq2xmOFdHg"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.0">
@@ -112,8 +120,10 @@
   <handlers xmi:id="_CGhuAMySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.buildAndRun" command="_yWlqYMyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_ElMI0MySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.runToolchain" command="_3H-80MyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
-  <handlers xmi:id="_idGn0L63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.coding_perspective" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CodingPerspectiveHandler" command="_XZnhsL62Eeaij7VdtYSbPw"/>
-  <handlers xmi:id="_mIJWML63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.imaging_perspective" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ImagingPerspectiveHandler" command="_fxOF0L62Eeaij7VdtYSbPw"/>
+  <handlers xmi:id="_idGn0L63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.CodingPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CodingPerspectiveHandler" command="_XZnhsL62Eeaij7VdtYSbPw"/>
+  <handlers xmi:id="_mIJWML63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.BigSpritePerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.BigSpritePerspectiveHandler" command="_fxOF0L62Eeaij7VdtYSbPw"/>
+  <handlers xmi:id="_KGj4YJW0EeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handler.SpritePerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SpritePerspectiveHandler" command="_AT5rgJW0EeiXIq2xmOFdHg"/>
+  <handlers xmi:id="_PlHUUJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handler.CharsetPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CharsetPerspectiveHandler" command="_Uw3ngJXLEeiXIq2xmOFdHg"/>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
@@ -124,8 +134,10 @@
   <commands xmi:id="_yWlqYMyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.build_and_run" commandName="Build and Run"/>
   <commands xmi:id="_3H-80MyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.run_toolchain" commandName="Run ToolChain"/>
   <commands xmi:id="_ka2AIOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.command.newSourceFile" commandName="New Source File"/>
-  <commands xmi:id="_XZnhsL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.conding_perspective" commandName="Coding Perspective"/>
-  <commands xmi:id="_fxOF0L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.ImagingPerspective" commandName="Imaging Perspective"/>
+  <commands xmi:id="_XZnhsL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.CodingPerspective" commandName="Coding Perspective"/>
+  <commands xmi:id="_fxOF0L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.BigSpritePerspective" commandName="Big Sprite Perspective"/>
+  <commands xmi:id="_AT5rgJW0EeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.command.SpritePerspective" commandName="Sprite Perspective"/>
+  <commands xmi:id="_Uw3ngJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.command.CharsetPerspective" commandName="Charset Perspective"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

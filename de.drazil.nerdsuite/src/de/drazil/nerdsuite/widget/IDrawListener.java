@@ -1,12 +1,12 @@
 package de.drazil.nerdsuite.widget;
 
-public interface IDrawListener
-{
-	public void drawPixel(int x, int y);
+public interface IDrawListener {
 
-	public void drawTile(int x, int y);
+	public void doDrawPixel(int x, int y, boolean paintMode);
 
-	public void drawAll();
+	public void doDrawTile();
+
+	public void doDrawAllTiles();
 
 	public void setSelectedTileOffset(int offset);
 }

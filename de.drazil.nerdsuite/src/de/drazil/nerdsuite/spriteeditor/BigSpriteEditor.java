@@ -16,7 +16,7 @@ import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 
-public class SpriteEditor implements IColorProvider {
+public class BigSpriteEditor implements IColorProvider {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -30,9 +30,9 @@ public class SpriteEditor implements IColorProvider {
 		singleSpritePainter.setWidgetMode(WidgetMode.PAINTER);
 		singleSpritePainter.setWidth(24);
 		singleSpritePainter.setHeight(21);
-		singleSpritePainter.setPixelSize(20);
-		singleSpritePainter.setTileColumns(1);
-		singleSpritePainter.setTileRows(1);
+		singleSpritePainter.setPixelSize(10);
+		singleSpritePainter.setTileColumns(2);
+		singleSpritePainter.setTileRows(2);
 
 		singleSpritePainter.setPixelGridEnabled(true);
 		singleSpritePainter.setGridStyle(GridStyle.PIXEL);
@@ -54,11 +54,11 @@ public class SpriteEditor implements IColorProvider {
 		spriteSelector.setWidgetMode(WidgetMode.SELECTOR);
 		spriteSelector.setWidth(24);
 		spriteSelector.setHeight(21);
-		spriteSelector.setTileColumns(1);
-		spriteSelector.setTileRows(1);
+		spriteSelector.setTileColumns(2);
+		spriteSelector.setTileRows(2);
 		spriteSelector.setColumns(10);
 		spriteSelector.setRows(2);
-		spriteSelector.setPixelSize(4);
+		spriteSelector.setPixelSize(1);
 		spriteSelector.setPixelGridEnabled(false);
 		spriteSelector.setTileGridEnabled(false);
 		spriteSelector.setTileSubGridEnabled(true);

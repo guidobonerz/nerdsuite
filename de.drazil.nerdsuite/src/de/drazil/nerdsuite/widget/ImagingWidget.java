@@ -23,12 +23,19 @@ import org.eclipse.swt.widgets.ScrollBar;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.log.Console;
 
-public abstract class AbstractBitmapWidget extends Canvas implements IDrawListener, PaintListener {
+public class ImagingWidget extends Canvas implements IDrawListener, PaintListener {
 	private final static int MOUSE_BUTTON_LEFT = 1;
 	private final static int MOUSE_BUTTON_MIDDLE = 2;
 	private final static int MOUSE_BUTTON_RIGHT = 3;
-	public final static int PIXELGRID = 1;
-	public final static int LINEGRID = 2;
+	protected final static int DRAW_NOTHING = 0;
+	protected final static int SET_DRAW_ALL_TILES = 1;
+	protected final static int SET_DRAW_TILE = 2;
+	protected final static int SET_DRAW_PIXEL = 4;
+	protected final static int LEFT_BUTTON_PRESSED = 1;
+	protected final static int LEFT_BUTTON_RELEASED = 2;
+	protected final static int RIGHT_BUTTON_PRESSED = 4;
+	protected final static int RIGHT_BUTTON_RELEASED = 8;
+
 	protected int width = 8;
 	protected int currentWidth = 0;
 	protected int height = 8;
@@ -37,59 +44,66 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 	protected int columns = 1;
 	protected int rows = 1;
 	protected int pixelSize = 15;
+	protected int layerCount = 0;
+	protected int activeLayer = 0;
+	protected int maxLayerCount = 4;
 	protected int currentPixelWidth;
 	protected int currentPixelHeight;
-	protected boolean pixelGridEnabled = true;
-	protected boolean tileGridEnabled = true;
-	protected boolean tileSubGridEnabled = true;
-	protected boolean multiColorEnabled = true;
-	protected boolean tileCursorEnabled = false;
-	protected boolean separatorEnabled = true;
-	protected boolean mouseIn = false;
 	protected int selectedTileIndexX = 0;
 	protected int selectedTileIndexY = 0;
 	protected int bytesPerRow;
-	protected byte byteArray[];
 	protected int cursorX = 0;
 	protected int cursorY = 0;
 	protected int tileX = 0;
 	protected int tileY = 0;
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
-	protected int gridStyle = LINEGRID;
-
-	protected boolean paintMode = true;
-	protected boolean readOnly = false;
-	protected Map<String, Color> palette;
 	protected int selectedColorIndex;
 	protected int colorCount;
-	protected int offset = 0;
+	protected int selectedTileOffset = 0;
+	protected int cursorLineWidth = 1;
+	protected int leftButtonMode = 0;
+	protected int rightButtonMode = 0;
+	protected int drawMode = DRAW_NOTHING;
+
+	protected byte byteArray[];
+
+	protected boolean pixelGridEnabled = true;
+	protected boolean tileGridEnabled = true;
+	protected boolean tileSubGridEnabled = true;
+	protected boolean multiColorEnabled = true;
+	protected boolean tileCursorEnabled = false;
+	protected boolean separatorEnabled = true;
+	protected boolean layerViewEnabled = false;
+	protected boolean paintMode = true;
+	protected boolean mouseIn = false;
+
+	protected GridStyle gridStyle = GridStyle.LINE;
+	protected Map<String, Color> palette;
 	protected IColorProvider colorProvider;
 	protected ScrollBar hBar = null;
 	protected ScrollBar vBar = null;
 	protected List<IDrawListener> drawListenerList = null;
 
-	protected final static int DRAW_NOTHING = 0;
-	protected final static int SET_DRAW_ALL = 1;
-	protected final static int SET_DRAW_AREA = 2;
-	protected final static int SET_DRAW_PIXEL = 4;
+	protected String widgetName = "<unknown>";
 
-	protected final static int LEFT_BUTTON_PRESSED = 1;
-	protected final static int LEFT_BUTTON_RELEASED = 2;
-	protected final static int RIGHT_BUTTON_PRESSED = 4;
-	protected final static int RIGHT_BUTTON_RELEASED = 8;
+	protected WidgetMode widgetMode;
 
-	protected int leftButtonMode = 0;
-	protected int rightButtonMode = 0;
+	public enum WidgetMode {
+		SELECTOR, PAINTER
+	};
 
-	protected int drawMode = DRAW_NOTHING;
+	public enum GridStyle {
+		PIXEL, LINE
+	};
 
-	public AbstractBitmapWidget(Composite parent, int style) {
+	public ImagingWidget(Composite parent, int style) {
 		super(parent, style);
 		setTileColumns(1);
 		setTileRows(1);
 		setColumns(1);
 		setRows(1);
+
 		/*
 		 * hBar = getHorizontalBar(); vBar = getVerticalBar(); final Point
 		 * origin = new Point(0, 0); hBar.addListener(SWT.Selection, e -> { int
@@ -114,7 +128,7 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseScrolled(MouseEvent e) {
-				if (!isReadOnly()) {
+				if (widgetMode == WidgetMode.PAINTER) {
 					colorCount += e.count;
 					selectedColorIndex = Math.abs(colorCount % 4);
 				}
@@ -132,13 +146,23 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 			@Override
 			public void mouseExit(MouseEvent e) {
 				mouseIn = false;
-				drawAll();
+				if (widgetMode == WidgetMode.PAINTER) {
+
+				} else if (widgetMode == WidgetMode.SELECTOR) {
+
+				}
+				// doDrawAll();
 			}
 
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				mouseIn = true;
-				drawAll();
+				if (widgetMode == WidgetMode.PAINTER) {
+
+				} else if (widgetMode == WidgetMode.SELECTOR) {
+
+				}
+				// doDrawAll();
 			}
 		});
 
@@ -147,18 +171,20 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 			@Override
 			public void mouseMove(MouseEvent e) {
 				setCursorPosition(e.x, e.y);
-				if (leftButtonMode == LEFT_BUTTON_PRESSED) {
-					if (!isReadOnly()) {
+				if (widgetMode == WidgetMode.PAINTER) {
+					
+					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
+						
 						System.out.printf(
-								getPainterName()
+								getWidgetName()
 										+ ": mx:%3d  my:%3d | px:%3d  py:%3d | tx:%3d  ty:%3d | tcx:%3d  tcy:%3d %n",
 								e.x, e.y, cursorX, cursorY, tileX, tileY, tileCursorX, tileCursorY);
-						drawPixel();
-						fireDrawAll();
+						doDrawPixel();
+						// fireDoDrawPixel(tileCursorX, tileCursorY, paintMode);
+						fireDoDrawTile();
 					}
-				}
-				if (isReadOnly()) {
-					drawAll();
+				} else if (widgetMode == WidgetMode.SELECTOR) {
+					doDrawAllTiles();
 				}
 			}
 		});
@@ -168,24 +194,26 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 			@Override
 			public void mouseUp(MouseEvent e) {
 				if (e.button == MOUSE_BUTTON_RIGHT) {
-					paintMode = !paintMode;
-					Console.println("drawMode:" + paintMode);
+					if (widgetMode == WidgetMode.PAINTER) {
+						paintMode = !paintMode;
+						Console.println("drawMode:" + paintMode);
+					}
 				} else if (e.button == MOUSE_BUTTON_LEFT) {
 					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
 						leftButtonMode = 0;
-						if (isReadOnly()) {
+						if (widgetMode == WidgetMode.SELECTOR) {
 							drawMode = 0;
 							selectedTileIndexX = tileX;
 							selectedTileIndexY = tileY;
-							offset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
+							selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
 									* (selectedTileIndexX + (selectedTileIndexY * columns));
-							fireSetSelectedTileOffset(offset);
-							System.out.printf(getPainterName() + ": Tile selected x:%3d  y:%3d %n", selectedTileIndexX,
+							fireSetSelectedTileOffset(selectedTileOffset);
+							System.out.printf(getWidgetName() + ": Tile selected x:%3d  y:%3d %n", selectedTileIndexX,
 									selectedTileIndexY);
-							drawAll();
+							doDrawAllTiles();
 						} else {
-							drawPixel();
-							fireDrawAll();
+							// doDrawPixel();
+							// fireDoDrawAllTiles();
 						}
 					}
 				}
@@ -196,10 +224,12 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 				if (e.button == MOUSE_BUTTON_LEFT) {
 					setCursorPosition(e.x, e.y);
 					leftButtonMode = LEFT_BUTTON_PRESSED;
-					if (!isReadOnly()) {
+					if (widgetMode == WidgetMode.PAINTER) {
+						
 					}
 				}
 			}
+
 		});
 	}
 
@@ -212,28 +242,46 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		tileCursorY = (cursorY - (tileY * height));
 	}
 
-	public String getPainterName() {
-		return this.getClass().getName();
+	public void setWidgetName(String widgetName) {
+		this.widgetName = widgetName;
+	}
+
+	public String getWidgetName() {
+		return widgetName;
 	}
 
 	public void paintControl(PaintEvent e) {
 
+		if ((drawMode & SET_DRAW_ALL_TILES) == SET_DRAW_ALL_TILES) {
+			paintControlTiles(e.gc);
+		}
+		if ((drawMode & SET_DRAW_TILE) == SET_DRAW_TILE) {
+			paintControlTile(e.gc, selectedTileIndexX, selectedTileIndexY);
+		}
+		if (drawMode == SET_DRAW_PIXEL) {
+			paintControlPixel(e.gc, cursorX, cursorY);
+		}
 		if (isPixelGridEnabled()) {
-			drawPixelGrid(e.gc);
+			paintControlPixelGrid(e.gc);
 		}
 		if (isSeparatorEnabled()) {
-			drawSeparator(e.gc);
+			paintControlSeparator(e.gc);
 		}
 		if (isTileGridEnabled()) {
-			drawTileGrid(e.gc);
+			paintControlTileGrid(e.gc);
 		}
 		if (isTileSubGridEnabled()) {
-			drawTileSubGrid(e.gc);
+			paintControlTileSubGrid(e.gc);
 		}
+		if (isTileCursorEnabled()) {
+			paintControlTileCursor(e.gc, mouseIn);
+		}
+		drawMode = DRAW_NOTHING;
+
 	}
 
-	public void drawTileCursor(GC gc, boolean mouseIn) {
-		gc.setLineWidth(1);
+	public void paintControlTileCursor(GC gc, boolean mouseIn) {
+		gc.setLineWidth(cursorLineWidth);
 		gc.setLineStyle(SWT.LINE_SOLID);
 
 		gc.setForeground(Constants.DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR);
@@ -247,14 +295,13 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 			gc.drawRectangle(tileX * width * pixelSize * tileColumns, tileY * height * pixelSize * tileRows,
 					width * pixelSize * tileColumns, height * pixelSize * tileRows);
 		}
-
 	}
 
-	public void drawPixelGrid(GC gc) {
+	public void paintControlPixelGrid(GC gc) {
 		for (int x = 0; x <= currentWidth * tileColumns; x++) {
 			for (int y = 0; y <= height * tileRows; y++) {
 				gc.setForeground(Constants.PIXEL_GRID_COLOR);
-				if (gridStyle == LINEGRID) {
+				if (gridStyle == GridStyle.LINE) {
 					gc.drawLine(x * currentPixelWidth, 0, x * currentPixelWidth,
 							height * currentPixelHeight * tileRows);
 					gc.drawLine(0, y * pixelSize, width * pixelSize * tileColumns, y * pixelSize);
@@ -265,7 +312,7 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		}
 	}
 
-	public void drawSeparator(GC gc) {
+	public void paintControlSeparator(GC gc) {
 		gc.setForeground(Constants.BYTE_SEPARATOR_COLOR);
 		int step = (4 * (isMultiColorEnabled() ? 1 : 2));
 		for (int x = step; x < (width * tileColumns) / ((isMultiColorEnabled() ? 2 : 1)); x += step) {
@@ -273,7 +320,7 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		}
 	}
 
-	public void drawTileGrid(GC gc) {
+	public void paintControlTileGrid(GC gc) {
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int y = height; y < height * tileRows; y += height) {
 			gc.drawLine(0, y * pixelSize, width * tileColumns * pixelSize, y * pixelSize);
@@ -284,7 +331,7 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		}
 	}
 
-	public void drawTileSubGrid(GC gc) {
+	public void paintControlTileSubGrid(GC gc) {
 		gc.setLineWidth(1);
 		gc.setLineStyle(SWT.LINE_SOLID);
 		gc.setForeground(Constants.TILE_GRID_COLOR);
@@ -296,60 +343,102 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		}
 	}
 
-	/*
-	 * public void drawImage(GC gc) { int x = 0; int y = 0; int b1 = bytesPerRow
-	 * * height; int b2 = b1 * tileColumns; for (int i = offset, k = 0; i <
-	 * (offset + getViewportSize()); i++, k++) { int b = (byteArray[i] & 0xff);
-	 * int xi = (k % bytesPerRow) * (8 / (isMultiColorEnabled() ? 2 : 1)); int
-	 * xo = (k / b1) % tileColumns; x = xi + (xo * currentWidth) +
-	 * (selectedTileIndexX * width * tileColumns);
-	 * 
-	 * int yi = (k / bytesPerRow) % height; int yo = (k / b2) % tileRows; y = yi
-	 * + (yo * height) + (selectedTileIndexY * height * tileRows); int
-	 * colorMapIndex = k / width;
-	 * 
-	 * if (isMultiColorEnabled()) { for (int j = 6; j >= 0; j -= 2) { int bi =
-	 * b; int colorIndex = (bi >> j) & 3;
-	 * gc.setBackground(colorProvider.getColorByIndex((byte) colorIndex,
-	 * byteArray, offset, colorMapIndex)); int pix = isPixelGridEnabled() ? 1 :
-	 * 0; gc.fillRectangle((x * currentPixelWidth) + pix, (y *
-	 * currentPixelHeight) + pix, currentPixelWidth - pix, currentPixelHeight -
-	 * pix); x++; } } else { for (int j = 128; j > 0; j >>= 1) {
-	 * gc.setBackground((b & j) == j ?
-	 * palette.get(String.valueOf(selectedColorIndex)) :
-	 * Constants.BITMAP_BACKGROUND_COLOR); int pix = isPixelGridEnabled() ? 1 :
-	 * 0; gc.fillRectangle((x * currentPixelWidth) + pix, (y *
-	 * currentPixelHeight) + pix, currentPixelWidth - pix, currentPixelHeight -
-	 * pix); x++; } } } }
-	 * 
-	 * private void drawPixel(GC gc, int x, int y) {
-	 * 
-	 * System.out.println(getPainterName() + ":drawPixel x:" + x + "  y:" + y);
-	 * if (x < currentWidth * tileColumns && y < height * tileRows) { int ix = x
-	 * % currentWidth; int iy = y % height; int ax = (x / currentWidth); int ay
-	 * = (y / height) * tileColumns; int offset = (ax + ay) * (height *
-	 * bytesPerRow); if (isMultiColorEnabled()) { int index = (((iy *
-	 * currentWidth) + ix) >> 2) + offset; ix &= 3; int mask = (3 << ((3 - ix) *
-	 * 2) ^ 0xff) & 0xff; byte byteMask = (byte) ((byteArray[index +
-	 * getOffset()] & mask)); byteMask |= selectedColorIndex << ((3 - ix) * 2);
-	 * if (!isReadOnly()) { byteArray[index + getOffset()] = byteMask; }
-	 * gc.setBackground(paintMode ?
-	 * palette.get(String.valueOf(selectedColorIndex)) :
-	 * Constants.BITMAP_BACKGROUND_COLOR); } else { int index = (((iy *
-	 * currentWidth) + ix) >> 3) + offset; byte byteMask = byteArray[index +
-	 * getOffset()]; int pixelMask = (1 << (7 - (ix % 8)) & 0xff); if
-	 * (!isReadOnly()) { byteArray[index + getOffset()] = paintMode ? (byte)
-	 * (byteMask | pixelMask) : (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
-	 * } gc.setBackground(paintMode ?
-	 * palette.get(String.valueOf(selectedColorIndex)) :
-	 * Constants.BITMAP_BACKGROUND_COLOR); }
-	 * 
-	 * int pix = isPixelGridEnabled() ? 1 : 0; gc.fillRectangle((x *
-	 * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
-	 * currentPixelWidth - pix, currentPixelHeight - pix); }
-	 * 
-	 * }
-	 */
+	private void paintControlTiles(GC gc) {
+
+		for (int tx = 0; tx < columns; tx++) {
+			for (int ty = 0; ty < rows; ty++) {
+				paintControlTile(gc, tx, ty);
+			}
+		}
+	}
+
+	private void paintControlTile(GC gc, int tx, int ty) {
+		int x = 0;
+		int y = 0;
+		int b1 = bytesPerRow * height;
+		int b2 = b1 * tileColumns;
+
+		int byteOffset = 0;
+		if (widgetMode == WidgetMode.PAINTER) {
+			byteOffset = selectedTileOffset;
+		} else if (widgetMode == WidgetMode.SELECTOR) {
+			byteOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tx + (ty * columns));
+		}
+		// System.out.println(getWidgetName() + "selectedTileOffset:" +
+		// selectedTileOffset);
+		for (int i = byteOffset, k = 0; i < (byteOffset + getViewportSize()); i++, k++) {
+			int b = (byteArray[i] & 0xff);
+			int xi = (k % bytesPerRow) * (8 / (isMultiColorEnabled() ? 2 : 1));
+			int xo = (k / b1) % tileColumns;
+			x = xi + (xo * currentWidth) + (tx * width * tileColumns);
+
+			int yi = (k / bytesPerRow) % height;
+			int yo = (k / b2) % tileRows;
+			y = yi + (yo * height) + (ty * height * tileRows);
+			int colorMapIndex = k / width;
+
+			if (isMultiColorEnabled()) {
+				for (int j = 6; j >= 0; j -= 2) {
+					int bi = b;
+					int colorIndex = (bi >> j) & 3;
+					gc.setBackground(
+							colorProvider.getColorByIndex((byte) colorIndex, byteArray, byteOffset, colorMapIndex));
+					int pix = isPixelGridEnabled() ? 1 : 0;
+					gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
+							currentPixelWidth - pix, currentPixelHeight - pix);
+					x++;
+				}
+			} else {
+				for (int j = 128; j > 0; j >>= 1) {
+					gc.setBackground((b & j) == j ? palette.get(String.valueOf(selectedColorIndex))
+							: Constants.BITMAP_BACKGROUND_COLOR);
+					int pix = isPixelGridEnabled() ? 1 : 0;
+
+					gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
+							currentPixelWidth - pix, currentPixelHeight - pix);
+					x++;
+				}
+			}
+		}
+	}
+
+	private void paintControlPixel(GC gc, int x, int y) {
+
+		System.out.println(getWidgetName() + ":drawPixel x:" + x + "  y:" + y);
+		if (widgetMode == WidgetMode.PAINTER) {
+			if (x < currentWidth * tileColumns && y < height * tileRows) {
+				int ix = x % currentWidth;
+				int iy = y % height;
+				int ax = (x / currentWidth);
+				int ay = (y / height) * tileColumns;
+				int offset = (ax + ay) * (height * bytesPerRow);
+				if (isMultiColorEnabled()) {
+					int index = (((iy * currentWidth) + ix) >> 2) + offset;
+					ix &= 3;
+					int mask = (3 << ((3 - ix) * 2) ^ 0xff) & 0xff;
+					byte byteMask = (byte) ((byteArray[index + getSelectedTileOffset()] & mask));
+					byteMask |= selectedColorIndex << ((3 - ix) * 2);
+					byteArray[index + getSelectedTileOffset()] = byteMask;
+
+				} else {
+					int index = (((iy * currentWidth) + ix) >> 3) + offset;
+					byte byteMask = byteArray[index + getSelectedTileOffset()];
+					int pixelMask = (1 << (7 - (ix % 8)) & 0xff);
+					byteArray[index + getSelectedTileOffset()] = paintMode ? (byte) (byteMask | pixelMask)
+							: (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
+				}
+			}
+		}
+
+		gc.setBackground(
+				paintMode ? palette.get(String.valueOf(selectedColorIndex)) : Constants.BITMAP_BACKGROUND_COLOR);
+
+		int pix = isPixelGridEnabled() ? 1 : 0;
+		gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix, currentPixelWidth - pix,
+				currentPixelHeight - pix);
+
+	}
+
 	public void setColorProvider(IColorProvider colorProvider) {
 		this.colorProvider = colorProvider;
 	}
@@ -401,6 +490,14 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 	public void setTileColumns(int tileColumns) {
 		this.tileColumns = tileColumns;
 		reset();
+	}
+
+	public void setCursorLineWidth(int cursorLineWidth) {
+		this.cursorLineWidth = cursorLineWidth;
+	}
+
+	public int getCursorLineWidth() {
+		return cursorLineWidth;
 	}
 
 	public int getTileRows() {
@@ -481,15 +578,8 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		this.multiColorEnabled = multiColorEnabled;
 		currentPixelWidth = getPixelSize() * (isMultiColorEnabled() ? 2 : 1);
 		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
-		redraw();
-	}
-
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-	}
-
-	public boolean isReadOnly() {
-		return this.readOnly;
+		// redraw();
+		doDrawAllTiles();
 	}
 
 	private void reset() {
@@ -498,7 +588,7 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		redraw();
 	}
 
-	public void setGridStyle(int gridStyle) {
+	public void setGridStyle(GridStyle gridStyle) {
 		this.gridStyle = gridStyle;
 	}
 
@@ -514,14 +604,40 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		selectedColorIndex = index;
 	}
 
-	public void setOffset(int offset) {
-		this.offset = offset;
-		drawMode = SET_DRAW_ALL;
-		redraw();
+	public void addLayer() {
+		layerCount += (layerCount < maxLayerCount ? 1 : 0);
 	}
 
-	public int getOffset() {
-		return this.offset;
+	public void removeLayer() {
+		layerCount -= (layerCount > 0 ? 1 : 0);
+	}
+
+	public void setActiveLayer(int activeLayer) {
+
+		this.activeLayer = activeLayer < layerCount ? activeLayer : layerCount;
+	}
+
+	public int getActiveLayer() {
+		return activeLayer;
+	}
+
+	public void setLayerViewEnabled(boolean layerViewEnabled) {
+		this.layerViewEnabled = layerViewEnabled;
+	}
+
+	public boolean isLayerViewEnabled() {
+		return layerCount > 0 && layerViewEnabled;
+	}
+
+	@Override
+	public void setSelectedTileOffset(int offset) {
+		this.selectedTileOffset = offset;
+		System.out.println(getWidgetName() + ":offset=" + offset);
+		doDrawAllTiles();
+	}
+
+	public int getSelectedTileOffset() {
+		return this.selectedTileOffset;
 	}
 
 	public void addDrawListener(IDrawListener redrawListener) {
@@ -532,15 +648,15 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		drawListenerList.remove(redrawListener);
 	}
 
-	private void fireDrawTile(int x, int y) {
+	private void fireDoDrawTile() {
 		for (IDrawListener listener : drawListenerList) {
-			listener.drawTile(x, y);
+			listener.doDrawTile();
 		}
 	}
 
-	private void fireDrawAll() {
+	private void fireDoDrawAllTiles() {
 		for (IDrawListener listener : drawListenerList) {
-			listener.drawAll();
+			listener.doDrawAllTiles();
 		}
 	}
 
@@ -550,9 +666,9 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 		}
 	}
 
-	private void fireDrawPixel(int x, int y) {
+	private void fireDoDrawPixel(int x, int y, boolean paintMode) {
 		for (IDrawListener listener : drawListenerList) {
-			listener.drawPixel(x, y);
+			listener.doDrawPixel(x, y, paintMode);
 		}
 	}
 
@@ -565,42 +681,47 @@ public abstract class AbstractBitmapWidget extends Canvas implements IDrawListen
 	}
 
 	@Override
-	public void drawTile(int x, int y) {
-		// TODO Auto-generated method stub
-
+	public void doDrawPixel(int x, int y, boolean paintMode) {
+		this.paintMode = paintMode;
+		cursorX = x + (selectedTileIndexX * width * tileColumns);
+		cursorY = y + (selectedTileIndexY * height * tileRows);
+		doDrawPixel();
 	}
 
-	@Override
-	public void drawPixel(int x, int y) {
-		cursorX = x + (selectedTileIndexX * width);
-		cursorY = y + (selectedTileIndexY * height);
-		drawPixel();
-	}
-
-	protected void drawPixel() {
+	protected void doDrawPixel() {
 		drawMode = SET_DRAW_PIXEL;
-		System.out.println(getPainterName() + ":   x:" + cursorX + "    y:" + cursorY);
+		System.out.println(getWidgetName() + ":   x:" + cursorX + "    y:" + cursorY);
 		int inset = isPixelGridEnabled() ? 1 : 0;
 		redraw((cursorX * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset, currentPixelWidth - inset,
 				currentPixelHeight - inset, true);
-
 	}
 
 	@Override
-	public void drawAll() {
-		drawMode = SET_DRAW_ALL;
+	public void doDrawTile() {
+		drawMode = SET_DRAW_TILE;
+		redraw(selectedTileIndexX * width * pixelSize * tileColumns, selectedTileIndexY * height * pixelSize * tileRows,
+				width * pixelSize * tileColumns, height * pixelSize * tileRows, true);
+	}
+
+	@Override
+	public void doDrawAllTiles() {
+		drawMode = SET_DRAW_ALL_TILES;
 		redraw();
 	}
 
-	@Override
-	public void setSelectedTileOffset(int offset) {
-		System.out.println(getPainterName() + ":offset=" + offset);
-		setOffset(offset);
+	public void setWidgetMode(WidgetMode widgetMode) {
+		this.widgetMode = widgetMode;
+	}
+
+	public WidgetMode getWidgetMode() {
+		return widgetMode;
+
 	}
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point((width * currentPixelWidth * tileColumns * columns),
-				(height * currentPixelHeight * tileRows * rows));
+		return new Point((width * currentPixelWidth * tileColumns * columns) + +(cursorLineWidth * (columns + 1)),
+				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)));
 	}
+
 }

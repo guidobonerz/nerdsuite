@@ -8,12 +8,12 @@ import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
-public class ImagingPerspectiveHandler
+public class BigSpritePerspectiveHandler
 {
 	@Execute
 	public void execute(MPerspective activePerspective, MApplication app, EPartService partService, EModelService modelService)
 	{
-		List<MPerspective> perspectives = modelService.findElements(app, "de.drazil.nerdsuite.perspective.imaging", MPerspective.class, null);
+		List<MPerspective> perspectives = modelService.findElements(app, "de.drazil.nerdsuite.perspective.bigspriteeditor", MPerspective.class, null);
 		for (MPerspective perspective : perspectives)
 		{
 			if (!perspective.equals(activePerspective))
