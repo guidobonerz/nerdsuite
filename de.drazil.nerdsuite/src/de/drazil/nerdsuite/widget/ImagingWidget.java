@@ -1,9 +1,12 @@
 package de.drazil.nerdsuite.widget;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -23,6 +26,8 @@ import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.log.Console;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 public class ImagingWidget extends Canvas implements IDrawListener, PaintListener {
 	private final static int MOUSE_BUTTON_LEFT = 1;
@@ -70,6 +75,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	protected byte byteArray[];
 
+	protected boolean animationIsRunning = false;
 	protected boolean pixelGridEnabled = true;
 	protected boolean tileGridEnabled = true;
 	protected boolean tileSubGridEnabled = true;
@@ -86,10 +92,13 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected ScrollBar hBar = null;
 	protected ScrollBar vBar = null;
 	protected List<IDrawListener> drawListenerList = null;
-
+	protected List<TileRange> tileRangeList = null;
+	protected List<TileLocation> tileLocationList = null;
 	protected String widgetName = "<unknown>";
 
 	protected WidgetMode widgetMode;
+
+	private Timer animationTimer;
 
 	public enum WidgetMode {
 		SELECTOR, PAINTER
@@ -99,6 +108,31 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		PIXEL, LINE
 	};
 
+	@Data
+	@AllArgsConstructor
+	private class TileRange {
+		private int x1;
+		private int y1;
+		private int x2;
+		private int y2;
+	}
+
+	@Data
+	@AllArgsConstructor
+	private class TileLocation {
+		private int x;
+		private int y;
+	}
+
+	private int animationIndexX;
+	private int animationIndexY;
+
+	public class Animator extends TimerTask {
+		public void run() {
+			animate();
+		}
+	}
+
 	public ImagingWidget(Composite parent, int style) {
 		super(parent, style);
 		setTileColumns(1);
@@ -106,20 +140,18 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		setColumns(1);
 		setRows(1);
 
-		/*
-		 * hBar = getHorizontalBar(); vBar = getVerticalBar(); final Point
-		 * origin = new Point(0, 0); hBar.addListener(SWT.Selection, e -> { int
-		 * hSelection = hBar.getSelection(); int destX = -hSelection - origin.x;
-		 * Rectangle rect = new Rectangle(0, 0, (8 * 3 * 40) + 18, 8 * 3 * 25);
-		 * scroll(destX, 0, 0, 0, rect.width, rect.height, false); origin.x =
-		 * -hSelection; redraw(); });
-		 * 
-		 * vBar.addListener(SWT.Selection, e -> { int vSelection =
-		 * vBar.getSelection(); int destY = -vSelection - origin.y; Rectangle
-		 * rect = new Rectangle(0, 0, (8 * 3 * 40) + 18, 8 * 3 * 25); scroll(0,
-		 * destY, 0, 0, rect.width, rect.height, false); origin.y = -vSelection;
-		 * redraw(); });
-		 */
+		tileLocationList = new ArrayList<>();
+		tileLocationList.add(new TileLocation(0, 0));
+		tileLocationList.add(new TileLocation(1, 0));
+		tileLocationList.add(new TileLocation(2, 0));
+		tileLocationList.add(new TileLocation(3, 0));
+		tileLocationList.add(new TileLocation(4, 0));
+		tileLocationList.add(new TileLocation(5, 0));
+		tileRangeList = new ArrayList<>();
+		tileRangeList.add(new TileRange(0, 0, 4, 0));
+
+		hBar = getHorizontalBar();
+		vBar = getVerticalBar();
 
 		setBackground(Constants.BLACK);
 
@@ -285,25 +317,26 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		if (isTileSubGridEnabled()) {
 			paintControlTileSubGrid(e.gc);
 		}
+
 		if (isTileCursorEnabled()) {
-			paintControlTileCursor(e.gc, mouseIn);
+			paintControlTileCursor(e.gc, mouseIn, !animationIsRunning ? selectedTileIndexX : animationIndexX,
+					!animationIsRunning ? selectedTileIndexY : animationIndexY);
 		}
+
 		drawMode = DRAW_NOTHING;
 
 	}
 
-	public void paintControlTileCursor(GC gc, boolean mouseIn) {
+	public void paintControlTileCursor(GC gc, boolean mouseIn, int x, int y) {
 		gc.setLineWidth(cursorLineWidth);
 		gc.setLineStyle(SWT.LINE_SOLID);
 
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
-		gc.drawRectangle(selectedTileIndexX * width * pixelSize * tileColumns,
-				selectedTileIndexY * height * pixelSize * tileRows, width * pixelSize * tileColumns,
-				height * pixelSize * tileRows);
+		gc.drawRectangle(x * width * pixelSize * tileColumns, y * height * pixelSize * tileRows,
+				width * pixelSize * tileColumns, height * pixelSize * tileRows);
 
 		if (mouseIn) {
-			gc.setForeground((tileX == selectedTileIndexX && tileY == selectedTileIndexY) ? Constants.LIGHT_RED
-					: Constants.LIGHT_RED);
+			gc.setForeground((tileX == x && tileY == y) ? Constants.LIGHT_RED : Constants.LIGHT_RED);
 			gc.drawRectangle(tileX * width * pixelSize * tileColumns, tileY * height * pixelSize * tileRows,
 					width * pixelSize * tileColumns, height * pixelSize * tileRows);
 		}
@@ -726,13 +759,47 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		redraw();
 	}
 
+	public void startAnimation() {
+		initTimer();
+		animationIsRunning = true;
+		animationTimer.scheduleAtFixedRate(new Animator(), 0, 200);
+	}
+
+	public void stopAnimation() {
+		animationIsRunning = false;
+		animationTimer.cancel();
+		animationTimer.purge();
+		initTimer();
+	}
+
+	private void initTimer() {
+		animationTimer = new Timer();
+	}
+
+	public void animate() {
+		if (!getDisplay().isDisposed()) {
+			getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					Collections.rotate(tileLocationList, -1);
+					TileLocation tl = tileLocationList.get(0);
+					animationIndexX = tl.x;
+					animationIndexY = tl.y;
+					selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
+							* (animationIndexX + (animationIndexY * columns));
+					fireSetSelectedTileOffset(selectedTileOffset);
+					doDrawAllTiles();
+				}
+			});
+		}
+	}
+
 	public void setWidgetMode(WidgetMode widgetMode) {
 		this.widgetMode = widgetMode;
 	}
 
 	public WidgetMode getWidgetMode() {
 		return widgetMode;
-
 	}
 
 	@Override

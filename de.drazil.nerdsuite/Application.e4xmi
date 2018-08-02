@@ -44,7 +44,7 @@
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="__4FmgL60Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.perspective.spriteeditor" label="SpriteEditor">
-        <children xsi:type="basic:InputPart" xmi:id="_fsTj8L9IEeOU-6uJVJ8W-w" elementId="de.drazil.nerdsuite.inputpart.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.spriteeditor.SpriteEditor" label="SpriteEditor" closeable="true">
+        <children xsi:type="basic:InputPart" xmi:id="_fsTj8L9IEeOU-6uJVJ8W-w" elementId="de.drazil.nerdsuite.inputpart.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.SpriteEditor" label="SpriteEditor" closeable="true">
           <menus xmi:id="_gDctYL76EeapDZJEicGLWg" elementId="de.drazil.nerdsuite.menu.painterMenu" label="painter menu">
             <children xsi:type="menu:HandledMenuItem" xmi:id="_8Lt_oL76EeapDZJEicGLWg" elementId="de.drazil.nerdsuite.handledmenuitem.rrtyrtyry" label="rrtyrtyry"/>
           </menus>
@@ -52,10 +52,10 @@
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_hqm8EJW1EeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.bigspriteeditor" label="BigSpriteEditor">
-        <children xsi:type="basic:Part" xmi:id="_qzU0EJW1EeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.bigspriteeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.spriteeditor.BigSpriteEditor" label="BigSpriteEditor"/>
+        <children xsi:type="basic:Part" xmi:id="_qzU0EJW1EeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.bigspriteeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.BigSpriteEditor" label="BigSpriteEditor"/>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.charseteditor" label="CharsetEditor">
-        <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.charseteditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.spriteeditor.CharsetEditor" label="CharsetEditor"/>
+        <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.charseteditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.CharsetEditor" label="CharsetEditor"/>
       </children>
     </children>
     <mainMenu xmi:id="_1r1OEKLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.0">

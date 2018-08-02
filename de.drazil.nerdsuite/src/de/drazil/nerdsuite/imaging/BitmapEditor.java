@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.painter;
+package de.drazil.nerdsuite.imaging;
 
 import java.io.File;
 
@@ -26,11 +26,11 @@ import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.IColorProvider;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 
-public class BitmapPainter implements IColorProvider {
+public class BitmapEditor implements IColorProvider {
 	private Text offsetField;
 
 	@Inject
-	public BitmapPainter() {
+	public BitmapEditor() {
 		// TODO Your code here
 	}
 

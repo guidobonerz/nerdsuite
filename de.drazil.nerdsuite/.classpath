@@ -9,6 +9,6 @@
 	<classpathentry exported="true" kind="lib" path="ext_libs/jackson-databind-2.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext_libs/miglayout-4.0-swt.jar"/>
 	<classpathentry kind="lib" path="ext_libs/KickAss_4.19.jar"/>
-	<classpathentry kind="lib" path="ext_libs/lombok_1.16.20.jar"/>
+	<classpathentry kind="lib" path="ext_libs/lombok.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

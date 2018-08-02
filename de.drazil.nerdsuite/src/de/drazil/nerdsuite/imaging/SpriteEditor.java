@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.spriteeditor;
+package de.drazil.nerdsuite.imaging;
 
 import javax.annotation.PostConstruct;
 

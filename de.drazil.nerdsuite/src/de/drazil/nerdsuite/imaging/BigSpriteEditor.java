@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.spriteeditor;
+package de.drazil.nerdsuite.imaging;
 
 import javax.annotation.PostConstruct;
 
@@ -16,7 +16,7 @@ import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 
-public class CharsetEditor implements IColorProvider {
+public class BigSpriteEditor implements IColorProvider {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -28,11 +28,11 @@ public class CharsetEditor implements IColorProvider {
 		ImagingWidget singleSpritePainter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		singleSpritePainter.setWidgetName("SpritePainter :");
 		singleSpritePainter.setWidgetMode(WidgetMode.PAINTER);
-		singleSpritePainter.setWidth(8);
-		singleSpritePainter.setHeight(8);
-		singleSpritePainter.setPixelSize(20);
-		singleSpritePainter.setTileColumns(1);
-		singleSpritePainter.setTileRows(1);
+		singleSpritePainter.setWidth(24);
+		singleSpritePainter.setHeight(21);
+		singleSpritePainter.setPixelSize(10);
+		singleSpritePainter.setTileColumns(2);
+		singleSpritePainter.setTileRows(2);
 
 		singleSpritePainter.setPixelGridEnabled(true);
 		singleSpritePainter.setGridStyle(GridStyle.PIXEL);
@@ -52,13 +52,13 @@ public class CharsetEditor implements IColorProvider {
 		ImagingWidget spriteSelector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		spriteSelector.setWidgetName("SpriteSelector:");
 		spriteSelector.setWidgetMode(WidgetMode.SELECTOR);
-		spriteSelector.setWidth(8);
-		spriteSelector.setHeight(8);
-		spriteSelector.setTileColumns(1);
-		spriteSelector.setTileRows(1);
-		spriteSelector.setColumns(20);
-		spriteSelector.setRows(20);
-		spriteSelector.setPixelSize(3);
+		spriteSelector.setWidth(24);
+		spriteSelector.setHeight(21);
+		spriteSelector.setTileColumns(2);
+		spriteSelector.setTileRows(2);
+		spriteSelector.setColumns(10);
+		spriteSelector.setRows(2);
+		spriteSelector.setPixelSize(1);
 		spriteSelector.setPixelGridEnabled(false);
 		spriteSelector.setTileGridEnabled(false);
 		spriteSelector.setTileSubGridEnabled(true);
@@ -95,6 +95,6 @@ public class CharsetEditor implements IColorProvider {
 
 	@Override
 	public Color getColorByIndex(byte bitmapByte, byte bitmap[], int offset, int index) {
-		return InstructionSet.getPlatformData().getColorPalette().get(index).getColor();
+		return InstructionSet.getPlatformData().getColorPalette().get(6).getColor();
 	}
 }
