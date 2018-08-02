@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -131,6 +133,33 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				if (widgetMode == WidgetMode.PAINTER) {
 					colorCount += e.count;
 					selectedColorIndex = Math.abs(colorCount % 4);
+					System.out.println(selectedColorIndex);
+				}
+			}
+		});
+
+		addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+			}
+
+			public void keyReleased(KeyEvent e) {
+				switch (e.character) {
+				case '1': {
+					selectedColorIndex=0;
+					break;
+				}
+				case '2': {
+					selectedColorIndex=1;
+					break;
+				}
+				case '3': {
+					selectedColorIndex=2;
+					break;
+				}
+				case '4': {
+					selectedColorIndex=3;
+					break;
+				}
 				}
 			}
 		});
@@ -149,20 +178,17 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				if (widgetMode == WidgetMode.PAINTER) {
 
 				} else if (widgetMode == WidgetMode.SELECTOR) {
-
 				}
-				// doDrawAll();
+				doDrawAllTiles();
 			}
 
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				mouseIn = true;
 				if (widgetMode == WidgetMode.PAINTER) {
-
 				} else if (widgetMode == WidgetMode.SELECTOR) {
-
 				}
-				// doDrawAll();
+				doDrawAllTiles();
 			}
 		});
 
@@ -172,15 +198,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			public void mouseMove(MouseEvent e) {
 				setCursorPosition(e.x, e.y);
 				if (widgetMode == WidgetMode.PAINTER) {
-					
 					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
-						
-						System.out.printf(
-								getWidgetName()
-										+ ": mx:%3d  my:%3d | px:%3d  py:%3d | tx:%3d  ty:%3d | tcx:%3d  tcy:%3d %n",
-								e.x, e.y, cursorX, cursorY, tileX, tileY, tileCursorX, tileCursorY);
 						doDrawPixel();
-						// fireDoDrawPixel(tileCursorX, tileCursorY, paintMode);
 						fireDoDrawTile();
 					}
 				} else if (widgetMode == WidgetMode.SELECTOR) {
@@ -190,7 +209,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		});
 
 		addMouseListener(new MouseAdapter() {
-
 			@Override
 			public void mouseUp(MouseEvent e) {
 				if (e.button == MOUSE_BUTTON_RIGHT) {
@@ -212,8 +230,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 									selectedTileIndexY);
 							doDrawAllTiles();
 						} else {
-							// doDrawPixel();
-							// fireDoDrawAllTiles();
+							doDrawPixel();
+							fireDoDrawTile();
 						}
 					}
 				}
@@ -225,21 +243,26 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					setCursorPosition(e.x, e.y);
 					leftButtonMode = LEFT_BUTTON_PRESSED;
 					if (widgetMode == WidgetMode.PAINTER) {
-						
+
 					}
 				}
 			}
-
 		});
 	}
 
 	protected void setCursorPosition(int x, int y) {
 		cursorX = x / currentPixelWidth;
 		cursorY = y / currentPixelHeight;
-		tileX = x / (width * currentPixelWidth * tileColumns);
+		tileX = x / (currentWidth * currentPixelWidth * tileColumns);
 		tileY = y / (height * currentPixelHeight * tileRows);
 		tileCursorX = (cursorX - (tileX * width));
 		tileCursorY = (cursorY - (tileY * height));
+		// System.out.printf(
+		// getWidgetName()
+		// + ": mx:%3d my:%3d | px:%3d py:%3d | tx:%3d ty:%3d | tcx:%3d tcy:%3d
+		// |pixwidth: %3d \n",
+		// x, y, cursorX, cursorY, tileX, tileY, tileCursorX, tileCursorY,
+		// currentPixelWidth);
 	}
 
 	public void setWidgetName(String widgetName) {
@@ -284,7 +307,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		gc.setLineWidth(cursorLineWidth);
 		gc.setLineStyle(SWT.LINE_SOLID);
 
-		gc.setForeground(Constants.DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR);
+		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		gc.drawRectangle(selectedTileIndexX * width * pixelSize * tileColumns,
 				selectedTileIndexY * height * pixelSize * tileRows, width * pixelSize * tileColumns,
 				height * pixelSize * tileRows);
@@ -364,8 +387,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		} else if (widgetMode == WidgetMode.SELECTOR) {
 			byteOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tx + (ty * columns));
 		}
-		// System.out.println(getWidgetName() + "selectedTileOffset:" +
-		// selectedTileOffset);
+
 		for (int i = byteOffset, k = 0; i < (byteOffset + getViewportSize()); i++, k++) {
 			int b = (byteArray[i] & 0xff);
 			int xi = (k % bytesPerRow) * (8 / (isMultiColorEnabled() ? 2 : 1));
@@ -381,8 +403,12 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				for (int j = 6; j >= 0; j -= 2) {
 					int bi = b;
 					int colorIndex = (bi >> j) & 3;
-					gc.setBackground(
-							colorProvider.getColorByIndex((byte) colorIndex, byteArray, byteOffset, colorMapIndex));
+
+					Color color = palette.get(String.valueOf(selectedColorIndex));
+					if (colorProvider != null) {
+						color = colorProvider.getColorByIndex((byte) colorIndex, byteArray, byteOffset, colorMapIndex);
+					}
+					gc.setBackground(color);
 					int pix = isPixelGridEnabled() ? 1 : 0;
 					gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
 							currentPixelWidth - pix, currentPixelHeight - pix);
@@ -404,7 +430,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	private void paintControlPixel(GC gc, int x, int y) {
 
-		System.out.println(getWidgetName() + ":drawPixel x:" + x + "  y:" + y);
+		//System.out.println(getWidgetName() + ":drawPixel x:" + x + "  y:" + y);
 		if (widgetMode == WidgetMode.PAINTER) {
 			if (x < currentWidth * tileColumns && y < height * tileRows) {
 				int ix = x % currentWidth;

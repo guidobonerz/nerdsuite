@@ -40,14 +40,14 @@ public class CharsetEditor implements IColorProvider {
 		singleSpritePainter.setTileCursorEnabled(false);
 		singleSpritePainter.setMultiColorEnabled(multiColorMode);
 		singleSpritePainter.setSelectedTileOffset(0);
-		singleSpritePainter.setColorProvider(this);
+		singleSpritePainter.setColorProvider(null);
 
 		singleSpritePainter.setContent(binaryData);
 		singleSpritePainter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		singleSpritePainter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
-		singleSpritePainter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
-		singleSpritePainter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(15).getColor());
-		singleSpritePainter.setSelectedColor(3);
+		singleSpritePainter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		singleSpritePainter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		singleSpritePainter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		singleSpritePainter.setSelectedColor(0);
 
 		ImagingWidget spriteSelector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		spriteSelector.setWidgetName("SpriteSelector:");
@@ -58,7 +58,7 @@ public class CharsetEditor implements IColorProvider {
 		spriteSelector.setTileRows(1);
 		spriteSelector.setColumns(20);
 		spriteSelector.setRows(20);
-		spriteSelector.setPixelSize(2);
+		spriteSelector.setPixelSize(3);
 		spriteSelector.setPixelGridEnabled(false);
 		spriteSelector.setTileGridEnabled(false);
 		spriteSelector.setTileSubGridEnabled(true);
@@ -67,14 +67,14 @@ public class CharsetEditor implements IColorProvider {
 		spriteSelector.setMultiColorEnabled(multiColorMode);
 
 		spriteSelector.setSelectedTileOffset(0);
-		spriteSelector.setColorProvider(this);
+		spriteSelector.setColorProvider(null);
 
 		spriteSelector.setContent(binaryData);
 		spriteSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		spriteSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
-		spriteSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
-		spriteSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(15).getColor());
-		spriteSelector.setSelectedColor(3);
+		spriteSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		spriteSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		spriteSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		spriteSelector.setSelectedColor(0);
 
 		singleSpritePainter.addDrawListener(spriteSelector);
 		spriteSelector.addDrawListener(singleSpritePainter);
@@ -95,6 +95,6 @@ public class CharsetEditor implements IColorProvider {
 
 	@Override
 	public Color getColorByIndex(byte bitmapByte, byte bitmap[], int offset, int index) {
-		return InstructionSet.getPlatformData().getColorPalette().get(6).getColor();
+		return InstructionSet.getPlatformData().getColorPalette().get(index).getColor();
 	}
 }
