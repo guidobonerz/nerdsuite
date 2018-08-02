@@ -71,7 +71,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int cursorLineWidth = 1;
 	protected int leftButtonMode = 0;
 	protected int rightButtonMode = 0;
-	protected int drawMode = DRAW_NOTHING;
+	public int drawMode = DRAW_NOTHING;
 
 	protected byte byteArray[];
 
@@ -625,10 +625,15 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setMultiColorEnabled(boolean multiColorEnabled) {
 		this.multiColorEnabled = multiColorEnabled;
-		currentPixelWidth = getPixelSize() * (isMultiColorEnabled() ? 2 : 1);
-		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
+		recalc();
 		// redraw();
 		doDrawAllTiles();
+	}
+
+	public void recalc() {
+		currentPixelWidth = getPixelSize() * (isMultiColorEnabled() ? 2 : 1);
+		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
+		drawMode = SET_DRAW_ALL_TILES;
 	}
 
 	private void reset() {

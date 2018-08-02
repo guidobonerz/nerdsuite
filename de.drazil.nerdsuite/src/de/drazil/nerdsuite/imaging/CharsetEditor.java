@@ -32,7 +32,7 @@ public class CharsetEditor implements IColorProvider {
 			binaryData[i] = 0;
 		parent.setLayout(new RowLayout(SWT.VERTICAL));
 		ImagingWidget painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		painter.setWidgetName("CharPainter :");
+		painter.setWidgetName("Painter :");
 		painter.setWidgetMode(WidgetMode.PAINTER);
 		painter.setWidth(8);
 		painter.setHeight(8);
@@ -57,7 +57,7 @@ public class CharsetEditor implements IColorProvider {
 
 		ImagingWidget selector = new ImagingWidget(parent,
 				SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.H_SCROLL);
-		selector.setWidgetName("CharSelector:");
+		selector.setWidgetName("Selector:");
 		selector.setWidgetMode(WidgetMode.SELECTOR);
 		selector.setWidth(8);
 		selector.setHeight(8);
@@ -142,10 +142,14 @@ public class CharsetEditor implements IColorProvider {
 					painter.setHeight(8);
 					painter.setTileColumns(1);
 					painter.setTileRows(1);
+					painter.setPixelSize(20);
+					painter.recalc();
 					selector.setWidth(8);
 					selector.setHeight(8);
 					selector.setTileColumns(1);
 					selector.setTileRows(1);
+					selector.setPixelSize(3);
+					selector.recalc();
 					parent.layout();
 					break;
 				}
@@ -154,11 +158,15 @@ public class CharsetEditor implements IColorProvider {
 					painter.setHeight(8);
 					painter.setTileColumns(2);
 					painter.setTileRows(1);
+					painter.setPixelSize(20);
+					painter.recalc();
 					selector.setWidth(8);
 					selector.setHeight(8);
 					selector.setTileColumns(2);
 					selector.setTileRows(1);
-					
+					selector.setPixelSize(3);
+					selector.recalc();
+
 					parent.layout();
 					break;
 				}
@@ -168,10 +176,14 @@ public class CharsetEditor implements IColorProvider {
 					painter.setHeight(8);
 					painter.setTileColumns(1);
 					painter.setTileRows(2);
+					painter.setPixelSize(20);
+					painter.recalc();
 					selector.setWidth(8);
 					selector.setHeight(8);
 					selector.setTileColumns(1);
 					selector.setTileRows(2);
+					selector.setPixelSize(3);
+					selector.recalc();
 					parent.layout();
 					break;
 				}
@@ -181,10 +193,14 @@ public class CharsetEditor implements IColorProvider {
 					painter.setHeight(8);
 					painter.setTileColumns(2);
 					painter.setTileRows(2);
+					painter.setPixelSize(20);
+					painter.recalc();
 					selector.setWidth(8);
 					selector.setHeight(8);
 					selector.setTileColumns(2);
 					selector.setTileRows(2);
+					selector.setPixelSize(3);
+					selector.recalc();
 					parent.layout();
 					break;
 				}
@@ -194,10 +210,14 @@ public class CharsetEditor implements IColorProvider {
 					painter.setHeight(21);
 					painter.setTileColumns(1);
 					painter.setTileRows(1);
+					painter.setPixelSize(10);
+					painter.recalc();
 					selector.setWidth(24);
 					selector.setHeight(21);
 					selector.setTileColumns(1);
 					selector.setTileRows(1);
+					selector.setPixelSize(2);
+					selector.recalc();
 					parent.layout();
 					break;
 				}
@@ -207,10 +227,14 @@ public class CharsetEditor implements IColorProvider {
 					painter.setHeight(21);
 					painter.setTileColumns(2);
 					painter.setTileRows(1);
+					painter.setPixelSize(10);
+					painter.recalc();
 					selector.setWidth(24);
 					selector.setHeight(21);
 					selector.setTileColumns(2);
 					selector.setTileRows(1);
+					selector.setPixelSize(2);
+					selector.recalc();
 					parent.layout();
 					break;
 				}
@@ -220,10 +244,14 @@ public class CharsetEditor implements IColorProvider {
 					painter.setHeight(21);
 					painter.setTileColumns(1);
 					painter.setTileRows(2);
+					painter.setPixelSize(10);
+					painter.recalc();
 					selector.setWidth(24);
 					selector.setHeight(21);
 					selector.setTileColumns(1);
 					selector.setTileRows(2);
+					selector.setPixelSize(2);
+					selector.recalc();
 					parent.layout();
 					break;
 				}
@@ -233,10 +261,14 @@ public class CharsetEditor implements IColorProvider {
 					painter.setHeight(21);
 					painter.setTileColumns(2);
 					painter.setTileRows(2);
+					painter.setPixelSize(10);
+					painter.recalc();
 					selector.setWidth(24);
 					selector.setHeight(21);
 					selector.setTileColumns(2);
 					selector.setTileRows(2);
+					selector.setPixelSize(2);
+					selector.recalc();
 					parent.layout();
 					break;
 				}
