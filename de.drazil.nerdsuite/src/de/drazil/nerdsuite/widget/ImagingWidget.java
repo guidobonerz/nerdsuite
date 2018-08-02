@@ -381,12 +381,12 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			int b = (byteArray[i] & 0xff);
 			int xi = (k % bytesPerRow) * (8 / (isMultiColorEnabled() ? 2 : 1));
 			int xo = (k / b1) % tileColumns;
-			x = xi + (xo * currentWidth) + (tx * width * tileColumns);
+			x = xi + (xo * currentWidth) + (tx * currentWidth * tileColumns);
 
 			int yi = (k / bytesPerRow) % height;
 			int yo = (k / b2) % tileRows;
 			y = yi + (yo * height) + (ty * height * tileRows);
-			int colorMapIndex = k / width;
+			int colorMapIndex = k / currentWidth;
 
 			if (isMultiColorEnabled()) {
 				for (int j = 6; j >= 0; j -= 2) {
