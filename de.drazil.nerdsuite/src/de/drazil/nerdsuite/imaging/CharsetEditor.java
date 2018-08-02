@@ -54,6 +54,7 @@ public class CharsetEditor implements IColorProvider {
 		painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
 		painter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 		painter.setSelectedColor(1);
+		painter.recalc();
 
 		ImagingWidget selector = new ImagingWidget(parent,
 				SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.H_SCROLL);
@@ -82,7 +83,7 @@ public class CharsetEditor implements IColorProvider {
 		selector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
 		selector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 		selector.setSelectedColor(1);
-
+		selector.recalc();
 		painter.addDrawListener(selector);
 		selector.addDrawListener(painter);
 
@@ -94,7 +95,9 @@ public class CharsetEditor implements IColorProvider {
 			public void handleEvent(Event event) {
 
 				painter.setMultiColorEnabled(multicolor.getSelection());
+				painter.recalc();
 				selector.setMultiColorEnabled(multicolor.getSelection());
+				selector.recalc();
 
 			}
 		});

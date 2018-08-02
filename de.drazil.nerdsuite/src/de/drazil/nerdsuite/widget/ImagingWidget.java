@@ -502,7 +502,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setWidth(int width) {
 		this.width = width;
-		reset();
+
 	}
 
 	public int getHeight() {
@@ -511,7 +511,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setHeight(int height) {
 		this.height = height;
-		reset();
+
 	}
 
 	public int getColumns() {
@@ -520,7 +520,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setColumns(int columns) {
 		this.columns = columns;
-		reset();
+
 	}
 
 	public int getRows() {
@@ -529,7 +529,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setRows(int rows) {
 		this.rows = rows;
-		reset();
+
 	}
 
 	public int getTileColumns() {
@@ -538,7 +538,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileColumns(int tileColumns) {
 		this.tileColumns = tileColumns;
-		reset();
+
 	}
 
 	public void setCursorLineWidth(int cursorLineWidth) {
@@ -555,7 +555,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileRows(int tileRows) {
 		this.tileRows = tileRows;
-		reset();
+
 	}
 
 	public int getViewportSize() {
@@ -571,7 +571,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		this.pixelSize = pixelSize;
 		this.currentPixelWidth = pixelSize;
 		this.currentPixelHeight = pixelSize;
-		reset();
+
 	}
 
 	public boolean isPixelGridEnabled() {
@@ -580,7 +580,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setPixelGridEnabled(boolean pixelGridEnabled) {
 		this.pixelGridEnabled = pixelGridEnabled;
-		redraw();
+
 	}
 
 	public boolean isTileSubGridEnabled() {
@@ -589,7 +589,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileSubGridEnabled(boolean tileSubGridEnabled) {
 		this.tileSubGridEnabled = tileSubGridEnabled;
-		redraw();
+
 	}
 
 	public boolean isTileGridEnabled() {
@@ -598,7 +598,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileGridEnabled(boolean tileGridEnabled) {
 		this.tileGridEnabled = tileGridEnabled;
-		redraw();
+
 	}
 
 	public boolean isSeparatorEnabled() {
@@ -607,7 +607,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setSeparatorEnabled(boolean separatorEnabled) {
 		this.separatorEnabled = separatorEnabled;
-		redraw();
+
 	}
 
 	public boolean isTileCursorEnabled() {
@@ -616,7 +616,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileCursorEnabled(boolean tileCursorEnabled) {
 		this.tileCursorEnabled = tileCursorEnabled;
-		redraw();
+
 	}
 
 	public boolean isMultiColorEnabled() {
@@ -625,19 +625,17 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setMultiColorEnabled(boolean multiColorEnabled) {
 		this.multiColorEnabled = multiColorEnabled;
-		recalc();
-		// redraw();
-		doDrawAllTiles();
 	}
 
 	public void recalc() {
 		currentPixelWidth = getPixelSize() * (isMultiColorEnabled() ? 2 : 1);
 		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
-		drawMode = SET_DRAW_ALL_TILES;
+		bytesPerRow = width >> 3;
+		doDrawAllTiles();
 	}
 
 	private void reset() {
-		bytesPerRow = width >> 3;
+
 		// byteArray = new byte[(height * bytesPerRow * columns * rows)];
 		redraw();
 	}
