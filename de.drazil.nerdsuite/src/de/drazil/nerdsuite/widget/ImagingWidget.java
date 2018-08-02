@@ -12,7 +12,6 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -61,6 +60,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
 	protected int selectedColorIndex;
+	protected int monoColorDefaultIndex;
 	protected int colorCount;
 	protected int selectedTileOffset = 0;
 	protected int cursorLineWidth = 1;
@@ -127,17 +127,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 		addPaintListener(this);
 
-		addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseScrolled(MouseEvent e) {
-				if (widgetMode == WidgetMode.PAINTER) {
-					colorCount += e.count;
-					selectedColorIndex = Math.abs(colorCount % 4);
-					System.out.println(selectedColorIndex);
-				}
-			}
-		});
-
 		addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 			}
@@ -145,19 +134,19 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			public void keyReleased(KeyEvent e) {
 				switch (e.character) {
 				case '1': {
-					selectedColorIndex=0;
+					selectedColorIndex = 0;
 					break;
 				}
 				case '2': {
-					selectedColorIndex=1;
+					selectedColorIndex = 1;
 					break;
 				}
 				case '3': {
-					selectedColorIndex=2;
+					selectedColorIndex = 2;
 					break;
 				}
 				case '4': {
-					selectedColorIndex=3;
+					selectedColorIndex = 3;
 					break;
 				}
 				}
@@ -404,7 +393,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					int bi = b;
 					int colorIndex = (bi >> j) & 3;
 
-					Color color = palette.get(String.valueOf(selectedColorIndex));
+					Color color = palette.get(String.valueOf(colorIndex));
 					if (colorProvider != null) {
 						color = colorProvider.getColorByIndex((byte) colorIndex, byteArray, byteOffset, colorMapIndex);
 					}
@@ -430,7 +419,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	private void paintControlPixel(GC gc, int x, int y) {
 
-		//System.out.println(getWidgetName() + ":drawPixel x:" + x + "  y:" + y);
+		// System.out.println(getWidgetName() + ":drawPixel x:" + x + " y:" +
+		// y);
 		if (widgetMode == WidgetMode.PAINTER) {
 			if (x < currentWidth * tileColumns && y < height * tileRows) {
 				int ix = x % currentWidth;
@@ -628,6 +618,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setSelectedColor(int index) {
 		selectedColorIndex = index;
+		monoColorDefaultIndex = index;
 	}
 
 	public void addLayer() {

@@ -47,7 +47,7 @@ public class CharsetEditor implements IColorProvider {
 		singleSpritePainter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 		singleSpritePainter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
 		singleSpritePainter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		singleSpritePainter.setSelectedColor(0);
+		singleSpritePainter.setSelectedColor(1);
 
 		ImagingWidget spriteSelector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		spriteSelector.setWidgetName("SpriteSelector:");
@@ -74,7 +74,7 @@ public class CharsetEditor implements IColorProvider {
 		spriteSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 		spriteSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
 		spriteSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		spriteSelector.setSelectedColor(0);
+		spriteSelector.setSelectedColor(1);
 
 		singleSpritePainter.addDrawListener(spriteSelector);
 		spriteSelector.addDrawListener(singleSpritePainter);

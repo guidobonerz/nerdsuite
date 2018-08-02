@@ -40,14 +40,14 @@ public class BigSpriteEditor implements IColorProvider {
 		singleSpritePainter.setTileCursorEnabled(false);
 		singleSpritePainter.setMultiColorEnabled(multiColorMode);
 		singleSpritePainter.setSelectedTileOffset(0);
-		singleSpritePainter.setColorProvider(this);
+		singleSpritePainter.setColorProvider(null);
 
 		singleSpritePainter.setContent(binaryData);
 		singleSpritePainter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		singleSpritePainter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
-		singleSpritePainter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
-		singleSpritePainter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(15).getColor());
-		singleSpritePainter.setSelectedColor(3);
+		singleSpritePainter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		singleSpritePainter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		singleSpritePainter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		singleSpritePainter.setSelectedColor(1);
 
 		ImagingWidget spriteSelector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		spriteSelector.setWidgetName("SpriteSelector:");
@@ -67,14 +67,14 @@ public class BigSpriteEditor implements IColorProvider {
 		spriteSelector.setMultiColorEnabled(multiColorMode);
 
 		spriteSelector.setSelectedTileOffset(0);
-		spriteSelector.setColorProvider(this);
+		spriteSelector.setColorProvider(null);
 
 		spriteSelector.setContent(binaryData);
 		spriteSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		spriteSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
-		spriteSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
-		spriteSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(15).getColor());
-		spriteSelector.setSelectedColor(3);
+		spriteSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		spriteSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		spriteSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		spriteSelector.setSelectedColor(1);
 
 		singleSpritePainter.addDrawListener(spriteSelector);
 		spriteSelector.addDrawListener(singleSpritePainter);
