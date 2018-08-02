@@ -1,11 +1,17 @@
 package de.drazil.nerdsuite.imaging;
 
 import javax.annotation.PostConstruct;
+import javax.swing.SwingConstants;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -25,60 +31,60 @@ public class CharsetEditor implements IColorProvider {
 		for (int i = 0; i < binaryData.length; i++)
 			binaryData[i] = 0;
 		parent.setLayout(new RowLayout(SWT.VERTICAL));
-		ImagingWidget charPainter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		charPainter.setWidgetName("CharPainter :");
-		charPainter.setWidgetMode(WidgetMode.PAINTER);
-		charPainter.setWidth(8);
-		charPainter.setHeight(8);
-		charPainter.setPixelSize(20);
-		charPainter.setTileColumns(1);
-		charPainter.setTileRows(2);
+		ImagingWidget painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+		painter.setWidgetName("CharPainter :");
+		painter.setWidgetMode(WidgetMode.PAINTER);
+		painter.setWidth(8);
+		painter.setHeight(8);
+		painter.setPixelSize(20);
+		painter.setTileColumns(1);
+		painter.setTileRows(2);
 
-		charPainter.setPixelGridEnabled(true);
-		charPainter.setGridStyle(GridStyle.PIXEL);
-		charPainter.setTileGridEnabled(true);
-		charPainter.setTileCursorEnabled(false);
-		charPainter.setMultiColorEnabled(multiColorMode);
-		charPainter.setSelectedTileOffset(0);
-		charPainter.setColorProvider(null);
+		painter.setPixelGridEnabled(true);
+		painter.setGridStyle(GridStyle.PIXEL);
+		painter.setTileGridEnabled(true);
+		painter.setTileCursorEnabled(false);
+		painter.setMultiColorEnabled(multiColorMode);
+		painter.setSelectedTileOffset(0);
+		painter.setColorProvider(null);
 
-		charPainter.setContent(binaryData);
-		charPainter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		charPainter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		charPainter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		charPainter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		charPainter.setSelectedColor(1);
+		painter.setContent(binaryData);
+		painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		painter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		painter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		painter.setSelectedColor(1);
 
-		ImagingWidget charSelector = new ImagingWidget(parent,
+		ImagingWidget selector = new ImagingWidget(parent,
 				SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.H_SCROLL);
-		charSelector.setWidgetName("CharSelector:");
-		charSelector.setWidgetMode(WidgetMode.SELECTOR);
-		charSelector.setWidth(8);
-		charSelector.setHeight(8);
-		charSelector.setTileColumns(1);
-		charSelector.setTileRows(2);
-		charSelector.setColumns(20);
-		charSelector.setRows(20);
-		charSelector.setPixelSize(3);
-		charSelector.setPixelGridEnabled(false);
-		charSelector.setTileGridEnabled(false);
-		charSelector.setTileSubGridEnabled(true);
-		charSelector.setTileCursorEnabled(true);
-		charSelector.setSeparatorEnabled(false);
-		charSelector.setMultiColorEnabled(multiColorMode);
+		selector.setWidgetName("CharSelector:");
+		selector.setWidgetMode(WidgetMode.SELECTOR);
+		selector.setWidth(8);
+		selector.setHeight(8);
+		selector.setTileColumns(1);
+		selector.setTileRows(2);
+		selector.setColumns(8);
+		selector.setRows(3);
+		selector.setPixelSize(3);
+		selector.setPixelGridEnabled(false);
+		selector.setTileGridEnabled(false);
+		selector.setTileSubGridEnabled(true);
+		selector.setTileCursorEnabled(true);
+		selector.setSeparatorEnabled(false);
+		selector.setMultiColorEnabled(multiColorMode);
 
-		charSelector.setSelectedTileOffset(0);
-		charSelector.setColorProvider(null);
+		selector.setSelectedTileOffset(0);
+		selector.setColorProvider(null);
 
-		charSelector.setContent(binaryData);
-		charSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		charSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		charSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		charSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		charSelector.setSelectedColor(1);
+		selector.setContent(binaryData);
+		selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		selector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		selector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		selector.setSelectedColor(1);
 
-		charPainter.addDrawListener(charSelector);
-		charSelector.addDrawListener(charPainter);
+		painter.addDrawListener(selector);
+		selector.addDrawListener(painter);
 
 		Button multicolor = new Button(parent, SWT.CHECK);
 		multicolor.setText("MultiColor");
@@ -87,8 +93,8 @@ public class CharsetEditor implements IColorProvider {
 			@Override
 			public void handleEvent(Event event) {
 
-				charPainter.setMultiColorEnabled(multicolor.getSelection());
-				charSelector.setMultiColorEnabled(multicolor.getSelection());
+				painter.setMultiColorEnabled(multicolor.getSelection());
+				selector.setMultiColorEnabled(multicolor.getSelection());
 
 			}
 		});
@@ -99,7 +105,7 @@ public class CharsetEditor implements IColorProvider {
 
 			@Override
 			public void handleEvent(Event event) {
-				charSelector.startAnimation();
+				selector.startAnimation();
 			}
 		});
 
@@ -109,7 +115,7 @@ public class CharsetEditor implements IColorProvider {
 
 			@Override
 			public void handleEvent(Event event) {
-				charSelector.stopAnimation();
+				selector.stopAnimation();
 			}
 		});
 		Button clearMemory = new Button(parent, SWT.PUSH);
@@ -118,7 +124,131 @@ public class CharsetEditor implements IColorProvider {
 
 			@Override
 			public void handleEvent(Event event) {
-				charSelector.stopAnimation();
+				selector.stopAnimation();
+			}
+		});
+		Combo formatSelector = new Combo(parent, SWT.DROP_DOWN);
+		formatSelector.setItems(new String[] { "Char", "Char 2X", "Char 2Y", "Char 2XY", "Sprite", "Sprite 2X",
+				"Sprite 2Y", "Sprite 2XY" });
+		formatSelector.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Combo c = ((Combo) e.getSource());
+				int index = c.getSelectionIndex();
+				switch (c.getItem(index)) {
+				case "Char": {
+					painter.setWidth(8);
+					painter.setHeight(8);
+					painter.setTileColumns(1);
+					painter.setTileRows(1);
+					selector.setWidth(8);
+					selector.setHeight(8);
+					selector.setTileColumns(1);
+					selector.setTileRows(1);
+					parent.layout();
+					break;
+				}
+				case "Char 2X": {
+					painter.setWidth(8);
+					painter.setHeight(8);
+					painter.setTileColumns(2);
+					painter.setTileRows(1);
+					selector.setWidth(8);
+					selector.setHeight(8);
+					selector.setTileColumns(2);
+					selector.setTileRows(1);
+					
+					parent.layout();
+					break;
+				}
+
+				case "Char 2Y": {
+					painter.setWidth(8);
+					painter.setHeight(8);
+					painter.setTileColumns(1);
+					painter.setTileRows(2);
+					selector.setWidth(8);
+					selector.setHeight(8);
+					selector.setTileColumns(1);
+					selector.setTileRows(2);
+					parent.layout();
+					break;
+				}
+
+				case "Char 2XY": {
+					painter.setWidth(8);
+					painter.setHeight(8);
+					painter.setTileColumns(2);
+					painter.setTileRows(2);
+					selector.setWidth(8);
+					selector.setHeight(8);
+					selector.setTileColumns(2);
+					selector.setTileRows(2);
+					parent.layout();
+					break;
+				}
+
+				case "Sprite": {
+					painter.setWidth(24);
+					painter.setHeight(21);
+					painter.setTileColumns(1);
+					painter.setTileRows(1);
+					selector.setWidth(24);
+					selector.setHeight(21);
+					selector.setTileColumns(1);
+					selector.setTileRows(1);
+					parent.layout();
+					break;
+				}
+
+				case "Sprite 2X": {
+					painter.setWidth(24);
+					painter.setHeight(21);
+					painter.setTileColumns(2);
+					painter.setTileRows(1);
+					selector.setWidth(24);
+					selector.setHeight(21);
+					selector.setTileColumns(2);
+					selector.setTileRows(1);
+					parent.layout();
+					break;
+				}
+
+				case "Sprite 2Y": {
+					painter.setWidth(24);
+					painter.setHeight(21);
+					painter.setTileColumns(1);
+					painter.setTileRows(2);
+					selector.setWidth(24);
+					selector.setHeight(21);
+					selector.setTileColumns(1);
+					selector.setTileRows(2);
+					parent.layout();
+					break;
+				}
+
+				case "Sprite 2XY": {
+					painter.setWidth(24);
+					painter.setHeight(21);
+					painter.setTileColumns(2);
+					painter.setTileRows(2);
+					selector.setWidth(24);
+					selector.setHeight(21);
+					selector.setTileColumns(2);
+					selector.setTileRows(2);
+					parent.layout();
+					break;
+				}
+
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
