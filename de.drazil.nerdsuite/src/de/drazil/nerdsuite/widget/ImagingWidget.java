@@ -101,7 +101,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	private Timer animationTimer;
 
 	public enum WidgetMode {
-		SELECTOR, PAINTER
+		SELECTOR, PAINTER, VIEWER
 	};
 
 	public enum GridStyle {
@@ -390,8 +390,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	private void paintControlTiles(GC gc) {
 
-		for (int tx = 0; tx < columns; tx++) {
-			for (int ty = 0; ty < rows; ty++) {
+		for (int ty = 0; ty < rows; ty++) {
+			for (int tx = 0; tx < columns; tx++) {
 				paintControlTile(gc, tx, ty);
 			}
 		}
@@ -406,11 +406,12 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		int byteOffset = 0;
 		if (widgetMode == WidgetMode.PAINTER) {
 			byteOffset = selectedTileOffset;
-		} else if (widgetMode == WidgetMode.SELECTOR) {
+		} else if (widgetMode == WidgetMode.SELECTOR || widgetMode == WidgetMode.VIEWER) {
 			byteOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tx + (ty * columns));
 		}
 
 		for (int i = byteOffset, k = 0; i < (byteOffset + getViewportSize()); i++, k++) {
+
 			int b = (byteArray[i] & 0xff);
 			int xi = (k % bytesPerRow) * (8 / (isMultiColorEnabled() ? 2 : 1));
 			int xo = (k / b1) % tileColumns;
@@ -419,17 +420,21 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			int yi = (k / bytesPerRow) % height;
 			int yo = (k / b2) % tileRows;
 			y = yi + (yo * height) + (ty * height * tileRows);
-			int colorMapIndex = k / currentWidth;
+			// int colorMapIndex = k / currentWidth;
 
 			if (isMultiColorEnabled()) {
 				for (int j = 6; j >= 0; j -= 2) {
 					int bi = b;
 					int colorIndex = (bi >> j) & 3;
 
-					Color color = palette.get(String.valueOf(colorIndex));
+					Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
 					if (colorProvider != null) {
-						color = colorProvider.getColorByIndex((byte) colorIndex, byteArray, byteOffset, colorMapIndex);
+						color = colorProvider.getColorByIndex((byte) colorIndex, byteArray, tx, ty, columns);
+						// color =
+						// InstructionSet.getPlatformData().getColorPalette().get(4).getColor();
 					}
+					// System.out.println("tx:"+tx+" ty:"+ty+" x:"+x+" y:"+y+"
+					// i:"+i+" mi:"+colorMapIndex);
 					gc.setBackground(color);
 					int pix = isPixelGridEnabled() ? 1 : 0;
 					gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
@@ -490,6 +495,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setColorProvider(IColorProvider colorProvider) {
 		this.colorProvider = colorProvider;
+		setMultiColorEnabled(colorProvider.isMultiColorEnabled());
 	}
 
 	public void setContent(byte byteArray[]) {

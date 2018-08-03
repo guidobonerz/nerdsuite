@@ -5,7 +5,6 @@ import javax.annotation.PostConstruct;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -14,12 +13,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
-import de.drazil.nerdsuite.widget.IColorProvider;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 
-public class IconEditor implements IColorProvider {
+public class IconEditor {
 
 	private ImagingWidget painter;
 	private ImagingWidget selector;
@@ -37,14 +35,13 @@ public class IconEditor implements IColorProvider {
 		this.parent = parent;
 		parent.setLayout(new RowLayout(SWT.VERTICAL));
 
-		
 		getPainter();
 		getSelector();
 		getMultiColor();
 		getStartAnimation();
 		getStopAnimation();
 		getClearMemory();
-		//getFormatSelector();
+		// getFormatSelector();
 		getFormatSelector();
 		setFormat("Char");
 	}
@@ -344,8 +341,4 @@ public class IconEditor implements IColorProvider {
 		return binaryData;
 	}
 
-	@Override
-	public Color getColorByIndex(byte bitmapByte, byte bitmap[], int offset, int index) {
-		return InstructionSet.getPlatformData().getColorPalette().get(index).getColor();
-	}
 }

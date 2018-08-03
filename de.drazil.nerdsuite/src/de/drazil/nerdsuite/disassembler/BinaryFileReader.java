@@ -8,8 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class BinaryFileReader {
-	public static byte[] readFile(File file) {
+	public static byte[] readFile(File file, int bytesToSkip) {
 		byte[] result = new byte[(int) file.length()];
+		byte[] resultReduced = new byte[(int) file.length() - bytesToSkip];
 		InputStream input = null;
 		try {
 			int totalBytesRead = 0;
@@ -34,6 +35,7 @@ public class BinaryFileReader {
 				e.printStackTrace();
 			}
 		}
-		return result;
+		System.arraycopy(result, 2, resultReduced, 0, resultReduced.length);
+		return resultReduced;
 	}
 }
