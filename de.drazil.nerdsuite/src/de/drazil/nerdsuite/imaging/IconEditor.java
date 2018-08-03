@@ -74,6 +74,7 @@ public class IconEditor implements IColorProvider {
 		selector.setSelectedTileOffset(0);
 		selector.setColorProvider(null);
 
+		
 		selector.setContent(binaryData);
 		selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 		selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
