@@ -76,6 +76,7 @@ public class BitmapEditor {
 			@Override
 			public void handleEvent(Event event) {
 				painter.setMultiColorEnabled(multicolor.getSelection());
+				painter.recalc();
 			}
 		});
 

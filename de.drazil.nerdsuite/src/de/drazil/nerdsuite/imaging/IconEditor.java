@@ -56,15 +56,12 @@ public class IconEditor {
 			painter.setPixelSize(20);
 			painter.setTileColumns(1);
 			painter.setTileRows(2);
-
 			painter.setPixelGridEnabled(true);
 			painter.setGridStyle(GridStyle.PIXEL);
 			painter.setTileGridEnabled(true);
 			painter.setTileCursorEnabled(false);
 			painter.setMultiColorEnabled(multiColorMode);
 			painter.setSelectedTileOffset(0);
-			painter.setColorProvider(null);
-
 			painter.setContent(getBinaryData());
 			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			painter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
@@ -95,10 +92,7 @@ public class IconEditor {
 			selector.setTileCursorEnabled(true);
 			selector.setSeparatorEnabled(false);
 			selector.setMultiColorEnabled(multiColorMode);
-
 			selector.setSelectedTileOffset(0);
-			selector.setColorProvider(null);
-
 			selector.setContent(getBinaryData());
 			selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
