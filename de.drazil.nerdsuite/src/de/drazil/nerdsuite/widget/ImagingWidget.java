@@ -807,8 +807,11 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point((currentWidth * currentPixelWidth * tileColumns * columns) + (cursorLineWidth * (columns + 1)),
-				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)));
+		int sbw = hBar != null ? hBar.getSize().x : 0;
+		int sbh = vBar != null ? vBar.getSize().y : 0;
+		return new Point(
+				(currentWidth * currentPixelWidth * tileColumns * columns) + (cursorLineWidth * (columns + 1)) + sbw,
+				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)) + sbh);
 	}
 
 }
