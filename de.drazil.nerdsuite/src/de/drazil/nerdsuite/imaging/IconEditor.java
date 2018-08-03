@@ -1,14 +1,11 @@
 package de.drazil.nerdsuite.imaging;
 
 import javax.annotation.PostConstruct;
-import javax.swing.SwingConstants;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -22,7 +19,7 @@ import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 
-public class CharsetEditor implements IColorProvider {
+public class IconEditor implements IColorProvider {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {

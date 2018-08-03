@@ -634,12 +634,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		doDrawAllTiles();
 	}
 
-	private void reset() {
-
-		// byteArray = new byte[(height * bytesPerRow * columns * rows)];
-		redraw();
-	}
-
 	public void setGridStyle(GridStyle gridStyle) {
 		this.gridStyle = gridStyle;
 	}
@@ -807,7 +801,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point((width * currentPixelWidth * tileColumns * columns) + +(cursorLineWidth * (columns + 1)),
+		return new Point((currentWidth * currentPixelWidth * tileColumns * columns) + (cursorLineWidth * (columns + 1)),
 				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)));
 	}
 
