@@ -305,6 +305,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		if (drawMode == SET_DRAW_PIXEL) {
 			paintControlPixel(e.gc, cursorX, cursorY);
 		}
+		
 		if (isPixelGridEnabled()) {
 			paintControlPixelGrid(e.gc);
 		}
@@ -314,6 +315,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		if (isTileGridEnabled()) {
 			paintControlTileGrid(e.gc);
 		}
+		
 		if (isTileSubGridEnabled()) {
 			paintControlTileSubGrid(e.gc);
 		}
@@ -365,7 +367,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	public void paintControlTileGrid(GC gc) {
+	public void paintControlTileSubGrid(GC gc) {
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int y = height; y < height * tileRows; y += height) {
 			gc.drawLine(0, y * pixelSize, width * tileColumns * pixelSize, y * pixelSize);
@@ -376,12 +378,12 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	public void paintControlTileSubGrid(GC gc) {
+	public void paintControlTileGrid(GC gc) {
 		gc.setLineWidth(1);
 		gc.setLineStyle(SWT.LINE_SOLID);
 		gc.setForeground(Constants.TILE_GRID_COLOR);
 		for (int x = 0; x < columns; x++) {
-			for (int y = 0; y < columns; y++) {
+			for (int y = 0; y < rows; y++) {
 				gc.drawRectangle(x * width * pixelSize * tileColumns, y * height * pixelSize * tileRows,
 						width * pixelSize * tileColumns, height * pixelSize * tileRows);
 			}
@@ -810,8 +812,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		int sbw = hBar != null ? hBar.getSize().x : 0;
 		int sbh = vBar != null ? vBar.getSize().y : 0;
 		return new Point(
-				(currentWidth * currentPixelWidth * tileColumns * columns) + (cursorLineWidth * (columns + 1)) + sbw,
-				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)) + sbh);
+				(currentWidth * currentPixelWidth * tileColumns * columns) + (cursorLineWidth * (columns + 1)) ,
+				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)));
 	}
 
 }

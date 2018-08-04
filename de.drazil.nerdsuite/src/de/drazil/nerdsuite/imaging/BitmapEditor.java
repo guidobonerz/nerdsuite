@@ -55,15 +55,16 @@ public class BitmapEditor {
 		painter.setWidth(8);
 		painter.setHeight(8);
 		painter.setColumns(40);
-		painter.setRows(24);
+		painter.setRows(25);
 		painter.setPixelSize(3);
 		painter.setPixelGridEnabled(false);
+		painter.setTileSubGridEnabled(false);
 		painter.setTileGridEnabled(true);
 		painter.setColorProvider(new KoalaColorProvider());
 		painter.setContent(binaryData);
-		painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
+		//painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
 
-		painter.setSelectedColor(0);
+		//painter.setSelectedColor(0);
 
 		painter.recalc();
 		parent.setLayout(new RowLayout(SWT.HORIZONTAL));
