@@ -48,8 +48,7 @@ public class BitmapEditor {
 
 		byte binaryData[] = BinaryFileReader.readFile(file, 2);
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
-		ImagingWidget painter = new ImagingWidget(parent,
-				SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
+		ImagingWidget painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.setWidgetName("Painter :");
 		painter.setWidgetMode(WidgetMode.VIEWER);
 		painter.setWidth(8);
@@ -62,9 +61,8 @@ public class BitmapEditor {
 		painter.setTileGridEnabled(true);
 		painter.setColorProvider(new KoalaColorProvider());
 		painter.setContent(binaryData);
-		//painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
-
-		//painter.setSelectedColor(0);
+		painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
+		painter.setSelectedColor(0);
 
 		painter.recalc();
 		parent.setLayout(new RowLayout(SWT.HORIZONTAL));

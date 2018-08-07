@@ -24,10 +24,21 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
 import swing2swt.layout.BoxLayout;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.custom.CBanner;
+import org.eclipse.wb.swt.SWTResourceManager;
+
+import net.miginfocom.swt.MigLayout;
+
+import org.eclipse.swt.widgets.ExpandBar;
+import org.eclipse.swt.widgets.ExpandItem;
 
 public class Test extends Composite {
 
 	private final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
+	private Table table;
 
 	/**
 	 * Create the composite.
@@ -36,43 +47,22 @@ public class Test extends Composite {
 	 */
 	public Test(Composite parent, int style) {
 		super(parent, style);
-		setLayout(new RowLayout(SWT.VERTICAL));
+		setLayout(new MigLayout());
 		
 		Composite composite = new Composite(this, SWT.NONE);
-		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
-		composite.setLayoutData(new RowData(689, 327));
+		composite.setLayout(new BoxLayout(BoxLayout.X_AXIS));
 		
-		Composite paintPanel = new Composite(composite, SWT.NONE);
-		paintPanel.setLayout(new FillLayout(SWT.HORIZONTAL));
+		table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
 		
-		Composite controlPanel = new Composite(composite, SWT.NONE);
-		controlPanel.setLayout(new GridLayout(3, false));
+		Button btnNewButton = new Button(composite, SWT.NONE);
+		btnNewButton.setText("New Button");
 		
-		Label lblNewLabel = new Label(controlPanel, SWT.NONE);
-		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel.setText("Format");
+		Composite composite_1 = new Composite(this, SWT.NONE);
+		composite_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		Combo combo = new Combo(controlPanel, SWT.NONE);
-		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		
-		Label lblNewLabel_1 = new Label(controlPanel, SWT.NONE);
-		lblNewLabel_1.setText("Multicolor");
-		
-		Button btnCheckButton = new Button(controlPanel, SWT.CHECK);
-		new Label(controlPanel, SWT.NONE);
-		new Label(controlPanel, SWT.NONE);
-		
-		Button btnNewButton_1 = new Button(controlPanel, SWT.NONE);
-		btnNewButton_1.setText("Start Animation");
-		new Label(controlPanel, SWT.NONE);
-		new Label(controlPanel, SWT.NONE);
-		
-		Button btnNewButton = new Button(controlPanel, SWT.NONE);
-		btnNewButton.setText("Stop Animation");
-		new Label(controlPanel, SWT.NONE);
-		
-		Composite selectorPanel = new Composite(this, SWT.NONE);
-		selectorPanel.setLayoutData(new RowData(689, 140));
+		Spinner spinner = new Spinner(composite_1, SWT.BORDER);
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				toolkit.dispose();

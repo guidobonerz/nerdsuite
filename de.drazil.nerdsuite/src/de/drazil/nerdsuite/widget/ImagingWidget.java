@@ -62,6 +62,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int cursorY = 0;
 	protected int tileX = 0;
 	protected int tileY = 0;
+	protected int visibleRows = 0;
+	protected int visibleColumns = 0;
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
 	protected int selectedColorIndex;
@@ -305,7 +307,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		if (drawMode == SET_DRAW_PIXEL) {
 			paintControlPixel(e.gc, cursorX, cursorY);
 		}
-		
+
 		if (isPixelGridEnabled()) {
 			paintControlPixelGrid(e.gc);
 		}
@@ -315,7 +317,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		if (isTileGridEnabled()) {
 			paintControlTileGrid(e.gc);
 		}
-		
+
 		if (isTileSubGridEnabled()) {
 			paintControlTileSubGrid(e.gc);
 		}
@@ -510,7 +512,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setWidth(int width) {
 		this.width = width;
-
 	}
 
 	public int getHeight() {
@@ -519,7 +520,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setHeight(int height) {
 		this.height = height;
-
 	}
 
 	public int getColumns() {
@@ -528,7 +528,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setColumns(int columns) {
 		this.columns = columns;
-
+		this.visibleColumns = columns;
 	}
 
 	public int getRows() {
@@ -537,7 +537,24 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setRows(int rows) {
 		this.rows = rows;
+		this.visibleRows = rows;
 
+	}
+
+	public void setVisibleRows(int rows) {
+		this.visibleRows = rows;
+	}
+
+	public int getVisibleRows() {
+		return visibleRows;
+	}
+
+	public void setVisibleColumns(int columns) {
+		this.visibleColumns = columns;
+	}
+
+	public int getVisibleColumns() {
+		return visibleColumns;
 	}
 
 	public int getTileColumns() {
@@ -809,11 +826,12 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		int sbw = hBar != null ? hBar.getSize().x : 0;
-		int sbh = vBar != null ? vBar.getSize().y : 0;
+		Point hsb = hBar != null ? hBar.getSize() : new Point(0, 0);
+		Point vsb = vBar != null ? vBar.getSize() : new Point(0, 0);
 		return new Point(
-				(currentWidth * currentPixelWidth * tileColumns * columns) + (cursorLineWidth * (columns + 1)) ,
-				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)));
+				(currentWidth * currentPixelWidth * tileColumns * columns) + (cursorLineWidth * (columns + 1)) + vsb.x
+						- columns,
+				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)) + hsb.x - rows);
 	}
 
 }

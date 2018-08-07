@@ -5,7 +5,6 @@ import javax.annotation.PostConstruct;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -16,6 +15,7 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
+import net.miginfocom.swt.MigLayout;
 
 public class IconEditor {
 
@@ -26,6 +26,7 @@ public class IconEditor {
 	private Button startAnimation;
 	private Button stopAnimation;
 	private Button clearMemory;
+	private Composite controls;
 	private Combo formatSelector;
 	private byte binaryData[] = null;
 	boolean multiColorMode = false;
@@ -33,16 +34,20 @@ public class IconEditor {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
-		parent.setLayout(new RowLayout(SWT.VERTICAL));
+		parent.setLayout(new MigLayout());
 
-		getPainter();
-		getSelector();
-		getMultiColor();
-		getStartAnimation();
-		getStopAnimation();
-		getClearMemory();
-		// getFormatSelector();
-		getFormatSelector();
+		getPainter().setLayoutData("cell 0 0");
+		getSelector().setLayoutData("cell 0 1 2 1");
+		controls = new Composite(parent, SWT.BORDER);
+		controls.setLayout(new MigLayout());
+		controls.setLayoutData("cell 1 0");
+
+		getMultiColor().setLayoutData("cell 0 0 2 1");
+		getClearMemory().setLayoutData("cell 0 1 2 1");
+		getFormatSelector().setLayoutData("cell 0 2 2 1");
+		getStartAnimation().setLayoutData("cell 0 3 1 1");
+		getStopAnimation().setLayoutData("cell 1 3  1 1");
+
 		setFormat("Char");
 	}
 
@@ -75,8 +80,7 @@ public class IconEditor {
 
 	private ImagingWidget getSelector() {
 		if (selector == null) {
-			selector = new ImagingWidget(parent,
-					SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.H_SCROLL);
+			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
 			selector.setWidgetName("Selector:");
 			selector.setWidgetMode(WidgetMode.SELECTOR);
 			selector.setWidth(8);
@@ -87,8 +91,8 @@ public class IconEditor {
 			selector.setRows(3);
 			selector.setPixelSize(3);
 			selector.setPixelGridEnabled(false);
-			selector.setTileGridEnabled(false);
-			selector.setTileSubGridEnabled(true);
+			selector.setTileGridEnabled(true);
+			selector.setTileSubGridEnabled(false);
 			selector.setTileCursorEnabled(true);
 			selector.setSeparatorEnabled(false);
 			selector.setMultiColorEnabled(multiColorMode);
@@ -106,7 +110,7 @@ public class IconEditor {
 
 	private Button getMultiColor() {
 		if (multicolor == null) {
-			multicolor = new Button(parent, SWT.CHECK);
+			multicolor = new Button(controls, SWT.CHECK);
 			multicolor.setText("MultiColor");
 			multicolor.addListener(SWT.Selection, new Listener() {
 				@Override
@@ -124,7 +128,7 @@ public class IconEditor {
 
 	private Button getStartAnimation() {
 		if (startAnimation == null) {
-			startAnimation = new Button(parent, SWT.PUSH);
+			startAnimation = new Button(controls, SWT.PUSH);
 			startAnimation.setText("Start Animation");
 			startAnimation.addListener(SWT.Selection, new Listener() {
 
@@ -139,7 +143,7 @@ public class IconEditor {
 
 	private Button getStopAnimation() {
 		if (stopAnimation == null) {
-			stopAnimation = new Button(parent, SWT.PUSH);
+			stopAnimation = new Button(controls, SWT.PUSH);
 			stopAnimation.setText("Stop Animation");
 			stopAnimation.addListener(SWT.Selection, new Listener() {
 
@@ -154,7 +158,7 @@ public class IconEditor {
 
 	private Button getClearMemory() {
 		if (clearMemory == null) {
-			clearMemory = new Button(parent, SWT.PUSH);
+			clearMemory = new Button(controls, SWT.PUSH);
 			clearMemory.setText("Clear Memory");
 			clearMemory.addListener(SWT.Selection, new Listener() {
 
@@ -169,7 +173,7 @@ public class IconEditor {
 
 	private Combo getFormatSelector() {
 		if (formatSelector == null) {
-			formatSelector = new Combo(parent, SWT.DROP_DOWN);
+			formatSelector = new Combo(controls, SWT.DROP_DOWN);
 			formatSelector.setItems(new String[] { "Char", "Char 2X", "Char 2Y", "Char 2XY", "Sprite", "Sprite 2X",
 					"Sprite 2Y", "Sprite 2XY" });
 			formatSelector.addSelectionListener(new SelectionAdapter() {
@@ -266,6 +270,8 @@ public class IconEditor {
 			getSelector().setTileColumns(1);
 			getSelector().setTileRows(1);
 			getSelector().setPixelSize(2);
+			getSelector().setColumns(16);
+			getSelector().setRows(6);
 			getSelector().recalc();
 			parent.layout();
 			break;
@@ -283,6 +289,8 @@ public class IconEditor {
 			getSelector().setTileColumns(2);
 			getSelector().setTileRows(1);
 			getSelector().setPixelSize(2);
+			getSelector().setColumns(8);
+			getSelector().setRows(6);
 			getSelector().recalc();
 			parent.layout();
 			break;
@@ -300,6 +308,8 @@ public class IconEditor {
 			getSelector().setTileColumns(1);
 			getSelector().setTileRows(2);
 			getSelector().setPixelSize(2);
+			getSelector().setColumns(16);
+			getSelector().setRows(3);
 			getSelector().recalc();
 			parent.layout();
 			break;
@@ -317,6 +327,8 @@ public class IconEditor {
 			getSelector().setTileColumns(2);
 			getSelector().setTileRows(2);
 			getSelector().setPixelSize(2);
+			getSelector().setColumns(8);
+			getSelector().setRows(3);
 			getSelector().recalc();
 			parent.layout();
 			break;
