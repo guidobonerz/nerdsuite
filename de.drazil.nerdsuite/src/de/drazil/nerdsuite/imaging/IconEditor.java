@@ -1,7 +1,12 @@
 package de.drazil.nerdsuite.imaging;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javax.annotation.PostConstruct;
 
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -15,8 +20,8 @@ import org.eclipse.swt.widgets.MenuItem;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.widget.ImagingWidget;
-import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
+import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 import net.miginfocom.swt.MigLayout;
 
@@ -53,32 +58,90 @@ public class IconEditor {
 		getStartAnimation().setLayoutData("cell 0 4 1 1");
 		getStopAnimation().setLayoutData("cell 1 4  1 1");
 
+		ImageDescriptor cutId = null;
+		ImageDescriptor copyId = null;
+		ImageDescriptor pasteId = null;
+		ImageDescriptor rotateCWId = null;
+		ImageDescriptor rotateCCWId = null;
+		ImageDescriptor flipHorizontalId = null;
+		ImageDescriptor flipVerticalId = null;
+		try {
+			cutId = ImageDescriptor.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/cut.png"));
+			copyId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png"));
+			pasteId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png"));
+			rotateCWId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_clockwise.png"));
+			rotateCCWId = ImageDescriptor.createFromURL(
+					new URL("platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_anticlockwise.png"));
+			flipHorizontalId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/shape_flip_horizontal.png"));
+			flipVerticalId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/shape_flip_vertical.png"));
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		Menu popup = new Menu(getSelector());
 		MenuItem cut = new MenuItem(popup, SWT.NONE);
 		cut.setText("Cut");
+		cut.setImage(cutId.createImage());
 		cut.addListener(SWT.Selection, e -> {
 			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Cut);
 		});
 		MenuItem copy = new MenuItem(popup, SWT.NONE);
 		copy.setText("Copy");
+		copy.setImage(copyId.createImage());
 		copy.addListener(SWT.Selection, e -> {
 			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Copy);
 		});
 		MenuItem paste = new MenuItem(popup, SWT.NONE);
 		paste.setText("Paste");
+		paste.setImage(pasteId.createImage());
 		paste.addListener(SWT.Selection, e -> {
 			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Paste);
 		});
-		MenuItem separator = new MenuItem(popup, SWT.SEPARATOR);
 		MenuItem clear = new MenuItem(popup, SWT.NONE);
 		clear.setText("Clear");
 		clear.addListener(SWT.Selection, e -> {
 			getSelector().clearTile();
 		});
-		MenuItem flip = new MenuItem(popup, SWT.NONE);
-		flip.setText("Flip");
-		getSelector().setMenu(popup);
+		MenuItem separator1 = new MenuItem(popup, SWT.SEPARATOR);
 
+		MenuItem flipHorizontal = new MenuItem(popup, SWT.NONE);
+		flipHorizontal.setText("Flip Horizontal");
+		flipHorizontal.setImage(flipHorizontalId.createImage());
+
+		MenuItem flipVertical = new MenuItem(popup, SWT.NONE);
+		flipVertical.setText("Flip Vertical");
+		flipVertical.setImage(flipVerticalId.createImage());
+
+		MenuItem separator2 = new MenuItem(popup, SWT.SEPARATOR);
+
+		MenuItem rotateCW = new MenuItem(popup, SWT.NONE);
+		rotateCW.setText("Rotate CW");
+		rotateCW.setImage(rotateCWId.createImage());
+
+		MenuItem rotateCCW = new MenuItem(popup, SWT.NONE);
+		rotateCCW.setText("Rotate CCW");
+		rotateCCW.setImage(rotateCCWId.createImage());
+
+		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
+
+		MenuItem shiftUp = new MenuItem(popup, SWT.NONE);
+		shiftUp.setText("Shift Up");
+
+		MenuItem shiftDown = new MenuItem(popup, SWT.NONE);
+		shiftDown.setText("Shift Down");
+
+		MenuItem shiftLeft = new MenuItem(popup, SWT.NONE);
+		shiftLeft.setText("Shift Left");
+
+		MenuItem shiftRight = new MenuItem(popup, SWT.NONE);
+		shiftRight.setText("Shift Right");
+		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);
 		MenuItem swapTiles = new MenuItem(popup, SWT.NONE);
 		swapTiles.setText("Swap Selected Tiles");
 		swapTiles.addListener(SWT.Selection, e -> {
@@ -99,7 +162,7 @@ public class IconEditor {
 		setPaintMode("Pixel");
 		getFormatSelector().select(0);
 		getPaintModeSelector().select(0);
-
+		getSelector().setMenu(popup);
 	}
 
 	private ImagingWidget getPainter() {
@@ -116,7 +179,7 @@ public class IconEditor {
 			painter.setTileCursorEnabled(false);
 			painter.setMultiColorEnabled(multiColorMode);
 			painter.setSelectedTileOffset(0);
-			painter.setContent(getBinaryData());
+			painter.setBitlane(getBinaryData());
 			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			painter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -129,7 +192,19 @@ public class IconEditor {
 
 	private ImagingWidget getSelector() {
 		if (selector == null) {
-			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
+			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
+				@Override
+				protected boolean isClearSwapBufferConfirmed() {
+					return MessageDialog.openQuestion(parent.getShell(), "Question",
+							"Do really want to clear the SwapBuffer?");
+				}
+
+				@Override
+				protected boolean isClearTileConfirmed() {
+					return MessageDialog.openQuestion(parent.getShell(), "Question",
+							"Do you really want to clear the tile?");
+				}
+			};
 			selector.setWidgetName("Selector:");
 			selector.setWidgetMode(WidgetMode.SELECTOR);
 			selector.setWidth(8);
@@ -144,7 +219,7 @@ public class IconEditor {
 			selector.setSeparatorEnabled(false);
 			selector.setMultiColorEnabled(multiColorMode);
 			selector.setSelectedTileOffset(0);
-			selector.setContent(getBinaryData());
+			selector.setBitlane(getBinaryData());
 			selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			selector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());

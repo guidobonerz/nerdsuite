@@ -60,7 +60,7 @@ public class BitmapEditor {
 		painter.setTileSubGridEnabled(false);
 		painter.setTileGridEnabled(true);
 		painter.setColorProvider(new KoalaColorProvider());
-		painter.setContent(binaryData);
+		painter.setBitlane(binaryData);
 		painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
 		painter.setSelectedColor(0);
 
