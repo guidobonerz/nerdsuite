@@ -251,7 +251,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				if (widgetMode == WidgetMode.PAINTER) {
 					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
 						doDrawPixel();
-						// doDrawAllTiles();
 						fireDoDrawTile();
 					} else {
 						doDrawAllTiles();
@@ -280,8 +279,11 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 							selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
 									* (selectedTileIndexX + (selectedTileIndexY * columns));
 							fireSetSelectedTileOffset(selectedTileOffset);
-							System.out.printf(getWidgetName() + ": Tile selected x:%3d  y:%3d %n", selectedTileIndexX,
-									selectedTileIndexY);
+							/*
+							 * System.out.printf(getWidgetName() +
+							 * ": Tile selected x:%3d  y:%3d %n",
+							 * selectedTileIndexX, selectedTileIndexY);
+							 */
 							doDrawAllTiles();
 						} else {
 							doDrawPixel();
@@ -435,8 +437,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public void paintControlPixelGridCursor(GC gc, int x, int y) {
 		System.out.println(cursorX + "   " + cursorY);
 		gc.setForeground(Constants.DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR);
-		gc.setLineWidth((int) (getPixelSize() * 0.1));
-		gc.drawRectangle(cursorX * currentPixelWidth, cursorY * pixelSize, currentPixelWidth, pixelSize);
+		int lineWidth = (int) (getPixelSize() * 0.1);
+		gc.setLineWidth(lineWidth);
+		gc.drawRectangle((cursorX * currentPixelWidth) + 1 + lineWidth / 2, (cursorY * pixelSize) + 1 + lineWidth / 2,
+				currentPixelWidth - 1 - lineWidth, pixelSize - 1 - lineWidth);
 	}
 
 	public void paintControlSeparator(GC gc) {
@@ -966,7 +970,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		doDrawAllTiles();
 	}
 
-	public void clearSwapBuffer() {
+	public void removeSwapMarker() {
 		if (isClearSwapBufferConfirmed()) {
 			swapRingBuffer.clear();
 			doDrawAllTiles();

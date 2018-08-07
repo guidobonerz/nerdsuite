@@ -23,7 +23,7 @@ public class Disassembler {
 	}
 
 	public void start(String file) {
-		byteArray = BinaryFileReader.readFile(new File(file, 0));
+		byteArray = BinaryFileReader.readFile(new File(file), 0);
 		byteArray = platform.parseBinary(byteArray);
 
 		Map<String, ConversionType> conversionMap = new HashMap<String, ConversionType>();

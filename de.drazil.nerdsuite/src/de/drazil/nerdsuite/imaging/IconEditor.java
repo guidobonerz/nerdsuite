@@ -58,6 +58,10 @@ public class IconEditor {
 		getStartAnimation().setLayoutData("cell 0 4 1 1");
 		getStopAnimation().setLayoutData("cell 1 4  1 1");
 
+		ImageDescriptor upId = null;
+		ImageDescriptor downId = null;
+		ImageDescriptor leftId = null;
+		ImageDescriptor rightId = null;
 		ImageDescriptor cutId = null;
 		ImageDescriptor copyId = null;
 		ImageDescriptor pasteId = null;
@@ -65,6 +69,8 @@ public class IconEditor {
 		ImageDescriptor rotateCCWId = null;
 		ImageDescriptor flipHorizontalId = null;
 		ImageDescriptor flipVerticalId = null;
+		ImageDescriptor swapId = null;
+		ImageDescriptor removeSwapMarkerId = null;
 		try {
 			cutId = ImageDescriptor.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/cut.png"));
 			copyId = ImageDescriptor
@@ -79,6 +85,17 @@ public class IconEditor {
 					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/shape_flip_horizontal.png"));
 			flipVerticalId = ImageDescriptor
 					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/shape_flip_vertical.png"));
+			upId = ImageDescriptor.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_up.png"));
+			downId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_down.png"));
+			leftId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_left.png"));
+			rightId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_right.png"));
+			swapId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_switch.png"));
+			removeSwapMarkerId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/cross.png"));
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -132,18 +149,25 @@ public class IconEditor {
 
 		MenuItem shiftUp = new MenuItem(popup, SWT.NONE);
 		shiftUp.setText("Shift Up");
+		shiftUp.setImage(upId.createImage());
 
 		MenuItem shiftDown = new MenuItem(popup, SWT.NONE);
 		shiftDown.setText("Shift Down");
+		shiftDown.setImage(downId.createImage());
 
 		MenuItem shiftLeft = new MenuItem(popup, SWT.NONE);
 		shiftLeft.setText("Shift Left");
+		shiftLeft.setImage(leftId.createImage());
 
 		MenuItem shiftRight = new MenuItem(popup, SWT.NONE);
 		shiftRight.setText("Shift Right");
+		shiftRight.setImage(rightId.createImage());
+
 		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);
+
 		MenuItem swapTiles = new MenuItem(popup, SWT.NONE);
 		swapTiles.setText("Swap Selected Tiles");
+		swapTiles.setImage(swapId.createImage());
 		swapTiles.addListener(SWT.Selection, e -> {
 			getSelector().swapTiles();
 		});
@@ -152,10 +176,11 @@ public class IconEditor {
 		swapTarget.addListener(SWT.Selection, e -> {
 			getSelector().markAsSwapTarget();
 		});
-		MenuItem deleteSwapTargets = new MenuItem(popup, SWT.NONE);
-		deleteSwapTargets.setText("Delete Swap Targets");
-		deleteSwapTargets.addListener(SWT.Selection, e -> {
-			getSelector().clearSwapBuffer();
+		MenuItem removeSwapMarkers = new MenuItem(popup, SWT.NONE);
+		removeSwapMarkers.setText("Delete Swap Targets");
+		removeSwapMarkers.setImage(removeSwapMarkerId.createImage());
+		removeSwapMarkers.addListener(SWT.Selection, e -> {
+			getSelector().removeSwapMarker();
 		});
 
 		setPaintFormat("Char");
@@ -172,7 +197,6 @@ public class IconEditor {
 			painter.setWidgetMode(WidgetMode.PAINTER);
 			painter.setWidth(8);
 			painter.setHeight(8);
-			painter.setPixelSize(20);
 			painter.setPixelGridEnabled(true);
 			painter.setGridStyle(GridStyle.PIXEL);
 			painter.setTileGridEnabled(true);
@@ -284,7 +308,7 @@ public class IconEditor {
 
 				@Override
 				public void handleEvent(Event event) {
-					selector.stopAnimation();
+					// selector.stopAnimation();
 				}
 			});
 		}
@@ -352,7 +376,7 @@ public class IconEditor {
 			getPainter().setHeight(8);
 			getPainter().setTileColumns(1);
 			getPainter().setTileRows(1);
-			getPainter().setPixelSize(20);
+			getPainter().setPixelSize(40);
 			getPainter().recalc();
 			getSelector().setWidth(8);
 			getSelector().setHeight(8);

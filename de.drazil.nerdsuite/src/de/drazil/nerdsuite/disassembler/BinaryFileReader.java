@@ -7,7 +7,26 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
+
 public class BinaryFileReader {
+
+	public static byte[] readFile(InputStream is, int bytesToSkip) {
+
+		byte[] result = null;
+		byte[] resultReduced = null;
+		try {
+			result = IOUtils.toByteArray(is);
+			resultReduced = new byte[(int) result.length - bytesToSkip];
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+		System.arraycopy(result, 2, resultReduced, 0, resultReduced.length);
+		return resultReduced;
+	}
+
 	public static byte[] readFile(File file, int bytesToSkip) {
 		byte[] result = new byte[(int) file.length()];
 		byte[] resultReduced = new byte[(int) file.length() - bytesToSkip];
