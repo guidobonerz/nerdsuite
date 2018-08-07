@@ -73,7 +73,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int cursorLineWidth = 1;
 	protected int leftButtonMode = 0;
 	protected int rightButtonMode = 0;
-	public int drawMode = DRAW_NOTHING;
+	private int paintControlMode = DRAW_NOTHING;
+	private PaintMode drawMode = PaintMode.Pixel;
 
 	protected byte bitplane[];
 	protected byte clipboardBuffer[];
@@ -129,6 +130,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public enum ClipboardAction {
 		Cut, Copy, Paste, Off
 	};
+
+	public enum PaintMode {
+		Pixel, VerticalMirror, HorizontalMirror, Kaleidoscope
+	}
 
 	@Data
 	@AllArgsConstructor
@@ -266,7 +271,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
 						leftButtonMode = 0;
 						if (widgetMode == WidgetMode.SELECTOR) {
-							drawMode = 0;
+							paintControlMode = 0;
 							selectedTileIndexX = tileX;
 							selectedTileIndexY = tileY;
 							selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
@@ -311,24 +316,48 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		// currentPixelWidth);
 	}
 
-	public void setWidgetName(String widgetName) {
-		this.widgetName = widgetName;
-	}
-
-	public String getWidgetName() {
-		return widgetName;
-	}
-
 	public void paintControl(PaintEvent e) {
 
-		if ((drawMode & SET_DRAW_ALL_TILES) == SET_DRAW_ALL_TILES) {
+		if ((paintControlMode & SET_DRAW_ALL_TILES) == SET_DRAW_ALL_TILES) {
 			paintControlTiles(e.gc);
 		}
-		if ((drawMode & SET_DRAW_TILE) == SET_DRAW_TILE) {
+		if ((paintControlMode & SET_DRAW_TILE) == SET_DRAW_TILE) {
 			paintControlTile(e.gc, selectedTileIndexX, selectedTileIndexY);
 		}
-		if (drawMode == SET_DRAW_PIXEL) {
-			paintControlPixel(e.gc, cursorX, cursorY);
+		if (paintControlMode == SET_DRAW_PIXEL) {
+			switch (drawMode) {
+			case Pixel: {
+				paintControlPixel(e.gc, cursorX, cursorY);
+				break;
+			}
+
+			case VerticalMirror: {
+				paintControlPixel(e.gc, cursorX, cursorY);
+				int centerX = ((width * tileColumns) / 2);
+				int diff = centerX - cursorX - 1;
+				paintControlPixel(e.gc, centerX + diff, cursorY);
+				break;
+			}
+			case HorizontalMirror: {
+				paintControlPixel(e.gc, cursorX, cursorY);
+				int centerY = ((height * tileRows) / 2);
+				int diff = centerY - cursorY - 1;
+				paintControlPixel(e.gc, cursorX, centerY + diff);
+				break;
+			}
+			case Kaleidoscope: {
+				paintControlPixel(e.gc, cursorX, cursorY);
+				int centerX = ((width * tileColumns) / 2);
+				int diffX = centerX - cursorX - 1;
+				paintControlPixel(e.gc, centerX + diffX, cursorY);
+				int centerY = ((height * tileRows) / 2);
+				int diffY = centerY - cursorY - 1;
+				paintControlPixel(e.gc, cursorX, centerY + diffY);
+				paintControlPixel(e.gc, centerX + diffX, centerY + diffY);
+				break;
+			}
+			}
+
 		}
 
 		if (isPixelGridEnabled()) {
@@ -352,7 +381,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 		paintControlSwapMarkers(e.gc);
 
-		drawMode = DRAW_NOTHING;
+		paintControlMode = DRAW_NOTHING;
 
 	}
 
@@ -464,21 +493,16 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			int yi = (k / bytesPerRow) % height;
 			int yo = (k / b2) % tileRows;
 			y = yi + (yo * height) + (ty * height * tileRows);
-			// int colorMapIndex = k / currentWidth;
 
 			if (isMultiColorEnabled()) {
 				for (int j = 6; j >= 0; j -= 2) {
 					int bi = b;
 					int colorIndex = (bi >> j) & 3;
-
 					Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
 					if (colorProvider != null) {
 						color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tx, ty, columns);
-						// color =
-						// InstructionSet.getPlatformData().getColorPalette().get(4).getColor();
 					}
-					// System.out.println("tx:"+tx+" ty:"+ty+" x:"+x+" y:"+y+"
-					// i:"+i+" mi:"+colorMapIndex);
+
 					gc.setBackground(color);
 					int pix = isPixelGridEnabled() ? 1 : 0;
 					gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
@@ -501,8 +525,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	private void paintControlPixel(GC gc, int x, int y) {
 
-		// System.out.println(getWidgetName() + ":drawPixel x:" + x + " y:" +
-		// y);
 		if (widgetMode == WidgetMode.PAINTER) {
 			if (x < currentWidth * tileColumns && y < height * tileRows) {
 				int ix = x % currentWidth;
@@ -534,7 +556,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		int pix = isPixelGridEnabled() ? 1 : 0;
 		gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix, currentPixelWidth - pix,
 				currentPixelHeight - pix);
-
 	}
 
 	public void setColorProvider(IColorProvider colorProvider) {
@@ -578,7 +599,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public void setRows(int rows) {
 		this.rows = rows;
 		this.visibleRows = rows;
-
 	}
 
 	public void setVisibleRows(int rows) {
@@ -603,7 +623,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileColumns(int tileColumns) {
 		this.tileColumns = tileColumns;
-
 	}
 
 	public void setCursorLineWidth(int cursorLineWidth) {
@@ -620,12 +639,19 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileRows(int tileRows) {
 		this.tileRows = tileRows;
-
 	}
 
 	public int getViewportSize() {
 		int viewPortSize = (getWidth() / 8) * getHeight() * tileColumns * tileRows;
 		return viewPortSize;
+	}
+
+	public void setWidgetName(String widgetName) {
+		this.widgetName = widgetName;
+	}
+
+	public String getWidgetName() {
+		return widgetName;
 	}
 
 	public int getPixelSize() {
@@ -636,7 +662,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		this.pixelSize = pixelSize;
 		this.currentPixelWidth = pixelSize;
 		this.currentPixelHeight = pixelSize;
-
 	}
 
 	public boolean isPixelGridEnabled() {
@@ -645,7 +670,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setPixelGridEnabled(boolean pixelGridEnabled) {
 		this.pixelGridEnabled = pixelGridEnabled;
-
 	}
 
 	public boolean isTileSubGridEnabled() {
@@ -654,7 +678,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileSubGridEnabled(boolean tileSubGridEnabled) {
 		this.tileSubGridEnabled = tileSubGridEnabled;
-
 	}
 
 	public boolean isTileGridEnabled() {
@@ -663,7 +686,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileGridEnabled(boolean tileGridEnabled) {
 		this.tileGridEnabled = tileGridEnabled;
-
 	}
 
 	public boolean isSeparatorEnabled() {
@@ -672,7 +694,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setSeparatorEnabled(boolean separatorEnabled) {
 		this.separatorEnabled = separatorEnabled;
-
 	}
 
 	public boolean isTileCursorEnabled() {
@@ -681,7 +702,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setTileCursorEnabled(boolean tileCursorEnabled) {
 		this.tileCursorEnabled = tileCursorEnabled;
-
 	}
 
 	public boolean isMultiColorEnabled() {
@@ -690,6 +710,22 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void setMultiColorEnabled(boolean multiColorEnabled) {
 		this.multiColorEnabled = multiColorEnabled;
+	}
+
+	public void setPaintMode(PaintMode drawMode) {
+		this.drawMode = drawMode;
+	}
+
+	public PaintMode getDrawMode() {
+		return drawMode;
+	}
+
+	public void setWidgetMode(WidgetMode widgetMode) {
+		this.widgetMode = widgetMode;
+	}
+
+	public WidgetMode getWidgetMode() {
+		return widgetMode;
 	}
 
 	public void recalc() {
@@ -794,23 +830,62 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	protected void doDrawPixel() {
-		drawMode = SET_DRAW_PIXEL;
+		paintControlMode = SET_DRAW_PIXEL;
 		System.out.println(getWidgetName() + ":   x:" + cursorX + "    y:" + cursorY);
 		int inset = isPixelGridEnabled() ? 1 : 0;
-		redraw((cursorX * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset, currentPixelWidth - inset,
-				currentPixelHeight - inset, true);
+
+		switch (drawMode) {
+		case Pixel: {
+			redraw((cursorX * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			break;
+		}
+		case VerticalMirror: {
+			redraw((cursorX * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			int centerX = ((currentWidth * tileColumns) / 2);
+			int diff = centerX - cursorX - 1;
+			redraw(((centerX + diff) * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			break;
+		}
+		case HorizontalMirror: {
+			redraw((cursorX * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			int centerY = ((height * tileRows) / 2);
+			int diff = centerY - cursorY - 1;
+			redraw((cursorX * currentPixelWidth) + inset, ((centerY + diff) * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			break;
+		}
+		case Kaleidoscope: {
+			redraw((cursorX * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			int centerX = ((currentWidth * tileColumns) / 2);
+			int diffX = centerX - cursorX - 1;
+			redraw(((centerX + diffX) * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			int centerY = ((height * tileRows) / 2);
+			int diffY = centerY - cursorY - 1;
+			redraw((cursorX * currentPixelWidth) + inset, ((centerY + diffY) * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			redraw(((centerX + diffX) * currentPixelWidth) + inset, ((centerY + diffY) * currentPixelHeight) + inset,
+					currentPixelWidth - inset, currentPixelHeight - inset, true);
+			break;
+		}
+		}
 	}
 
 	@Override
 	public void doDrawTile() {
-		drawMode = SET_DRAW_TILE;
+		paintControlMode = SET_DRAW_TILE;
 		redraw(selectedTileIndexX * width * pixelSize * tileColumns, selectedTileIndexY * height * pixelSize * tileRows,
 				width * pixelSize * tileColumns, height * pixelSize * tileRows, true);
 	}
 
 	@Override
 	public void doDrawAllTiles() {
-		drawMode = SET_DRAW_ALL_TILES;
+		paintControlMode = SET_DRAW_ALL_TILES;
 		redraw();
 	}
 
@@ -847,14 +922,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				}
 			});
 		}
-	}
-
-	public void setWidgetMode(WidgetMode widgetMode) {
-		this.widgetMode = widgetMode;
-	}
-
-	public WidgetMode getWidgetMode() {
-		return widgetMode;
 	}
 
 	public void swapTiles() {
@@ -914,6 +981,15 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			doDrawAllTiles();
 			fireDoDrawAllTiles();
 		}
+	}
+
+	public void clearTile() {
+		int offset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tileX + (tileY * columns));
+		for (int i = 0; i < getViewportSize(); i++) {
+			bitplane[offset + i] = 0;
+		}
+		doDrawAllTiles();
+		fireDoDrawAllTiles();
 	}
 
 	public void shiftTile(int x, int y, Direction direction) {

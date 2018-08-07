@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.MenuItem;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.widget.ImagingWidget;
+import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 import net.miginfocom.swt.MigLayout;
@@ -30,6 +31,7 @@ public class IconEditor {
 	private Button clearMemory;
 	private Composite controls;
 	private Combo formatSelector;
+	private Combo paintModeSelector;
 	private byte binaryData[] = null;
 	boolean multiColorMode = false;
 
@@ -47,8 +49,9 @@ public class IconEditor {
 		getMultiColor().setLayoutData("cell 0 0 2 1");
 		getClearMemory().setLayoutData("cell 0 1 2 1");
 		getFormatSelector().setLayoutData("cell 0 2 2 1");
-		getStartAnimation().setLayoutData("cell 0 3 1 1");
-		getStopAnimation().setLayoutData("cell 1 3  1 1");
+		getPaintModeSelector().setLayoutData("cell 0 3 2 1");
+		getStartAnimation().setLayoutData("cell 0 4 1 1");
+		getStopAnimation().setLayoutData("cell 1 4  1 1");
 
 		Menu popup = new Menu(getSelector());
 		MenuItem cut = new MenuItem(popup, SWT.NONE);
@@ -69,6 +72,9 @@ public class IconEditor {
 		MenuItem separator = new MenuItem(popup, SWT.SEPARATOR);
 		MenuItem clear = new MenuItem(popup, SWT.NONE);
 		clear.setText("Clear");
+		clear.addListener(SWT.Selection, e -> {
+			getSelector().clearTile();
+		});
 		MenuItem flip = new MenuItem(popup, SWT.NONE);
 		flip.setText("Flip");
 		getSelector().setMenu(popup);
@@ -89,7 +95,11 @@ public class IconEditor {
 			getSelector().clearSwapBuffer();
 		});
 
-		setFormat("Char");
+		setPaintFormat("Char");
+		setPaintMode("Pixel");
+		getFormatSelector().select(0);
+		getPaintModeSelector().select(0);
+
 	}
 
 	private ImagingWidget getPainter() {
@@ -216,14 +226,51 @@ public class IconEditor {
 				public void widgetSelected(SelectionEvent e) {
 					Combo c = ((Combo) e.getSource());
 					int index = c.getSelectionIndex();
-					setFormat(c.getItem(index));
+					setPaintFormat(c.getItem(index));
 				}
 			});
 		}
 		return formatSelector;
 	}
 
-	private void setFormat(String format) {
+	private Combo getPaintModeSelector() {
+		if (paintModeSelector == null) {
+			paintModeSelector = new Combo(controls, SWT.DROP_DOWN);
+			paintModeSelector.setItems(new String[] { "Pixel", "VerticalMirror", "HorizontalMirror", "Kaleidoscope" });
+			paintModeSelector.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					Combo c = ((Combo) e.getSource());
+					int index = c.getSelectionIndex();
+					setPaintMode(c.getItem(index));
+				}
+			});
+		}
+		return paintModeSelector;
+	}
+
+	private void setPaintMode(String paintMode) {
+		switch (paintMode) {
+		case "Pixel": {
+			getPainter().setPaintMode(PaintMode.Pixel);
+			break;
+		}
+		case "VerticalMirror": {
+			getPainter().setPaintMode(PaintMode.VerticalMirror);
+			break;
+		}
+		case "HorizontalMirror": {
+			getPainter().setPaintMode(PaintMode.HorizontalMirror);
+			break;
+		}
+		case "Kaleidoscope": {
+			getPainter().setPaintMode(PaintMode.Kaleidoscope);
+			break;
+		}
+		}
+	}
+
+	private void setPaintFormat(String format) {
 		switch (format) {
 		case "Char": {
 			getPainter().setWidth(8);
