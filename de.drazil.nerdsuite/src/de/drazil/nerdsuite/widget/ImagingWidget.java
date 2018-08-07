@@ -75,7 +75,11 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int rightButtonMode = 0;
 	public int drawMode = DRAW_NOTHING;
 
-	protected byte byteArray[];
+	protected byte bitplane[];
+	protected byte clipboardBuffer[];
+	private int cutCopyOffset;
+	private int pasteOffset;
+	private ClipboardAction clipboardAction = ClipboardAction.Off;
 
 	protected boolean animationIsRunning = false;
 	protected boolean pixelGridEnabled = true;
@@ -110,6 +114,22 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		PIXEL, LINE
 	};
 
+	public enum Direction {
+		UP, DOWN, LEFT, RIGHT
+	};
+
+	public enum Orientation {
+		HORIZONTAL, VERTICAL
+	};
+
+	public enum Rotate {
+		CW, CCW
+	};
+
+	public enum ClipboardAction {
+		Cut, Copy, Paste, Off
+	};
+
 	@Data
 	@AllArgsConstructor
 	private class TileRange {
@@ -129,6 +149,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	private int animationIndexX;
 	private int animationIndexY;
 
+	private List<TileLocation> swapRingBuffer = null;
+
 	public class Animator extends TimerTask {
 		public void run() {
 			animate();
@@ -142,6 +164,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		setColumns(1);
 		setRows(1);
 
+		swapRingBuffer = new ArrayList<>();
 		tileLocationList = new ArrayList<>();
 		tileLocationList.add(new TileLocation(0, 0));
 		tileLocationList.add(new TileLocation(1, 0));
@@ -327,8 +350,25 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					!animationIsRunning ? selectedTileIndexY : animationIndexY);
 		}
 
+		paintControlSwapMarkers(e.gc);
+
 		drawMode = DRAW_NOTHING;
 
+	}
+
+	public void paintControlCutCopySource(GC gc, int x, int y) {
+	}
+
+	public void paintControlSwapMarkers(GC gc) {
+		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
+		gc.setLineStyle(SWT.LINE_CUSTOM);
+		gc.setLineDash(new int[] { 4, 4 });
+		for (TileLocation tilelocation : swapRingBuffer) {
+
+			gc.drawRectangle(tilelocation.x * width * pixelSize * tileColumns,
+					tilelocation.y * height * pixelSize * tileRows, width * pixelSize * tileColumns,
+					height * pixelSize * tileRows);
+		}
 	}
 
 	public void paintControlTileCursor(GC gc, boolean mouseIn, int x, int y) {
@@ -416,7 +456,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 		for (int i = byteOffset, k = 0; i < (byteOffset + getViewportSize()); i++, k++) {
 
-			int b = (byteArray[i] & 0xff);
+			int b = (bitplane[i] & 0xff);
 			int xi = (k % bytesPerRow) * (8 / (isMultiColorEnabled() ? 2 : 1));
 			int xo = (k / b1) % tileColumns;
 			x = xi + (xo * currentWidth) + (tx * currentWidth * tileColumns);
@@ -433,7 +473,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 					Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
 					if (colorProvider != null) {
-						color = colorProvider.getColorByIndex((byte) colorIndex, byteArray, tx, ty, columns);
+						color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tx, ty, columns);
 						// color =
 						// InstructionSet.getPlatformData().getColorPalette().get(4).getColor();
 					}
@@ -474,15 +514,15 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					int index = (((iy * currentWidth) + ix) >> 2) + offset;
 					ix &= 3;
 					int mask = (3 << ((3 - ix) * 2) ^ 0xff) & 0xff;
-					byte byteMask = (byte) ((byteArray[index + getSelectedTileOffset()] & mask));
+					byte byteMask = (byte) ((bitplane[index + getSelectedTileOffset()] & mask));
 					byteMask |= selectedColorIndex << ((3 - ix) * 2);
-					byteArray[index + getSelectedTileOffset()] = byteMask;
+					bitplane[index + getSelectedTileOffset()] = byteMask;
 
 				} else {
 					int index = (((iy * currentWidth) + ix) >> 3) + offset;
-					byte byteMask = byteArray[index + getSelectedTileOffset()];
+					byte byteMask = bitplane[index + getSelectedTileOffset()];
 					int pixelMask = (1 << (7 - (ix % 8)) & 0xff);
-					byteArray[index + getSelectedTileOffset()] = paintMode ? (byte) (byteMask | pixelMask)
+					bitplane[index + getSelectedTileOffset()] = paintMode ? (byte) (byteMask | pixelMask)
 							: (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
 				}
 			}
@@ -503,7 +543,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public void setContent(byte byteArray[]) {
-		this.byteArray = byteArray;
+		this.bitplane = byteArray;
 	}
 
 	public int getWidth() {
@@ -656,6 +696,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		currentPixelWidth = getPixelSize() * (isMultiColorEnabled() ? 2 : 1);
 		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
 		bytesPerRow = width >> 3;
+		clipboardBuffer = new byte[getViewportSize()];
 		doDrawAllTiles();
 	}
 
@@ -744,14 +785,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	private void setDrawMode(int drawMode) {
-		this.drawMode = drawMode;
-	}
-
-	private int getDrawMode() {
-		return drawMode;
-	}
-
 	@Override
 	public void doDrawPixel(int x, int y, boolean paintMode) {
 		this.paintMode = paintMode;
@@ -822,6 +855,77 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public WidgetMode getWidgetMode() {
 		return widgetMode;
+	}
+
+	public void swapTiles() {
+		if (swapRingBuffer.size() == 2) {
+			int swapSourceOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
+					* (swapRingBuffer.get(0).x + (swapRingBuffer.get(0).y * columns));
+			int swapTargetOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
+					* (swapRingBuffer.get(1).x + (swapRingBuffer.get(1).y * columns));
+
+			for (int i = 0; i < getViewportSize(); i++) {
+				byte buffer = bitplane[swapSourceOffset + i];
+				bitplane[swapSourceOffset + i] = bitplane[swapTargetOffset + i];
+				bitplane[swapTargetOffset + i] = buffer;
+			}
+		}
+		doDrawAllTiles();
+		fireDoDrawAllTiles();
+	}
+
+	public void markAsSwapTarget() {
+		if (swapRingBuffer.size() == 2) {
+			swapRingBuffer.set(0, swapRingBuffer.get(1));
+			swapRingBuffer.remove(1);
+		}
+		boolean hasMatch = false;
+		for (TileLocation tl : swapRingBuffer) {
+			if (tl.x == tileX && tl.y == tileY) {
+				hasMatch |= true;
+			}
+		}
+		if (!hasMatch) {
+			swapRingBuffer.add(new TileLocation(tileX, tileY));
+		}
+		doDrawAllTiles();
+	}
+
+	public void clearSwapBuffer() {
+		swapRingBuffer.clear();
+		doDrawAllTiles();
+	}
+
+	public void clipboardAction(ClipboardAction clipboardAction) {
+		int offset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tileX + (tileY * columns));
+		if (clipboardAction == ClipboardAction.Cut || clipboardAction == ClipboardAction.Copy) {
+			this.clipboardAction = clipboardAction;
+			cutCopyOffset = offset;
+		}
+		if (clipboardAction == ClipboardAction.Paste && this.clipboardAction != ClipboardAction.Off) {
+			pasteOffset = offset;
+			for (int i = 0; i < getViewportSize(); i++) {
+				bitplane[pasteOffset + i] = bitplane[cutCopyOffset + i];
+				if (this.clipboardAction == ClipboardAction.Cut) {
+					bitplane[cutCopyOffset + i] = 0;
+				}
+			}
+			this.clipboardAction = ClipboardAction.Off;
+			doDrawAllTiles();
+			fireDoDrawAllTiles();
+		}
+	}
+
+	public void shiftTile(int x, int y, Direction direction) {
+	}
+
+	public void flipTile(int x, int y, Orientation orientation) {
+	}
+
+	public void mirrorTile(int x, int y, Direction direction) {
+	}
+
+	public void rotateTile(int x, int y, Rotate direction) {
 	}
 
 	@Override

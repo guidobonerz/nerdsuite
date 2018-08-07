@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.widget.ImagingWidget;
@@ -39,7 +41,7 @@ public class IconEditor {
 		getPainter().setLayoutData("cell 0 0");
 		getSelector().setLayoutData("cell 0 1 2 1");
 		controls = new Composite(parent, SWT.BORDER);
-		controls.setLayout(new MigLayout());
+		controls.setLayout(new MigLayout("fill"));
 		controls.setLayoutData("cell 1 0");
 
 		getMultiColor().setLayoutData("cell 0 0 2 1");
@@ -47,6 +49,45 @@ public class IconEditor {
 		getFormatSelector().setLayoutData("cell 0 2 2 1");
 		getStartAnimation().setLayoutData("cell 0 3 1 1");
 		getStopAnimation().setLayoutData("cell 1 3  1 1");
+
+		Menu popup = new Menu(getSelector());
+		MenuItem cut = new MenuItem(popup, SWT.NONE);
+		cut.setText("Cut");
+		cut.addListener(SWT.Selection, e -> {
+			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Cut);
+		});
+		MenuItem copy = new MenuItem(popup, SWT.NONE);
+		copy.setText("Copy");
+		copy.addListener(SWT.Selection, e -> {
+			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Copy);
+		});
+		MenuItem paste = new MenuItem(popup, SWT.NONE);
+		paste.setText("Paste");
+		paste.addListener(SWT.Selection, e -> {
+			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Paste);
+		});
+		MenuItem separator = new MenuItem(popup, SWT.SEPARATOR);
+		MenuItem clear = new MenuItem(popup, SWT.NONE);
+		clear.setText("Clear");
+		MenuItem flip = new MenuItem(popup, SWT.NONE);
+		flip.setText("Flip");
+		getSelector().setMenu(popup);
+
+		MenuItem swapTiles = new MenuItem(popup, SWT.NONE);
+		swapTiles.setText("Swap Selected Tiles");
+		swapTiles.addListener(SWT.Selection, e -> {
+			getSelector().swapTiles();
+		});
+		MenuItem swapTarget = new MenuItem(popup, SWT.NONE);
+		swapTarget.setText("Mark As Swap Target");
+		swapTarget.addListener(SWT.Selection, e -> {
+			getSelector().markAsSwapTarget();
+		});
+		MenuItem deleteSwapTargets = new MenuItem(popup, SWT.NONE);
+		deleteSwapTargets.setText("Delete Swap Targets");
+		deleteSwapTargets.addListener(SWT.Selection, e -> {
+			getSelector().clearSwapBuffer();
+		});
 
 		setFormat("Char");
 	}
@@ -59,8 +100,6 @@ public class IconEditor {
 			painter.setWidth(8);
 			painter.setHeight(8);
 			painter.setPixelSize(20);
-			painter.setTileColumns(1);
-			painter.setTileRows(2);
 			painter.setPixelGridEnabled(true);
 			painter.setGridStyle(GridStyle.PIXEL);
 			painter.setTileGridEnabled(true);
@@ -85,8 +124,6 @@ public class IconEditor {
 			selector.setWidgetMode(WidgetMode.SELECTOR);
 			selector.setWidth(8);
 			selector.setHeight(8);
-			selector.setTileColumns(1);
-			selector.setTileRows(2);
 			selector.setColumns(8);
 			selector.setRows(3);
 			selector.setPixelSize(3);
@@ -115,7 +152,6 @@ public class IconEditor {
 			multicolor.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-
 					painter.setMultiColorEnabled(multicolor.getSelection());
 					painter.recalc();
 					selector.setMultiColorEnabled(multicolor.getSelection());
@@ -131,7 +167,6 @@ public class IconEditor {
 			startAnimation = new Button(controls, SWT.PUSH);
 			startAnimation.setText("Start Animation");
 			startAnimation.addListener(SWT.Selection, new Listener() {
-
 				@Override
 				public void handleEvent(Event event) {
 					selector.startAnimation();
