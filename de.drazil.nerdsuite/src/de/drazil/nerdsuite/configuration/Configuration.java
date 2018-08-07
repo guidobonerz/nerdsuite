@@ -34,9 +34,9 @@ public class Configuration {
 		try {
 
 			workspace = getWorkspace();
-			InstructionSet.init(Constants.PLUGIN_BASE_PATH);
 
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			InstructionSet.init(bundle);
 			URL fileURL1 = bundle.getEntry("/fonts/C64_Pro_Mono-STYLE.ttf");
 			URL fileURL2 = bundle.getEntry("/fonts/DroidSansMono.ttf");
 			URL fileURL3 = bundle.getEntry("/fonts/PTm55F.ttf");

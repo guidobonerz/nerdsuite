@@ -42,7 +42,7 @@ public class SourceEditor implements IDocument {
 
 		documentStyler = new DocumentStyler(this);
 		documentStyler.addRule(new MultiLineRule("/*", "*/", new Token(Constants.T_COMMENT)));
-		documentStyler.addRule(new SingleLineRule("//", new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new SingleLineRule("//", Marker.EOL, new Token(Constants.T_COMMENT)));
 		documentStyler.addRule(new SingleLineRule("\"", "\"", new Token(Constants.T_PETME642YASCII)));
 		documentStyler.addRule(new SingleLineRule("", ":", new Token(Constants.T_LABEL)));
 		documentStyler.addRule(new ValueRule("#", "d", 5, new Token(Constants.T_DECIMAL)));
@@ -111,8 +111,8 @@ public class SourceEditor implements IDocument {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				System.out.println("modify text");
-				//documentStyler.refreshMultilineComments(styledText.getText());
-				//styledText.redraw();
+				// documentStyler.refreshMultilineComments(styledText.getText());
+				// styledText.redraw();
 
 			}
 		});
@@ -127,7 +127,7 @@ public class SourceEditor implements IDocument {
 				// styledText.append(new
 				// String(Character.toChars(font.getUnicodePrefix() | ((int) 22
 				// & 0xff))));
-				//styledText.append(new String(Character.toChars(0xee57)));
+				// styledText.append(new String(Character.toChars(0xee57)));
 				styledText.append(new String(Character.toChars(0xe0d1)));
 
 			}

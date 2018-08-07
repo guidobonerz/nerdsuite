@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.framework.Bundle;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.Address;
@@ -25,20 +27,21 @@ public final class InstructionSet {
 	private static PlatformData platformData = null;
 	private static CpuInstructions cpuInstructions = null;
 
-	public static void init(String baseUrl) throws Exception {
-		createPlatformspecificData(baseUrl, "configuration/c64_platform.json");
-		createDirectiveList(baseUrl, "configuration/kickass_syntax.json");
+	public static void init(Bundle bundle) throws Exception {
+
+		createPlatformspecificData(bundle, "configuration/c64_platform.json");
+		createDirectiveList(bundle, "configuration/kickass_syntax.json");
 	}
 
 	public static List<AssemblerDirective> getDirectiveList() {
 		return directiveList;
 	}
 
-	public static void createDirectiveList(String baseUrl, String file) {
+	public static void createDirectiveList(Bundle bundle, String file) {
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
-			AssemblerDirectives directives = mapper.readValue(new URL(baseUrl + file), AssemblerDirectives.class);
+			AssemblerDirectives directives = mapper.readValue(bundle.getEntry(file), AssemblerDirectives.class);
 			directiveList = directives.getDirectives();
 
 		} catch (Exception e) {
@@ -62,12 +65,14 @@ public final class InstructionSet {
 		return platformData.getPlatformAddressList();
 	}
 
-	public static void createPlatformspecificData(String baseUrl, String file) {
+	// public static void createPlatformspecificData(String baseUrl, String
+	// file) {
+	public static void createPlatformspecificData(Bundle bundle, String file) {
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
-			platformData = mapper.readValue(new URL(baseUrl + file), PlatformData.class);
-			cpuInstructions = mapper.readValue(new URL(baseUrl + platformData.getCpuInstructionSource()),
+			platformData = mapper.readValue(bundle.getEntry(file), PlatformData.class);
+			cpuInstructions = mapper.readValue(bundle.getEntry(platformData.getCpuInstructionSource()),
 					CpuInstructions.class);
 			cpuInstructionList = cpuInstructions.getCpuInstructionList();
 

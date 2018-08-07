@@ -52,6 +52,11 @@
             id="dfgdfg"
             name="New Perspective">
       </perspective>
+      <perspective
+            class="de.drazil.test.Test"
+            id="de.drazil.test.Test"
+            name="New Perspective">
+      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">

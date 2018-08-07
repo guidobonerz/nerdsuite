@@ -10,24 +10,20 @@ import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.Opcode;
 
-public class Disassembler
-{
+public class Disassembler {
 	private byte byteArray[] = null;
 	private IPlatform platform = null;
 
-	public Disassembler()
-	{
+	public Disassembler() {
 		this(new C64Platform(new KickAssemblerDialect(), false));
 	}
 
-	public Disassembler(IPlatform platform)
-	{
+	public Disassembler(IPlatform platform) {
 		this.platform = platform;
 	}
 
-	public void start(String file)
-	{
-		byteArray = BinaryFileReader.readFile(new File(file));
+	public void start(String file) {
+		byteArray = BinaryFileReader.readFile(new File(file), 0);
 		byteArray = platform.parseBinary(byteArray);
 
 		Map<String, ConversionType> conversionMap = new HashMap<String, ConversionType>();
@@ -36,9 +32,9 @@ public class Disassembler
 		// print the result
 
 		int byteCount = 0;
-		for (InstructionLine instructionLine : platform.getCPU().getInstructionLineList())
-		{
-			// System.out.printf("%s: %s\n", instructionLine.getProgramCounter(),
+		for (InstructionLine instructionLine : platform.getCPU().getInstructionLineList()) {
+			// System.out.printf("%s: %s\n",
+			// instructionLine.getProgramCounter(),
 			// instructionLine.getReferenceType());
 			byteCount += instructionLine.getRange().getLen();
 			printDiasassembly(instructionLine, conversionMap);
@@ -48,13 +44,11 @@ public class Disassembler
 
 	}
 
-	private void printDiasassembly(InstructionLine instructionLine, Map<String, ConversionType> conversionMap)
-	{
+	private void printDiasassembly(InstructionLine instructionLine, Map<String, ConversionType> conversionMap) {
 		Range range = instructionLine.getRange();
 		Opcode opcode = platform.getCPU().getOpcodeByIndex(byteArray, range.getOffset());
 		String pc = NumericConverter.toHexString(instructionLine.getProgramCounter().getValue(), 4);
-		if (pc.equals("23f1"))
-		{
+		if (pc.equals("23f1")) {
 			int a = 0;
 
 		}
@@ -62,38 +56,30 @@ public class Disassembler
 		String s2 = "";
 		String s3 = " ";
 		String s0 = "";
-		if (opcode != null && instructionLine.getType() == Type.AsmInstruction)
-		{
+		if (opcode != null && instructionLine.getType() == Type.AsmInstruction) {
 			s1 = opcode.getMnemonic();
 			s2 = AbstractCPU.getMnemonicArgument(opcode, range, byteArray);
-			System.out.printf("%s: %3s %8s %30s len:%s %s\n", pc, s1, s2, (instructionLine.hasValue() ? instructionLine.getRefValue() : ""), instructionLine.getRange().getLen(), instructionLine.getReferenceType() == ReferenceType.JumpMark ? "JumpMark" : "");
-		}
-		else
-		{
+			System.out.printf("%s: %3s %8s %30s len:%s %s\n", pc, s1, s2,
+					(instructionLine.hasValue() ? instructionLine.getRefValue() : ""),
+					instructionLine.getRange().getLen(),
+					instructionLine.getReferenceType() == ReferenceType.JumpMark ? "JumpMark" : "");
+		} else {
 			ConversionType ct = conversionMap.get(pc);
-			if (ct == null)
-			{
-				for (int i = (int) range.getOffset(); i < (range.getOffset() + range.getLen()); i++)
-				{
+			if (ct == null) {
+				for (int i = (int) range.getOffset(); i < (range.getOffset() + range.getLen()); i++) {
 					s1 += NumericConverter.toHexString(NumericConverter.getByteAsInt(byteArray, i), 2) + " ";
 				}
 				System.out.printf("%s: %s %s \n", pc, s1, instructionLine.getReferenceType());
-			}
-			else if (ct == ConversionType.MulticolorSpriteData)
-			{
+			} else if (ct == ConversionType.MulticolorSpriteData) {
 				int index = 0;
-				while (index < range.getLen())
-				{
+				while (index < range.getLen()) {
 					System.out.println(NumericConverter.toBinaryString(byteArray, range.getOffset() + index, 3));
 					index += 3;
 				}
-			}
-			else if (ct == ConversionType.CharsetData)
-			{
+			} else if (ct == ConversionType.CharsetData) {
 
 				int index = 0;
-				while (index < range.getLen())
-				{
+				while (index < range.getLen()) {
 					if (range.getOffset() + index > byteArray.length - 1)
 						break;
 					System.out.println(NumericConverter.toBinaryString(byteArray, range.getOffset() + index, 1));
@@ -107,10 +93,9 @@ public class Disassembler
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 
-		//InstructionSet.init("/Users/drazil/Documents/workspace/rcp/de.drazil.NerdSuite/");
+		// InstructionSet.init("/Users/drazil/Documents/workspace/rcp/de.drazil.NerdSuite/");
 		new Disassembler().start("/Users/drazil/LocalApplications/step74/jmain.prg");
 		// new
 		// Disassembler().start("/Users/drazil/Documents/retro_computing/c64_stuff/prg/for.prg");

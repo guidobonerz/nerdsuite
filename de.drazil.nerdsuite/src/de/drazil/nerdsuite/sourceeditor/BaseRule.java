@@ -4,8 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import de.drazil.nerdsuite.model.SourceRules;
 
-public abstract class BaseRule implements IRule
-{
+public abstract class BaseRule implements IRule {
 
 	protected boolean hasMatch;
 	protected boolean hasMore = false;
@@ -22,34 +21,34 @@ public abstract class BaseRule implements IRule
 	private String suffix;
 	@Getter
 	@Setter
+	private Marker marker;
+	@Getter
+	@Setter
 	private Token token;
+	@Getter
+	@Setter
+	private int priority;
 
-	public BaseRule(SourceRules sourceRule)
-	{
+	public BaseRule(SourceRules sourceRule) {
 	}
 
-	public BaseRule(String prefix, String suffix, Token token)
-	{
+	public BaseRule(String prefix, String suffix, Marker marker, Token token) {
 		setPrefix(prefix);
 		setSuffix(suffix);
 		setToken(token);
 		reset();
 	}
 
-	public String getPrefixBufferString(char c, int index)
-	{
+	public String getPrefixBufferString(char c, int index) {
 		return getBufferString(prefixBuffer, c, index);
 	}
 
-	public String getSuffixBufferString(char c, int index)
-	{
+	public String getSuffixBufferString(char c, int index) {
 		return getBufferString(suffixBuffer, c, index);
 	}
 
-	private String getBufferString(char buffer[], char c, int index)
-	{
-		if (index >= buffer.length)
-		{
+	private String getBufferString(char buffer[], char c, int index) {
+		if (index >= buffer.length) {
 			System.arraycopy(buffer, 1, buffer, 0, buffer.length - 1);
 		}
 		buffer[(index < buffer.length ? index : buffer.length - 1)] = c;
@@ -57,14 +56,12 @@ public abstract class BaseRule implements IRule
 	}
 
 	@Override
-	public void reset()
-	{
+	public void reset() {
 		prefixBuffer = createCharArray(getPrefix());
 		suffixBuffer = createCharArray(getSuffix());
 	}
 
-	private char[] createCharArray(String pattern)
-	{
+	private char[] createCharArray(String pattern) {
 		if (pattern == null)
 			return new char[] {};
 		return new char[pattern.length()];

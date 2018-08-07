@@ -43,13 +43,11 @@
           </children>
         </children>
       </children>
-      <children xsi:type="advanced:Perspective" xmi:id="__4FmgL60Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.perspective.imaging" label="Imaging ">
-        <children xsi:type="basic:InputPart" xmi:id="_fsTj8L9IEeOU-6uJVJ8W-w" elementId="de.drazil.nerdsuite.inputpart.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.spriteeditor.SpriteEditor" label="Painter" closeable="true">
-          <menus xmi:id="_gDctYL76EeapDZJEicGLWg" elementId="de.drazil.nerdsuite.menu.painterMenu" label="painter menu">
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_8Lt_oL76EeapDZJEicGLWg" elementId="de.drazil.nerdsuite.handledmenuitem.rrtyrtyry" label="rrtyrtyry"/>
-          </menus>
-          <toolbar xmi:id="_nuUHUL76EeapDZJEicGLWg" elementId="de.drazil.nerdsuite.toolbar.3"/>
-        </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.iconeditor" label="IconEditor">
+        <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.iconeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.IconEditor" label="IconEditor"/>
+      </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_QbE0MJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.perspective.bitmapeditor" label="BitmapEditor">
+        <children xsi:type="basic:Part" xmi:id="_niiCgJdGEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.part.bitmapeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.BitmapEditor" label="BitmapEditor"/>
       </children>
     </children>
     <mainMenu xmi:id="_1r1OEKLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.0">
@@ -86,8 +84,9 @@
       </children>
       <children xsi:type="menu:Menu" xmi:id="_FUN4MKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.disassemble" label="Disassemble"/>
       <children xsi:type="menu:Menu" xmi:id="_r7g4cL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.menu.perspective" label="Perspective">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6UAA8L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.codingPerspective" label="Coding Perspective" command="_XZnhsL62Eeaij7VdtYSbPw"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_-VfgcL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.imagingPerspective" label="Imaging Perspective" command="_fxOF0L62Eeaij7VdtYSbPw"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6UAA8L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.CodingPerspective" label="Coding Perspective" command="_XZnhsL62Eeaij7VdtYSbPw"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_iT-AIJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handledmenuitem.IconPerspective" label="Icon Perspective" command="_Uw3ngJXLEeiXIq2xmOFdHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_HCEdcJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handledmenuitem.BitmapPerspective" label="Bitmap Perspective" command="_9k6mgJdEEeiWU4p0leyFHA"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.0">
@@ -112,8 +111,9 @@
   <handlers xmi:id="_CGhuAMySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.buildAndRun" command="_yWlqYMyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_ElMI0MySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.runToolchain" command="_3H-80MyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
-  <handlers xmi:id="_idGn0L63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.coding_perspective" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CodingPerspectiveHandler" command="_XZnhsL62Eeaij7VdtYSbPw"/>
-  <handlers xmi:id="_mIJWML63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.imaging_perspective" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ImagingPerspectiveHandler" command="_fxOF0L62Eeaij7VdtYSbPw"/>
+  <handlers xmi:id="_idGn0L63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.CodingPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CodingPerspectiveHandler" command="_XZnhsL62Eeaij7VdtYSbPw"/>
+  <handlers xmi:id="_PlHUUJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handler.IconPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.IconPerspectiveHandler" command="_Uw3ngJXLEeiXIq2xmOFdHg"/>
+  <handlers xmi:id="_3-IkMJdEEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handler.BitmapPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.BitmapPerspectiveHandler" command="_9k6mgJdEEeiWU4p0leyFHA"/>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
@@ -124,8 +124,9 @@
   <commands xmi:id="_yWlqYMyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.build_and_run" commandName="Build and Run"/>
   <commands xmi:id="_3H-80MyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.run_toolchain" commandName="Run ToolChain"/>
   <commands xmi:id="_ka2AIOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.command.newSourceFile" commandName="New Source File"/>
-  <commands xmi:id="_XZnhsL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.conding_perspective" commandName="Coding Perspective"/>
-  <commands xmi:id="_fxOF0L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.ImagingPerspective" commandName="Imaging Perspective"/>
+  <commands xmi:id="_XZnhsL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.CodingPerspective" commandName="Coding Perspective"/>
+  <commands xmi:id="_Uw3ngJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.command.IconPerspective" commandName="Icon Perspective"/>
+  <commands xmi:id="_9k6mgJdEEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.command.BitmapPerspective" commandName="Bitmap Perspective"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

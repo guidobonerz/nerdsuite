@@ -1,33 +1,28 @@
 package de.drazil.nerdsuite.sourceeditor;
 
-public class WordRule extends BaseRule
-{
+public class WordRule extends BaseRule {
 	private int offset;
 
-	public WordRule(String word, Token token)
-	{
-		super(word, null, token);
+	public WordRule(String word, Token token) {
+		super(word, null, Marker.NONE, token);
+		setPriority(30);
 	}
 
 	@Override
-	public boolean hasMatch(String text)
-	{
+	public boolean hasMatch(String text) {
 		int matchIndex = text.indexOf(getPrefix(), offset);
-		if (matchIndex != -1)
-		{
+		if (matchIndex != -1) {
 			getToken().setStart(matchIndex);
 			int length = getPrefix().length();
-			offset = matchIndex + length+1;
+			offset = matchIndex + length + 1;
 			getToken().setLength(length);
 			hasMatch = true;
 
-		}
-		else
-		{
+		} else {
 			hasMatch = false;
-			offset=0;
+			offset = 0;
 		}
-		
+
 		getToken().setValid(hasMatch);
 
 		return hasMatch;
