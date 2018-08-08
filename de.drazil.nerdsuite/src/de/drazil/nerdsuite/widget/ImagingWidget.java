@@ -931,10 +931,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void swapTiles() {
 		if (swapRingBuffer.size() == 2) {
-			int swapSourceOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-					* (swapRingBuffer.get(0).x + (swapRingBuffer.get(0).y * columns));
-			int swapTargetOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-					* (swapRingBuffer.get(1).x + (swapRingBuffer.get(1).y * columns));
+			int swapSourceOffset = computeTileOffset(swapRingBuffer.get(0).x, swapRingBuffer.get(0).y);
+			int swapTargetOffset = computeTileOffset(swapRingBuffer.get(1).x, swapRingBuffer.get(1).y);
 
 			for (int i = 0; i < getViewportSize(); i++) {
 				byte buffer = bitplane[swapSourceOffset + i];
@@ -975,7 +973,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public void clipboardAction(ClipboardAction clipboardAction) {
-		int offset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tileX + (tileY * columns));
+		int offset = computeTileOffset(tileX, tileY);
 		if (clipboardAction == ClipboardAction.Cut || clipboardAction == ClipboardAction.Copy) {
 			this.clipboardAction = clipboardAction;
 			cutCopyOffset = offset;
@@ -996,7 +994,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void clearTile() {
 		if (isClearTileConfirmed()) {
-			int offset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tileX + (tileY * columns));
+			int offset = computeTileOffset(tileX, tileY);
 			for (int i = 0; i < getViewportSize(); i++) {
 				bitplane[offset + i] = 0;
 			}
