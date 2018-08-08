@@ -335,7 +335,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				paintControlPixel(e.gc, cursorX, cursorY);
 				break;
 			}
-
 			case VerticalMirror: {
 				paintControlPixel(e.gc, cursorX, cursorY);
 				int centerX = ((width * tileColumns) / 2);
@@ -362,7 +361,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				break;
 			}
 			}
-
 		}
 
 		if (isPixelGridEnabled()) {
@@ -745,6 +743,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
 		bytesPerRow = width >> 3;
 		clipboardBuffer = new byte[getViewportSize()];
+		int selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
+				* (selectedTileIndexX + (selectedTileIndexY * columns));
+		fireSetSelectedTileOffset(selectedTileOffset);
 		doDrawAllTiles();
 	}
 

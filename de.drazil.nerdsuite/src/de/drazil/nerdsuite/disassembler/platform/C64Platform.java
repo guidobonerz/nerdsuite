@@ -8,13 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.basic.BasicParser;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
-import de.drazil.nerdsuite.disassembler.ReferenceType;
-import de.drazil.nerdsuite.disassembler.Type;
-import de.drazil.nerdsuite.disassembler.Value;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
+import de.drazil.nerdsuite.model.ReferenceType;
+import de.drazil.nerdsuite.model.Type;
+import de.drazil.nerdsuite.model.Value;
 
 public class C64Platform extends AbstractPlatform
 {

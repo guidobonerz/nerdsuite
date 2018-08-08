@@ -1,9 +1,9 @@
 package de.drazil.nerdsuite.disassembler.platform;
 
-import de.drazil.nerdsuite.disassembler.Value;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.PlatformData;
+import de.drazil.nerdsuite.model.Value;
 
 public interface IPlatform
 {

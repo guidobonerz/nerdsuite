@@ -1,5 +1,6 @@
-package de.drazil.nerdsuite.disassembler;
+package de.drazil.nerdsuite.model;
 
+import de.drazil.nerdsuite.util.NumericConverter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,8 @@ public class Value
 	public final static int BYTE = 3;
 	public final static int HIGHBYTE = 31;
 	public final static int LOWBYTE = 32;
+	public final static int HIGHNIBBLE = 33;
+	public final static int LOWNIBBLE = 34;
 
 	@Getter
 	@Setter
@@ -80,6 +83,16 @@ public class Value
 		return ((value >> 8) & 0xff);
 	}
 
+	public int getLowNibble()
+	{
+		return value & 0x0f;
+	}
+
+	public int getHighNibble()
+	{
+		return ((value >> 4) & 0x0f);
+	}
+	
 	public int getLowWord()
 	{
 		return value & 0xffff;

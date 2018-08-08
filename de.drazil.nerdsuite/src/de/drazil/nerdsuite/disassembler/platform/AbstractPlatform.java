@@ -5,13 +5,13 @@ import java.io.File;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.disassembler.InstructionLine;
-import de.drazil.nerdsuite.disassembler.Range;
-import de.drazil.nerdsuite.disassembler.ReferenceType;
-import de.drazil.nerdsuite.disassembler.Type;
-import de.drazil.nerdsuite.disassembler.Value;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.PlatformData;
+import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.ReferenceType;
+import de.drazil.nerdsuite.model.Type;
+import de.drazil.nerdsuite.model.Value;
 
 public abstract class AbstractPlatform implements IPlatform
 {

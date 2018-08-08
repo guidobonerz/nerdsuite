@@ -3,6 +3,11 @@ package de.drazil.nerdsuite.disassembler;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.ReferenceType;
+import de.drazil.nerdsuite.model.Type;
+import de.drazil.nerdsuite.model.Value;
+
 public class InstructionLine
 {
 

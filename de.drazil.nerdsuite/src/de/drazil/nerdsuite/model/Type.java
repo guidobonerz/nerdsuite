@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.disassembler;
+package de.drazil.nerdsuite.model;
 
 public enum Type
 {

@@ -9,4 +9,5 @@ public interface IDrawListener {
 	public void doDrawAllTiles();
 
 	public void setSelectedTileOffset(int offset);
+
 }
