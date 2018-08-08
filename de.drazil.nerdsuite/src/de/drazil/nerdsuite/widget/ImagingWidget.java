@@ -276,14 +276,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 							paintControlMode = 0;
 							selectedTileIndexX = tileX;
 							selectedTileIndexY = tileY;
-							selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-									* (selectedTileIndexX + (selectedTileIndexY * columns));
+							selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
 							fireSetSelectedTileOffset(selectedTileOffset);
-							/*
-							 * System.out.printf(getWidgetName() +
-							 * ": Tile selected x:%3d  y:%3d %n",
-							 * selectedTileIndexX, selectedTileIndexY);
-							 */
 							doDrawAllTiles();
 						} else {
 							doDrawPixel();
@@ -743,8 +737,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
 		bytesPerRow = width >> 3;
 		clipboardBuffer = new byte[getViewportSize()];
-		int selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-				* (selectedTileIndexX + (selectedTileIndexY * columns));
+		int selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
 		fireSetSelectedTileOffset(selectedTileOffset);
 		doDrawAllTiles();
 	}
@@ -928,8 +921,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					TileLocation tl = tileLocationList.get(0);
 					animationIndexX = tl.x;
 					animationIndexY = tl.y;
-					selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-							* (animationIndexX + (animationIndexY * columns));
+					selectedTileOffset = computeTileOffset(animationIndexX, animationIndexY);
 					fireSetSelectedTileOffset(selectedTileOffset);
 					doDrawAllTiles();
 				}
@@ -1039,4 +1031,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)) + hsb.x - rows);
 	}
 
+	private int computeTileOffset(int x, int y) {
+		return (getWidth() / 8) * getHeight() * tileColumns * tileRows * (x + (y * columns));
+	}
 }
