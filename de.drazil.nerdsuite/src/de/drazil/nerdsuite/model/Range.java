@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.disassembler;
+package de.drazil.nerdsuite.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

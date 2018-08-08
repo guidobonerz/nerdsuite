@@ -8,7 +8,12 @@ import de.drazil.nerdsuite.disassembler.cpu.AbstractCPU;
 import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
 import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
+import de.drazil.nerdsuite.model.ConversionType;
 import de.drazil.nerdsuite.model.Opcode;
+import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.ReferenceType;
+import de.drazil.nerdsuite.model.Type;
+import de.drazil.nerdsuite.util.NumericConverter;
 
 public class Disassembler {
 	private byte byteArray[] = null;

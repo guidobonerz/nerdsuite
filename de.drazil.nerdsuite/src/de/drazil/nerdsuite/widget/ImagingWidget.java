@@ -276,14 +276,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 							paintControlMode = 0;
 							selectedTileIndexX = tileX;
 							selectedTileIndexY = tileY;
-							selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-									* (selectedTileIndexX + (selectedTileIndexY * columns));
+							selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
 							fireSetSelectedTileOffset(selectedTileOffset);
-							/*
-							 * System.out.printf(getWidgetName() +
-							 * ": Tile selected x:%3d  y:%3d %n",
-							 * selectedTileIndexX, selectedTileIndexY);
-							 */
 							doDrawAllTiles();
 						} else {
 							doDrawPixel();
@@ -335,7 +329,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				paintControlPixel(e.gc, cursorX, cursorY);
 				break;
 			}
-
 			case VerticalMirror: {
 				paintControlPixel(e.gc, cursorX, cursorY);
 				int centerX = ((width * tileColumns) / 2);
@@ -362,7 +355,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				break;
 			}
 			}
-
 		}
 
 		if (isPixelGridEnabled()) {
@@ -745,6 +737,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
 		bytesPerRow = width >> 3;
 		clipboardBuffer = new byte[getViewportSize()];
+		int selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+		fireSetSelectedTileOffset(selectedTileOffset);
 		doDrawAllTiles();
 	}
 
@@ -927,8 +921,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					TileLocation tl = tileLocationList.get(0);
 					animationIndexX = tl.x;
 					animationIndexY = tl.y;
-					selectedTileOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-							* (animationIndexX + (animationIndexY * columns));
+					selectedTileOffset = computeTileOffset(animationIndexX, animationIndexY);
 					fireSetSelectedTileOffset(selectedTileOffset);
 					doDrawAllTiles();
 				}
@@ -938,10 +931,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void swapTiles() {
 		if (swapRingBuffer.size() == 2) {
-			int swapSourceOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-					* (swapRingBuffer.get(0).x + (swapRingBuffer.get(0).y * columns));
-			int swapTargetOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows
-					* (swapRingBuffer.get(1).x + (swapRingBuffer.get(1).y * columns));
+			int swapSourceOffset = computeTileOffset(swapRingBuffer.get(0).x, swapRingBuffer.get(0).y);
+			int swapTargetOffset = computeTileOffset(swapRingBuffer.get(1).x, swapRingBuffer.get(1).y);
 
 			for (int i = 0; i < getViewportSize(); i++) {
 				byte buffer = bitplane[swapSourceOffset + i];
@@ -982,7 +973,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public void clipboardAction(ClipboardAction clipboardAction) {
-		int offset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tileX + (tileY * columns));
+		int offset = computeTileOffset(tileX, tileY);
 		if (clipboardAction == ClipboardAction.Cut || clipboardAction == ClipboardAction.Copy) {
 			this.clipboardAction = clipboardAction;
 			cutCopyOffset = offset;
@@ -1003,7 +994,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void clearTile() {
 		if (isClearTileConfirmed()) {
-			int offset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tileX + (tileY * columns));
+			int offset = computeTileOffset(tileX, tileY);
 			for (int i = 0; i < getViewportSize(); i++) {
 				bitplane[offset + i] = 0;
 			}
@@ -1038,4 +1029,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				(height * currentPixelHeight * tileRows * rows) + (cursorLineWidth * (rows + 1)) + hsb.x - rows);
 	}
 
+	private int computeTileOffset(int x, int y) {
+		return (getWidth() / 8) * getHeight() * tileColumns * tileRows * (x + (y * columns));
+	}
 }

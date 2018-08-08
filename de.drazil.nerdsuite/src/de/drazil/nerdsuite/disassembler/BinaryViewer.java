@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.disassembler;
 
 import java.io.File;
 
+import de.drazil.nerdsuite.util.NumericConverter;
+
 public class BinaryViewer {
 	public BinaryViewer() {
 	}

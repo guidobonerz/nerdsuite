@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.disassembler;
 
 import java.io.File;
 
+import de.drazil.nerdsuite.util.NumericConverter;
+
 public class Binary2SourceConverter {
 	public final static int CHARSET = 1;
 	public final static int CHARSET_DOUBLE_X = 2;
