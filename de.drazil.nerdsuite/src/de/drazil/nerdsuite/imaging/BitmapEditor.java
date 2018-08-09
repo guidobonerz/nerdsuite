@@ -49,11 +49,17 @@ public class BitmapEditor {
 			e.printStackTrace();
 		}
 
-		byte binaryData[] = BinaryFileReader.readFile(file, 2);
+		byte binaryData[] = null;
+		try {
+			binaryData = BinaryFileReader.readFile(file, 2);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		ImagingWidget painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.setWidgetName("Painter :");
-		painter.setWidgetMode(WidgetMode.VIEWER);
+		painter.setWidgetMode(WidgetMode.BITMAP_VIEWER);
 		painter.setWidth(8);
 		painter.setHeight(8);
 		painter.setColumns(40);

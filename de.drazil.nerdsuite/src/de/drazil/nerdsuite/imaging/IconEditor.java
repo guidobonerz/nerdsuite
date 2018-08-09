@@ -1,10 +1,16 @@
 package de.drazil.nerdsuite.imaging;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -17,8 +23,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.osgi.framework.Bundle;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
@@ -28,6 +37,7 @@ import net.miginfocom.swt.MigLayout;
 public class IconEditor {
 
 	private ImagingWidget painter;
+	private ImagingWidget previewer;
 	private ImagingWidget selector;
 	private Composite parent;
 	private Button multicolor;
@@ -44,8 +54,9 @@ public class IconEditor {
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
 		parent.setLayout(new MigLayout());
-
+		parent.setBackground(Constants.BLACK);
 		getPainter().setLayoutData("cell 0 0");
+		getPreviewer().setLayoutData("cell 1 0");
 		getSelector().setLayoutData("cell 0 1 2 1");
 		controls = new Composite(parent, SWT.BORDER);
 		controls.setLayout(new MigLayout("fill"));
@@ -123,7 +134,7 @@ public class IconEditor {
 		MenuItem clear = new MenuItem(popup, SWT.NONE);
 		clear.setText("Clear");
 		clear.addListener(SWT.Selection, e -> {
-			getSelector().clearTile();
+			getSelector().clearTiles((e.stateMask & SWT.SHIFT) == SWT.SHIFT);
 		});
 		MenuItem separator1 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -171,17 +182,6 @@ public class IconEditor {
 		swapTiles.addListener(SWT.Selection, e -> {
 			getSelector().swapTiles();
 		});
-		MenuItem swapTarget = new MenuItem(popup, SWT.NONE);
-		swapTarget.setText("Mark As Swap Target");
-		swapTarget.addListener(SWT.Selection, e -> {
-			getSelector().markAsSwapTarget();
-		});
-		MenuItem removeSwapMarkers = new MenuItem(popup, SWT.NONE);
-		removeSwapMarkers.setText("Delete Swap Targets");
-		removeSwapMarkers.setImage(removeSwapMarkerId.createImage());
-		removeSwapMarkers.addListener(SWT.Selection, e -> {
-			getSelector().removeSwapMarker();
-		});
 
 		setPaintFormat("Char");
 		setPaintMode("Pixel");
@@ -214,6 +214,31 @@ public class IconEditor {
 		return painter;
 	}
 
+	private ImagingWidget getPreviewer() {
+		if (previewer == null) {
+			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			previewer.setWidgetName("Preview :");
+			previewer.setWidgetMode(WidgetMode.VIEWER);
+			previewer.setWidth(8);
+			previewer.setHeight(8);
+			previewer.setPixelSize(2);
+			previewer.setPixelGridEnabled(false);
+			previewer.setGridStyle(GridStyle.PIXEL);
+			previewer.setTileGridEnabled(false);
+			previewer.setTileCursorEnabled(false);
+			previewer.setMultiColorEnabled(multiColorMode);
+			previewer.setSelectedTileOffset(0);
+			previewer.setBitlane(getBinaryData());
+			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+			previewer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+			previewer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+			previewer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+			previewer.setSelectedColor(1);
+			previewer.recalc();
+		}
+		return previewer;
+	}
+
 	private ImagingWidget getSelector() {
 		if (selector == null) {
 			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
@@ -228,13 +253,16 @@ public class IconEditor {
 					return MessageDialog.openQuestion(parent.getShell(), "Question",
 							"Do you really want to clear the tile?");
 				}
+
+				@Override
+				protected void showMessage(String message) {
+					MessageDialog.openInformation(parent.getShell(), "Information", message);
+				}
 			};
 			selector.setWidgetName("Selector:");
 			selector.setWidgetMode(WidgetMode.SELECTOR);
 			selector.setWidth(8);
 			selector.setHeight(8);
-			selector.setColumns(8);
-			selector.setRows(3);
 			selector.setPixelSize(3);
 			selector.setPixelGridEnabled(false);
 			selector.setTileGridEnabled(true);
@@ -250,6 +278,7 @@ public class IconEditor {
 			selector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 			selector.setSelectedColor(1);
 			selector.addDrawListener(getPainter());
+			selector.addDrawListener(getPreviewer());
 		}
 		return selector;
 	}
@@ -378,10 +407,17 @@ public class IconEditor {
 			getPainter().setTileRows(1);
 			getPainter().setPixelSize(40);
 			getPainter().recalc();
+			getPreviewer().setWidth(8);
+			getPreviewer().setHeight(8);
+			getPreviewer().setTileColumns(1);
+			getPreviewer().setTileRows(1);
+			getPreviewer().recalc();
 			getSelector().setWidth(8);
 			getSelector().setHeight(8);
 			getSelector().setTileColumns(1);
 			getSelector().setTileRows(1);
+			getSelector().setColumns(16);
+			getSelector().setRows(16);
 			getSelector().setPixelSize(3);
 			getSelector().recalc();
 			parent.layout();
@@ -394,10 +430,17 @@ public class IconEditor {
 			getPainter().setTileRows(1);
 			getPainter().setPixelSize(20);
 			getPainter().recalc();
+			getPreviewer().setWidth(8);
+			getPreviewer().setHeight(8);
+			getPreviewer().setTileColumns(2);
+			getPreviewer().setTileRows(1);
+			getPreviewer().recalc();
 			getSelector().setWidth(8);
 			getSelector().setHeight(8);
 			getSelector().setTileColumns(2);
 			getSelector().setTileRows(1);
+			getSelector().setColumns(8);
+			getSelector().setRows(16);
 			getSelector().setPixelSize(3);
 			getSelector().recalc();
 
@@ -412,10 +455,17 @@ public class IconEditor {
 			getPainter().setTileRows(2);
 			getPainter().setPixelSize(20);
 			getPainter().recalc();
+			getPreviewer().setWidth(8);
+			getPreviewer().setHeight(8);
+			getPreviewer().setTileColumns(1);
+			getPreviewer().setTileRows(2);
+			getPreviewer().recalc();
 			getSelector().setWidth(8);
 			getSelector().setHeight(8);
 			getSelector().setTileColumns(1);
 			getSelector().setTileRows(2);
+			getSelector().setColumns(16);
+			getSelector().setRows(8);
 			getSelector().setPixelSize(3);
 			getSelector().recalc();
 			parent.layout();
@@ -429,10 +479,17 @@ public class IconEditor {
 			getPainter().setTileRows(2);
 			getPainter().setPixelSize(20);
 			getPainter().recalc();
+			getPreviewer().setWidth(8);
+			getPreviewer().setHeight(8);
+			getPreviewer().setTileColumns(2);
+			getPreviewer().setTileRows(2);
+			getPreviewer().recalc();
 			getSelector().setWidth(8);
 			getSelector().setHeight(8);
 			getSelector().setTileColumns(2);
 			getSelector().setTileRows(2);
+			getSelector().setColumns(8);
+			getSelector().setRows(8);
 			getSelector().setPixelSize(3);
 			getSelector().recalc();
 			parent.layout();
@@ -446,6 +503,11 @@ public class IconEditor {
 			getPainter().setTileRows(1);
 			getPainter().setPixelSize(10);
 			getPainter().recalc();
+			getPreviewer().setWidth(24);
+			getPreviewer().setHeight(21);
+			getPreviewer().setTileColumns(1);
+			getPreviewer().setTileRows(1);
+			getPreviewer().recalc();
 			getSelector().setWidth(24);
 			getSelector().setHeight(21);
 			getSelector().setTileColumns(1);
@@ -465,6 +527,11 @@ public class IconEditor {
 			getPainter().setTileRows(1);
 			getPainter().setPixelSize(10);
 			getPainter().recalc();
+			getPreviewer().setWidth(24);
+			getPreviewer().setHeight(21);
+			getPreviewer().setTileColumns(2);
+			getPreviewer().setTileRows(1);
+			getPreviewer().recalc();
 			getSelector().setWidth(24);
 			getSelector().setHeight(21);
 			getSelector().setTileColumns(2);
@@ -484,6 +551,11 @@ public class IconEditor {
 			getPainter().setTileRows(2);
 			getPainter().setPixelSize(10);
 			getPainter().recalc();
+			getPreviewer().setWidth(24);
+			getPreviewer().setHeight(21);
+			getPreviewer().setTileColumns(1);
+			getPreviewer().setTileRows(2);
+			getPreviewer().recalc();
 			getSelector().setWidth(24);
 			getSelector().setHeight(21);
 			getSelector().setTileColumns(1);
@@ -503,6 +575,11 @@ public class IconEditor {
 			getPainter().setTileRows(2);
 			getPainter().setPixelSize(10);
 			getPainter().recalc();
+			getPreviewer().setWidth(24);
+			getPreviewer().setHeight(21);
+			getPreviewer().setTileColumns(2);
+			getPreviewer().setTileRows(2);
+			getPreviewer().recalc();
 			getSelector().setWidth(24);
 			getSelector().setHeight(21);
 			getSelector().setTileColumns(2);
@@ -521,9 +598,35 @@ public class IconEditor {
 
 	private byte[] getBinaryData() {
 		if (binaryData == null) {
-			binaryData = new byte[0xffff];
-			for (int i = 0; i < binaryData.length; i++)
-				binaryData[i] = 0;
+
+			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			URL url = bundle.getEntry("/fonts/c64_lower.64c");
+			// URL url = bundle.getEntry("/images/galencia_dump2");
+			File file = null;
+
+			try {
+				file = new File(FileLocator.resolve(url).toURI());
+				URL resolvedUrl = FileLocator.toFileURL(url);
+				URI resolvedUri = new URI(resolvedUrl.getProtocol(), resolvedUrl.getPath(), null);
+				file = new File(resolvedUri);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+				binaryData = BinaryFileReader.readFile(file, 2);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/*
+			 * binaryData = new byte[0xffff]; for (int i = 0; i <
+			 * binaryData.length; i++) binaryData[i] = 0;
+			 */
 		}
 		return binaryData;
 	}

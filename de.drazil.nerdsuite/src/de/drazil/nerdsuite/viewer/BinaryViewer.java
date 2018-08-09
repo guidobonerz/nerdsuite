@@ -48,7 +48,13 @@ public class BinaryViewer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		byte binaryData[] = BinaryFileReader.readFile(file,0);
+		byte binaryData[] = null;
+		try {
+			binaryData = BinaryFileReader.readFile(file,0);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		IFont font = new C64Font();
 		TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);

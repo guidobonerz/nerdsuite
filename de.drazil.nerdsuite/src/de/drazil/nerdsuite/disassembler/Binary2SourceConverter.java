@@ -24,7 +24,13 @@ public class Binary2SourceConverter {
 			boolean skipLocation, boolean writeComment) {
 		checkFormatSettings(sourceFormat);
 		StringBuilder sb = new StringBuilder();
-		byte byteArray[] = BinaryFileReader.readFile(file, 0);
+		byte binaryData[] = null;
+		try {
+			binaryData = BinaryFileReader.readFile(file,0);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		int index = 0;
 		int width = 1;
 		int height = 8;
@@ -44,12 +50,12 @@ public class Binary2SourceConverter {
 		}
 
 		int rows = 0;
-		while (index < byteArray.length) {
-			byte b = byteArray[index];
+		while (index < binaryData.length) {
+			byte b = binaryData[index];
 			if (index == 0 && !skipLocation) {
 				sb.append(".pc $");
-				NumericConverter.toHexString(byteArray[1], sb);
-				NumericConverter.toHexString(byteArray[0], sb);
+				NumericConverter.toHexString(binaryData[1], sb);
+				NumericConverter.toHexString(binaryData[0], sb);
 				sb.append(" \"" + file.getName() + "\"\n");
 				index = +2;
 			}
@@ -57,16 +63,16 @@ public class Binary2SourceConverter {
 			if (index > 1) {
 				sb.append(".byte ");
 				if (valueOutputFormat == AS_HEX_VALUE) {
-					NumericConverter.toHexString(byteArray, index, width, step, sb);
+					NumericConverter.toHexString(binaryData, index, width, step, sb);
 				} else if (valueOutputFormat == AS_BINARY_VALUE) {
-					NumericConverter.toBinaryString(byteArray, index, width, step, sb);
+					NumericConverter.toBinaryString(binaryData, index, width, step, sb);
 				} else if (valueOutputFormat == AS_DECIMAL_VALUE) {
-					NumericConverter.toDecimalString(byteArray, index, width, step, sb);
+					NumericConverter.toDecimalString(binaryData, index, width, step, sb);
 				}
 
 				if (writeComment) {
 					sb.append(" //");
-					toCommentString(byteArray, index, width, step, sourceFormat, sb);
+					toCommentString(binaryData, index, width, step, sourceFormat, sb);
 				}
 				sb.append('\n');
 				index += width;

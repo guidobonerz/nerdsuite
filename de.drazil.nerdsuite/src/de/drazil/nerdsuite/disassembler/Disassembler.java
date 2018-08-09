@@ -28,7 +28,13 @@ public class Disassembler {
 	}
 
 	public void start(String file) {
-		byteArray = BinaryFileReader.readFile(new File(file), 0);
+
+		try {
+			byteArray = BinaryFileReader.readFile(new File(file), 0);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		byteArray = platform.parseBinary(byteArray);
 
 		Map<String, ConversionType> conversionMap = new HashMap<String, ConversionType>();

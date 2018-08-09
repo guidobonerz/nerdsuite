@@ -9,8 +9,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -68,6 +68,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int tileCursorY = 0;
 	protected int selectedColorIndex;
 	protected int monoColorDefaultIndex;
+	private int navigationOffset = 0;
 	protected int colorCount;
 	protected int selectedTileOffset = 0;
 	protected int cursorLineWidth = 1;
@@ -92,6 +93,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected boolean layerViewEnabled = false;
 	protected boolean paintMode = true;
 	protected boolean mouseIn = false;
+	protected boolean animationMarkersSet = false;
 
 	protected GridStyle gridStyle = GridStyle.LINE;
 	protected Map<String, Color> palette;
@@ -99,7 +101,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected ScrollBar hBar = null;
 	protected ScrollBar vBar = null;
 	protected List<IDrawListener> drawListenerList = null;
-	protected List<TileRange> tileRangeList = null;
 	protected List<TileLocation> tileLocationList = null;
 	protected String widgetName = "<unknown>";
 
@@ -108,7 +109,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	private Timer animationTimer;
 
 	public enum WidgetMode {
-		SELECTOR, PAINTER, VIEWER
+		SELECTOR, PAINTER, VIEWER, BITMAP_VIEWER
 	};
 
 	public enum GridStyle {
@@ -154,7 +155,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	private int animationIndexX;
 	private int animationIndexY;
 
-	private List<TileLocation> swapRingBuffer = null;
+	private List<TileLocation> selectionRangeBuffer = null;
 
 	public class Animator extends TimerTask {
 		public void run() {
@@ -169,19 +170,27 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		setColumns(1);
 		setRows(1);
 
-		swapRingBuffer = new ArrayList<>();
+		selectionRangeBuffer = new ArrayList<>();
 		tileLocationList = new ArrayList<>();
-		tileLocationList.add(new TileLocation(0, 0));
-		tileLocationList.add(new TileLocation(1, 0));
-		tileLocationList.add(new TileLocation(2, 0));
-		tileLocationList.add(new TileLocation(3, 0));
-		tileLocationList.add(new TileLocation(4, 0));
-		tileLocationList.add(new TileLocation(5, 0));
-		tileRangeList = new ArrayList<>();
-		tileRangeList.add(new TileRange(0, 0, 4, 0));
 
 		hBar = getHorizontalBar();
 		vBar = getVerticalBar();
+		/*
+		 * vBar.addSelectionListener(new SelectionListener() {
+		 * 
+		 * @Override public void widgetSelected(SelectionEvent e) { if
+		 * (navigationOffset > 0) { navigationOffset = hBar.getSelection() *
+		 * computeTileSize() * columns; selectedTileOffset =
+		 * computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+		 * fireSetSelectedTileOffset(selectedTileOffset); doDrawAllTiles(); }
+		 * 
+		 * }
+		 * 
+		 * @Override public void widgetDefaultSelected(SelectionEvent e) { //
+		 * TODO Auto-generated method stub
+		 * 
+		 * } });
+		 */
 
 		setBackground(Constants.BLACK);
 
@@ -189,11 +198,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 		addPaintListener(this);
 
-		addKeyListener(new KeyListener() {
+		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-			}
-
-			public void keyReleased(KeyEvent e) {
 				switch (e.character) {
 				case '1': {
 					selectedColorIndex = 0;
@@ -209,6 +215,63 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				}
 				case '4': {
 					selectedColorIndex = 3;
+					break;
+				}
+
+				}
+				switch (e.keyCode) {
+
+				case SWT.ARROW_UP: {
+
+					if (selectedTileIndexY > 0) {
+						selectedTileIndexY--;
+						selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+					} else {
+						if (navigationOffset > 0) {
+							navigationOffset -= computeTileSize() * columns;
+						}
+					}
+					fireSetSelectedTileOffset(selectedTileOffset);
+					doDrawAllTiles();
+
+					break;
+				}
+				case SWT.ARROW_DOWN: {
+
+					if (selectedTileIndexY < rows - 1) {
+						selectedTileIndexY++;
+						selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+					} else {
+						if (navigationOffset < bitplane.length - computeTileSize()) {
+							navigationOffset += computeTileSize() * columns;
+						}
+					}
+					fireSetSelectedTileOffset(selectedTileOffset);
+					doDrawAllTiles();
+					break;
+				}
+				case SWT.ARROW_LEFT: {
+
+					if (selectedTileIndexX > 0) {
+						selectedTileIndexX--;
+					} else {
+						selectedTileIndexX = columns - 1;
+					}
+					selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+					fireSetSelectedTileOffset(selectedTileOffset);
+					doDrawAllTiles();
+					break;
+				}
+				case SWT.ARROW_RIGHT: {
+
+					if (selectedTileIndexX < columns - 1) {
+						selectedTileIndexX++;
+					} else {
+						selectedTileIndexX = 0;
+					}
+					selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+					fireSetSelectedTileOffset(selectedTileOffset);
+					doDrawAllTiles();
 					break;
 				}
 				}
@@ -227,7 +290,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			public void mouseExit(MouseEvent e) {
 				mouseIn = false;
 				if (widgetMode == WidgetMode.PAINTER) {
-
 				} else if (widgetMode == WidgetMode.SELECTOR) {
 				}
 				doDrawAllTiles();
@@ -235,6 +297,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 			@Override
 			public void mouseEnter(MouseEvent e) {
+				setFocus();
 				mouseIn = true;
 				if (widgetMode == WidgetMode.PAINTER) {
 				} else if (widgetMode == WidgetMode.SELECTOR) {
@@ -256,39 +319,89 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 						doDrawAllTiles();
 					}
 				} else if (widgetMode == WidgetMode.SELECTOR) {
-					doDrawAllTiles();
+					if (leftButtonMode == LEFT_BUTTON_PRESSED && (e.stateMask & SWT.SHIFT) == SWT.SHIFT) {
+						if (selectionRangeBuffer.isEmpty()) {
+							selectionRangeBuffer.add(new TileLocation(tileX, tileY));
+							selectionRangeBuffer.add(new TileLocation(0, 0));
+						} else {
+							selectionRangeBuffer.get(1).x = tileX;
+							selectionRangeBuffer.get(1).y = tileY;
+							int o1 = computeTileOffset(selectionRangeBuffer.get(0).x, selectionRangeBuffer.get(0).y);
+							int o2 = computeTileOffset(selectionRangeBuffer.get(1).x, selectionRangeBuffer.get(1).y);
+							int a = 0;
+							int b = 1;
+							if (o1 > o2) {
+								a = 1;
+								b = 0;
+							}
+							int xs = selectionRangeBuffer.get(a).x;
+							int ys = selectionRangeBuffer.get(a).y;
+							tileLocationList = new ArrayList<>();
+							for (;;) {
+								if (xs < columns) {
+									if (!hasTile(xs, ys)) {
+										tileLocationList.add(new TileLocation(xs, ys));
+									}
+									if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
+										break;
+									}
+									xs++;
+								} else {
+									xs = 0;
+									ys++;
+								}
+							}
+						}
+					}
 				}
+				doDrawAllTiles();
 			}
 		});
 
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
+				setCursorPosition(e.x, e.y);
+
 				if (e.button == MOUSE_BUTTON_RIGHT) {
+
 					if (widgetMode == WidgetMode.PAINTER) {
 						paintMode = !paintMode;
 						Console.println("drawMode:" + paintMode);
 					}
+
 				} else if (e.button == MOUSE_BUTTON_LEFT) {
 					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
 						leftButtonMode = 0;
-						if (widgetMode == WidgetMode.SELECTOR) {
-							paintControlMode = 0;
-							selectedTileIndexX = tileX;
-							selectedTileIndexY = tileY;
-							selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
-							fireSetSelectedTileOffset(selectedTileOffset);
-							doDrawAllTiles();
-						} else {
-							doDrawPixel();
-							fireDoDrawTile();
+						if ((e.stateMask & SWT.CTRL) == 0 && (e.stateMask & SWT.SHIFT) == 0) {
+							tileLocationList = new ArrayList<>();
+							selectionRangeBuffer = new ArrayList<>();
 						}
 					}
+					if (widgetMode == WidgetMode.SELECTOR) {
+						paintControlMode = 0;
+						selectedTileIndexX = tileX;
+						selectedTileIndexY = tileY;
+						selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+						fireSetSelectedTileOffset(selectedTileOffset);
+						if ((e.stateMask & SWT.CTRL) != 0) {
+							if (!hasTile(tileX, tileY)) {
+								tileLocationList.add(new TileLocation(tileX, tileY));
+							}
+						}
+						doDrawAllTiles();
+
+					} else {
+						doDrawPixel();
+						fireDoDrawTile();
+					}
+
 				}
 			}
 
 			@Override
 			public void mouseDown(MouseEvent e) {
+
 				if (e.button == MOUSE_BUTTON_LEFT) {
 					setCursorPosition(e.x, e.y);
 					leftButtonMode = LEFT_BUTTON_PRESSED;
@@ -323,74 +436,77 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		if ((paintControlMode & SET_DRAW_TILE) == SET_DRAW_TILE) {
 			paintControlTile(e.gc, selectedTileIndexX, selectedTileIndexY);
 		}
-		if (paintControlMode == SET_DRAW_PIXEL) {
-			switch (drawMode) {
-			case Pixel: {
-				paintControlPixel(e.gc, cursorX, cursorY);
-				break;
+		if (widgetMode != WidgetMode.VIEWER && widgetMode != WidgetMode.BITMAP_VIEWER) {
+			if (paintControlMode == SET_DRAW_PIXEL) {
+				switch (drawMode) {
+				case Pixel: {
+					paintControlPixel(e.gc, cursorX, cursorY);
+					break;
+				}
+				case VerticalMirror: {
+					paintControlPixel(e.gc, cursorX, cursorY);
+					int centerX = ((width * tileColumns) / 2);
+					int diff = centerX - cursorX - 1;
+					paintControlPixel(e.gc, centerX + diff, cursorY);
+					break;
+				}
+				case HorizontalMirror: {
+					paintControlPixel(e.gc, cursorX, cursorY);
+					int centerY = ((height * tileRows) / 2);
+					int diff = centerY - cursorY - 1;
+					paintControlPixel(e.gc, cursorX, centerY + diff);
+					break;
+				}
+				case Kaleidoscope: {
+					paintControlPixel(e.gc, cursorX, cursorY);
+					int centerX = ((width * tileColumns) / 2);
+					int diffX = centerX - cursorX - 1;
+					paintControlPixel(e.gc, centerX + diffX, cursorY);
+					int centerY = ((height * tileRows) / 2);
+					int diffY = centerY - cursorY - 1;
+					paintControlPixel(e.gc, cursorX, centerY + diffY);
+					paintControlPixel(e.gc, centerX + diffX, centerY + diffY);
+					break;
+				}
+				}
 			}
-			case VerticalMirror: {
-				paintControlPixel(e.gc, cursorX, cursorY);
-				int centerX = ((width * tileColumns) / 2);
-				int diff = centerX - cursorX - 1;
-				paintControlPixel(e.gc, centerX + diff, cursorY);
-				break;
+
+			if (isPixelGridEnabled()) {
+				paintControlPixelGrid(e.gc);
 			}
-			case HorizontalMirror: {
-				paintControlPixel(e.gc, cursorX, cursorY);
-				int centerY = ((height * tileRows) / 2);
-				int diff = centerY - cursorY - 1;
-				paintControlPixel(e.gc, cursorX, centerY + diff);
-				break;
+			if (isSeparatorEnabled()) {
+				paintControlSeparator(e.gc);
 			}
-			case Kaleidoscope: {
-				paintControlPixel(e.gc, cursorX, cursorY);
-				int centerX = ((width * tileColumns) / 2);
-				int diffX = centerX - cursorX - 1;
-				paintControlPixel(e.gc, centerX + diffX, cursorY);
-				int centerY = ((height * tileRows) / 2);
-				int diffY = centerY - cursorY - 1;
-				paintControlPixel(e.gc, cursorX, centerY + diffY);
-				paintControlPixel(e.gc, centerX + diffX, centerY + diffY);
-				break;
+			if (isTileGridEnabled()) {
+				paintControlTileGrid(e.gc);
 			}
+
+			if (isTileSubGridEnabled()) {
+				paintControlTileSubGrid(e.gc);
 			}
-		}
 
-		if (isPixelGridEnabled()) {
-			paintControlPixelGrid(e.gc);
-		}
-		if (isSeparatorEnabled()) {
-			paintControlSeparator(e.gc);
-		}
-		if (isTileGridEnabled()) {
-			paintControlTileGrid(e.gc);
-		}
+			if (isTileCursorEnabled()) {
+				paintControlTileCursor(e.gc, mouseIn, !animationIsRunning ? selectedTileIndexX : animationIndexX,
+						!animationIsRunning ? selectedTileIndexY : animationIndexY);
+			}
+			if (widgetMode == WidgetMode.PAINTER) {
+				paintControlPixelCursor(e.gc, 0, 0);
+			}
 
-		if (isTileSubGridEnabled()) {
-			paintControlTileSubGrid(e.gc);
+			paintControlAnimationMarkers(e.gc);
 		}
-
-		if (isTileCursorEnabled()) {
-			paintControlTileCursor(e.gc, mouseIn, !animationIsRunning ? selectedTileIndexX : animationIndexX,
-					!animationIsRunning ? selectedTileIndexY : animationIndexY);
-		}
-		if (widgetMode == WidgetMode.PAINTER) {
-			paintControlPixelGridCursor(e.gc, 0, 0);
-		}
-
-		paintControlSwapMarkers(e.gc);
-
 		paintControlMode = DRAW_NOTHING;
 
 	}
 
-	public void paintControlSwapMarkers(GC gc) {
-		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
-		gc.setLineStyle(SWT.LINE_CUSTOM);
-		gc.setLineDash(new int[] { 4, 4 });
-		for (TileLocation tilelocation : swapRingBuffer) {
-			gc.drawRectangle(tilelocation.x * width * pixelSize * tileColumns,
+	public void paintControlAnimationMarkers(GC gc) {
+		gc.setBackground(Constants.ANIMATION_TILE_MARKER_COLOR);
+		gc.setAlpha(150);
+		// List<TileLocation> list = animationMarkersSet ? tileLocationList :
+		// rangeBuffer;
+
+		for (TileLocation tilelocation : tileLocationList) {
+			gc.fillRectangle(tilelocation.x * width * pixelSize * tileColumns,
 					tilelocation.y * height * pixelSize * tileRows, width * pixelSize * tileColumns,
 					height * pixelSize * tileRows);
 		}
@@ -400,13 +516,14 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		gc.setLineWidth(cursorLineWidth);
 		gc.setLineStyle(SWT.LINE_SOLID);
 
-		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
-		gc.drawRectangle(x * width * pixelSize * tileColumns, y * height * pixelSize * tileRows,
+		gc.setBackground(Constants.TILE_SUB_GRID_COLOR);
+		gc.setAlpha(150);
+		gc.fillRectangle(x * width * pixelSize * tileColumns, y * height * pixelSize * tileRows,
 				width * pixelSize * tileColumns, height * pixelSize * tileRows);
 
 		if (mouseIn) {
-			gc.setForeground((tileX == x && tileY == y) ? Constants.LIGHT_RED : Constants.LIGHT_RED);
-			gc.drawRectangle(tileX * width * pixelSize * tileColumns, tileY * height * pixelSize * tileRows,
+			gc.setBackground((tileX == x && tileY == y) ? Constants.LIGHT_RED : Constants.LIGHT_RED);
+			gc.fillRectangle(tileX * width * pixelSize * tileColumns, tileY * height * pixelSize * tileRows,
 					width * pixelSize * tileColumns, height * pixelSize * tileRows);
 		}
 	}
@@ -426,8 +543,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	public void paintControlPixelGridCursor(GC gc, int x, int y) {
-		System.out.println(cursorX + "   " + cursorY);
+	public void paintControlPixelCursor(GC gc, int x, int y) {
+		// System.out.println(cursorX + " " + cursorY);
 		gc.setForeground(Constants.DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR);
 		int lineWidth = (int) (getPixelSize() * 0.1);
 		gc.setLineWidth(lineWidth);
@@ -481,15 +598,14 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		int b2 = b1 * tileColumns;
 
 		int byteOffset = 0;
-		if (widgetMode == WidgetMode.PAINTER) {
+		if (widgetMode == WidgetMode.PAINTER || widgetMode == WidgetMode.VIEWER) {
 			byteOffset = selectedTileOffset;
-		} else if (widgetMode == WidgetMode.SELECTOR || widgetMode == WidgetMode.VIEWER) {
-			byteOffset = (getWidth() / 8) * getHeight() * tileColumns * tileRows * (tx + (ty * columns));
+		} else if (widgetMode == WidgetMode.SELECTOR || widgetMode == WidgetMode.BITMAP_VIEWER) {
+			byteOffset = computeTileOffset(tx, ty);
 		}
 
-		for (int i = byteOffset, k = 0; i < (byteOffset + getViewportSize()); i++, k++) {
+		for (int i = byteOffset, k = 0; i < (byteOffset + computeTileSize()); i++, k++) {
 
-			int b = (bitplane[i] & 0xff);
 			int xi = (k % bytesPerRow) * (8 / (isMultiColorEnabled() ? 2 : 1));
 			int xo = (k / b1) % tileColumns;
 			x = xi + (xo * currentWidth) + (tx * currentWidth * tileColumns);
@@ -498,30 +614,33 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			int yo = (k / b2) % tileRows;
 			y = yi + (yo * height) + (ty * height * tileRows);
 
-			if (isMultiColorEnabled()) {
-				for (int j = 6; j >= 0; j -= 2) {
-					int bi = b;
-					int colorIndex = (bi >> j) & 3;
-					Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
-					if (colorProvider != null) {
-						color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tx, ty, columns);
+			if (i < bitplane.length) {
+				int b = (bitplane[i] & 0xff);
+				if (isMultiColorEnabled()) {
+					for (int j = 6; j >= 0; j -= 2) {
+						int bi = b;
+						int colorIndex = (bi >> j) & 3;
+						Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
+						if (colorProvider != null) {
+							color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tx, ty, columns);
+						}
+
+						gc.setBackground(color);
+						int pix = isPixelGridEnabled() ? 1 : 0;
+						gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
+								currentPixelWidth - pix, currentPixelHeight - pix);
+						x++;
 					}
+				} else {
+					for (int j = 128; j > 0; j >>= 1) {
+						gc.setBackground((b & j) == j ? palette.get(String.valueOf(selectedColorIndex))
+								: Constants.BITMAP_BACKGROUND_COLOR);
+						int pix = isPixelGridEnabled() ? 1 : 0;
 
-					gc.setBackground(color);
-					int pix = isPixelGridEnabled() ? 1 : 0;
-					gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
-							currentPixelWidth - pix, currentPixelHeight - pix);
-					x++;
-				}
-			} else {
-				for (int j = 128; j > 0; j >>= 1) {
-					gc.setBackground((b & j) == j ? palette.get(String.valueOf(selectedColorIndex))
-							: Constants.BITMAP_BACKGROUND_COLOR);
-					int pix = isPixelGridEnabled() ? 1 : 0;
-
-					gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
-							currentPixelWidth - pix, currentPixelHeight - pix);
-					x++;
+						gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix,
+								currentPixelWidth - pix, currentPixelHeight - pix);
+						x++;
+					}
 				}
 			}
 		}
@@ -645,11 +764,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		this.tileRows = tileRows;
 	}
 
-	public int getViewportSize() {
-		int viewPortSize = (getWidth() / 8) * getHeight() * tileColumns * tileRows;
-		return viewPortSize;
-	}
-
 	public void setWidgetName(String widgetName) {
 		this.widgetName = widgetName;
 	}
@@ -736,8 +850,13 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		currentPixelWidth = getPixelSize() * (isMultiColorEnabled() ? 2 : 1);
 		currentWidth = getWidth() / (isMultiColorEnabled() ? 2 : 1);
 		bytesPerRow = width >> 3;
-		clipboardBuffer = new byte[getViewportSize()];
+		clipboardBuffer = new byte[computeTileSize()];
 		int selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+		if (vBar != null) {
+			vBar.setMinimum(0);
+			vBar.setMaximum(getRows());
+
+		}
 		fireSetSelectedTileOffset(selectedTileOffset);
 		doDrawAllTiles();
 	}
@@ -787,7 +906,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	@Override
 	public void setSelectedTileOffset(int offset) {
 		this.selectedTileOffset = offset;
-		System.out.println(getWidgetName() + ":offset=" + offset);
+		// System.out.println(getWidgetName() + ":offset=" + offset);
 		doDrawAllTiles();
 	}
 
@@ -837,7 +956,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	protected void doDrawPixel() {
 		paintControlMode = SET_DRAW_PIXEL;
-		System.out.println(getWidgetName() + ":   x:" + cursorX + "    y:" + cursorY);
+		// System.out.println(getWidgetName() + ": x:" + cursorX + " y:" +
+		// cursorY);
 		int inset = isPixelGridEnabled() ? 1 : 0;
 
 		switch (drawMode) {
@@ -896,19 +1016,19 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public void startAnimation() {
-		initTimer();
+		resetTimer();
 		animationIsRunning = true;
-		animationTimer.scheduleAtFixedRate(new Animator(), 0, 200);
+		animationTimer.scheduleAtFixedRate(new Animator(), 0, 100);
 	}
 
 	public void stopAnimation() {
 		animationIsRunning = false;
 		animationTimer.cancel();
 		animationTimer.purge();
-		initTimer();
+		resetTimer();
 	}
 
-	private void initTimer() {
+	private void resetTimer() {
 		animationTimer = new Timer();
 	}
 
@@ -930,42 +1050,26 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public void swapTiles() {
-		if (swapRingBuffer.size() == 2) {
-			int swapSourceOffset = computeTileOffset(swapRingBuffer.get(0).x, swapRingBuffer.get(0).y);
-			int swapTargetOffset = computeTileOffset(swapRingBuffer.get(1).x, swapRingBuffer.get(1).y);
 
-			for (int i = 0; i < getViewportSize(); i++) {
+		if (tileLocationList.size() == 2) {
+			int swapSourceOffset = computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y);
+			int swapTargetOffset = computeTileOffset(tileLocationList.get(1).x, tileLocationList.get(1).y);
+
+			for (int i = 0; i < computeTileSize(); i++) {
 				byte buffer = bitplane[swapSourceOffset + i];
 				bitplane[swapSourceOffset + i] = bitplane[swapTargetOffset + i];
 				bitplane[swapTargetOffset + i] = buffer;
 			}
+		} else {
+			showMessage("Please select only two tiles to swap");
 		}
 		doDrawAllTiles();
 		fireDoDrawAllTiles();
+
 	}
 
-	public void markAsSwapTarget() {
-		if (swapRingBuffer.size() == 2) {
-			swapRingBuffer.set(0, swapRingBuffer.get(1));
-			swapRingBuffer.remove(1);
-		}
-		boolean hasMatch = false;
-		for (TileLocation tl : swapRingBuffer) {
-			if (tl.x == tileX && tl.y == tileY) {
-				hasMatch |= true;
-			}
-		}
-		if (!hasMatch) {
-			swapRingBuffer.add(new TileLocation(tileX, tileY));
-		}
-		doDrawAllTiles();
-	}
+	protected void showMessage(String message) {
 
-	public void removeSwapMarker() {
-		if (isClearSwapBufferConfirmed()) {
-			swapRingBuffer.clear();
-			doDrawAllTiles();
-		}
 	}
 
 	protected boolean isClearSwapBufferConfirmed() {
@@ -980,7 +1084,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 		if (clipboardAction == ClipboardAction.Paste && this.clipboardAction != ClipboardAction.Off) {
 			pasteOffset = offset;
-			for (int i = 0; i < getViewportSize(); i++) {
+			for (int i = 0; i < computeTileSize(); i++) {
 				bitplane[pasteOffset + i] = bitplane[cutCopyOffset + i];
 				if (this.clipboardAction == ClipboardAction.Cut) {
 					bitplane[cutCopyOffset + i] = 0;
@@ -992,14 +1096,24 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	public void clearTile() {
+	public void clearTiles(boolean allSelected) {
 		if (isClearTileConfirmed()) {
-			int offset = computeTileOffset(tileX, tileY);
-			for (int i = 0; i < getViewportSize(); i++) {
-				bitplane[offset + i] = 0;
+			if (allSelected) {
+				for (TileLocation tl : tileLocationList) {
+					clearTile(tl.x, tl.y);
+				}
+			} else {
+				clearTile(tileX, tileY);
 			}
 			doDrawAllTiles();
 			fireDoDrawAllTiles();
+		}
+	}
+
+	private void clearTile(int x, int y) {
+		int offset = computeTileOffset(x, y);
+		for (int i = 0; i < computeTileSize(); i++) {
+			bitplane[offset + i] = 0;
 		}
 	}
 
@@ -1019,6 +1133,15 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public void rotateTile(int x, int y, Rotate direction) {
 	}
 
+	private boolean hasTile(int x, int y) {
+		for (TileLocation tl : tileLocationList) {
+			if (tl.x == x && tl.y == y) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		Point hsb = hBar != null ? hBar.getSize() : new Point(0, 0);
@@ -1030,6 +1153,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	private int computeTileOffset(int x, int y) {
-		return (getWidth() / 8) * getHeight() * tileColumns * tileRows * (x + (y * columns));
+		return computeTileSize() * (x + (y * columns)) + navigationOffset;
+	}
+
+	public int computeTileSize() {
+		return (width / 8) * height * tileColumns * tileRows;
 	}
 }
