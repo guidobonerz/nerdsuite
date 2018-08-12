@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 
@@ -23,14 +24,18 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.ImagingWidget;
+import de.drazil.nerdsuite.widget.ImagingWidget.Direction;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
+import de.drazil.nerdsuite.widget.ImagingWidget.Orientation;
 import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
+import de.drazil.nerdsuite.widget.ImagingWidget.Rotate;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 import net.miginfocom.swt.MigLayout;
 
@@ -42,8 +47,7 @@ public class IconEditor {
 	private Composite parent;
 	private Button multicolor;
 	private Button startAnimation;
-	private Button stopAnimation;
-	private Button clearMemory;
+	private Text notification;
 	private Composite controls;
 	private Combo formatSelector;
 	private Combo paintModeSelector;
@@ -55,19 +59,20 @@ public class IconEditor {
 		this.parent = parent;
 		parent.setLayout(new MigLayout());
 		parent.setBackground(Constants.BLACK);
-		getPainter().setLayoutData("cell 0 0");
-		getPreviewer().setLayoutData("cell 1 0");
-		getSelector().setLayoutData("cell 0 1 2 1");
+
 		controls = new Composite(parent, SWT.BORDER);
-		controls.setLayout(new MigLayout("fill"));
+		controls.setLayout(new MigLayout("fillx"));
 		controls.setLayoutData("cell 1 0");
 
 		getMultiColor().setLayoutData("cell 0 0 2 1");
-		getClearMemory().setLayoutData("cell 0 1 2 1");
-		getFormatSelector().setLayoutData("cell 0 2 2 1");
-		getPaintModeSelector().setLayoutData("cell 0 3 2 1");
-		getStartAnimation().setLayoutData("cell 0 4 1 1");
-		getStopAnimation().setLayoutData("cell 1 4  1 1");
+		getFormatSelector().setLayoutData("cell 0 1 2 1");
+		getPaintModeSelector().setLayoutData("cell 0 2 2 1");
+		getStartAnimation().setLayoutData("cell 0 3 1 1");
+		getNotification().setLayoutData("cell 0 4 2 1");
+
+		getPainter().setLayoutData("cell 0 0");
+		getPreviewer().setLayoutData("cell 1 0");
+		getSelector().setLayoutData("cell 0 1 2 1");
 
 		ImageDescriptor upId = null;
 		ImageDescriptor downId = null;
@@ -81,7 +86,7 @@ public class IconEditor {
 		ImageDescriptor flipHorizontalId = null;
 		ImageDescriptor flipVerticalId = null;
 		ImageDescriptor swapId = null;
-		ImageDescriptor removeSwapMarkerId = null;
+
 		try {
 			cutId = ImageDescriptor.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/cut.png"));
 			copyId = ImageDescriptor
@@ -105,8 +110,7 @@ public class IconEditor {
 					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_right.png"));
 			swapId = ImageDescriptor
 					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_switch.png"));
-			removeSwapMarkerId = ImageDescriptor
-					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/cross.png"));
+
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -141,38 +145,61 @@ public class IconEditor {
 		MenuItem flipHorizontal = new MenuItem(popup, SWT.NONE);
 		flipHorizontal.setText("Flip Horizontal");
 		flipHorizontal.setImage(flipHorizontalId.createImage());
+		flipHorizontal.addListener(SWT.Selection, e -> {
+			getSelector().flipTile(Orientation.Horizontal);
+		});
 
 		MenuItem flipVertical = new MenuItem(popup, SWT.NONE);
 		flipVertical.setText("Flip Vertical");
 		flipVertical.setImage(flipVerticalId.createImage());
-
+		flipVertical.addListener(SWT.Selection, e -> {
+			getSelector().flipTile(Orientation.Vertical);
+		});
 		MenuItem separator2 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem rotateCW = new MenuItem(popup, SWT.NONE);
 		rotateCW.setText("Rotate CW");
 		rotateCW.setImage(rotateCWId.createImage());
+		rotateCW.addListener(SWT.Selection, e -> {
+			getSelector().rotateTile(Rotate.CW);
+		});
 
 		MenuItem rotateCCW = new MenuItem(popup, SWT.NONE);
 		rotateCCW.setText("Rotate CCW");
 		rotateCCW.setImage(rotateCCWId.createImage());
+		rotateCCW.addListener(SWT.Selection, e -> {
+			getSelector().rotateTile(Rotate.CCW);
+		});
 
 		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem shiftUp = new MenuItem(popup, SWT.NONE);
 		shiftUp.setText("Shift Up");
 		shiftUp.setImage(upId.createImage());
+		shiftUp.addListener(SWT.Selection, e -> {
+			getSelector().shiftTile(Direction.Up);
+		});
 
 		MenuItem shiftDown = new MenuItem(popup, SWT.NONE);
 		shiftDown.setText("Shift Down");
 		shiftDown.setImage(downId.createImage());
+		shiftDown.addListener(SWT.Selection, e -> {
+			getSelector().shiftTile(Direction.Down);
+		});
 
 		MenuItem shiftLeft = new MenuItem(popup, SWT.NONE);
 		shiftLeft.setText("Shift Left");
 		shiftLeft.setImage(leftId.createImage());
+		shiftLeft.addListener(SWT.Selection, e -> {
+			getSelector().shiftTile(Direction.Up);
+		});
 
 		MenuItem shiftRight = new MenuItem(popup, SWT.NONE);
 		shiftRight.setText("Shift Right");
 		shiftRight.setImage(rightId.createImage());
+		shiftRight.addListener(SWT.Selection, e -> {
+			getSelector().shiftTile(Direction.Right);
+		});
 
 		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -221,7 +248,7 @@ public class IconEditor {
 			previewer.setWidgetMode(WidgetMode.VIEWER);
 			previewer.setWidth(8);
 			previewer.setHeight(8);
-			previewer.setPixelSize(2);
+			previewer.setPixelSize(3);
 			previewer.setPixelGridEnabled(false);
 			previewer.setGridStyle(GridStyle.PIXEL);
 			previewer.setTileGridEnabled(false);
@@ -242,21 +269,34 @@ public class IconEditor {
 	private ImagingWidget getSelector() {
 		if (selector == null) {
 			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
-				@Override
-				protected boolean isClearSwapBufferConfirmed() {
-					return MessageDialog.openQuestion(parent.getShell(), "Question",
-							"Do really want to clear the SwapBuffer?");
-				}
 
 				@Override
-				protected boolean isClearTileConfirmed() {
-					return MessageDialog.openQuestion(parent.getShell(), "Question",
-							"Do you really want to clear the tile?");
+				protected boolean isClearTileConfirmed(boolean allSelected) {
+					return MessageDialog.openQuestion(parent.getShell(), "Question", MessageFormat.format(
+							"Do you really want to clear {0} ?", allSelected ? "all selected  tiles" : "this tile"));
 				}
 
 				@Override
 				protected void showMessage(String message) {
 					MessageDialog.openInformation(parent.getShell(), "Information", message);
+				}
+
+				@Override
+				protected void setNotification(int offset, int tileSize) {
+
+					getNotification().setText(MessageFormat.format("Offset: ${0} tile:{1} bytes",
+							String.format("%04X", offset), tileSize));
+				}
+
+				@Override
+				protected boolean isRotationConfirmed() {
+					return MessageDialog.openQuestion(parent.getShell(), "Question",
+							"Rotating these tile(s) causes data loss, because it is/they are not squarish. /n Do you want to rotate anyway?");
+				}
+
+				@Override
+				protected void notifyAnimationStarted(boolean state) {
+					startAnimation.setText(state ? "Stop Animation" : "Start Animation");
 				}
 			};
 			selector.setWidgetName("Selector:");
@@ -281,6 +321,15 @@ public class IconEditor {
 			selector.addDrawListener(getPreviewer());
 		}
 		return selector;
+
+	}
+
+	private Text getNotification() {
+		if (notification == null) {
+			notification = new Text(controls, SWT.NONE);
+			notification.setEnabled(false);
+		}
+		return notification;
 	}
 
 	private Button getMultiColor() {
@@ -303,45 +352,20 @@ public class IconEditor {
 	private Button getStartAnimation() {
 		if (startAnimation == null) {
 			startAnimation = new Button(controls, SWT.PUSH);
+			startAnimation.setSelection(false);
 			startAnimation.setText("Start Animation");
 			startAnimation.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					selector.startAnimation();
+					if (!getSelector().isAnimationRunning()) {
+						selector.startAnimation();
+					} else {
+						selector.stopAnimation();
+					}
 				}
 			});
 		}
 		return startAnimation;
-	}
-
-	private Button getStopAnimation() {
-		if (stopAnimation == null) {
-			stopAnimation = new Button(controls, SWT.PUSH);
-			stopAnimation.setText("Stop Animation");
-			stopAnimation.addListener(SWT.Selection, new Listener() {
-
-				@Override
-				public void handleEvent(Event event) {
-					selector.stopAnimation();
-				}
-			});
-		}
-		return stopAnimation;
-	}
-
-	private Button getClearMemory() {
-		if (clearMemory == null) {
-			clearMemory = new Button(controls, SWT.PUSH);
-			clearMemory.setText("Clear Memory");
-			clearMemory.addListener(SWT.Selection, new Listener() {
-
-				@Override
-				public void handleEvent(Event event) {
-					// selector.stopAnimation();
-				}
-			});
-		}
-		return clearMemory;
 	}
 
 	private Combo getFormatSelector() {

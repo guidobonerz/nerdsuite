@@ -14,7 +14,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -26,8 +26,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.log.Console;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import de.drazil.nerdsuite.model.TileLocation;
 
 public class ImagingWidget extends Canvas implements IDrawListener, PaintListener {
 	private final static int MOUSE_BUTTON_LEFT = 1;
@@ -62,6 +61,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int cursorY = 0;
 	protected int tileX = 0;
 	protected int tileY = 0;
+	private int animationIndexX;
+	private int animationIndexY;
 	protected int visibleRows = 0;
 	protected int visibleColumns = 0;
 	protected int tileCursorX = 0;
@@ -76,6 +77,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int rightButtonMode = 0;
 	private int paintControlMode = DRAW_NOTHING;
 	private PaintMode drawMode = PaintMode.Pixel;
+	private PencilMode pencilMode = PencilMode.Draw;
 
 	protected byte bitplane[];
 	protected byte clipboardBuffer[];
@@ -91,7 +93,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected boolean tileCursorEnabled = false;
 	protected boolean separatorEnabled = true;
 	protected boolean layerViewEnabled = false;
-	protected boolean paintMode = true;
+	// protected boolean paintMode = true;
 	protected boolean mouseIn = false;
 	protected boolean animationMarkersSet = false;
 
@@ -102,6 +104,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected ScrollBar vBar = null;
 	protected List<IDrawListener> drawListenerList = null;
 	protected List<TileLocation> tileLocationList = null;
+	private List<TileLocation> selectionRangeBuffer = null;
 	protected String widgetName = "<unknown>";
 
 	protected WidgetMode widgetMode;
@@ -117,11 +120,11 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	};
 
 	public enum Direction {
-		UP, DOWN, LEFT, RIGHT
+		Up, Down, Left, Right
 	};
 
 	public enum Orientation {
-		HORIZONTAL, VERTICAL
+		Horizontal, Vertical
 	};
 
 	public enum Rotate {
@@ -136,26 +139,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		Pixel, VerticalMirror, HorizontalMirror, Kaleidoscope
 	}
 
-	@Data
-	@AllArgsConstructor
-	private class TileRange {
-		private int x1;
-		private int y1;
-		private int x2;
-		private int y2;
+	public enum PencilMode {
+		Draw, Erase
 	}
-
-	@Data
-	@AllArgsConstructor
-	private class TileLocation {
-		private int x;
-		private int y;
-	}
-
-	private int animationIndexX;
-	private int animationIndexY;
-
-	private List<TileLocation> selectionRangeBuffer = null;
 
 	public class Animator extends TimerTask {
 		public void run() {
@@ -175,22 +161,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 		hBar = getHorizontalBar();
 		vBar = getVerticalBar();
-		/*
-		 * vBar.addSelectionListener(new SelectionListener() {
-		 * 
-		 * @Override public void widgetSelected(SelectionEvent e) { if
-		 * (navigationOffset > 0) { navigationOffset = hBar.getSelection() *
-		 * computeTileSize() * columns; selectedTileOffset =
-		 * computeTileOffset(selectedTileIndexX, selectedTileIndexY);
-		 * fireSetSelectedTileOffset(selectedTileOffset); doDrawAllTiles(); }
-		 * 
-		 * }
-		 * 
-		 * @Override public void widgetDefaultSelected(SelectionEvent e) { //
-		 * TODO Auto-generated method stub
-		 * 
-		 * } });
-		 */
 
 		setBackground(Constants.BLACK);
 
@@ -242,7 +212,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 						selectedTileIndexY++;
 						selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
 					} else {
-						if (navigationOffset < bitplane.length - computeTileSize()) {
+						if (navigationOffset < bitplane.length - (computeTileSize() * rows * columns)) {
 							navigationOffset += computeTileSize() * columns;
 						}
 					}
@@ -278,14 +248,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			}
 		});
 
-		addMouseTrackListener(new MouseTrackListener() {
-
-			@Override
-			public void mouseHover(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
+		addMouseTrackListener(new MouseTrackAdapter() {
 			@Override
 			public void mouseExit(MouseEvent e) {
 				mouseIn = false;
@@ -366,8 +329,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				if (e.button == MOUSE_BUTTON_RIGHT) {
 
 					if (widgetMode == WidgetMode.PAINTER) {
-						paintMode = !paintMode;
-						Console.println("drawMode:" + paintMode);
+						pencilMode = pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
+						Console.println("PencilMode:" + pencilMode);
 					}
 
 				} else if (e.button == MOUSE_BUTTON_LEFT) {
@@ -420,12 +383,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		tileY = y / (height * currentPixelHeight * tileRows);
 		tileCursorX = (cursorX - (tileX * width));
 		tileCursorY = (cursorY - (tileY * height));
-		/*
-		 * System.out.printf( getWidgetName() +
-		 * ": mx:%3d my:%3d | px:%3d py:%3d | tx:%3d ty:%3d | tcx:%3d tcy:%3d |pixwidth: %3d \n"
-		 * , x, y, cursorX, cursorY, tileX, tileY, tileCursorX, tileCursorY,
-		 * currentPixelWidth);
-		 */
 	}
 
 	public void paintControl(PaintEvent e) {
@@ -502,9 +459,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public void paintControlAnimationMarkers(GC gc) {
 		gc.setBackground(Constants.ANIMATION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
-		// List<TileLocation> list = animationMarkersSet ? tileLocationList :
-		// rangeBuffer;
-
 		for (TileLocation tilelocation : tileLocationList) {
 			gc.fillRectangle(tilelocation.x * width * pixelSize * tileColumns,
 					tilelocation.y * height * pixelSize * tileRows, width * pixelSize * tileColumns,
@@ -515,7 +469,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public void paintControlTileCursor(GC gc, boolean mouseIn, int x, int y) {
 		gc.setLineWidth(cursorLineWidth);
 		gc.setLineStyle(SWT.LINE_SOLID);
-
 		gc.setBackground(Constants.TILE_SUB_GRID_COLOR);
 		gc.setAlpha(150);
 		gc.fillRectangle(x * width * pixelSize * tileColumns, y * height * pixelSize * tileRows,
@@ -667,14 +620,14 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					int index = (((iy * currentWidth) + ix) >> 3) + offset;
 					byte byteMask = bitplane[index + getSelectedTileOffset()];
 					int pixelMask = (1 << (7 - (ix % 8)) & 0xff);
-					bitplane[index + getSelectedTileOffset()] = paintMode ? (byte) (byteMask | pixelMask)
-							: (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
+					bitplane[index + getSelectedTileOffset()] = pencilMode == PencilMode.Draw
+							? (byte) (byteMask | pixelMask) : (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
 				}
 			}
 		}
 
-		gc.setBackground(
-				paintMode ? palette.get(String.valueOf(selectedColorIndex)) : Constants.BITMAP_BACKGROUND_COLOR);
+		gc.setBackground(pencilMode == PencilMode.Draw ? palette.get(String.valueOf(selectedColorIndex))
+				: Constants.BITMAP_BACKGROUND_COLOR);
 
 		int pix = isPixelGridEnabled() ? 1 : 0;
 		gc.fillRectangle((x * currentPixelWidth) + pix, (y * currentPixelHeight) + pix, currentPixelWidth - pix,
@@ -940,15 +893,15 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	private void fireDoDrawPixel(int x, int y, boolean paintMode) {
+	private void fireDoDrawPixel(int x, int y, PencilMode pencilMode) {
 		for (IDrawListener listener : drawListenerList) {
-			listener.doDrawPixel(x, y, paintMode);
+			listener.doDrawPixel(x, y, pencilMode);
 		}
 	}
 
 	@Override
-	public void doDrawPixel(int x, int y, boolean paintMode) {
-		this.paintMode = paintMode;
+	public void doDrawPixel(int x, int y, PencilMode pencilMode) {
+		this.pencilMode = pencilMode;
 		cursorX = x + (selectedTileIndexX * width * tileColumns);
 		cursorY = y + (selectedTileIndexY * height * tileRows);
 		doDrawPixel();
@@ -1012,17 +965,25 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	@Override
 	public void doDrawAllTiles() {
 		paintControlMode = SET_DRAW_ALL_TILES;
+		setNotification(selectedTileOffset, computeTileSize());
 		redraw();
 	}
 
 	public void startAnimation() {
-		resetTimer();
-		animationIsRunning = true;
-		animationTimer.scheduleAtFixedRate(new Animator(), 0, 100);
+
+		if (tileLocationList.size() < 1) {
+			showMessage("You have to select an animation range first.");
+		} else {
+			resetTimer();
+			animationIsRunning = true;
+			notifyAnimationStarted(animationIsRunning);
+			animationTimer.scheduleAtFixedRate(new Animator(), 0, 70);
+		}
 	}
 
 	public void stopAnimation() {
 		animationIsRunning = false;
+		notifyAnimationStarted(animationIsRunning);
 		animationTimer.cancel();
 		animationTimer.purge();
 		resetTimer();
@@ -1030,6 +991,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	private void resetTimer() {
 		animationTimer = new Timer();
+	}
+
+	public boolean isAnimationRunning() {
+		return animationIsRunning;
 	}
 
 	public void animate() {
@@ -1068,11 +1033,28 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	}
 
+	private boolean checkIfSquareBase() {
+		int w = currentWidth * tileColumns;
+		int h = height * tileRows;
+		return w == h;
+	}
+
+	protected void notifyAnimationStarted(boolean state) {
+	}
+
+	protected void setNotification(int offset, int tileSize) {
+
+	}
+
 	protected void showMessage(String message) {
 
 	}
 
-	protected boolean isClearSwapBufferConfirmed() {
+	protected boolean isClearTileConfirmed(boolean allSelected) {
+		return true;
+	}
+
+	protected boolean isRotationConfirmed() {
 		return true;
 	}
 
@@ -1097,7 +1079,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public void clearTiles(boolean allSelected) {
-		if (isClearTileConfirmed()) {
+		if (isClearTileConfirmed(allSelected)) {
 			if (allSelected) {
 				for (TileLocation tl : tileLocationList) {
 					clearTile(tl.x, tl.y);
@@ -1117,20 +1099,30 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	protected boolean isClearTileConfirmed() {
-		return true;
+	public void shiftTile(Direction direction) {
+		switch (direction) {
+		case Up: {
+
+			break;
+		}
+		}
+
 	}
 
-	public void shiftTile(int x, int y, Direction direction) {
+	public void flipTile(Orientation orientation) {
 	}
 
-	public void flipTile(int x, int y, Orientation orientation) {
+	public void mirrorTile(Direction direction) {
 	}
 
-	public void mirrorTile(int x, int y, Direction direction) {
-	}
+	public void rotateTile(Rotate direction) {
+		boolean doRotate = false;
+		if (!(doRotate = checkIfSquareBase())) {
+			doRotate = isRotationConfirmed();
+		}
+		if (doRotate) {
 
-	public void rotateTile(int x, int y, Rotate direction) {
+		}
 	}
 
 	private boolean hasTile(int x, int y) {
