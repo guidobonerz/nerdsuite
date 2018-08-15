@@ -1211,7 +1211,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			}
 			if (doRotate) {
 				byte sourceWorkArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
-				printResult(sourceWorkArray);
 				byte targetWorkArray[] = createWorkArray();
 				switch (mode) {
 				case CCW: {

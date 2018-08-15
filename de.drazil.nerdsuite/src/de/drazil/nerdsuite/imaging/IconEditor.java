@@ -297,7 +297,7 @@ public class IconEditor {
 				@Override
 				protected boolean isRotationConfirmed() {
 					return MessageDialog.openQuestion(parent.getShell(), "Question",
-							"Rotating these tile(s) causes data loss, because it is/they are not squarish. /n Do you want to rotate anyway?");
+							"Rotating these tile(s) causes data loss, because it is/they are not squarish.\n\nDo you want to rotate anyway?");
 				}
 
 				@Override
