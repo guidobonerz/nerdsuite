@@ -1180,7 +1180,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 						workArray[x + (y * fw)] = b;
 						workArray[x + ((fh - y - 1) * fw)] = a;
 					}
-
 				}
 				break;
 			}
@@ -1190,15 +1189,36 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		case Mirror: {
 			switch (mode) {
 			case UpperHalf: {
+				for (int y = 0; y < fh / 2; y++) {
+					for (int x = 0; x < fw; x++) {
+						workArray[x + ((fh - y - 1) * fw)] = workArray[x + (y * fw)];
+					}
+				}
 				break;
 			}
 			case LowerHalf: {
+				for (int y = 0; y < fh / 2; y++) {
+					for (int x = 0; x < fw; x++) {
+						workArray[x + (y * fw)] = workArray[x + ((fh - y - 1) * fw)];
+
+					}
+				}
 				break;
 			}
 			case LeftHalf: {
+				for (int y = 0; y < fh; y++) {
+					for (int x = 0; x < fw / 2; x++) {
+						workArray[(fw) - 1 - x + (y * fw)] = workArray[x + (y * fw)];
+					}
+				}
 				break;
 			}
 			case RightHalf: {
+				for (int y = 0; y < fh; y++) {
+					for (int x = 0; x < fw / 2; x++) {
+						workArray[x + (y * fw)] = workArray[(fw) - 1 - x + (y * fw)];
+					}
+				}
 				break;
 			}
 			}
@@ -1241,6 +1261,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			}
 		}
 		}
+
 		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
 		doDrawTile();
 		fireDoDrawAllTiles();

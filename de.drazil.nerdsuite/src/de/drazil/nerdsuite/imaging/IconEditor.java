@@ -157,6 +157,38 @@ public class IconEditor {
 		});
 		MenuItem separator2 = new MenuItem(popup, SWT.SEPARATOR);
 
+		MenuItem mirrorUpperHalf = new MenuItem(popup, SWT.NONE);
+		mirrorUpperHalf.setText("Mirror Upper Half");
+		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
+		mirrorUpperHalf.addListener(SWT.Selection, e -> {
+			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Mirror,
+					TransformationMode.UpperHalf);
+		});
+
+		MenuItem mirrorLowerHalf = new MenuItem(popup, SWT.NONE);
+		mirrorLowerHalf.setText("Mirror Lower Half");
+		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
+		mirrorLowerHalf.addListener(SWT.Selection, e -> {
+			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Mirror,
+					TransformationMode.LowerHalf);
+		});
+
+		MenuItem mirrorLeftHalf = new MenuItem(popup, SWT.NONE);
+		mirrorLeftHalf.setText("Mirror Left Half");
+		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
+		mirrorLeftHalf.addListener(SWT.Selection, e -> {
+			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Mirror,
+					TransformationMode.LeftHalf);
+		});
+		MenuItem mirrorRightHalf = new MenuItem(popup, SWT.NONE);
+		mirrorRightHalf.setText("Mirror Right Half");
+		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
+		mirrorRightHalf.addListener(SWT.Selection, e -> {
+			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Mirror,
+					TransformationMode.RightHalf);
+		});
+		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
+
 		MenuItem rotateCW = new MenuItem(popup, SWT.NONE);
 		rotateCW.setText("Rotate CW");
 		rotateCW.setImage(rotateCWId.createImage());
@@ -173,7 +205,7 @@ public class IconEditor {
 					TransformationMode.CCW);
 		});
 
-		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
+		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem shiftUp = new MenuItem(popup, SWT.NONE);
 		shiftUp.setText("Shift Up");
@@ -207,7 +239,7 @@ public class IconEditor {
 					TransformationMode.Right);
 		});
 
-		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);
+		MenuItem separator5 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem swapTiles = new MenuItem(popup, SWT.NONE);
 		swapTiles.setText("Swap Selected Tiles");
