@@ -182,6 +182,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		});
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+
 				switch (e.character) {
 				case '1': {
 					selectedColorIndex = 0;
@@ -1116,10 +1117,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public void shiftTile(boolean allSelected, Direction direction) {
-		byte workArray[] = toWorkArray(selectedTileIndexX, selectedTileIndexY);
+		byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
 		switch (direction) {
 		case Up: {
-
 			for (int x = 0; x < width * tileColumns; x++) {
 				byte b = workArray[x];
 				for (int y = 0; y < (height * tileRows) - 1; y++) {
@@ -1127,7 +1127,6 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				}
 				workArray[x + (width * tileColumns * ((height * tileRows) - 1))] = b;
 			}
-
 			break;
 		}
 		case Down: {
@@ -1162,11 +1161,14 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			break;
 		}
 		}
-		printResult(workArray);
+
+		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
 		doDrawTile();
+		fireDoDrawAllTiles();
 	}
 
 	public void flipTile(boolean allSelected, Orientation orientation) {
+		byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
 		switch (orientation) {
 		case Horizontal: {
 			break;
@@ -1176,9 +1178,14 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 
 		}
+
+		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
+		doDrawTile();
+		fireDoDrawAllTiles();
 	}
 
 	public void mirrorTile(boolean allSelected, Mirror mirror) {
+		byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
 		switch (mirror) {
 		case UpperHalf: {
 			break;
@@ -1194,6 +1201,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 
 		}
+
+		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
+		doDrawTile();
+		fireDoDrawAllTiles();
 	}
 
 	public void rotateTile(boolean allSelected, Rotate direction) {
@@ -1202,6 +1213,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			doRotate = isRotationConfirmed();
 		}
 		if (doRotate) {
+			byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
 			switch (direction) {
 			case CW: {
 				break;
@@ -1211,6 +1223,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			}
 
 			}
+
+			convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
+			doDrawTile();
+			fireDoDrawAllTiles();
 		}
 	}
 
@@ -1226,7 +1242,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		System.out.println(sb);
 	}
 
-	private byte[] toWorkArray(int xc, int yc) {
+	private byte[] convertToWorkArray(int xc, int yc) {
 		int iconSize = computeIconSize();
 		int tileSize = computeTileSize();
 		int tileOffset = computeTileOffset(xc, yc);
@@ -1234,10 +1250,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 		for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
 			s = (si % (iconSize)) == 0 ? 0 : s;
-			int x = (si / iconSize) & (tileColumns - 1);
-			int y = (si / (iconSize * tileColumns));
-			int xo = x * width;
-			int yo = y * height * width * tileColumns;
+			int xo = (si / iconSize) & (tileColumns - 1) * width;
+			int yo = (si / (iconSize * tileColumns)) * height * width * tileColumns;
 			int ro = ((s / bytesPerRow) * width) * tileColumns;
 			int wai = ro + xo + yo;
 
@@ -1249,6 +1263,27 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			}
 		}
 		return workArray;
+	}
+
+	private void convertToBitplane(byte workArray[], int xc, int yc) {
+		int iconSize = computeIconSize();
+		int tileSize = computeTileSize();
+		int tileOffset = computeTileOffset(xc, yc);
+
+		for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
+			s = (si % (iconSize)) == 0 ? 0 : s;
+			int xo = (si / iconSize) & (tileColumns - 1) * width;
+			int yo = (si / (iconSize * tileColumns)) * height * width * tileColumns;
+			int ro = ((s / bytesPerRow) * width) * tileColumns;
+			int wai = ro + xo + yo;
+
+			for (int i = 0; i < bytesPerRow; i++) {
+				bitplane[tileOffset + si + i] = 0;
+				for (int m = 7, ti = 0; m >= 0; m -= (isMultiColorEnabled() ? 2 : 1), ti++) {
+					(bitplane[tileOffset + si + i]) |= (workArray[wai + (8 * i) + ti] << m);
+				}
+			}
+		}
 	}
 
 	private boolean hasTile(int x, int y) {
