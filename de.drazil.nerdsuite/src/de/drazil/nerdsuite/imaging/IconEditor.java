@@ -381,6 +381,8 @@ public class IconEditor {
 					painter.recalc();
 					selector.setMultiColorEnabled(multicolor.getSelection());
 					selector.recalc();
+					previewer.setMultiColorEnabled(multicolor.getSelection());
+					previewer.recalc();
 				}
 			});
 		}

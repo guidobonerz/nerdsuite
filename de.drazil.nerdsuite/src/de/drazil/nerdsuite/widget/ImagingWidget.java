@@ -105,7 +105,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected ScrollBar hBar = null;
 	protected ScrollBar vBar = null;
 	protected List<IDrawListener> drawListenerList = null;
-	protected List<TileLocation> tileLocationList = null;
+	private List<TileLocation> tileSelectionList = null;
 	private List<TileLocation> selectionRangeBuffer = null;
 	protected String widgetName = "<unknown>";
 
@@ -155,7 +155,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		setRows(1);
 
 		selectionRangeBuffer = new ArrayList<>();
-		tileLocationList = new ArrayList<>();
+		tileSelectionList = new ArrayList<>();
 
 		hBar = getHorizontalBar();
 		vBar = getVerticalBar();
@@ -308,11 +308,11 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 							}
 							int xs = selectionRangeBuffer.get(a).x;
 							int ys = selectionRangeBuffer.get(a).y;
-							tileLocationList = new ArrayList<>();
+							tileSelectionList = new ArrayList<>();
 							for (;;) {
 								if (xs < columns) {
 									if (!hasTile(xs, ys)) {
-										tileLocationList.add(new TileLocation(xs, ys));
+										tileSelectionList.add(new TileLocation(xs, ys));
 									}
 									if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
 										break;
@@ -346,7 +346,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
 						leftButtonMode = 0;
 						if ((e.stateMask & SWT.CTRL) == 0 && (e.stateMask & SWT.SHIFT) == 0) {
-							tileLocationList = new ArrayList<>();
+							tileSelectionList = new ArrayList<>();
 							selectionRangeBuffer = new ArrayList<>();
 						}
 					}
@@ -358,7 +358,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 						fireSetSelectedTileOffset(selectedTileOffset);
 						if ((e.stateMask & SWT.CTRL) != 0) {
 							if (!hasTile(tileX, tileY)) {
-								tileLocationList.add(new TileLocation(tileX, tileY));
+								tileSelectionList.add(new TileLocation(tileX, tileY));
 							}
 						}
 						doDrawAllTiles();
@@ -468,7 +468,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public void paintControlAnimationMarkers(GC gc) {
 		gc.setBackground(Constants.ANIMATION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
-		for (TileLocation tilelocation : tileLocationList) {
+		for (TileLocation tilelocation : tileSelectionList) {
 			gc.fillRectangle(tilelocation.x * width * pixelSize * tileColumns,
 					tilelocation.y * height * pixelSize * tileRows, width * pixelSize * tileColumns,
 					height * pixelSize * tileRows);
@@ -980,7 +980,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void startAnimation() {
 
-		if (tileLocationList.size() < 1) {
+		if (tileSelectionList.size() < 1) {
 			showMessage("You have to select an animation range first.");
 		} else {
 			resetTimer();
@@ -1011,8 +1011,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			getDisplay().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					Collections.rotate(tileLocationList, -1);
-					TileLocation tl = tileLocationList.get(0);
+					Collections.rotate(tileSelectionList, -1);
+					TileLocation tl = tileSelectionList.get(0);
 					animationIndexX = tl.x;
 					animationIndexY = tl.y;
 					selectedTileOffset = computeTileOffset(animationIndexX, animationIndexY);
@@ -1025,9 +1025,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	public void swapTiles() {
 
-		if (tileLocationList.size() == 2) {
-			int swapSourceOffset = computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y);
-			int swapTargetOffset = computeTileOffset(tileLocationList.get(1).x, tileLocationList.get(1).y);
+		if (tileSelectionList.size() == 2) {
+			int swapSourceOffset = computeTileOffset(tileSelectionList.get(0).x, tileSelectionList.get(0).y);
+			int swapTargetOffset = computeTileOffset(tileSelectionList.get(1).x, tileSelectionList.get(1).y);
 
 			for (int i = 0; i < computeTileSize(); i++) {
 				byte buffer = bitplane[swapSourceOffset + i];
@@ -1090,7 +1090,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public void clearTiles(boolean allSelected) {
 		if (isClearTileConfirmed(allSelected)) {
 			if (allSelected) {
-				for (TileLocation tl : tileLocationList) {
+				for (TileLocation tl : tileSelectionList) {
 					clearTile(tl.x, tl.y);
 				}
 			} else {
@@ -1112,6 +1112,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
 		int fh = height * tileRows;
 		int fw = width * tileColumns;
+		int size = fh * fw;
 		switch (type) {
 
 		case Shift: {
@@ -1165,9 +1166,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				for (int y = 0; y < fh; y++) {
 					for (int x = 0; x < fw / 2; x++) {
 						byte a = workArray[x + (y * fw)];
-						byte b = workArray[(fw) - 1 - x + (y * fw)];
+						byte b = workArray[fw - 1 - x + (y * fw)];
 						workArray[x + (y * fw)] = b;
-						workArray[(fw) - 1 - x + (y * fw)] = a;
+						workArray[fw - 1 - x + (y * fw)] = a;
 					}
 				}
 				break;
@@ -1208,7 +1209,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			case LeftHalf: {
 				for (int y = 0; y < fh; y++) {
 					for (int x = 0; x < fw / 2; x++) {
-						workArray[(fw) - 1 - x + (y * fw)] = workArray[x + (y * fw)];
+						workArray[fw - 1 - x + (y * fw)] = workArray[x + (y * fw)];
 					}
 				}
 				break;
@@ -1216,7 +1217,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			case RightHalf: {
 				for (int y = 0; y < fh; y++) {
 					for (int x = 0; x < fw / 2; x++) {
-						workArray[x + (y * fw)] = workArray[(fw) - 1 - x + (y * fw)];
+						workArray[x + (y * fw)] = workArray[fw - 1 - x + (y * fw)];
 					}
 				}
 				break;
@@ -1239,7 +1240,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 							byte b = sourceWorkArray[x + (y * width * tileColumns)];
 							int o = (width * height * tileRows * tileColumns) - (width * tileColumns)
 									- (width * tileColumns * x) + y;
-							targetWorkArray[o] = b;
+							if (o >= 0 && o < size) {
+								targetWorkArray[o] = b;
+							}
 						}
 					}
 					break;
@@ -1249,8 +1252,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 						for (int x = 0; x < width * tileColumns; x++) {
 							byte b = sourceWorkArray[x + (y * width * tileColumns)];
 							int o = (width * tileColumns) - y - 1 + (x * width * tileColumns);
-							targetWorkArray[o] = b;
-							printResult(targetWorkArray);
+							if (o >= 0 && o < size) {
+								targetWorkArray[o] = b;
+							}
 						}
 					}
 					break;
@@ -1329,7 +1333,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	private boolean hasTile(int x, int y) {
-		for (TileLocation tl : tileLocationList) {
+		for (TileLocation tl : tileSelectionList) {
 			if (tl.x == x && tl.y == y) {
 				return true;
 			}
