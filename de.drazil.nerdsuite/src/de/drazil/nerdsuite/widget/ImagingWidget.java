@@ -1109,164 +1109,167 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public void transform(boolean allSelected, TransformationType type, TransformationMode mode) {
-		byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
 		int fh = height * tileRows;
 		int fw = width * tileColumns;
 		int size = fh * fw;
-		switch (type) {
+		for (int i = 0; i < tileSelectionList.size(); i++) {
+			byte workArray[] = convertToWorkArray(tileSelectionList.get(i).x, tileSelectionList.get(i).y);
 
-		case Shift: {
-			switch (mode) {
-			case Up: {
-				for (int x = 0; x < fw; x++) {
-					byte b = workArray[x];
-					for (int y = 0; y < fh - 1; y++) {
-						workArray[x + y * fw] = workArray[x + (y + 1) * fw];
-					}
-					workArray[x + (fw * (fh - 1))] = b;
-				}
-				break;
-			}
-			case Down: {
+			switch (type) {
 
-				for (int x = 0; x < fw; x++) {
-					byte b = workArray[x + (fw * (fh - 1))];
-					for (int y = fh - 1; y > 0; y--) {
-						workArray[x + y * fw] = workArray[x + (y - 1) * fw];
-					}
-					workArray[x] = b;
-				}
-				break;
-			}
-			case Left: {
-				for (int y = 0; y < fh; y++) {
-					byte b = workArray[y * fw];
-					for (int x = 0; x < fw - 1; x++) {
-						workArray[x + y * fw] = workArray[(x + 1) + y * fw];
-					}
-					workArray[(fw + y * fw) - 1] = b;
-				}
-				break;
-			}
-			case Right: {
-				for (int y = 0; y < fh; y++) {
-					byte b = workArray[(fw + y * fw) - 1];
-					for (int x = fw - 1; x > 0; x--) {
-						workArray[x + y * fw] = workArray[(x - 1) + y * fw];
-					}
-					workArray[y * fw] = b;
-				}
-				break;
-			}
-			}
-		}
-		case Flip: {
-			switch (mode) {
-			case Horizontal: {
-				for (int y = 0; y < fh; y++) {
-					for (int x = 0; x < fw / 2; x++) {
-						byte a = workArray[x + (y * fw)];
-						byte b = workArray[fw - 1 - x + (y * fw)];
-						workArray[x + (y * fw)] = b;
-						workArray[fw - 1 - x + (y * fw)] = a;
-					}
-				}
-				break;
-			}
-			case Vertical: {
-				for (int y = 0; y < fh / 2; y++) {
-					for (int x = 0; x < fw; x++) {
-						byte a = workArray[x + (y * fw)];
-						byte b = workArray[x + ((fh - y - 1) * fw)];
-						workArray[x + (y * fw)] = b;
-						workArray[x + ((fh - y - 1) * fw)] = a;
-					}
-				}
-				break;
-			}
-			}
-			break;
-		}
-		case Mirror: {
-			switch (mode) {
-			case UpperHalf: {
-				for (int y = 0; y < fh / 2; y++) {
-					for (int x = 0; x < fw; x++) {
-						workArray[x + ((fh - y - 1) * fw)] = workArray[x + (y * fw)];
-					}
-				}
-				break;
-			}
-			case LowerHalf: {
-				for (int y = 0; y < fh / 2; y++) {
-					for (int x = 0; x < fw; x++) {
-						workArray[x + (y * fw)] = workArray[x + ((fh - y - 1) * fw)];
-
-					}
-				}
-				break;
-			}
-			case LeftHalf: {
-				for (int y = 0; y < fh; y++) {
-					for (int x = 0; x < fw / 2; x++) {
-						workArray[fw - 1 - x + (y * fw)] = workArray[x + (y * fw)];
-					}
-				}
-				break;
-			}
-			case RightHalf: {
-				for (int y = 0; y < fh; y++) {
-					for (int x = 0; x < fw / 2; x++) {
-						workArray[x + (y * fw)] = workArray[fw - 1 - x + (y * fw)];
-					}
-				}
-				break;
-			}
-			}
-			break;
-		}
-		case Rotate: {
-			boolean doRotate = false;
-			if (!(doRotate = checkIfSquareBase())) {
-				doRotate = isRotationConfirmed();
-			}
-			if (doRotate) {
-				byte sourceWorkArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
-				byte targetWorkArray[] = createWorkArray();
+			case Shift: {
 				switch (mode) {
-				case CCW: {
-					for (int y = 0; y < height * tileRows; y++) {
-						for (int x = 0; x < width * tileColumns; x++) {
-							byte b = sourceWorkArray[x + (y * width * tileColumns)];
-							int o = (width * height * tileRows * tileColumns) - (width * tileColumns)
-									- (width * tileColumns * x) + y;
-							if (o >= 0 && o < size) {
-								targetWorkArray[o] = b;
-							}
+				case Up: {
+					for (int x = 0; x < fw; x++) {
+						byte b = workArray[x];
+						for (int y = 0; y < fh - 1; y++) {
+							workArray[x + y * fw] = workArray[x + (y + 1) * fw];
 						}
+						workArray[x + (fw * (fh - 1))] = b;
 					}
 					break;
 				}
-				case CW: {
-					for (int y = 0; y < height * tileRows; y++) {
-						for (int x = 0; x < width * tileColumns; x++) {
-							byte b = sourceWorkArray[x + (y * width * tileColumns)];
-							int o = (width * tileColumns) - y - 1 + (x * width * tileColumns);
-							if (o >= 0 && o < size) {
-								targetWorkArray[o] = b;
-							}
-						}
-					}
-					break;
-				}
-				}
-				workArray = targetWorkArray;
-			}
-			break;
-		}
-		}
+				case Down: {
 
-		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
+					for (int x = 0; x < fw; x++) {
+						byte b = workArray[x + (fw * (fh - 1))];
+						for (int y = fh - 1; y > 0; y--) {
+							workArray[x + y * fw] = workArray[x + (y - 1) * fw];
+						}
+						workArray[x] = b;
+					}
+					break;
+				}
+				case Left: {
+					for (int y = 0; y < fh; y++) {
+						byte b = workArray[y * fw];
+						for (int x = 0; x < fw - 1; x++) {
+							workArray[x + y * fw] = workArray[(x + 1) + y * fw];
+						}
+						workArray[(fw + y * fw) - 1] = b;
+					}
+					break;
+				}
+				case Right: {
+					for (int y = 0; y < fh; y++) {
+						byte b = workArray[(fw + y * fw) - 1];
+						for (int x = fw - 1; x > 0; x--) {
+							workArray[x + y * fw] = workArray[(x - 1) + y * fw];
+						}
+						workArray[y * fw] = b;
+					}
+					break;
+				}
+				}
+			}
+			case Flip: {
+				switch (mode) {
+				case Horizontal: {
+					for (int y = 0; y < fh; y++) {
+						for (int x = 0; x < fw / 2; x++) {
+							byte a = workArray[x + (y * fw)];
+							byte b = workArray[fw - 1 - x + (y * fw)];
+							workArray[x + (y * fw)] = b;
+							workArray[fw - 1 - x + (y * fw)] = a;
+						}
+					}
+					break;
+				}
+				case Vertical: {
+					for (int y = 0; y < fh / 2; y++) {
+						for (int x = 0; x < fw; x++) {
+							byte a = workArray[x + (y * fw)];
+							byte b = workArray[x + ((fh - y - 1) * fw)];
+							workArray[x + (y * fw)] = b;
+							workArray[x + ((fh - y - 1) * fw)] = a;
+						}
+					}
+					break;
+				}
+				}
+				break;
+			}
+			case Mirror: {
+				switch (mode) {
+				case UpperHalf: {
+					for (int y = 0; y < fh / 2; y++) {
+						for (int x = 0; x < fw; x++) {
+							workArray[x + ((fh - y - 1) * fw)] = workArray[x + (y * fw)];
+						}
+					}
+					break;
+				}
+				case LowerHalf: {
+					for (int y = 0; y < fh / 2; y++) {
+						for (int x = 0; x < fw; x++) {
+							workArray[x + (y * fw)] = workArray[x + ((fh - y - 1) * fw)];
+
+						}
+					}
+					break;
+				}
+				case LeftHalf: {
+					for (int y = 0; y < fh; y++) {
+						for (int x = 0; x < fw / 2; x++) {
+							workArray[fw - 1 - x + (y * fw)] = workArray[x + (y * fw)];
+						}
+					}
+					break;
+				}
+				case RightHalf: {
+					for (int y = 0; y < fh; y++) {
+						for (int x = 0; x < fw / 2; x++) {
+							workArray[x + (y * fw)] = workArray[fw - 1 - x + (y * fw)];
+						}
+					}
+					break;
+				}
+				}
+				break;
+			}
+			case Rotate: {
+				boolean doRotate = false;
+				if (!(doRotate = checkIfSquareBase())) {
+					doRotate = isRotationConfirmed();
+				}
+				if (doRotate) {
+
+					byte targetWorkArray[] = createWorkArray();
+					switch (mode) {
+					case CCW: {
+						for (int y = 0; y < height * tileRows; y++) {
+							for (int x = 0; x < width * tileColumns; x++) {
+								byte b = workArray[x + (y * width * tileColumns)];
+								int o = (width * height * tileRows * tileColumns) - (width * tileColumns)
+										- (width * tileColumns * x) + y;
+								if (o >= 0 && o < size) {
+									targetWorkArray[o] = b;
+								}
+							}
+						}
+						break;
+					}
+					case CW: {
+						for (int y = 0; y < height * tileRows; y++) {
+							for (int x = 0; x < width * tileColumns; x++) {
+								byte b = workArray[x + (y * width * tileColumns)];
+								int o = (width * tileColumns) - y - 1 + (x * width * tileColumns);
+								if (o >= 0 && o < size) {
+									targetWorkArray[o] = b;
+								}
+							}
+						}
+						break;
+					}
+					}
+					workArray = targetWorkArray;
+				}
+				break;
+			}
+			}
+
+			convertToBitplane(workArray, tileSelectionList.get(i).x, tileSelectionList.get(i).y);
+		}
 		doDrawTile();
 		fireDoDrawAllTiles();
 	}
