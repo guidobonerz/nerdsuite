@@ -1162,7 +1162,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 		case Flip: {
 			switch (mode) {
-			case Vertical: {
+			case Horizontal: {
 				for (int y = 0; y < fh; y++) {
 					for (int x = 0; x < fw / 2; x++) {
 						byte a = workArray[x + (y * fw)];
@@ -1173,7 +1173,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				}
 				break;
 			}
-			case Horizontal: {
+			case Vertical: {
 				for (int y = 0; y < fh / 2; y++) {
 					for (int x = 0; x < fw; x++) {
 						byte a = workArray[x + (y * fw)];
