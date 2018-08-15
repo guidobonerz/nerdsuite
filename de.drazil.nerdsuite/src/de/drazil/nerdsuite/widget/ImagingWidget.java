@@ -121,21 +121,13 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		PIXEL, LINE
 	};
 
-	public enum Direction {
-		Up, Down, Left, Right
-	};
+	public enum TransformationType {
+		Shift, Mirror, Flip, Rotate
+	}
 
-	public enum Mirror {
-		UpperHalf, LowerHalf, LeftHalf, RightHalf
-	};
-
-	public enum Orientation {
-		Horizontal, Vertical
-	};
-
-	public enum Rotate {
-		CW, CCW
-	};
+	public enum TransformationMode {
+		Up, Down, Left, Right, UpperHalf, LowerHalf, LeftHalf, RightHalf, Horizontal, Vertical, CCW, CW
+	}
 
 	public enum ClipboardAction {
 		Cut, Copy, Paste, Off
@@ -1116,118 +1108,143 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	public void shiftTile(boolean allSelected, Direction direction) {
+	public void transform(boolean allSelected, TransformationType type, TransformationMode mode) {
 		byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
-		switch (direction) {
-		case Up: {
-			for (int x = 0; x < width * tileColumns; x++) {
-				byte b = workArray[x];
-				for (int y = 0; y < (height * tileRows) - 1; y++) {
-					workArray[x + y * (width * tileColumns)] = workArray[x + (y + 1) * (width * tileColumns)];
+		int fh = height * tileRows;
+		int fw = width * tileColumns;
+		switch (type) {
+
+		case Shift: {
+			switch (mode) {
+			case Up: {
+				for (int x = 0; x < fw; x++) {
+					byte b = workArray[x];
+					for (int y = 0; y < fh - 1; y++) {
+						workArray[x + y * fw] = workArray[x + (y + 1) * fw];
+					}
+					workArray[x + (fw * (fh - 1))] = b;
 				}
-				workArray[x + (width * tileColumns * ((height * tileRows) - 1))] = b;
-			}
-			break;
-		}
-		case Down: {
-
-			for (int x = 0; x < width * tileColumns; x++) {
-				byte b = workArray[x + (width * tileColumns * ((height * tileRows) - 1))];
-				for (int y = (height * tileRows) - 1; y > 0; y--) {
-					workArray[x + y * (width * tileColumns)] = workArray[x + (y - 1) * (width * tileColumns)];
-				}
-				workArray[x] = b;
-			}
-			break;
-		}
-		case Left: {
-			for (int y = 0; y < (height * tileRows); y++) {
-				byte b = workArray[y * (width * tileColumns)];
-				for (int x = 0; x < (width * tileColumns) - 1; x++) {
-					workArray[x + y * (width * tileColumns)] = workArray[(x + 1) + y * (width * tileColumns)];
-				}
-				workArray[(width * tileColumns + y * (width * tileColumns)) - 1] = b;
-			}
-			break;
-		}
-		case Right: {
-			for (int y = 0; y < (height * tileRows); y++) {
-				byte b = workArray[(width * tileColumns + y * (width * tileColumns)) - 1];
-				for (int x = (width * tileColumns) - 1; x > 0; x--) {
-					workArray[x + y * (width * tileColumns)] = workArray[(x - 1) + y * (width * tileColumns)];
-				}
-				workArray[y * (width * tileColumns)] = b;
-			}
-			break;
-		}
-		}
-
-		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
-		doDrawTile();
-		fireDoDrawAllTiles();
-	}
-
-	public void flipTile(boolean allSelected, Orientation orientation) {
-		byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
-		switch (orientation) {
-		case Horizontal: {
-			break;
-		}
-		case Vertical: {
-			break;
-		}
-
-		}
-
-		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
-		doDrawTile();
-		fireDoDrawAllTiles();
-	}
-
-	public void mirrorTile(boolean allSelected, Mirror mirror) {
-		byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
-		switch (mirror) {
-		case UpperHalf: {
-			break;
-		}
-		case LowerHalf: {
-			break;
-		}
-		case LeftHalf: {
-			break;
-		}
-		case RightHalf: {
-			break;
-		}
-
-		}
-
-		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
-		doDrawTile();
-		fireDoDrawAllTiles();
-	}
-
-	public void rotateTile(boolean allSelected, Rotate direction) {
-		boolean doRotate = false;
-		if (!(doRotate = checkIfSquareBase())) {
-			doRotate = isRotationConfirmed();
-		}
-		if (doRotate) {
-			byte workArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
-			switch (direction) {
-			case CW: {
 				break;
 			}
-			case CCW: {
+			case Down: {
+
+				for (int x = 0; x < fw; x++) {
+					byte b = workArray[x + (fw * (fh - 1))];
+					for (int y = fh - 1; y > 0; y--) {
+						workArray[x + y * fw] = workArray[x + (y - 1) * fw];
+					}
+					workArray[x] = b;
+				}
 				break;
 			}
-
+			case Left: {
+				for (int y = 0; y < fh; y++) {
+					byte b = workArray[y * fw];
+					for (int x = 0; x < fw - 1; x++) {
+						workArray[x + y * fw] = workArray[(x + 1) + y * fw];
+					}
+					workArray[(fw + y * fw) - 1] = b;
+				}
+				break;
 			}
-
-			convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
-			doDrawTile();
-			fireDoDrawAllTiles();
+			case Right: {
+				for (int y = 0; y < fh; y++) {
+					byte b = workArray[(fw + y * fw) - 1];
+					for (int x = fw - 1; x > 0; x--) {
+						workArray[x + y * fw] = workArray[(x - 1) + y * fw];
+					}
+					workArray[y * fw] = b;
+				}
+				break;
+			}
+			}
 		}
+		case Flip: {
+			switch (mode) {
+			case Vertical: {
+				for (int y = 0; y < fh; y++) {
+					for (int x = 0; x < fw / 2; x++) {
+						byte a = workArray[x + (y * fw)];
+						byte b = workArray[(fw) - 1 - x + (y * fw)];
+						workArray[x + (y * fw)] = b;
+						workArray[(fw) - 1 - x + (y * fw)] = a;
+					}
+				}
+				break;
+			}
+			case Horizontal: {
+				for (int y = 0; y < fh / 2; y++) {
+					for (int x = 0; x < fw; x++) {
+						byte a = workArray[x + (y * fw)];
+						byte b = workArray[x + ((fh - y - 1) * fw)];
+						workArray[x + (y * fw)] = b;
+						workArray[x + ((fh - y - 1) * fw)] = a;
+					}
+
+				}
+				break;
+			}
+			}
+			break;
+		}
+		case Mirror: {
+			switch (mode) {
+			case UpperHalf: {
+				break;
+			}
+			case LowerHalf: {
+				break;
+			}
+			case LeftHalf: {
+				break;
+			}
+			case RightHalf: {
+				break;
+			}
+			}
+			break;
+		}
+		case Rotate: {
+			boolean doRotate = false;
+			if (!(doRotate = checkIfSquareBase())) {
+				doRotate = isRotationConfirmed();
+			}
+			if (doRotate) {
+				byte sourceWorkArray[] = convertToWorkArray(selectedTileIndexX, selectedTileIndexY);
+				printResult(sourceWorkArray);
+				byte targetWorkArray[] = createWorkArray();
+				switch (mode) {
+				case CCW: {
+					for (int y = 0; y < height * tileRows; y++) {
+						for (int x = 0; x < width * tileColumns; x++) {
+							byte b = sourceWorkArray[x + (y * width * tileColumns)];
+							int o = (width * height * tileRows * tileColumns) - (width * tileColumns)
+									- (width * tileColumns * x) + y;
+							targetWorkArray[o] = b;
+						}
+					}
+					workArray = targetWorkArray;
+					break;
+				}
+				case CW: {
+					/*
+					 * for (int y = 0; y < height * tileRows; y++) { for (int x
+					 * = 0; x < width * tileColumns; x++) { byte b =
+					 * sourceWorkArray[x + (y * width * tileColumns)]; int o =
+					 * (width * tileColumns) - x + (width * tileColumns * x) +
+					 * y; targetWorkArray[o] = b; } } workArray =
+					 * targetWorkArray;
+					 */
+					break;
+				}
+				}
+				break;
+			}
+		}
+		}
+		convertToBitplane(workArray, selectedTileIndexX, selectedTileIndexY);
+		doDrawTile();
+		fireDoDrawAllTiles();
 	}
 
 	private void printResult(byte workArray[]) {
@@ -1246,11 +1263,11 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		int iconSize = computeIconSize();
 		int tileSize = computeTileSize();
 		int tileOffset = computeTileOffset(xc, yc);
-		byte[] workArray = new byte[tileSize * (isMultiColorEnabled() ? 4 : 8)];
+		byte[] workArray = createWorkArray();
 
 		for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
 			s = (si % (iconSize)) == 0 ? 0 : s;
-			int xo = (si / iconSize) & (tileColumns - 1) * width;
+			int xo = ((si / iconSize) & (tileColumns - 1)) * width;
 			int yo = (si / (iconSize * tileColumns)) * height * width * tileColumns;
 			int ro = ((s / bytesPerRow) * width) * tileColumns;
 			int wai = ro + xo + yo;
@@ -1265,6 +1282,11 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		return workArray;
 	}
 
+	private byte[] createWorkArray() {
+		int tileSize = computeTileSize();
+		return new byte[tileSize * (isMultiColorEnabled() ? 4 : 8)];
+	}
+
 	private void convertToBitplane(byte workArray[], int xc, int yc) {
 		int iconSize = computeIconSize();
 		int tileSize = computeTileSize();
@@ -1272,7 +1294,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 		for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
 			s = (si % (iconSize)) == 0 ? 0 : s;
-			int xo = (si / iconSize) & (tileColumns - 1) * width;
+			int xo = ((si / iconSize) & (tileColumns - 1)) * width;
 			int yo = (si / (iconSize * tileColumns)) * height * width * tileColumns;
 			int ro = ((s / bytesPerRow) * width) * tileColumns;
 			int wai = ro + xo + yo;
