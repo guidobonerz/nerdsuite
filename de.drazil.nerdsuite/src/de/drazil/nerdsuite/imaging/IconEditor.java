@@ -58,7 +58,7 @@ public class IconEditor {
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
 		parent.setLayout(new MigLayout());
-		parent.setBackground(Constants.BLACK);
+		//parent.setBackground(Constants.BLACK);
 
 		controls = new Composite(parent, SWT.BORDER);
 		controls.setLayout(new MigLayout("fillx"));
@@ -146,14 +146,14 @@ public class IconEditor {
 		flipHorizontal.setText("Flip Horizontal");
 		flipHorizontal.setImage(flipHorizontalId.createImage());
 		flipHorizontal.addListener(SWT.Selection, e -> {
-			getSelector().flipTile(Orientation.Horizontal);
+			getSelector().flipTile((e.stateMask & SWT.SHIFT) == SWT.SHIFT, Orientation.Horizontal);
 		});
 
 		MenuItem flipVertical = new MenuItem(popup, SWT.NONE);
 		flipVertical.setText("Flip Vertical");
 		flipVertical.setImage(flipVerticalId.createImage());
 		flipVertical.addListener(SWT.Selection, e -> {
-			getSelector().flipTile(Orientation.Vertical);
+			getSelector().flipTile((e.stateMask & SWT.SHIFT) == SWT.SHIFT, Orientation.Vertical);
 		});
 		MenuItem separator2 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -161,14 +161,14 @@ public class IconEditor {
 		rotateCW.setText("Rotate CW");
 		rotateCW.setImage(rotateCWId.createImage());
 		rotateCW.addListener(SWT.Selection, e -> {
-			getSelector().rotateTile(Rotate.CW);
+			getSelector().rotateTile((e.stateMask & SWT.SHIFT) == SWT.SHIFT, Rotate.CW);
 		});
 
 		MenuItem rotateCCW = new MenuItem(popup, SWT.NONE);
 		rotateCCW.setText("Rotate CCW");
 		rotateCCW.setImage(rotateCCWId.createImage());
 		rotateCCW.addListener(SWT.Selection, e -> {
-			getSelector().rotateTile(Rotate.CCW);
+			getSelector().rotateTile((e.stateMask & SWT.SHIFT) == SWT.SHIFT, Rotate.CCW);
 		});
 
 		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
@@ -177,28 +177,28 @@ public class IconEditor {
 		shiftUp.setText("Shift Up");
 		shiftUp.setImage(upId.createImage());
 		shiftUp.addListener(SWT.Selection, e -> {
-			getSelector().shiftTile(Direction.Up);
+			getSelector().shiftTile((e.stateMask & SWT.SHIFT) == SWT.SHIFT, Direction.Up);
 		});
 
 		MenuItem shiftDown = new MenuItem(popup, SWT.NONE);
 		shiftDown.setText("Shift Down");
 		shiftDown.setImage(downId.createImage());
 		shiftDown.addListener(SWT.Selection, e -> {
-			getSelector().shiftTile(Direction.Down);
+			getSelector().shiftTile((e.stateMask & SWT.SHIFT) == SWT.SHIFT, Direction.Down);
 		});
 
 		MenuItem shiftLeft = new MenuItem(popup, SWT.NONE);
 		shiftLeft.setText("Shift Left");
 		shiftLeft.setImage(leftId.createImage());
 		shiftLeft.addListener(SWT.Selection, e -> {
-			getSelector().shiftTile(Direction.Up);
+			getSelector().shiftTile((e.stateMask & SWT.SHIFT) == SWT.SHIFT, Direction.Left);
 		});
 
 		MenuItem shiftRight = new MenuItem(popup, SWT.NONE);
 		shiftRight.setText("Shift Right");
 		shiftRight.setImage(rightId.createImage());
 		shiftRight.addListener(SWT.Selection, e -> {
-			getSelector().shiftTile(Direction.Right);
+			getSelector().shiftTile((e.stateMask & SWT.SHIFT) == SWT.SHIFT, Direction.Right);
 		});
 
 		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);

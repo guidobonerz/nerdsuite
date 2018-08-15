@@ -22,6 +22,8 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
@@ -123,6 +125,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		Up, Down, Left, Right
 	};
 
+	public enum Mirror {
+		UpperHalf, LowerHalf, LeftHalf, RightHalf
+	};
+
 	public enum Orientation {
 		Horizontal, Vertical
 	};
@@ -167,7 +173,13 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		drawListenerList = new ArrayList<IDrawListener>();
 
 		addPaintListener(this);
+		parent.getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 
+			@Override
+			public void handleEvent(Event event) {
+				doDrawAllTiles();
+			}
+		});
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				switch (e.character) {
@@ -273,6 +285,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 			@Override
 			public void mouseMove(MouseEvent e) {
+				if (widgetMode == WidgetMode.SELECTOR) {
+					// System.out.println((e.stateMask & SWT.MODIFIER_MASK) + "
+					// " + e.button + " " + leftButtonMode);
+				}
 				setCursorPosition(e.x, e.y);
 				if (widgetMode == WidgetMode.PAINTER) {
 					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
@@ -1099,30 +1115,140 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	public void shiftTile(Direction direction) {
+	public void shiftTile(boolean allSelected, Direction direction) {
+		byte workArray[] = toWorkArray(selectedTileIndexX, selectedTileIndexY);
 		switch (direction) {
 		case Up: {
 
+			for (int x = 0; x < width * tileColumns; x++) {
+				byte b = workArray[x];
+				for (int y = 0; y < (height * tileRows) - 1; y++) {
+					workArray[x + y * (width * tileColumns)] = workArray[x + (y + 1) * (width * tileColumns)];
+				}
+				workArray[x + (width * tileColumns * ((height * tileRows) - 1))] = b;
+			}
+
+			break;
+		}
+		case Down: {
+
+			for (int x = 0; x < width * tileColumns; x++) {
+				byte b = workArray[x + (width * tileColumns * ((height * tileRows) - 1))];
+				for (int y = (height * tileRows) - 1; y > 0; y--) {
+					workArray[x + y * (width * tileColumns)] = workArray[x + (y - 1) * (width * tileColumns)];
+				}
+				workArray[x] = b;
+			}
+			break;
+		}
+		case Left: {
+			for (int y = 0; y < (height * tileRows); y++) {
+				byte b = workArray[y * (width * tileColumns)];
+				for (int x = 0; x < (width * tileColumns) - 1; x++) {
+					workArray[x + y * (width * tileColumns)] = workArray[(x + 1) + y * (width * tileColumns)];
+				}
+				workArray[(width * tileColumns + y * (width * tileColumns)) - 1] = b;
+			}
+			break;
+		}
+		case Right: {
+			for (int y = 0; y < (height * tileRows); y++) {
+				byte b = workArray[(width * tileColumns + y * (width * tileColumns)) - 1];
+				for (int x = (width * tileColumns) - 1; x > 0; x--) {
+					workArray[x + y * (width * tileColumns)] = workArray[(x - 1) + y * (width * tileColumns)];
+				}
+				workArray[y * (width * tileColumns)] = b;
+			}
 			break;
 		}
 		}
-
+		printResult(workArray);
+		doDrawTile();
 	}
 
-	public void flipTile(Orientation orientation) {
+	public void flipTile(boolean allSelected, Orientation orientation) {
+		switch (orientation) {
+		case Horizontal: {
+			break;
+		}
+		case Vertical: {
+			break;
+		}
+
+		}
 	}
 
-	public void mirrorTile(Direction direction) {
+	public void mirrorTile(boolean allSelected, Mirror mirror) {
+		switch (mirror) {
+		case UpperHalf: {
+			break;
+		}
+		case LowerHalf: {
+			break;
+		}
+		case LeftHalf: {
+			break;
+		}
+		case RightHalf: {
+			break;
+		}
+
+		}
 	}
 
-	public void rotateTile(Rotate direction) {
+	public void rotateTile(boolean allSelected, Rotate direction) {
 		boolean doRotate = false;
 		if (!(doRotate = checkIfSquareBase())) {
 			doRotate = isRotationConfirmed();
 		}
 		if (doRotate) {
+			switch (direction) {
+			case CW: {
+				break;
+			}
+			case CCW: {
+				break;
+			}
 
+			}
 		}
+	}
+
+	private void printResult(byte workArray[]) {
+		System.out.println("-----------------------------------------");
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < workArray.length; i++) {
+			if (i % (width * tileColumns) == 0) {
+				sb.append("\n");
+			}
+			sb.append(workArray[i]);
+		}
+		System.out.println(sb);
+	}
+
+	private byte[] toWorkArray(int xc, int yc) {
+		int iconSize = computeIconSize();
+		int tileSize = computeTileSize();
+		int tileOffset = computeTileOffset(xc, yc);
+		byte[] workArray = new byte[tileSize * (isMultiColorEnabled() ? 4 : 8)];
+
+		for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
+			s = (si % (iconSize)) == 0 ? 0 : s;
+			int x = (si / iconSize) & (tileColumns - 1);
+			int y = (si / (iconSize * tileColumns));
+			int xo = x * width;
+			int yo = y * height * width * tileColumns;
+			int ro = ((s / bytesPerRow) * width) * tileColumns;
+			int wai = ro + xo + yo;
+
+			for (int i = 0; i < bytesPerRow; i++) {
+				for (int m = 7, ti = 0; m >= 0; m -= (isMultiColorEnabled() ? 2 : 1), ti++) {
+					workArray[wai + (8 * i)
+							+ ti] = (byte) ((bitplane[tileOffset + si + i] >> m) & (isMultiColorEnabled() ? 3 : 1));
+				}
+			}
+		}
+		return workArray;
 	}
 
 	private boolean hasTile(int x, int y) {
@@ -1149,6 +1275,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	}
 
 	public int computeTileSize() {
-		return (width / 8) * height * tileColumns * tileRows;
+		return computeIconSize() * tileColumns * tileRows;
+	}
+
+	public int computeIconSize() {
+		return bytesPerRow * height;
 	}
 }
