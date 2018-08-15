@@ -1242,23 +1242,23 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 							targetWorkArray[o] = b;
 						}
 					}
-					workArray = targetWorkArray;
 					break;
 				}
 				case CW: {
-					/*
-					 * for (int y = 0; y < height * tileRows; y++) { for (int x
-					 * = 0; x < width * tileColumns; x++) { byte b =
-					 * sourceWorkArray[x + (y * width * tileColumns)]; int o =
-					 * (width * tileColumns) - x + (width * tileColumns * x) +
-					 * y; targetWorkArray[o] = b; } } workArray =
-					 * targetWorkArray;
-					 */
+					for (int y = 0; y < height * tileRows; y++) {
+						for (int x = 0; x < width * tileColumns; x++) {
+							byte b = sourceWorkArray[x + (y * width * tileColumns)];
+							int o = (width * tileColumns) - y - 1 + (x * width * tileColumns);
+							targetWorkArray[o] = b;
+							printResult(targetWorkArray);
+						}
+					}
 					break;
 				}
 				}
-				break;
+				workArray = targetWorkArray;
 			}
+			break;
 		}
 		}
 
