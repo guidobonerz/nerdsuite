@@ -67,7 +67,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int paintControlMode = SET_DRAW_NOTHING;
 	private PaintMode drawMode = PaintMode.Simple;
 	private PencilMode pencilMode = PencilMode.Draw;
-	private boolean isDrawing = false;
 
 	protected byte bitplane[];
 	protected byte clipboardBuffer[];
@@ -276,7 +275,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
-		System.out.println("right clicked");
+		// System.out.println("right clicked");
 		if (widgetMode == WidgetMode.Painter) {
 			pencilMode = pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
 			Console.println("PencilMode:" + pencilMode);
@@ -285,7 +284,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		System.out.println("left click");
+		// System.out.println("left click");
 		setCursorPosition(x, y);
 		if (widgetMode == WidgetMode.Selector) {
 			paintControlMode = 0;
@@ -302,14 +301,14 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
-		System.out.println("moved");
+		// System.out.println("moved");
 		setCursorPosition(x, y);
 		doDrawAllTiles();
 	}
 
 	@Override
 	public void mouseExit(int modifierMask, int x, int y) {
-		System.out.println("exit");
+		// System.out.println("exit");
 		mouseIn = false;
 		if (widgetMode == WidgetMode.Painter) {
 		} else if (widgetMode == WidgetMode.Selector) {
@@ -319,7 +318,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseEnter(int modifierMask, int x, int y) {
-		System.out.println("enter");
+		// System.out.println("enter");
 		setFocus();
 		mouseIn = true;
 		if (widgetMode == WidgetMode.Painter) {
@@ -330,7 +329,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseDragged(int modifierMask, int x, int y) {
-		System.out.println("dragged");
+		// System.out.println("dragged");
 		setCursorPosition(x, y);
 		if (widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
@@ -375,7 +374,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		System.out.println("left pressed");
+		// System.out.println("left pressed");
 		if (widgetMode == WidgetMode.Selector) {
 			tileSelectionList = new ArrayList<>();
 			selectionRangeBuffer = new ArrayList<>();
@@ -458,11 +457,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				paintControlTileCursor(e.gc, mouseIn, !animationIsRunning ? tileX : animationIndexX,
 						!animationIsRunning ? tileY : animationIndexY);
 			}
-
-			if (widgetMode == WidgetMode.Painter) {
-				paintControlPixelCursor(e.gc, 0, 0);
-			}
-
+			/*
+			 * if (widgetMode == WidgetMode.Painter) {
+			 * paintControlPixelCursor(e.gc, 0, 0); }
+			 */
 			paintControlSelection(e.gc);
 		}
 		paintControlMode = SET_DRAW_NOTHING;
@@ -512,9 +510,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void paintControlPixelCursor(GC gc, int x, int y) {
 		gc.setBackground(Constants.RED);
 		gc.setForeground(Constants.RED);
-		gc.fillRectangle((cursorX * currentPixelWidth) + 1 + (currentPixelWidth / 2) - currentPixelWidth / 8,
-				(cursorY * pixelSize) + 1 + (pixelSize / 2) - pixelSize / 8, currentPixelWidth / 4,
-				currentPixelWidth / 4);
+		gc.fillRectangle((cursorX * currentPixelWidth) + 1 + (currentPixelWidth / 2) - pixelSize / 8,
+				(cursorY * pixelSize) + 1 + (pixelSize / 2) - pixelSize / 8, pixelSize / 4, pixelSize / 4);
 
 	}
 
@@ -922,8 +919,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	protected void doDrawPixel() {
 		paintControlMode = SET_DRAW_PIXEL;
-		// System.out.println(getWidgetName() + ": x:" + cursorX + " y:" +
-		// cursorY);
 		int inset = isPixelGridEnabled() ? 1 : 0;
 
 		switch (drawMode) {
