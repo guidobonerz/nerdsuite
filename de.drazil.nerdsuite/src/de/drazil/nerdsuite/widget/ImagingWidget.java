@@ -67,6 +67,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int paintControlMode = SET_DRAW_NOTHING;
 	private PaintMode drawMode = PaintMode.Simple;
 	private PencilMode pencilMode = PencilMode.Draw;
+	private boolean isDrawing = false;
 
 	protected byte bitplane[];
 	protected byte clipboardBuffer[];
@@ -303,9 +304,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void mouseMove(int modifierMask, int x, int y) {
 		System.out.println("moved");
 		setCursorPosition(x, y);
-		if (widgetMode == WidgetMode.Selector) {
-			doDrawAllTiles();
-		}
+		doDrawAllTiles();
 	}
 
 	@Override
@@ -316,7 +315,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		} else if (widgetMode == WidgetMode.Selector) {
 		}
 		doDrawAllTiles();
-
 	}
 
 	@Override
@@ -512,12 +510,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	public void paintControlPixelCursor(GC gc, int x, int y) {
-		// System.out.println(cursorX + " " + cursorY);
-		gc.setForeground(Constants.DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR);
-		int lineWidth = (int) (getPixelSize() * 0.1);
-		gc.setLineWidth(lineWidth);
-		gc.drawRectangle((cursorX * currentPixelWidth) + 1 + lineWidth / 2, (cursorY * pixelSize) + 1 + lineWidth / 2,
-				currentPixelWidth - 1 - lineWidth, pixelSize - 1 - lineWidth);
+		gc.setBackground(Constants.RED);
+		gc.setForeground(Constants.RED);
+		// int lineWidth = (int) (getPixelSize() * 0.1);
+		// gc.setAlpha(100);
+		// gc.setLineWidth(lineWidth);
+		// gc.fillRectangle((cursorX * currentPixelWidth) + 1 + lineWidth / 2,
+		// (cursorY * pixelSize) + 1 + lineWidth / 2,currentPixelWidth - 1 -
+		// lineWidth, pixelSize - 1 - lineWidth);
+		gc.fillRectangle((cursorX * currentPixelWidth) + 1 + (currentPixelWidth / 2) - currentPixelWidth / 8,
+				(cursorY * pixelSize) + 1 + (pixelSize / 2) - pixelSize / 8, currentPixelWidth / 8,
+				currentPixelWidth / 8);
+
 	}
 
 	public void paintControlSeparator(GC gc) {

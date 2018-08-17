@@ -132,12 +132,13 @@ public class AdvancedMouseAdaper {
 		@Override
 		public void mouseMove(MouseEvent e) {
 			int modifierMask = getModifierMask(e);
-			fireMouseMove(MouseMove.Move, modifierMask, e.x, e.y);
 			setMouseState(SET_MOUSE_MOVE, true);
 			if (isMouseState(SET_LEFT_BUTTON_PRESSED + SET_MOUSE_MOVE, true)) {
 				setMouseState(SET_MOUSE_DRAGGED, true);
 				setMouseState(SET_MOUSE_DROPPED, false);
 				fireMouseMove(MouseMove.Drag, modifierMask, e.x, e.y);
+			} else {
+				fireMouseMove(MouseMove.Move, modifierMask, e.x, e.y);
 			}
 			setMouseState(SET_MOUSE_MOVE, false);
 		}
