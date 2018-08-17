@@ -1,9 +1,12 @@
 package de.drazil.nerdsuite.imaging.actions;
 
 public interface IImagingAction {
+
+	public boolean needsConfirmation();
+
 	public void doProcess(byte workArray[], byte bitplane[]);
 
-	public void sendMessage(String message, Object data);
+	public void sendResponse(String message, Object data);
 
-	public boolean isProcessConfirmed();
+	public boolean isProcessConfirmed(boolean confirmAnyProcess);
 }

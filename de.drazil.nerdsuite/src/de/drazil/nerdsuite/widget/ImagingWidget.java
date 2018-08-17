@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.imaging.actions.IImagingAction;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 
@@ -93,6 +94,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private List<TileLocation> tileSelectionList = null;
 	private List<TileLocation> selectionRangeBuffer = null;
 	protected String widgetName = "<unknown>";
+
+	private Map<String, IImagingAction> actionMap = null;
 
 	protected WidgetMode widgetMode;
 
@@ -173,6 +176,16 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		setColumns(1);
 		setRows(1);
 
+		if (widgetMode == WidgetMode.Selector) {
+			actionMap = new HashMap<>();
+			actionMap.put(ActionType.Shift.getName(), null);
+			actionMap.put(ActionType.Mirror.getName(), null);
+			actionMap.put(ActionType.Flip.getName(), null);
+			actionMap.put(ActionType.Rotate.getName(), null);
+			actionMap.put(ActionType.Animation.getName(), null);
+			actionMap.put(ActionType.Swap.getName(), null);
+			actionMap.put(ActionType.Purge.getName(), null);
+		}
 		selectionRangeBuffer = new ArrayList<>();
 		tileSelectionList = new ArrayList<>();
 
@@ -185,12 +198,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 		addPaintListener(this);
 		parent.getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
-
 			@Override
 			public void handleEvent(Event event) {
 				doDrawAllTiles();
 			}
 		});
+
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 
@@ -284,7 +297,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		//System.out.println("left click");
+		// System.out.println("left click");
 		setCursorPosition(x, y);
 		if (widgetMode == WidgetMode.Selector) {
 			paintControlMode = 0;
@@ -292,7 +305,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			selectedTileIndexY = tileY;
 			selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
 			fireSetSelectedTileOffset(selectedTileOffset);
-			computeSelection(false);
+			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			doDrawAllTiles();
 		} else if (widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
@@ -324,13 +337,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseDragged(int modifierMask, int x, int y) {
-		//System.out.println("dragged");
+		// System.out.println("dragged");
 		setCursorPosition(x, y);
 		if (widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
 			fireDoDrawTile();
 		} else if (widgetMode == WidgetMode.Selector) {
-			computeSelection(false);
+			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			doDrawAllTiles();
 		}
 	}
@@ -346,7 +359,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void selectAll() {
 		if (widgetMode == WidgetMode.Selector) {
 			resetSelectionList();
-			computeSelection(true);
+			computeSelection(true, false);
 			doDrawAllTiles();
 		}
 	}
@@ -365,7 +378,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		selectionRangeBuffer = new ArrayList<>();
 	}
 
-	private void computeSelection(boolean selectAll) {
+	private void computeSelection(boolean selectAll, boolean addNewSelectionRange) {
+		if (addNewSelectionRange) {
+			System.out.println("add new selection range");
+		}
 		if (selectionRangeBuffer.isEmpty()) {
 			if (selectAll) {
 				selectionRangeBuffer.add(new TileLocation(0, 0));
@@ -822,7 +838,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		if (vBar != null) {
 			vBar.setMinimum(0);
 			vBar.setMaximum(getRows());
-
 		}
 		fireSetSelectedTileOffset(selectedTileOffset);
 		doDrawAllTiles();
@@ -854,7 +869,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	public void setActiveLayer(int activeLayer) {
-
 		this.activeLayer = activeLayer < layerCount ? activeLayer : layerCount;
 	}
 
@@ -873,7 +887,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void setSelectedTileOffset(int offset) {
 		this.selectedTileOffset = offset;
-		// System.out.println(getWidgetName() + ":offset=" + offset);
 		doDrawAllTiles();
 	}
 
@@ -1363,10 +1376,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	private int computeIconSize() {
 		return bytesPerRow * height;
-	}
-
-	private int getMaximunTileCount() {
-		return bitplane.length / computeTileSize();
 	}
 
 	public void setMouseActionEnabled(boolean mouseActionEnabled) {
