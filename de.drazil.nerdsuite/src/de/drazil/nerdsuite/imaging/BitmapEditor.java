@@ -59,7 +59,7 @@ public class BitmapEditor {
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		ImagingWidget painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.setWidgetName("Painter :");
-		painter.setWidgetMode(WidgetMode.BITMAP_VIEWER);
+		painter.setWidgetMode(WidgetMode.BitmapViewer);
 		painter.setWidth(8);
 		painter.setHeight(8);
 		painter.setColumns(40);

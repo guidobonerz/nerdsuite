@@ -11,16 +11,11 @@ import java.util.TimerTask;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -30,18 +25,12 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 
-public class ImagingWidget extends Canvas implements IDrawListener, PaintListener {
-	private final static int MOUSE_BUTTON_LEFT = 1;
-	private final static int MOUSE_BUTTON_MIDDLE = 2;
-	private final static int MOUSE_BUTTON_RIGHT = 3;
-	protected final static int DRAW_NOTHING = 0;
+public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener {
+
+	protected final static int SET_DRAW_NOTHING = 0;
 	protected final static int SET_DRAW_ALL_TILES = 1;
 	protected final static int SET_DRAW_TILE = 2;
 	protected final static int SET_DRAW_PIXEL = 4;
-	protected final static int LEFT_BUTTON_PRESSED = 1;
-	protected final static int LEFT_BUTTON_RELEASED = 2;
-	protected final static int RIGHT_BUTTON_PRESSED = 4;
-	protected final static int RIGHT_BUTTON_RELEASED = 8;
 
 	protected int width = 8;
 	protected int currentWidth = 0;
@@ -75,10 +64,8 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected int colorCount;
 	protected int selectedTileOffset = 0;
 	protected int cursorLineWidth = 1;
-	protected int leftButtonMode = 0;
-	protected int rightButtonMode = 0;
-	private int paintControlMode = DRAW_NOTHING;
-	private PaintMode drawMode = PaintMode.Pixel;
+	private int paintControlMode = SET_DRAW_NOTHING;
+	private PaintMode drawMode = PaintMode.Simple;
 	private PencilMode pencilMode = PencilMode.Draw;
 
 	protected byte bitplane[];
@@ -95,11 +82,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	protected boolean tileCursorEnabled = false;
 	protected boolean separatorEnabled = true;
 	protected boolean layerViewEnabled = false;
-	// protected boolean paintMode = true;
 	protected boolean mouseIn = false;
-	protected boolean animationMarkersSet = false;
 
-	protected GridStyle gridStyle = GridStyle.LINE;
+	protected GridStyle gridStyle = GridStyle.Line;
 	protected Map<String, Color> palette;
 	protected IColorProvider colorProvider;
 	protected ScrollBar hBar = null;
@@ -114,19 +99,49 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	private Timer animationTimer;
 
 	public enum WidgetMode {
-		SELECTOR, PAINTER, VIEWER, BITMAP_VIEWER
+		Selector, Painter, Viewer, BitmapViewer
 	};
 
 	public enum GridStyle {
-		PIXEL, LINE
+		Dot, Line
 	};
 
-	public enum TransformationType {
-		Shift, Mirror, Flip, Rotate
+	public enum ActionType {
+		All("All"), Shift("Shift"), Mirror("Mirror"), Flip("Flip"), Rotate("Rotate"), Purge("Purge",
+				false), Swap("Swap", false, true), Animation("Animation", false);
+		private final String name;
+		private final boolean convert;
+		private final boolean ignoreSelectionList;
+
+		ActionType(String name) {
+			this(name, true);
+		}
+
+		ActionType(String name, boolean convert) {
+			this(name, convert, false);
+		}
+
+		ActionType(String name, boolean convert, boolean ignoreSelectionList) {
+			this.name = name;
+			this.convert = convert;
+			this.ignoreSelectionList = ignoreSelectionList;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public boolean doConvert() {
+			return convert;
+		}
+
+		public boolean ignoreSelectionList() {
+			return ignoreSelectionList;
+		}
 	}
 
-	public enum TransformationMode {
-		Up, Down, Left, Right, UpperHalf, LowerHalf, LeftHalf, RightHalf, Horizontal, Vertical, CCW, CW
+	public enum ActionMode {
+		Up, Down, Left, Right, UpperHalf, LowerHalf, LeftHalf, RightHalf, Horizontal, Vertical, CCW, CW, Start, Stop
 	}
 
 	public enum ClipboardAction {
@@ -134,11 +149,15 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	};
 
 	public enum PaintMode {
-		Pixel, VerticalMirror, HorizontalMirror, Kaleidoscope
+		Simple, VerticalMirror, HorizontalMirror, Kaleidoscope
 	}
 
 	public enum PencilMode {
 		Draw, Erase
+	}
+
+	public enum ConversionMode {
+		toWorkArray, toBitplane
 	}
 
 	public class Animator extends TimerTask {
@@ -252,137 +271,123 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 				}
 			}
 		});
+	}
 
-		addMouseTrackListener(new MouseTrackAdapter() {
-			@Override
-			public void mouseExit(MouseEvent e) {
-				mouseIn = false;
-				if (widgetMode == WidgetMode.PAINTER) {
-				} else if (widgetMode == WidgetMode.SELECTOR) {
+	@Override
+	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
+		System.out.println("right clicked");
+		if (widgetMode == WidgetMode.Painter) {
+			pencilMode = pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
+			Console.println("PencilMode:" + pencilMode);
+		}
+	}
+
+	@Override
+	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
+		System.out.println("left click");
+		setCursorPosition(x, y);
+		if (widgetMode == WidgetMode.Selector) {
+			paintControlMode = 0;
+			selectedTileIndexX = tileX;
+			selectedTileIndexY = tileY;
+			selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+			fireSetSelectedTileOffset(selectedTileOffset);
+			doDrawAllTiles();
+		} else if (widgetMode == WidgetMode.Painter) {
+			doDrawPixel();
+			fireDoDrawAllTiles();
+		}
+	}
+
+	@Override
+	public void mouseMove(int modifierMask, int x, int y) {
+		System.out.println("moved");
+		setCursorPosition(x, y);
+		if (widgetMode == WidgetMode.Selector) {
+			doDrawAllTiles();
+		}
+	}
+
+	@Override
+	public void mouseExit(int modifierMask, int x, int y) {
+		System.out.println("exit");
+		mouseIn = false;
+		if (widgetMode == WidgetMode.Painter) {
+		} else if (widgetMode == WidgetMode.Selector) {
+		}
+		doDrawAllTiles();
+
+	}
+
+	@Override
+	public void mouseEnter(int modifierMask, int x, int y) {
+		System.out.println("enter");
+		setFocus();
+		mouseIn = true;
+		if (widgetMode == WidgetMode.Painter) {
+		} else if (widgetMode == WidgetMode.Selector) {
+		}
+		doDrawAllTiles();
+	}
+
+	@Override
+	public void mouseDragged(int modifierMask, int x, int y) {
+		System.out.println("dragged");
+		setCursorPosition(x, y);
+		if (widgetMode == WidgetMode.Painter) {
+			doDrawPixel();
+			fireDoDrawTile();
+		} else if (widgetMode == WidgetMode.Selector) {
+
+			if (selectionRangeBuffer.isEmpty()) {
+				selectionRangeBuffer.add(new TileLocation(tileX, tileY));
+				selectionRangeBuffer.add(new TileLocation(0, 0));
+			} else {
+				selectionRangeBuffer.get(1).x = tileX;
+				selectionRangeBuffer.get(1).y = tileY;
+				int o1 = computeTileOffset(selectionRangeBuffer.get(0).x, selectionRangeBuffer.get(0).y);
+				int o2 = computeTileOffset(selectionRangeBuffer.get(1).x, selectionRangeBuffer.get(1).y);
+				int a = 0;
+				int b = 1;
+				if (o1 > o2) {
+					a = 1;
+					b = 0;
 				}
-				doDrawAllTiles();
-			}
-
-			@Override
-			public void mouseEnter(MouseEvent e) {
-				setFocus();
-				mouseIn = true;
-				if (widgetMode == WidgetMode.PAINTER) {
-				} else if (widgetMode == WidgetMode.SELECTOR) {
-				}
-				doDrawAllTiles();
-			}
-		});
-
-		addMouseMoveListener(new MouseMoveListener() {
-
-			@Override
-			public void mouseMove(MouseEvent e) {
-				if (widgetMode == WidgetMode.SELECTOR) {
-					// System.out.println((e.stateMask & SWT.MODIFIER_MASK) + "
-					// " + e.button + " " + leftButtonMode);
-				}
-				setCursorPosition(e.x, e.y);
-				if (widgetMode == WidgetMode.PAINTER) {
-					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
-						doDrawPixel();
-						fireDoDrawTile();
+				int xs = selectionRangeBuffer.get(a).x;
+				int ys = selectionRangeBuffer.get(a).y;
+				tileSelectionList = new ArrayList<>();
+				for (;;) {
+					if (xs < columns) {
+						if (!hasTile(xs, ys)) {
+							tileSelectionList.add(new TileLocation(xs, ys));
+						}
+						if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
+							break;
+						}
+						xs++;
 					} else {
-						doDrawAllTiles();
-					}
-				} else if (widgetMode == WidgetMode.SELECTOR) {
-					if (leftButtonMode == LEFT_BUTTON_PRESSED && (e.stateMask & SWT.SHIFT) == SWT.SHIFT) {
-						if (selectionRangeBuffer.isEmpty()) {
-							selectionRangeBuffer.add(new TileLocation(tileX, tileY));
-							selectionRangeBuffer.add(new TileLocation(0, 0));
-						} else {
-							selectionRangeBuffer.get(1).x = tileX;
-							selectionRangeBuffer.get(1).y = tileY;
-							int o1 = computeTileOffset(selectionRangeBuffer.get(0).x, selectionRangeBuffer.get(0).y);
-							int o2 = computeTileOffset(selectionRangeBuffer.get(1).x, selectionRangeBuffer.get(1).y);
-							int a = 0;
-							int b = 1;
-							if (o1 > o2) {
-								a = 1;
-								b = 0;
-							}
-							int xs = selectionRangeBuffer.get(a).x;
-							int ys = selectionRangeBuffer.get(a).y;
-							tileSelectionList = new ArrayList<>();
-							for (;;) {
-								if (xs < columns) {
-									if (!hasTile(xs, ys)) {
-										tileSelectionList.add(new TileLocation(xs, ys));
-									}
-									if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
-										break;
-									}
-									xs++;
-								} else {
-									xs = 0;
-									ys++;
-								}
-							}
-						}
-					}
-				}
-				doDrawAllTiles();
-			}
-		});
-
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseUp(MouseEvent e) {
-				setCursorPosition(e.x, e.y);
-
-				if (e.button == MOUSE_BUTTON_RIGHT) {
-
-					if (widgetMode == WidgetMode.PAINTER) {
-						pencilMode = pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
-						Console.println("PencilMode:" + pencilMode);
-					}
-
-				} else if (e.button == MOUSE_BUTTON_LEFT) {
-					if (leftButtonMode == LEFT_BUTTON_PRESSED) {
-						leftButtonMode = 0;
-						if ((e.stateMask & SWT.CTRL) == 0 && (e.stateMask & SWT.SHIFT) == 0) {
-							tileSelectionList = new ArrayList<>();
-							selectionRangeBuffer = new ArrayList<>();
-						}
-					}
-					if (widgetMode == WidgetMode.SELECTOR) {
-						paintControlMode = 0;
-						selectedTileIndexX = tileX;
-						selectedTileIndexY = tileY;
-						selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
-						fireSetSelectedTileOffset(selectedTileOffset);
-						if ((e.stateMask & SWT.CTRL) != 0) {
-							if (!hasTile(tileX, tileY)) {
-								tileSelectionList.add(new TileLocation(tileX, tileY));
-							}
-						}
-						doDrawAllTiles();
-
-					} else {
-						doDrawPixel();
-						fireDoDrawTile();
-					}
-
-				}
-			}
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-
-				if (e.button == MOUSE_BUTTON_LEFT) {
-					setCursorPosition(e.x, e.y);
-					leftButtonMode = LEFT_BUTTON_PRESSED;
-					if (widgetMode == WidgetMode.PAINTER) {
-
+						xs = 0;
+						ys++;
 					}
 				}
 			}
-		});
+			doDrawAllTiles();
+		}
+	}
+
+	@Override
+	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
+		System.out.println("left pressed");
+		if (widgetMode == WidgetMode.Selector) {
+			tileSelectionList = new ArrayList<>();
+			selectionRangeBuffer = new ArrayList<>();
+		}
+	}
+
+	public void selectAll() {
+		selectionRangeBuffer = new ArrayList<>();
+		selectionRangeBuffer.add(new TileLocation(0, 0));
+		selectionRangeBuffer.add(new TileLocation(columns, rows));
 	}
 
 	protected void setCursorPosition(int x, int y) {
@@ -402,10 +407,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		if ((paintControlMode & SET_DRAW_TILE) == SET_DRAW_TILE) {
 			paintControlTile(e.gc, selectedTileIndexX, selectedTileIndexY);
 		}
-		if (widgetMode != WidgetMode.VIEWER && widgetMode != WidgetMode.BITMAP_VIEWER) {
+		if (widgetMode != WidgetMode.Viewer && widgetMode != WidgetMode.BitmapViewer) {
 			if (paintControlMode == SET_DRAW_PIXEL) {
 				switch (drawMode) {
-				case Pixel: {
+				case Simple: {
 					paintControlPixel(e.gc, cursorX, cursorY);
 					break;
 				}
@@ -452,21 +457,22 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			}
 
 			if (isTileCursorEnabled()) {
-				paintControlTileCursor(e.gc, mouseIn, !animationIsRunning ? selectedTileIndexX : animationIndexX,
-						!animationIsRunning ? selectedTileIndexY : animationIndexY);
+				paintControlTileCursor(e.gc, mouseIn, !animationIsRunning ? tileX : animationIndexX,
+						!animationIsRunning ? tileY : animationIndexY);
 			}
-			if (widgetMode == WidgetMode.PAINTER) {
+
+			if (widgetMode == WidgetMode.Painter) {
 				paintControlPixelCursor(e.gc, 0, 0);
 			}
 
-			paintControlAnimationMarkers(e.gc);
+			paintControlSelection(e.gc);
 		}
-		paintControlMode = DRAW_NOTHING;
+		paintControlMode = SET_DRAW_NOTHING;
 
 	}
 
-	public void paintControlAnimationMarkers(GC gc) {
-		gc.setBackground(Constants.ANIMATION_TILE_MARKER_COLOR);
+	public void paintControlSelection(GC gc) {
+		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
 		for (TileLocation tilelocation : tileSelectionList) {
 			gc.fillRectangle(tilelocation.x * width * pixelSize * tileColumns,
@@ -494,7 +500,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		for (int x = 0; x <= currentWidth * tileColumns; x++) {
 			for (int y = 0; y <= height * tileRows; y++) {
 				gc.setForeground(Constants.PIXEL_GRID_COLOR);
-				if (gridStyle == GridStyle.LINE) {
+				if (gridStyle == GridStyle.Line) {
 					gc.drawLine(x * currentPixelWidth, 0, x * currentPixelWidth,
 							height * currentPixelHeight * tileRows);
 					gc.drawLine(0, y * pixelSize, width * pixelSize * tileColumns, y * pixelSize);
@@ -560,9 +566,9 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		int b2 = b1 * tileColumns;
 
 		int byteOffset = 0;
-		if (widgetMode == WidgetMode.PAINTER || widgetMode == WidgetMode.VIEWER) {
+		if (widgetMode == WidgetMode.Painter || widgetMode == WidgetMode.Viewer) {
 			byteOffset = selectedTileOffset;
-		} else if (widgetMode == WidgetMode.SELECTOR || widgetMode == WidgetMode.BITMAP_VIEWER) {
+		} else if (widgetMode == WidgetMode.Selector || widgetMode == WidgetMode.BitmapViewer) {
 			byteOffset = computeTileOffset(tx, ty);
 		}
 
@@ -610,7 +616,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 
 	private void paintControlPixel(GC gc, int x, int y) {
 
-		if (widgetMode == WidgetMode.PAINTER) {
+		if (widgetMode == WidgetMode.Painter) {
 			if (x < currentWidth * tileColumns && y < height * tileRows) {
 				int ix = x % currentWidth;
 				int iy = y % height;
@@ -923,7 +929,7 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		int inset = isPixelGridEnabled() ? 1 : 0;
 
 		switch (drawMode) {
-		case Pixel: {
+		case Simple: {
 			redraw((cursorX * currentPixelWidth) + inset, (cursorY * currentPixelHeight) + inset,
 					currentPixelWidth - inset, currentPixelHeight - inset, true);
 			break;
@@ -975,24 +981,25 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 	public void doDrawAllTiles() {
 		paintControlMode = SET_DRAW_ALL_TILES;
 		setNotification(selectedTileOffset, computeTileSize());
+
 		redraw();
 	}
 
 	public void startAnimation() {
 
 		if (tileSelectionList.size() < 1) {
-			showMessage("You have to select an animation range first.");
+			showNotification(ActionType.Animation, null, "You have to select an animation range first.", null);
 		} else {
 			resetTimer();
 			animationIsRunning = true;
-			notifyAnimationStarted(animationIsRunning);
+			showNotification(ActionType.Animation, ActionMode.Start, null, animationIsRunning);
 			animationTimer.scheduleAtFixedRate(new Animator(), 0, 70);
 		}
 	}
 
 	public void stopAnimation() {
 		animationIsRunning = false;
-		notifyAnimationStarted(animationIsRunning);
+		showNotification(ActionType.Animation, ActionMode.Start, null, animationIsRunning);
 		animationTimer.cancel();
 		animationTimer.purge();
 		resetTimer();
@@ -1023,48 +1030,22 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	public void swapTiles() {
-
-		if (tileSelectionList.size() == 2) {
-			int swapSourceOffset = computeTileOffset(tileSelectionList.get(0).x, tileSelectionList.get(0).y);
-			int swapTargetOffset = computeTileOffset(tileSelectionList.get(1).x, tileSelectionList.get(1).y);
-
-			for (int i = 0; i < computeTileSize(); i++) {
-				byte buffer = bitplane[swapSourceOffset + i];
-				bitplane[swapSourceOffset + i] = bitplane[swapTargetOffset + i];
-				bitplane[swapTargetOffset + i] = buffer;
-			}
-		} else {
-			showMessage("Please select only two tiles to swap");
-		}
-		doDrawAllTiles();
-		fireDoDrawAllTiles();
-
-	}
-
 	private boolean checkIfSquareBase() {
 		int w = currentWidth * tileColumns;
 		int h = height * tileRows;
 		return w == h;
 	}
 
-	protected void notifyAnimationStarted(boolean state) {
-	}
-
 	protected void setNotification(int offset, int tileSize) {
 
 	}
 
-	protected void showMessage(String message) {
-
-	}
-
-	protected boolean isClearTileConfirmed(boolean allSelected) {
+	protected boolean isConfirmed(ActionType type, ActionMode mode, int tileCount) {
 		return true;
 	}
 
-	protected boolean isRotationConfirmed() {
-		return true;
+	protected void showNotification(ActionType type, ActionMode mode, String notification, Object data) {
+
 	}
 
 	public void clipboardAction(ClipboardAction clipboardAction) {
@@ -1087,190 +1068,229 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		}
 	}
 
-	public void clearTiles(boolean allSelected) {
-		if (isClearTileConfirmed(allSelected)) {
-			if (allSelected) {
-				for (TileLocation tl : tileSelectionList) {
-					clearTile(tl.x, tl.y);
-				}
-			} else {
-				clearTile(tileX, tileY);
-			}
-			doDrawAllTiles();
-			fireDoDrawAllTiles();
-		}
+	public void action(boolean allSelected, ActionType type) {
+		action(allSelected, type, null);
 	}
 
-	private void clearTile(int x, int y) {
-		int offset = computeTileOffset(x, y);
-		for (int i = 0; i < computeTileSize(); i++) {
-			bitplane[offset + i] = 0;
-		}
-	}
-
-	public void transform(boolean allSelected, TransformationType type, TransformationMode mode) {
+	public void action(boolean allSelected, ActionType type, ActionMode mode) {
 		int fh = height * tileRows;
 		int fw = width * tileColumns;
 		int size = fh * fw;
-		for (int i = 0; i < tileSelectionList.size(); i++) {
-			byte workArray[] = convertToWorkArray(tileSelectionList.get(i).x, tileSelectionList.get(i).y);
+		int tsize = computeTileSize();
+		byte workArray[] = null;
+		if (isConfirmed(ActionType.All, null, tileSelectionList.size())) {
+			for (int i = 0; i < (type.ignoreSelectionList ? 1 : tileSelectionList.size()); i++) {
+				if (type.convert) {
+					workArray = createWorkArray();
+					convert(workArray, bitplane, tileSelectionList.get(i).x, tileSelectionList.get(i).y,
+							ConversionMode.toWorkArray);
+				}
+				switch (type) {
+				case Animation: {
+					if (mode == ActionMode.Start) {
+						if (tileSelectionList.size() < 1) {
+							showNotification(ActionType.Animation, null, "You have to select an animation range first.",
+									null);
+						} else {
+							animationIsRunning = true;
+							resetTimer();
+							showNotification(ActionType.Animation, ActionMode.Start, null, animationIsRunning);
+							animationTimer.scheduleAtFixedRate(new Animator(), 0, 70);
+						}
+					} else if (mode == ActionMode.Stop) {
+						animationIsRunning = false;
+						showNotification(ActionType.Animation, ActionMode.Start, null, animationIsRunning);
+						animationTimer.cancel();
+						animationTimer.purge();
+						resetTimer();
+					}
+					break;
+				}
+				case Purge: {
+					int offset = computeTileOffset(tileSelectionList.get(i).x, tileSelectionList.get(i).y);
+					for (int n = 0; n < tsize; n++) {
+						bitplane[offset + n] = 0;
+					}
+					break;
+				}
+				case Swap: {
+					if (tileSelectionList.size() == 2) {
+						int swapSourceOffset = computeTileOffset(tileSelectionList.get(0).x,
+								tileSelectionList.get(0).y);
+						int swapTargetOffset = computeTileOffset(tileSelectionList.get(1).x,
+								tileSelectionList.get(1).y);
 
-			switch (type) {
-
-			case Shift: {
-				switch (mode) {
-				case Up: {
-					for (int x = 0; x < fw; x++) {
-						byte b = workArray[x];
-						for (int y = 0; y < fh - 1; y++) {
-							workArray[x + y * fw] = workArray[x + (y + 1) * fw];
+						for (int n = 0; n < computeTileSize(); n++) {
+							byte buffer = bitplane[swapSourceOffset + n];
+							bitplane[swapSourceOffset + n] = bitplane[swapTargetOffset + n];
+							bitplane[swapTargetOffset + n] = buffer;
 						}
-						workArray[x + (fw * (fh - 1))] = b;
+					} else {
+						showNotification(ActionType.Swap, null, "Please select only two tiles to swap.", null);
 					}
 					break;
 				}
-				case Down: {
-
-					for (int x = 0; x < fw; x++) {
-						byte b = workArray[x + (fw * (fh - 1))];
-						for (int y = fh - 1; y > 0; y--) {
-							workArray[x + y * fw] = workArray[x + (y - 1) * fw];
-						}
-						workArray[x] = b;
-					}
-					break;
-				}
-				case Left: {
-					for (int y = 0; y < fh; y++) {
-						byte b = workArray[y * fw];
-						for (int x = 0; x < fw - 1; x++) {
-							workArray[x + y * fw] = workArray[(x + 1) + y * fw];
-						}
-						workArray[(fw + y * fw) - 1] = b;
-					}
-					break;
-				}
-				case Right: {
-					for (int y = 0; y < fh; y++) {
-						byte b = workArray[(fw + y * fw) - 1];
-						for (int x = fw - 1; x > 0; x--) {
-							workArray[x + y * fw] = workArray[(x - 1) + y * fw];
-						}
-						workArray[y * fw] = b;
-					}
-					break;
-				}
-				}
-			}
-			case Flip: {
-				switch (mode) {
-				case Horizontal: {
-					for (int y = 0; y < fh; y++) {
-						for (int x = 0; x < fw / 2; x++) {
-							byte a = workArray[x + (y * fw)];
-							byte b = workArray[fw - 1 - x + (y * fw)];
-							workArray[x + (y * fw)] = b;
-							workArray[fw - 1 - x + (y * fw)] = a;
-						}
-					}
-					break;
-				}
-				case Vertical: {
-					for (int y = 0; y < fh / 2; y++) {
-						for (int x = 0; x < fw; x++) {
-							byte a = workArray[x + (y * fw)];
-							byte b = workArray[x + ((fh - y - 1) * fw)];
-							workArray[x + (y * fw)] = b;
-							workArray[x + ((fh - y - 1) * fw)] = a;
-						}
-					}
-					break;
-				}
-				}
-				break;
-			}
-			case Mirror: {
-				switch (mode) {
-				case UpperHalf: {
-					for (int y = 0; y < fh / 2; y++) {
-						for (int x = 0; x < fw; x++) {
-							workArray[x + ((fh - y - 1) * fw)] = workArray[x + (y * fw)];
-						}
-					}
-					break;
-				}
-				case LowerHalf: {
-					for (int y = 0; y < fh / 2; y++) {
-						for (int x = 0; x < fw; x++) {
-							workArray[x + (y * fw)] = workArray[x + ((fh - y - 1) * fw)];
-
-						}
-					}
-					break;
-				}
-				case LeftHalf: {
-					for (int y = 0; y < fh; y++) {
-						for (int x = 0; x < fw / 2; x++) {
-							workArray[fw - 1 - x + (y * fw)] = workArray[x + (y * fw)];
-						}
-					}
-					break;
-				}
-				case RightHalf: {
-					for (int y = 0; y < fh; y++) {
-						for (int x = 0; x < fw / 2; x++) {
-							workArray[x + (y * fw)] = workArray[fw - 1 - x + (y * fw)];
-						}
-					}
-					break;
-				}
-				}
-				break;
-			}
-			case Rotate: {
-				boolean doRotate = false;
-				if (!(doRotate = checkIfSquareBase())) {
-					doRotate = isRotationConfirmed();
-				}
-				if (doRotate) {
-
-					byte targetWorkArray[] = createWorkArray();
+				case Shift: {
 					switch (mode) {
-					case CCW: {
-						for (int y = 0; y < height * tileRows; y++) {
-							for (int x = 0; x < width * tileColumns; x++) {
-								byte b = workArray[x + (y * width * tileColumns)];
-								int o = (width * height * tileRows * tileColumns) - (width * tileColumns)
-										- (width * tileColumns * x) + y;
-								if (o >= 0 && o < size) {
-									targetWorkArray[o] = b;
-								}
+					case Up: {
+						for (int x = 0; x < fw; x++) {
+							byte b = workArray[x];
+							for (int y = 0; y < fh - 1; y++) {
+								workArray[x + y * fw] = workArray[x + (y + 1) * fw];
 							}
+							workArray[x + (fw * (fh - 1))] = b;
 						}
 						break;
 					}
-					case CW: {
-						for (int y = 0; y < height * tileRows; y++) {
-							for (int x = 0; x < width * tileColumns; x++) {
-								byte b = workArray[x + (y * width * tileColumns)];
-								int o = (width * tileColumns) - y - 1 + (x * width * tileColumns);
-								if (o >= 0 && o < size) {
-									targetWorkArray[o] = b;
-								}
-							}
-						}
-						break;
-					}
-					}
-					workArray = targetWorkArray;
-				}
-				break;
-			}
-			}
+					case Down: {
 
-			convertToBitplane(workArray, tileSelectionList.get(i).x, tileSelectionList.get(i).y);
+						for (int x = 0; x < fw; x++) {
+							byte b = workArray[x + (fw * (fh - 1))];
+							for (int y = fh - 1; y > 0; y--) {
+								workArray[x + y * fw] = workArray[x + (y - 1) * fw];
+							}
+							workArray[x] = b;
+						}
+						break;
+					}
+					case Left: {
+						for (int y = 0; y < fh; y++) {
+							byte b = workArray[y * fw];
+							for (int x = 0; x < fw - 1; x++) {
+								workArray[x + y * fw] = workArray[(x + 1) + y * fw];
+							}
+							workArray[(fw + y * fw) - 1] = b;
+						}
+						break;
+					}
+					case Right: {
+						for (int y = 0; y < fh; y++) {
+							byte b = workArray[(fw + y * fw) - 1];
+							for (int x = fw - 1; x > 0; x--) {
+								workArray[x + y * fw] = workArray[(x - 1) + y * fw];
+							}
+							workArray[y * fw] = b;
+						}
+						break;
+					}
+					}
+				}
+				case Flip: {
+					switch (mode) {
+					case Horizontal: {
+						for (int y = 0; y < fh; y++) {
+							for (int x = 0; x < fw / 2; x++) {
+								byte a = workArray[x + (y * fw)];
+								byte b = workArray[fw - 1 - x + (y * fw)];
+								workArray[x + (y * fw)] = b;
+								workArray[fw - 1 - x + (y * fw)] = a;
+							}
+						}
+						break;
+					}
+					case Vertical: {
+						for (int y = 0; y < fh / 2; y++) {
+							for (int x = 0; x < fw; x++) {
+								byte a = workArray[x + (y * fw)];
+								byte b = workArray[x + ((fh - y - 1) * fw)];
+								workArray[x + (y * fw)] = b;
+								workArray[x + ((fh - y - 1) * fw)] = a;
+							}
+						}
+						break;
+					}
+					}
+					break;
+				}
+				case Mirror: {
+					switch (mode) {
+					case UpperHalf: {
+						for (int y = 0; y < fh / 2; y++) {
+							for (int x = 0; x < fw; x++) {
+								workArray[x + ((fh - y - 1) * fw)] = workArray[x + (y * fw)];
+							}
+						}
+						break;
+					}
+					case LowerHalf: {
+						for (int y = 0; y < fh / 2; y++) {
+							for (int x = 0; x < fw; x++) {
+								workArray[x + (y * fw)] = workArray[x + ((fh - y - 1) * fw)];
+
+							}
+						}
+						break;
+					}
+					case LeftHalf: {
+						for (int y = 0; y < fh; y++) {
+							for (int x = 0; x < fw / 2; x++) {
+								workArray[fw - 1 - x + (y * fw)] = workArray[x + (y * fw)];
+							}
+						}
+						break;
+					}
+					case RightHalf: {
+						for (int y = 0; y < fh; y++) {
+							for (int x = 0; x < fw / 2; x++) {
+								workArray[x + (y * fw)] = workArray[fw - 1 - x + (y * fw)];
+							}
+						}
+						break;
+					}
+					}
+					break;
+				}
+				case Rotate: {
+					boolean doRotate = false;
+					if (!(doRotate = checkIfSquareBase())) {
+						doRotate = isConfirmed(type, mode, 0);
+					}
+					if (doRotate) {
+
+						byte targetWorkArray[] = createWorkArray();
+						switch (mode) {
+						case CCW: {
+							for (int y = 0; y < height * tileRows; y++) {
+								for (int x = 0; x < width * tileColumns; x++) {
+									byte b = workArray[x + (y * width * tileColumns)];
+									int o = (width * height * tileRows * tileColumns) - (width * tileColumns)
+											- (width * tileColumns * x) + y;
+									if (o >= 0 && o < size) {
+										targetWorkArray[o] = b;
+									}
+								}
+							}
+							break;
+						}
+						case CW: {
+							for (int y = 0; y < height * tileRows; y++) {
+								for (int x = 0; x < width * tileColumns; x++) {
+									byte b = workArray[x + (y * width * tileColumns)];
+									int o = (width * tileColumns) - y - 1 + (x * width * tileColumns);
+									if (o >= 0 && o < size) {
+										targetWorkArray[o] = b;
+									}
+								}
+							}
+							break;
+						}
+						}
+						workArray = targetWorkArray;
+					}
+					break;
+				}
+				}
+				if (type.convert) {
+					convert(workArray, bitplane, tileSelectionList.get(i).x, tileSelectionList.get(i).y,
+							ConversionMode.toBitplane);
+				}
+			}
 		}
-		doDrawTile();
+		if (tileSelectionList.size() == 1) {
+			doDrawTile();
+		} else {
+			doDrawAllTiles();
+		}
 		fireDoDrawAllTiles();
 	}
 
@@ -1286,11 +1306,10 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		System.out.println(sb);
 	}
 
-	private byte[] convertToWorkArray(int xc, int yc) {
+	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {
 		int iconSize = computeIconSize();
 		int tileSize = computeTileSize();
-		int tileOffset = computeTileOffset(xc, yc);
-		byte[] workArray = createWorkArray();
+		int tileOffset = computeTileOffset(x, y);
 
 		for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
 			s = (si % (iconSize)) == 0 ? 0 : s;
@@ -1300,39 +1319,22 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 			int wai = ro + xo + yo;
 
 			for (int i = 0; i < bytesPerRow; i++) {
+				bitplane[tileOffset + si + i] = mode == ConversionMode.toBitplane ? 0 : bitplane[tileOffset + si + i];
 				for (int m = 7, ti = 0; m >= 0; m -= (isMultiColorEnabled() ? 2 : 1), ti++) {
-					workArray[wai + (8 * i)
-							+ ti] = (byte) ((bitplane[tileOffset + si + i] >> m) & (isMultiColorEnabled() ? 3 : 1));
+					if (mode == ConversionMode.toWorkArray) {
+						workArray[wai + (8 * i)
+								+ ti] = (byte) ((bitplane[tileOffset + si + i] >> m) & (isMultiColorEnabled() ? 3 : 1));
+					} else if (mode == ConversionMode.toBitplane) {
+						(bitplane[tileOffset + si + i]) |= (workArray[wai + (8 * i) + ti] << m);
+					}
 				}
 			}
 		}
-		return workArray;
 	}
 
 	private byte[] createWorkArray() {
 		int tileSize = computeTileSize();
 		return new byte[tileSize * (isMultiColorEnabled() ? 4 : 8)];
-	}
-
-	private void convertToBitplane(byte workArray[], int xc, int yc) {
-		int iconSize = computeIconSize();
-		int tileSize = computeTileSize();
-		int tileOffset = computeTileOffset(xc, yc);
-
-		for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
-			s = (si % (iconSize)) == 0 ? 0 : s;
-			int xo = ((si / iconSize) & (tileColumns - 1)) * width;
-			int yo = (si / (iconSize * tileColumns)) * height * width * tileColumns;
-			int ro = ((s / bytesPerRow) * width) * tileColumns;
-			int wai = ro + xo + yo;
-
-			for (int i = 0; i < bytesPerRow; i++) {
-				bitplane[tileOffset + si + i] = 0;
-				for (int m = 7, ti = 0; m >= 0; m -= (isMultiColorEnabled() ? 2 : 1), ti++) {
-					(bitplane[tileOffset + si + i]) |= (workArray[wai + (8 * i) + ti] << m);
-				}
-			}
-		}
 	}
 
 	private boolean hasTile(int x, int y) {
@@ -1362,7 +1364,15 @@ public class ImagingWidget extends Canvas implements IDrawListener, PaintListene
 		return computeIconSize() * tileColumns * tileRows;
 	}
 
-	public int computeIconSize() {
+	private int computeIconSize() {
 		return bytesPerRow * height;
+	}
+
+	private int getMaximunTileCount() {
+		return bitplane.length / computeTileSize();
+	}
+
+	public void setMouseActionEnabled(boolean mouseActionEnabled) {
+		ama.setMouseActionEnabled(mouseActionEnabled);
 	}
 }

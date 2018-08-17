@@ -32,8 +32,8 @@ import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
-import de.drazil.nerdsuite.widget.ImagingWidget.TransformationMode;
-import de.drazil.nerdsuite.widget.ImagingWidget.TransformationType;
+import de.drazil.nerdsuite.widget.ImagingWidget.ActionMode;
+import de.drazil.nerdsuite.widget.ImagingWidget.ActionType;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 import net.miginfocom.swt.MigLayout;
 
@@ -133,10 +133,16 @@ public class IconEditor {
 		paste.addListener(SWT.Selection, e -> {
 			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Paste);
 		});
+		MenuItem selectAll = new MenuItem(popup, SWT.NONE);
+		selectAll.setText("Select All");
+		// paste.setImage(pasteId.createImage());
+		selectAll.addListener(SWT.Selection, e -> {
+			getSelector().selectAll();
+		});
 		MenuItem clear = new MenuItem(popup, SWT.NONE);
-		clear.setText("Clear");
+		clear.setText("Purge");
 		clear.addListener(SWT.Selection, e -> {
-			getSelector().clearTiles((e.stateMask & SWT.SHIFT) == SWT.SHIFT);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Purge);
 		});
 		MenuItem separator1 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -144,16 +150,14 @@ public class IconEditor {
 		flipHorizontal.setText("Flip Horizontal");
 		flipHorizontal.setImage(flipHorizontalId.createImage());
 		flipHorizontal.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Flip,
-					TransformationMode.Horizontal);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Flip, ActionMode.Horizontal);
 		});
 
 		MenuItem flipVertical = new MenuItem(popup, SWT.NONE);
 		flipVertical.setText("Flip Vertical");
 		flipVertical.setImage(flipVerticalId.createImage());
 		flipVertical.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Flip,
-					TransformationMode.Vertical);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Flip, ActionMode.Vertical);
 		});
 		MenuItem separator2 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -161,31 +165,27 @@ public class IconEditor {
 		mirrorUpperHalf.setText("Mirror Upper Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorUpperHalf.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Mirror,
-					TransformationMode.UpperHalf);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Mirror, ActionMode.UpperHalf);
 		});
 
 		MenuItem mirrorLowerHalf = new MenuItem(popup, SWT.NONE);
 		mirrorLowerHalf.setText("Mirror Lower Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorLowerHalf.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Mirror,
-					TransformationMode.LowerHalf);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Mirror, ActionMode.LowerHalf);
 		});
 
 		MenuItem mirrorLeftHalf = new MenuItem(popup, SWT.NONE);
 		mirrorLeftHalf.setText("Mirror Left Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorLeftHalf.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Mirror,
-					TransformationMode.LeftHalf);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Mirror, ActionMode.LeftHalf);
 		});
 		MenuItem mirrorRightHalf = new MenuItem(popup, SWT.NONE);
 		mirrorRightHalf.setText("Mirror Right Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorRightHalf.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Mirror,
-					TransformationMode.RightHalf);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Mirror, ActionMode.RightHalf);
 		});
 		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -193,16 +193,14 @@ public class IconEditor {
 		rotateCW.setText("Rotate CW");
 		rotateCW.setImage(rotateCWId.createImage());
 		rotateCW.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Rotate,
-					TransformationMode.CW);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Rotate, ActionMode.CW);
 		});
 
 		MenuItem rotateCCW = new MenuItem(popup, SWT.NONE);
 		rotateCCW.setText("Rotate CCW");
 		rotateCCW.setImage(rotateCCWId.createImage());
 		rotateCCW.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Rotate,
-					TransformationMode.CCW);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Rotate, ActionMode.CCW);
 		});
 
 		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);
@@ -211,32 +209,28 @@ public class IconEditor {
 		shiftUp.setText("Shift Up");
 		shiftUp.setImage(upId.createImage());
 		shiftUp.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Shift,
-					TransformationMode.Up);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Shift, ActionMode.Up);
 		});
 
 		MenuItem shiftDown = new MenuItem(popup, SWT.NONE);
 		shiftDown.setText("Shift Down");
 		shiftDown.setImage(downId.createImage());
 		shiftDown.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Shift,
-					TransformationMode.Down);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Shift, ActionMode.Down);
 		});
 
 		MenuItem shiftLeft = new MenuItem(popup, SWT.NONE);
 		shiftLeft.setText("Shift Left");
 		shiftLeft.setImage(leftId.createImage());
 		shiftLeft.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Shift,
-					TransformationMode.Left);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Shift, ActionMode.Left);
 		});
 
 		MenuItem shiftRight = new MenuItem(popup, SWT.NONE);
 		shiftRight.setText("Shift Right");
 		shiftRight.setImage(rightId.createImage());
 		shiftRight.addListener(SWT.Selection, e -> {
-			getSelector().transform((e.stateMask & SWT.SHIFT) == SWT.SHIFT, TransformationType.Shift,
-					TransformationMode.Right);
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Shift, ActionMode.Right);
 		});
 
 		MenuItem separator5 = new MenuItem(popup, SWT.SEPARATOR);
@@ -245,7 +239,7 @@ public class IconEditor {
 		swapTiles.setText("Swap Selected Tiles");
 		swapTiles.setImage(swapId.createImage());
 		swapTiles.addListener(SWT.Selection, e -> {
-			getSelector().swapTiles();
+			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ActionType.Swap);
 		});
 
 		setPaintFormat("Char");
@@ -259,11 +253,11 @@ public class IconEditor {
 		if (painter == null) {
 			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.setWidgetName("Painter :");
-			painter.setWidgetMode(WidgetMode.PAINTER);
+			painter.setWidgetMode(WidgetMode.Painter);
 			painter.setWidth(8);
 			painter.setHeight(8);
 			painter.setPixelGridEnabled(true);
-			painter.setGridStyle(GridStyle.PIXEL);
+			painter.setGridStyle(GridStyle.Dot);
 			painter.setTileGridEnabled(true);
 			painter.setTileCursorEnabled(false);
 			painter.setMultiColorEnabled(multiColorMode);
@@ -275,6 +269,7 @@ public class IconEditor {
 			painter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 			painter.setSelectedColor(1);
 			painter.addDrawListener(getSelector());
+			painter.addDrawListener(getPreviewer());
 		}
 		return painter;
 	}
@@ -283,12 +278,12 @@ public class IconEditor {
 		if (previewer == null) {
 			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			previewer.setWidgetName("Preview :");
-			previewer.setWidgetMode(WidgetMode.VIEWER);
+			previewer.setWidgetMode(WidgetMode.Viewer);
 			previewer.setWidth(8);
 			previewer.setHeight(8);
 			previewer.setPixelSize(3);
 			previewer.setPixelGridEnabled(false);
-			previewer.setGridStyle(GridStyle.PIXEL);
+			previewer.setGridStyle(GridStyle.Dot);
 			previewer.setTileGridEnabled(false);
 			previewer.setTileCursorEnabled(false);
 			previewer.setMultiColorEnabled(multiColorMode);
@@ -300,6 +295,7 @@ public class IconEditor {
 			previewer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 			previewer.setSelectedColor(1);
 			previewer.recalc();
+
 		}
 		return previewer;
 	}
@@ -309,14 +305,27 @@ public class IconEditor {
 			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
 
 				@Override
-				protected boolean isClearTileConfirmed(boolean allSelected) {
-					return MessageDialog.openQuestion(parent.getShell(), "Question", MessageFormat.format(
-							"Do you really want to clear {0} ?", allSelected ? "all selected  tiles" : "this tile"));
+				protected void showNotification(ActionType type, ActionMode mode, String notification, Object data) {
+					if (type == ActionType.Animation) {
+						startAnimation.setText(((Boolean) data) ? "Stop Animation" : "Start Animation");
+					} else {
+						MessageDialog.openInformation(parent.getShell(), "Information", notification);
+					}
 				}
 
 				@Override
-				protected void showMessage(String message) {
-					MessageDialog.openInformation(parent.getShell(), "Information", message);
+				protected boolean isConfirmed(ActionType type, ActionMode mode, int tileCount) {
+					boolean confirmation = false;
+					if (type == ActionType.Rotate) {
+						confirmation = MessageDialog.openQuestion(parent.getShell(), "Question",
+								"Rotating these tile(s) causes data loss, because it is/they are not squarish.\n\nDo you want to rotate anyway?");
+					}
+					if (type == ActionType.All) {
+						confirmation = MessageDialog.openQuestion(parent.getShell(), "Question",
+								MessageFormat.format("Do you really want to process {0} ?",
+										(tileCount > 1) ? "all selected tiles" : "this tile"));
+					}
+					return confirmation;
 				}
 
 				@Override
@@ -325,20 +334,9 @@ public class IconEditor {
 					getNotification().setText(MessageFormat.format("Offset: ${0} tile:{1} bytes",
 							String.format("%04X", offset), tileSize));
 				}
-
-				@Override
-				protected boolean isRotationConfirmed() {
-					return MessageDialog.openQuestion(parent.getShell(), "Question",
-							"Rotating these tile(s) causes data loss, because it is/they are not squarish.\n\nDo you want to rotate anyway?");
-				}
-
-				@Override
-				protected void notifyAnimationStarted(boolean state) {
-					startAnimation.setText(state ? "Stop Animation" : "Start Animation");
-				}
 			};
 			selector.setWidgetName("Selector:");
-			selector.setWidgetMode(WidgetMode.SELECTOR);
+			selector.setWidgetMode(WidgetMode.Selector);
 			selector.setWidth(8);
 			selector.setHeight(8);
 			selector.setPixelSize(3);
@@ -398,9 +396,15 @@ public class IconEditor {
 				@Override
 				public void handleEvent(Event event) {
 					if (!getSelector().isAnimationRunning()) {
-						selector.startAnimation();
+						getSelector().setMouseActionEnabled(false);
+						getPainter().setMouseActionEnabled(false);
+						getPreviewer().setMouseActionEnabled(false);
+						getSelector().startAnimation();
 					} else {
-						selector.stopAnimation();
+						getSelector().stopAnimation();
+						getSelector().setMouseActionEnabled(true);
+						getPainter().setMouseActionEnabled(true);
+						getPreviewer().setMouseActionEnabled(true);
 					}
 				}
 			});
@@ -444,7 +448,7 @@ public class IconEditor {
 	private void setPaintMode(String paintMode) {
 		switch (paintMode) {
 		case "Pixel": {
-			getPainter().setPaintMode(PaintMode.Pixel);
+			getPainter().setPaintMode(PaintMode.Simple);
 			break;
 		}
 		case "VerticalMirror": {
