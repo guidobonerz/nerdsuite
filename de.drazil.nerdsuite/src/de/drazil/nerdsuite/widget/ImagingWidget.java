@@ -284,7 +284,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		// System.out.println("left click");
+		//System.out.println("left click");
 		setCursorPosition(x, y);
 		if (widgetMode == WidgetMode.Selector) {
 			paintControlMode = 0;
@@ -292,6 +292,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			selectedTileIndexY = tileY;
 			selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
 			fireSetSelectedTileOffset(selectedTileOffset);
+			computeSelection(false);
 			doDrawAllTiles();
 		} else if (widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
@@ -310,9 +311,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void mouseExit(int modifierMask, int x, int y) {
 		// System.out.println("exit");
 		mouseIn = false;
-		if (widgetMode == WidgetMode.Painter) {
-		} else if (widgetMode == WidgetMode.Selector) {
-		}
 		doDrawAllTiles();
 	}
 
@@ -321,53 +319,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		// System.out.println("enter");
 		setFocus();
 		mouseIn = true;
-		if (widgetMode == WidgetMode.Painter) {
-		} else if (widgetMode == WidgetMode.Selector) {
-		}
 		doDrawAllTiles();
 	}
 
 	@Override
 	public void mouseDragged(int modifierMask, int x, int y) {
-		// System.out.println("dragged");
+		//System.out.println("dragged");
 		setCursorPosition(x, y);
 		if (widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
 			fireDoDrawTile();
 		} else if (widgetMode == WidgetMode.Selector) {
-
-			if (selectionRangeBuffer.isEmpty()) {
-				selectionRangeBuffer.add(new TileLocation(tileX, tileY));
-				selectionRangeBuffer.add(new TileLocation(0, 0));
-			} else {
-				selectionRangeBuffer.get(1).x = tileX;
-				selectionRangeBuffer.get(1).y = tileY;
-				int o1 = computeTileOffset(selectionRangeBuffer.get(0).x, selectionRangeBuffer.get(0).y);
-				int o2 = computeTileOffset(selectionRangeBuffer.get(1).x, selectionRangeBuffer.get(1).y);
-				int a = 0;
-				int b = 1;
-				if (o1 > o2) {
-					a = 1;
-					b = 0;
-				}
-				int xs = selectionRangeBuffer.get(a).x;
-				int ys = selectionRangeBuffer.get(a).y;
-				tileSelectionList = new ArrayList<>();
-				for (;;) {
-					if (xs < columns) {
-						if (!hasTile(xs, ys)) {
-							tileSelectionList.add(new TileLocation(xs, ys));
-						}
-						if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
-							break;
-						}
-						xs++;
-					} else {
-						xs = 0;
-						ys++;
-					}
-				}
-			}
+			computeSelection(false);
 			doDrawAllTiles();
 		}
 	}
@@ -376,15 +339,16 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
 		// System.out.println("left pressed");
 		if (widgetMode == WidgetMode.Selector) {
-			tileSelectionList = new ArrayList<>();
-			selectionRangeBuffer = new ArrayList<>();
+			resetSelectionList();
 		}
 	}
 
 	public void selectAll() {
-		selectionRangeBuffer = new ArrayList<>();
-		selectionRangeBuffer.add(new TileLocation(0, 0));
-		selectionRangeBuffer.add(new TileLocation(columns, rows));
+		if (widgetMode == WidgetMode.Selector) {
+			resetSelectionList();
+			computeSelection(true);
+			doDrawAllTiles();
+		}
 	}
 
 	protected void setCursorPosition(int x, int y) {
@@ -394,6 +358,52 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		tileY = y / (height * currentPixelHeight * tileRows);
 		tileCursorX = (cursorX - (tileX * width));
 		tileCursorY = (cursorY - (tileY * height));
+	}
+
+	private void resetSelectionList() {
+		tileSelectionList = new ArrayList<>();
+		selectionRangeBuffer = new ArrayList<>();
+	}
+
+	private void computeSelection(boolean selectAll) {
+		if (selectionRangeBuffer.isEmpty()) {
+			if (selectAll) {
+				selectionRangeBuffer.add(new TileLocation(0, 0));
+				selectionRangeBuffer.add(new TileLocation(columns - 1, rows - 1));
+			} else {
+				selectionRangeBuffer.add(new TileLocation(tileX, tileY));
+				selectionRangeBuffer.add(new TileLocation(tileX, tileY));
+			}
+		}
+		if (!selectAll) {
+			selectionRangeBuffer.get(1).x = tileX;
+			selectionRangeBuffer.get(1).y = tileY;
+		}
+		int o1 = computeTileOffset(selectionRangeBuffer.get(0).x, selectionRangeBuffer.get(0).y);
+		int o2 = computeTileOffset(selectionRangeBuffer.get(1).x, selectionRangeBuffer.get(1).y);
+		int a = 0;
+		int b = 1;
+		if (o1 > o2) {
+			a = 1;
+			b = 0;
+		}
+		int xs = selectionRangeBuffer.get(a).x;
+		int ys = selectionRangeBuffer.get(a).y;
+		tileSelectionList = new ArrayList<>();
+		for (;;) {
+			if (xs < columns) {
+				if (!hasTile(xs, ys)) {
+					tileSelectionList.add(new TileLocation(xs, ys));
+				}
+				if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
+					break;
+				}
+				xs++;
+			} else {
+				xs = 0;
+				ys++;
+			}
+		}
 	}
 
 	public void paintControl(PaintEvent e) {
@@ -454,8 +464,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			}
 
 			if (isTileCursorEnabled()) {
-				paintControlTileCursor(e.gc, mouseIn, !animationIsRunning ? tileX : animationIndexX,
-						!animationIsRunning ? tileY : animationIndexY);
+				paintControlTileCursor(e.gc, mouseIn, isAnimationRunning(),
+						!animationIsRunning ? tileX : animationIndexX, !animationIsRunning ? tileY : animationIndexY);
 			}
 			/*
 			 * if (widgetMode == WidgetMode.Painter) {
@@ -477,16 +487,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	public void paintControlTileCursor(GC gc, boolean mouseIn, int x, int y) {
-		gc.setLineWidth(cursorLineWidth);
-		gc.setLineStyle(SWT.LINE_SOLID);
-		gc.setBackground(Constants.TILE_SUB_GRID_COLOR);
-		gc.setAlpha(150);
-		gc.fillRectangle(x * width * pixelSize * tileColumns, y * height * pixelSize * tileRows,
-				width * pixelSize * tileColumns, height * pixelSize * tileRows);
-
+	public void paintControlTileCursor(GC gc, boolean mouseIn, boolean isAnimationRunning, int x, int y) {
 		if (mouseIn) {
-			gc.setBackground((tileX == x && tileY == y) ? Constants.LIGHT_RED : Constants.LIGHT_RED);
+			gc.setAlpha(150);
+			gc.setBackground((tileX == x && tileY == y) ? Constants.RED : Constants.LIGHT_RED);
 			gc.fillRectangle(tileX * width * pixelSize * tileColumns, tileY * height * pixelSize * tileRows,
 					width * pixelSize * tileColumns, height * pixelSize * tileRows);
 		}
