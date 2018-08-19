@@ -13,8 +13,11 @@ public abstract class BaseImagingWidget extends Canvas implements IAdvancedMouse
 		IAdvancedMouseTrackListener, IAdvancedMouseWheelListener {
 	protected AdvancedMouseAdaper ama = null;
 
+	protected ImagingWidgetConfiguration configuration = null;
+
 	public BaseImagingWidget(Composite parent, int style) {
 		super(parent, style);
+		configuration = new ImagingWidgetConfiguration();
 		ama = new AdvancedMouseAdaper(this);
 		ama.addMouseListener(this);
 		ama.addMouseMoveListener(this);

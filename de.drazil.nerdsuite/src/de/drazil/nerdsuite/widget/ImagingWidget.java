@@ -85,7 +85,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	protected boolean layerViewEnabled = false;
 	protected boolean mouseIn = false;
 
-	protected GridStyle gridStyle = GridStyle.Line;
 	protected Map<String, Color> palette;
 	protected IColorProvider colorProvider;
 	protected ScrollBar hBar = null;
@@ -97,6 +96,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	private Map<String, IImagingAction> actionMap = null;
 
+	protected GridStyle gridStyle = GridStyle.Line;
 	protected WidgetMode widgetMode;
 
 	private Timer animationTimer;
@@ -109,22 +109,22 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		Dot, Line
 	};
 
-	public enum ActionType {
+	public enum ImagingService {
 		All("All"), Shift("Shift"), Mirror("Mirror"), Flip("Flip"), Rotate("Rotate"), Purge("Purge",
 				false), Swap("Swap", false, true), Animation("Animation", false);
 		private final String name;
 		private final boolean convert;
 		private final boolean ignoreSelectionList;
 
-		ActionType(String name) {
+		ImagingService(String name) {
 			this(name, true);
 		}
 
-		ActionType(String name, boolean convert) {
+		ImagingService(String name, boolean convert) {
 			this(name, convert, false);
 		}
 
-		ActionType(String name, boolean convert, boolean ignoreSelectionList) {
+		ImagingService(String name, boolean convert, boolean ignoreSelectionList) {
 			this.name = name;
 			this.convert = convert;
 			this.ignoreSelectionList = ignoreSelectionList;
@@ -143,7 +143,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	public enum ActionMode {
+	public enum ImagingServiceAction {
 		Up, Down, Left, Right, UpperHalf, LowerHalf, LeftHalf, RightHalf, Horizontal, Vertical, CCW, CW, Start, Stop
 	}
 
@@ -171,6 +171,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public ImagingWidget(Composite parent, int style) {
 		super(parent, style);
+
 		setTileColumns(1);
 		setTileRows(1);
 		setColumns(1);
@@ -178,13 +179,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 		if (widgetMode == WidgetMode.Selector) {
 			actionMap = new HashMap<>();
-			actionMap.put(ActionType.Shift.getName(), null);
-			actionMap.put(ActionType.Mirror.getName(), null);
-			actionMap.put(ActionType.Flip.getName(), null);
-			actionMap.put(ActionType.Rotate.getName(), null);
-			actionMap.put(ActionType.Animation.getName(), null);
-			actionMap.put(ActionType.Swap.getName(), null);
-			actionMap.put(ActionType.Purge.getName(), null);
+			actionMap.put(ImagingService.Shift.getName(), null);
+			actionMap.put(ImagingService.Mirror.getName(), null);
+			actionMap.put(ImagingService.Flip.getName(), null);
+			actionMap.put(ImagingService.Rotate.getName(), null);
+			actionMap.put(ImagingService.Animation.getName(), null);
+			actionMap.put(ImagingService.Swap.getName(), null);
+			actionMap.put(ImagingService.Purge.getName(), null);
 		}
 		selectionRangeBuffer = new ArrayList<>();
 		tileSelectionList = new ArrayList<>();
@@ -998,18 +999,21 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void startAnimation() {
 
 		if (tileSelectionList.size() < 1) {
-			showNotification(ActionType.Animation, null, "You have to select an animation range first.", null);
+			showNotification(ImagingService.Animation, null, "You have to select an animation range first.", null);
+		} else if (tileSelectionList.size() == 1) {
+			showNotification(ImagingService.Animation, null,
+					"You have to select at least two tiles to start the animation.", null);
 		} else {
 			resetTimer();
 			animationIsRunning = true;
-			showNotification(ActionType.Animation, ActionMode.Start, null, animationIsRunning);
+			showNotification(ImagingService.Animation, ImagingServiceAction.Start, null, animationIsRunning);
 			animationTimer.scheduleAtFixedRate(new Animator(), 0, 70);
 		}
 	}
 
 	public void stopAnimation() {
 		animationIsRunning = false;
-		showNotification(ActionType.Animation, ActionMode.Start, null, animationIsRunning);
+		showNotification(ImagingService.Animation, ImagingServiceAction.Start, null, animationIsRunning);
 		animationTimer.cancel();
 		animationTimer.purge();
 		resetTimer();
@@ -1028,6 +1032,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			getDisplay().asyncExec(new Runnable() {
 				@Override
 				public void run() {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					Collections.rotate(tileSelectionList, -1);
 					TileLocation tl = tileSelectionList.get(0);
 					animationIndexX = tl.x;
@@ -1050,11 +1060,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	}
 
-	protected boolean isConfirmed(ActionType type, ActionMode mode, int tileCount) {
+	protected boolean isConfirmed(ImagingService type, ImagingServiceAction mode, int tileCount) {
 		return true;
 	}
 
-	protected void showNotification(ActionType type, ActionMode mode, String notification, Object data) {
+	protected void showNotification(ImagingService type, ImagingServiceAction mode, String notification, Object data) {
 
 	}
 
@@ -1078,17 +1088,17 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	public void action(boolean allSelected, ActionType type) {
+	public void action(boolean allSelected, ImagingService type) {
 		action(allSelected, type, null);
 	}
 
-	public void action(boolean allSelected, ActionType type, ActionMode mode) {
+	public void action(boolean allSelected, ImagingService type, ImagingServiceAction mode) {
 		int fh = height * tileRows;
 		int fw = width * tileColumns;
 		int size = fh * fw;
 		int tsize = computeTileSize();
 		byte workArray[] = null;
-		if (isConfirmed(ActionType.All, null, tileSelectionList.size())) {
+		if (isConfirmed(ImagingService.All, null, tileSelectionList.size())) {
 			for (int i = 0; i < (type.ignoreSelectionList ? 1 : tileSelectionList.size()); i++) {
 				if (type.convert) {
 					workArray = createWorkArray();
@@ -1097,19 +1107,21 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				}
 				switch (type) {
 				case Animation: {
-					if (mode == ActionMode.Start) {
+					if (mode == ImagingServiceAction.Start) {
 						if (tileSelectionList.size() < 1) {
-							showNotification(ActionType.Animation, null, "You have to select an animation range first.",
-									null);
+							showNotification(ImagingService.Animation, null,
+									"You have to select an animation range first.", null);
 						} else {
 							animationIsRunning = true;
 							resetTimer();
-							showNotification(ActionType.Animation, ActionMode.Start, null, animationIsRunning);
-							animationTimer.scheduleAtFixedRate(new Animator(), 0, 70);
+							showNotification(ImagingService.Animation, ImagingServiceAction.Start, null,
+									animationIsRunning);
+							animationTimer.schedule(new Animator(), 0, 1000);
 						}
-					} else if (mode == ActionMode.Stop) {
+					} else if (mode == ImagingServiceAction.Stop) {
 						animationIsRunning = false;
-						showNotification(ActionType.Animation, ActionMode.Start, null, animationIsRunning);
+						showNotification(ImagingService.Animation, ImagingServiceAction.Start, null,
+								animationIsRunning);
 						animationTimer.cancel();
 						animationTimer.purge();
 						resetTimer();
@@ -1136,7 +1148,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 							bitplane[swapTargetOffset + n] = buffer;
 						}
 					} else {
-						showNotification(ActionType.Swap, null, "Please select only two tiles to swap.", null);
+						showNotification(ImagingService.Swap, null, "Please select only two tiles to swap.", null);
 					}
 					break;
 				}
@@ -1381,4 +1393,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void setMouseActionEnabled(boolean mouseActionEnabled) {
 		ama.setMouseActionEnabled(mouseActionEnabled);
 	}
+
+	
 }
