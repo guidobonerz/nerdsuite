@@ -46,6 +46,9 @@ public class Constants
 	public final static String INCLUDE_FOLDER = "INCLUDE_FOLDER";
 	public final static String SYMBOL_FOLDER = "SYMBOL_FOLDER";
 
+	public final static Color SWAP_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#0000C0"));
+	public final static Color SELECTION_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C00000"));
+	
 	public final static Color SOURCE_EDITOR_FOREGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C0C0C0"));
 	public final static Color SOURCE_EDITOR_BACKGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
 	public final static Color SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#404040"));
