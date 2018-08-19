@@ -17,6 +17,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -24,6 +27,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 
@@ -33,9 +37,9 @@ import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.IConfigurationListener;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
-import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
-import de.drazil.nerdsuite.widget.ImagingWidget.ImagingServiceAction;
 import de.drazil.nerdsuite.widget.ImagingWidget.ImagingService;
+import de.drazil.nerdsuite.widget.ImagingWidget.ImagingServiceAction;
+import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
 import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
 import net.miginfocom.swt.MigLayout;
 
@@ -44,6 +48,7 @@ public class IconEditor implements IConfigurationListener {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget selector;
+	private Scale animationTimerDelayScale;
 	private Composite parent;
 	private Button multicolor;
 	private Button startAnimation;
@@ -62,14 +67,17 @@ public class IconEditor implements IConfigurationListener {
 		// parent.setBackground(Constants.BLACK);
 
 		controls = new Composite(parent, SWT.BORDER);
-		controls.setLayout(new MigLayout("fillx"));
+		controls.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridLayout layout = new GridLayout(2, false);
+		controls.setLayout(layout);
 		controls.setLayoutData("cell 1 0");
 
-		getMultiColor().setLayoutData("cell 0 0 2 1");
-		getFormatSelector().setLayoutData("cell 0 1 2 1");
-		getPaintModeSelector().setLayoutData("cell 0 2 2 1");
-		getStartAnimation().setLayoutData("cell 0 3 1 1");
-		getNotification().setLayoutData("cell 0 4 2 1");
+		getMultiColor();
+		getFormatSelector();
+		getPaintModeSelector();
+		getStartAnimation();
+		getAnimationTimerDelayScale();
+		getNotification();
 
 		getPainter().setLayoutData("cell 0 0");
 		getPreviewer().setLayoutData("cell 1 0");
@@ -267,6 +275,38 @@ public class IconEditor implements IConfigurationListener {
 
 	}
 
+	private Scale getAnimationTimerDelayScale() {
+		if (animationTimerDelayScale == null) {
+			animationTimerDelayScale = new Scale(controls, SWT.HORIZONTAL);
+			animationTimerDelayScale.setEnabled(false);
+			animationTimerDelayScale.setMinimum(50);
+			animationTimerDelayScale.setMaximum(1000);
+			animationTimerDelayScale.setSelection(200);
+			animationTimerDelayScale.setIncrement(50);
+			animationTimerDelayScale.setIncrement(50);
+
+			animationTimerDelayScale.setPageIncrement(50);
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = GridData.FILL;
+			animationTimerDelayScale.setLayoutData(gridData);
+			animationTimerDelayScale.addSelectionListener(new SelectionListener() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					getSelector().changeAnimationTimerDelay(getAnimationTimerDelayScale().getSelection());
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+		}
+		return animationTimerDelayScale;
+	}
+
 	private ImagingWidget getPainter() {
 		if (painter == null) {
 			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
@@ -323,10 +363,16 @@ public class IconEditor implements IConfigurationListener {
 			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
 
 				@Override
+				protected void setHasTileSelection(int count) {
+					getStartAnimation().setEnabled(count > 1);
+					getAnimationTimerDelayScale().setEnabled(count > 1);
+				}
+
+				@Override
 				protected void showNotification(ImagingService type, ImagingServiceAction mode, String notification,
 						Object data) {
 					if (type == ImagingService.Animation) {
-						getStartAnimation().setText(((Boolean) data) ? "Stop Animation" : "Start Animation");
+						getStartAnimation().setText(notification);
 					} else {
 						MessageDialog.openInformation(parent.getShell(), "Information", notification);
 					}
@@ -391,6 +437,11 @@ public class IconEditor implements IConfigurationListener {
 		if (multicolor == null) {
 			multicolor = new Button(controls, SWT.CHECK);
 			multicolor.setText("MultiColor");
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.horizontalSpan = 2;
+			multicolor.setLayoutData(gridData);
 			multicolor.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
@@ -409,12 +460,18 @@ public class IconEditor implements IConfigurationListener {
 	private Button getStartAnimation() {
 		if (startAnimation == null) {
 			startAnimation = new Button(controls, SWT.PUSH);
+			startAnimation.setEnabled(false);
 			startAnimation.setSelection(false);
 			startAnimation.setText("Start Animation");
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = GridData.FILL;
+			startAnimation.setLayoutData(gridData);
 			startAnimation.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					if (!getSelector().isAnimationRunning()) {
+
+					if (!getSelector().isAnimationRunning() && getSelector().isAnimatable()) {
 						getSelector().setMouseActionEnabled(false);
 						getPainter().setMouseActionEnabled(false);
 						getPreviewer().setMouseActionEnabled(false);
@@ -436,6 +493,11 @@ public class IconEditor implements IConfigurationListener {
 			formatSelector = new Combo(controls, SWT.DROP_DOWN);
 			formatSelector.setItems(new String[] { "Char", "Char 2X", "Char 2Y", "Char 2XY", "Sprite", "Sprite 2X",
 					"Sprite 2Y", "Sprite 2XY", "Custom ..." });
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.horizontalSpan = 2;
+			formatSelector.setLayoutData(gridData);
 			formatSelector.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -452,6 +514,11 @@ public class IconEditor implements IConfigurationListener {
 		if (paintModeSelector == null) {
 			paintModeSelector = new Combo(controls, SWT.DROP_DOWN);
 			paintModeSelector.setItems(new String[] { "Pixel", "VerticalMirror", "HorizontalMirror", "Kaleidoscope" });
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.horizontalSpan = 2;
+			paintModeSelector.setLayoutData(gridData);
 			paintModeSelector.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {

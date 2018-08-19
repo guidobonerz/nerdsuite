@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -65,6 +63,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	protected int colorCount;
 	protected int selectedTileOffset = 0;
 	protected int cursorLineWidth = 1;
+	private int animationTimerDelay = 200;
 	private int paintControlMode = SET_DRAW_NOTHING;
 	private PaintMode drawMode = PaintMode.Simple;
 	private PencilMode pencilMode = PencilMode.Draw;
@@ -99,7 +98,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	protected GridStyle gridStyle = GridStyle.Line;
 	protected WidgetMode widgetMode;
 
-	private Timer animationTimer;
+	private Animator animator = null;
 
 	public enum WidgetMode {
 		Selector, Painter, Viewer, BitmapViewer
@@ -163,9 +162,16 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		toWorkArray, toBitplane
 	}
 
-	public class Animator extends TimerTask {
-		public void run() {
-			animate();
+	public class Animator implements Runnable {
+		public synchronized void run() {
+			Collections.rotate(tileSelectionList, -1);
+			TileLocation tl = tileSelectionList.get(0);
+			animationIndexX = tl.x;
+			animationIndexY = tl.y;
+			selectedTileOffset = computeTileOffset(animationIndexX, animationIndexY);
+			fireSetSelectedTileOffset(selectedTileOffset);
+			doDrawAllTiles();
+			getDisplay().timerExec(animationTimerDelay, this);
 		}
 	}
 
@@ -176,6 +182,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		setTileRows(1);
 		setColumns(1);
 		setRows(1);
+
+		animator = new Animator();
 
 		if (widgetMode == WidgetMode.Selector) {
 			actionMap = new HashMap<>();
@@ -421,6 +429,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				ys++;
 			}
 		}
+		setHasTileSelection(tileSelectionList.size());
+
 	}
 
 	public void paintControl(PaintEvent e) {
@@ -997,56 +1007,42 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	public void startAnimation() {
-
 		if (tileSelectionList.size() < 1) {
-			showNotification(ImagingService.Animation, null, "You have to select an animation range first.", null);
+			showNotification(null, null, "You have to select an animation range first.", null);
 		} else if (tileSelectionList.size() == 1) {
-			showNotification(ImagingService.Animation, null,
-					"You have to select at least two tiles to start the animation.", null);
+			showNotification(null, null, "You have to select at least two tiles to start the animation.", null);
 		} else {
-			resetTimer();
 			animationIsRunning = true;
-			showNotification(ImagingService.Animation, ImagingServiceAction.Start, null, animationIsRunning);
-			animationTimer.scheduleAtFixedRate(new Animator(), 0, 70);
+			showNotification(ImagingService.Animation, ImagingServiceAction.Start,
+					isAnimationRunning() ? "Stop Animation (" + (animationTimerDelay) + " ms)" : "Start Animation",
+					animationIsRunning);
+			getDisplay().timerExec(0, animator);
 		}
 	}
 
 	public void stopAnimation() {
 		animationIsRunning = false;
-		showNotification(ImagingService.Animation, ImagingServiceAction.Start, null, animationIsRunning);
-		animationTimer.cancel();
-		animationTimer.purge();
-		resetTimer();
-	}
-
-	private void resetTimer() {
-		animationTimer = new Timer();
+		showNotification(ImagingService.Animation, ImagingServiceAction.Start,
+				isAnimationRunning() ? "Stop Animation (" + (animationTimerDelay) + " ms)" : "Start Animation",
+				animationIsRunning);
+		getDisplay().timerExec(-1, animator);
 	}
 
 	public boolean isAnimationRunning() {
 		return animationIsRunning;
 	}
 
-	public void animate() {
-		if (!getDisplay().isDisposed()) {
-			getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					Collections.rotate(tileSelectionList, -1);
-					TileLocation tl = tileSelectionList.get(0);
-					animationIndexX = tl.x;
-					animationIndexY = tl.y;
-					selectedTileOffset = computeTileOffset(animationIndexX, animationIndexY);
-					fireSetSelectedTileOffset(selectedTileOffset);
-					doDrawAllTiles();
-				}
-			});
+	public boolean isAnimatable() {
+		return tileSelectionList.size() > 1;
+	}
+
+	public void changeAnimationTimerDelay(int delay) {
+		animationTimerDelay = delay;
+		if (isAnimationRunning()) {
+			showNotification(ImagingService.Animation, ImagingServiceAction.Start,
+					isAnimationRunning() ? "Stop Animation (" + (animationTimerDelay) + " ms)" : "Start Animation",
+					animationIsRunning);
+			getDisplay().timerExec(delay, animator);
 		}
 	}
 
@@ -1054,6 +1050,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		int w = currentWidth * tileColumns;
 		int h = height * tileRows;
 		return w == h;
+	}
+
+	protected void setHasTileSelection(int count) {
 	}
 
 	protected void setNotification(int offset, int tileSize) {
@@ -1106,28 +1105,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 							ConversionMode.toWorkArray);
 				}
 				switch (type) {
-				case Animation: {
-					if (mode == ImagingServiceAction.Start) {
-						if (tileSelectionList.size() < 1) {
-							showNotification(ImagingService.Animation, null,
-									"You have to select an animation range first.", null);
-						} else {
-							animationIsRunning = true;
-							resetTimer();
-							showNotification(ImagingService.Animation, ImagingServiceAction.Start, null,
-									animationIsRunning);
-							animationTimer.schedule(new Animator(), 0, 1000);
-						}
-					} else if (mode == ImagingServiceAction.Stop) {
-						animationIsRunning = false;
-						showNotification(ImagingService.Animation, ImagingServiceAction.Start, null,
-								animationIsRunning);
-						animationTimer.cancel();
-						animationTimer.purge();
-						resetTimer();
-					}
-					break;
-				}
 				case Purge: {
 					int offset = computeTileOffset(tileSelectionList.get(i).x, tileSelectionList.get(i).y);
 					for (int n = 0; n < tsize; n++) {
@@ -1394,5 +1371,4 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		ama.setMouseActionEnabled(mouseActionEnabled);
 	}
 
-	
 }
