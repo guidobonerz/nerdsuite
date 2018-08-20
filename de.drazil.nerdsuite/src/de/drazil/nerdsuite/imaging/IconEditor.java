@@ -17,7 +17,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -33,14 +32,17 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.imaging.service.FlipService;
+import de.drazil.nerdsuite.imaging.service.MirrorService;
+import de.drazil.nerdsuite.imaging.service.RotationService;
+import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.IConfigurationListener;
 import de.drazil.nerdsuite.widget.ImagingWidget;
-import de.drazil.nerdsuite.widget.ImagingWidget.GridStyle;
-import de.drazil.nerdsuite.widget.ImagingWidget.ImagingService;
-import de.drazil.nerdsuite.widget.ImagingWidget.ImagingServiceAction;
-import de.drazil.nerdsuite.widget.ImagingWidget.PaintMode;
-import de.drazil.nerdsuite.widget.ImagingWidget.WidgetMode;
+import de.drazil.nerdsuite.widget.ImagingWidget.ImagingServiceDescription;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PaintMode;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.WidgetMode;
 import net.miginfocom.swt.MigLayout;
 
 public class IconEditor implements IConfigurationListener {
@@ -153,7 +155,9 @@ public class IconEditor implements IConfigurationListener {
 		MenuItem clear = new MenuItem(popup, SWT.NONE);
 		clear.setText("Purge");
 		clear.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Purge);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Purge);
+			getSelector().executeService(ImagingServiceDescription.Purge);
 		});
 		MenuItem separator1 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -161,16 +165,18 @@ public class IconEditor implements IConfigurationListener {
 		flipHorizontal.setText("Flip Horizontal");
 		flipHorizontal.setImage(flipHorizontalId.createImage());
 		flipHorizontal.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Flip,
-					ImagingServiceAction.Horizontal);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Flip,ImagingServiceAction.Horizontal);
+			getSelector().executeService(ImagingServiceDescription.Flip, FlipService.HORIZONTAL);
 		});
 
 		MenuItem flipVertical = new MenuItem(popup, SWT.NONE);
 		flipVertical.setText("Flip Vertical");
 		flipVertical.setImage(flipVerticalId.createImage());
 		flipVertical.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Flip,
-					ImagingServiceAction.Vertical);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Flip,ImagingServiceAction.Vertical);
+			getSelector().executeService(ImagingServiceDescription.Flip, FlipService.VERTICAL);
 		});
 		MenuItem separator2 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -178,31 +184,39 @@ public class IconEditor implements IConfigurationListener {
 		mirrorUpperHalf.setText("Mirror Upper Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorUpperHalf.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Mirror,
-					ImagingServiceAction.UpperHalf);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Mirror,
+			// ImagingServiceAction.UpperHalf);
+			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.UPPER_HALF);
 		});
 
 		MenuItem mirrorLowerHalf = new MenuItem(popup, SWT.NONE);
 		mirrorLowerHalf.setText("Mirror Lower Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorLowerHalf.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Mirror,
-					ImagingServiceAction.LowerHalf);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Mirror,
+			// ImagingServiceAction.LowerHalf);
+			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.LOWER_HALF);
 		});
 
 		MenuItem mirrorLeftHalf = new MenuItem(popup, SWT.NONE);
 		mirrorLeftHalf.setText("Mirror Left Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorLeftHalf.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Mirror,
-					ImagingServiceAction.LeftHalf);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Mirror,
+			// ImagingServiceAction.LeftHalf);
+			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.LEFT_HALF);
 		});
 		MenuItem mirrorRightHalf = new MenuItem(popup, SWT.NONE);
 		mirrorRightHalf.setText("Mirror Right Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorRightHalf.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Mirror,
-					ImagingServiceAction.RightHalf);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Mirror,
+			// ImagingServiceAction.RightHalf);
+			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.RIGHT_HALF);
 		});
 		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
 
@@ -210,16 +224,20 @@ public class IconEditor implements IConfigurationListener {
 		rotateCW.setText("Rotate CW");
 		rotateCW.setImage(rotateCWId.createImage());
 		rotateCW.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Rotate,
-					ImagingServiceAction.CW);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Rotate,
+			// ImagingServiceAction.CW);
+			getSelector().executeService(ImagingServiceDescription.Rotate, RotationService.CW);
 		});
 
 		MenuItem rotateCCW = new MenuItem(popup, SWT.NONE);
 		rotateCCW.setText("Rotate CCW");
 		rotateCCW.setImage(rotateCCWId.createImage());
 		rotateCCW.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Rotate,
-					ImagingServiceAction.CCW);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Rotate,
+			// ImagingServiceAction.CCW);
+			getSelector().executeService(ImagingServiceDescription.Rotate, RotationService.CCW);
 		});
 
 		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);
@@ -228,31 +246,40 @@ public class IconEditor implements IConfigurationListener {
 		shiftUp.setText("Shift Up");
 		shiftUp.setImage(upId.createImage());
 		shiftUp.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Shift, ImagingServiceAction.Up);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Shift,
+			// ImagingServiceAction.Up);
+			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.UP);
 		});
 
 		MenuItem shiftDown = new MenuItem(popup, SWT.NONE);
 		shiftDown.setText("Shift Down");
 		shiftDown.setImage(downId.createImage());
 		shiftDown.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Shift,
-					ImagingServiceAction.Down);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Shift,
+			// ImagingServiceAction.Down);
+			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.DOWN);
 		});
 
 		MenuItem shiftLeft = new MenuItem(popup, SWT.NONE);
 		shiftLeft.setText("Shift Left");
 		shiftLeft.setImage(leftId.createImage());
 		shiftLeft.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Shift,
-					ImagingServiceAction.Left);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Shift,
+			// ImagingServiceAction.Left);
+			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.LEFT);
 		});
 
 		MenuItem shiftRight = new MenuItem(popup, SWT.NONE);
 		shiftRight.setText("Shift Right");
 		shiftRight.setImage(rightId.createImage());
 		shiftRight.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Shift,
-					ImagingServiceAction.Right);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Shift,
+			// ImagingServiceAction.Right);
+			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.RIGHT);
 		});
 
 		MenuItem separator5 = new MenuItem(popup, SWT.SEPARATOR);
@@ -261,7 +288,9 @@ public class IconEditor implements IConfigurationListener {
 		swapTiles.setText("Swap Selected Tiles");
 		swapTiles.setImage(swapId.createImage());
 		swapTiles.addListener(SWT.Selection, e -> {
-			getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT, ImagingService.Swap);
+			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
+			// ImagingServiceDescription.Swap);
+			getSelector().executeService(ImagingServiceDescription.Swap);
 		});
 
 		setPaintFormat("Char");
@@ -307,15 +336,15 @@ public class IconEditor implements IConfigurationListener {
 	private ImagingWidget getPainter() {
 		if (painter == null) {
 			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-			painter.setWidgetName("Painter :");
-			painter.setWidgetMode(WidgetMode.Painter);
-			painter.setWidth(8);
-			painter.setHeight(8);
-			painter.setPixelGridEnabled(true);
-			painter.setGridStyle(GridStyle.Dot);
-			painter.setTileGridEnabled(true);
-			painter.setTileCursorEnabled(false);
-			painter.setMultiColorEnabled(multiColorMode);
+			painter.getConf().setWidgetName("Painter :");
+			painter.getConf().setWidgetMode(WidgetMode.Painter);
+			painter.getConf().setWidth(8);
+			painter.getConf().setHeight(8);
+			painter.getConf().setPixelGridEnabled(true);
+			painter.getConf().setGridStyle(GridStyle.Dot);
+			painter.getConf().setTileGridEnabled(true);
+			painter.getConf().setTileCursorEnabled(false);
+			painter.getConf().setMultiColorEnabled(multiColorMode);
 			painter.setSelectedTileOffset(0);
 			painter.setBitlane(getBinaryData());
 			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
@@ -332,16 +361,16 @@ public class IconEditor implements IConfigurationListener {
 	private ImagingWidget getPreviewer() {
 		if (previewer == null) {
 			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-			previewer.setWidgetName("Preview :");
-			previewer.setWidgetMode(WidgetMode.Viewer);
-			previewer.setWidth(8);
-			previewer.setHeight(8);
-			previewer.setPixelSize(3);
-			previewer.setPixelGridEnabled(false);
-			previewer.setGridStyle(GridStyle.Dot);
-			previewer.setTileGridEnabled(false);
-			previewer.setTileCursorEnabled(false);
-			previewer.setMultiColorEnabled(multiColorMode);
+			previewer.getConf().setWidgetName("Preview :");
+			previewer.getConf().setWidgetMode(WidgetMode.Viewer);
+			previewer.getConf().setWidth(8);
+			previewer.getConf().setHeight(8);
+			previewer.getConf().setPixelSize(3);
+			previewer.getConf().setPixelGridEnabled(false);
+			previewer.getConf().setGridStyle(GridStyle.Dot);
+			previewer.getConf().setTileGridEnabled(false);
+			previewer.getConf().setTileCursorEnabled(false);
+			previewer.getConf().setMultiColorEnabled(multiColorMode);
 			previewer.setSelectedTileOffset(0);
 			previewer.setBitlane(getBinaryData());
 			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
@@ -366,9 +395,9 @@ public class IconEditor implements IConfigurationListener {
 				}
 
 				@Override
-				protected void showNotification(ImagingService type, ImagingServiceAction mode, String notification,
-						Object data) {
-					if (type == ImagingService.Animation) {
+				protected void showNotification(ImagingServiceDescription type, ImagingServiceAction mode,
+						String notification, Object data) {
+					if (type == ImagingServiceDescription.Animation) {
 						getStartAnimation().setText(notification);
 					} else {
 						MessageDialog.openInformation(parent.getShell(), "Information", notification);
@@ -376,13 +405,14 @@ public class IconEditor implements IConfigurationListener {
 				}
 
 				@Override
-				protected boolean isConfirmed(ImagingService type, ImagingServiceAction mode, int tileCount) {
+				protected boolean isConfirmed(ImagingServiceDescription type, ImagingServiceAction mode,
+						int tileCount) {
 					boolean confirmation = false;
-					if (type == ImagingService.Rotate) {
+					if (type == ImagingServiceDescription.Rotate) {
 						confirmation = MessageDialog.openQuestion(parent.getShell(), "Question",
 								"Rotating these tile(s) causes data loss, because it is/they are not squarish.\n\nDo you want to rotate anyway?");
 					}
-					if (type == ImagingService.All) {
+					if (type == ImagingServiceDescription.All) {
 						confirmation = MessageDialog.openQuestion(parent.getShell(), "Question",
 								MessageFormat.format("Do you really want to process {0} ?",
 										(tileCount > 1) ? "all selected tiles" : "this tile"));
@@ -397,17 +427,17 @@ public class IconEditor implements IConfigurationListener {
 							String.format("%04X", offset), tileSize));
 				}
 			};
-			selector.setWidgetName("Selector:");
-			selector.setWidgetMode(WidgetMode.Selector);
-			selector.setWidth(8);
-			selector.setHeight(8);
-			selector.setPixelSize(3);
-			selector.setPixelGridEnabled(false);
-			selector.setTileGridEnabled(true);
-			selector.setTileSubGridEnabled(false);
-			selector.setTileCursorEnabled(true);
-			selector.setSeparatorEnabled(false);
-			selector.setMultiColorEnabled(multiColorMode);
+			selector.getConf().setWidgetName("Selector:");
+			selector.getConf().setWidgetMode(WidgetMode.Selector);
+			selector.getConf().setWidth(8);
+			selector.getConf().setHeight(8);
+			selector.getConf().setPixelSize(3);
+			selector.getConf().setPixelGridEnabled(false);
+			selector.getConf().setTileGridEnabled(true);
+			selector.getConf().setTileSubGridEnabled(false);
+			selector.getConf().setTileCursorEnabled(true);
+			selector.getConf().setSeparatorEnabled(false);
+			selector.getConf().setMultiColorEnabled(multiColorMode);
 			selector.setSelectedTileOffset(0);
 			selector.setBitlane(getBinaryData());
 			selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
@@ -442,11 +472,11 @@ public class IconEditor implements IConfigurationListener {
 			multicolor.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					painter.setMultiColorEnabled(multicolor.getSelection());
+					painter.getConf().setMultiColorEnabled(multicolor.getSelection());
 					painter.recalc();
-					selector.setMultiColorEnabled(multicolor.getSelection());
+					selector.getConf().setMultiColorEnabled(multicolor.getSelection());
 					selector.recalc();
-					previewer.setMultiColorEnabled(multicolor.getSelection());
+					previewer.getConf().setMultiColorEnabled(multicolor.getSelection());
 					previewer.recalc();
 				}
 			});
@@ -531,19 +561,19 @@ public class IconEditor implements IConfigurationListener {
 	private void setPaintMode(String paintMode) {
 		switch (paintMode) {
 		case "Pixel": {
-			getPainter().setPaintMode(PaintMode.Simple);
+			getPainter().getConf().setPaintMode(PaintMode.Simple);
 			break;
 		}
 		case "VerticalMirror": {
-			getPainter().setPaintMode(PaintMode.VerticalMirror);
+			getPainter().getConf().setPaintMode(PaintMode.VerticalMirror);
 			break;
 		}
 		case "HorizontalMirror": {
-			getPainter().setPaintMode(PaintMode.HorizontalMirror);
+			getPainter().getConf().setPaintMode(PaintMode.HorizontalMirror);
 			break;
 		}
 		case "Kaleidoscope": {
-			getPainter().setPaintMode(PaintMode.Kaleidoscope);
+			getPainter().getConf().setPaintMode(PaintMode.Kaleidoscope);
 			break;
 		}
 		}
@@ -552,47 +582,47 @@ public class IconEditor implements IConfigurationListener {
 	private void setPaintFormat(String format) {
 		switch (format) {
 		case "Char": {
-			getPainter().setWidth(8);
-			getPainter().setHeight(8);
-			getPainter().setTileColumns(1);
-			getPainter().setTileRows(1);
-			getPainter().setPixelSize(40);
+			getPainter().getConf().setWidth(8);
+			getPainter().getConf().setHeight(8);
+			getPainter().getConf().setTileColumns(1);
+			getPainter().getConf().setTileRows(1);
+			getPainter().getConf().setPixelSize(40);
 			getPainter().recalc();
-			getPreviewer().setWidth(8);
-			getPreviewer().setHeight(8);
-			getPreviewer().setTileColumns(1);
-			getPreviewer().setTileRows(1);
+			getPreviewer().getConf().setWidth(8);
+			getPreviewer().getConf().setHeight(8);
+			getPreviewer().getConf().setTileColumns(1);
+			getPreviewer().getConf().setTileRows(1);
 			getPreviewer().recalc();
-			getSelector().setWidth(8);
-			getSelector().setHeight(8);
-			getSelector().setTileColumns(1);
-			getSelector().setTileRows(1);
-			getSelector().setColumns(16);
-			getSelector().setRows(16);
-			getSelector().setPixelSize(3);
+			getSelector().getConf().setWidth(8);
+			getSelector().getConf().setHeight(8);
+			getSelector().getConf().setTileColumns(1);
+			getSelector().getConf().setTileRows(1);
+			getSelector().getConf().setColumns(16);
+			getSelector().getConf().setRows(16);
+			getSelector().getConf().setPixelSize(3);
 			getSelector().recalc();
 			parent.layout();
 			break;
 		}
 		case "Char 2X": {
-			getPainter().setWidth(8);
-			getPainter().setHeight(8);
-			getPainter().setTileColumns(2);
-			getPainter().setTileRows(1);
-			getPainter().setPixelSize(20);
+			getPainter().getConf().setWidth(8);
+			getPainter().getConf().setHeight(8);
+			getPainter().getConf().setTileColumns(2);
+			getPainter().getConf().setTileRows(1);
+			getPainter().getConf().setPixelSize(20);
 			getPainter().recalc();
-			getPreviewer().setWidth(8);
-			getPreviewer().setHeight(8);
-			getPreviewer().setTileColumns(2);
-			getPreviewer().setTileRows(1);
+			getPreviewer().getConf().setWidth(8);
+			getPreviewer().getConf().setHeight(8);
+			getPreviewer().getConf().setTileColumns(2);
+			getPreviewer().getConf().setTileRows(1);
 			getPreviewer().recalc();
-			getSelector().setWidth(8);
-			getSelector().setHeight(8);
-			getSelector().setTileColumns(2);
-			getSelector().setTileRows(1);
-			getSelector().setColumns(8);
-			getSelector().setRows(16);
-			getSelector().setPixelSize(3);
+			getSelector().getConf().setWidth(8);
+			getSelector().getConf().setHeight(8);
+			getSelector().getConf().setTileColumns(2);
+			getSelector().getConf().setTileRows(1);
+			getSelector().getConf().setColumns(8);
+			getSelector().getConf().setRows(16);
+			getSelector().getConf().setPixelSize(3);
 			getSelector().recalc();
 
 			parent.layout();
@@ -600,153 +630,153 @@ public class IconEditor implements IConfigurationListener {
 		}
 
 		case "Char 2Y": {
-			getPainter().setWidth(8);
-			getPainter().setHeight(8);
-			getPainter().setTileColumns(1);
-			getPainter().setTileRows(2);
-			getPainter().setPixelSize(20);
+			getPainter().getConf().setWidth(8);
+			getPainter().getConf().setHeight(8);
+			getPainter().getConf().setTileColumns(1);
+			getPainter().getConf().setTileRows(2);
+			getPainter().getConf().setPixelSize(20);
 			getPainter().recalc();
-			getPreviewer().setWidth(8);
-			getPreviewer().setHeight(8);
-			getPreviewer().setTileColumns(1);
-			getPreviewer().setTileRows(2);
+			getPreviewer().getConf().setWidth(8);
+			getPreviewer().getConf().setHeight(8);
+			getPreviewer().getConf().setTileColumns(1);
+			getPreviewer().getConf().setTileRows(2);
 			getPreviewer().recalc();
-			getSelector().setWidth(8);
-			getSelector().setHeight(8);
-			getSelector().setTileColumns(1);
-			getSelector().setTileRows(2);
-			getSelector().setColumns(16);
-			getSelector().setRows(8);
-			getSelector().setPixelSize(3);
+			getSelector().getConf().setWidth(8);
+			getSelector().getConf().setHeight(8);
+			getSelector().getConf().setTileColumns(1);
+			getSelector().getConf().setTileRows(2);
+			getSelector().getConf().setColumns(16);
+			getSelector().getConf().setRows(8);
+			getSelector().getConf().setPixelSize(3);
 			getSelector().recalc();
 			parent.layout();
 			break;
 		}
 
 		case "Char 2XY": {
-			getPainter().setWidth(8);
-			getPainter().setHeight(8);
-			getPainter().setTileColumns(2);
-			getPainter().setTileRows(2);
-			getPainter().setPixelSize(20);
+			getPainter().getConf().setWidth(8);
+			getPainter().getConf().setHeight(8);
+			getPainter().getConf().setTileColumns(2);
+			getPainter().getConf().setTileRows(2);
+			getPainter().getConf().setPixelSize(20);
 			getPainter().recalc();
-			getPreviewer().setWidth(8);
-			getPreviewer().setHeight(8);
-			getPreviewer().setTileColumns(2);
-			getPreviewer().setTileRows(2);
+			getPreviewer().getConf().setWidth(8);
+			getPreviewer().getConf().setHeight(8);
+			getPreviewer().getConf().setTileColumns(2);
+			getPreviewer().getConf().setTileRows(2);
 			getPreviewer().recalc();
-			getSelector().setWidth(8);
-			getSelector().setHeight(8);
-			getSelector().setTileColumns(2);
-			getSelector().setTileRows(2);
-			getSelector().setColumns(8);
-			getSelector().setRows(8);
-			getSelector().setPixelSize(3);
+			getSelector().getConf().setWidth(8);
+			getSelector().getConf().setHeight(8);
+			getSelector().getConf().setTileColumns(2);
+			getSelector().getConf().setTileRows(2);
+			getSelector().getConf().setColumns(8);
+			getSelector().getConf().setRows(8);
+			getSelector().getConf().setPixelSize(3);
 			getSelector().recalc();
 			parent.layout();
 			break;
 		}
 
 		case "Sprite": {
-			getPainter().setWidth(24);
-			getPainter().setHeight(21);
-			getPainter().setTileColumns(1);
-			getPainter().setTileRows(1);
-			getPainter().setPixelSize(10);
+			getPainter().getConf().setWidth(24);
+			getPainter().getConf().setHeight(21);
+			getPainter().getConf().setTileColumns(1);
+			getPainter().getConf().setTileRows(1);
+			getPainter().getConf().setPixelSize(10);
 			getPainter().recalc();
-			getPreviewer().setWidth(24);
-			getPreviewer().setHeight(21);
-			getPreviewer().setTileColumns(1);
-			getPreviewer().setTileRows(1);
+			getPreviewer().getConf().setWidth(24);
+			getPreviewer().getConf().setHeight(21);
+			getPreviewer().getConf().setTileColumns(1);
+			getPreviewer().getConf().setTileRows(1);
 			getPreviewer().recalc();
-			getSelector().setWidth(24);
-			getSelector().setHeight(21);
-			getSelector().setTileColumns(1);
-			getSelector().setTileRows(1);
-			getSelector().setPixelSize(2);
-			getSelector().setColumns(16);
-			getSelector().setRows(6);
+			getSelector().getConf().setWidth(24);
+			getSelector().getConf().setHeight(21);
+			getSelector().getConf().setTileColumns(1);
+			getSelector().getConf().setTileRows(1);
+			getSelector().getConf().setPixelSize(2);
+			getSelector().getConf().setColumns(16);
+			getSelector().getConf().setRows(6);
 			getSelector().recalc();
 			parent.layout();
 			break;
 		}
 
 		case "Sprite 2X": {
-			getPainter().setWidth(24);
-			getPainter().setHeight(21);
-			getPainter().setTileColumns(2);
-			getPainter().setTileRows(1);
-			getPainter().setPixelSize(10);
+			getPainter().getConf().setWidth(24);
+			getPainter().getConf().setHeight(21);
+			getPainter().getConf().setTileColumns(2);
+			getPainter().getConf().setTileRows(1);
+			getPainter().getConf().setPixelSize(10);
 			getPainter().recalc();
-			getPreviewer().setWidth(24);
-			getPreviewer().setHeight(21);
-			getPreviewer().setTileColumns(2);
-			getPreviewer().setTileRows(1);
+			getPreviewer().getConf().setWidth(24);
+			getPreviewer().getConf().setHeight(21);
+			getPreviewer().getConf().setTileColumns(2);
+			getPreviewer().getConf().setTileRows(1);
 			getPreviewer().recalc();
-			getSelector().setWidth(24);
-			getSelector().setHeight(21);
-			getSelector().setTileColumns(2);
-			getSelector().setTileRows(1);
-			getSelector().setPixelSize(2);
-			getSelector().setColumns(8);
-			getSelector().setRows(6);
+			getSelector().getConf().setWidth(24);
+			getSelector().getConf().setHeight(21);
+			getSelector().getConf().setTileColumns(2);
+			getSelector().getConf().setTileRows(1);
+			getSelector().getConf().setPixelSize(2);
+			getSelector().getConf().setColumns(8);
+			getSelector().getConf().setRows(6);
 			getSelector().recalc();
 			parent.layout();
 			break;
 		}
 
 		case "Sprite 2Y": {
-			getPainter().setWidth(24);
-			getPainter().setHeight(21);
-			getPainter().setTileColumns(1);
-			getPainter().setTileRows(2);
-			getPainter().setPixelSize(10);
+			getPainter().getConf().setWidth(24);
+			getPainter().getConf().setHeight(21);
+			getPainter().getConf().setTileColumns(1);
+			getPainter().getConf().setTileRows(2);
+			getPainter().getConf().setPixelSize(10);
 			getPainter().recalc();
-			getPreviewer().setWidth(24);
-			getPreviewer().setHeight(21);
-			getPreviewer().setTileColumns(1);
-			getPreviewer().setTileRows(2);
+			getPreviewer().getConf().setWidth(24);
+			getPreviewer().getConf().setHeight(21);
+			getPreviewer().getConf().setTileColumns(1);
+			getPreviewer().getConf().setTileRows(2);
 			getPreviewer().recalc();
-			getSelector().setWidth(24);
-			getSelector().setHeight(21);
-			getSelector().setTileColumns(1);
-			getSelector().setTileRows(2);
-			getSelector().setPixelSize(2);
-			getSelector().setColumns(16);
-			getSelector().setRows(3);
+			getSelector().getConf().setWidth(24);
+			getSelector().getConf().setHeight(21);
+			getSelector().getConf().setTileColumns(1);
+			getSelector().getConf().setTileRows(2);
+			getSelector().getConf().setPixelSize(2);
+			getSelector().getConf().setColumns(16);
+			getSelector().getConf().setRows(3);
 			getSelector().recalc();
 			parent.layout();
 			break;
 		}
 
 		case "Sprite 2XY": {
-			getPainter().setWidth(24);
-			getPainter().setHeight(21);
-			getPainter().setTileColumns(2);
-			getPainter().setTileRows(2);
-			getPainter().setPixelSize(10);
+			getPainter().getConf().setWidth(24);
+			getPainter().getConf().setHeight(21);
+			getPainter().getConf().setTileColumns(2);
+			getPainter().getConf().setTileRows(2);
+			getPainter().getConf().setPixelSize(10);
 			getPainter().recalc();
-			getPreviewer().setWidth(24);
-			getPreviewer().setHeight(21);
-			getPreviewer().setTileColumns(2);
-			getPreviewer().setTileRows(2);
+			getPreviewer().getConf().setWidth(24);
+			getPreviewer().getConf().setHeight(21);
+			getPreviewer().getConf().setTileColumns(2);
+			getPreviewer().getConf().setTileRows(2);
 			getPreviewer().recalc();
-			getSelector().setWidth(24);
-			getSelector().setHeight(21);
-			getSelector().setTileColumns(2);
-			getSelector().setTileRows(2);
-			getSelector().setPixelSize(2);
-			getSelector().setColumns(8);
-			getSelector().setRows(3);
+			getSelector().getConf().setWidth(24);
+			getSelector().getConf().setHeight(21);
+			getSelector().getConf().setTileColumns(2);
+			getSelector().getConf().setTileRows(2);
+			getSelector().getConf().setPixelSize(2);
+			getSelector().getConf().setColumns(8);
+			getSelector().getConf().setRows(3);
 			getSelector().recalc();
 			parent.layout();
 			break;
 		}
 		case "Custom ...": {
 
-			configurationDialog.setConfiguration(getPainter().getWidth(), getPainter().getHeight(),
-					getPainter().getTileColumns(), getPainter().getTileRows(), getPainter().getPixelSize(),
-					getSelector().getPixelSize());
+			configurationDialog.setConfiguration(getPainter().getConf().getWidth(), getPainter().getConf().getHeight(),
+					getPainter().getConf().getTileColumns(), getPainter().getConf().getTileRows(),
+					getPainter().getConf().getPixelSize(), getSelector().getConf().getPixelSize());
 			configurationDialog.open();
 
 			break;
@@ -758,24 +788,24 @@ public class IconEditor implements IConfigurationListener {
 	@Override
 	public void configurationChanged(int width, int height, int tileColumns, int tileRows, int painterPixelSize,
 			int selectorPixelSize) {
-		getPainter().setWidth(width);
-		getPainter().setHeight(height);
-		getPainter().setTileColumns(tileColumns);
-		getPainter().setTileRows(tileRows);
-		getPainter().setPixelSize(painterPixelSize);
+		getPainter().getConf().setWidth(width);
+		getPainter().getConf().setHeight(height);
+		getPainter().getConf().setTileColumns(tileColumns);
+		getPainter().getConf().setTileRows(tileRows);
+		getPainter().getConf().setPixelSize(painterPixelSize);
 		getPainter().recalc();
-		getPreviewer().setWidth(width);
-		getPreviewer().setHeight(height);
-		getPreviewer().setTileColumns(tileColumns);
-		getPreviewer().setTileRows(tileRows);
+		getPreviewer().getConf().setWidth(width);
+		getPreviewer().getConf().setHeight(height);
+		getPreviewer().getConf().setTileColumns(tileColumns);
+		getPreviewer().getConf().setTileRows(tileRows);
 		getPreviewer().recalc();
-		getSelector().setWidth(width);
-		getSelector().setHeight(height);
-		getSelector().setTileColumns(tileColumns);
-		getSelector().setTileRows(tileRows);
-		getSelector().setPixelSize(selectorPixelSize);
-		getSelector().setColumns(8);
-		getSelector().setRows(3);
+		getSelector().getConf().setWidth(width);
+		getSelector().getConf().setHeight(height);
+		getSelector().getConf().setTileColumns(tileColumns);
+		getSelector().getConf().setTileRows(tileRows);
+		getSelector().getConf().setPixelSize(selectorPixelSize);
+		getSelector().getConf().setColumns(8);
+		getSelector().getConf().setRows(3);
 		getSelector().recalc();
 		parent.layout();
 	}
