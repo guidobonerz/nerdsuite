@@ -142,6 +142,25 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
+	public enum PixelBits {
+		OneBit("OneBit", 1), TwoBit("TwoBit", 2), Byte("Byte", 8);
+		private final String name;
+		private final int bits;
+
+		PixelBits(String name, int bits) {
+			this.name = name;
+			this.bits = bits;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public int getBits() {
+			return bits;
+		}
+	}
+
 	public enum ImagingServiceAction {
 		Up, Down, Left, Right, UpperHalf, LowerHalf, LeftHalf, RightHalf, Horizontal, Vertical, CCW, CW, Start, Stop
 	}
@@ -156,6 +175,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public enum PencilMode {
 		Draw, Erase
+	}
+
+	public enum Brush {
+		Dot, Pattern
 	}
 
 	public enum ConversionMode {
@@ -239,9 +262,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 				case SWT.ARROW_UP: {
 
-					if (selectedTileIndexY > 0) {
-						selectedTileIndexY--;
-						selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+					if (tileY > 0) {
+						tileY--;
+						selectedTileOffset = computeTileOffset(tileX, tileY);
 					} else {
 						if (navigationOffset > 0) {
 							navigationOffset -= computeTileSize() * columns;
@@ -254,9 +277,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				}
 				case SWT.ARROW_DOWN: {
 
-					if (selectedTileIndexY < rows - 1) {
-						selectedTileIndexY++;
-						selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+					if (tileY < rows - 1) {
+						tileY++;
+						selectedTileOffset = computeTileOffset(tileX, tileY);
 					} else {
 						if (navigationOffset < bitplane.length - (computeTileSize() * rows * columns)) {
 							navigationOffset += computeTileSize() * columns;
@@ -268,24 +291,24 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				}
 				case SWT.ARROW_LEFT: {
 
-					if (selectedTileIndexX > 0) {
-						selectedTileIndexX--;
+					if (tileX > 0) {
+						tileX--;
 					} else {
-						selectedTileIndexX = columns - 1;
+						tileX = columns - 1;
 					}
-					selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+					selectedTileOffset = computeTileOffset(tileX, tileY);
 					fireSetSelectedTileOffset(selectedTileOffset);
 					doDrawAllTiles();
 					break;
 				}
 				case SWT.ARROW_RIGHT: {
 
-					if (selectedTileIndexX < columns - 1) {
-						selectedTileIndexX++;
+					if (tileX < columns - 1) {
+						tileX++;
 					} else {
-						selectedTileIndexX = 0;
+						tileX = 0;
 					}
-					selectedTileOffset = computeTileOffset(selectedTileIndexX, selectedTileIndexY);
+					selectedTileOffset = computeTileOffset(tileX, tileY);
 					fireSetSelectedTileOffset(selectedTileOffset);
 					doDrawAllTiles();
 					break;
@@ -490,15 +513,16 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				paintControlTileSubGrid(e.gc);
 			}
 
+			paintControlSelection(e.gc);
+
 			if (isTileCursorEnabled()) {
-				paintControlTileCursor(e.gc, mouseIn, isAnimationRunning(),
-						!animationIsRunning ? tileX : animationIndexX, !animationIsRunning ? tileY : animationIndexY);
+				paintControlTileCursor(e.gc, mouseIn, isAnimationRunning());
 			}
 			/*
 			 * if (widgetMode == WidgetMode.Painter) {
 			 * paintControlPixelCursor(e.gc, 0, 0); }
 			 */
-			paintControlSelection(e.gc);
+
 		}
 		paintControlMode = SET_DRAW_NOTHING;
 
@@ -514,12 +538,21 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	public void paintControlTileCursor(GC gc, boolean mouseIn, boolean isAnimationRunning, int x, int y) {
+	public void paintControlTileCursor(GC gc, boolean mouseIn, boolean isAnimationRunning) {
+
 		if (mouseIn) {
 			gc.setAlpha(150);
-			gc.setBackground((tileX == x && tileY == y) ? Constants.RED : Constants.LIGHT_RED);
+			gc.setBackground(Constants.RED);
 			gc.fillRectangle(tileX * width * pixelSize * tileColumns, tileY * height * pixelSize * tileRows,
 					width * pixelSize * tileColumns, height * pixelSize * tileRows);
+		}
+		if (isAnimationRunning) {
+			gc.setAlpha(255);
+			gc.setLineWidth(3);
+			gc.setForeground(Constants.LIGHT_GREEN2);
+			gc.drawRectangle(animationIndexX * width * pixelSize * tileColumns,
+					animationIndexY * height * pixelSize * tileRows, width * pixelSize * tileColumns,
+					height * pixelSize * tileRows);
 		}
 	}
 
@@ -1026,6 +1059,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				isAnimationRunning() ? "Stop Animation (" + (animationTimerDelay) + " ms)" : "Start Animation",
 				animationIsRunning);
 		getDisplay().timerExec(-1, animator);
+		doDrawAllTiles();
 	}
 
 	public boolean isAnimationRunning() {
@@ -1068,6 +1102,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	public void clipboardAction(ClipboardAction clipboardAction) {
+
 		int offset = computeTileOffset(tileX, tileY);
 		if (clipboardAction == ClipboardAction.Cut || clipboardAction == ClipboardAction.Copy) {
 			this.clipboardAction = clipboardAction;

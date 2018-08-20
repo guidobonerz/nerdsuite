@@ -78,6 +78,8 @@ public class Constants
 	public final static Color BLACK = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
 	public final static Color LIGHT_BLUE = new Color(Display.getCurrent(), SwtUtil.toRGB("#EFEFFF"));
 	public final static Color LIGHT_GREEN = new Color(Display.getCurrent(), SwtUtil.toRGB("#EFFFEF"));
+	public final static Color LIGHT_GREEN2 = new Color(Display.getCurrent(), SwtUtil.toRGB("#D0FFD0"));
+	
 	public final static Color RED = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF0000"));
 	public final static Color LIGHT_RED = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF9090"));
 

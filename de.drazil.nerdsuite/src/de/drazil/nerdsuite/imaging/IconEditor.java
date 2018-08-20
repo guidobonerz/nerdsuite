@@ -290,17 +290,14 @@ public class IconEditor implements IConfigurationListener {
 			gridData.grabExcessHorizontalSpace = true;
 			gridData.horizontalAlignment = GridData.FILL;
 			animationTimerDelayScale.setLayoutData(gridData);
-			animationTimerDelayScale.addSelectionListener(new SelectionListener() {
-
+			animationTimerDelayScale.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					getSelector().changeAnimationTimerDelay(getAnimationTimerDelayScale().getSelection());
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
-
+					int step = (getAnimationTimerDelayScale().getSelection()
+							/ getAnimationTimerDelayScale().getIncrement())
+							* getAnimationTimerDelayScale().getIncrement();
+					getAnimationTimerDelayScale().setSelection(step);
+					getSelector().changeAnimationTimerDelay(step);
 				}
 			});
 		}
