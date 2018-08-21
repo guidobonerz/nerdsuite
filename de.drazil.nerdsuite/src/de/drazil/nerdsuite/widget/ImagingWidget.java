@@ -653,7 +653,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void recalc() {
 		conf.currentPixelWidth = conf.pixelSize * (conf.isMultiColorEnabled() ? 2 : 1);
 		conf.currentWidth = conf.width / (conf.isMultiColorEnabled() ? 2 : 1);
-		// clipboardBuffer = new byte[conf.getTileSize()];
 		int selectedTileOffset = conf.computeTileOffset(selectedTileIndexX, selectedTileIndexY, navigationOffset);
 		if (vBar != null) {
 			vBar.setMinimum(0);
