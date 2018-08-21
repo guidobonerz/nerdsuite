@@ -66,7 +66,6 @@ public class IconEditor implements IConfigurationListener {
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
 		parent.setLayout(new MigLayout());
-		// parent.setBackground(Constants.BLACK);
 
 		controls = new Composite(parent, SWT.BORDER);
 		controls.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -155,8 +154,6 @@ public class IconEditor implements IConfigurationListener {
 		MenuItem clear = new MenuItem(popup, SWT.NONE);
 		clear.setText("Purge");
 		clear.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Purge);
 			getSelector().executeService(ImagingServiceDescription.Purge);
 		});
 		MenuItem separator1 = new MenuItem(popup, SWT.SEPARATOR);
@@ -165,8 +162,6 @@ public class IconEditor implements IConfigurationListener {
 		flipHorizontal.setText("Flip Horizontal");
 		flipHorizontal.setImage(flipHorizontalId.createImage());
 		flipHorizontal.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Flip,ImagingServiceAction.Horizontal);
 			getSelector().executeService(ImagingServiceDescription.Flip, FlipService.HORIZONTAL);
 		});
 
@@ -174,8 +169,6 @@ public class IconEditor implements IConfigurationListener {
 		flipVertical.setText("Flip Vertical");
 		flipVertical.setImage(flipVerticalId.createImage());
 		flipVertical.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Flip,ImagingServiceAction.Vertical);
 			getSelector().executeService(ImagingServiceDescription.Flip, FlipService.VERTICAL);
 		});
 		MenuItem separator2 = new MenuItem(popup, SWT.SEPARATOR);
@@ -184,9 +177,6 @@ public class IconEditor implements IConfigurationListener {
 		mirrorUpperHalf.setText("Mirror Upper Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorUpperHalf.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Mirror,
-			// ImagingServiceAction.UpperHalf);
 			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.UPPER_HALF);
 		});
 
@@ -194,9 +184,6 @@ public class IconEditor implements IConfigurationListener {
 		mirrorLowerHalf.setText("Mirror Lower Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorLowerHalf.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Mirror,
-			// ImagingServiceAction.LowerHalf);
 			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.LOWER_HALF);
 		});
 
@@ -204,18 +191,12 @@ public class IconEditor implements IConfigurationListener {
 		mirrorLeftHalf.setText("Mirror Left Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorLeftHalf.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Mirror,
-			// ImagingServiceAction.LeftHalf);
 			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.LEFT_HALF);
 		});
 		MenuItem mirrorRightHalf = new MenuItem(popup, SWT.NONE);
 		mirrorRightHalf.setText("Mirror Right Half");
 		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorRightHalf.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Mirror,
-			// ImagingServiceAction.RightHalf);
 			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.RIGHT_HALF);
 		});
 		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
@@ -224,9 +205,6 @@ public class IconEditor implements IConfigurationListener {
 		rotateCW.setText("Rotate CW");
 		rotateCW.setImage(rotateCWId.createImage());
 		rotateCW.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Rotate,
-			// ImagingServiceAction.CW);
 			getSelector().executeService(ImagingServiceDescription.Rotate, RotationService.CW);
 		});
 
@@ -234,9 +212,6 @@ public class IconEditor implements IConfigurationListener {
 		rotateCCW.setText("Rotate CCW");
 		rotateCCW.setImage(rotateCCWId.createImage());
 		rotateCCW.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Rotate,
-			// ImagingServiceAction.CCW);
 			getSelector().executeService(ImagingServiceDescription.Rotate, RotationService.CCW);
 		});
 
@@ -246,9 +221,6 @@ public class IconEditor implements IConfigurationListener {
 		shiftUp.setText("Shift Up");
 		shiftUp.setImage(upId.createImage());
 		shiftUp.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Shift,
-			// ImagingServiceAction.Up);
 			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.UP);
 		});
 
@@ -256,9 +228,6 @@ public class IconEditor implements IConfigurationListener {
 		shiftDown.setText("Shift Down");
 		shiftDown.setImage(downId.createImage());
 		shiftDown.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Shift,
-			// ImagingServiceAction.Down);
 			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.DOWN);
 		});
 
@@ -266,9 +235,6 @@ public class IconEditor implements IConfigurationListener {
 		shiftLeft.setText("Shift Left");
 		shiftLeft.setImage(leftId.createImage());
 		shiftLeft.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Shift,
-			// ImagingServiceAction.Left);
 			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.LEFT);
 		});
 
@@ -276,9 +242,6 @@ public class IconEditor implements IConfigurationListener {
 		shiftRight.setText("Shift Right");
 		shiftRight.setImage(rightId.createImage());
 		shiftRight.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Shift,
-			// ImagingServiceAction.Right);
 			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.RIGHT);
 		});
 
@@ -288,8 +251,6 @@ public class IconEditor implements IConfigurationListener {
 		swapTiles.setText("Swap Selected Tiles");
 		swapTiles.setImage(swapId.createImage());
 		swapTiles.addListener(SWT.Selection, e -> {
-			// getSelector().action((e.stateMask & SWT.SHIFT) == SWT.SHIFT,
-			// ImagingServiceDescription.Swap);
 			getSelector().executeService(ImagingServiceDescription.Swap);
 		});
 

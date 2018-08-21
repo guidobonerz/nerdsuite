@@ -20,7 +20,45 @@ public class ShiftService extends AbstractService {
 	@Override
 	public void sendResponse(String message, Object data) {
 		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
+			byte[] bitplane, byte workArray[], int width, int height) {
+		if (action == UP) {
+			for (int x = 0; x < width; x++) {
+				byte b = workArray[x];
+				for (int y = 0; y < height - 1; y++) {
+					workArray[x + y * width] = workArray[x + (y + 1) * width];
+				}
+				workArray[x + (width * (height - 1))] = b;
+			}
+		} else if (action == DOWN) {
+			for (int x = 0; x < width; x++) {
+				byte b = workArray[x + (width * (height - 1))];
+				for (int y = height - 1; y > 0; y--) {
+					workArray[x + y * width] = workArray[x + (y - 1) * width];
+				}
+				workArray[x] = b;
+			}
+		} else if (action == LEFT) {
+			for (int y = 0; y < height; y++) {
+				byte b = workArray[y * width];
+				for (int x = 0; x < width - 1; x++) {
+					workArray[x + y * width] = workArray[(x + 1) + y * width];
+				}
+				workArray[(width + y * width) - 1] = b;
+			}
+		} else if (action == RIGHT) {
+			for (int y = 0; y < height; y++) {
+				byte b = workArray[(width + y * width) - 1];
+				for (int x = width - 1; x > 0; x--) {
+					workArray[x + y * width] = workArray[(x - 1) + y * width];
+				}
+				workArray[y * width] = b;
+			}
+		}
+		return workArray;
 	}
 
 	@Override
@@ -34,5 +72,6 @@ public class ShiftService extends AbstractService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 
 }

@@ -9,11 +9,13 @@ public interface IImagingService {
 
 	public boolean needsConfirmation();
 
+	public boolean needsConversion();
+
 	public void runService(int action, List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration,
 			int offset, byte bitplane[]);
 
-	public void each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte bitplane[]);
+	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
+			byte bitplane[], byte workArray[], int width, int height);
 
 	public void sendResponse(String message, Object data);
 

@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.imaging.service.AbstractService;
 import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
@@ -383,7 +384,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		tileSelectionList = new ArrayList<>();
 		for (;;) {
 			if (xs < conf.columns) {
-				if (!hasTile(xs, ys)) {
+				if (!isTileSelected(xs, ys)) {
 					tileSelectionList.add(new TileLocation(xs, ys));
 				}
 				if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
@@ -395,7 +396,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				ys++;
 			}
 		}
-		setHasTileSelection(tileSelectionList.size());
 
 	}
 
@@ -866,15 +866,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	private boolean checkIfSquareBase() {
-		int w = conf.currentWidth * conf.tileColumns;
-		int h = conf.height * conf.tileRows;
-		return w == h;
-	}
-
-	protected void setHasTileSelection(int count) {
-	}
-
 	protected void setNotification(int offset, int tileSize) {
 
 	}
@@ -885,6 +876,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	protected void showNotification(ImagingServiceDescription type, ImagingServiceAction mode, String notification,
 			Object data) {
+
+	}
+
+	protected void setHasTileSelection(int count) {
 
 	}
 
@@ -915,248 +910,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public void executeService(ImagingServiceDescription serviceDescription, int action) {
 		IImagingService service = getService(serviceDescription);
+		((AbstractService) service).setConf(conf);
 		service.runService(action, tileSelectionList, conf, navigationOffset, bitplane);
-	}
-
-	public void action(boolean allSelected, ImagingServiceDescription type) {
-		action(allSelected, type, null);
-	}
-
-	public void action(boolean allSelected, ImagingServiceDescription type, ImagingServiceAction mode) {
-		int fh = conf.height * conf.tileRows;
-		int fw = conf.width * conf.tileColumns;
-		int size = fh * fw;
-		int tsize = conf.getTileSize();
-		byte workArray[] = null;
-		if (isConfirmed(ImagingServiceDescription.All, null, tileSelectionList.size())) {
-			for (int i = 0; i < (type.ignoreSelectionList ? 1 : tileSelectionList.size()); i++) {
-				if (type.convert) {
-					workArray = createWorkArray();
-					convert(workArray, bitplane, tileSelectionList.get(i).x, tileSelectionList.get(i).y,
-							ConversionMode.toWorkArray);
-				}
-				switch (type) {
-				case Purge: {
-					int offset = conf.computeTileOffset(tileSelectionList.get(i).x, tileSelectionList.get(i).y,
-							navigationOffset);
-					for (int n = 0; n < tsize; n++) {
-						bitplane[offset + n] = 0;
-					}
-					break;
-				}
-				case Swap: {
-					if (tileSelectionList.size() == 2) {
-						int swapSourceOffset = conf.computeTileOffset(tileSelectionList.get(0).x,
-								tileSelectionList.get(0).y, navigationOffset);
-						int swapTargetOffset = conf.computeTileOffset(tileSelectionList.get(1).x,
-								tileSelectionList.get(1).y, navigationOffset);
-
-						for (int n = 0; n < conf.getTileSize(); n++) {
-							byte buffer = bitplane[swapSourceOffset + n];
-							bitplane[swapSourceOffset + n] = bitplane[swapTargetOffset + n];
-							bitplane[swapTargetOffset + n] = buffer;
-						}
-					} else {
-						showNotification(ImagingServiceDescription.Swap, null, "Please select only two tiles to swap.",
-								null);
-					}
-					break;
-				}
-				case Shift: {
-					switch (mode) {
-					case Up: {
-						for (int x = 0; x < fw; x++) {
-							byte b = workArray[x];
-							for (int y = 0; y < fh - 1; y++) {
-								workArray[x + y * fw] = workArray[x + (y + 1) * fw];
-							}
-							workArray[x + (fw * (fh - 1))] = b;
-						}
-						break;
-					}
-					case Down: {
-
-						for (int x = 0; x < fw; x++) {
-							byte b = workArray[x + (fw * (fh - 1))];
-							for (int y = fh - 1; y > 0; y--) {
-								workArray[x + y * fw] = workArray[x + (y - 1) * fw];
-							}
-							workArray[x] = b;
-						}
-						break;
-					}
-					case Left: {
-						for (int y = 0; y < fh; y++) {
-							byte b = workArray[y * fw];
-							for (int x = 0; x < fw - 1; x++) {
-								workArray[x + y * fw] = workArray[(x + 1) + y * fw];
-							}
-							workArray[(fw + y * fw) - 1] = b;
-						}
-						break;
-					}
-					case Right: {
-						for (int y = 0; y < fh; y++) {
-							byte b = workArray[(fw + y * fw) - 1];
-							for (int x = fw - 1; x > 0; x--) {
-								workArray[x + y * fw] = workArray[(x - 1) + y * fw];
-							}
-							workArray[y * fw] = b;
-						}
-						break;
-					}
-					}
-				}
-				case Flip: {
-					switch (mode) {
-					case Horizontal: {
-						for (int y = 0; y < fh; y++) {
-							for (int x = 0; x < fw / 2; x++) {
-								byte a = workArray[x + (y * fw)];
-								byte b = workArray[fw - 1 - x + (y * fw)];
-								workArray[x + (y * fw)] = b;
-								workArray[fw - 1 - x + (y * fw)] = a;
-							}
-						}
-						break;
-					}
-					case Vertical: {
-						for (int y = 0; y < fh / 2; y++) {
-							for (int x = 0; x < fw; x++) {
-								byte a = workArray[x + (y * fw)];
-								byte b = workArray[x + ((fh - y - 1) * fw)];
-								workArray[x + (y * fw)] = b;
-								workArray[x + ((fh - y - 1) * fw)] = a;
-							}
-						}
-						break;
-					}
-					}
-					break;
-				}
-				case Mirror: {
-					switch (mode) {
-					case UpperHalf: {
-						for (int y = 0; y < fh / 2; y++) {
-							for (int x = 0; x < fw; x++) {
-								workArray[x + ((fh - y - 1) * fw)] = workArray[x + (y * fw)];
-							}
-						}
-						break;
-					}
-					case LowerHalf: {
-						for (int y = 0; y < fh / 2; y++) {
-							for (int x = 0; x < fw; x++) {
-								workArray[x + (y * fw)] = workArray[x + ((fh - y - 1) * fw)];
-
-							}
-						}
-						break;
-					}
-					case LeftHalf: {
-						for (int y = 0; y < fh; y++) {
-							for (int x = 0; x < fw / 2; x++) {
-								workArray[fw - 1 - x + (y * fw)] = workArray[x + (y * fw)];
-							}
-						}
-						break;
-					}
-					case RightHalf: {
-						for (int y = 0; y < fh; y++) {
-							for (int x = 0; x < fw / 2; x++) {
-								workArray[x + (y * fw)] = workArray[fw - 1 - x + (y * fw)];
-							}
-						}
-						break;
-					}
-					}
-					break;
-				}
-				case Rotate: {
-					boolean doRotate = false;
-					if (!(doRotate = checkIfSquareBase())) {
-						doRotate = isConfirmed(type, mode, 0);
-					}
-					if (doRotate) {
-						byte targetWorkArray[] = createWorkArray();
-						for (int y = 0; y < conf.height * conf.tileRows; y++) {
-							for (int x = 0; x < conf.width * conf.tileColumns; x++) {
-								byte b = workArray[x + (y * conf.width * conf.tileColumns)];
-								int o = 0;
-								if (mode == ImagingServiceAction.CCW) {
-									o = (conf.width * conf.height * conf.tileRows * conf.tileColumns)
-											- (conf.width * conf.tileColumns) - (conf.width * conf.tileColumns * x) + y;
-								} else if (mode == ImagingServiceAction.CW) {
-									o = (conf.width * conf.tileColumns) - y - 1 + (x * conf.width * conf.tileColumns);
-								}
-								if (o >= 0 && o < size) {
-									targetWorkArray[o] = b;
-								}
-							}
-						}
-						workArray = targetWorkArray;
-					}
-					break;
-				}
-				}
-				if (type.convert) {
-					convert(workArray, bitplane, tileSelectionList.get(i).x, tileSelectionList.get(i).y,
-							ConversionMode.toBitplane);
-				}
-			}
-		}
-		if (tileSelectionList.size() == 1) {
-			doDrawTile();
-		} else {
-			doDrawAllTiles();
-		}
+		doDrawAllTiles();
 		fireDoDrawAllTiles();
 	}
 
-	private void printResult(byte workArray[]) {
-		System.out.println("-----------------------------------------");
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < workArray.length; i++) {
-			if (i % (conf.width * conf.tileColumns) == 0) {
-				sb.append("\n");
-			}
-			sb.append(workArray[i]);
-		}
-		System.out.println(sb);
-	}
-
-	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {
-		int iconSize = conf.getIconSize();
-		int tileSize = conf.getTileSize();
-		int tileOffset = conf.computeTileOffset(x, y, navigationOffset);
-
-		for (int si = 0, s = 0; si < tileSize; si += conf.bytesPerRow, s += conf.bytesPerRow) {
-			s = (si % (iconSize)) == 0 ? 0 : s;
-			int xo = ((si / iconSize) & (conf.tileColumns - 1)) * conf.width;
-			int yo = (si / (iconSize * conf.tileColumns)) * conf.height * conf.width * conf.tileColumns;
-			int ro = ((s / conf.bytesPerRow) * conf.width) * conf.tileColumns;
-			int wai = ro + xo + yo;
-
-			for (int i = 0; i < conf.bytesPerRow; i++) {
-				bitplane[tileOffset + si + i] = mode == ConversionMode.toBitplane ? 0 : bitplane[tileOffset + si + i];
-				for (int m = 7, ti = 0; m >= 0; m -= (conf.isMultiColorEnabled() ? 2 : 1), ti++) {
-					if (mode == ConversionMode.toWorkArray) {
-						workArray[wai + (8 * i) + ti] = (byte) ((bitplane[tileOffset + si + i] >> m)
-								& (conf.isMultiColorEnabled() ? 3 : 1));
-					} else if (mode == ConversionMode.toBitplane) {
-						(bitplane[tileOffset + si + i]) |= (workArray[wai + (8 * i) + ti] << m);
-					}
-				}
-			}
-		}
-	}
-
-	private byte[] createWorkArray() {
-		int tileSize = conf.getTileSize();
-		return new byte[tileSize * (conf.isMultiColorEnabled() ? 4 : 8)];
-	}
-
-	private boolean hasTile(int x, int y) {
+	private boolean isTileSelected(int x, int y) {
 		for (TileLocation tl : tileSelectionList) {
 			if (tl.x == x && tl.y == y) {
 				return true;

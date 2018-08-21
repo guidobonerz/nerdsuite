@@ -39,6 +39,11 @@ public class SwapService extends AbstractService {
 	}
 
 	@Override
+	public boolean needsConversion() {
+		return false;
+	}
+
+	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		// TODO Auto-generated method stub
 		return false;

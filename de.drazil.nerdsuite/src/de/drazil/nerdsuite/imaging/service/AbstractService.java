@@ -19,15 +19,21 @@ public abstract class AbstractService implements IImagingService {
 	public void runService(int action, List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration,
 			int offset, byte bitplane[]) {
 		navigationOffset = offset;
+		int width = conf.width * conf.tileColumns;
+		int height = conf.height * conf.tileRows;
 		for (int i = 0; i < tileLocationList.size(); i++) {
-			byte workArray[] = createWorkArray();
-			convert(workArray, bitplane, tileLocationList.get(i).x, tileLocationList.get(i).y,
-					ConversionMode.toWorkArray);
-
+			byte workArray[] = null;
+			if (needsConversion()) {
+				workArray = createWorkArray();
+				convert(workArray, bitplane, tileLocationList.get(i).x, tileLocationList.get(i).y,
+						ConversionMode.toWorkArray);
+			}
 			int ofs = conf.computeTileOffset(tileLocationList.get(i).x, tileLocationList.get(i).y, offset);
-			each(action, tileLocationList.get(i), configuration, ofs, bitplane);
-			convert(workArray, bitplane, tileLocationList.get(i).x, tileLocationList.get(i).y,
-					ConversionMode.toBitplane);
+			workArray = each(action, tileLocationList.get(i), configuration, ofs, bitplane, workArray, width, height);
+			if (needsConversion()) {
+				convert(workArray, bitplane, tileLocationList.get(i).x, tileLocationList.get(i).y,
+						ConversionMode.toBitplane);
+			}
 		}
 	}
 
@@ -57,13 +63,30 @@ public abstract class AbstractService implements IImagingService {
 		}
 	}
 
-	private byte[] createWorkArray() {
+	protected byte[] createWorkArray() {
 		return new byte[conf.getTileSize() * (conf.isMultiColorEnabled() ? 4 : 8)];
 	}
 
 	@Override
-	public void each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane) {
+	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
+			byte[] bitplane, byte workArray[], int width, int height) {
+		return null;
+	}
 
+	@Override
+	public boolean needsConversion() {
+		return true;
+	}
+
+	private void printResult(byte workArray[]) {
+		System.out.println("-----------------------------------------");
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < workArray.length; i++) {
+			if (i % (conf.width * conf.tileColumns) == 0) {
+				sb.append("\n");
+			}
+			sb.append(workArray[i]);
+		}
+		System.out.println(sb);
 	}
 }
