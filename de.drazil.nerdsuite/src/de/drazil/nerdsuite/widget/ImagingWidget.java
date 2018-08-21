@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.imaging.service.AbstractService;
 import de.drazil.nerdsuite.imaging.service.AnimationService;
+import de.drazil.nerdsuite.imaging.service.ClipboardService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
@@ -35,7 +36,7 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PencilMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.WidgetMode;
 
-public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener {
+public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IImagingCallback {
 
 	private final static int SET_DRAW_NOTHING = 0;
 	private final static int SET_DRAW_ALL_TILES = 1;
@@ -68,10 +69,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int paintControlMode = SET_DRAW_NOTHING;
 
 	private byte bitplane[];
-	private byte clipboardBuffer[];
-	private int cutCopyOffset;
-	private int pasteOffset;
-	private ClipboardAction clipboardAction = ClipboardAction.Off;
+
 	private boolean animationIsRunning = false;
 	private boolean mouseIn = false;
 	private Map<String, Color> palette;
@@ -89,8 +87,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public enum ImagingServiceDescription {
 		All("All", null), Shift("Shift", ShiftService.class), Mirror("Mirror", MirrorService.class), Flip("Flip",
 				FlipService.class), Rotate("Rotate", RotationService.class), Purge("Purge", PurgeService.class,
-						false), Swap("Swap", SwapService.class, false,
-								true), Animation("Animation", AnimationService.class, false);
+						false), Swap("Swap", SwapService.class, false, true), Animation("Animation",
+								AnimationService.class,
+								false), Clipboard("Clipboard", ClipboardService.class, false, true);
 		private final String name;
 		private final boolean convert;
 		private final boolean ignoreSelectionList;
@@ -129,15 +128,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	public enum ImagingServiceAction {
-		Up, Down, Left, Right, UpperHalf, LowerHalf, LeftHalf, RightHalf, Horizontal, Vertical, CCW, CW, Start, Stop
-	}
-
-	public enum ClipboardAction {
-		Cut, Copy, Paste, Off
-	};
-
-	public enum ConversionMode {
-		toWorkArray, toBitplane
+		Start, Stop
 	}
 
 	public class Animator implements Runnable {
@@ -264,7 +255,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
-		// System.out.println("right clicked");
 		if (conf.widgetMode == WidgetMode.Painter) {
 			conf.pencilMode = conf.pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
 			Console.println("PencilMode:" + conf.pencilMode);
@@ -273,7 +263,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		// System.out.println("left click");
 		setCursorPosition(x, y);
 		if (conf.widgetMode == WidgetMode.Selector) {
 			paintControlMode = 0;
@@ -291,21 +280,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
-		// System.out.println("moved");
 		setCursorPosition(x, y);
 		doDrawAllTiles();
 	}
 
 	@Override
 	public void mouseExit(int modifierMask, int x, int y) {
-		// System.out.println("exit");
 		mouseIn = false;
 		doDrawAllTiles();
 	}
 
 	@Override
 	public void mouseEnter(int modifierMask, int x, int y) {
-		// System.out.println("enter");
 		setFocus();
 		mouseIn = true;
 		doDrawAllTiles();
@@ -313,7 +299,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseDragged(int modifierMask, int x, int y) {
-		// System.out.println("dragged");
 		setCursorPosition(x, y);
 		if (conf.widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
@@ -326,7 +311,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		// System.out.println("left pressed");
 		if (conf.widgetMode == WidgetMode.Selector) {
 			resetSelectionList();
 		}
@@ -669,7 +653,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void recalc() {
 		conf.currentPixelWidth = conf.pixelSize * (conf.isMultiColorEnabled() ? 2 : 1);
 		conf.currentWidth = conf.width / (conf.isMultiColorEnabled() ? 2 : 1);
-		clipboardBuffer = new byte[conf.getTileSize()];
+		// clipboardBuffer = new byte[conf.getTileSize()];
 		int selectedTileOffset = conf.computeTileOffset(selectedTileIndexX, selectedTileIndexY, navigationOffset);
 		if (vBar != null) {
 			vBar.setMinimum(0);
@@ -821,7 +805,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void doDrawAllTiles() {
 		paintControlMode = SET_DRAW_ALL_TILES;
 		setNotification(selectedTileOffset, conf.getTileSize());
-
 		redraw();
 	}
 
@@ -883,27 +866,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	}
 
-	public void clipboardAction(ClipboardAction clipboardAction) {
-
-		int offset = conf.computeTileOffset(tileX, tileY, navigationOffset);
-		if (clipboardAction == ClipboardAction.Cut || clipboardAction == ClipboardAction.Copy) {
-			this.clipboardAction = clipboardAction;
-			cutCopyOffset = offset;
-		}
-		if (clipboardAction == ClipboardAction.Paste && this.clipboardAction != ClipboardAction.Off) {
-			pasteOffset = offset;
-			for (int i = 0; i < conf.getTileSize(); i++) {
-				bitplane[pasteOffset + i] = bitplane[cutCopyOffset + i];
-				if (this.clipboardAction == ClipboardAction.Cut) {
-					bitplane[cutCopyOffset + i] = 0;
-				}
-			}
-			this.clipboardAction = ClipboardAction.Off;
-			doDrawAllTiles();
-			fireDoDrawAllTiles();
-		}
-	}
-
 	public void executeService(ImagingServiceDescription serviceDescription) {
 		executeService(serviceDescription, 0);
 	}
@@ -911,7 +873,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void executeService(ImagingServiceDescription serviceDescription, int action) {
 		IImagingService service = getService(serviceDescription);
 		((AbstractService) service).setConf(conf);
-		service.runService(action, tileSelectionList, conf, navigationOffset, bitplane);
+		service.runService(action, tileSelectionList, conf, this, navigationOffset, bitplane);
+	}
+
+	@Override
+	public void update(int updateMethod) {
 		doDrawAllTiles();
 		fireDoDrawAllTiles();
 	}
@@ -936,15 +902,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 						+ (conf.cursorLineWidth * (conf.rows + 1)) + hsb.x - conf.rows);
 	}
 
-	public void setMouseActionEnabled(boolean mouseActionEnabled) {
-		ama.setMouseActionEnabled(mouseActionEnabled);
-	}
-
 	private IImagingService getService(ImagingServiceDescription s) {
 		IImagingService service = serviceCacheMap.get(s.getName());
 		if (service == null) {
 			try {
 				service = (IImagingService) s.getCls().newInstance();
+				serviceCacheMap.put(s.getName(), service);
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {

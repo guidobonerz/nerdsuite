@@ -32,6 +32,7 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.imaging.service.ClipboardService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
@@ -131,23 +132,22 @@ public class IconEditor implements IConfigurationListener {
 		cut.setText("Cut");
 		cut.setImage(cutId.createImage());
 		cut.addListener(SWT.Selection, e -> {
-			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Cut);
+			getSelector().executeService(ImagingServiceDescription.Clipboard, ClipboardService.CUT);
 		});
 		MenuItem copy = new MenuItem(popup, SWT.NONE);
 		copy.setText("Copy");
 		copy.setImage(copyId.createImage());
 		copy.addListener(SWT.Selection, e -> {
-			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Copy);
+			getSelector().executeService(ImagingServiceDescription.Clipboard, ClipboardService.COPY);
 		});
 		MenuItem paste = new MenuItem(popup, SWT.NONE);
 		paste.setText("Paste");
 		paste.setImage(pasteId.createImage());
 		paste.addListener(SWT.Selection, e -> {
-			getSelector().clipboardAction(ImagingWidget.ClipboardAction.Paste);
+			getSelector().executeService(ImagingServiceDescription.Clipboard, ClipboardService.PASTE);
 		});
 		MenuItem selectAll = new MenuItem(popup, SWT.NONE);
 		selectAll.setText("Select All");
-		// paste.setImage(pasteId.createImage());
 		selectAll.addListener(SWT.Selection, e -> {
 			getSelector().selectAll();
 		});
@@ -175,27 +175,23 @@ public class IconEditor implements IConfigurationListener {
 
 		MenuItem mirrorUpperHalf = new MenuItem(popup, SWT.NONE);
 		mirrorUpperHalf.setText("Mirror Upper Half");
-		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorUpperHalf.addListener(SWT.Selection, e -> {
 			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.UPPER_HALF);
 		});
 
 		MenuItem mirrorLowerHalf = new MenuItem(popup, SWT.NONE);
 		mirrorLowerHalf.setText("Mirror Lower Half");
-		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorLowerHalf.addListener(SWT.Selection, e -> {
 			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.LOWER_HALF);
 		});
 
 		MenuItem mirrorLeftHalf = new MenuItem(popup, SWT.NONE);
 		mirrorLeftHalf.setText("Mirror Left Half");
-		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorLeftHalf.addListener(SWT.Selection, e -> {
 			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.LEFT_HALF);
 		});
 		MenuItem mirrorRightHalf = new MenuItem(popup, SWT.NONE);
 		mirrorRightHalf.setText("Mirror Right Half");
-		// mirrorUpperHalf.setImage(flipHorizontalId.createImage());
 		mirrorRightHalf.addListener(SWT.Selection, e -> {
 			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.RIGHT_HALF);
 		});

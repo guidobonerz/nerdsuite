@@ -3,12 +3,15 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
+import de.drazil.nerdsuite.widget.IImagingCallback;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.Setter;
 
 public abstract class AbstractService implements IImagingService {
 	@Setter
 	protected ImagingWidgetConfiguration conf = null;
+	@Setter
+	protected IImagingCallback callback = null;
 	@Setter
 	private int navigationOffset = 0;
 
@@ -17,7 +20,7 @@ public abstract class AbstractService implements IImagingService {
 	}
 
 	public void runService(int action, List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration,
-			int offset, byte bitplane[]) {
+			IImagingCallback callback, int offset, byte bitplane[]) {
 		navigationOffset = offset;
 		int width = conf.width * conf.tileColumns;
 		int height = conf.height * conf.tileRows;
@@ -35,6 +38,7 @@ public abstract class AbstractService implements IImagingService {
 						ConversionMode.toBitplane);
 			}
 		}
+		callback.update(0);
 	}
 
 	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {

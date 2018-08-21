@@ -32,6 +32,10 @@ public abstract class BaseImagingWidget extends Canvas implements IAdvancedMouse
 		ama.addMouseWheelListener(this);
 	}
 
+	public void setMouseActionEnabled(boolean mouseActionEnabled) {
+		ama.setMouseActionEnabled(mouseActionEnabled);
+	}
+
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
 		// System.out.println("right clicked");

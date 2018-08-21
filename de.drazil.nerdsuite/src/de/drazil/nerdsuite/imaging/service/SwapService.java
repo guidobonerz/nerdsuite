@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
+import de.drazil.nerdsuite.widget.IImagingCallback;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class SwapService extends AbstractService {
@@ -15,7 +16,7 @@ public class SwapService extends AbstractService {
 
 	@Override
 	public void runService(int action, List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration,
-			int offset, byte bitplane[]) {
+			IImagingCallback callback, int offset, byte bitplane[]) {
 		int swapSourceOffset = conf.computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y, offset);
 		int swapTargetOffset = conf.computeTileOffset(tileLocationList.get(1).x, tileLocationList.get(1).y, offset);
 
