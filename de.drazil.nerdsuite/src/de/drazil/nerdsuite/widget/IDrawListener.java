@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
-import de.drazil.nerdsuite.widget.ImagingWidget.PencilMode;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PencilMode;
 
 public interface IDrawListener {
 

@@ -8,21 +8,32 @@ import de.drazil.nerdsuite.mouse.IAdvancedMouseListener;
 import de.drazil.nerdsuite.mouse.IAdvancedMouseMoveListener;
 import de.drazil.nerdsuite.mouse.IAdvancedMouseTrackListener;
 import de.drazil.nerdsuite.mouse.IAdvancedMouseWheelListener;
+import lombok.Getter;
 
 public abstract class BaseImagingWidget extends Canvas implements IAdvancedMouseListener, IAdvancedMouseMoveListener,
 		IAdvancedMouseTrackListener, IAdvancedMouseWheelListener {
+
 	protected AdvancedMouseAdaper ama = null;
 
-	protected ImagingWidgetConfiguration configuration = null;
+	@Getter
+	protected ImagingWidgetConfiguration conf = null;
 
-	public BaseImagingWidget(Composite parent, int style) {
+	private final static class DefaultImageingWidgetConfiguration extends ImagingWidgetConfiguration {
+
+	}
+
+	public BaseImagingWidget(Composite parent, int style, ImagingWidgetConfiguration configuration) {
 		super(parent, style);
-		configuration = new ImagingWidgetConfiguration();
+		conf = configuration == null ? new DefaultImageingWidgetConfiguration() : configuration;
 		ama = new AdvancedMouseAdaper(this);
 		ama.addMouseListener(this);
 		ama.addMouseMoveListener(this);
 		ama.addMouseTrackListener(this);
 		ama.addMouseWheelListener(this);
+	}
+
+	public void setMouseActionEnabled(boolean mouseActionEnabled) {
+		ama.setMouseActionEnabled(mouseActionEnabled);
 	}
 
 	@Override
