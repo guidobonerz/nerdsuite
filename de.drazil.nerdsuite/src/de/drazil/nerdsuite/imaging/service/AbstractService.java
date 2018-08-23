@@ -24,21 +24,23 @@ public abstract class AbstractService implements IImagingService {
 		navigationOffset = offset;
 		int width = conf.width * conf.tileColumns;
 		int height = conf.height * conf.tileRows;
+		callback.beforeRunService();
 		for (int i = 0; i < tileLocationList.size(); i++) {
+			int x = tileLocationList.get(i).x;
+			int y = tileLocationList.get(i).y;
+			//callback.onRunService(x, y, computeTileOffset(x, y, offset));
 			byte workArray[] = null;
 			if (needsConversion()) {
 				workArray = createWorkArray();
-				convert(workArray, bitplane, tileLocationList.get(i).x, tileLocationList.get(i).y,
-						ConversionMode.toWorkArray);
+				convert(workArray, bitplane, x, y, ConversionMode.toWorkArray);
 			}
-			int ofs = conf.computeTileOffset(tileLocationList.get(i).x, tileLocationList.get(i).y, offset);
+			int ofs = conf.computeTileOffset(x, y, offset);
 			workArray = each(action, tileLocationList.get(i), configuration, ofs, bitplane, workArray, width, height);
 			if (needsConversion()) {
-				convert(workArray, bitplane, tileLocationList.get(i).x, tileLocationList.get(i).y,
-						ConversionMode.toBitplane);
+				convert(workArray, bitplane, x, y, ConversionMode.toBitplane);
 			}
 		}
-		callback.update(0);
+		callback.afterRunService();
 	}
 
 	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {
@@ -92,5 +94,9 @@ public abstract class AbstractService implements IImagingService {
 			sb.append(workArray[i]);
 		}
 		System.out.println(sb);
+	}
+
+	public int computeTileOffset(int x, int y, int offset) {
+		return conf.tileSize * (x + (y * conf.columns)) + offset;
 	}
 }

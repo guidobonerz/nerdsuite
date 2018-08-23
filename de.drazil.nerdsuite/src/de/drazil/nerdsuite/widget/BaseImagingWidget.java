@@ -14,6 +14,7 @@ public abstract class BaseImagingWidget extends Canvas implements IAdvancedMouse
 		IAdvancedMouseTrackListener, IAdvancedMouseWheelListener {
 
 	protected AdvancedMouseAdaper ama = null;
+	protected int modifierMask = 0;
 
 	@Getter
 	protected ImagingWidgetConfiguration conf = null;
@@ -38,91 +39,91 @@ public abstract class BaseImagingWidget extends Canvas implements IAdvancedMouse
 
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
-		// System.out.println("right clicked");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void rightMouseButtonReleased(int modifierMask, int x, int y) {
-		// System.out.println("right released");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void rightMouseButtonPressed(int modifierMask, int x, int y) {
-		// System.out.println("right pressed");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void leftMouseButtonDoubleClicked(int modifierMask, int x, int y) {
-		// System.out.println("left doubleclick");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void rightMouseButtonDoubleClicked(int modifierMask, int x, int y) {
-		// System.out.println("right doubleclick");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		// System.out.println("left click");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
-		// System.out.println("moved");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void mouseExit(int modifierMask, int x, int y) {
-		// System.out.println("exit");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void mouseEnter(int modifierMask, int x, int y) {
-		// System.out.println("enter");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void mouseDropped(int modifierMask, int x, int y) {
-		// System.out.println("dropped");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void mouseDragged(int modifierMask, int x, int y) {
-		// System.out.println("dragged");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void middleMouseButtonReleased(int modifierMask, int x, int y) {
-		// System.out.println("middle released");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void middleMouseButtonPressed(int modifierMask, int x, int y) {
-		// System.out.println("middle pressed");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void leftMouseButtonReleased(int modifierMask, int x, int y) {
-		// System.out.println("left released");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		// System.out.println("left pressed");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void leftMouseButtonTimesClicked(int modifierMask, int x, int y, int count) {
-		// System.out.println("left " + count + " times clicked");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void rightMouseButtonTimesClicked(int modifierMask, int x, int y, int count) {
-		// System.out.println("right " + count + " times clicked");
+		this.modifierMask = modifierMask;
 	}
 
 	@Override
 	public void mouseScrolled(int modifierMask, int x, int y, int count) {
-		// System.out.println("scrolled " + count);
+		this.modifierMask = modifierMask;
 	}
 }
