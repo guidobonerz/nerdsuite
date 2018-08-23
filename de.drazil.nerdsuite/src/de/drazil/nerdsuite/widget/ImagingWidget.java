@@ -25,6 +25,7 @@ import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.ClipboardService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
+import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
@@ -47,17 +48,24 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int activeLayer = 0;
 	private int maxLayerCount = 4;
 
+	private boolean keyPressed = false;
+	private int currentKeyCodePressed = 0;
+	private char currentCharacterPressed = 0;
+	private boolean altS = false;
+
 	private int selectedTileIndexX = 0;
 	private int selectedTileIndexY = 0;
 
 	private int cursorX = 0;
 	private int cursorY = 0;
+	private int oldTileX = 0;
+	private int oldTileY = 0;
 	private int tileX = 0;
 	private int tileY = 0;
 	private int tileCursorX = 0;
 	private int tileCursorY = 0;
-	private int animationIndexX;
-	private int animationIndexY;
+	// private int animationIndexX;
+	// private int animationIndexY;
 
 	private int selectedColorIndex;
 	private int selectedTileOffset = 0;
@@ -86,40 +94,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public enum ImagingServiceDescription {
 		All("All", null), Shift("Shift", ShiftService.class), Mirror("Mirror", MirrorService.class), Flip("Flip",
-				FlipService.class), Rotate("Rotate", RotationService.class), Purge("Purge", PurgeService.class,
-						false), Swap("Swap", SwapService.class, false, true), Animation("Animation",
-								AnimationService.class,
-								false), Clipboard("Clipboard", ClipboardService.class, false, true);
+				FlipService.class), Rotate("Rotate", RotationService.class), Purge("Purge", PurgeService.class), Swap(
+						"Swap", SwapService.class), Invert("Invert", InvertService.class), Animation("Animation",
+								AnimationService.class), Clipboard("Clipboard", ClipboardService.class);
 		private final String name;
-		private final boolean convert;
-		private final boolean ignoreSelectionList;
 		private final Class<?> cls;
 
 		ImagingServiceDescription(String name, Class<?> cls) {
-			this(name, cls, true);
-		}
-
-		ImagingServiceDescription(String name, Class<?> cls, boolean convert) {
-			this(name, cls, convert, false);
-		}
-
-		ImagingServiceDescription(String name, Class<?> cls, boolean convert, boolean ignoreSelectionList) {
 			this.name = name;
-			this.convert = convert;
-			this.ignoreSelectionList = ignoreSelectionList;
 			this.cls = cls;
 		}
 
 		public String getName() {
 			return name;
-		}
-
-		public boolean doConvert() {
-			return convert;
-		}
-
-		public boolean ignoreSelectionList() {
-			return ignoreSelectionList;
 		}
 
 		public Class<?> getCls() {
@@ -135,9 +122,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		public synchronized void run() {
 			Collections.rotate(tileSelectionList, -1);
 			TileLocation tl = tileSelectionList.get(0);
-			animationIndexX = tl.x;
-			animationIndexY = tl.y;
-			selectedTileOffset = conf.computeTileOffset(animationIndexX, animationIndexY, navigationOffset);
+			tileX = tl.x;
+			tileY = tl.y;
+			selectedTileOffset = conf.computeTileOffset(tileX, tileY, navigationOffset);
 			fireSetSelectedTileOffset(selectedTileOffset);
 			doDrawAllTiles();
 			getDisplay().timerExec(animationTimerDelay, this);
@@ -172,7 +159,22 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		});
 
 		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				keyPressed = false;
+				currentCharacterPressed = e.character;
+				currentKeyCodePressed = e.keyCode;
+				modifierMask = e.stateMask & SWT.MODIFIER_MASK;
+				altS = checkKeyPressed(SWT.ALT, 's');
+
+			}
+
 			public void keyPressed(KeyEvent e) {
+				keyPressed = true;
+				currentCharacterPressed = e.character;
+				currentKeyCodePressed = e.keyCode;
+				modifierMask = e.stateMask & SWT.MODIFIER_MASK;
+				altS = checkKeyPressed(SWT.ALT, 's');
 
 				switch (e.character) {
 				case '1': {
@@ -270,7 +272,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			selectedTileIndexY = tileY;
 			selectedTileOffset = conf.computeTileOffset(selectedTileIndexX, selectedTileIndexY, navigationOffset);
 			fireSetSelectedTileOffset(selectedTileOffset);
-			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
+			computeSelection(false, false);
 			doDrawAllTiles();
 		} else if (conf.widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
@@ -304,7 +306,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			doDrawPixel();
 			fireDoDrawTile();
 		} else if (conf.widgetMode == WidgetMode.Selector) {
-			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
+			computeSelection(false, false);
 			doDrawAllTiles();
 		}
 	}
@@ -363,24 +365,37 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			a = 1;
 			b = 0;
 		}
-		int xs = selectionRangeBuffer.get(a).x;
-		int ys = selectionRangeBuffer.get(a).y;
+		int xa = selectionRangeBuffer.get(a).x;
+		int ya = selectionRangeBuffer.get(a).y;
+		int xb = selectionRangeBuffer.get(b).x;
+		int yb = selectionRangeBuffer.get(b).y;
+		int x = xa;
+		int y = ya;
 		tileSelectionList = new ArrayList<>();
+
 		for (;;) {
-			if (xs < conf.columns) {
-				if (!isTileSelected(xs, ys)) {
-					tileSelectionList.add(new TileLocation(xs, ys));
-				}
-				if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
-					break;
-				}
-				xs++;
-			} else {
-				xs = 0;
-				ys++;
+			if (!isTileSelected(x, y)) {
+				tileSelectionList.add(new TileLocation(x, y));
 			}
+			if (x == selectionRangeBuffer.get(b).x && y == selectionRangeBuffer.get(b).y) {
+				break;
+			}
+
+			if (x < (altS ? xb : conf.columns)) {
+				x++;
+			} else {
+				x = (altS ? xa : 0);
+				y++;
+			}
+
+			// System.out.println(x + " " + y + " " + xa + " " + xb);
 		}
 
+	}
+
+	private boolean checkKeyPressed(int modifierKey, char charCode) {
+
+		return (modifierMask & modifierKey) == modifierKey && currentCharacterPressed == charCode && keyPressed;
 	}
 
 	public void paintControl(PaintEvent e) {
@@ -478,8 +493,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			gc.setAlpha(255);
 			gc.setLineWidth(3);
 			gc.setForeground(Constants.LIGHT_GREEN2);
-			gc.drawRectangle(animationIndexX * conf.width * conf.pixelSize * conf.tileColumns,
-					animationIndexY * conf.height * conf.pixelSize * conf.tileRows,
+			gc.drawRectangle(tileX * conf.width * conf.pixelSize * conf.tileColumns,
+					tileY * conf.height * conf.pixelSize * conf.tileRows,
 					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows);
 		}
 	}
@@ -876,9 +891,24 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void update(int updateMethod) {
+	public void afterRunService() {
+		tileX = oldTileX;
+		tileY = oldTileY;
 		doDrawAllTiles();
 		fireDoDrawAllTiles();
+
+	}
+
+	@Override
+	public void beforeRunService() {
+		oldTileX = tileX;
+		oldTileY = tileY;
+	}
+
+	@Override
+	public void onRunService(int x, int y, int offset) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private boolean isTileSelected(int x, int y) {

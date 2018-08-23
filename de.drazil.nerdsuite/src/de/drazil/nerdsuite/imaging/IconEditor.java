@@ -97,6 +97,7 @@ public class IconEditor implements IConfigurationListener {
 		ImageDescriptor flipHorizontalId = null;
 		ImageDescriptor flipVerticalId = null;
 		ImageDescriptor swapId = null;
+		ImageDescriptor invertId = null;
 
 		try {
 			cutId = ImageDescriptor.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/cut.png"));
@@ -121,6 +122,8 @@ public class IconEditor implements IConfigurationListener {
 					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_right.png"));
 			swapId = ImageDescriptor
 					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/arrow_switch.png"));
+			invertId = ImageDescriptor
+					.createFromURL(new URL("platform:/plugin/de.drazil.nerdsuite/icons/contrast.png"));
 
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
@@ -244,10 +247,17 @@ public class IconEditor implements IConfigurationListener {
 		MenuItem separator5 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem swapTiles = new MenuItem(popup, SWT.NONE);
-		swapTiles.setText("Swap Selected Tiles");
+		swapTiles.setText("Swap");
 		swapTiles.setImage(swapId.createImage());
 		swapTiles.addListener(SWT.Selection, e -> {
 			getSelector().executeService(ImagingServiceDescription.Swap);
+		});
+
+		MenuItem invertTiles = new MenuItem(popup, SWT.NONE);
+		invertTiles.setText("Invert");
+		invertTiles.setImage(invertId.createImage());
+		invertTiles.addListener(SWT.Selection, e -> {
+			getSelector().executeService(ImagingServiceDescription.Invert);
 		});
 
 		setPaintFormat("Char");

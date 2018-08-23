@@ -5,12 +5,8 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class AnimationService extends AbstractService {
-	public final static int START = 1;
-	public final static int STOP = 2;
+public class InvertService extends AbstractService {
 
-
-	
 	@Override
 	public boolean needsConfirmation() {
 		// TODO Auto-generated method stub
