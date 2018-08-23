@@ -6,13 +6,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,6 +30,7 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.ClipboardService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
@@ -62,6 +61,7 @@ public class IconEditor implements IConfigurationListener {
 	private byte binaryData[] = null;
 	boolean multiColorMode = false;
 	private ConfigurationDialog configurationDialog = null;
+	private boolean isAnimationRunning = false;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -274,13 +274,13 @@ public class IconEditor implements IConfigurationListener {
 	private Scale getAnimationTimerDelayScale() {
 		if (animationTimerDelayScale == null) {
 			animationTimerDelayScale = new Scale(controls, SWT.HORIZONTAL);
-			animationTimerDelayScale.setEnabled(false);
+			animationTimerDelayScale.setEnabled(true);
 			animationTimerDelayScale.setMinimum(50);
 			animationTimerDelayScale.setMaximum(1000);
 			animationTimerDelayScale.setSelection(200);
+			getSelector().setServiceValue(ImagingServiceDescription.Animation, AnimationService.SET_DELAY, 200);
 			animationTimerDelayScale.setIncrement(50);
 			animationTimerDelayScale.setIncrement(50);
-
 			animationTimerDelayScale.setPageIncrement(50);
 			GridData gridData = new GridData();
 			gridData.grabExcessHorizontalSpace = true;
@@ -293,7 +293,8 @@ public class IconEditor implements IConfigurationListener {
 							/ getAnimationTimerDelayScale().getIncrement())
 							* getAnimationTimerDelayScale().getIncrement();
 					getAnimationTimerDelayScale().setSelection(step);
-					getSelector().changeAnimationTimerDelay(step);
+					getSelector().setServiceValue(ImagingServiceDescription.Animation, AnimationService.SET_DELAY,
+							step);
 				}
 			});
 		}
@@ -355,44 +356,41 @@ public class IconEditor implements IConfigurationListener {
 		if (selector == null) {
 			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
 
-				@Override
-				protected void setHasTileSelection(int count) {
-					getStartAnimation().setEnabled(count > 1);
-					getAnimationTimerDelayScale().setEnabled(count > 1);
-				}
-
-				@Override
-				protected void showNotification(ImagingServiceDescription type, ImagingServiceAction mode,
-						String notification, Object data) {
-					if (type == ImagingServiceDescription.Animation) {
-						getStartAnimation().setText(notification);
-					} else {
-						MessageDialog.openInformation(parent.getShell(), "Information", notification);
-					}
-				}
-
-				@Override
-				protected boolean isConfirmed(ImagingServiceDescription type, ImagingServiceAction mode,
-						int tileCount) {
-					boolean confirmation = false;
-					if (type == ImagingServiceDescription.Rotate) {
-						confirmation = MessageDialog.openQuestion(parent.getShell(), "Question",
-								"Rotating these tile(s) causes data loss, because it is/they are not squarish.\n\nDo you want to rotate anyway?");
-					}
-					if (type == ImagingServiceDescription.All) {
-						confirmation = MessageDialog.openQuestion(parent.getShell(), "Question",
-								MessageFormat.format("Do you really want to process {0} ?",
-										(tileCount > 1) ? "all selected tiles" : "this tile"));
-					}
-					return confirmation;
-				}
-
-				@Override
-				protected void setNotification(int offset, int tileSize) {
-
-					getNotification().setText(MessageFormat.format("Offset: ${0} tile:{1} bytes",
-							String.format("%04X", offset), tileSize));
-				}
+				/*
+				 * 
+				 * @Override protected void setHasTileSelection(int count) {
+				 * getStartAnimation().setEnabled(count > 1);
+				 * getAnimationTimerDelayScale().setEnabled(count > 1); }
+				 * 
+				 * @Override protected void
+				 * showNotification(ImagingServiceDescription type,
+				 * ImagingServiceAction mode, String notification, Object data)
+				 * { if (type == ImagingServiceDescription.Animation) {
+				 * getStartAnimation().setText(notification); } else {
+				 * MessageDialog.openInformation(parent.getShell(),
+				 * "Information", notification); } }
+				 * 
+				 * @Override protected boolean
+				 * isConfirmed(ImagingServiceDescription type,
+				 * ImagingServiceAction mode, int tileCount) { boolean
+				 * confirmation = false; if (type ==
+				 * ImagingServiceDescription.Rotate) { confirmation =
+				 * MessageDialog.openQuestion(parent.getShell(), "Question",
+				 * "Rotating these tile(s) causes data loss, because it is/they are not squarish.\n\nDo you want to rotate anyway?"
+				 * ); } if (type == ImagingServiceDescription.All) {
+				 * confirmation = MessageDialog.openQuestion(parent.getShell(),
+				 * "Question", MessageFormat.format(
+				 * "Do you really want to process {0} ?", (tileCount > 1) ?
+				 * "all selected tiles" : "this tile")); } return confirmation;
+				 * }
+				 * 
+				 * @Override protected void setNotification(int offset, int
+				 * tileSize) {
+				 * 
+				 * getNotification().setText(MessageFormat.format(
+				 * "Offset: ${0} tile:{1} bytes", String.format("%04X", offset),
+				 * tileSize)); }
+				 */
 			};
 			selector.getConf().setWidgetName("Selector:");
 			selector.getConf().setWidgetMode(WidgetMode.Selector);
@@ -414,6 +412,7 @@ public class IconEditor implements IConfigurationListener {
 			selector.setSelectedColor(1);
 			selector.addDrawListener(getPainter());
 			selector.addDrawListener(getPreviewer());
+
 		}
 		return selector;
 
@@ -454,7 +453,7 @@ public class IconEditor implements IConfigurationListener {
 	private Button getStartAnimation() {
 		if (startAnimation == null) {
 			startAnimation = new Button(controls, SWT.PUSH);
-			startAnimation.setEnabled(false);
+			startAnimation.setEnabled(true);
 			startAnimation.setSelection(false);
 			startAnimation.setText("Start Animation");
 			GridData gridData = new GridData();
@@ -465,16 +464,18 @@ public class IconEditor implements IConfigurationListener {
 				@Override
 				public void handleEvent(Event event) {
 
-					if (!getSelector().isAnimationRunning() && getSelector().isAnimatable()) {
+					if (!isAnimationRunning) {
+						isAnimationRunning = true;
 						getSelector().setMouseActionEnabled(false);
 						getPainter().setMouseActionEnabled(false);
 						getPreviewer().setMouseActionEnabled(false);
-						getSelector().startAnimation();
+						getSelector().executeService(ImagingServiceDescription.Animation, AnimationService.START);
 					} else {
-						getSelector().stopAnimation();
+						getSelector().executeService(ImagingServiceDescription.Animation, AnimationService.STOP);
 						getSelector().setMouseActionEnabled(true);
 						getPainter().setMouseActionEnabled(true);
 						getPreviewer().setMouseActionEnabled(true);
+						isAnimationRunning = false;
 					}
 				}
 			});
