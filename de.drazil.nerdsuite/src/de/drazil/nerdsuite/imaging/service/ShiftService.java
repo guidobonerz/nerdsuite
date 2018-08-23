@@ -72,6 +72,5 @@ public class ShiftService extends AbstractService {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
 
 }

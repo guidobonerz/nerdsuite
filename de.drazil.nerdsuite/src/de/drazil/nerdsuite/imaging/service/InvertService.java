@@ -20,6 +20,15 @@ public class InvertService extends AbstractService {
 	}
 
 	@Override
+	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
+			byte[] bitplane, byte[] workArray, int width, int height) {
+		for (int i = 0; i < workArray.length; i++) {
+			workArray[i] = (byte) ((workArray[i] ^ 0xff) & (configuration.isMultiColorEnabled() ? 3 : 1));
+		}
+		return workArray;
+	}
+
+	@Override
 	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
 		// TODO Auto-generated method stub
 		return false;
