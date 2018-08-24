@@ -32,7 +32,6 @@ public abstract class AbstractService implements IImagingService {
 		for (int i = 0; i < tileLocationList.size(); i++) {
 			int x = tileLocationList.get(i).x;
 			int y = tileLocationList.get(i).y;
-			// callback.onRunService(x, y, computeTileOffset(x, y, offset));
 			byte workArray[] = null;
 			if (needsConversion()) {
 				workArray = createWorkArray();

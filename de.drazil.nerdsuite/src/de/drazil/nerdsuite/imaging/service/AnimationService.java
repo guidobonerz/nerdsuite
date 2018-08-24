@@ -24,7 +24,7 @@ public class AnimationService extends AbstractService {
 		public synchronized void run() {
 			Collections.rotate(tileLocationList, -1);
 			TileLocation tl = tileLocationList.get(0);
-			callback.onRunService(conf.computeTileOffset(tl.x, tl.y, navigationOffset));
+			callback.onRunService(conf.computeTileOffset(tl.x, tl.y, navigationOffset), tl.x, tl.y, true);
 			((Composite) source).getDisplay().timerExec(animationDelay, this);
 		}
 	}

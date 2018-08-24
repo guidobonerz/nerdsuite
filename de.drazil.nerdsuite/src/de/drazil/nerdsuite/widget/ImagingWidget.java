@@ -63,8 +63,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int tileY = 0;
 	private int tileCursorX = 0;
 	private int tileCursorY = 0;
-	// private int animationIndexX;
-	// private int animationIndexY;
+	private boolean updateCursorLocation = false;
 
 	private int selectedColorIndex;
 	private int selectedTileOffset = 0;
@@ -435,8 +434,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			paintControlSelection(e.gc);
 
 			if (conf.isTileCursorEnabled()) {
-				// paintControlTileCursor(e.gc, mouseIn, isAnimationRunning());
-				paintControlTileCursor(e.gc, mouseIn, false);
+				paintControlTileCursor(e.gc, mouseIn, updateCursorLocation);
 			}
 			/*
 			 * if (widgetMode == WidgetMode.Painter) {
@@ -458,7 +456,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	public void paintControlTileCursor(GC gc, boolean mouseIn, boolean isAnimationRunning) {
+	public void paintControlTileCursor(GC gc, boolean mouseIn, boolean updateCursorLocation) {
 
 		if (mouseIn) {
 			gc.setAlpha(150);
@@ -467,7 +465,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 					tileY * conf.height * conf.pixelSize * conf.tileRows,
 					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows);
 		}
-		if (isAnimationRunning) {
+		if (updateCursorLocation) {
 			gc.setAlpha(255);
 			gc.setLineWidth(3);
 			gc.setForeground(Constants.LIGHT_GREEN2);
@@ -826,6 +824,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void afterRunService() {
 		tileX = oldTileX;
 		tileY = oldTileY;
+		updateCursorLocation = false;
 		doDrawAllTiles();
 		fireDoDrawAllTiles();
 
@@ -838,7 +837,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void onRunService(int offset) {
+	public void onRunService(int offset, int x, int y, boolean updateCursorLocation) {
+		tileX = x;
+		tileY = y;
+		this.updateCursorLocation = updateCursorLocation;
 		fireSetSelectedTileOffset(offset);
 		doDrawAllTiles();
 	}
