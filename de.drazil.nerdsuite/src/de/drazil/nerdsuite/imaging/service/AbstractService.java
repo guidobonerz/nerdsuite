@@ -13,29 +13,32 @@ public abstract class AbstractService implements IImagingService {
 	@Setter
 	protected IImagingCallback callback = null;
 	@Setter
-	private int navigationOffset = 0;
+	protected int navigationOffset = 0;
+	@Setter
+	protected Object source = null;
+	protected List<TileLocation> tileLocationList = null;
 
 	public enum ConversionMode {
 		toWorkArray, toBitplane
 	}
 
-	public void runService(int action, List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration,
-			IImagingCallback callback, int offset, byte bitplane[]) {
-		navigationOffset = offset;
+	public void runService(int action, List<TileLocation> tileLocationList, int offset, byte bitplane[]) {
+		this.navigationOffset = offset;
+		this.tileLocationList = tileLocationList;
+
 		int width = conf.width * conf.tileColumns;
 		int height = conf.height * conf.tileRows;
 		callback.beforeRunService();
 		for (int i = 0; i < tileLocationList.size(); i++) {
 			int x = tileLocationList.get(i).x;
 			int y = tileLocationList.get(i).y;
-			//callback.onRunService(x, y, computeTileOffset(x, y, offset));
 			byte workArray[] = null;
 			if (needsConversion()) {
 				workArray = createWorkArray();
 				convert(workArray, bitplane, x, y, ConversionMode.toWorkArray);
 			}
 			int ofs = conf.computeTileOffset(x, y, offset);
-			workArray = each(action, tileLocationList.get(i), configuration, ofs, bitplane, workArray, width, height);
+			workArray = each(action, tileLocationList.get(i), conf, ofs, bitplane, workArray, width, height);
 			if (needsConversion()) {
 				convert(workArray, bitplane, x, y, ConversionMode.toBitplane);
 			}
@@ -82,6 +85,12 @@ public abstract class AbstractService implements IImagingService {
 	@Override
 	public boolean needsConversion() {
 		return true;
+	}
+
+	@Override
+	public void setValue(int action, Object data) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void printResult(byte workArray[]) {

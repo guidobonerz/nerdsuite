@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +63,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int tileY = 0;
 	private int tileCursorX = 0;
 	private int tileCursorY = 0;
-	// private int animationIndexX;
-	// private int animationIndexY;
+	private boolean updateCursorLocation = false;
 
 	private int selectedColorIndex;
 	private int selectedTileOffset = 0;
@@ -73,12 +71,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int navigationOffset = 0;
 	private int colorCount;
 
-	private int animationTimerDelay = 200;
 	private int paintControlMode = SET_DRAW_NOTHING;
 
 	private byte bitplane[];
 
-	private boolean animationIsRunning = false;
 	private boolean mouseIn = false;
 	private Map<String, Color> palette;
 	private IColorProvider colorProvider;
@@ -89,8 +85,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private List<TileLocation> selectionRangeBuffer = null;
 
 	private Map<String, IImagingService> serviceCacheMap = null;
-
-	private Animator animator = null;
 
 	public enum ImagingServiceDescription {
 		All("All", null), Shift("Shift", ShiftService.class), Mirror("Mirror", MirrorService.class), Flip("Flip",
@@ -114,23 +108,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	public enum ImagingServiceAction {
-		Start, Stop
-	}
-
-	public class Animator implements Runnable {
-		public synchronized void run() {
-			Collections.rotate(tileSelectionList, -1);
-			TileLocation tl = tileSelectionList.get(0);
-			tileX = tl.x;
-			tileY = tl.y;
-			selectedTileOffset = conf.computeTileOffset(tileX, tileY, navigationOffset);
-			fireSetSelectedTileOffset(selectedTileOffset);
-			doDrawAllTiles();
-			getDisplay().timerExec(animationTimerDelay, this);
-		}
-	}
-
 	public ImagingWidget(Composite parent, int style) {
 		this(parent, style, null);
 	}
@@ -138,7 +115,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public ImagingWidget(Composite parent, int style, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
 
-		animator = new Animator();
 		serviceCacheMap = new HashMap<>();
 		selectionRangeBuffer = new ArrayList<>();
 		tileSelectionList = new ArrayList<>();
@@ -256,7 +232,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
+	public void rightMouseButtonClicked(int  modifierMask, int x, int y) {
 		if (conf.widgetMode == WidgetMode.Painter) {
 			conf.pencilMode = conf.pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
 			Console.println("PencilMode:" + conf.pencilMode);
@@ -265,7 +241,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		setCursorPosition(x, y);
+		computeCursorPosition(x, y);
 		if (conf.widgetMode == WidgetMode.Selector) {
 			paintControlMode = 0;
 			selectedTileIndexX = tileX;
@@ -282,7 +258,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
-		setCursorPosition(x, y);
+		computeCursorPosition(x, y);
 		doDrawAllTiles();
 	}
 
@@ -301,7 +277,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseDragged(int modifierMask, int x, int y) {
-		setCursorPosition(x, y);
+		computeCursorPosition(x, y);
 		if (conf.widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
 			fireDoDrawTile();
@@ -326,7 +302,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	protected void setCursorPosition(int x, int y) {
+	protected void computeCursorPosition(int x, int y) {
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
 		tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);
@@ -458,7 +434,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			paintControlSelection(e.gc);
 
 			if (conf.isTileCursorEnabled()) {
-				paintControlTileCursor(e.gc, mouseIn, isAnimationRunning());
+				paintControlTileCursor(e.gc, mouseIn, updateCursorLocation);
 			}
 			/*
 			 * if (widgetMode == WidgetMode.Painter) {
@@ -480,7 +456,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	public void paintControlTileCursor(GC gc, boolean mouseIn, boolean isAnimationRunning) {
+	public void paintControlTileCursor(GC gc, boolean mouseIn, boolean updateCursorLocation) {
 
 		if (mouseIn) {
 			gc.setAlpha(150);
@@ -489,7 +465,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 					tileY * conf.height * conf.pixelSize * conf.tileRows,
 					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows);
 		}
-		if (isAnimationRunning) {
+		if (updateCursorLocation) {
 			gc.setAlpha(255);
 			gc.setLineWidth(3);
 			gc.setForeground(Constants.LIGHT_GREEN2);
@@ -818,66 +794,17 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void doDrawAllTiles() {
 		paintControlMode = SET_DRAW_ALL_TILES;
-		setNotification(selectedTileOffset, conf.getTileSize());
+		// setNotification(selectedTileOffset, conf.getTileSize());
 		redraw();
-	}
-
-	public void startAnimation() {
-		if (tileSelectionList.size() < 1) {
-			showNotification(null, null, "You have to select an animation range first.", null);
-		} else if (tileSelectionList.size() == 1) {
-			showNotification(null, null, "You have to select at least two tiles to start the animation.", null);
-		} else {
-			animationIsRunning = true;
-			showNotification(ImagingServiceDescription.Animation, ImagingServiceAction.Start,
-					isAnimationRunning() ? "Stop Animation (" + (animationTimerDelay) + " ms)" : "Start Animation",
-					animationIsRunning);
-			getDisplay().timerExec(0, animator);
-		}
-	}
-
-	public void stopAnimation() {
-		animationIsRunning = false;
-		showNotification(ImagingServiceDescription.Animation, ImagingServiceAction.Start,
-				isAnimationRunning() ? "Stop Animation (" + (animationTimerDelay) + " ms)" : "Start Animation",
-				animationIsRunning);
-		getDisplay().timerExec(-1, animator);
-		doDrawAllTiles();
-	}
-
-	public boolean isAnimationRunning() {
-		return animationIsRunning;
-	}
-
-	public boolean isAnimatable() {
-		return tileSelectionList.size() > 1;
-	}
-
-	public void changeAnimationTimerDelay(int delay) {
-		animationTimerDelay = delay;
-		if (isAnimationRunning()) {
-			showNotification(ImagingServiceDescription.Animation, ImagingServiceAction.Start,
-					isAnimationRunning() ? "Stop Animation (" + (animationTimerDelay) + " ms)" : "Start Animation",
-					animationIsRunning);
-			getDisplay().timerExec(delay, animator);
-		}
-	}
-
-	protected void setNotification(int offset, int tileSize) {
-
-	}
-
-	protected boolean isConfirmed(ImagingServiceDescription type, ImagingServiceAction mode, int tileCount) {
-		return true;
-	}
-
-	protected void showNotification(ImagingServiceDescription type, ImagingServiceAction mode, String notification,
-			Object data) {
-
 	}
 
 	protected void setHasTileSelection(int count) {
 
+	}
+
+	public void setServiceValue(ImagingServiceDescription serviceDescription, int action, Object data) {
+		IImagingService service = getService(serviceDescription);
+		service.setValue(action, data);
 	}
 
 	public void executeService(ImagingServiceDescription serviceDescription) {
@@ -886,14 +813,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public void executeService(ImagingServiceDescription serviceDescription, int action) {
 		IImagingService service = getService(serviceDescription);
+		((AbstractService) service).setSource(this);
 		((AbstractService) service).setConf(conf);
-		service.runService(action, tileSelectionList, conf, this, navigationOffset, bitplane);
+		((AbstractService) service).setCallback(this);
+		((AbstractService) service).setNavigationOffset(navigationOffset);
+		service.runService(action, tileSelectionList, navigationOffset, bitplane);
 	}
 
 	@Override
 	public void afterRunService() {
 		tileX = oldTileX;
 		tileY = oldTileY;
+		updateCursorLocation = false;
 		doDrawAllTiles();
 		fireDoDrawAllTiles();
 
@@ -906,9 +837,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void onRunService(int x, int y, int offset) {
-		// TODO Auto-generated method stub
-
+	public void onRunService(int offset, int x, int y, boolean updateCursorLocation) {
+		tileX = x;
+		tileY = y;
+		this.updateCursorLocation = updateCursorLocation;
+		fireSetSelectedTileOffset(offset);
+		doDrawAllTiles();
 	}
 
 	private boolean isTileSelected(int x, int y) {
