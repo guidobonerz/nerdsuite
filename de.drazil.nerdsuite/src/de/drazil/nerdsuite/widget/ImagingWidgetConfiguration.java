@@ -17,6 +17,7 @@ public class ImagingWidgetConfiguration {
 	public int currentPixelWidth;
 	public int currentPixelHeight;
 	public int bytesPerRow;
+	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public int tileSize;
 	public int iconSize;
 	public int cursorLineWidth = 1;
@@ -54,23 +55,25 @@ public class ImagingWidgetConfiguration {
 		Dot, Pattern
 	}
 
-	public enum PixelBits {
-		OneBit("OneBit", 1), TwoBit("TwoBit", 2), Byte("Byte", 8);
-		private final String name;
+	public enum PixelConfig {
+		BC8(8, 0), BC2(2, 3), BC1(1, 3);
+
 		private final int bits;
+		private final int shift;
 
-		PixelBits(String name, int bits) {
-			this.name = name;
+		PixelConfig(int bits, int shift) {
 			this.bits = bits;
-		}
-
-		public String getName() {
-			return name;
+			this.shift = shift;
 		}
 
 		public int getBits() {
 			return bits;
 		}
+
+		public int getShift() {
+			return shift;
+		}
+
 	}
 
 	public String widgetName = "<unknown>";
@@ -124,7 +127,6 @@ public class ImagingWidgetConfiguration {
 
 	public void setWidth(int width) {
 		this.width = width;
-		bytesPerRow = width >> 3;
 		computeSizes();
 	}
 
@@ -153,6 +155,11 @@ public class ImagingWidgetConfiguration {
 
 	public void setTileRows(int tileRows) {
 		this.tileRows = tileRows;
+		computeSizes();
+	}
+
+	public void setPixelConfig(PixelConfig pixelConfig) {
+		this.pixelConfig = pixelConfig;
 		computeSizes();
 	}
 
@@ -193,6 +200,7 @@ public class ImagingWidgetConfiguration {
 	}
 
 	public void computeSizes() {
+		bytesPerRow = width >> pixelConfig.getShift();
 		iconSize = bytesPerRow * height;
 		tileSize = iconSize * tileColumns * tileRows;
 	}

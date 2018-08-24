@@ -232,7 +232,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
+	public void rightMouseButtonClicked(int  modifierMask, int x, int y) {
 		if (conf.widgetMode == WidgetMode.Painter) {
 			conf.pencilMode = conf.pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
 			Console.println("PencilMode:" + conf.pencilMode);
@@ -241,7 +241,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		setCursorPosition(x, y);
+		computeCursorPosition(x, y);
 		if (conf.widgetMode == WidgetMode.Selector) {
 			paintControlMode = 0;
 			selectedTileIndexX = tileX;
@@ -258,7 +258,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
-		setCursorPosition(x, y);
+		computeCursorPosition(x, y);
 		doDrawAllTiles();
 	}
 
@@ -277,7 +277,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void mouseDragged(int modifierMask, int x, int y) {
-		setCursorPosition(x, y);
+		computeCursorPosition(x, y);
 		if (conf.widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
 			fireDoDrawTile();
@@ -302,7 +302,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	protected void setCursorPosition(int x, int y) {
+	protected void computeCursorPosition(int x, int y) {
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
 		tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);

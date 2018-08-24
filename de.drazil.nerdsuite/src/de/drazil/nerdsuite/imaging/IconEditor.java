@@ -487,7 +487,7 @@ public class IconEditor implements IConfigurationListener {
 		if (formatSelector == null) {
 			formatSelector = new Combo(controls, SWT.DROP_DOWN);
 			formatSelector.setItems(new String[] { "Char", "Char 2X", "Char 2Y", "Char 2XY", "Sprite", "Sprite 2X",
-					"Sprite 2Y", "Sprite 2XY", "Custom ..." });
+					"Sprite 2Y", "Sprite 2XY", "Screen", "Custom ..." });
 			GridData gridData = new GridData();
 			gridData.grabExcessHorizontalSpace = true;
 			gridData.horizontalAlignment = GridData.FILL;
