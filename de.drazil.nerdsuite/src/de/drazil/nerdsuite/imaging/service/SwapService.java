@@ -14,10 +14,11 @@ public class SwapService extends AbstractService {
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, int offset,
-			byte bitplane[]) {
-		int swapSourceOffset = conf.computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y, offset);
-		int swapTargetOffset = conf.computeTileOffset(tileLocationList.get(1).x, tileLocationList.get(1).y, offset);
+	public void runService(int action, List<TileLocation> tileLocationList, byte bitplane[]) {
+		int swapSourceOffset = conf.computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y,
+				navigationOffset);
+		int swapTargetOffset = conf.computeTileOffset(tileLocationList.get(1).x, tileLocationList.get(1).y,
+				navigationOffset);
 
 		for (int n = 0; n < conf.getTileSize(); n++) {
 			byte buffer = bitplane[swapSourceOffset + n];

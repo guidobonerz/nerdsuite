@@ -22,8 +22,8 @@ public abstract class AbstractService implements IImagingService {
 		toWorkArray, toBitplane
 	}
 
-	public void runService(int action, List<TileLocation> tileLocationList, int offset, byte bitplane[]) {
-		this.navigationOffset = offset;
+	public void runService(int action, List<TileLocation> tileLocationList, byte bitplane[]) {
+
 		this.tileLocationList = tileLocationList;
 
 		int width = conf.width * conf.tileColumns;
@@ -37,7 +37,7 @@ public abstract class AbstractService implements IImagingService {
 				workArray = createWorkArray();
 				convert(workArray, bitplane, x, y, ConversionMode.toWorkArray);
 			}
-			int ofs = conf.computeTileOffset(x, y, offset);
+			int ofs = conf.computeTileOffset(x, y, navigationOffset);
 			workArray = each(action, tileLocationList.get(i), conf, ofs, bitplane, workArray, width, height);
 			if (needsConversion()) {
 				convert(workArray, bitplane, x, y, ConversionMode.toBitplane);
@@ -50,7 +50,8 @@ public abstract class AbstractService implements IImagingService {
 		int iconSize = conf.getIconSize();
 		int tileSize = conf.getTileSize();
 		int tileOffset = conf.computeTileOffset(x, y, navigationOffset);
-
+		int bc = conf.pixelConfig.bitCount;
+		int mask = conf.pixelConfig.mask;
 		for (int si = 0, s = 0; si < tileSize; si += conf.bytesPerRow, s += conf.bytesPerRow) {
 			s = (si % (iconSize)) == 0 ? 0 : s;
 			int xo = ((si / iconSize) & (conf.tileColumns - 1)) * conf.width;
@@ -60,10 +61,9 @@ public abstract class AbstractService implements IImagingService {
 
 			for (int i = 0; i < conf.bytesPerRow; i++) {
 				bitplane[tileOffset + si + i] = mode == ConversionMode.toBitplane ? 0 : bitplane[tileOffset + si + i];
-				for (int m = 7, ti = 0; m >= 0; m -= (conf.isMultiColorEnabled() ? 2 : 1), ti++) {
+				for (int m = 7, ti = 0; m >= 0; m -= bc, ti++) {
 					if (mode == ConversionMode.toWorkArray) {
-						workArray[wai + (8 * i) + ti] = (byte) ((bitplane[tileOffset + si + i] >> m)
-								& (conf.isMultiColorEnabled() ? 3 : 1));
+						workArray[wai + (8 * i) + ti] = (byte) ((bitplane[tileOffset + si + i] >> m) & mask);
 					} else if (mode == ConversionMode.toBitplane) {
 						(bitplane[tileOffset + si + i]) |= (workArray[wai + (8 * i) + ti] << m);
 					}
@@ -73,7 +73,7 @@ public abstract class AbstractService implements IImagingService {
 	}
 
 	protected byte[] createWorkArray() {
-		return new byte[conf.getTileSize() * (conf.isMultiColorEnabled() ? 4 : 8)];
+		return new byte[conf.getTileSize() * (conf.pixelConfig.mul)];
 	}
 
 	@Override

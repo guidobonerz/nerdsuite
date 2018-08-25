@@ -38,10 +38,10 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.WidgetMode;
 
 public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IImagingCallback {
 
-	private final static int SET_DRAW_NOTHING = 0;
-	private final static int SET_DRAW_ALL_TILES = 1;
-	private final static int SET_DRAW_TILE = 2;
-	private final static int SET_DRAW_PIXEL = 4;
+	private final static int DRAW_NOTHING = 0;
+	private final static int DRAW_ALL_TILES = 1;
+	private final static int DRAW_TILE = 2;
+	private final static int DRAW_PIXEL = 4;
 
 	private int layerCount = 0;
 	private int activeLayer = 0;
@@ -63,6 +63,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int tileY = 0;
 	private int tileCursorX = 0;
 	private int tileCursorY = 0;
+
 	private boolean updateCursorLocation = false;
 
 	private int selectedColorIndex;
@@ -71,7 +72,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int navigationOffset = 0;
 	private int colorCount;
 
-	private int paintControlMode = SET_DRAW_NOTHING;
+	private int paintControlMode = DRAW_NOTHING;
 
 	private byte bitplane[];
 
@@ -232,7 +233,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void rightMouseButtonClicked(int  modifierMask, int x, int y) {
+	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.widgetMode == WidgetMode.Painter) {
 			conf.pencilMode = conf.pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
 			Console.println("PencilMode:" + conf.pencilMode);
@@ -252,6 +253,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			doDrawAllTiles();
 		} else if (conf.widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
+			// doDrawTile();
 			fireDoDrawAllTiles();
 		}
 	}
@@ -259,7 +261,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		doDrawAllTiles();
+		if (conf.widgetMode == WidgetMode.Selector) {
+			doDrawAllTiles();
+		}
 	}
 
 	@Override
@@ -280,6 +284,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		computeCursorPosition(x, y);
 		if (conf.widgetMode == WidgetMode.Painter) {
 			doDrawPixel();
+			// paintControlPixel(cursorX, cursorY);
+			// doDrawTile();
 			fireDoDrawTile();
 		} else if (conf.widgetMode == WidgetMode.Selector) {
 			computeSelection(false, false);
@@ -305,7 +311,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	protected void computeCursorPosition(int x, int y) {
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
-		tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);
+		tileX = x / (currentWidth * conf.currentPixelWidth * conf.tileColumns);
 		tileY = y / (conf.height * conf.currentPixelHeight * conf.tileRows);
 		tileCursorX = (cursorX - (tileX * conf.width));
 		tileCursorY = (cursorY - (tileY * conf.height));
@@ -376,14 +382,14 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public void paintControl(PaintEvent e) {
 
-		if ((paintControlMode & SET_DRAW_ALL_TILES) == SET_DRAW_ALL_TILES) {
+		if ((paintControlMode & DRAW_ALL_TILES) == DRAW_ALL_TILES) {
 			paintControlTiles(e.gc);
 		}
-		if ((paintControlMode & SET_DRAW_TILE) == SET_DRAW_TILE) {
+		if ((paintControlMode & DRAW_TILE) == DRAW_TILE) {
 			paintControlTile(e.gc, selectedTileIndexX, selectedTileIndexY);
 		}
 		if (conf.widgetMode != WidgetMode.Viewer && conf.widgetMode != WidgetMode.BitmapViewer) {
-			if (paintControlMode == SET_DRAW_PIXEL) {
+			if (paintControlMode == DRAW_PIXEL) {
 				switch (conf.paintMode) {
 				case Simple: {
 					paintControlPixel(e.gc, cursorX, cursorY);
@@ -442,7 +448,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			 */
 
 		}
-		paintControlMode = SET_DRAW_NOTHING;
+		paintControlMode = DRAW_NOTHING;
 
 	}
 
@@ -476,7 +482,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	public void paintControlPixelGrid(GC gc) {
-		for (int x = 0; x <= conf.currentWidth * conf.tileColumns; x++) {
+		for (int x = 0; x <= currentWidth * conf.tileColumns; x++) {
 			for (int y = 0; y <= conf.height * conf.tileRows; y++) {
 				gc.setForeground(Constants.PIXEL_GRID_COLOR);
 				if (conf.gridStyle == GridStyle.Line) {
@@ -497,13 +503,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		gc.fillRectangle((cursorX * conf.currentPixelWidth) + 1 + (conf.currentPixelWidth / 2) - conf.pixelSize / 8,
 				(cursorY * conf.pixelSize) + 1 + (conf.pixelSize / 2) - conf.pixelSize / 8, conf.pixelSize / 4,
 				conf.pixelSize / 4);
-
 	}
 
 	public void paintControlSeparator(GC gc) {
 		gc.setForeground(Constants.BYTE_SEPARATOR_COLOR);
-		int step = (4 * (conf.isMultiColorEnabled() ? 1 : 2));
-		for (int x = step; x < (conf.width * conf.tileColumns) / ((conf.isMultiColorEnabled() ? 2 : 1)); x += step) {
+		int bc = conf.pixelConfig.bitCount;
+		int step = (4 * bc);
+		for (int x = step; x < (conf.width * conf.tileColumns) / bc; x += step) {
 			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
 					conf.height * conf.tileRows * conf.pixelSize);
 		}
@@ -515,7 +521,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			gc.drawLine(0, y * conf.pixelSize, conf.width * conf.tileColumns * conf.pixelSize, y * conf.pixelSize);
 		}
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
-		for (int x = conf.currentWidth; x < conf.currentWidth * conf.tileColumns; x += conf.currentWidth) {
+		for (int x = currentWidth; x < currentWidth * conf.tileColumns; x += currentWidth) {
 			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
 					conf.height * conf.tileRows * conf.pixelSize);
 		}
@@ -542,24 +548,29 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
+	private void paintControlTile(GC gc, int index) {
+		int y = index / conf.tileColumns;
+		int x = index - (y * conf.tileColumns);
+	}
+
 	private void paintControlTile(GC gc, int tx, int ty) {
 		int x = 0;
 		int y = 0;
 		int b1 = conf.bytesPerRow * conf.height;
 		int b2 = b1 * conf.tileColumns;
-
+		int bc = conf.pixelConfig.bitCount;
 		int byteOffset = 0;
+		int pix = conf.isPixelGridEnabled() ? 1 : 0;
 		if (conf.widgetMode == WidgetMode.Painter || conf.widgetMode == WidgetMode.Viewer) {
 			byteOffset = selectedTileOffset;
 		} else if (conf.widgetMode == WidgetMode.Selector || conf.widgetMode == WidgetMode.BitmapViewer) {
 			byteOffset = conf.computeTileOffset(tx, ty, navigationOffset);
 		}
 
-		for (int i = byteOffset, k = 0; i < (byteOffset + conf.getTileSize()); i++, k++) {
-
-			int xi = (k % conf.bytesPerRow) * (8 / (conf.isMultiColorEnabled() ? 2 : 1));
+		for (int i = byteOffset, k = 0; i < (byteOffset + conf.tileSize); i++, k++) {
+			int xi = (k % conf.bytesPerRow) * (8 / bc);
 			int xo = (k / b1) % conf.tileColumns;
-			x = xi + (xo * conf.currentWidth) + (tx * conf.currentWidth * conf.tileColumns);
+			x = xi + (xo * currentWidth) + (tx * currentWidth * conf.tileColumns);
 
 			int yi = (k / conf.bytesPerRow) % conf.height;
 			int yo = (k / b2) % conf.tileRows;
@@ -567,7 +578,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 			if (i < bitplane.length) {
 				int b = (bitplane[i] & 0xff);
-				if (conf.isMultiColorEnabled()) {
+				switch (conf.pixelConfig) {
+				case BC1: {
+					for (int j = 128; j > 0; j >>= 1) {
+						gc.setBackground((b & j) == j ? palette.get(String.valueOf(selectedColorIndex))
+								: Constants.BITMAP_BACKGROUND_COLOR);
+						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
+								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
+						x++;
+					}
+					break;
+				}
+				case BC2: {
 					for (int j = 6; j >= 0; j -= 2) {
 						int bi = b;
 						int colorIndex = (bi >> j) & 3;
@@ -575,66 +597,76 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 						if (colorProvider != null) {
 							color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tx, ty, conf.columns);
 						}
-
 						gc.setBackground(color);
-						int pix = conf.isPixelGridEnabled() ? 1 : 0;
 						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
 								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
 						x++;
 					}
-				} else {
-					for (int j = 128; j > 0; j >>= 1) {
-						gc.setBackground((b & j) == j ? palette.get(String.valueOf(selectedColorIndex))
-								: Constants.BITMAP_BACKGROUND_COLOR);
-						int pix = conf.isPixelGridEnabled() ? 1 : 0;
-
-						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
-						x++;
-					}
+					break;
+				}
+				case BC8: {
+					gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
+					gc.drawString(String.valueOf(b), (x * conf.currentPixelWidth) + pix,
+							(y * conf.currentPixelHeight) + pix);
+					x++;
+					break;
+				}
 				}
 			}
 		}
 	}
 
 	private void paintControlPixel(GC gc, int x, int y) {
+		if (x < currentWidth * tileColumns && y < height * tileRows) {
+			int ix = x % currentWidth;
+			int iy = y % height;
+			int ax = (x / currentWidth);
+			int ay = (y / height) * tileColumns;
+			int offset = (ax + ay) * (height * conf.bytesPerRow);
+			int index = 0;
+			int pix = conf.isPixelGridEnabled() ? 1 : 0;
+			switch (conf.pixelConfig) {
+			case BC1: {
+				index = (((iy * currentWidth) + ix) >> 3) + offset;
+				byte byteMask = bitplane[index + getSelectedTileOffset()];
+				int pixelMask = (1 << (7 - (ix % 8)) & 0xff);
+				bitplane[index + getSelectedTileOffset()] = conf.pencilMode == PencilMode.Draw
+						? (byte) (byteMask | pixelMask) : (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
 
-		if (conf.widgetMode == WidgetMode.Painter) {
-			if (x < conf.currentWidth * conf.tileColumns && y < conf.height * conf.tileRows) {
-				int ix = x % conf.currentWidth;
-				int iy = y % conf.height;
-				int ax = (x / conf.currentWidth);
-				int ay = (y / conf.height) * conf.tileColumns;
-				int offset = (ax + ay) * (conf.height * conf.bytesPerRow);
-				if (conf.isMultiColorEnabled()) {
-					int index = (((iy * conf.currentWidth) + ix) >> 2) + offset;
-					ix &= 3;
-					int mask = (3 << ((3 - ix) * 2) ^ 0xff) & 0xff;
-					byte byteMask = (byte) ((bitplane[index + getSelectedTileOffset()] & mask));
-					byteMask |= selectedColorIndex << ((3 - ix) * 2);
-					bitplane[index + getSelectedTileOffset()] = byteMask;
-
-				} else {
-					int index = (((iy * conf.currentWidth) + ix) >> 3) + offset;
-					byte byteMask = bitplane[index + getSelectedTileOffset()];
-					int pixelMask = (1 << (7 - (ix % 8)) & 0xff);
-					bitplane[index + getSelectedTileOffset()] = conf.pencilMode == PencilMode.Draw
-							? (byte) (byteMask | pixelMask) : (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
-				}
+				gc.setBackground(conf.pencilMode == PencilMode.Draw ? palette.get(String.valueOf(selectedColorIndex))
+						: Constants.BITMAP_BACKGROUND_COLOR);
+				gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
+						conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
+				break;
+			}
+			case BC2: {
+				index = (((iy * currentWidth) + ix) >> 2) + offset;
+				ix &= 3;
+				int mask = (3 << ((3 - ix) * 2) ^ 0xff) & 0xff;
+				byte byteMask = (byte) ((bitplane[index + getSelectedTileOffset()] & mask));
+				byteMask |= selectedColorIndex << ((3 - ix) * 2);
+				bitplane[index + getSelectedTileOffset()] = byteMask;
+				gc.setBackground(conf.pencilMode == PencilMode.Draw ? Constants.DEFAULT_BINARY_COLOR
+						: Constants.BITMAP_BACKGROUND_COLOR);
+				gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
+						conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
+				break;
+			}
+			case BC8: {
+				index = ((iy * currentWidth) + ix) + offset;
+				bitplane[index + getSelectedTileOffset()] = (byte) x;
+				gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
+				gc.drawString(String.valueOf(bitplane[index + getSelectedTileOffset()]),
+						(x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix);
+				break;
+			}
 			}
 		}
-
-		gc.setBackground(conf.pencilMode == PencilMode.Draw ? palette.get(String.valueOf(selectedColorIndex))
-				: Constants.BITMAP_BACKGROUND_COLOR);
-
-		int pix = conf.isPixelGridEnabled() ? 1 : 0;
-		gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-				conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
 	}
 
 	public void setColorProvider(IColorProvider colorProvider) {
 		this.colorProvider = colorProvider;
-		conf.setMultiColorEnabled(colorProvider.isMultiColorEnabled());
+		conf.setPixelConfig(colorProvider.getPixelConfig());
 	}
 
 	public void setBitlane(byte bitplane[]) {
@@ -642,8 +674,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	public void recalc() {
-		conf.currentPixelWidth = conf.pixelSize * (conf.isMultiColorEnabled() ? 2 : 1);
-		conf.currentWidth = conf.width / (conf.isMultiColorEnabled() ? 2 : 1);
+		int pixmul = conf.pixelConfig.pixmul;
+		conf.currentPixelWidth = conf.pixelSize * pixmul;
+		currentWidth = conf.width / pixmul;
 		int selectedTileOffset = conf.computeTileOffset(selectedTileIndexX, selectedTileIndexY, navigationOffset);
 		if (vBar != null) {
 			vBar.setMinimum(0);
@@ -737,11 +770,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	protected void doDrawPixel() {
-		paintControlMode = SET_DRAW_PIXEL;
+		paintControlMode = DRAW_PIXEL;
 		int inset = conf.isPixelGridEnabled() ? 1 : 0;
 
 		switch (conf.paintMode) {
 		case Simple: {
+			// redraw();
 			redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
 					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
 			break;
@@ -749,7 +783,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		case VerticalMirror: {
 			redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
 					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			int centerX = ((conf.currentWidth * conf.tileColumns) / 2);
+			int centerX = ((currentWidth * conf.tileColumns) / 2);
 			int diff = centerX - cursorX - 1;
 			redraw(((centerX + diff) * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
 					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
@@ -767,7 +801,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		case Kaleidoscope: {
 			redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
 					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			int centerX = ((conf.currentWidth * conf.tileColumns) / 2);
+			int centerX = ((currentWidth * conf.tileColumns) / 2);
 			int diffX = centerX - cursorX - 1;
 			redraw(((centerX + diffX) * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
 					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
@@ -785,7 +819,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void doDrawTile() {
-		paintControlMode = SET_DRAW_TILE;
+		paintControlMode = DRAW_TILE;
 		redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
 				selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows,
 				conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows, true);
@@ -793,7 +827,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void doDrawAllTiles() {
-		paintControlMode = SET_DRAW_ALL_TILES;
+		paintControlMode = DRAW_ALL_TILES;
 		// setNotification(selectedTileOffset, conf.getTileSize());
 		redraw();
 	}
@@ -817,7 +851,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		((AbstractService) service).setConf(conf);
 		((AbstractService) service).setCallback(this);
 		((AbstractService) service).setNavigationOffset(navigationOffset);
-		service.runService(action, tileSelectionList, navigationOffset, bitplane);
+		service.runService(action, tileSelectionList, bitplane);
 	}
 
 	@Override
@@ -827,7 +861,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		updateCursorLocation = false;
 		doDrawAllTiles();
 		fireDoDrawAllTiles();
-
 	}
 
 	@Override
@@ -859,7 +892,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		Point hsb = hBar != null ? hBar.getSize() : new Point(0, 0);
 		Point vsb = vBar != null ? vBar.getSize() : new Point(0, 0);
 		return new Point(
-				(conf.currentWidth * conf.currentPixelWidth * conf.tileColumns * conf.columns)
+				(currentWidth * conf.currentPixelWidth * conf.tileColumns * conf.columns)
 						+ (conf.cursorLineWidth * (conf.columns + 1)) + vsb.x - conf.columns,
 				(conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows)
 						+ (conf.cursorLineWidth * (conf.rows + 1)) + hsb.x - conf.rows);

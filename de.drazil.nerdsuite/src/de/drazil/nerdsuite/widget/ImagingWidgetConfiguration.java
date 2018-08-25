@@ -17,7 +17,6 @@ public class ImagingWidgetConfiguration {
 	public int currentPixelWidth;
 	public int currentPixelHeight;
 	public int bytesPerRow;
-	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public int tileSize;
 	public int iconSize;
 	public int cursorLineWidth = 1;
@@ -25,15 +24,17 @@ public class ImagingWidgetConfiguration {
 	public boolean pixelGridEnabled = true;
 	public boolean tileGridEnabled = true;
 	public boolean tileSubGridEnabled = true;
-	public boolean multiColorEnabled = true;
 	public boolean tileCursorEnabled = false;
 	public boolean separatorEnabled = true;
 	public boolean layerViewEnabled = false;
 
+	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public PaintMode paintMode = PaintMode.Simple;
 	public PencilMode pencilMode = PencilMode.Draw;
 	public GridStyle gridStyle = GridStyle.Line;
 	public WidgetMode widgetMode;
+
+	public IConfigurationListener cl;
 
 	public enum WidgetMode {
 		Selector, Painter, Viewer, BitmapViewer
@@ -56,32 +57,34 @@ public class ImagingWidgetConfiguration {
 	}
 
 	public enum PixelConfig {
-		BC8(8, 0), BC2(2, 3), BC1(1, 3);
+		BC8("MultiColor255", 8, 0, 256, 1, 1), BC2("MultiColor4", 2, 3, 3, 4, 2), BC1("MonoColor", 1, 3, 1, 8, 1);
 
-		private final int bits;
-		private final int shift;
+		public final int bitCount;
+		public final int shift;
+		public final int mask;
+		public final int mul;
+		public final int pixmul;
+		public final String name;
 
-		PixelConfig(int bits, int shift) {
-			this.bits = bits;
+		PixelConfig(String name, int bitCount, int shift, int mask, int mul, int pixmul) {
+			this.name = name;
+			this.bitCount = bitCount;
 			this.shift = shift;
+			this.mask = mask;
+			this.mul = mul;
+			this.pixmul = pixmul;
 		}
-
-		public int getBits() {
-			return bits;
-		}
-
-		public int getShift() {
-			return shift;
-		}
-
 	}
 
 	public String widgetName = "<unknown>";
 
+	public void setConfigurationListener(IConfigurationListener cl) {
+		this.cl = cl;
+	}
+
 	public void setPixelSize(int pixelSize) {
 		this.pixelSize = pixelSize;
-		this.currentPixelWidth = pixelSize;
-		this.currentPixelHeight = pixelSize;
+		computeSizes();
 	}
 
 	public boolean isPixelGridEnabled() {
@@ -114,10 +117,6 @@ public class ImagingWidgetConfiguration {
 
 	public void setTileCursorEnabled(boolean tileCursorEnabled) {
 		this.tileCursorEnabled = tileCursorEnabled;
-	}
-
-	public boolean isMultiColorEnabled() {
-		return this.multiColorEnabled;
 	}
 
 	public void setHeight(int height) {
@@ -171,10 +170,6 @@ public class ImagingWidgetConfiguration {
 		this.widgetName = widgetName;
 	}
 
-	public void setMultiColorEnabled(boolean multiColorEnabled) {
-		this.multiColorEnabled = multiColorEnabled;
-	}
-
 	public void setPixelGridEnabled(boolean pixelGridEnabled) {
 		this.pixelGridEnabled = pixelGridEnabled;
 	}
@@ -200,9 +195,13 @@ public class ImagingWidgetConfiguration {
 	}
 
 	public void computeSizes() {
-		bytesPerRow = width >> pixelConfig.getShift();
+		currentPixelWidth = pixelSize;
+		currentPixelHeight = pixelSize;
+		bytesPerRow = width >> pixelConfig.shift;
 		iconSize = bytesPerRow * height;
 		tileSize = iconSize * tileColumns * tileRows;
+		cl.configurationChanged(width, height, tileColumns, tileRows, 0, 0, columns, rows, currentWidth);
+
 	}
 
 	public int computeTileOffset(int x, int y, int offset) {

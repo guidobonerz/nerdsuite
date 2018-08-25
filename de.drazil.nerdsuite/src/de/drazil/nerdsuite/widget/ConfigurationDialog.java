@@ -71,7 +71,7 @@ public class ConfigurationDialog extends TitleAreaDialog implements SelectionLis
 		for (IConfigurationListener cl : configurationListenerList) {
 			cl.configurationChanged(tileWidthSpinner.getSelection(), tileHeightSpinner.getSelection(),
 					tileColumnsSpinner.getSelection(), tileRowsSpinner.getSelection(),
-					painterPixelSizeSpinner.getSelection(), selectorPixelSizeSpinner.getSelection());
+					painterPixelSizeSpinner.getSelection(), selectorPixelSizeSpinner.getSelection(), 0, 0, 0);
 		}
 	}
 
