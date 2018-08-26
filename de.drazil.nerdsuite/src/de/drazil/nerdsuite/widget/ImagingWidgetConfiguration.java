@@ -39,7 +39,7 @@ public class ImagingWidgetConfiguration {
 	public IConfigurationListener cl;
 
 	public enum WidgetMode {
-		Selector, Painter, Viewer, BitmapViewer
+		Selector, ReferenceSelector, Painter, Viewer, BitmapViewer
 	};
 
 	public enum PaintMode {

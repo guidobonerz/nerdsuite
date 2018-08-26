@@ -38,6 +38,10 @@ import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.IConfigurationListener;
+import de.drazil.nerdsuite.widget.ImagePainter;
+import de.drazil.nerdsuite.widget.ImageReferenceSelector;
+import de.drazil.nerdsuite.widget.ImageSelector;
+import de.drazil.nerdsuite.widget.ImageViewer;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.ImagingServiceDescription;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
@@ -48,9 +52,10 @@ import net.miginfocom.swt.MigLayout;
 
 public class IconEditor implements IConfigurationListener {
 
-	private ImagingWidget painter;
-	private ImagingWidget previewer;
-	private ImagingWidget selector;
+	private ImagePainter painter;
+	private ImageViewer previewer;
+	private ImageSelector selector;
+	private ImageReferenceSelector referenceSelector;
 	private Scale animationTimerDelayScale;
 	private Composite parent;
 	private Button multicolor;
@@ -61,6 +66,7 @@ public class IconEditor implements IConfigurationListener {
 	private Combo formatSelector;
 	private Combo paintModeSelector;
 	private byte binaryData[] = null;
+	private byte blankData[] = null;
 	boolean multiColorMode = false;
 	private ConfigurationDialog configurationDialog = null;
 	private boolean isAnimationRunning = false;
@@ -82,6 +88,7 @@ public class IconEditor implements IConfigurationListener {
 		getStartAnimation();
 		getAnimationTimerDelayScale();
 		getNotification();
+		getReferenceSelector();
 
 		getPainter().setLayoutData("cell 0 0");
 		getPreviewer().setLayoutData("cell 1 0");
@@ -280,10 +287,9 @@ public class IconEditor implements IConfigurationListener {
 			animationTimerDelayScale = new Scale(controls, SWT.HORIZONTAL);
 			animationTimerDelayScale.setEnabled(true);
 			animationTimerDelayScale.setMinimum(50);
-			animationTimerDelayScale.setMaximum(1000);
+			animationTimerDelayScale.setMaximum(500);
 			animationTimerDelayScale.setSelection(200);
 			getSelector().setServiceValue(ImagingServiceDescription.Animation, AnimationService.SET_DELAY, 200);
-			animationTimerDelayScale.setIncrement(50);
 			animationTimerDelayScale.setIncrement(50);
 			animationTimerDelayScale.setPageIncrement(50);
 			GridData gridData = new GridData();
@@ -305,9 +311,9 @@ public class IconEditor implements IConfigurationListener {
 		return animationTimerDelayScale;
 	}
 
-	private ImagingWidget getPainter() {
+	private ImagePainter getPainter() {
 		if (painter == null) {
-			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			painter = new ImagePainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setWidgetMode(WidgetMode.Painter);
 			painter.getConf().setWidth(8);
@@ -317,7 +323,7 @@ public class IconEditor implements IConfigurationListener {
 			painter.getConf().setTileGridEnabled(true);
 			painter.getConf().setTileCursorEnabled(false);
 			painter.setSelectedTileOffset(0);
-			painter.setBitlane(getBinaryData());
+			painter.setBitlane(getBlankData());
 			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			painter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -329,9 +335,9 @@ public class IconEditor implements IConfigurationListener {
 		return painter;
 	}
 
-	private ImagingWidget getPreviewer() {
+	private ImageViewer getPreviewer() {
 		if (previewer == null) {
-			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			previewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			previewer.getConf().setWidgetName("Preview :");
 			previewer.getConf().setWidgetMode(WidgetMode.Viewer);
 			previewer.getConf().setWidth(8);
@@ -342,7 +348,7 @@ public class IconEditor implements IConfigurationListener {
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
 			previewer.setSelectedTileOffset(0);
-			previewer.setBitlane(getBinaryData());
+			previewer.setBitlane(getBlankData());
 			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			previewer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			previewer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -353,9 +359,9 @@ public class IconEditor implements IConfigurationListener {
 		return previewer;
 	}
 
-	private ImagingWidget getSelector() {
+	private ImageSelector getSelector() {
 		if (selector == null) {
-			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
+			selector = new ImageSelector(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
 
 				/*
 				 * 
@@ -415,6 +421,43 @@ public class IconEditor implements IConfigurationListener {
 
 		}
 		return selector;
+
+	}
+
+	private ImagingWidget getReferenceSelector() {
+		if (referenceSelector == null) {
+			referenceSelector = new ImageReferenceSelector(controls,
+					SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
+			referenceSelector.getConf().setWidgetName("ReferenceSelector:");
+			referenceSelector.getConf().setWidgetMode(WidgetMode.ReferenceSelector);
+			referenceSelector.getConf().setWidth(8);
+			referenceSelector.getConf().setHeight(8);
+			referenceSelector.getConf().setTileColumns(1);
+			referenceSelector.getConf().setTileRows(1);
+			referenceSelector.getConf().setColumns(16);
+			referenceSelector.getConf().setRows(16);
+			referenceSelector.getConf().setPixelSize(2);
+			referenceSelector.getConf().setPixelGridEnabled(false);
+			referenceSelector.getConf().setTileGridEnabled(true);
+			referenceSelector.getConf().setTileSubGridEnabled(false);
+			referenceSelector.getConf().setTileCursorEnabled(true);
+			referenceSelector.getConf().setSeparatorEnabled(false);
+			referenceSelector.setSelectedTileOffset(0);
+			referenceSelector.setBitlane(getBinaryData());
+			referenceSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+			referenceSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+			referenceSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+			referenceSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+			referenceSelector.setSelectedColor(1);
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.horizontalSpan = 2;
+			referenceSelector.setLayoutData(gridData);
+			referenceSelector.recalc();
+
+		}
+		return referenceSelector;
 
 	}
 
@@ -796,7 +839,7 @@ public class IconEditor implements IConfigurationListener {
 
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 			URL url = bundle.getEntry("/fonts/c64_lower.64c");
-			// URL url = bundle.getEntry("/images/galencia_dump2");
+
 			File file = null;
 
 			try {
@@ -824,6 +867,15 @@ public class IconEditor implements IConfigurationListener {
 			 */
 		}
 		return binaryData;
+	}
+
+	private byte[] getBlankData() {
+		if (blankData == null) {
+			blankData = new byte[0x1f40];
+			for (int i = 0; i < blankData.length; i++)
+				blankData[i] = 0;
+		}
+		return blankData;
 	}
 
 }

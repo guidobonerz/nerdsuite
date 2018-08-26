@@ -20,6 +20,7 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.widget.ImageViewer;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
@@ -71,7 +72,7 @@ public class BitmapEditor {
 		ic.setPixelGridEnabled(false);
 		ic.setTileSubGridEnabled(false);
 		ic.setTileGridEnabled(true);
-		ImagingWidget painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
+		ImageViewer painter = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
 
 		painter.setColorProvider(new KoalaColorProvider());
 		painter.setBitlane(binaryData);

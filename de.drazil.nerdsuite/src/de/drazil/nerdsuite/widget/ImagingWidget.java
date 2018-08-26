@@ -36,7 +36,8 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PencilMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.WidgetMode;
 
-public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IImagingCallback {
+public abstract class ImagingWidget extends BaseImagingWidget
+		implements IDrawListener, PaintListener, IImagingCallback {
 
 	private final static int DRAW_NOTHING = 0;
 	private final static int DRAW_ALL_TILES = 1;
@@ -236,7 +237,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
-		if (conf.widgetMode == WidgetMode.Painter) {
+		if (supportsPainting()) {
 			conf.pencilMode = conf.pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
 			Console.println("PencilMode:" + conf.pencilMode);
 		}
@@ -245,7 +246,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		if (conf.widgetMode == WidgetMode.Selector) {
+		if (supportsSingleSelection() || supportsMultiSelection()) {
 			paintControlMode = 0;
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
@@ -253,10 +254,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			fireSetSelectedTileOffset(selectedTileOffset);
 			computeSelection(false, false);
 			doDrawAllTiles();
-		} else if (conf.widgetMode == WidgetMode.Painter) {
+		} else if (supportsPainting()) {
 			setPixel(cursorX, cursorY);
 			doDrawPixel();
-			// doDrawTile();
 			fireDoDrawAllTiles();
 		}
 	}
@@ -264,7 +264,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		if (conf.widgetMode == WidgetMode.Selector) {
+		if (supportsSingleSelection() || supportsMultiSelection()) {
 			if (oldTileX != tileX || oldTileY != tileY) {
 				oldTileX = tileX;
 				oldTileY = tileY;
@@ -289,7 +289,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void mouseDragged(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		if (conf.widgetMode == WidgetMode.Painter) {
+		if (supportsPainting()) {
 			if (oldCursorX != cursorX || oldCursorY != cursorY) {
 				oldCursorX = cursorX;
 				oldCursorY = cursorY;
@@ -297,7 +297,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				doDrawTile();
 				fireDoDrawTile();
 			}
-		} else if (conf.widgetMode == WidgetMode.Selector) {
+		} else if (supportsMultiSelection()) {
 			computeSelection(false, false);
 			doDrawAllTiles();
 		}
@@ -305,13 +305,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		if (conf.widgetMode == WidgetMode.Selector) {
+		if (supportsSingleSelection()) {
 			resetSelectionList();
 		}
 	}
 
 	public void selectAll() {
-		if (conf.widgetMode == WidgetMode.Selector) {
+		if (supportsMultiSelection()) {
 			resetSelectionList();
 			computeSelection(true, false);
 			doDrawAllTiles();
@@ -379,10 +379,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				x = (altS ? xa : 0);
 				y++;
 			}
-
-			// System.out.println(x + " " + y + " " + xa + " " + xb);
 		}
-
 	}
 
 	private boolean checkKeyPressed(int modifierKey, char charCode) {
@@ -392,70 +389,65 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public void paintControl(PaintEvent e) {
 
-		// Image bufferImage = new Image(e.gc.getDevice(), conf.fullWidth,
-		// conf.fullHeight);
-		// bufferImage.setBackground(Constants.BLACK);
-		GC imageGC = e.gc;// new GC(bufferImage);
-
 		if ((paintControlMode & DRAW_ALL_TILES) == DRAW_ALL_TILES) {
-			paintControlTiles(imageGC);
+			paintControlTiles(e.gc);
 		}
 		if ((paintControlMode & DRAW_TILE) == DRAW_TILE) {
-			paintControlTile(imageGC, selectedTileIndexX, selectedTileIndexY);
+			paintControlTile(e.gc, selectedTileIndexX, selectedTileIndexY);
 		}
 		if (conf.widgetMode != WidgetMode.Viewer && conf.widgetMode != WidgetMode.BitmapViewer) {
 			if (paintControlMode == DRAW_PIXEL) {
 				switch (conf.paintMode) {
 				case Simple: {
-					paintControlPixel(imageGC, cursorX, cursorY);
+					paintControlPixel(e.gc, cursorX, cursorY);
 					break;
 				}
 				case VerticalMirror: {
-					paintControlPixel(imageGC, cursorX, cursorY);
+					paintControlPixel(e.gc, cursorX, cursorY);
 					int centerX = ((conf.width * conf.tileColumns) / 2);
 					int diff = centerX - cursorX - 1;
-					paintControlPixel(imageGC, centerX + diff, cursorY);
+					paintControlPixel(e.gc, centerX + diff, cursorY);
 					break;
 				}
 				case HorizontalMirror: {
-					paintControlPixel(imageGC, cursorX, cursorY);
+					paintControlPixel(e.gc, cursorX, cursorY);
 					int centerY = ((conf.height * conf.tileRows) / 2);
 					int diff = centerY - cursorY - 1;
-					paintControlPixel(imageGC, cursorX, centerY + diff);
+					paintControlPixel(e.gc, cursorX, centerY + diff);
 					break;
 				}
 				case Kaleidoscope: {
-					paintControlPixel(imageGC, cursorX, cursorY);
+					paintControlPixel(e.gc, cursorX, cursorY);
 					int centerX = ((conf.width * conf.tileColumns) / 2);
 					int diffX = centerX - cursorX - 1;
-					paintControlPixel(imageGC, centerX + diffX, cursorY);
+					paintControlPixel(e.gc, centerX + diffX, cursorY);
 					int centerY = ((conf.height * conf.tileRows) / 2);
 					int diffY = centerY - cursorY - 1;
-					paintControlPixel(imageGC, cursorX, centerY + diffY);
-					paintControlPixel(imageGC, centerX + diffX, centerY + diffY);
+					paintControlPixel(e.gc, cursorX, centerY + diffY);
+					paintControlPixel(e.gc, centerX + diffX, centerY + diffY);
 					break;
 				}
 				}
 			}
 
 			if (conf.isPixelGridEnabled()) {
-				paintControlPixelGrid(imageGC);
+				paintControlPixelGrid(e.gc);
 			}
 			if (conf.isSeparatorEnabled()) {
-				paintControlSeparator(imageGC);
+				paintControlSeparator(e.gc);
 			}
 			if (conf.isTileGridEnabled()) {
-				paintControlTileGrid(imageGC);
+				paintControlTileGrid(e.gc);
 			}
 
 			if (conf.isTileSubGridEnabled()) {
-				paintControlTileSubGrid(imageGC);
+				paintControlTileSubGrid(e.gc);
 			}
 
-			paintControlSelection(imageGC);
+			paintControlSelection(e.gc);
 
 			if (conf.isTileCursorEnabled()) {
-				paintControlTileCursor(imageGC, mouseIn, updateCursorLocation);
+				paintControlTileCursor(e.gc, mouseIn, updateCursorLocation);
 			}
 			/*
 			 * if (widgetMode == WidgetMode.Painter) {
@@ -463,9 +455,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			 */
 
 		}
-		// e.gc.drawImage(bufferImage, 0, 0);
-		// imageGC.dispose();
-		// bufferImage.dispose();
 		paintControlMode = DRAW_NOTHING;
 
 	}
@@ -579,10 +568,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		int bc = conf.pixelConfig.bitCount;
 		int byteOffset = 0;
 		int pix = conf.isPixelGridEnabled() ? 1 : 0;
-		if (conf.widgetMode == WidgetMode.Painter || conf.widgetMode == WidgetMode.Viewer) {
-			byteOffset = selectedTileOffset;
-		} else if (conf.widgetMode == WidgetMode.Selector || conf.widgetMode == WidgetMode.BitmapViewer) {
+		if (supportsMultiTileView()) {
 			byteOffset = conf.computeTileOffset(tx, ty, navigationOffset);
+		} else {
+			byteOffset = selectedTileOffset;
 		}
 
 		for (int i = byteOffset, k = 0; i < (byteOffset + conf.tileSize); i++, k++) {
@@ -946,4 +935,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		return service;
 	}
 
+	protected boolean supportsPainting() {
+		return false;
+	}
+
+	protected boolean supportsMultiTileView() {
+		return false;
+	}
+
+	protected boolean supportsSingleSelection() {
+		return false;
+	}
+
+	protected boolean supportsMultiSelection() {
+		return false;
+	}
 }
