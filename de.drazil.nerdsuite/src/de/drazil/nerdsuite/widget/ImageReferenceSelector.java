@@ -16,4 +16,9 @@ public class ImageReferenceSelector extends ImageSelector {
 	protected boolean supportsMultiSelection() {
 		return false;
 	}
+
+	@Override
+	protected boolean supportsReferenceIndexSelection() {
+		return true;
+	}
 }

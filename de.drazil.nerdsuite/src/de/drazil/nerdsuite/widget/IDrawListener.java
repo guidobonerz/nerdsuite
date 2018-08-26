@@ -10,6 +10,6 @@ public interface IDrawListener {
 
 	public void doDrawAllTiles();
 
-	public void setSelectedTileOffset(int offset);
+	public void setSelectedTileOffset(int offset, int index);
 
 }

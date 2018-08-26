@@ -21,10 +21,8 @@ import org.osgi.framework.Bundle;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.ImageViewer;
-import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.WidgetMode;
 
 public class BitmapEditor {
 
@@ -63,7 +61,7 @@ public class BitmapEditor {
 
 		ImagingWidgetConfiguration ic = new ImagingWidgetConfiguration();
 		ic.setWidgetName("Viewer:");
-		ic.setWidgetMode(WidgetMode.BitmapViewer);
+		// ic.setWidgetMode(WidgetMode.BitmapViewer);
 		ic.setWidth(8);
 		ic.setHeight(8);
 		ic.setColumns(40);
@@ -72,29 +70,29 @@ public class BitmapEditor {
 		ic.setPixelGridEnabled(false);
 		ic.setTileSubGridEnabled(false);
 		ic.setTileGridEnabled(true);
-		ImageViewer painter = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
+		ImageViewer viewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
 
-		painter.setColorProvider(new KoalaColorProvider());
-		painter.setBitlane(binaryData);
-		painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
-		painter.setSelectedColor(0);
+		viewer.setColorProvider(new KoalaColorProvider());
+		viewer.setBitplane(binaryData);
+		viewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
+		viewer.setSelectedColor(0);
 
-		painter.recalc();
+		viewer.recalc();
 		parent.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		Button multicolor = new Button(parent, SWT.CHECK);
 		multicolor.setSelection(ic.getPixelConfig() == PixelConfig.BC2);
 		multicolor.setText("MultiColor");
 		multicolor.addListener(SWT.Selection, e -> {
-			painter.getConf().setPixelConfig(multicolor.getSelection() ? PixelConfig.BC2 : PixelConfig.BC1);
-			painter.recalc();
+			viewer.getConf().setPixelConfig(multicolor.getSelection() ? PixelConfig.BC2 : PixelConfig.BC1);
+			viewer.recalc();
 		});
 		Button grid = new Button(parent, SWT.CHECK);
 		grid.setSelection(ic.isTileGridEnabled());
 		grid.setText("Grid");
 		grid.addListener(SWT.Selection, e -> {
 			ic.setTileGridEnabled(grid.getSelection());
-			painter.recalc();
+			viewer.recalc();
 		});
 
 	}

@@ -47,7 +47,6 @@ import de.drazil.nerdsuite.widget.ImagingWidget.ImagingServiceDescription;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PaintMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.WidgetMode;
 import net.miginfocom.swt.MigLayout;
 
 public class IconEditor implements IConfigurationListener {
@@ -315,15 +314,15 @@ public class IconEditor implements IConfigurationListener {
 		if (painter == null) {
 			painter = new ImagePainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.getConf().setWidgetName("Painter :");
-			painter.getConf().setWidgetMode(WidgetMode.Painter);
 			painter.getConf().setWidth(8);
 			painter.getConf().setHeight(8);
 			painter.getConf().setPixelGridEnabled(true);
 			painter.getConf().setGridStyle(GridStyle.Dot);
 			painter.getConf().setTileGridEnabled(true);
 			painter.getConf().setTileCursorEnabled(false);
-			painter.setSelectedTileOffset(0);
-			painter.setBitlane(getBlankData());
+			painter.setSelectedTileOffset(0, 0);
+			painter.setBitplane(getBlankData());
+			painter.setReferenceBitplane(getBinaryData());
 			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			painter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -339,7 +338,6 @@ public class IconEditor implements IConfigurationListener {
 		if (previewer == null) {
 			previewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			previewer.getConf().setWidgetName("Preview :");
-			previewer.getConf().setWidgetMode(WidgetMode.Viewer);
 			previewer.getConf().setWidth(8);
 			previewer.getConf().setHeight(8);
 			previewer.getConf().setPixelSize(3);
@@ -347,8 +345,10 @@ public class IconEditor implements IConfigurationListener {
 			previewer.getConf().setGridStyle(GridStyle.Dot);
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
-			previewer.setSelectedTileOffset(0);
-			previewer.setBitlane(getBlankData());
+			previewer.getConf().setSeparatorEnabled(false);
+			previewer.setSelectedTileOffset(0, 0);
+			previewer.setBitplane(getBlankData());
+			previewer.setReferenceBitplane(getBinaryData());
 			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			previewer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			previewer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -400,7 +400,6 @@ public class IconEditor implements IConfigurationListener {
 				 */
 			};
 			selector.getConf().setWidgetName("Selector:");
-			selector.getConf().setWidgetMode(WidgetMode.Selector);
 			selector.getConf().setWidth(8);
 			selector.getConf().setHeight(8);
 			selector.getConf().setPixelSize(3);
@@ -409,8 +408,9 @@ public class IconEditor implements IConfigurationListener {
 			selector.getConf().setTileSubGridEnabled(false);
 			selector.getConf().setTileCursorEnabled(true);
 			selector.getConf().setSeparatorEnabled(false);
-			selector.setSelectedTileOffset(0);
-			selector.setBitlane(getBinaryData());
+			selector.setSelectedTileOffset(0, 0);
+			selector.setBitplane(getBinaryData());
+			selector.setReferenceBitplane(getBinaryData());
 			selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			selector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -429,7 +429,6 @@ public class IconEditor implements IConfigurationListener {
 			referenceSelector = new ImageReferenceSelector(controls,
 					SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
 			referenceSelector.getConf().setWidgetName("ReferenceSelector:");
-			referenceSelector.getConf().setWidgetMode(WidgetMode.ReferenceSelector);
 			referenceSelector.getConf().setWidth(8);
 			referenceSelector.getConf().setHeight(8);
 			referenceSelector.getConf().setTileColumns(1);
@@ -442,8 +441,8 @@ public class IconEditor implements IConfigurationListener {
 			referenceSelector.getConf().setTileSubGridEnabled(false);
 			referenceSelector.getConf().setTileCursorEnabled(true);
 			referenceSelector.getConf().setSeparatorEnabled(false);
-			referenceSelector.setSelectedTileOffset(0);
-			referenceSelector.setBitlane(getBinaryData());
+			referenceSelector.setSelectedTileOffset(0, 0);
+			referenceSelector.setBitplane(getBinaryData());
 			referenceSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			referenceSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			referenceSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
