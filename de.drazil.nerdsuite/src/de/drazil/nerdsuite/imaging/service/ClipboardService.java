@@ -28,7 +28,7 @@ public class ClipboardService extends AbstractService implements IImagingService
 			currentAction = action;
 			cutCopyOffset = offset;
 		}
-		if (action == PASTE && currentAction != OFF) {
+		if (action == PASTE) {// && currentAction != OFF) {
 			pasteOffset = offset;
 			for (int i = 0; i < conf.getTileSize(); i++) {
 				bitplane[pasteOffset + i] = bitplane[cutCopyOffset + i];

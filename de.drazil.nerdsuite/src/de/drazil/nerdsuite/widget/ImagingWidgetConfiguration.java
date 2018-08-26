@@ -20,6 +20,8 @@ public class ImagingWidgetConfiguration {
 	public int tileSize;
 	public int iconSize;
 	public int cursorLineWidth = 1;
+	public int fullWidth = 0;
+	public int fullHeight = 0;
 
 	public boolean pixelGridEnabled = true;
 	public boolean tileGridEnabled = true;
@@ -200,8 +202,8 @@ public class ImagingWidgetConfiguration {
 		bytesPerRow = width >> pixelConfig.shift;
 		iconSize = bytesPerRow * height;
 		tileSize = iconSize * tileColumns * tileRows;
-		cl.configurationChanged(width, height, tileColumns, tileRows, 0, 0, columns, rows, currentWidth);
-
+		fullWidth = width * tileColumns * columns * pixelSize;
+		fullHeight = height * tileRows * rows * pixelSize;
 	}
 
 	public int computeTileOffset(int x, int y, int offset) {
