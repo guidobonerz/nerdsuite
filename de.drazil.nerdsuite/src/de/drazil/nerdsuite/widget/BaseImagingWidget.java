@@ -126,4 +126,5 @@ public abstract class BaseImagingWidget extends Canvas implements IAdvancedMouse
 	public void mouseScrolled(int modifierMask, int x, int y, int count) {
 		this.modifierMask = modifierMask;
 	}
+
 }

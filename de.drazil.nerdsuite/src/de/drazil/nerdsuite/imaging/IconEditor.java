@@ -38,27 +38,35 @@ import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.IConfigurationListener;
+import de.drazil.nerdsuite.widget.ImagePainter;
+import de.drazil.nerdsuite.widget.ImageReferenceSelector;
+import de.drazil.nerdsuite.widget.ImageSelector;
+import de.drazil.nerdsuite.widget.ImageViewer;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidget.ImagingServiceDescription;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PaintMode;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.WidgetMode;
 import net.miginfocom.swt.MigLayout;
 
 public class IconEditor implements IConfigurationListener {
 
-	private ImagingWidget painter;
-	private ImagingWidget previewer;
-	private ImagingWidget selector;
+	private ImagePainter painter;
+	private ImageViewer previewer;
+	private ImageSelector selector;
+	private ImageReferenceSelector referenceSelector;
 	private Scale animationTimerDelayScale;
 	private Composite parent;
 	private Button multicolor;
 	private Button startAnimation;
 	private Text notification;
 	private Composite controls;
+	private Combo pixelConfigSelector;
 	private Combo formatSelector;
 	private Combo paintModeSelector;
 	private byte binaryData[] = null;
+	private byte blankData[] = null;
 	boolean multiColorMode = false;
 	private ConfigurationDialog configurationDialog = null;
 	private boolean isAnimationRunning = false;
@@ -74,12 +82,13 @@ public class IconEditor implements IConfigurationListener {
 		controls.setLayout(layout);
 		controls.setLayoutData("cell 1 0");
 
-		getMultiColor();
+		getPixelConfigSelector();
 		getFormatSelector();
 		getPaintModeSelector();
 		getStartAnimation();
 		getAnimationTimerDelayScale();
 		getNotification();
+		getReferenceSelector();
 
 		getPainter().setLayoutData("cell 0 0");
 		getPreviewer().setLayoutData("cell 1 0");
@@ -260,8 +269,10 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().executeService(ImagingServiceDescription.Invert);
 		});
 
-		setPaintFormat("Char");
+		setPixelConfig("BC8");
+		setPaintFormat("Screen");
 		setPaintMode("Pixel");
+		getPixelConfigSelector().select(2);
 		getFormatSelector().select(0);
 		getPaintModeSelector().select(0);
 		getSelector().setMenu(popup);
@@ -276,10 +287,9 @@ public class IconEditor implements IConfigurationListener {
 			animationTimerDelayScale = new Scale(controls, SWT.HORIZONTAL);
 			animationTimerDelayScale.setEnabled(true);
 			animationTimerDelayScale.setMinimum(50);
-			animationTimerDelayScale.setMaximum(1000);
+			animationTimerDelayScale.setMaximum(500);
 			animationTimerDelayScale.setSelection(200);
 			getSelector().setServiceValue(ImagingServiceDescription.Animation, AnimationService.SET_DELAY, 200);
-			animationTimerDelayScale.setIncrement(50);
 			animationTimerDelayScale.setIncrement(50);
 			animationTimerDelayScale.setPageIncrement(50);
 			GridData gridData = new GridData();
@@ -301,9 +311,9 @@ public class IconEditor implements IConfigurationListener {
 		return animationTimerDelayScale;
 	}
 
-	private ImagingWidget getPainter() {
+	private ImagePainter getPainter() {
 		if (painter == null) {
-			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			painter = new ImagePainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setWidgetMode(WidgetMode.Painter);
 			painter.getConf().setWidth(8);
@@ -312,9 +322,8 @@ public class IconEditor implements IConfigurationListener {
 			painter.getConf().setGridStyle(GridStyle.Dot);
 			painter.getConf().setTileGridEnabled(true);
 			painter.getConf().setTileCursorEnabled(false);
-			painter.getConf().setMultiColorEnabled(multiColorMode);
 			painter.setSelectedTileOffset(0);
-			painter.setBitlane(getBinaryData());
+			painter.setBitlane(getBlankData());
 			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			painter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -326,9 +335,9 @@ public class IconEditor implements IConfigurationListener {
 		return painter;
 	}
 
-	private ImagingWidget getPreviewer() {
+	private ImageViewer getPreviewer() {
 		if (previewer == null) {
-			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			previewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			previewer.getConf().setWidgetName("Preview :");
 			previewer.getConf().setWidgetMode(WidgetMode.Viewer);
 			previewer.getConf().setWidth(8);
@@ -338,23 +347,21 @@ public class IconEditor implements IConfigurationListener {
 			previewer.getConf().setGridStyle(GridStyle.Dot);
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
-			previewer.getConf().setMultiColorEnabled(multiColorMode);
 			previewer.setSelectedTileOffset(0);
-			previewer.setBitlane(getBinaryData());
+			previewer.setBitlane(getBlankData());
 			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			previewer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			previewer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
 			previewer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 			previewer.setSelectedColor(1);
-			previewer.recalc();
 
 		}
 		return previewer;
 	}
 
-	private ImagingWidget getSelector() {
+	private ImageSelector getSelector() {
 		if (selector == null) {
-			selector = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
+			selector = new ImageSelector(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
 
 				/*
 				 * 
@@ -402,7 +409,6 @@ public class IconEditor implements IConfigurationListener {
 			selector.getConf().setTileSubGridEnabled(false);
 			selector.getConf().setTileCursorEnabled(true);
 			selector.getConf().setSeparatorEnabled(false);
-			selector.getConf().setMultiColorEnabled(multiColorMode);
 			selector.setSelectedTileOffset(0);
 			selector.setBitlane(getBinaryData());
 			selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
@@ -418,36 +424,49 @@ public class IconEditor implements IConfigurationListener {
 
 	}
 
+	private ImagingWidget getReferenceSelector() {
+		if (referenceSelector == null) {
+			referenceSelector = new ImageReferenceSelector(controls,
+					SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
+			referenceSelector.getConf().setWidgetName("ReferenceSelector:");
+			referenceSelector.getConf().setWidgetMode(WidgetMode.ReferenceSelector);
+			referenceSelector.getConf().setWidth(8);
+			referenceSelector.getConf().setHeight(8);
+			referenceSelector.getConf().setTileColumns(1);
+			referenceSelector.getConf().setTileRows(1);
+			referenceSelector.getConf().setColumns(16);
+			referenceSelector.getConf().setRows(16);
+			referenceSelector.getConf().setPixelSize(2);
+			referenceSelector.getConf().setPixelGridEnabled(false);
+			referenceSelector.getConf().setTileGridEnabled(true);
+			referenceSelector.getConf().setTileSubGridEnabled(false);
+			referenceSelector.getConf().setTileCursorEnabled(true);
+			referenceSelector.getConf().setSeparatorEnabled(false);
+			referenceSelector.setSelectedTileOffset(0);
+			referenceSelector.setBitlane(getBinaryData());
+			referenceSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+			referenceSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+			referenceSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+			referenceSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+			referenceSelector.setSelectedColor(1);
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.horizontalSpan = 2;
+			referenceSelector.setLayoutData(gridData);
+			referenceSelector.recalc();
+
+		}
+		return referenceSelector;
+
+	}
+
 	private Text getNotification() {
 		if (notification == null) {
 			notification = new Text(controls, SWT.NONE);
 			notification.setEnabled(false);
 		}
 		return notification;
-	}
-
-	private Button getMultiColor() {
-		if (multicolor == null) {
-			multicolor = new Button(controls, SWT.CHECK);
-			multicolor.setText("MultiColor");
-			GridData gridData = new GridData();
-			gridData.grabExcessHorizontalSpace = true;
-			gridData.horizontalAlignment = GridData.FILL;
-			gridData.horizontalSpan = 2;
-			multicolor.setLayoutData(gridData);
-			multicolor.addListener(SWT.Selection, new Listener() {
-				@Override
-				public void handleEvent(Event event) {
-					painter.getConf().setMultiColorEnabled(multicolor.getSelection());
-					painter.recalc();
-					selector.getConf().setMultiColorEnabled(multicolor.getSelection());
-					selector.recalc();
-					previewer.getConf().setMultiColorEnabled(multicolor.getSelection());
-					previewer.recalc();
-				}
-			});
-		}
-		return multicolor;
 	}
 
 	private Button getStartAnimation() {
@@ -483,11 +502,32 @@ public class IconEditor implements IConfigurationListener {
 		return startAnimation;
 	}
 
+	private Combo getPixelConfigSelector() {
+		if (pixelConfigSelector == null) {
+			pixelConfigSelector = new Combo(controls, SWT.DROP_DOWN);
+			pixelConfigSelector.setItems(new String[] { "BC1", "BC2", "BC8" });
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.horizontalSpan = 2;
+			pixelConfigSelector.setLayoutData(gridData);
+			pixelConfigSelector.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					Combo c = ((Combo) e.getSource());
+					int index = c.getSelectionIndex();
+					setPixelConfig(c.getItem(index));
+				}
+			});
+		}
+		return pixelConfigSelector;
+	}
+
 	private Combo getFormatSelector() {
 		if (formatSelector == null) {
 			formatSelector = new Combo(controls, SWT.DROP_DOWN);
-			formatSelector.setItems(new String[] { "Char", "Char 2X", "Char 2Y", "Char 2XY", "Sprite", "Sprite 2X",
-					"Sprite 2Y", "Sprite 2XY", "Screen", "Custom ..." });
+			formatSelector.setItems(new String[] { "Screen", "Char", "Char 2X", "Char 2Y", "Char 2XY", "Sprite",
+					"Sprite 2X", "Sprite 2Y", "Sprite 2XY", "Screen", "Custom ..." });
 			GridData gridData = new GridData();
 			gridData.grabExcessHorizontalSpace = true;
 			gridData.horizontalAlignment = GridData.FILL;
@@ -547,20 +587,66 @@ public class IconEditor implements IConfigurationListener {
 		}
 	}
 
+	private void setPixelConfig(String pixelConfig) {
+		switch (pixelConfig) {
+		case "BC1": {
+			getPainter().getConf().setPixelConfig(PixelConfig.BC1);
+			getSelector().getConf().setPixelConfig(PixelConfig.BC1);
+			getPreviewer().getConf().setPixelConfig(PixelConfig.BC1);
+			break;
+		}
+		case "BC2": {
+			getPainter().getConf().setPixelConfig(PixelConfig.BC2);
+			getSelector().getConf().setPixelConfig(PixelConfig.BC2);
+			getPreviewer().getConf().setPixelConfig(PixelConfig.BC2);
+			break;
+		}
+		case "BC8": {
+			getPainter().getConf().setPixelConfig(PixelConfig.BC8);
+			getSelector().getConf().setPixelConfig(PixelConfig.BC8);
+			getPreviewer().getConf().setPixelConfig(PixelConfig.BC8);
+			break;
+		}
+
+		}
+		getPreviewer().recalc();
+		getSelector().recalc();
+		getPainter().recalc();
+		parent.layout();
+	}
+
 	private void setPaintFormat(String format) {
 		switch (format) {
+		case "Screen": {
+			getPainter().getConf().setWidth(40);
+			getPainter().getConf().setHeight(25);
+			getPainter().getConf().setTileColumns(1);
+			getPainter().getConf().setTileRows(1);
+			getPainter().getConf().setPixelSize(16);
+			getPreviewer().getConf().setWidth(40);
+			getPreviewer().getConf().setHeight(25);
+			getPreviewer().getConf().setTileColumns(1);
+			getPreviewer().getConf().setTileRows(1);
+			getPreviewer().getConf().setPixelSize(4);
+			getSelector().getConf().setWidth(40);
+			getSelector().getConf().setHeight(25);
+			getSelector().getConf().setTileColumns(1);
+			getSelector().getConf().setTileRows(1);
+			getSelector().getConf().setColumns(8);
+			getSelector().getConf().setRows(1);
+			getSelector().getConf().setPixelSize(8);
+			break;
+		}
 		case "Char": {
 			getPainter().getConf().setWidth(8);
 			getPainter().getConf().setHeight(8);
 			getPainter().getConf().setTileColumns(1);
 			getPainter().getConf().setTileRows(1);
 			getPainter().getConf().setPixelSize(40);
-			getPainter().recalc();
 			getPreviewer().getConf().setWidth(8);
 			getPreviewer().getConf().setHeight(8);
 			getPreviewer().getConf().setTileColumns(1);
 			getPreviewer().getConf().setTileRows(1);
-			getPreviewer().recalc();
 			getSelector().getConf().setWidth(8);
 			getSelector().getConf().setHeight(8);
 			getSelector().getConf().setTileColumns(1);
@@ -568,8 +654,6 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().getConf().setColumns(16);
 			getSelector().getConf().setRows(16);
 			getSelector().getConf().setPixelSize(3);
-			getSelector().recalc();
-			parent.layout();
 			break;
 		}
 		case "Char 2X": {
@@ -578,12 +662,10 @@ public class IconEditor implements IConfigurationListener {
 			getPainter().getConf().setTileColumns(2);
 			getPainter().getConf().setTileRows(1);
 			getPainter().getConf().setPixelSize(20);
-			getPainter().recalc();
 			getPreviewer().getConf().setWidth(8);
 			getPreviewer().getConf().setHeight(8);
 			getPreviewer().getConf().setTileColumns(2);
 			getPreviewer().getConf().setTileRows(1);
-			getPreviewer().recalc();
 			getSelector().getConf().setWidth(8);
 			getSelector().getConf().setHeight(8);
 			getSelector().getConf().setTileColumns(2);
@@ -591,9 +673,6 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().getConf().setColumns(8);
 			getSelector().getConf().setRows(16);
 			getSelector().getConf().setPixelSize(3);
-			getSelector().recalc();
-
-			parent.layout();
 			break;
 		}
 
@@ -603,12 +682,10 @@ public class IconEditor implements IConfigurationListener {
 			getPainter().getConf().setTileColumns(1);
 			getPainter().getConf().setTileRows(2);
 			getPainter().getConf().setPixelSize(20);
-			getPainter().recalc();
 			getPreviewer().getConf().setWidth(8);
 			getPreviewer().getConf().setHeight(8);
 			getPreviewer().getConf().setTileColumns(1);
 			getPreviewer().getConf().setTileRows(2);
-			getPreviewer().recalc();
 			getSelector().getConf().setWidth(8);
 			getSelector().getConf().setHeight(8);
 			getSelector().getConf().setTileColumns(1);
@@ -616,8 +693,6 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().getConf().setColumns(16);
 			getSelector().getConf().setRows(8);
 			getSelector().getConf().setPixelSize(3);
-			getSelector().recalc();
-			parent.layout();
 			break;
 		}
 
@@ -627,12 +702,10 @@ public class IconEditor implements IConfigurationListener {
 			getPainter().getConf().setTileColumns(2);
 			getPainter().getConf().setTileRows(2);
 			getPainter().getConf().setPixelSize(20);
-			getPainter().recalc();
 			getPreviewer().getConf().setWidth(8);
 			getPreviewer().getConf().setHeight(8);
 			getPreviewer().getConf().setTileColumns(2);
 			getPreviewer().getConf().setTileRows(2);
-			getPreviewer().recalc();
 			getSelector().getConf().setWidth(8);
 			getSelector().getConf().setHeight(8);
 			getSelector().getConf().setTileColumns(2);
@@ -640,8 +713,6 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().getConf().setColumns(8);
 			getSelector().getConf().setRows(8);
 			getSelector().getConf().setPixelSize(3);
-			getSelector().recalc();
-			parent.layout();
 			break;
 		}
 
@@ -651,12 +722,10 @@ public class IconEditor implements IConfigurationListener {
 			getPainter().getConf().setTileColumns(1);
 			getPainter().getConf().setTileRows(1);
 			getPainter().getConf().setPixelSize(10);
-			getPainter().recalc();
 			getPreviewer().getConf().setWidth(24);
 			getPreviewer().getConf().setHeight(21);
 			getPreviewer().getConf().setTileColumns(1);
 			getPreviewer().getConf().setTileRows(1);
-			getPreviewer().recalc();
 			getSelector().getConf().setWidth(24);
 			getSelector().getConf().setHeight(21);
 			getSelector().getConf().setTileColumns(1);
@@ -664,8 +733,6 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().getConf().setPixelSize(2);
 			getSelector().getConf().setColumns(16);
 			getSelector().getConf().setRows(6);
-			getSelector().recalc();
-			parent.layout();
 			break;
 		}
 
@@ -675,12 +742,10 @@ public class IconEditor implements IConfigurationListener {
 			getPainter().getConf().setTileColumns(2);
 			getPainter().getConf().setTileRows(1);
 			getPainter().getConf().setPixelSize(10);
-			getPainter().recalc();
 			getPreviewer().getConf().setWidth(24);
 			getPreviewer().getConf().setHeight(21);
 			getPreviewer().getConf().setTileColumns(2);
 			getPreviewer().getConf().setTileRows(1);
-			getPreviewer().recalc();
 			getSelector().getConf().setWidth(24);
 			getSelector().getConf().setHeight(21);
 			getSelector().getConf().setTileColumns(2);
@@ -688,8 +753,6 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().getConf().setPixelSize(2);
 			getSelector().getConf().setColumns(8);
 			getSelector().getConf().setRows(6);
-			getSelector().recalc();
-			parent.layout();
 			break;
 		}
 
@@ -699,12 +762,10 @@ public class IconEditor implements IConfigurationListener {
 			getPainter().getConf().setTileColumns(1);
 			getPainter().getConf().setTileRows(2);
 			getPainter().getConf().setPixelSize(10);
-			getPainter().recalc();
 			getPreviewer().getConf().setWidth(24);
 			getPreviewer().getConf().setHeight(21);
 			getPreviewer().getConf().setTileColumns(1);
 			getPreviewer().getConf().setTileRows(2);
-			getPreviewer().recalc();
 			getSelector().getConf().setWidth(24);
 			getSelector().getConf().setHeight(21);
 			getSelector().getConf().setTileColumns(1);
@@ -712,8 +773,6 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().getConf().setPixelSize(2);
 			getSelector().getConf().setColumns(16);
 			getSelector().getConf().setRows(3);
-			getSelector().recalc();
-			parent.layout();
 			break;
 		}
 
@@ -723,12 +782,10 @@ public class IconEditor implements IConfigurationListener {
 			getPainter().getConf().setTileColumns(2);
 			getPainter().getConf().setTileRows(2);
 			getPainter().getConf().setPixelSize(10);
-			getPainter().recalc();
 			getPreviewer().getConf().setWidth(24);
 			getPreviewer().getConf().setHeight(21);
 			getPreviewer().getConf().setTileColumns(2);
 			getPreviewer().getConf().setTileRows(2);
-			getPreviewer().recalc();
 			getSelector().getConf().setWidth(24);
 			getSelector().getConf().setHeight(21);
 			getSelector().getConf().setTileColumns(2);
@@ -736,12 +793,9 @@ public class IconEditor implements IConfigurationListener {
 			getSelector().getConf().setPixelSize(2);
 			getSelector().getConf().setColumns(8);
 			getSelector().getConf().setRows(3);
-			getSelector().recalc();
-			parent.layout();
 			break;
 		}
 		case "Custom ...": {
-
 			configurationDialog.setConfiguration(getPainter().getConf().getWidth(), getPainter().getConf().getHeight(),
 					getPainter().getConf().getTileColumns(), getPainter().getConf().getTileRows(),
 					getPainter().getConf().getPixelSize(), getSelector().getConf().getPixelSize());
@@ -750,12 +804,16 @@ public class IconEditor implements IConfigurationListener {
 			break;
 		}
 		}
+		getPainter().recalc();
+		getPreviewer().recalc();
+		getSelector().recalc();
+		parent.layout();
 
 	}
 
 	@Override
 	public void configurationChanged(int width, int height, int tileColumns, int tileRows, int painterPixelSize,
-			int selectorPixelSize) {
+			int selectorPixelSize, int columns, int rows, int currentWidth) {
 		getPainter().getConf().setWidth(width);
 		getPainter().getConf().setHeight(height);
 		getPainter().getConf().setTileColumns(tileColumns);
@@ -772,8 +830,6 @@ public class IconEditor implements IConfigurationListener {
 		getSelector().getConf().setTileColumns(tileColumns);
 		getSelector().getConf().setTileRows(tileRows);
 		getSelector().getConf().setPixelSize(selectorPixelSize);
-		getSelector().getConf().setColumns(8);
-		getSelector().getConf().setRows(3);
 		getSelector().recalc();
 		parent.layout();
 	}
@@ -783,7 +839,7 @@ public class IconEditor implements IConfigurationListener {
 
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 			URL url = bundle.getEntry("/fonts/c64_lower.64c");
-			// URL url = bundle.getEntry("/images/galencia_dump2");
+
 			File file = null;
 
 			try {
@@ -811,6 +867,15 @@ public class IconEditor implements IConfigurationListener {
 			 */
 		}
 		return binaryData;
+	}
+
+	private byte[] getBlankData() {
+		if (blankData == null) {
+			blankData = new byte[0x1f40];
+			for (int i = 0; i < blankData.length; i++)
+				blankData[i] = 0;
+		}
+		return blankData;
 	}
 
 }

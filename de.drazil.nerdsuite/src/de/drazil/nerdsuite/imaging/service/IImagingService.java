@@ -13,7 +13,7 @@ public interface IImagingService {
 
 	public void setValue(int action, Object data);
 
-	public void runService(int action, List<TileLocation> tileLocationList, int offset, byte bitplane[]);
+	public void runService(int action, List<TileLocation> tileLocationList, byte bitplane[]);
 
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte bitplane[], byte workArray[], int width, int height);

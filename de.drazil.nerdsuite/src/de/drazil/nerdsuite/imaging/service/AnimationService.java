@@ -1,6 +1,5 @@
 package de.drazil.nerdsuite.imaging.service;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
@@ -14,27 +13,30 @@ public class AnimationService extends AbstractService {
 	public final static int SET_DELAY = 4;
 	private Animator animator = null;
 	private int animationDelay = 0;
+	private int pos = 0;
 
 	public AnimationService() {
-
 		animator = new Animator();
 	}
 
 	public class Animator implements Runnable {
 		public synchronized void run() {
-			Collections.rotate(tileLocationList, -1);
-			TileLocation tl = tileLocationList.get(0);
+			if (pos >= tileLocationList.size()) {
+				pos = 0;
+			}
+			TileLocation tl = tileLocationList.get(pos);
+			pos++;
 			callback.onRunService(conf.computeTileOffset(tl.x, tl.y, navigationOffset), tl.x, tl.y, true);
 			((Composite) source).getDisplay().timerExec(animationDelay, this);
 		}
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, int offset, byte[] bitplane) {
-		this.navigationOffset = offset;
+	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
 		this.tileLocationList = tileLocationList;
 		callback.beforeRunService();
 		if (action == START) {
+			pos = 0;
 			((Composite) source).getDisplay().timerExec(0, animator);
 		} else if (action == STOP) {
 			((Composite) source).getDisplay().timerExec(-1, animator);

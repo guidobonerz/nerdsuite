@@ -4,6 +4,8 @@ import org.eclipse.swt.graphics.Color;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.widget.IColorProvider;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
 
 public class KoalaColorProvider implements IColorProvider {
 
@@ -28,8 +30,8 @@ public class KoalaColorProvider implements IColorProvider {
 	}
 
 	@Override
-	public boolean isMultiColorEnabled() {
-		return true;
+	public PixelConfig getPixelConfig() {
+		return ImagingWidgetConfiguration.PixelConfig.BC2;
 	}
 
 }

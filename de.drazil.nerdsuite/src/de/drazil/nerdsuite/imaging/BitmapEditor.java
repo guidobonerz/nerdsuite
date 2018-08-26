@@ -20,8 +20,10 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.widget.ImageViewer;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.WidgetMode;
 
 public class BitmapEditor {
@@ -70,7 +72,7 @@ public class BitmapEditor {
 		ic.setPixelGridEnabled(false);
 		ic.setTileSubGridEnabled(false);
 		ic.setTileGridEnabled(true);
-		ImagingWidget painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
+		ImageViewer painter = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
 
 		painter.setColorProvider(new KoalaColorProvider());
 		painter.setBitlane(binaryData);
@@ -81,10 +83,10 @@ public class BitmapEditor {
 		parent.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		Button multicolor = new Button(parent, SWT.CHECK);
-		multicolor.setSelection(ic.isMultiColorEnabled());
+		multicolor.setSelection(ic.getPixelConfig() == PixelConfig.BC2);
 		multicolor.setText("MultiColor");
 		multicolor.addListener(SWT.Selection, e -> {
-			painter.getConf().setMultiColorEnabled(multicolor.getSelection());
+			painter.getConf().setPixelConfig(multicolor.getSelection() ? PixelConfig.BC2 : PixelConfig.BC1);
 			painter.recalc();
 		});
 		Button grid = new Button(parent, SWT.CHECK);
