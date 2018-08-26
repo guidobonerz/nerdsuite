@@ -29,18 +29,14 @@ public class ImagingWidgetConfiguration {
 	public boolean tileCursorEnabled = false;
 	public boolean separatorEnabled = true;
 	public boolean layerViewEnabled = false;
+	public boolean televisionModeEnabled = false;
 
 	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public PaintMode paintMode = PaintMode.Simple;
 	public PencilMode pencilMode = PencilMode.Draw;
 	public GridStyle gridStyle = GridStyle.Line;
-	public WidgetMode widgetMode;
 
 	public IConfigurationListener cl;
-
-	public enum WidgetMode {
-		Selector, ReferenceSelector, Painter, Viewer, BitmapViewer
-	};
 
 	public enum PaintMode {
 		Simple, VerticalMirror, HorizontalMirror, Kaleidoscope
@@ -59,7 +55,7 @@ public class ImagingWidgetConfiguration {
 	}
 
 	public enum PixelConfig {
-		BC8("MultiColor255", 8, 0, 256, 1, 1), BC2("MultiColor4", 2, 3, 3, 4, 2), BC1("MonoColor", 1, 3, 1, 8, 1);
+		BC8("MultiColor256", 8, 0, 256, 1, 1), BC2("MultiColor4", 2, 3, 3, 4, 2), BC1("MonoColor", 1, 3, 1, 8, 1);
 
 		public final int bitCount;
 		public final int shift;
@@ -164,10 +160,6 @@ public class ImagingWidgetConfiguration {
 		computeSizes();
 	}
 
-	public void setWidgetMode(WidgetMode widgetMode) {
-		this.widgetMode = widgetMode;
-	}
-
 	public void setWidgetName(String widgetName) {
 		this.widgetName = widgetName;
 	}
@@ -194,6 +186,10 @@ public class ImagingWidgetConfiguration {
 
 	public void setCursorLineWidth(int cursorLineWidth) {
 		this.cursorLineWidth = cursorLineWidth;
+	}
+
+	public void setTelevisonModeEnabled(boolean televisionModeEnabled) {
+		this.televisionModeEnabled = televisionModeEnabled;
 	}
 
 	public void computeSizes() {
