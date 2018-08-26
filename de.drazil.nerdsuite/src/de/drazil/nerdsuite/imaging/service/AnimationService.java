@@ -30,8 +30,7 @@ public class AnimationService extends AbstractService {
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, int offset, byte[] bitplane) {
-		this.navigationOffset = offset;
+	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
 		this.tileLocationList = tileLocationList;
 		callback.beforeRunService();
 		if (action == START) {
