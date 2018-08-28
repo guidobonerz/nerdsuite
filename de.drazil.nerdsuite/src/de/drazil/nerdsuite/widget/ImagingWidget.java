@@ -392,31 +392,33 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	public void paintControl(PaintEvent e) {
 
+		GC gc = e.gc;
+
 		if ((paintControlMode & DRAW_ALL_TILES) == DRAW_ALL_TILES) {
-			paintControlTiles(e.gc);
+			paintControlTiles(gc);
 		}
 		if ((paintControlMode & DRAW_TILE) == DRAW_TILE) {
-			paintControlTile(e.gc, selectedTileIndexX, selectedTileIndexY);
+			paintControlTile(gc, selectedTileIndexX, selectedTileIndexY);
 		}
 
 		if (conf.isPixelGridEnabled()) {
-			paintControlPixelGrid(e.gc);
+			paintControlPixelGrid(gc);
 		}
 		if (conf.isSeparatorEnabled()) {
-			paintControlSeparator(e.gc);
+			paintControlSeparator(gc);
 		}
 		if (conf.isTileGridEnabled()) {
-			paintControlTileGrid(e.gc);
+			paintControlTileGrid(gc);
 		}
 
 		if (conf.isTileSubGridEnabled()) {
-			paintControlTileSubGrid(e.gc);
+			paintControlTileSubGrid(gc);
 		}
 
-		paintControlSelection(e.gc);
+		paintControlSelection(gc);
 
 		if (conf.isTileCursorEnabled()) {
-			paintControlTileCursor(e.gc, mouseIn, updateCursorLocation);
+			paintControlTileCursor(gc, mouseIn, updateCursorLocation);
 		}
 		/*
 		 * if (widgetMode == WidgetMode.Painter) {
@@ -424,11 +426,24 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		 */
 
 		// }
+		// paintTelevisionRaster(gc);
+
 		paintControlMode = DRAW_NOTHING;
 
 	}
 
-	public void paintControlSelection(GC gc) {
+	private void paintTelevisionRaster(GC gc) {
+		int height = conf.height * conf.tileRows * conf.rows * conf.currentPixelHeight;
+		int length = conf.width * conf.tileColumns * conf.columns * conf.currentPixelWidth;
+		for (int y = 0; y < height; y += 2) {
+			gc.setAlpha(30);
+			gc.setForeground(Constants.BLACK);
+
+			gc.drawLine(0, y, length, y);
+		}
+	}
+
+	private void paintControlSelection(GC gc) {
 		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
 		for (TileLocation tilelocation : tileSelectionList) {
@@ -438,7 +453,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	public void paintControlTileCursor(GC gc, boolean mouseIn, boolean updateCursorLocation) {
+	private void paintControlTileCursor(GC gc, boolean mouseIn, boolean updateCursorLocation) {
 
 		if (mouseIn) {
 			gc.setAlpha(150);
@@ -457,7 +472,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	public void paintControlPixelGrid(GC gc) {
+	private void paintControlPixelGrid(GC gc) {
 		for (int x = 0; x <= conf.currentWidth * conf.tileColumns; x++) {
 			for (int y = 0; y <= conf.height * conf.tileRows; y++) {
 				gc.setForeground(Constants.PIXEL_GRID_COLOR);
@@ -473,7 +488,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	public void paintControlPixelCursor(GC gc, int x, int y) {
+	private void paintControlPixelCursor(GC gc, int x, int y) {
 		gc.setBackground(Constants.RED);
 		gc.setForeground(Constants.RED);
 		gc.fillRectangle((cursorX * conf.currentPixelWidth) + 1 + (conf.currentPixelWidth / 2) - conf.pixelSize / 8,
@@ -481,17 +496,17 @@ public abstract class ImagingWidget extends BaseImagingWidget
 				conf.pixelSize / 4);
 	}
 
-	public void paintControlSeparator(GC gc) {
+	private void paintControlSeparator(GC gc) {
 		gc.setForeground(Constants.BYTE_SEPARATOR_COLOR);
 		int bc = conf.pixelConfig.bitCount;
-		int step = (4 * bc);
+		int step = (8 * bc);
 		for (int x = step; x < (conf.width * conf.tileColumns) / bc; x += step) {
 			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
 					conf.height * conf.tileRows * conf.pixelSize);
 		}
 	}
 
-	public void paintControlTileSubGrid(GC gc) {
+	private void paintControlTileSubGrid(GC gc) {
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int y = conf.height; y < conf.height * conf.tileRows; y += conf.height) {
 			gc.drawLine(0, y * conf.pixelSize, conf.width * conf.tileColumns * conf.pixelSize, y * conf.pixelSize);
@@ -503,7 +518,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	public void paintControlTileGrid(GC gc) {
+	private void paintControlTileGrid(GC gc) {
 		gc.setLineWidth(1);
 		gc.setLineStyle(SWT.LINE_SOLID);
 		gc.setForeground(Constants.TILE_GRID_COLOR);
@@ -701,7 +716,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	public void setReferenceBitplane(byte bitplane[]) {
-		this.referenceBitplane = referenceBitplane;
+		this.referenceBitplane = bitplane;
 		hasReferenceBitplane = (bitplane != null && bitplane.length > 0);
 	}
 

@@ -5,7 +5,18 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class InvertService extends AbstractService {
+public class ImageWriterService extends AbstractService {
+
+	public final static int WRITE_PNG = 1;
+	public final static int WRITE_GIF = 2;
+	public final static int WRITE_ANIMATED_GIF = 4;
+	public final static int ENABLE_TELEVISION_MODE = 128;
+
+	private boolean isTelevisionModeEnabled = false;
+
+	public ImageWriterService() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public boolean needsConfirmation() {
@@ -32,13 +43,16 @@ public class InvertService extends AbstractService {
 	}
 
 	@Override
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane, byte[] workArray, int width, int height) {
-		int mask = conf.pixelConfig.mask;
-		for (int i = 0; i < workArray.length; i++) {
-			workArray[i] = (byte) ((workArray[i] ^ 0xff) & mask);
+	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
+		// TODO Auto-generated method stub
+		super.runService(action, tileLocationList, bitplane);
+	}
+
+	@Override
+	public void setValue(int action, Object data) {
+		if (action == ENABLE_TELEVISION_MODE) {
+			isTelevisionModeEnabled = (boolean) data;
 		}
-		return workArray;
 	}
 
 }

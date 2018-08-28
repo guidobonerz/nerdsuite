@@ -22,6 +22,24 @@ public class RotationService extends AbstractService {
 	}
 
 	@Override
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean checkIfSquareBase() {
+		int w = conf.currentWidth * conf.tileColumns;
+		int h = conf.height * conf.tileRows;
+		return w == h;
+	}
+
+	@Override
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte[] workArray, int width, int height) {
 		byte targetWorkArray[] = createWorkArray();
@@ -41,24 +59,6 @@ public class RotationService extends AbstractService {
 			}
 		}
 		return targetWorkArray;
-	}
-
-	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	private boolean checkIfSquareBase() {
-		int w = conf.currentWidth * conf.tileColumns;
-		int h = conf.height * conf.tileRows;
-		return w == h;
 	}
 
 }

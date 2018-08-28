@@ -22,6 +22,24 @@ public class ClipboardService extends AbstractService implements IImagingService
 	}
 
 	@Override
+	public void sendResponse(String message, Object data) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
 		int offset = conf.computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y, navigationOffset);
 		if (action == CUT || action == COPY) {
@@ -39,24 +57,6 @@ public class ClipboardService extends AbstractService implements IImagingService
 			currentAction = OFF;
 			callback.afterRunService();
 		}
-	}
-
-	@Override
-	public void sendResponse(String message, Object data) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
