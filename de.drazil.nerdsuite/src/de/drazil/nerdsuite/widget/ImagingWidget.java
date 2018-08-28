@@ -398,7 +398,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 			paintControlTiles(gc);
 		}
 		if ((paintControlMode & DRAW_TILE) == DRAW_TILE) {
-			paintControlTile(gc, selectedTileIndexX, selectedTileIndexY);
+			paintControlTile(gc, selectedTileIndexX, selectedTileIndexY, false, 0, 0);
 		}
 
 		if (conf.isPixelGridEnabled()) {
@@ -534,7 +534,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private void paintControlTiles(GC gc) {
 		for (int ty = 0; ty < conf.rows; ty++) {
 			for (int tx = 0; tx < conf.columns; tx++) {
-				paintControlTile(gc, tx, ty);
+				paintControlTile(gc, tx, ty, false, 0, 0);
 			}
 		}
 	}
@@ -544,7 +544,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		int x = index - (y * conf.tileColumns);
 	}
 
-	private void paintControlTile(GC gc, int tx, int ty) {
+	private void paintControlTile(GC gc, int tileX, int tileY, boolean externalPosition, int ex, int ey) {
 		int x = 0;
 		int y = 0;
 		int b1 = conf.bytesPerRow * conf.height;
@@ -553,7 +553,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		int byteOffset = 0;
 		int pix = conf.isPixelGridEnabled() ? 1 : 0;
 		if (supportsMultiTileView()) {
-			byteOffset = conf.computeTileOffset(tx, ty, navigationOffset);
+			byteOffset = conf.computeTileOffset(tileX, tileY, navigationOffset);
 		} else {
 			byteOffset = selectedTileOffset;
 		}
@@ -561,11 +561,12 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		for (int i = byteOffset, k = 0; i < (byteOffset + conf.tileSize); i++, k++) {
 			int xi = (k % conf.bytesPerRow) * (8 / bc);
 			int xo = (k / b1) % conf.tileColumns;
-			x = xi + (xo * conf.currentWidth) + (tx * conf.currentWidth * conf.tileColumns);
+			x = externalPosition ? ex
+					: (xi + (xo * conf.currentWidth) + (tileX * conf.currentWidth * conf.tileColumns));
 
 			int yi = (k / conf.bytesPerRow) % conf.height;
 			int yo = (k / b2) % conf.tileRows;
-			y = yi + (yo * conf.height) + (ty * conf.height * conf.tileRows);
+			y = externalPosition ? ey : (yi + (yo * conf.height) + (tileY * conf.height * conf.tileRows));
 
 			if (i < bitplane.length) {
 				int b = (bitplane[i] & 0xff);
@@ -586,7 +587,8 @@ public abstract class ImagingWidget extends BaseImagingWidget
 						int colorIndex = (bi >> j) & 3;
 						Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
 						if (colorProvider != null) {
-							color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tx, ty, conf.columns);
+							color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tileX, tileY,
+									conf.columns);
 						}
 						gc.setBackground(color);
 						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
