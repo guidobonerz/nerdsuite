@@ -873,7 +873,7 @@ public class IconEditor implements IConfigurationListener {
 		if (blankData == null) {
 			blankData = new byte[0x1f40];
 			for (int i = 0; i < blankData.length; i++)
-				blankData[i] = (byte) (Math.random() * 80);
+				blankData[i] = 0;//(byte) (Math.random() * 80);
 		}
 		return blankData;
 	}
