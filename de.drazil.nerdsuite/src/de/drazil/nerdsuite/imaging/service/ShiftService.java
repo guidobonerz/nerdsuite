@@ -23,6 +23,18 @@ public class ShiftService extends AbstractService {
 	}
 
 	@Override
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte workArray[], int width, int height) {
 		if (action == UP) {
@@ -59,18 +71,6 @@ public class ShiftService extends AbstractService {
 			}
 		}
 		return workArray;
-	}
-
-	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

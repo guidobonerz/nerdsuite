@@ -18,6 +18,24 @@ public class MirrorService extends AbstractService {
 	}
 
 	@Override
+	public void sendResponse(String message, Object data) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte[] workArray, int width, int height) {
 
@@ -47,24 +65,6 @@ public class MirrorService extends AbstractService {
 			}
 		}
 		return workArray;
-	}
-
-	@Override
-	public void sendResponse(String message, Object data) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

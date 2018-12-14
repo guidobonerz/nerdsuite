@@ -14,20 +14,6 @@ public class SwapService extends AbstractService {
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, byte bitplane[]) {
-		int swapSourceOffset = conf.computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y,
-				navigationOffset);
-		int swapTargetOffset = conf.computeTileOffset(tileLocationList.get(1).x, tileLocationList.get(1).y,
-				navigationOffset);
-
-		for (int n = 0; n < conf.getTileSize(); n++) {
-			byte buffer = bitplane[swapSourceOffset + n];
-			bitplane[swapSourceOffset + n] = bitplane[swapTargetOffset + n];
-			bitplane[swapTargetOffset + n] = buffer;
-		}
-	}
-
-	@Override
 	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
 		return tileLocationList.size() == 2;
 	}
@@ -48,6 +34,20 @@ public class SwapService extends AbstractService {
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void runService(int action, List<TileLocation> tileLocationList, byte bitplane[]) {
+		int swapSourceOffset = conf.computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y,
+				navigationOffset);
+		int swapTargetOffset = conf.computeTileOffset(tileLocationList.get(1).x, tileLocationList.get(1).y,
+				navigationOffset);
+
+		for (int n = 0; n < conf.getTileSize(); n++) {
+			byte buffer = bitplane[swapSourceOffset + n];
+			bitplane[swapSourceOffset + n] = bitplane[swapTargetOffset + n];
+			bitplane[swapTargetOffset + n] = buffer;
+		}
 	}
 
 }

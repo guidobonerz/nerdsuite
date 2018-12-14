@@ -32,26 +32,6 @@ public class AnimationService extends AbstractService {
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
-		this.tileLocationList = tileLocationList;
-		callback.beforeRunService();
-		if (action == START) {
-			pos = 0;
-			((Composite) source).getDisplay().timerExec(0, animator);
-		} else if (action == STOP) {
-			((Composite) source).getDisplay().timerExec(-1, animator);
-		}
-		callback.afterRunService();
-	}
-
-	@Override
-	public void setValue(int action, Object data) {
-		if (action == SET_DELAY) {
-			animationDelay = (int) data;
-		}
-	}
-
-	@Override
 	public boolean needsConfirmation() {
 		// TODO Auto-generated method stub
 		return false;
@@ -74,6 +54,7 @@ public class AnimationService extends AbstractService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	/*
 	 * public void startAnimation() { if (tileSelectionList.size() < 1) {
 	 * showNotification(null, null,
@@ -103,4 +84,23 @@ public class AnimationService extends AbstractService {
 	 * (animationTimerDelay) + " ms)" : "Start Animation", animationIsRunning);
 	 * getDisplay().timerExec(delay, animator); } }
 	 */
+	@Override
+	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
+		this.tileLocationList = tileLocationList;
+		callback.beforeRunService();
+		if (action == START) {
+			pos = 0;
+			((Composite) source).getDisplay().timerExec(0, animator);
+		} else if (action == STOP) {
+			((Composite) source).getDisplay().timerExec(-1, animator);
+		}
+		callback.afterRunService();
+	}
+
+	@Override
+	public void setValue(int action, Object data) {
+		if (action == SET_DELAY) {
+			animationDelay = (int) data;
+		}
+	}
 }

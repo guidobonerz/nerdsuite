@@ -320,7 +320,7 @@ public class IconEditor implements IConfigurationListener {
 			painter.getConf().setGridStyle(GridStyle.Dot);
 			painter.getConf().setTileGridEnabled(true);
 			painter.getConf().setTileCursorEnabled(false);
-			painter.setSelectedTileOffset(0, 0);
+			painter.setSelectedTileOffset(0, 0, false);
 			painter.setBitplane(getBlankData());
 			painter.setReferenceBitplane(getBinaryData());
 			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
@@ -346,7 +346,7 @@ public class IconEditor implements IConfigurationListener {
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
 			previewer.getConf().setSeparatorEnabled(false);
-			previewer.setSelectedTileOffset(0, 0);
+			previewer.setSelectedTileOffset(0, 0, false);
 			previewer.setBitplane(getBlankData());
 			previewer.setReferenceBitplane(getBinaryData());
 			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
@@ -408,8 +408,8 @@ public class IconEditor implements IConfigurationListener {
 			selector.getConf().setTileSubGridEnabled(false);
 			selector.getConf().setTileCursorEnabled(true);
 			selector.getConf().setSeparatorEnabled(false);
-			selector.setSelectedTileOffset(0, 0);
-			selector.setBitplane(getBinaryData());
+			selector.setSelectedTileOffset(0, 0, false);
+			selector.setBitplane(getBlankData());
 			selector.setReferenceBitplane(getBinaryData());
 			selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
@@ -441,7 +441,7 @@ public class IconEditor implements IConfigurationListener {
 			referenceSelector.getConf().setTileSubGridEnabled(false);
 			referenceSelector.getConf().setTileCursorEnabled(true);
 			referenceSelector.getConf().setSeparatorEnabled(false);
-			referenceSelector.setSelectedTileOffset(0, 0);
+			referenceSelector.setSelectedTileOffset(0, 0, true);
 			referenceSelector.setBitplane(getBinaryData());
 			referenceSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			referenceSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
@@ -454,6 +454,7 @@ public class IconEditor implements IConfigurationListener {
 			gridData.horizontalSpan = 2;
 			referenceSelector.setLayoutData(gridData);
 			referenceSelector.recalc();
+			referenceSelector.addDrawListener(getPainter());
 
 		}
 		return referenceSelector;
@@ -872,7 +873,7 @@ public class IconEditor implements IConfigurationListener {
 		if (blankData == null) {
 			blankData = new byte[0x1f40];
 			for (int i = 0; i < blankData.length; i++)
-				blankData[i] = 0;
+				blankData[i] = 0;//(byte) (Math.random() * 80);
 		}
 		return blankData;
 	}
