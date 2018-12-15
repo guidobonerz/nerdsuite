@@ -39,6 +39,7 @@ import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.IConfigurationListener;
 import de.drazil.nerdsuite.widget.ImagePainter;
+import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
 import de.drazil.nerdsuite.widget.ImageSelector;
 import de.drazil.nerdsuite.widget.ImageViewer;
@@ -69,6 +70,7 @@ public class IconEditor implements IConfigurationListener {
 	boolean multiColorMode = false;
 	private ConfigurationDialog configurationDialog = null;
 	private boolean isAnimationRunning = false;
+	private ImagePainterFactory imagePainterFactory = null;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -80,7 +82,7 @@ public class IconEditor implements IConfigurationListener {
 		GridLayout layout = new GridLayout(2, false);
 		controls.setLayout(layout);
 		controls.setLayoutData("cell 1 0");
-
+		imagePainterFactory = new ImagePainterFactory();
 		getPixelConfigSelector();
 		getFormatSelector();
 		getPaintModeSelector();
@@ -322,7 +324,7 @@ public class IconEditor implements IConfigurationListener {
 			painter.getConf().setTileCursorEnabled(false);
 			painter.setSelectedTileOffset(0, 0, false);
 			painter.setBitplane(getBlankData());
-			painter.setReferenceBitplane(getBinaryData());
+			painter.setImagePainterFactory(imagePainterFactory);
 			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			painter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -348,7 +350,7 @@ public class IconEditor implements IConfigurationListener {
 			previewer.getConf().setSeparatorEnabled(false);
 			previewer.setSelectedTileOffset(0, 0, false);
 			previewer.setBitplane(getBlankData());
-			previewer.setReferenceBitplane(getBinaryData());
+			previewer.setImagePainterFactory(imagePainterFactory);
 			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			previewer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			previewer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -410,7 +412,7 @@ public class IconEditor implements IConfigurationListener {
 			selector.getConf().setSeparatorEnabled(false);
 			selector.setSelectedTileOffset(0, 0, false);
 			selector.setBitplane(getBlankData());
-			selector.setReferenceBitplane(getBinaryData());
+			selector.setImagePainterFactory(imagePainterFactory);
 			selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
 			selector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
@@ -873,7 +875,7 @@ public class IconEditor implements IConfigurationListener {
 		if (blankData == null) {
 			blankData = new byte[0x1f40];
 			for (int i = 0; i < blankData.length; i++)
-				blankData[i] = 0;//(byte) (Math.random() * 80);
+				blankData[i] = 32;// (byte) (Math.random() * 80);
 		}
 		return blankData;
 	}
