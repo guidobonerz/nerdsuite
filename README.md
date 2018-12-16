@@ -6,13 +6,13 @@
 ## CharEditor View
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/char_view.png)
 ## CharEditor 2X View
-![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15 20_54_24-Nerdsuite.png)
+![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15_20_54_24-Nerdsuite.png)
 ## CharEditor 2Y View
-![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15 20_58_32-Nerdsuite.png)
+![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15_20_58_32-Nerdsuite.png)
 ## CharEditor 2XY View
-![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15 21_00_36-Nerdsuite.png)
+![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15_21_00_36-Nerdsuite.png)
 ## SpriteEditor View
-![screenshot5](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-16 02_33_40-Nerdsuite.png)
+![screenshot5](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-16_02_33_40-Nerdsuite.png)
 ## SpriteEditor 2X View
 ![screenshot6](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/sprite_2x_view.png)
 ## SpriteEditor 2Y View
