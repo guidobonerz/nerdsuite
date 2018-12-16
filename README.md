@@ -18,7 +18,7 @@
 ## SpriteEditor 2Y View
 ![screenshot7](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/sprite_2y_view.png)
 ## SpriteEditor 2XY View
-![screenshot8](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-16 02_37_51-Nerdsuite.png)
+![screenshot8](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-16_02_37_51-Nerdsuite.png)
 ## CustomEditor  View
 ![screenshot9](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/custom_view.png)
 ## Paint Styles
