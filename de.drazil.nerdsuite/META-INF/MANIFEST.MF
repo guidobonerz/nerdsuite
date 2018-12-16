@@ -31,4 +31,7 @@ Bundle-ClassPath: ext_libs/commons-exec-1.2.jar,
  ext_libs/miglayout-4.0-swt.jar,
  .,
  swing2swt.jar,
- images/
+ images/,
+ fonts/,
+ css/,
+ icons/

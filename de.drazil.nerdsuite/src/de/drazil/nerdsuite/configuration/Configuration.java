@@ -33,7 +33,7 @@ public class Configuration {
 	public void initialize() {
 		try {
 
-			workspace = getWorkspace();
+			 workspace = getWorkspace();
 
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 			InstructionSet.init(bundle);
@@ -47,7 +47,9 @@ public class Configuration {
 			boolean b;
 			try {
 				file = new File(FileLocator.resolve(fileURL1).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
+				//b = Display.getCurrent().loadFont(file.toString());
+				b = Display.getCurrent().loadFont(new URL("platform:/plugin/de.drazil.nerdsuite/fonts/C64_Pro_Mono-STYLE.ttf").toString());
+				
 
 				file = new File(FileLocator.resolve(fileURL2).toURI());
 				b = Display.getCurrent().loadFont(file.toString());

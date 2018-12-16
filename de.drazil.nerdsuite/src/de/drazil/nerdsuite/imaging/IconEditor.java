@@ -1,15 +1,11 @@
 package de.drazil.nerdsuite.imaging;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -840,33 +836,17 @@ public class IconEditor implements IConfigurationListener {
 		if (binaryData == null) {
 
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-			URL url = bundle.getEntry("/fonts/c64_lower.64c");
-
-			File file = null;
+			URL url = bundle.getEntry("fonts/c64_lower.64c");
 
 			try {
-				file = new File(FileLocator.resolve(url).toURI());
-				URL resolvedUrl = FileLocator.toFileURL(url);
-				URI resolvedUri = new URI(resolvedUrl.getProtocol(), resolvedUrl.getPath(), null);
-				file = new File(resolvedUri);
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-
-			try {
-				binaryData = BinaryFileReader.readFile(file, 2);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			/*
-			 * binaryData = new byte[0xffff]; for (int i = 0; i <
-			 * binaryData.length; i++) binaryData[i] = 0;
-			 */
 		}
 		return binaryData;
 	}
