@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class ImageWriterService extends AbstractService {
+public class ImageWriterService extends AbstractImagingService {
 
 	public final static int WRITE_PNG = 1;
 	public final static int WRITE_GIF = 2;

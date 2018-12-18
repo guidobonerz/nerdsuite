@@ -7,6 +7,8 @@ import java.net.URL;
 import javax.annotation.PostConstruct;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,9 +31,12 @@ import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.ClipboardService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
+import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
+import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
+import de.drazil.nerdsuite.imaging.service.SwapService;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.IConfigurationListener;
 import de.drazil.nerdsuite.widget.ImagePainter;
@@ -67,10 +72,27 @@ public class IconEditor implements IConfigurationListener {
 	private ConfigurationDialog configurationDialog = null;
 	private boolean isAnimationRunning = false;
 	private ImagePainterFactory imagePainterFactory = null;
+	/*
+	 * @Execute public void execute(MWindow window, EModelService modelService)
+	 * {
+	 * 
+	 * MUIElement findElement = modelService.find("menu:com.test.filesubmenu",
+	 * window.getMainMenu());
+	 * 
+	 * MUIElement doSomethingElement =
+	 * modelService.find("com.test.handledmenuitem.dosomething",
+	 * window.getMainMenu());
+	 * 
+	 * logger.debug("Found submenu " + findElement); logger.debug(
+	 * "Found do something element " + doSomethingElement); }
+	 */
+	// @Inject
+	// EMenuService menuService;
 
 	@PostConstruct
-	public void postConstruct(Composite parent) {
+	public void postConstruct(Composite parent, MPart part, EMenuService menuService) {
 		this.parent = parent;
+
 		parent.setLayout(new MigLayout());
 
 		controls = new Composite(parent, SWT.BORDER);
@@ -90,6 +112,8 @@ public class IconEditor implements IConfigurationListener {
 		getPainter().setLayoutData("cell 0 0");
 		getPreviewer().setLayoutData("cell 1 0");
 		getSelector().setLayoutData("cell 0 1 2 1");
+
+		menuService.registerContextMenu(parent, "de.drazil.nerdsuite.popupmenu.iconeditor");
 
 		ImageDescriptor upId = null;
 		ImageDescriptor downId = null;
@@ -138,142 +162,200 @@ public class IconEditor implements IConfigurationListener {
 
 		Menu popup = new Menu(getSelector());
 		MenuItem cut = new MenuItem(popup, SWT.NONE);
-		cut.setText("Cut");
+		cut.setText("Cut\tCtrl+X");
 		cut.setImage(cutId.createImage());
 		cut.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Clipboard, ClipboardService.CUT);
+			ClipboardService service = getSelector().getService(ClipboardService.class);
+			service.setAction(ClipboardService.CUT);
+			// getSelector().executeService(ImagingServiceDescription.Clipboard,
+			// ClipboardService.CUT);
 		});
 		MenuItem copy = new MenuItem(popup, SWT.NONE);
-		copy.setText("Copy");
+		copy.setText("Copy\tCtrl+C");
 		copy.setImage(copyId.createImage());
 		copy.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Clipboard, ClipboardService.COPY);
+			ClipboardService service = getSelector().getService(ClipboardService.class);
+			service.setAction(ClipboardService.COPY);
+			// getSelector().executeService(ImagingServiceDescription.Clipboard,
+			// ClipboardService.COPY);
 		});
 		MenuItem paste = new MenuItem(popup, SWT.NONE);
-		paste.setText("Paste");
+		paste.setText("Paste\tCtrl+V");
 		paste.setImage(pasteId.createImage());
 		paste.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Clipboard, ClipboardService.PASTE);
+			ClipboardService service = getSelector().getService(ClipboardService.class);
+			service.setAction(ClipboardService.PASTE);
+			// getSelector().executeService(ImagingServiceDescription.Clipboard,
+			// ClipboardService.PASTE);
 		});
 		MenuItem selectAll = new MenuItem(popup, SWT.NONE);
 		selectAll.setText("Select All");
 		selectAll.addListener(SWT.Selection, e -> {
 			getSelector().selectAll();
 		});
+
 		MenuItem clear = new MenuItem(popup, SWT.NONE);
 		clear.setText("Purge");
 		clear.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Purge);
+			PurgeService service = getSelector().getService(PurgeService.class);
+			// getSelector().executeService(ImagingServiceDescription.Purge);
 		});
 		MenuItem separator1 = new MenuItem(popup, SWT.SEPARATOR);
+		MenuItem undo = new MenuItem(popup, SWT.NONE);
+		undo.setText("Undo");
+		undo.setEnabled(false);
 
+		MenuItem redo = new MenuItem(popup, SWT.NONE);
+		redo.setText("Redo");
+		redo.setEnabled(false);
+
+		MenuItem separator1b = new MenuItem(popup, SWT.SEPARATOR);
 		MenuItem flipHorizontal = new MenuItem(popup, SWT.NONE);
-		flipHorizontal.setText("Flip Horizontal");
+		flipHorizontal.setText("Flip Horizontal\tShift+Up");
 		flipHorizontal.setImage(flipHorizontalId.createImage());
 		flipHorizontal.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Flip, FlipService.HORIZONTAL);
+			FlipService service = getSelector().getService(FlipService.class);
+			service.setAction(FlipService.HORIZONTAL);
+			// getSelector().executeService(ImagingServiceDescription.Flip,
+			// FlipService.HORIZONTAL);
 		});
 
 		MenuItem flipVertical = new MenuItem(popup, SWT.NONE);
-		flipVertical.setText("Flip Vertical");
+		flipVertical.setText("Flip Vertical\tShift+Right");
 		flipVertical.setImage(flipVerticalId.createImage());
 		flipVertical.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Flip, FlipService.VERTICAL);
+			FlipService service = getSelector().getService(FlipService.class);
+			service.setAction(FlipService.VERTICAL);
+			// getSelector().executeService(ImagingServiceDescription.Flip,
+			// FlipService.VERTICAL);
 		});
 		MenuItem separator2 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem mirrorUpperHalf = new MenuItem(popup, SWT.NONE);
 		mirrorUpperHalf.setText("Mirror Upper Half");
 		mirrorUpperHalf.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.UPPER_HALF);
+			MirrorService service = getSelector().getService(MirrorService.class);
+			service.setAction(MirrorService.UPPER_HALF);
+			// getSelector().executeService(ImagingServiceDescription.Mirror,
+			// MirrorService.UPPER_HALF);
 		});
 
 		MenuItem mirrorLowerHalf = new MenuItem(popup, SWT.NONE);
 		mirrorLowerHalf.setText("Mirror Lower Half");
 		mirrorLowerHalf.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.LOWER_HALF);
+			MirrorService service = getSelector().getService(MirrorService.class);
+			service.setAction(MirrorService.LOWER_HALF);
+			// getSelector().executeService(ImagingServiceDescription.Mirror,
+			// MirrorService.LOWER_HALF);
 		});
 
 		MenuItem mirrorLeftHalf = new MenuItem(popup, SWT.NONE);
 		mirrorLeftHalf.setText("Mirror Left Half");
 		mirrorLeftHalf.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.LEFT_HALF);
+			MirrorService service = getSelector().getService(MirrorService.class);
+			service.setAction(MirrorService.LEFT_HALF);
+			// getSelector().executeService(ImagingServiceDescription.Mirror,
+			// MirrorService.LEFT_HALF);
 		});
 		MenuItem mirrorRightHalf = new MenuItem(popup, SWT.NONE);
 		mirrorRightHalf.setText("Mirror Right Half");
 		mirrorRightHalf.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Mirror, MirrorService.RIGHT_HALF);
+			MirrorService service = getSelector().getService(MirrorService.class);
+			service.setAction(MirrorService.RIGHT_HALF);
+			// getSelector().executeService(ImagingServiceDescription.Mirror,
+			// MirrorService.RIGHT_HALF);
 		});
 		MenuItem separator3 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem rotateCW = new MenuItem(popup, SWT.NONE);
-		rotateCW.setText("Rotate CW");
+		rotateCW.setText("Rotate CW\tShift+Right");
 		rotateCW.setImage(rotateCWId.createImage());
 		rotateCW.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Rotate, RotationService.CW);
+			RotationService service = getSelector().getService(RotationService.class);
+			service.setAction(RotationService.CW);
+			// getSelector().executeService(ImagingServiceDescription.Rotate,
+			// RotationService.CW);
 		});
 
 		MenuItem rotateCCW = new MenuItem(popup, SWT.NONE);
-		rotateCCW.setText("Rotate CCW");
+		rotateCCW.setText("Rotate CCW\tShift+Left");
 		rotateCCW.setImage(rotateCCWId.createImage());
 		rotateCCW.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Rotate, RotationService.CCW);
+			RotationService service = getSelector().getService(RotationService.class);
+			service.setAction(RotationService.CCW);
+			// getSelector().executeService(ImagingServiceDescription.Rotate,
+			// RotationService.CCW);
 		});
 
 		MenuItem separator4 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem shiftUp = new MenuItem(popup, SWT.NONE);
-		shiftUp.setText("Shift Up");
+		shiftUp.setAccelerator(SWT.MOD1 + 'U');
+		shiftUp.setText("Shift Up\tCtrl+Up");
 		shiftUp.setImage(upId.createImage());
 		shiftUp.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.UP);
+			ShiftService service = getSelector().getService(ShiftService.class);
+			service.setAction(ShiftService.UP);
+			// getSelector().executeService(ImagingServiceDescription.Shift,
+			// ShiftService.UP);
 		});
 
 		MenuItem shiftDown = new MenuItem(popup, SWT.NONE);
-		shiftDown.setText("Shift Down");
+		shiftDown.setText("Shift Down\tCtrl+Down");
 		shiftDown.setImage(downId.createImage());
 		shiftDown.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.DOWN);
+			ShiftService service = getSelector().getService(ShiftService.class);
+			service.setAction(ShiftService.DOWN);
+			// getSelector().executeService(ImagingServiceDescription.Shift,
+			// ShiftService.DOWN);
 		});
 
 		MenuItem shiftLeft = new MenuItem(popup, SWT.NONE);
-		shiftLeft.setText("Shift Left");
+		shiftLeft.setText("Shift Left\tCtrl+Left");
 		shiftLeft.setImage(leftId.createImage());
 		shiftLeft.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.LEFT);
+			ShiftService service = getSelector().getService(ShiftService.class);
+			service.setAction(ShiftService.LEFT);
+			// getSelector().executeService(ImagingServiceDescription.Shift,
+			// ShiftService.LEFT);
 		});
 
 		MenuItem shiftRight = new MenuItem(popup, SWT.NONE);
-		shiftRight.setText("Shift Right");
+		shiftRight.setText("Shift Right\tCtrl+Right");
 		shiftRight.setImage(rightId.createImage());
 		shiftRight.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Shift, ShiftService.RIGHT);
+			ShiftService service = getSelector().getService(ShiftService.class);
+			service.setAction(ShiftService.RIGHT);
+			// getSelector().executeService(ImagingServiceDescription.Shift,
+			// ShiftService.RIGHT);
 		});
 
 		MenuItem separator5 = new MenuItem(popup, SWT.SEPARATOR);
 
 		MenuItem swapTiles = new MenuItem(popup, SWT.NONE);
-		swapTiles.setText("Swap");
+		swapTiles.setText("Swap\tShift+Tab");
 		swapTiles.setImage(swapId.createImage());
 		swapTiles.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Swap);
+			SwapService service = getSelector().getService(SwapService.class);
+			// getSelector().executeService(ImagingServiceDescription.Swap);
 		});
 
 		MenuItem invertTiles = new MenuItem(popup, SWT.NONE);
-		invertTiles.setText("Invert");
+		invertTiles.setText("&Invert\tShift+I");
+		invertTiles.setAccelerator(SWT.SHIFT + 'I');
 		invertTiles.setImage(invertId.createImage());
 		invertTiles.addListener(SWT.Selection, e -> {
-			getSelector().executeService(ImagingServiceDescription.Invert);
+			InvertService service = getSelector().getService(InvertService.class);
+			// getSelector().executeService(ImagingServiceDescription.Invert);
 		});
 
+		getSelector().setMenu(popup);
 		setPixelConfig("BC8");
 		setPaintFormat("Screen");
 		setPaintMode("Pixel");
 		getPixelConfigSelector().select(2);
 		getFormatSelector().select(0);
 		getPaintModeSelector().select(0);
-		getSelector().setMenu(popup);
-
 		configurationDialog = new ConfigurationDialog(parent.getShell());
 		configurationDialog.addConfigurationListener(this);
 

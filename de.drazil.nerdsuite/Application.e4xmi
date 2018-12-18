@@ -44,7 +44,12 @@
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.iconeditor" label="IconEditor">
-        <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.iconeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.IconEditor" label="IconEditor"/>
+        <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.iconeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.IconEditor" label="IconEditor">
+          <handlers xmi:id="_N4cM8AGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.handler.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SwapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
+          <menus xsi:type="menu:PopupMenu" xmi:id="_t22uwADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.popupmenu.iconeditor" label="iconeditor">
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_wYIYsADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.handledmenuitem.test" label="Swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
+          </menus>
+        </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_QbE0MJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.perspective.bitmapeditor" label="BitmapEditor">
         <children xsi:type="basic:Part" xmi:id="_niiCgJdGEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.part.bitmapeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.BitmapEditor" label="BitmapEditor"/>
@@ -127,6 +132,7 @@
   <commands xmi:id="_XZnhsL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.CodingPerspective" commandName="Coding Perspective"/>
   <commands xmi:id="_Uw3ngJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.command.IconPerspective" commandName="Icon Perspective"/>
   <commands xmi:id="_9k6mgJdEEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.command.BitmapPerspective" commandName="Bitmap Perspective"/>
+  <commands xmi:id="_D6FtcAGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.command.SwapTile" commandName="SwapTile"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

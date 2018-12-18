@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class ShiftService extends AbstractService {
+public class ShiftService extends AbstractImagingService {
 	public final static int UP = 1;
 	public final static int DOWN = 2;
 	public final static int LEFT = 4;

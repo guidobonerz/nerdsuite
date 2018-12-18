@@ -1,8 +1,8 @@
 package de.drazil.nerdsuite.imaging.service;
 
-public abstract class AbstractService implements IService{
+public class LayerService extends AbstractImagingService {
 
-	public AbstractService() {
+	public LayerService() {
 		// TODO Auto-generated constructor stub
 	}
 

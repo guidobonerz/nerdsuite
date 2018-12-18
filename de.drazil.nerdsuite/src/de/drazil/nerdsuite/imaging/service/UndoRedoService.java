@@ -1,11 +1,33 @@
 package de.drazil.nerdsuite.imaging.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class InvertService extends AbstractImagingService {
+public class UndoRedoService extends AbstractImagingService {
+
+	public final static int UNDO = 1;
+	public final static int REDO = 2;
+
+	List<byte[]> undoRedoList = null;
+
+	public UndoRedoService() {
+		undoRedoList = new ArrayList<>();
+	}
+
+	@Override
+	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
+		switch (action) {
+		case UNDO: {
+			break;
+		}
+		case REDO: {
+			break;
+		}
+		}
+	}
 
 	@Override
 	public boolean needsConfirmation() {
@@ -29,16 +51,6 @@ public class InvertService extends AbstractImagingService {
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane, byte[] workArray, int width, int height) {
-		int mask = conf.pixelConfig.mask;
-		for (int i = 0; i < workArray.length; i++) {
-			workArray[i] = (byte) ((workArray[i] ^ 0xff) & mask);
-		}
-		return workArray;
 	}
 
 }

@@ -16,4 +16,9 @@ public class ImagePainter extends ImagingWidget {
 	protected boolean supportsPainting() {
 		return true;
 	}
+
+	@Override
+	protected boolean supportsDrawCursor() {
+		return true;
+	}
 }

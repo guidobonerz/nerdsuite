@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class RotationService extends AbstractService {
+public class RotationService extends AbstractImagingService {
 	public final static int CW = 1;
 	public final static int CCW = 2;
 

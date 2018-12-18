@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class PurgeService extends AbstractService {
+public class PurgeService extends AbstractImagingService {
 
 	@Override
 	public boolean needsConfirmation() {

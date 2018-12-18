@@ -11,4 +11,9 @@ public class ImageViewer extends ImagingWidget {
 	public ImageViewer(Composite parent, int style) {
 		super(parent, style);
 	}
+
+	@Override
+	protected boolean supportsDrawCursor() {
+		return true;
+	}
 }

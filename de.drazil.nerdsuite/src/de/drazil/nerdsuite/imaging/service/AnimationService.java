@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class AnimationService extends AbstractService {
+public class AnimationService extends AbstractImagingService {
 	public final static int START = 1;
 	public final static int STOP = 2;
 	public final static int SET_DELAY = 4;

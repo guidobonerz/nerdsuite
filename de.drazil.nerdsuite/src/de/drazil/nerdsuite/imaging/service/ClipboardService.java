@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class ClipboardService extends AbstractService implements IImagingService {
+public class ClipboardService extends AbstractImagingService implements IImagingService {
 
 	public final static int OFF = 0;
 	public final static int CUT = 1;

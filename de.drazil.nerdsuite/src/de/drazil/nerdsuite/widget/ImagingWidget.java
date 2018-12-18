@@ -19,17 +19,20 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.imaging.service.AbstractService;
+import de.drazil.nerdsuite.imaging.service.AbstractImagingService;
 import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.ClipboardService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
+import de.drazil.nerdsuite.imaging.service.IService;
 import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
+import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.SwapService;
+import de.drazil.nerdsuite.imaging.service.UndoRedoService;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
@@ -42,10 +45,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private final static int DRAW_ALL_TILES = 1;
 	private final static int DRAW_TILE = 2;
 	private final static int DRAW_PIXEL = 4;
-
-	private int layerCount = 0;
-	private int activeLayer = 0;
-	private int maxLayerCount = 4;
 
 	private boolean keyPressed = false;
 	private int currentKeyCodePressed = 0;
@@ -87,17 +86,19 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private ScrollBar hBar = null;
 	private ScrollBar vBar = null;
 	private List<IDrawListener> drawListenerList = null;
-	private List<TileLocation> tileSelectionList = null;
+	private List<TileLocation> tileLocationList = null;
 	private List<TileLocation> selectionRangeBuffer = null;
 
 	private Map<String, IImagingService> serviceCacheMap = null;
+
 	private ImagePainterFactory imagePainterFactory = null;
 
 	public enum ImagingServiceDescription {
 		All("All", null), Shift("Shift", ShiftService.class), Mirror("Mirror", MirrorService.class), Flip("Flip",
 				FlipService.class), Rotate("Rotate", RotationService.class), Purge("Purge", PurgeService.class), Swap(
 						"Swap", SwapService.class), Invert("Invert", InvertService.class), Animation("Animation",
-								AnimationService.class), Clipboard("Clipboard", ClipboardService.class);
+								AnimationService.class), Clipboard("Clipboard",
+										ClipboardService.class), UndoRedo("UndoRedo", UndoRedoService.class);
 		private final String name;
 		private final Class<?> cls;
 
@@ -123,8 +124,9 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		super(parent, style, configuration);
 
 		serviceCacheMap = new HashMap<>();
+
 		selectionRangeBuffer = new ArrayList<>();
-		tileSelectionList = new ArrayList<>();
+		tileLocationList = new ArrayList<>();
 		drawListenerList = new ArrayList<IDrawListener>();
 
 		hBar = getHorizontalBar();
@@ -336,7 +338,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	private void resetSelectionList() {
-		tileSelectionList = new ArrayList<>();
+		tileLocationList = new ArrayList<>();
 		selectionRangeBuffer = new ArrayList<>();
 	}
 
@@ -371,11 +373,11 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		int yb = selectionRangeBuffer.get(b).y;
 		int x = xa;
 		int y = ya;
-		tileSelectionList = new ArrayList<>();
+		tileLocationList = new ArrayList<>();
 
 		for (;;) {
 			if (!isTileSelected(x, y)) {
-				tileSelectionList.add(new TileLocation(x, y));
+				tileLocationList.add(new TileLocation(x, y));
 			}
 			if (x == selectionRangeBuffer.get(b).x && y == selectionRangeBuffer.get(b).y) {
 				break;
@@ -430,16 +432,13 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		if (paintTileCursor) {
 			paintTileCursor(gc, mouseIn, updateCursorLocation);
 		}
-		/*
-		 * if (widgetMode == WidgetMode.Painter) {
-		 * paintControlPixelCursor(imageGC, 0, 0); }
-		 */
 
-		// }
 		if (paintTelevisionMode) {
 			paintTelevisionRaster(gc);
 		}
-
+		/*
+		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
+		 */
 		paintControlMode = DRAW_NOTHING;
 	}
 
@@ -449,7 +448,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		for (int y = 0; y < height; y += 2) {
 			gc.setAlpha(60);
 			gc.setForeground(Constants.BLACK);
-
 			gc.drawLine(0, y, length, y);
 		}
 	}
@@ -457,7 +455,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private void paintSelection(GC gc) {
 		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
-		for (TileLocation tilelocation : tileSelectionList) {
+		for (TileLocation tilelocation : tileLocationList) {
 			gc.fillRectangle(tilelocation.x * conf.width * conf.pixelSize * conf.tileColumns,
 					tilelocation.y * conf.height * conf.pixelSize * conf.tileRows,
 					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows);
@@ -467,7 +465,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private void paintTileCursor(GC gc, boolean mouseIn, boolean updateCursorLocation) {
 
 		if (mouseIn) {
-			gc.setAlpha(150);
+			gc.setAlpha(40);
 			gc.setBackground(Constants.RED);
 			gc.fillRectangle(tileX * conf.width * conf.pixelSize * conf.tileColumns,
 					tileY * conf.height * conf.pixelSize * conf.tileRows,
@@ -499,9 +497,9 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	private void paintPixelCursor(GC gc, int x, int y) {
-		gc.setBackground(Constants.RED);
-		gc.setForeground(Constants.RED);
+	private void paintPixelCursor(GC gc) {
+		gc.setBackground(Constants.WHITE);
+		gc.setForeground(Constants.WHITE);
 		gc.fillRectangle((cursorX * conf.currentPixelWidth) + 1 + (conf.currentPixelWidth / 2) - conf.pixelSize / 8,
 				(cursorY * conf.pixelSize) + 1 + (conf.pixelSize / 2) - conf.pixelSize / 8, conf.pixelSize / 4,
 				conf.pixelSize / 4);
@@ -610,7 +608,9 @@ public abstract class ImagingWidget extends BaseImagingWidget
 				case BC8: {
 
 					if (null != imagePainterFactory) {
-						gc.drawImage(imagePainterFactory.getImage(getDisplay(), b, false),
+						gc.drawImage(
+								imagePainterFactory.getImage(getDisplay(), b, false, conf, bitplane, colorProvider,
+										palette),
 								(x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix);
 					}
 
@@ -753,26 +753,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		monoColorDefaultIndex = index;
 	}
 
-	public void addLayer() {
-		layerCount += (layerCount < maxLayerCount ? 1 : 0);
-	}
-
-	public void removeLayer() {
-		layerCount -= (layerCount > 0 ? 1 : 0);
-	}
-
-	public void setActiveLayer(int activeLayer) {
-		this.activeLayer = activeLayer < layerCount ? activeLayer : layerCount;
-	}
-
-	public int getActiveLayer() {
-		return activeLayer;
-	}
-
-	public boolean isLayerViewEnabled() {
-		return layerCount > 0 && conf.layerViewEnabled;
-	}
-
 	@Override
 	public void setSelectedTileOffset(int offset, int index, boolean useIndexAsReference) {
 		if (useIndexAsReference) {
@@ -899,17 +879,31 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		service.setValue(action, data);
 	}
 
+	public <S extends IService> S getService(Class<? super S> serviceClass) {
+		S service = ServiceFactory.getService(serviceClass);
+		if (serviceClass.isAssignableFrom(AbstractImagingService.class)) {
+			((AbstractImagingService) service).setCallback(this);
+			((AbstractImagingService) service).setImagingWidgetConfiguration(conf);
+			((AbstractImagingService) service).setTileLocationList(tileLocationList);
+			
+
+		} else {
+
+		}
+		return service;
+	}
+
 	public void executeService(ImagingServiceDescription serviceDescription) {
 		executeService(serviceDescription, 0);
 	}
 
 	public void executeService(ImagingServiceDescription serviceDescription, int action) {
 		IImagingService service = getService(serviceDescription);
-		((AbstractService) service).setSource(this);
-		((AbstractService) service).setConf(conf);
-		((AbstractService) service).setCallback(this);
-		((AbstractService) service).setNavigationOffset(navigationOffset);
-		service.runService(action, tileSelectionList, bitplane);
+		((AbstractImagingService) service).setSource(this);
+		((AbstractImagingService) service).setConf(conf);
+		((AbstractImagingService) service).setCallback(this);
+		((AbstractImagingService) service).setNavigationOffset(navigationOffset);
+		service.runService(action, tileLocationList, bitplane);
 	}
 
 	@Override
@@ -937,7 +931,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	private boolean isTileSelected(int x, int y) {
-		for (TileLocation tl : tileSelectionList) {
+		for (TileLocation tl : tileLocationList) {
 			if (tl.x == x && tl.y == y) {
 				return true;
 			}
@@ -992,6 +986,10 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	protected boolean supportsReferenceIndexSelection() {
+		return false;
+	}
+
+	protected boolean supportsDrawCursor() {
 		return false;
 	}
 }

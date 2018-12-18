@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class FlipService extends AbstractService {
+public class FlipService extends AbstractImagingService {
 
 	public final static int HORIZONTAL = 1;
 	public final static int VERTICAL = 2;

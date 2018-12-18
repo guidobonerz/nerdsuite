@@ -26,4 +26,9 @@ public class ImageSelector extends ImagingWidget {
 	protected boolean supportsMultiSelection() {
 		return true;
 	}
+
+	@Override
+	protected boolean supportsDrawCursor() {
+		return true;
+	}
 }
