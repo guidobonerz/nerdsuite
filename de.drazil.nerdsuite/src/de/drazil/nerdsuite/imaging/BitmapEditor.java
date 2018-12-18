@@ -61,7 +61,6 @@ public class BitmapEditor {
 
 		ImagingWidgetConfiguration ic = new ImagingWidgetConfiguration();
 		ic.setWidgetName("Viewer:");
-		// ic.setWidgetMode(WidgetMode.BitmapViewer);
 		ic.setWidth(8);
 		ic.setHeight(8);
 		ic.setColumns(40);
@@ -70,8 +69,10 @@ public class BitmapEditor {
 		ic.setPixelGridEnabled(false);
 		ic.setTileSubGridEnabled(false);
 		ic.setTileGridEnabled(true);
+		ic.setPixelConfig(PixelConfig.BC2);
 		ImageViewer viewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
 
+		
 		viewer.setColorProvider(new KoalaColorProvider());
 		viewer.setBitplane(binaryData);
 		viewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());

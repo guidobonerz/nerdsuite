@@ -20,19 +20,9 @@ import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.imaging.service.AbstractImagingService;
-import de.drazil.nerdsuite.imaging.service.AnimationService;
-import de.drazil.nerdsuite.imaging.service.ClipboardService;
-import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
 import de.drazil.nerdsuite.imaging.service.IService;
-import de.drazil.nerdsuite.imaging.service.InvertService;
-import de.drazil.nerdsuite.imaging.service.MirrorService;
-import de.drazil.nerdsuite.imaging.service.PurgeService;
-import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.ShiftService;
-import de.drazil.nerdsuite.imaging.service.SwapService;
-import de.drazil.nerdsuite.imaging.service.UndoRedoService;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
@@ -568,18 +558,19 @@ public abstract class ImagingWidget extends BaseImagingWidget
 				}
 				case BC2: {
 					for (int j = 6; j >= 0; j -= 2) {
-						int bi = b;
-						int colorIndex = (bi >> j) & 3;
+						int colorIndex = (b >> j) & 3;
 						Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
 						if (colorProvider != null) {
 							color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tileX, tileY,
 									conf.columns);
 						}
+
 						gc.setBackground(color);
 						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
 								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
 						x++;
 					}
+
 					break;
 				}
 				case BC8: {
