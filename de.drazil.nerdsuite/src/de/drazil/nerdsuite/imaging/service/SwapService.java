@@ -37,17 +37,16 @@ public class SwapService extends AbstractImagingService {
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, byte bitplane[]) {
-		int swapSourceOffset = conf.computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y,
+	public void execute(int action) {
+		int swapSourceOffset = imagingWidgetConfiguration.computeTileOffset(tileSelectionList.get(0).x, tileSelectionList.get(0).y,
 				navigationOffset);
-		int swapTargetOffset = conf.computeTileOffset(tileLocationList.get(1).x, tileLocationList.get(1).y,
+		int swapTargetOffset = imagingWidgetConfiguration.computeTileOffset(tileSelectionList.get(1).x, tileSelectionList.get(1).y,
 				navigationOffset);
 
-		for (int n = 0; n < conf.getTileSize(); n++) {
+		for (int n = 0; n < imagingWidgetConfiguration.getTileSize(); n++) {
 			byte buffer = bitplane[swapSourceOffset + n];
 			bitplane[swapSourceOffset + n] = bitplane[swapTargetOffset + n];
 			bitplane[swapTargetOffset + n] = buffer;
 		}
 	}
-
 }

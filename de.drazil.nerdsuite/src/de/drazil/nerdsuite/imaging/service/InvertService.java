@@ -34,7 +34,7 @@ public class InvertService extends AbstractImagingService {
 	@Override
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte[] workArray, int width, int height) {
-		int mask = conf.pixelConfig.mask;
+		int mask = imagingWidgetConfiguration.pixelConfig.mask;
 		for (int i = 0; i < workArray.length; i++) {
 			workArray[i] = (byte) ((workArray[i] ^ 0xff) & mask);
 		}

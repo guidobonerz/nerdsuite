@@ -18,7 +18,7 @@ public class UndoRedoService extends AbstractImagingService {
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
+	public void execute(int action) {
 		switch (action) {
 		case UNDO: {
 			break;

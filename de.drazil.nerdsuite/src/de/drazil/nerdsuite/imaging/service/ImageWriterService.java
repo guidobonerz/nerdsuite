@@ -43,16 +43,15 @@ public class ImageWriterService extends AbstractImagingService {
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
+	public void execute() {
 		// TODO Auto-generated method stub
-		super.runService(action, tileLocationList, bitplane);
+		super.execute();
 	}
 
 	@Override
-	public void setValue(int action, Object data) {
-		if (action == ENABLE_TELEVISION_MODE) {
-			isTelevisionModeEnabled = (boolean) data;
-		}
+	public void execute(int action) {
+		// TODO Auto-generated method stub
+		super.execute(action);
 	}
 
 }

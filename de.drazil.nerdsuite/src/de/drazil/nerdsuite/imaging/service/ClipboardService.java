@@ -40,15 +40,15 @@ public class ClipboardService extends AbstractImagingService implements IImaging
 	}
 
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
-		int offset = conf.computeTileOffset(tileLocationList.get(0).x, tileLocationList.get(0).y, navigationOffset);
+	public void execute(int action) {
+		int offset = imagingWidgetConfiguration.computeTileOffset(tileSelectionList.get(0).x, tileSelectionList.get(0).y, navigationOffset);
 		if (action == CUT || action == COPY) {
 			currentAction = action;
 			cutCopyOffset = offset;
 		}
 		if (action == PASTE) {// && currentAction != OFF) {
 			pasteOffset = offset;
-			for (int i = 0; i < conf.getTileSize(); i++) {
+			for (int i = 0; i < imagingWidgetConfiguration.getTileSize(); i++) {
 				bitplane[pasteOffset + i] = bitplane[cutCopyOffset + i];
 				if (currentAction == CUT) {
 					bitplane[cutCopyOffset + i] = 0;

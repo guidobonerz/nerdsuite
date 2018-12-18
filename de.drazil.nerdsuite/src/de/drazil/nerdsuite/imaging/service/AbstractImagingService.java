@@ -7,32 +7,25 @@ import de.drazil.nerdsuite.widget.IImagingCallback;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.Setter;
 
-public abstract class AbstractImagingService implements IImagingService {
+public abstract class AbstractImagingService extends AbstractService implements IImagingService {
 	@Setter
-	protected ImagingWidgetConfiguration conf = null;
+	protected ImagingWidgetConfiguration imagingWidgetConfiguration = null;
 	@Setter
 	protected IImagingCallback callback = null;
 	@Setter
 	protected int navigationOffset = 0;
 	@Setter
 	protected Object source = null;
-	protected List<TileLocation> tileLocationList = null;
+	@Setter
+	byte bitplane[];
+	@Setter
+	protected List<TileLocation> tileSelectionList = null;
 
 	public enum ConversionMode {
 		toWorkArray, toBitplane
 	}
 
-	@Override
-	public void setImagingWidgetConfiguration(ImagingWidgetConfiguration configuration) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTileLocationList(List<TileLocation> tileLocationList) {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
@@ -59,34 +52,25 @@ public abstract class AbstractImagingService implements IImagingService {
 	}
 
 	@Override
-	public void setAction(int action) {
-		// TODO Auto-generated method stub
-
+	public void execute() {
+		execute(-1);
 	}
 
-	@Override
-	public void start() {
-		// TODO Auto-generated method stub
+	public void execute(int action) {
 
-	}
-
-	public void runService(int action, List<TileLocation> tileLocationList, byte bitplane[]) {
-
-		this.tileLocationList = tileLocationList;
-
-		int width = conf.width * conf.tileColumns;
-		int height = conf.height * conf.tileRows;
+		int width = imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
+		int height = imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows;
 		callback.beforeRunService();
-		for (int i = 0; i < tileLocationList.size(); i++) {
-			int x = tileLocationList.get(i).x;
-			int y = tileLocationList.get(i).y;
+		for (int i = 0; i < tileSelectionList.size(); i++) {
+			int x = tileSelectionList.get(i).x;
+			int y = tileSelectionList.get(i).y;
 			byte workArray[] = null;
 			if (needsConversion()) {
 				workArray = createWorkArray();
 				convert(workArray, bitplane, x, y, ConversionMode.toWorkArray);
 			}
-			int ofs = conf.computeTileOffset(x, y, navigationOffset);
-			workArray = each(action, tileLocationList.get(i), conf, ofs, bitplane, workArray, width, height);
+			int ofs = imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
+			workArray = each(action, tileSelectionList.get(i), imagingWidgetConfiguration, ofs, bitplane, workArray, width, height);
 			if (needsConversion()) {
 				convert(workArray, bitplane, x, y, ConversionMode.toBitplane);
 			}
@@ -95,19 +79,19 @@ public abstract class AbstractImagingService implements IImagingService {
 	}
 
 	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {
-		int iconSize = conf.getIconSize();
-		int tileSize = conf.getTileSize();
-		int tileOffset = conf.computeTileOffset(x, y, navigationOffset);
-		int bc = conf.pixelConfig.bitCount;
-		int mask = conf.pixelConfig.mask;
-		for (int si = 0, s = 0; si < tileSize; si += conf.bytesPerRow, s += conf.bytesPerRow) {
+		int iconSize = imagingWidgetConfiguration.getIconSize();
+		int tileSize = imagingWidgetConfiguration.getTileSize();
+		int tileOffset = imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
+		int bc = imagingWidgetConfiguration.pixelConfig.bitCount;
+		int mask = imagingWidgetConfiguration.pixelConfig.mask;
+		for (int si = 0, s = 0; si < tileSize; si += imagingWidgetConfiguration.bytesPerRow, s += imagingWidgetConfiguration.bytesPerRow) {
 			s = (si % (iconSize)) == 0 ? 0 : s;
-			int xo = ((si / iconSize) & (conf.tileColumns - 1)) * conf.width;
-			int yo = (si / (iconSize * conf.tileColumns)) * conf.height * conf.width * conf.tileColumns;
-			int ro = ((s / conf.bytesPerRow) * conf.width) * conf.tileColumns;
+			int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1)) * imagingWidgetConfiguration.width;
+			int yo = (si / (iconSize * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
+			int ro = ((s / imagingWidgetConfiguration.bytesPerRow) * imagingWidgetConfiguration.width) * imagingWidgetConfiguration.tileColumns;
 			int wai = ro + xo + yo;
 
-			for (int i = 0; i < conf.bytesPerRow; i++) {
+			for (int i = 0; i < imagingWidgetConfiguration.bytesPerRow; i++) {
 				bitplane[tileOffset + si + i] = mode == ConversionMode.toBitplane ? 0 : bitplane[tileOffset + si + i];
 				for (int m = 7, ti = 0; m >= 0; m -= bc, ti++) {
 					if (mode == ConversionMode.toWorkArray) {
@@ -121,7 +105,7 @@ public abstract class AbstractImagingService implements IImagingService {
 	}
 
 	protected byte[] createWorkArray() {
-		return new byte[conf.getTileSize() * (conf.pixelConfig.mul)];
+		return new byte[imagingWidgetConfiguration.getTileSize() * (imagingWidgetConfiguration.pixelConfig.mul)];
 	}
 
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
@@ -133,17 +117,11 @@ public abstract class AbstractImagingService implements IImagingService {
 		return true;
 	}
 
-	@Override
-	public void setValue(int action, Object data) {
-		// TODO Auto-generated method stub
-
-	}
-
 	private void printResult(byte workArray[]) {
 		System.out.println("-----------------------------------------");
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < workArray.length; i++) {
-			if (i % (conf.width * conf.tileColumns) == 0) {
+			if (i % (imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns) == 0) {
 				sb.append("\n");
 			}
 			sb.append(workArray[i]);
@@ -152,6 +130,6 @@ public abstract class AbstractImagingService implements IImagingService {
 	}
 
 	public int computeTileOffset(int x, int y, int offset) {
-		return conf.tileSize * (x + (y * conf.columns)) + offset;
+		return imagingWidgetConfiguration.tileSize * (x + (y * imagingWidgetConfiguration.columns)) + offset;
 	}
 }
