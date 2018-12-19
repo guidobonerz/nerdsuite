@@ -26,6 +26,6 @@
 ## Popupmenu
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/multiselect_actions.png)
 ## Simple BitmapViewer
-![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-19 14_01_08-Nerdsuite.png)
+![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-19_14_01_08-Nerdsuite.png)
 
 
