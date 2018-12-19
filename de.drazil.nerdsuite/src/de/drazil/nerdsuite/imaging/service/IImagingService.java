@@ -5,18 +5,11 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public interface IImagingService {
+public interface IImagingService extends IService {
 
-	public boolean needsConfirmation();
+	public void setTileSelectionList(List<TileLocation> tileSelectionList);
 
-	public boolean needsConversion();
-
-	public void setValue(int action, Object data);
-
-	public void runService(int action, List<TileLocation> tileLocationList, byte bitplane[]);
-
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte bitplane[], byte workArray[], int width, int height);
+	public void setImagingWidgetConfiguration(ImagingWidgetConfiguration configuration);
 
 	public void sendResponse(String message, Object data);
 

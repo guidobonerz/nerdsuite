@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class RotationService extends AbstractService {
+public class RotationService extends AbstractImagingService {
 	public final static int CW = 1;
 	public final static int CCW = 2;
 
@@ -34,8 +34,8 @@ public class RotationService extends AbstractService {
 	}
 
 	private boolean checkIfSquareBase() {
-		int w = conf.currentWidth * conf.tileColumns;
-		int h = conf.height * conf.tileRows;
+		int w = imagingWidgetConfiguration.currentWidth * imagingWidgetConfiguration.tileColumns;
+		int h = imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows;
 		return w == h;
 	}
 
@@ -43,15 +43,18 @@ public class RotationService extends AbstractService {
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte[] workArray, int width, int height) {
 		byte targetWorkArray[] = createWorkArray();
-		for (int y = 0; y < conf.height * conf.tileRows; y++) {
-			for (int x = 0; x < conf.width * conf.tileColumns; x++) {
-				byte b = workArray[x + (y * conf.width * conf.tileColumns)];
+		for (int y = 0; y < imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows; y++) {
+			for (int x = 0; x < imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns; x++) {
+				byte b = workArray[x + (y * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns)];
 				int o = 0;
 				if (action == CCW) {
-					o = (conf.width * conf.height * conf.tileRows * conf.tileColumns) - (conf.width * conf.tileColumns)
-							- (conf.width * conf.tileColumns * x) + y;
+					o = (imagingWidgetConfiguration.width * imagingWidgetConfiguration.height
+							* imagingWidgetConfiguration.tileRows * imagingWidgetConfiguration.tileColumns)
+							- (imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns)
+							- (imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns * x) + y;
 				} else if (action == CW) {
-					o = (conf.width * conf.tileColumns) - y - 1 + (x * conf.width * conf.tileColumns);
+					o = (imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns) - y - 1
+							+ (x * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns);
 				}
 				if (o >= 0 && o < (width * height)) {
 					targetWorkArray[o] = b;

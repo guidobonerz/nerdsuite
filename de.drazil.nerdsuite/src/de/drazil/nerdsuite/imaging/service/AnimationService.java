@@ -6,13 +6,15 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import lombok.Setter;
 
-public class AnimationService extends AbstractService {
+public class AnimationService extends AbstractImagingService {
 	public final static int START = 1;
 	public final static int STOP = 2;
 	public final static int SET_DELAY = 4;
 	private Animator animator = null;
-	private int animationDelay = 0;
+	@Setter
+	private int delay = 0;
 	private int pos = 0;
 
 	public AnimationService() {
@@ -21,13 +23,13 @@ public class AnimationService extends AbstractService {
 
 	public class Animator implements Runnable {
 		public synchronized void run() {
-			if (pos >= tileLocationList.size()) {
+			if (pos >= tileSelectionList.size()) {
 				pos = 0;
 			}
-			TileLocation tl = tileLocationList.get(pos);
+			TileLocation tl = tileSelectionList.get(pos);
 			pos++;
-			callback.onRunService(conf.computeTileOffset(tl.x, tl.y, navigationOffset), tl.x, tl.y, true);
-			((Composite) source).getDisplay().timerExec(animationDelay, this);
+			callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x, tl.y, navigationOffset), tl.x, tl.y, true);
+			((Composite) source).getDisplay().timerExec(delay, this);
 		}
 	}
 
@@ -85,8 +87,8 @@ public class AnimationService extends AbstractService {
 	 * getDisplay().timerExec(delay, animator); } }
 	 */
 	@Override
-	public void runService(int action, List<TileLocation> tileLocationList, byte[] bitplane) {
-		this.tileLocationList = tileLocationList;
+	public void execute(int action) {
+
 		callback.beforeRunService();
 		if (action == START) {
 			pos = 0;
@@ -97,10 +99,4 @@ public class AnimationService extends AbstractService {
 		callback.afterRunService();
 	}
 
-	@Override
-	public void setValue(int action, Object data) {
-		if (action == SET_DELAY) {
-			animationDelay = (int) data;
-		}
-	}
 }

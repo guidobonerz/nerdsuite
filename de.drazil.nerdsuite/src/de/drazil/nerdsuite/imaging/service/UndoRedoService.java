@@ -1,21 +1,32 @@
 package de.drazil.nerdsuite.imaging.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class ImageWriterService extends AbstractImagingService {
+public class UndoRedoService extends AbstractImagingService {
 
-	public final static int WRITE_PNG = 1;
-	public final static int WRITE_GIF = 2;
-	public final static int WRITE_ANIMATED_GIF = 4;
-	public final static int ENABLE_TELEVISION_MODE = 128;
+	public final static int UNDO = 1;
+	public final static int REDO = 2;
 
-	private boolean isTelevisionModeEnabled = false;
+	List<byte[]> undoRedoList = null;
 
-	public ImageWriterService() {
-		// TODO Auto-generated constructor stub
+	public UndoRedoService() {
+		undoRedoList = new ArrayList<>();
+	}
+
+	@Override
+	public void execute(int action) {
+		switch (action) {
+		case UNDO: {
+			break;
+		}
+		case REDO: {
+			break;
+		}
+		}
 	}
 
 	@Override
@@ -40,18 +51,6 @@ public class ImageWriterService extends AbstractImagingService {
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		super.execute();
-	}
-
-	@Override
-	public void execute(int action) {
-		// TODO Auto-generated method stub
-		super.execute(action);
 	}
 
 }

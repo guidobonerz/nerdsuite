@@ -19,17 +19,10 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.imaging.service.AbstractService;
-import de.drazil.nerdsuite.imaging.service.AnimationService;
-import de.drazil.nerdsuite.imaging.service.ClipboardService;
-import de.drazil.nerdsuite.imaging.service.FlipService;
+import de.drazil.nerdsuite.imaging.service.AbstractImagingService;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
-import de.drazil.nerdsuite.imaging.service.InvertService;
-import de.drazil.nerdsuite.imaging.service.MirrorService;
-import de.drazil.nerdsuite.imaging.service.PurgeService;
-import de.drazil.nerdsuite.imaging.service.RotationService;
-import de.drazil.nerdsuite.imaging.service.ShiftService;
-import de.drazil.nerdsuite.imaging.service.SwapService;
+import de.drazil.nerdsuite.imaging.service.IService;
+import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
@@ -43,10 +36,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private final static int DRAW_TILE = 2;
 	private final static int DRAW_PIXEL = 4;
 
-	private int layerCount = 0;
-	private int activeLayer = 0;
-	private int maxLayerCount = 4;
-
 	private boolean keyPressed = false;
 	private int currentKeyCodePressed = 0;
 	private char currentCharacterPressed = 0;
@@ -57,8 +46,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private int selectedTileIndex = 0;
 
 	private int referenceIndex = 0;
-
-	private boolean hasReferenceBitplane = false;
 
 	private int oldCursorX = 0;
 	private int oldCursorY = 0;
@@ -82,7 +69,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private int paintControlMode = DRAW_NOTHING;
 
 	private byte bitplane[];
-	private byte referenceBitplane[];
 
 	private boolean mouseIn = false;
 	private Map<String, Color> palette;
@@ -95,27 +81,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	private Map<String, IImagingService> serviceCacheMap = null;
 
-	public enum ImagingServiceDescription {
-		All("All", null), Shift("Shift", ShiftService.class), Mirror("Mirror", MirrorService.class), Flip("Flip",
-				FlipService.class), Rotate("Rotate", RotationService.class), Purge("Purge", PurgeService.class), Swap(
-						"Swap", SwapService.class), Invert("Invert", InvertService.class), Animation("Animation",
-								AnimationService.class), Clipboard("Clipboard", ClipboardService.class);
-		private final String name;
-		private final Class<?> cls;
-
-		ImagingServiceDescription(String name, Class<?> cls) {
-			this.name = name;
-			this.cls = cls;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public Class<?> getCls() {
-			return cls;
-		}
-	}
+	private ImagePainterFactory imagePainterFactory = null;
 
 	public ImagingWidget(Composite parent, int style) {
 		this(parent, style, null);
@@ -125,6 +91,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		super(parent, style, configuration);
 
 		serviceCacheMap = new HashMap<>();
+
 		selectionRangeBuffer = new ArrayList<>();
 		tileSelectionList = new ArrayList<>();
 		drawListenerList = new ArrayList<IDrawListener>();
@@ -335,7 +302,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		tileY = y / (conf.height * conf.currentPixelHeight * conf.tileRows);
 		tileCursorX = (cursorX - (tileX * conf.width));
 		tileCursorY = (cursorY - (tileY * conf.height));
-
 	}
 
 	private void resetSelectionList() {
@@ -433,16 +399,13 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		if (paintTileCursor) {
 			paintTileCursor(gc, mouseIn, updateCursorLocation);
 		}
-		/*
-		 * if (widgetMode == WidgetMode.Painter) {
-		 * paintControlPixelCursor(imageGC, 0, 0); }
-		 */
 
-		// }
 		if (paintTelevisionMode) {
 			paintTelevisionRaster(gc);
 		}
-
+		/*
+		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
+		 */
 		paintControlMode = DRAW_NOTHING;
 	}
 
@@ -450,9 +413,8 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		int height = conf.height * conf.tileRows * conf.rows * conf.currentPixelHeight;
 		int length = conf.width * conf.tileColumns * conf.columns * conf.currentPixelWidth;
 		for (int y = 0; y < height; y += 2) {
-			gc.setAlpha(30);
+			gc.setAlpha(60);
 			gc.setForeground(Constants.BLACK);
-
 			gc.drawLine(0, y, length, y);
 		}
 	}
@@ -470,7 +432,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private void paintTileCursor(GC gc, boolean mouseIn, boolean updateCursorLocation) {
 
 		if (mouseIn) {
-			gc.setAlpha(150);
+			gc.setAlpha(40);
 			gc.setBackground(Constants.RED);
 			gc.fillRectangle(tileX * conf.width * conf.pixelSize * conf.tileColumns,
 					tileY * conf.height * conf.pixelSize * conf.tileRows,
@@ -502,9 +464,9 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	private void paintPixelCursor(GC gc, int x, int y) {
-		gc.setBackground(Constants.RED);
-		gc.setForeground(Constants.RED);
+	private void paintPixelCursor(GC gc) {
+		gc.setBackground(Constants.WHITE);
+		gc.setForeground(Constants.WHITE);
 		gc.fillRectangle((cursorX * conf.currentPixelWidth) + 1 + (conf.currentPixelWidth / 2) - conf.pixelSize / 8,
 				(cursorY * conf.pixelSize) + 1 + (conf.pixelSize / 2) - conf.pixelSize / 8, conf.pixelSize / 4,
 				conf.pixelSize / 4);
@@ -571,6 +533,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		} else {
 			byteOffset = selectedTileOffset;
 		}
+		byteOffset = conf.computeTileOffset(tileX, tileY, navigationOffset);
 
 		for (int i = byteOffset, k = 0; i < (byteOffset + conf.tileSize); i++, k++) {
 			int xi = (k % conf.bytesPerRow) * (8 / bc);
@@ -596,26 +559,36 @@ public abstract class ImagingWidget extends BaseImagingWidget
 				}
 				case BC2: {
 					for (int j = 6; j >= 0; j -= 2) {
-						int bi = b;
-						int colorIndex = (bi >> j) & 3;
+						int colorIndex = (b >> j) & 3;
 						Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
 						if (colorProvider != null) {
 							color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tileX, tileY,
 									conf.columns);
 						}
+
 						gc.setBackground(color);
 						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
 								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
 						x++;
 					}
+
 					break;
 				}
 				case BC8: {
-					gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
-					
-					gc.drawString(String.valueOf(b), (x * conf.currentPixelWidth) + pix,
-							(y * conf.currentPixelHeight) + pix);
-					
+
+					if (null != imagePainterFactory) {
+						gc.drawImage(
+								imagePainterFactory.getImage(getDisplay(), b, false, conf, bitplane, colorProvider,
+										palette),
+								(x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix);
+					}
+
+					/*
+					 * gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
+					 * gc.drawString(String.valueOf(b), (x *
+					 * conf.currentPixelWidth) + pix, (y *
+					 * conf.currentPixelHeight) + pix);
+					 */
 					x++;
 					break;
 				}
@@ -694,35 +667,26 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	private void paintPixel(GC gc, int x, int y) {
-		if (x < conf.currentWidth * conf.tileColumns && y < conf.height * conf.tileRows) {
-
-			int pix = conf.isPixelGridEnabled() ? 1 : 0;
-			switch (conf.pixelConfig) {
-			case BC1: {
-				gc.setBackground(conf.pencilMode == PencilMode.Draw ? palette.get(String.valueOf(selectedColorIndex))
-						: Constants.BITMAP_BACKGROUND_COLOR);
-				gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-						conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
-				break;
-			}
-			case BC2: {
-				gc.setBackground(conf.pencilMode == PencilMode.Draw ? Constants.DEFAULT_BINARY_COLOR
-						: Constants.BITMAP_BACKGROUND_COLOR);
-				gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-						conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
-				break;
-			}
-			case BC8: {
-				gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
-				gc.drawString(String.valueOf((x * y)), (x * conf.currentPixelWidth) + pix,
-						(y * conf.currentPixelHeight) + pix);
-				break;
-			}
-			}
-		}
-	}
-
+	/*
+	 * private void paintPixel(GC gc, int x, int y) { if (x < conf.currentWidth
+	 * * conf.tileColumns && y < conf.height * conf.tileRows) {
+	 * 
+	 * int pix = conf.isPixelGridEnabled() ? 1 : 0; switch (conf.pixelConfig) {
+	 * case BC1: { gc.setBackground(conf.pencilMode == PencilMode.Draw ?
+	 * palette.get(String.valueOf(selectedColorIndex)) :
+	 * Constants.BITMAP_BACKGROUND_COLOR); gc.fillRectangle((x *
+	 * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
+	 * conf.currentPixelWidth - pix, conf.currentPixelHeight - pix); break; }
+	 * case BC2: { gc.setBackground(conf.pencilMode == PencilMode.Draw ?
+	 * Constants.DEFAULT_BINARY_COLOR : Constants.BITMAP_BACKGROUND_COLOR);
+	 * gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y *
+	 * conf.currentPixelHeight) + pix, conf.currentPixelWidth - pix,
+	 * conf.currentPixelHeight - pix); break; } case BC8: {
+	 * 
+	 * gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
+	 * gc.drawString(String.valueOf((x * y)), (x * conf.currentPixelWidth) +
+	 * pix, (y * conf.currentPixelHeight) + pix); break; } } } }
+	 */
 	public void setColorProvider(IColorProvider colorProvider) {
 		this.colorProvider = colorProvider;
 		conf.setPixelConfig(colorProvider.getPixelConfig());
@@ -730,11 +694,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	public void setBitplane(byte bitplane[]) {
 		this.bitplane = bitplane;
-	}
-
-	public void setReferenceBitplane(byte bitplane[]) {
-		this.referenceBitplane = bitplane;
-		hasReferenceBitplane = (bitplane != null && bitplane.length > 0);
 	}
 
 	public void recalc() {
@@ -761,26 +720,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	public void setSelectedColor(int index) {
 		selectedColorIndex = index;
 		monoColorDefaultIndex = index;
-	}
-
-	public void addLayer() {
-		layerCount += (layerCount < maxLayerCount ? 1 : 0);
-	}
-
-	public void removeLayer() {
-		layerCount -= (layerCount > 0 ? 1 : 0);
-	}
-
-	public void setActiveLayer(int activeLayer) {
-		this.activeLayer = activeLayer < layerCount ? activeLayer : layerCount;
-	}
-
-	public int getActiveLayer() {
-		return activeLayer;
-	}
-
-	public boolean isLayerViewEnabled() {
-		return layerCount > 0 && conf.layerViewEnabled;
 	}
 
 	@Override
@@ -904,22 +843,17 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	}
 
-	public void setServiceValue(ImagingServiceDescription serviceDescription, int action, Object data) {
-		IImagingService service = getService(serviceDescription);
-		service.setValue(action, data);
-	}
-
-	public void executeService(ImagingServiceDescription serviceDescription) {
-		executeService(serviceDescription, 0);
-	}
-
-	public void executeService(ImagingServiceDescription serviceDescription, int action) {
-		IImagingService service = getService(serviceDescription);
-		((AbstractService) service).setSource(this);
-		((AbstractService) service).setConf(conf);
-		((AbstractService) service).setCallback(this);
-		((AbstractService) service).setNavigationOffset(navigationOffset);
-		service.runService(action, tileSelectionList, bitplane);
+	public <S extends IService> S getService(Class<? super S> serviceClass) {
+		S service = ServiceFactory.getService(serviceClass);
+		if (AbstractImagingService.class.isAssignableFrom(serviceClass)) {
+			((AbstractImagingService) service).setCallback(this);
+			((AbstractImagingService) service).setSource(this);
+			((AbstractImagingService) service).setImagingWidgetConfiguration(conf);
+			((AbstractImagingService) service).setTileSelectionList(tileSelectionList);
+			((AbstractImagingService) service).setNavigationOffset(navigationOffset);
+			((AbstractImagingService) service).setBitplane(bitplane);
+		}
+		return service;
 	}
 
 	@Override
@@ -966,19 +900,8 @@ public abstract class ImagingWidget extends BaseImagingWidget
 						+ (conf.cursorLineWidth * (conf.rows + 1)) + hsb.x - conf.rows);
 	}
 
-	private IImagingService getService(ImagingServiceDescription s) {
-		IImagingService service = serviceCacheMap.get(s.getName());
-		if (service == null) {
-			try {
-				service = (IImagingService) s.getCls().newInstance();
-				serviceCacheMap.put(s.getName(), service);
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-		return service;
+	public void setImagePainterFactory(ImagePainterFactory imagePainterFactory) {
+		this.imagePainterFactory = imagePainterFactory;
 	}
 
 	protected boolean supportsPainting() {
@@ -998,6 +921,10 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	protected boolean supportsReferenceIndexSelection() {
+		return false;
+	}
+
+	protected boolean supportsDrawCursor() {
 		return false;
 	}
 }

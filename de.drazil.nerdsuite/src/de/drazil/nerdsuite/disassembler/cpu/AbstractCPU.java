@@ -177,7 +177,7 @@ public abstract class AbstractCPU implements ICPU {
 	protected boolean isPlatFormAddress(PlatformData platformData, int value) {
 		boolean found = false;
 		for (Address address : platformData.getPlatformAddressList()) {
-			if (address.getAddress() == value) {
+			if (address.getAddressValue() == value) {
 				found = true;
 				break;
 			}

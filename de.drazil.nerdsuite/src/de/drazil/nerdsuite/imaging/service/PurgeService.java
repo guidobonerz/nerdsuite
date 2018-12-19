@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class PurgeService extends AbstractService {
+public class PurgeService extends AbstractImagingService {
 
 	@Override
 	public boolean needsConfirmation() {
@@ -37,7 +37,7 @@ public class PurgeService extends AbstractService {
 	@Override
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte workArray[], int width, int height) {
-		for (int n = 0; n < conf.getTileSize(); n++) {
+		for (int n = 0; n < imagingWidgetConfiguration.getTileSize(); n++) {
 			bitplane[offset + n] = 0;
 		}
 		return null;

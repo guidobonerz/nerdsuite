@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class MirrorService extends AbstractService {
+public class MirrorService extends AbstractImagingService {
 	public final static int UPPER_HALF = 1;
 	public final static int LOWER_HALF = 2;
 	public final static int LEFT_HALF = 4;

@@ -86,656 +86,656 @@
 	"platformPointerList": 
 	[
 		{
-			"address": 788
+			"address": 314
 		}
 	],
 
 	"platformAddressList": 
 	[
 		{
-			"address": 53248,
+			"address": "D000",
 			"constName": "VIC_SPRITE_0_X",
 			"description": "X-Coordinate of Sprite 0"
 		},
 
 		{
-			"address": 53249,
+			"address": "D001",
 			"constName": "VIC_SPRITE_0_Y",
 			"description": "Y-Coordinate of Sprite 0"
 		},
 
 		{
-			"address": 53250,
+			"address": "D002",
 			"constName": "VIC_SPRITE_1_X",
 			"description": "X-Coordinate of Sprite 1"
 		},
 
 		{
-			"address": 53251,
+			"address": "D003",
 			"constName": "VIC_SPRITE_1_Y",
 			"description": "Y-Coordinate of Sprite 1"
 		},
 
 		{
-			"address": 53252,
+			"address": "D004",
 			"constName": "VIC_SPRITE_2_X",
 			"description": "X-Coordinate of Sprite 2"
 		},
 
 		{
-			"address": 53253,
+			"address": "D005",
 			"constName": "VIC_SPRITE_2_Y",
 			"description": "Y-Coordinate of Sprite 2"
 		},
 
 		{
-			"address": 53254,
+			"address": "D006",
 			"constName": "VIC_SPRITE_3_X",
 			"description": "X-Coordinate of Sprite 3"
 		},
 
 		{
-			"address": 53255,
+			"address": "D007",
 			"constName": "VIC_SPRITE_3_Y",
 			"description": "Y-Coordinate of Sprite 3"
 		},
 
 		{
-			"address": 53256,
+			"address": "D008",
 			"constName": "VIC_SPRITE_4_X",
 			"description": "X-Coordinate of Sprite 4"
 		},
 
 		{
-			"address": 53257,
+			"address": "D009",
 			"constName": "VIC_SPRITE_4_Y",
 			"description": "Y-Coordinate of Sprite 4"
 		},
 
 		{
-			"address": 53258,
+			"address": "D00A",
 			"constName": "VIC_SPRITE_5_X",
 			"description": "X-Coordinate of Sprite 5"
 		},
 
 		{
-			"address": 53259,
+			"address": "D00B",
 			"constName": "VIC_SPRITE_5_Y",
 			"description": "Y-Coordinate of Sprite 5"
 		},
 
 		{
-			"address": 53260,
+			"address": "D00C",
 			"constName": "VIC_SPRITE_6_X",
 			"description": "X-Coordinate of Sprite 6"
 		},
 
 		{
-			"address": 53261,
+			"address": "D00D",
 			"constName": "VIC_SPRITE_6_Y",
 			"description": "Y-Coordinate of Sprite 6"
 		},
 
 		{
-			"address": 53262,
+			"address": "D00E",
 			"constName": "VIC_SPRITE_7_X",
 			"description": "X-Coordinate of Sprite 7"
 		},
 
 		{
-			"address": 53263,
+			"address": "D00F",
 			"constName": "VIC_SPRITE_7_Y",
 			"description": "Y-Coordinate of Sprite 7"
 		},
 
 		{
-			"address": 53264,
+			"address": "D010",
 			"constName": "VIC_SPRITES_X_8TH_BIT",
 			"description": "Bit 8 of X-Coordinate for Sprite 07"
 		},
 
 		{
-			"address": 53265,
+			"address": "D011",
 			"constName": "VIC_CONTROL_1",
 			"description": "VIC ControlRegister"
 		},
 
 		{
-			"address": 53266,
+			"address": "D012",
 			"constName": "VIC_RASTERLINE",
 			"description": "Rasterline"
 		},
 
 		{
-			"address": 53267,
+			"address": "D013",
 			"constName": "VIC_LIGHTPEN_X",
 			"description": "Lightpen X-Coordinate"
 		},
 
 		{
-			"address": 53268,
+			"address": "D014",
 			"constName": "VIC_LIGHTPEN_Y",
 			"description": "Lightpen Y-Coordinate"
 		},
 
 		{
-			"address": 53269,
+			"address": "D015",
 			"constName": "VIC_SPRITE_ENABLE",
 			"description": "SpriteSwitch OnOff 07"
 		},
 
 		{
-			"address": 53270,
+			"address": "D016",
 			"constName": "VIC_CONTROL_REGISTER_2",
 			"description": "VIC ControlRegister"
 		},
 
 		{
-			"address": 53271,
+			"address": "D017",
 			"constName": "VIC_SPRITES_EXPAND_Y",
 			"description": "SpriteSwitch Expand Y 07"
 		},
 
 		{
-			"address": 53272,
+			"address": "D018",
 			"constName": "VIC_MEMORY_CONTROL",
 			"description": "VIC Memory CrontrolRegister"
 		},
 
 		{
-			"address": 53273,
+			"address": "D019",
 			"constName": "VIC_INTERRUPT_REQUEST_1",
 			"description": "Interrupt RequestRegister"
 		},
 
 		{
-			"address": 53274,
+			"address": "D01A",
 			"constName": "VIC_INTERRUPT_REQUEST_2",
 			"description": "Interrupt RerquestRegister"
 		},
 
 		{
-			"address": 53275,
+			"address": "D01B",
 			"constName": "VIC_SPRITES_PRIORITY",
 			"description": "Sprite Priority 07"
 		},
 
 		{
-			"address": 53276,
+			"address": "D01C",
 			"constName": "VIC_SPRITES_DISPLAY_MODE",
 			"description": "Sprite DisplayMode 07"
 		},
 
 		{
-			"address": 53277,
+			"address": "D01D",
 			"constName": "VIC_SPRITES_EXPAND_X",
 			"description": "SpriteSwitch Expand X 07"
 		},
 
 		{
-			"address": 53278,
+			"address": "D01E",
 			"constName": "VIC_SPRITE_SPRITE_COLLISION",
 			"description": "SpriteSprite CollisionRegister 07"
 		},
 
 		{
-			"address": 53279,
+			"address": "D01F",
 			"constName": "VIC_SPRITES_BACKGROUND_COLLISION",
 			"description": "SpriteBackground Collisionregister 07"
 		},
 
 		{
-			"address": 53280,
+			"address": "D020",
 			"constName": "VIC_FRAME_COLOR",
 			"description": "FrameColor"
 		},
 
 		{
-			"address": 53281,
+			"address": "D021",
 			"constName": "VIC_BACKGROUND_COLOR",
 			"description": "BackgroundColor"
 		},
 
 		{
-			"address": 53282,
+			"address": "D022",
 			"constName": "VIC_BACKGROUND_COLOR_1",
 			"description": "BackgroundColor 1"
 		},
 
 		{
-			"address": 53283,
+			"address": "D023",
 			"constName": "VIC_BACKGROUND_COLOR_2",
 			"description": "BackgroundColor 2"
 		},
 
 		{
-			"address": 53284,
+			"address": "D024",
 			"constName": "VIC_BACKGROUND_COLOR_3",
 			"description": "BackgroundColor 3"
 		},
 
 		{
-			"address": 53285,
+			"address": "D025",
 			"constName": "VIC_SPRITE_MULTI_COLOR_0",
 			"description": "Unique SpriteColor 0 MulticolorMode 015"
 		},
 
 		{
-			"address": 53286,
+			"address": "D026",
 			"constName": "VIC_SPRITE_MULTI_COLOR_1",
 			"description": "Unique SpriteColor 1 MulticolorMode 015"
 		},
 
 		{
-			"address": 53287,
+			"address": "D027",
 			"constName": "VIC_SPRITE_COLOR_0",
 			"description": "SpriteColor 0 015"
 		},
 
 		{
-			"address": 53288,
+			"address": "D028",
 			"constName": "VIC_SPRITE_COLOR_1",
 			"description": "SpriteColor 1 015"
 		},
 
 		{
-			"address": 53289,
+			"address": "D029",
 			"constName": "VIC_SPRITE_COLOR_2",
 			"description": "SpriteColor 2 015"
 		},
 
 		{
-			"address": 53290,
+			"address": "D02A",
 			"constName": "VIC_SPRITE_COLOR_3",
 			"description": "SpriteColor 3 015"
 		},
 
 		{
-			"address": 53291,
+			"address": "D02B",
 			"constName": "VIC_SPRITE_COLOR_4",
 			"description": "SpriteColor 4 015"
 		},
 
 		{
-			"address": 53292,
+			"address": "D02C",
 			"constName": "VIC_SPRITE_COLOR_5",
 			"description": "SpriteColor 5 015"
 		},
 
 		{
-			"address": 53293,
+			"address": "D02D",
 			"constName": "VIC_SPRITE_COLOR_6",
 			"description": "SpriteColor 6 015"
 		},
 
 		{
-			"address": 53294,
+			"address": "D02E",
 			"constName": "VIC_SPRITE_COLOR_7",
 			"description": "SpriteColor 7 015"
 		},
 
 		{
-			"address": 54272,
+			"address": "D400",
 			"constName": "SID_CHANNEL_1_FREQ_LOWBYTE",
 			"description": "Channel 1 Frequence LowByte"
 		},
 
 		{
-			"address": 54273,
+			"address": "D401",
 			"constName": "SID_CHANNEL_1_FREQ_HIGHBYTE",
 			"description": "Channel 1 Frequence HighByte"
 		},
 
 		{
-			"address": 54274,
+			"address": "D402",
 			"constName": "SID_CHANNEL_1_PULSE_WIDTH_LOW",
 			"description": "Channel 1 Pulsewidth LowByte"
 		},
 
 		{
-			"address": 54275,
+			"address": "D403",
 			"constName": "SID_CHANNEL_1_PULSE_WIDTH_HIGH",
 			"description": "Channel 1 Pulsewidth HighByte"
 		},
 
 		{
-			"address": 54276,
+			"address": "D404",
 			"constName": "SID_CHANNEL_1_MODULATION",
 			"description": "Channel 1 Modulation Saw,Tri,Ring"
 		},
 
 		{
-			"address": 54277,
+			"address": "D405",
 			"constName": "SID_CHANNEL_1_ATTACK_DECAY",
 			"description": "Channel 1 Attack, Decay"
 		},
 
 		{
-			"address": 54278,
+			"address": "D406",
 			"constName": "SID_CHANNEL_1_SUSTAIN_RELEASE",
 			"description": "Channel 1 Sustain, Release"
 		},
 
 		{
-			"address": 54279,
+			"address": "D407",
 			"constName": "SID_CHANNEL_2_FREQ_LOWBYTE",
 			"description": "Channel 2 Frequence LowByte"
 		},
 
 		{
-			"address": 54280,
+			"address": "D408",
 			"constName": "SID_CHANNEL_2_FREQ_HIGHBYTE",
 			"description": "Channel 2 Frequence HighByte"
 		},
 
 		{
-			"address": 54281,
+			"address": "D409",
 			"constName": "SID_CHANNEL_2_PULSE_WIDTH_LOW",
 			"description": "Channel 2 Pulsewidth LowByte"
 		},
 
 		{
-			"address": 54282,
+			"address": "D40A",
 			"constName": "SID_CHANNEL_2_PULSE_WIDTH_HIGH",
 			"description": "Channel 2 Pulsewidth HighByte"
 		},
 
 		{
-			"address": 54283,
+			"address": "D40B",
 			"constName": "SID_CHANNEL_2_MODULATION",
 			"description": "Channel 2 Modulation Saw,Tri,Ring"
 		},
 
 		{
-			"address": 54284,
+			"address": "D40C",
 			"constName": "SID_CHANNEL_2_ATTACK_DECAY",
 			"description": "Channel 2 Attack, Decay"
 		},
 
 		{
-			"address": 54285,
+			"address": "D40D",
 			"constName": "SID_CHANNEL_2_SUSTAIN_RELEASE",
 			"description": "Channel 2 Sustain, Release"
 		},
 
 		{
-			"address": 54286,
+			"address": "D40E",
 			"constName": "SID_CHANNEL_3_FREQ_LOWBYTE",
 			"description": "Channel 3 Frequence LowByte"
 		},
 
 		{
-			"address": 54287,
+			"address": "D40F",
 			"constName": "SID_CHANNEL_3_FREQ_HIGHBYTE",
 			"description": "Channel 3 Frequence HighByte"
 		},
 
 		{
-			"address": 54288,
+			"address": "D410",
 			"constName": "SID_CHANNEL_3_PULSE_WIDTH_LOW",
 			"description": "Channel 3 Pulsewidth LowByte"
 		},
 
 		{
-			"address": 54289,
+			"address": "D411",
 			"constName": "SID_CHANNEL_3_PULSE_WIDTH_HIGH",
 			"description": "Channel 3 Pulsewidth HighByte"
 		},
 
 		{
-			"address": 54290,
+			"address": "D412",
 			"constName": "SID_CHANNEL_3_MODULATION",
 			"description": "Channel 3 Modulation Saw,Tri,Ring"
 		},
 
 		{
-			"address": 54291,
+			"address": "D413",
 			"constName": "SID_CHANNEL_3_ATTACK_DECAY",
 			"description": "Channel 3 Attack, Decay"
 		},
 
 		{
-			"address": 54292,
+			"address": "D414",
 			"constName": "SID_CHANNEL_3_SUSTAIN_RELEASE",
 			"description": "Channel 3 Sustain, Release"
 		},
 
 		{
-			"address": 54293,
+			"address": "D415",
 			"constName": "SID_FILTER_CUT_OFF_LOW",
 			"description": "Filter Cut off low"
 		},
 
 		{
-			"address": 54294,
+			"address": "D416",
 			"constName": "SID_FILTER_CUT_OFF_HIGH",
 			"description": "Filter Cut off high"
 		},
 
 		{
-			"address": 54295,
+			"address": "D417",
 			"constName": "SID_RESONANCE_FILTER",
 			"description": "Filter Cut off low"
 		},
 
 		{
-			"address": 54296,
+			"address": "D418",
 			"constName": "SID_MODE_VOLUME",
 			"description": "Filter Cut off low"
 		},
 
 		{
-			"address": 54297,
+			"address": "D419",
 			"constName": "SID_POTENTIOMETER_X",
 			"description": "Potentiometer X"
 		},
 
 		{
-			"address": 54298,
+			"address": "D41A",
 			"constName": "SID_POTENTIOMETER_Y",
 			"description": "Potentiometer Y"
 		},
 
 		{
-			"address": 54290,
+			"address": "D41B",
 			"constName": "SID_CHANNEL_3_OSCILATOR",
 			"description": "Channel 3 Oscilator"
 		},
 
 		{
-			"address": 54291,
+			"address": "D41C",
 			"constName": "SID_CHANNEL_3_ENEVELOPE",
 			"description": "Channel 3 Envelope"
 		},
 
 		{
-			"address": 56320,
+			"address": "DC1D",
 			"constName": "CIA1_DATA_PORT_A",
 			"description": "Data Port A"
 		},
 
 		{
-			"address": 56321,
+			"address": "DC1E",
 			"constName": "CIA1_DATA_PORT_B",
 			"description": "Data Port B"
 		},
 
 		{
-			"address": 56322,
+			"address": "DC1F",
 			"constName": "CIA1_DATA_DIR_A",
 			"description": "Data Direction A"
 		},
 
 		{
-			"address": 56323,
+			"address": "DC20",
 			"constName": "CIA1_DATA_DIR_B",
 			"description": "Data Direction B"
 		},
 
 		{
-			"address": 56324,
+			"address": "DC21",
 			"constName": "CIA1_TIMER_A_LOW_BYTE",
 			"description": "Timer A LowByte"
 		},
 
 		{
-			"address": 56325,
+			"address": "DC22",
 			"constName": "CIA1_TIMER_A_HIGH_BYTE",
 			"description": "Timer A HighByte"
 		},
 
 		{
-			"address": 56326,
+			"address": "DC23",
 			"constName": "CIA1_TIMER_B_LOW_BYTE",
 			"description": "Timer B LowByte"
 		},
 
 		{
-			"address": 56327,
+			"address": "DC24",
 			"constName": "CIA1_TIMER_B_HIGH_BYTE",
 			"description": "Timer B HighByte"
 		},
 
 		{
-			"address": 56328,
+			"address": "DC25",
 			"constName": "CIA1_REAL_TIME_MILLIS",
 			"description": "Real Time 10ths"
 		},
 
 		{
-			"address": 56329,
+			"address": "DC26",
 			"constName": "CIA1_REAL_TIME_SECONDS",
 			"description": "Real Time Seconds"
 		},
 
 		{
-			"address": 56330,
+			"address": "DC27",
 			"constName": "CIA1_REAL_TIME_MINUTES",
 			"description": "Real Time Minutes"
 		},
 
 		{
-			"address": 56331,
+			"address": "DC28",
 			"constName": "CIA1_REAL_TIME_HOURS",
 			"description": "Real Time HOURS"
 		},
 
 		{
-			"address": 56332,
+			"address": "DC29",
 			"constName": "CIA1_SERIAL_SHIFT",
 			"description": "Serial Shift"
 		},
 
 		{
-			"address": 56333,
+			"address": "DC2A",
 			"constName": "CIA1_IRQ_CONTROL_STATE",
 			"description": "Interrupt Control and State"
 		},
 
 		{
-			"address": 56334,
+			"address": "DC2B",
 			"constName": "CIA1_CONTROL_TIMER_A",
 			"description": "Control Timer A"
 		},
 
 		{
-			"address": 56335,
+			"address": "DC2C",
 			"constName": "CIA1_CONTROL_TIMER_B",
 			"description": "Control Timer B"
 		},
 
 		{
-			"address": 56576,
+			"address": "DC2D",
 			"constName": "CIA2_DATA_PORT_A",
 			"description": "DataPortA"
 		},
 
 		{
-			"address": 56577,
+			"address": "DC2E",
 			"constName": "CIA2_DATA_PORT_B",
 			"description": "Data Port B"
 		},
 
 		{
-			"address": 56578,
+			"address": "DC2F",
 			"constName": "CIA2_DATA_DIR_A",
 			"description": "Data Direction A"
 		},
 
 		{
-			"address": 56579,
+			"address": "DC30",
 			"constName": "CIA2_DATA_DIR_B",
 			"description": "Data Direction B"
 		},
 
 		{
-			"address": 56580,
+			"address": "DC31",
 			"constName": "CIA2_TIMER_A_LOW_BYTE",
 			"description": "Timer A LowByte"
 		},
 
 		{
-			"address": 56581,
+			"address": "DC32",
 			"constName": "CIA2_TIMER_A_HIGH_BYTE",
 			"description": "Timer A HighByte"
 		},
 
 		{
-			"address": 56581,
+			"address": "DC33",
 			"constName": "CIA2_TIMER_B_LOW_BYTE",
 			"description": "Timer B LowByte"
 		},
 
 		{
-			"address": 56582,
+			"address": "DC34",
 			"constName": "CIA2_TIMER_B_HIGH_BYTE",
 			"description": "Timer B HighByte"
 		},
 
 		{
-			"address": 56583,
+			"address": "DC35",
 			"constName": "CIA2_REAL_TIME_MILLIS",
 			"description": "Real Time 110s"
 		},
 
 		{
-			"address": 56584,
+			"address": "DC36",
 			"constName": "CIA2_REAL_TIME_SECONDS",
 			"description": "Real Time Seconds"
 		},
 
 		{
-			"address": 56585,
+			"address": "DC37",
 			"constName": "CIA2_REAL_TIME_MINUTES",
 			"description": "Real Time Minutes"
 		},
 
 		{
-			"address": 56586,
+			"address": "DC38",
 			"constName": "CIA2_REAL_TIME_HOURS",
 			"description": "Real Time HOURS"
 		},
 
 		{
-			"address": 56587,
+			"address": "DC39",
 			"constName": "CIA2_SERIAL_SHIFT",
 			"description": "Serial Shift"
 		},
 
 		{
-			"address": 56588,
+			"address": "DC3A",
 			"constName": "CIA2_IRQ_CONTROL_STATE",
 			"description": "Interrupt Control and State"
 		},
 
 		{
-			"address": 56589,
+			"address": "DC3B",
 			"constName": "CIA2_CONTROL_TIMER_A",
 			"description": "Control Timer A"
 		},
 
 		{
-			"address": 56590,
+			"address": "DC3E",
 			"constName": "CIA2_CONTROL_TIMER_B",
 			"description": "Control Timer B"
 		}

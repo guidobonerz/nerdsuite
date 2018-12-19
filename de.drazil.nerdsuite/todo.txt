@@ -1,7 +1,7 @@
 - create versions for windows,linux and mac
 - load/save/save as : all or selection
 - export graphic to : basic data / assembler dialect / png / animated gifs 
-- television display mode / image
+- crt display mode / image
 - example tabs
 - fix: byte separator
 - fix: paint performance
