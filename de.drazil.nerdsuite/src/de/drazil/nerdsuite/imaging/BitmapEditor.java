@@ -38,7 +38,8 @@ public class BitmapEditor {
 
 		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 		URL url = bundle.getEntry("images/Image by Almighty God.koa");
-
+		//URL url = bundle.getEntry("images/Image The Lost Ship by FIL.koa");
+		
 		try {
 			binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
 		} catch (IOException e) {
