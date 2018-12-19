@@ -533,6 +533,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		} else {
 			byteOffset = selectedTileOffset;
 		}
+		byteOffset = conf.computeTileOffset(tileX, tileY, navigationOffset);
 
 		for (int i = byteOffset, k = 0; i < (byteOffset + conf.tileSize); i++, k++) {
 			int xi = (k % conf.bytesPerRow) * (8 / bc);

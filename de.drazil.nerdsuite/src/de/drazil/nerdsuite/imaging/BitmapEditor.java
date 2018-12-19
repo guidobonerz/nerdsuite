@@ -33,30 +33,22 @@ public class BitmapEditor {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
+
+		byte binaryData[] = null;
+
 		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-		URL url = bundle.getEntry("images/picrambo.prg");
-		File file = null;
+		URL url = bundle.getEntry("images/Image by Almighty God.koa");
 
 		try {
-			file = new File(FileLocator.resolve(url).toURI());
-			URL resolvedUrl = FileLocator.toFileURL(url);
-			URI resolvedUri = new URI(resolvedUrl.getProtocol(), resolvedUrl.getPath(), null);
-			file = new File(resolvedUri);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		byte binaryData[] = null;
-		try {
-			binaryData = BinaryFileReader.readFile(file, 2);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 
 		ImagingWidgetConfiguration ic = new ImagingWidgetConfiguration();
@@ -72,7 +64,6 @@ public class BitmapEditor {
 		ic.setPixelConfig(PixelConfig.BC2);
 		ImageViewer viewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
 
-		
 		viewer.setColorProvider(new KoalaColorProvider());
 		viewer.setBitplane(binaryData);
 		viewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
