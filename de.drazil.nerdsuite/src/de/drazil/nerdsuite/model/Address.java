@@ -3,14 +3,16 @@ package de.drazil.nerdsuite.model;
 import lombok.Data;
 
 @Data
-public class Address
-{
-	private int address;
+public class Address {
+	private String address;
 	private String constName;
 	private String description;
 
-	public boolean matches(int value)
-	{
-		return address == value;
+	public int getAddressValue() {
+		return Integer.parseInt(address, 16);
+	}
+
+	public boolean matches(int value) {
+		return getAddressValue() == value;
 	}
 }

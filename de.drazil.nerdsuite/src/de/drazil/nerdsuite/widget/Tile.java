@@ -22,6 +22,9 @@ public class Tile {
 
 	public void addLayer() {
 		Layer layer = new Layer();
+		if (layerList.size() == 0) {
+			layer.setActive(true);
+		}
 		layerList.add(layer);
 		layerIndexOrderList.add(layerList.indexOf(layer));
 	}
