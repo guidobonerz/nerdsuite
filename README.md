@@ -26,7 +26,7 @@
 ## Popupmenu
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/multiselect_actions.png)
 ## Simple BitmapViewer
-###### Image by Almighty God
+###### Test
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-19_14_01_08-Nerdsuite.png)
 
 
