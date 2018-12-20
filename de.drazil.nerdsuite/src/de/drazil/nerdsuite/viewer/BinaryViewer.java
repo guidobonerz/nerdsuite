@@ -1,14 +1,11 @@
 package de.drazil.nerdsuite.viewer;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.viewers.TableViewer;
@@ -34,23 +31,15 @@ public class BinaryViewer {
 	@PostConstruct
 	public void createControls(Composite parent) {
 
-		// byte binaryData[] = BinaryFileReader.readFile(new
-		// File("/Users/drazil/Downloads/mx25l4006e-pollin120916.bin"));
+		byte binaryData[] = null;
 		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-		URL url = bundle.getEntry("/images/picrambo.prg");
-		File file = null;
+		URL url = bundle.getEntry("images/Image by Almighty God.koa");
+
 		try {
-			file = new File(FileLocator.resolve(url).toURI());
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		byte binaryData[] = null;
-		try {
-			binaryData = BinaryFileReader.readFile(file,0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,23 +58,22 @@ public class BinaryViewer {
 		table.setFont(font.getFont());
 
 		/*
-		 * final TableEditor editor = new TableEditor(table);
-		 * editor.horizontalAlignment = SWT.LEFT; editor.grabHorizontal = true;
-		 * editor.minimumWidth = 30; table.addSelectionListener(new
-		 * SelectionAdapter() { public void widgetSelected(SelectionEvent e) {
-		 * // Clean up any previous editor control Control oldEditor =
-		 * editor.getEditor(); if (oldEditor != null) oldEditor.dispose();
+		 * final TableEditor editor = new TableEditor(table); editor.horizontalAlignment
+		 * = SWT.LEFT; editor.grabHorizontal = true; editor.minimumWidth = 30;
+		 * table.addSelectionListener(new SelectionAdapter() { public void
+		 * widgetSelected(SelectionEvent e) { // Clean up any previous editor control
+		 * Control oldEditor = editor.getEditor(); if (oldEditor != null)
+		 * oldEditor.dispose();
 		 * 
-		 * // Identify the selected row TableItem item = (TableItem) e.item; if
-		 * (item == null) return;
+		 * // Identify the selected row TableItem item = (TableItem) e.item; if (item ==
+		 * null) return;
 		 * 
-		 * // The control that will be the editor must be a child of the Table
-		 * Text newEditor = new Text(table, SWT.NONE);
-		 * newEditor.setText(item.getText(1)); newEditor.addModifyListener(new
-		 * ModifyListener() { public void modifyText(ModifyEvent e) { Text text
-		 * = (Text) editor.getEditor(); editor.getItem().setText(1,
-		 * text.getText()); } }); newEditor.selectAll(); newEditor.setFocus();
-		 * editor.setEditor(newEditor, item, 1); } });
+		 * // The control that will be the editor must be a child of the Table Text
+		 * newEditor = new Text(table, SWT.NONE); newEditor.setText(item.getText(1));
+		 * newEditor.addModifyListener(new ModifyListener() { public void
+		 * modifyText(ModifyEvent e) { Text text = (Text) editor.getEditor();
+		 * editor.getItem().setText(1, text.getText()); } }); newEditor.selectAll();
+		 * newEditor.setFocus(); editor.setEditor(newEditor, item, 1); } });
 		 */
 		int height = font.getFont().getFontData()[0].getHeight();
 
