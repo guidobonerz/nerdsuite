@@ -62,9 +62,9 @@
                   <children xsi:type="menu:HandledToolItem" xmi:id="_887yAASIEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.load" label="Load" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk.png"/>
                 </toolbar>
               </children>
-              <children xsi:type="basic:Part" xmi:id="_CpvvYAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.layerview" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Layer" label="Layers" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layers.png">
+              <children xsi:type="basic:Part" xmi:id="_CpvvYAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.layerview" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.LayerView" label="Layers" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layers.png">
                 <toolbar xmi:id="_kFjs8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.toolbar.3">
-                  <children xsi:type="menu:HandledToolItem" xmi:id="_mE0O8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.addlayer" label="Add Layer" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--plus.png"/>
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_04Xe0AStEem0jsZqZTgKlw" elementId="de.drazil.nerdsuite.handledtoolitem.3" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--plus.png"/>
                   <children xsi:type="menu:HandledToolItem" xmi:id="_zPlAEASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.removelayer" label="Remove Layer" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--minus.png"/>
                 </toolbar>
               </children>
