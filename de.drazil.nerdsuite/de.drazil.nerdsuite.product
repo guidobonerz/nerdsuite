@@ -39,11 +39,15 @@
       <plugin id="javax.inject"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.xml"/>
+      <plugin id="org.apache.batik.constants"/>
       <plugin id="org.apache.batik.css"/>
+      <plugin id="org.apache.batik.i18n"/>
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.batik.util.gui"/>
+      <plugin id="org.apache.commons.io"/>
       <plugin id="org.apache.commons.jxpath"/>
       <plugin id="org.apache.commons.logging"/>
+      <plugin id="org.apache.xmlgraphics"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
@@ -76,6 +80,7 @@
       <plugin id="org.eclipse.e4.core.di"/>
       <plugin id="org.eclipse.e4.core.di.annotations"/>
       <plugin id="org.eclipse.e4.core.di.extensions"/>
+      <plugin id="org.eclipse.e4.core.di.extensions.supplier"/>
       <plugin id="org.eclipse.e4.core.services"/>
       <plugin id="org.eclipse.e4.core.services.source"/>
       <plugin id="org.eclipse.e4.emf.xpath"/>
@@ -115,6 +120,7 @@
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.compatibility.state" fragment="true"/>
       <plugin id="org.eclipse.osgi.services"/>
+      <plugin id="org.eclipse.osgi.util"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.carbon.macosx" fragment="true"/>
       <plugin id="org.eclipse.swt.cocoa.macosx" fragment="true"/>
@@ -144,6 +150,13 @@
       <plugin id="org.w3c.dom.svg"/>
    </plugins>
 
+   <configurations>
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+   </configurations>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>
