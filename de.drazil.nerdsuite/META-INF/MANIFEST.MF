@@ -35,4 +35,5 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.ui;bundle-version="3.111.0",
  org.eclipse.ui.intro;bundle-version="3.5.400"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: javax.inject;version="1.0.0"
+Import-Package: javax.annotation;version="1.0.0";resolution:=optional,
+ javax.inject;version="1.0.0"

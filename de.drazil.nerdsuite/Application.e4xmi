@@ -44,11 +44,32 @@
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.iconeditor" label="IconEditor">
-        <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.iconeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.IconEditor" label="IconEditor">
-          <handlers xmi:id="_N4cM8AGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.handler.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SwapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
-          <menus xsi:type="menu:PopupMenu" xmi:id="_t22uwADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.popupmenu.iconeditor" label="iconeditor">
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_wYIYsADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.handledmenuitem.test" label="Swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
-          </menus>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
+          <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.iconeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.IconEditor" label="IconEditor">
+            <handlers xmi:id="_N4cM8AGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.handler.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SwapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
+            <menus xsi:type="menu:PopupMenu" xmi:id="_t22uwADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.popupmenu.iconeditor" label="iconeditor">
+              <children xsi:type="menu:HandledMenuItem" xmi:id="_wYIYsADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.handledmenuitem.test" label="Swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
+            </menus>
+          </children>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_vkk_4AR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.4">
+            <children xsi:type="basic:PartStack" xmi:id="_iYxowASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.4">
+              <children xsi:type="basic:Part" xmi:id="_aN4D4ASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.preview" label="Preview"/>
+            </children>
+            <children xsi:type="basic:PartStack" xmi:id="_Bx0W8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.1">
+              <children xsi:type="basic:Part" xmi:id="_CpvvYAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.layerview" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Layer" label="Layers">
+                <toolbar xmi:id="_kFjs8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.toolbar.3">
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_mE0O8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.addlayer" label="Add Layer"/>
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_zPlAEASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.removelayer" label="Remove Layer"/>
+                </toolbar>
+              </children>
+              <children xsi:type="basic:Part" xmi:id="_QKqSgASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.tools" label="Tools"/>
+              <children xsi:type="basic:Part" xmi:id="_gtDb4ASIEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.charset" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.CharSet" label="CharSet">
+                <toolbar xmi:id="_5uqfMASIEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.toolbar.4">
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_887yAASIEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.load" label="Load"/>
+                </toolbar>
+              </children>
+            </children>
+          </children>
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_QbE0MJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.perspective.bitmapeditor" label="BitmapEditor">
