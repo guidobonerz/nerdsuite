@@ -21,7 +21,6 @@
       startupMessageRect="7,252,445,20"
       startupForegroundColor="000000" />
    <launcher name="nerdsuite">
-      <solaris/>
       <win useIco="false">
          <bmp
             winSmallHigh="/de.drazil.nerdsuite/nerdsuite_16.bmp"
@@ -29,8 +28,6 @@
             winExtraLargeHigh="/de.drazil.nerdsuite/nerdsuite256.bmp"/>
       </win>
    </launcher>
-
-  
 
    <vm>
    </vm>

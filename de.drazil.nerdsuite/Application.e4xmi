@@ -25,8 +25,8 @@
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_2MCBIKF_EeOMYoHAic2wfQ" elementId="de.drazil.nerdsuite.partsashcontainer.1" containerData="" selectedElement="_3-8wQKF_EeOMYoHAic2wfQ">
             <children xsi:type="basic:PartStack" xmi:id="_3Sw_sKF_EeOMYoHAic2wfQ" elementId="de.drazil.nerdsuite.partstack.work">
-              <children xsi:type="basic:InputPart" xmi:id="_CPzuQKI_EeOuno1RMFvLug" elementId="de.drazil.nerdsuite.inputpart.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditor" label="Editor" closeable="true"/>
               <children xsi:type="basic:Part" xmi:id="_6aUccOxIEeSI3IxeHRObrg" elementId="de.drazil.nerdsuite.part.binaryviewer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.viewer.BinaryViewer" label="BinaryViewer"/>
+              <children xsi:type="basic:Part" xmi:id="_K3x0IAP4EemchI7Xn04f0g" elementId="de.drazil.nerdsuite.part.sourceeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditor" label="SourceEditor"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_3-8wQKF_EeOMYoHAic2wfQ" elementId="de.drazil.nerdsuite.partstack.2" containerData="2000">
               <children xsi:type="basic:Part" xmi:id="_4_oKIKF_EeOMYoHAic2wfQ" elementId="de.drazil.nerdsuite.part.2" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.log.Console" label="Console">
