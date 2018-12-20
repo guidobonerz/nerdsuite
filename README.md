@@ -1,8 +1,13 @@
 # nerdsuite
-> Nerdsuite is an IDE (based on eclipse 4.10/2018-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
-> Running on Windows, Linux(not yet tested) and Mac(not yet tested)  
-> Once finished, it will contain a SourceCode Editor, Disassembler, IconEditor (for CharSets,Sprites,Screens and Bitmaps)  
-> Currently I work mostly on the graphics part.  
+Nerdsuite is an IDE (based on eclipse 4.10/2018-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
+Once finished, it will contain a SourceCode Editor, Disassembler, IconEditor (for CharSets,Sprites,Screens and Bitmaps)  
+Currently I work mostly on the graphics part.  
+
+| System | Running |
+| -- | -- |
+| Windows | yes |
+| Linux | partly |
+| Mac | not tested |
 
 ## CharEditor View
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/char_view.png)
@@ -27,7 +32,7 @@
 ## Popupmenu
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/multiselect_actions.png)
 ## Simple BitmapViewer
-> Image by Almighty God
+Image by Almighty God
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-19_14_01_08-Nerdsuite.png)
 
 
