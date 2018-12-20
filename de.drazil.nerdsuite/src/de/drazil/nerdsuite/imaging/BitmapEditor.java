@@ -1,15 +1,11 @@
 package de.drazil.nerdsuite.imaging;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -38,8 +34,7 @@ public class BitmapEditor {
 
 		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 		URL url = bundle.getEntry("images/Image by Almighty God.koa");
-		//URL url = bundle.getEntry("images/Image The Lost Ship by FIL.koa");
-		
+
 		try {
 			binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
 		} catch (IOException e) {
