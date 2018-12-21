@@ -15,6 +15,7 @@ import org.osgi.framework.Bundle;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.ImageSelector;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
 
 public class RepositoryView {
 
@@ -30,15 +31,24 @@ public class RepositoryView {
 	public void postConstruct(Composite parent) {
 		ImageSelector selector = new ImageSelector(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
 		selector.getConf().setWidgetName("Selector:");
-		selector.getConf().setWidth(8);
-		selector.getConf().setHeight(8);
-		selector.getConf().setPixelSize(3);
+		selector.getConf().setWidth(40);
+		selector.getConf().setHeight(25);
+		selector.getConf().setTileColumns(1);
+		selector.getConf().setTileRows(1);
+		selector.getConf().setColumns(8);
+		selector.getConf().setRows(1);
+		selector.getConf().setPixelSize(4);
+		selector.getConf().setPixelConfig(PixelConfig.BC8);
 		selector.getConf().setPixelGridEnabled(false);
 		selector.getConf().setTileGridEnabled(true);
 		selector.getConf().setTileSubGridEnabled(false);
 		selector.getConf().setTileCursorEnabled(true);
 		selector.getConf().setSeparatorEnabled(false);
 		selector.setSelectedTileOffset(0, 0, false);
+		
+		
+		
+		
 		selector.setBitplane(getBlankData());
 		// selector.setImagePainterFactory(imagePainterFactory);
 		selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
