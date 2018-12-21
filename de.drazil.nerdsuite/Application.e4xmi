@@ -60,7 +60,7 @@
             <children xsi:type="basic:PartStack" xmi:id="_iYxowASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.4">
               <children xsi:type="basic:Part" xmi:id="_aN4D4ASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.preview" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.PreviewView" label="Preview"/>
             </children>
-            <children xsi:type="basic:PartStack" xmi:id="_Bx0W8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.1">
+            <children xsi:type="basic:PartStack" xmi:id="_Bx0W8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.1" containerData="">
               <children xsi:type="basic:Part" xmi:id="_gJRGcASVEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.colors" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ColorPaletteView" label="Colors" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/color_wheel.png"/>
               <children xsi:type="basic:Part" xmi:id="_gtDb4ASIEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.charset" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.CharSetView" label="CharSet" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/bricks.png">
                 <toolbar xmi:id="_5uqfMASIEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.toolbar.4">
@@ -154,9 +154,9 @@
   <handlers xmi:id="_idGn0L63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.CodingPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CodingPerspectiveHandler" command="_XZnhsL62Eeaij7VdtYSbPw"/>
   <handlers xmi:id="_PlHUUJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handler.IconPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.IconPerspectiveHandler" command="_Uw3ngJXLEeiXIq2xmOFdHg"/>
   <handlers xmi:id="_3-IkMJdEEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handler.BitmapPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.BitmapPerspectiveHandler" command="_9k6mgJdEEeiWU4p0leyFHA"/>
-  <handlers xmi:id="_zoCDQAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.NewImageHandler" command="_mWhJ4AT4EemsC5geQwPptA"/>
-  <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.addLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.AddLayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
-  <handlers xmi:id="_akHrIAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.removeLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.RemoveLayerHandler" command="_F2WbkAT-EemsC5geQwPptA"/>
+  <handlers xmi:id="_zoCDQAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewImageHandler" command="_mWhJ4AT4EemsC5geQwPptA"/>
+  <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.addLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.AddLayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
+  <handlers xmi:id="_akHrIAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.removeLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RemoveLayerHandler" command="_F2WbkAT-EemsC5geQwPptA"/>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>

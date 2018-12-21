@@ -1,5 +1,5 @@
 
-package de.drazil.nerdsuite.imaging;
+package de.drazil.nerdsuite.handler;
 
 import javax.inject.Named;
 
