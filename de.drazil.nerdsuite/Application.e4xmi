@@ -45,15 +45,17 @@
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.iconeditor" label="IconEditor">
         <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
-          <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.iconeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.IconEditor" label="IconEditor">
-            <handlers xmi:id="_N4cM8AGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.handler.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SwapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
-            <menus xsi:type="menu:PopupMenu" xmi:id="_t22uwADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.popupmenu.iconeditor" label="iconeditor">
-              <children xsi:type="menu:HandledMenuItem" xmi:id="_wYIYsADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.handledmenuitem.test" label="Swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
-            </menus>
+          <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.5">
+            <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.iconeditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.IconEditor" label="IconEditor" closeable="true">
+              <handlers xmi:id="_N4cM8AGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.handler.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SwapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
+              <menus xsi:type="menu:PopupMenu" xmi:id="_t22uwADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.popupmenu.iconeditor" label="iconeditor">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_wYIYsADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.handledmenuitem.test" label="Swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
+              </menus>
+            </children>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_vkk_4AR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.4">
             <children xsi:type="basic:PartStack" xmi:id="_iYxowASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.4">
-              <children xsi:type="basic:Part" xmi:id="_aN4D4ASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.preview" label="Preview"/>
+              <children xsi:type="basic:Part" xmi:id="_aN4D4ASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.preview" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.PreviewView" label="Preview"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_Bx0W8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.1">
               <children xsi:type="basic:Part" xmi:id="_gJRGcASVEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.colors" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ColorPalette" label="Colors" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/color_wheel.png"/>
@@ -89,6 +91,14 @@
           <children xsi:type="menu:HandledMenuItem" xmi:id="_fvfdIKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.5" label="Project" command="_ATMWMKaVEeOsl7k25iZUBw"/>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_YRilsKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handledmenuitem.6" label="Source File" command="_ka2AIOwWEeSYVemvddr_Tw"/>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_iZmZEKruEeO33ch1Zth4Ww" elementId="de.drazil.nerdsuite.handledmenuitem.15" label="SpriteProject" command="_nW-SAKruEeO33ch1Zth4Ww"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_b3A3YATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.15" label="Sprite 2X Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_ew1kMATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.15" label="Sprite 2Y Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_gH6E0ATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.15" label="Sprite 2XY Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_oRyWAATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.charscreenpro" label="CharScreen Project"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_uaQW0AT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newimage" label="New Image" command="_mWhJ4AT4EemsC5geQwPptA">
+            <parameters xmi:id="_-d0hEAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.parameter.width" name="de.drazil.nerdsuite.commandparameter.width" value="8"/>
+            <parameters xmi:id="_DNU9IAT5EemsC5geQwPptA" elementId="de.drazil.nerdsuite.parameter.height" name="de.drazil.nerdsuite.commandparameter.height" value="8"/>
+          </children>
         </children>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_UgTn4KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.0" label="Close Project"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_VUSCgKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.1" label="Close File"/>
@@ -141,6 +151,7 @@
   <handlers xmi:id="_idGn0L63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.CodingPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CodingPerspectiveHandler" command="_XZnhsL62Eeaij7VdtYSbPw"/>
   <handlers xmi:id="_PlHUUJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handler.IconPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.IconPerspectiveHandler" command="_Uw3ngJXLEeiXIq2xmOFdHg"/>
   <handlers xmi:id="_3-IkMJdEEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handler.BitmapPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.BitmapPerspectiveHandler" command="_9k6mgJdEEeiWU4p0leyFHA"/>
+  <handlers xmi:id="_zoCDQAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.NewImageHandler" command="_mWhJ4AT4EemsC5geQwPptA"/>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
@@ -155,6 +166,10 @@
   <commands xmi:id="_Uw3ngJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.command.IconPerspective" commandName="Icon Perspective"/>
   <commands xmi:id="_9k6mgJdEEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.command.BitmapPerspective" commandName="Bitmap Perspective"/>
   <commands xmi:id="_D6FtcAGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.command.SwapTile" commandName="SwapTile"/>
+  <commands xmi:id="_mWhJ4AT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.newImageProject" commandName="New Image Project">
+    <parameters xmi:id="_HNiqQAT5EemsC5geQwPptA" elementId="de.drazil.nerdsuite.commandparameter.width" name="width" optional="false"/>
+    <parameters xmi:id="_JTaxoAT5EemsC5geQwPptA" elementId="de.drazil.nerdsuite.commandparameter.height" name="height" optional="false"/>
+  </commands>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
