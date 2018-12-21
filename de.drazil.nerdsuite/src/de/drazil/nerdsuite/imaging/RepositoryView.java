@@ -14,11 +14,11 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
-import de.drazil.nerdsuite.widget.ImageSelector;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
+import de.drazil.nerdsuite.widget.ImageRepository;
 
 public class RepositoryView {
-
+	private ImageRepository repository = null;
+	private Composite parent = null;
 	private byte binaryData[] = null;
 	private byte blankData[] = null;
 
@@ -29,34 +29,69 @@ public class RepositoryView {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
-		ImageSelector selector = new ImageSelector(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
-		selector.getConf().setWidgetName("Selector:");
-		selector.getConf().setWidth(40);
-		selector.getConf().setHeight(25);
-		selector.getConf().setTileColumns(1);
-		selector.getConf().setTileRows(1);
-		selector.getConf().setColumns(8);
-		selector.getConf().setRows(1);
-		selector.getConf().setPixelSize(4);
-		selector.getConf().setPixelConfig(PixelConfig.BC8);
-		selector.getConf().setPixelGridEnabled(false);
-		selector.getConf().setTileGridEnabled(true);
-		selector.getConf().setTileSubGridEnabled(false);
-		selector.getConf().setTileCursorEnabled(true);
-		selector.getConf().setSeparatorEnabled(false);
-		selector.setSelectedTileOffset(0, 0, false);
-		
-		
-		
-		
-		selector.setBitplane(getBlankData());
-		// selector.setImagePainterFactory(imagePainterFactory);
-		selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		selector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		selector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		selector.setSelectedColor(1);
-		selector.recalc();
+		this.parent = parent;
+		getRepository();
+	}
+
+	private ImageRepository getRepository() {
+		if (repository == null) {
+			repository = new ImageRepository(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
+
+				/*
+				 * 
+				 * @Override protected void setHasTileSelection(int count) {
+				 * getStartAnimation().setEnabled(count > 1);
+				 * getAnimationTimerDelayScale().setEnabled(count > 1); }
+				 * 
+				 * @Override protected void showNotification(ImagingServiceDescription type,
+				 * ImagingServiceAction mode, String notification, Object data) { if (type ==
+				 * ImagingServiceDescription.Animation) {
+				 * getStartAnimation().setText(notification); } else {
+				 * MessageDialog.openInformation(parent.getShell(), "Information",
+				 * notification); } }
+				 * 
+				 * @Override protected boolean isConfirmed(ImagingServiceDescription type,
+				 * ImagingServiceAction mode, int tileCount) { boolean confirmation = false; if
+				 * (type == ImagingServiceDescription.Rotate) { confirmation =
+				 * MessageDialog.openQuestion(parent.getShell(), "Question",
+				 * "Rotating these tile(s) causes data loss, because it is/they are not squarish.\n\nDo you want to rotate anyway?"
+				 * ); } if (type == ImagingServiceDescription.All) { confirmation =
+				 * MessageDialog.openQuestion(parent.getShell(), "Question",
+				 * MessageFormat.format( "Do you really want to process {0} ?", (tileCount > 1)
+				 * ? "all selected tiles" : "this tile")); } return confirmation; }
+				 * 
+				 * @Override protected void setNotification(int offset, int tileSize) {
+				 * 
+				 * getNotification().setText(MessageFormat.format(
+				 * "Offset: ${0} tile:{1} bytes", String.format("%04X", offset), tileSize)); }
+				 */
+			};
+			repository.getConf().setWidgetName("Selector:");
+			repository.getConf().setWidth(40);
+			repository.getConf().setHeight(25);
+			repository.getConf().setWidth(8);
+			repository.getConf().setHeight(8);
+			repository.getConf().setPixelSize(3);
+			repository.getConf().setPixelGridEnabled(false);
+			repository.getConf().setTileGridEnabled(true);
+			repository.getConf().setTileSubGridEnabled(false);
+			repository.getConf().setTileCursorEnabled(true);
+			repository.getConf().setSeparatorEnabled(false);
+			repository.setSelectedTileOffset(0, 0, false);
+			repository.setBitplane(getBlankData());
+			repository.setImagePainterFactory(null);
+			repository.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+			repository.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+			repository.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+			repository.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+			repository.setSelectedColor(1);
+			repository.recalc();
+			// selector.addDrawListener(getPainter());
+			// selector.addDrawListener(getPreviewer());
+
+		}
+		return repository;
+
 	}
 
 	private byte[] getBlankData() {

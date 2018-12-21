@@ -21,5 +21,7 @@ public class CodingPerspectiveHandler
 				partService.switchPerspective(perspective);
 			}
 		}
+		
+		
 	}
 }

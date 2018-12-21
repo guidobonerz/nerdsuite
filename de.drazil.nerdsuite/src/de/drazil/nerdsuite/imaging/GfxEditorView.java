@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -42,7 +43,7 @@ import de.drazil.nerdsuite.widget.IConfigurationListener;
 import de.drazil.nerdsuite.widget.ImagePainter;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
-import de.drazil.nerdsuite.widget.ImageSelector;
+import de.drazil.nerdsuite.widget.ImageRepository;
 import de.drazil.nerdsuite.widget.ImageViewer;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
@@ -50,11 +51,11 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PaintMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
 import net.miginfocom.swt.MigLayout;
 
-public class IconEditor implements IConfigurationListener {
-
+public class GfxEditorView //implements IConfigurationListener {
+{
 	private ImagePainter painter;
 	private ImageViewer previewer;
-	private ImageSelector selector;
+	private ImageRepository selector;
 	private ImageReferenceSelector referenceSelector;
 	private Scale animationTimerDelayScale;
 	private Composite parent;
@@ -71,9 +72,13 @@ public class IconEditor implements IConfigurationListener {
 	private ConfigurationDialog configurationDialog = null;
 	private boolean isAnimationRunning = false;
 	private ImagePainterFactory imagePainterFactory = null;
+	
+	@Inject
+	public GfxEditorView() {
+
+	}
 	/*
-	 * @Execute public void execute(MWindow window, EModelService modelService)
-	 * {
+	 * @Execute public void execute(MWindow window, EModelService modelService) {
 	 * 
 	 * MUIElement findElement = modelService.find("menu:com.test.filesubmenu",
 	 * window.getMainMenu());
@@ -91,7 +96,8 @@ public class IconEditor implements IConfigurationListener {
 	@PostConstruct
 	public void postConstruct(Composite parent, MPart part, EMenuService menuService) {
 		this.parent = parent;
-
+		getPainter();
+/*
 		parent.setLayout(new MigLayout());
 
 		controls = new Composite(parent, SWT.BORDER);
@@ -342,9 +348,9 @@ public class IconEditor implements IConfigurationListener {
 		getPaintModeSelector().select(0);
 		configurationDialog = new ConfigurationDialog(parent.getShell());
 		configurationDialog.addConfigurationListener(this);
-
+*/
 	}
-
+/*
 	private Scale getAnimationTimerDelayScale() {
 		if (animationTimerDelayScale == null) {
 			animationTimerDelayScale = new Scale(controls, SWT.HORIZONTAL);
@@ -372,8 +378,8 @@ public class IconEditor implements IConfigurationListener {
 		}
 		return animationTimerDelayScale;
 	}
-
-	private ImagePainter getPainter() {
+*/
+	public ImagePainter getPainter() {
 		if (painter == null) {
 			painter = new ImagePainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.getConf().setWidgetName("Painter :");
@@ -391,102 +397,39 @@ public class IconEditor implements IConfigurationListener {
 			painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
 			painter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 			painter.setSelectedColor(1);
-			painter.addDrawListener(getSelector());
-			painter.addDrawListener(getPreviewer());
+			painter.recalc();
+			// painter.addDrawListener(getSelector());
+			// painter.addDrawListener(getPreviewer());
 		}
 		return painter;
 	}
 
-	private ImageViewer getPreviewer() {
-		if (previewer == null) {
-			previewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-			previewer.getConf().setWidgetName("Preview :");
-			previewer.getConf().setWidth(8);
-			previewer.getConf().setHeight(8);
-			previewer.getConf().setPixelSize(3);
-			previewer.getConf().setPixelGridEnabled(false);
-			previewer.getConf().setGridStyle(GridStyle.Dot);
-			previewer.getConf().setTileGridEnabled(false);
-			previewer.getConf().setTileCursorEnabled(false);
-			previewer.getConf().setSeparatorEnabled(false);
-			previewer.setSelectedTileOffset(0, 0, false);
-			previewer.setBitplane(getBlankData());
-			previewer.setImagePainterFactory(imagePainterFactory);
-			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-			previewer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-			previewer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-			previewer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-			previewer.setSelectedColor(1);
-
-		}
-		return previewer;
-	}
-
-	private ImageSelector getSelector() {
-		if (selector == null) {
-			selector = new ImageSelector(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
-
-				/*
-				 * 
-				 * @Override protected void setHasTileSelection(int count) {
-				 * getStartAnimation().setEnabled(count > 1);
-				 * getAnimationTimerDelayScale().setEnabled(count > 1); }
-				 * 
-				 * @Override protected void
-				 * showNotification(ImagingServiceDescription type,
-				 * ImagingServiceAction mode, String notification, Object data)
-				 * { if (type == ImagingServiceDescription.Animation) {
-				 * getStartAnimation().setText(notification); } else {
-				 * MessageDialog.openInformation(parent.getShell(),
-				 * "Information", notification); } }
-				 * 
-				 * @Override protected boolean
-				 * isConfirmed(ImagingServiceDescription type,
-				 * ImagingServiceAction mode, int tileCount) { boolean
-				 * confirmation = false; if (type ==
-				 * ImagingServiceDescription.Rotate) { confirmation =
-				 * MessageDialog.openQuestion(parent.getShell(), "Question",
-				 * "Rotating these tile(s) causes data loss, because it is/they are not squarish.\n\nDo you want to rotate anyway?"
-				 * ); } if (type == ImagingServiceDescription.All) {
-				 * confirmation = MessageDialog.openQuestion(parent.getShell(),
-				 * "Question", MessageFormat.format(
-				 * "Do you really want to process {0} ?", (tileCount > 1) ?
-				 * "all selected tiles" : "this tile")); } return confirmation;
-				 * }
-				 * 
-				 * @Override protected void setNotification(int offset, int
-				 * tileSize) {
-				 * 
-				 * getNotification().setText(MessageFormat.format(
-				 * "Offset: ${0} tile:{1} bytes", String.format("%04X", offset),
-				 * tileSize)); }
-				 */
-			};
-			selector.getConf().setWidgetName("Selector:");
-			selector.getConf().setWidth(8);
-			selector.getConf().setHeight(8);
-			selector.getConf().setPixelSize(3);
-			selector.getConf().setPixelGridEnabled(false);
-			selector.getConf().setTileGridEnabled(true);
-			selector.getConf().setTileSubGridEnabled(false);
-			selector.getConf().setTileCursorEnabled(true);
-			selector.getConf().setSeparatorEnabled(false);
-			selector.setSelectedTileOffset(0, 0, false);
-			selector.setBitplane(getBlankData());
-			selector.setImagePainterFactory(imagePainterFactory);
-			selector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-			selector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-			selector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-			selector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-			selector.setSelectedColor(1);
-			selector.addDrawListener(getPainter());
-			selector.addDrawListener(getPreviewer());
-
-		}
-		return selector;
-
-	}
-
+	/*
+	 * private ImageViewer getPreviewer() { if (previewer == null) { previewer = new
+	 * ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+	 * previewer.getConf().setWidgetName("Preview :");
+	 * previewer.getConf().setWidth(8); previewer.getConf().setHeight(8);
+	 * previewer.getConf().setPixelSize(3);
+	 * previewer.getConf().setPixelGridEnabled(false);
+	 * previewer.getConf().setGridStyle(GridStyle.Dot);
+	 * previewer.getConf().setTileGridEnabled(false);
+	 * previewer.getConf().setTileCursorEnabled(false);
+	 * previewer.getConf().setSeparatorEnabled(false);
+	 * previewer.setSelectedTileOffset(0, 0, false);
+	 * previewer.setBitplane(getBlankData());
+	 * previewer.setImagePainterFactory(imagePainterFactory); previewer.setColor(0,
+	 * InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+	 * previewer.setColor(1,
+	 * InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+	 * previewer.setColor(2,
+	 * InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+	 * previewer.setColor(3,
+	 * InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+	 * previewer.setSelectedColor(1);
+	 * 
+	 * } return previewer; }
+	 */
+/*
 	private ImagingWidget getReferenceSelector() {
 		if (referenceSelector == null) {
 			referenceSelector = new ImageReferenceSelector(controls,
@@ -523,7 +466,7 @@ public class IconEditor implements IConfigurationListener {
 		return referenceSelector;
 
 	}
-
+*/
 	private Text getNotification() {
 		if (notification == null) {
 			notification = new Text(controls, SWT.NONE);
@@ -531,7 +474,7 @@ public class IconEditor implements IConfigurationListener {
 		}
 		return notification;
 	}
-
+/*
 	private Button getStartAnimation() {
 		if (startAnimation == null) {
 			startAnimation = new Button(controls, SWT.PUSH);
@@ -564,7 +507,8 @@ public class IconEditor implements IConfigurationListener {
 		}
 		return startAnimation;
 	}
-
+*/
+	/*
 	private Combo getPixelConfigSelector() {
 		if (pixelConfigSelector == null) {
 			pixelConfigSelector = new Combo(controls, SWT.DROP_DOWN);
@@ -585,7 +529,8 @@ public class IconEditor implements IConfigurationListener {
 		}
 		return pixelConfigSelector;
 	}
-
+	*/
+/*
 	private Combo getFormatSelector() {
 		if (formatSelector == null) {
 			formatSelector = new Combo(controls, SWT.DROP_DOWN);
@@ -628,7 +573,7 @@ public class IconEditor implements IConfigurationListener {
 		}
 		return paintModeSelector;
 	}
-
+*/
 	private void setPaintMode(String paintMode) {
 		switch (paintMode) {
 		case "Pixel": {
@@ -649,7 +594,7 @@ public class IconEditor implements IConfigurationListener {
 		}
 		}
 	}
-
+/*
 	private void setPixelConfig(String pixelConfig) {
 		switch (pixelConfig) {
 		case "BC1": {
@@ -677,7 +622,8 @@ public class IconEditor implements IConfigurationListener {
 		getPainter().recalc();
 		parent.layout();
 	}
-
+*/
+	/*
 	private void setPaintFormat(String format) {
 		switch (format) {
 		case "Screen": {
@@ -873,7 +819,8 @@ public class IconEditor implements IConfigurationListener {
 		parent.layout();
 
 	}
-
+*/
+	/*
 	@Override
 	public void configurationChanged(int width, int height, int tileColumns, int tileRows, int painterPixelSize,
 			int selectorPixelSize, int columns, int rows, int currentWidth) {
@@ -896,7 +843,7 @@ public class IconEditor implements IConfigurationListener {
 		getSelector().recalc();
 		parent.layout();
 	}
-
+*/
 	private byte[] getBinaryData() {
 		if (binaryData == null) {
 

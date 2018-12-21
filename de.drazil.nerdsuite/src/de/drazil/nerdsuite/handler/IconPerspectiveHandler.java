@@ -5,22 +5,26 @@ import java.util.List;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
-public class IconPerspectiveHandler
-{
+public class IconPerspectiveHandler {
 	@Execute
-	public void execute(MPerspective activePerspective, MApplication app, EPartService partService, EModelService modelService)
-	{
-		List<MPerspective> perspectives = modelService.findElements(app, "de.drazil.nerdsuite.perspective.iconeditor", MPerspective.class, null);
-		for (MPerspective perspective : perspectives)
-		{
-			if (!perspective.equals(activePerspective))
-			{
+	public void execute(MPerspective activePerspective, MApplication app, EPartService partService,
+			EModelService modelService) {
+		List<MPerspective> perspectives = modelService.findElements(app, "de.drazil.nerdsuite.perspective.GfxEditor",
+				MPerspective.class, null);
+		for (MPerspective perspective : perspectives) {
+			if (!perspective.equals(activePerspective)) {
 				partService.switchPerspective(perspective);
 			}
 		}
+		//MPart editor = partService.findPart("de.drazil.nerdsuite.part.iconeditor");
+		//MPart repository = partService.findPart("de.drazil.nerdsuite.part.repository");
+		//MPart preview = partService.findPart("de.drazil.nerdsuite.part.preview");
+		
+		int a = 0;
 	}
 
 }

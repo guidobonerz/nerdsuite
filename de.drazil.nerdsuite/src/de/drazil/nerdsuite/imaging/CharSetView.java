@@ -15,8 +15,12 @@ import org.osgi.framework.Bundle;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
+import de.drazil.nerdsuite.widget.ImagingWidget;
 
 public class CharSetView {
+
+	private ImageReferenceSelector referenceSelector = null;
+	private Composite parent = null;
 	private byte binaryData[] = null;
 
 	@Inject
@@ -26,29 +30,40 @@ public class CharSetView {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
-		ImageReferenceSelector referenceSelector = new ImageReferenceSelector(parent,
-				SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
-		referenceSelector.getConf().setWidgetName("ReferenceSelector:");
-		referenceSelector.getConf().setWidth(8);
-		referenceSelector.getConf().setHeight(8);
-		referenceSelector.getConf().setTileColumns(1);
-		referenceSelector.getConf().setTileRows(1);
-		referenceSelector.getConf().setColumns(16);
-		referenceSelector.getConf().setRows(16);
-		referenceSelector.getConf().setPixelSize(2);
-		referenceSelector.getConf().setPixelGridEnabled(false);
-		referenceSelector.getConf().setTileGridEnabled(true);
-		referenceSelector.getConf().setTileSubGridEnabled(false);
-		referenceSelector.getConf().setTileCursorEnabled(true);
-		referenceSelector.getConf().setSeparatorEnabled(false);
-		referenceSelector.setSelectedTileOffset(0, 0, true);
-		referenceSelector.setBitplane(getBinaryData());
-		referenceSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		referenceSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		referenceSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		referenceSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		referenceSelector.setSelectedColor(1);
-		referenceSelector.recalc();
+		this.parent = parent;
+		getReferenceSelector();
+	}
+
+	public ImagingWidget getReferenceSelector() {
+		if (referenceSelector == null) {
+			referenceSelector = new ImageReferenceSelector(parent,
+					SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
+			referenceSelector.getConf().setWidgetName("ReferenceSelector:");
+			referenceSelector.getConf().setWidth(8);
+			referenceSelector.getConf().setHeight(8);
+			referenceSelector.getConf().setTileColumns(1);
+			referenceSelector.getConf().setTileRows(1);
+			referenceSelector.getConf().setColumns(16);
+			referenceSelector.getConf().setRows(16);
+			referenceSelector.getConf().setPixelSize(2);
+			referenceSelector.getConf().setPixelGridEnabled(false);
+			referenceSelector.getConf().setTileGridEnabled(true);
+			referenceSelector.getConf().setTileSubGridEnabled(false);
+			referenceSelector.getConf().setTileCursorEnabled(true);
+			referenceSelector.getConf().setSeparatorEnabled(false);
+			referenceSelector.setSelectedTileOffset(0, 0, true);
+			referenceSelector.setBitplane(getBinaryData());
+			referenceSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+			referenceSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+			referenceSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+			referenceSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+			referenceSelector.setSelectedColor(1);
+			referenceSelector.recalc();
+			// referenceSelector.addDrawListener(getPainter());
+
+		}
+		return referenceSelector;
+
 	}
 
 	private byte[] getBinaryData() {
