@@ -62,7 +62,7 @@ public class ColorPaletteView {
 		});
 
 		TableViewerColumn colorColumn = new TableViewerColumn(viewer, SWT.NONE);
-		colorColumn.getColumn().setText("Code");
+		colorColumn.getColumn().setText("Color");
 		colorColumn.getColumn().setWidth(100);
 		colorColumn.setLabelProvider(new ColumnLabelProvider() {
 
