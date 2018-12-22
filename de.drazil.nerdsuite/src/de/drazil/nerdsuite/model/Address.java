@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class Address {
-	private String address;
+	private int address;
 	private String constName;
 	private String description;
 
 	public int getAddressValue() {
-		return Integer.parseInt(address, 16);
+		return address;
 	}
 
 	public boolean matches(int value) {

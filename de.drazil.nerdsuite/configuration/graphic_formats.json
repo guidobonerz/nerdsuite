@@ -1,8 +1,8 @@
 [
 	{
 		"id": "KOALA",
-		"metaDataId":"MULTICOLOR_BITMAP",
-		"content": 
+		"metadataRefId":"MULTICOLOR_BITMAP",
+		"contentStructure": 
 		{
 			"dataOffset": 2,
 			"bitmapOffset": 0,
@@ -14,8 +14,8 @@
 
 	{
 		"id": "MONO_BITMAP",
-		"metaData": 
-		{
+		"metadata": 
+		{ 
 			"width": 8,
 			"height": 8,
 			"rows": 25,
@@ -26,7 +26,7 @@
 
 	{
 		"id": "MONO_CHAR",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -37,7 +37,7 @@
 	},
 	{
 		"id": "MONO_CHAR_2X",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -48,7 +48,7 @@
 	},
 	{
 		"id": "MONO_CHAR_2Y",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -59,7 +59,7 @@
 	},
 	{
 		"id": "MONO_CHAR_2XY",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -71,7 +71,7 @@
 
 	{
 		"id": "MONO_SPRITE",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 24,
 			"height": 21,
@@ -82,7 +82,7 @@
 	},
 	{
 		"id": "MONO_SPRITE_2X",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 24,
 			"height": 21,
@@ -93,7 +93,7 @@
 	},
 	{
 		"id": "MONO_SPRITE_2Y",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 24,
 			"height": 21,
@@ -104,7 +104,7 @@
 	},
 	{
 		"id": "MONO_SPRITE_2XY",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 24,
 			"height": 21,
@@ -116,7 +116,7 @@
 
 	{
 		"id": "MULTICOLOR_BITMAP",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -128,7 +128,7 @@
 
 	{
 		"id": "MULTICOLOR_CHAR",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -139,7 +139,7 @@
 	},
 	{
 		"id": "MULTICOLOR_CHAR_2X",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -150,7 +150,7 @@
 	},
 	{
 		"id": "MULTICOLOR_CHAR_2Y",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -161,7 +161,7 @@
 	},
 	{
 		"id": "MULTICOLOR_CHAR_2XY",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
@@ -172,7 +172,7 @@
 	},
 	{
 		"id": "MULTICOLOR_SPRITE",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 24,
 			"height": 21,
@@ -183,7 +183,7 @@
 	},
 	{
 		"id": "MULTICOLOR_SPRITE_2X",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 24,
 			"height": 21,
@@ -194,7 +194,7 @@
 	},
 	{
 		"id": "MULTICOLOR_SPRITE_2Y",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 24,
 			"height": 21,
@@ -205,7 +205,7 @@
 	},
 	{
 		"id": "MULTICOLOR_SPRITE_2XY",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 24,
 			"height": 21,
