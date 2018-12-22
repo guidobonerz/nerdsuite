@@ -69,8 +69,10 @@ public class RepositoryView {
 			repository.getConf().setWidgetName("Selector:");
 			repository.getConf().setWidth(40);
 			repository.getConf().setHeight(25);
-			repository.getConf().setWidth(8);
-			repository.getConf().setHeight(8);
+			 repository.getConf().setTileColumns(1);
+			repository.getConf().setTileRows(1);
+			repository.getConf().setColumns(8);
+			repository.getConf().setRows(4);
 			repository.getConf().setPixelSize(3);
 			repository.getConf().setPixelGridEnabled(false);
 			repository.getConf().setTileGridEnabled(true);

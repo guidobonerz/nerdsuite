@@ -366,7 +366,7 @@ public class GfxEditorView //implements IConfigurationListener {
 			gridData.horizontalAlignment = GridData.FILL;
 			animationTimerDelayScale.setLayoutData(gridData);
 			animationTimerDelayScale.addSelectionListener(new SelectionAdapter() {
-				@Override
+				@Override 
 				public void widgetSelected(SelectionEvent e) {
 					int step = (getAnimationTimerDelayScale().getSelection()
 							/ getAnimationTimerDelayScale().getIncrement())
