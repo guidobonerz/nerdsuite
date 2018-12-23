@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
@@ -32,16 +33,35 @@ public class RepositoryView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
-		getRepository();
+		parent.addListener(SWT.Resize, e -> {
+			computeVisibility();
+		});
+		getWidget();
+	}
+
+	private void computeVisibility() {
+		Rectangle r = parent.getClientArea();
+		int columns = (r.width - getWidget().getVerticalBar().getSize().x) / getWidget().getConf().getTileWidth();
+		columns = columns == 0 ? 1 : columns;
+		int tileCount = blankData.length / getWidget().getConf().getTileSize();
+		int rows = tileCount / columns;
+
+		getWidget().getConf().setColumns(columns);
+		getWidget().getConf().setRows(rows);
+		getWidget().recalc();
 	}
 
 	@Inject
 	@Optional
 	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
-		System.out.print(gf.getId());
+		getWidget().getConf().setWidth(gf.getMetadata().getWidth());
+		getWidget().getConf().setHeight(gf.getMetadata().getHeight());
+		getWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
+		getWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getWidget().recalc();
 	}
 
-	private ImageRepository getRepository() {
+	private ImageRepository getWidget() {
 		if (repository == null) {
 			repository = new ImageRepository(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
 
@@ -75,11 +95,7 @@ public class RepositoryView {
 				 */
 			};
 			repository.getConf().setWidgetName("Selector:");
-			repository.getConf().setWidth(40);
-			repository.getConf().setHeight(25);
-			repository.getConf().setTileColumns(1);
-			repository.getConf().setTileRows(1);
-			repository.getConf().setColumns(8);
+			repository.getConf().setColumns(4);
 			repository.getConf().setRows(4);
 			repository.getConf().setPixelSize(3);
 			repository.getConf().setPixelGridEnabled(false);

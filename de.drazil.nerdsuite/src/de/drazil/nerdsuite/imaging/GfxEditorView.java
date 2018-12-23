@@ -77,14 +77,18 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
-		System.out.print(gf.getId());
+		getWidget().getConf().setWidth(gf.getMetadata().getWidth());
+		getWidget().getConf().setHeight(gf.getMetadata().getHeight());
+		getWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
+		getWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getWidget().recalc();
 	}
 
 	@PostConstruct
 	public void postConstruct(Composite parent, MPart part, EMenuService menuService) {
 		this.parent = parent;
 
-		getPainter();
+		getWidget();
 		/*
 		 * parent.setLayout(new MigLayout());
 		 * 
@@ -306,12 +310,11 @@ public class GfxEditorView // implements IConfigurationListener {
 	 * getSelector().getService(AnimationService.class).setDelay(step); } }); }
 	 * return animationTimerDelayScale; }
 	 */
-	public ImagePainter getPainter() {
+	public ImagePainter getWidget() {
 		if (painter == null) {
 			painter = new ImagePainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.getConf().setWidgetName("Painter :");
-			painter.getConf().setWidth(8);
-			painter.getConf().setHeight(8);
+			painter.getConf().setPixelSize(15);
 			painter.getConf().setPixelGridEnabled(true);
 			painter.getConf().setGridStyle(GridStyle.Dot);
 			painter.getConf().setTileGridEnabled(true);
@@ -465,27 +468,16 @@ public class GfxEditorView // implements IConfigurationListener {
 	 * e.getSource()); int index = c.getSelectionIndex();
 	 * setPaintMode(c.getItem(index)); } }); } return paintModeSelector; }
 	 */
-	private void setPaintMode(String paintMode) {
-		switch (paintMode) {
-		case "Pixel": {
-			getPainter().getConf().setPaintMode(PaintMode.Simple);
-			break;
-		}
-		case "VerticalMirror": {
-			getPainter().getConf().setPaintMode(PaintMode.VerticalMirror);
-			break;
-		}
-		case "HorizontalMirror": {
-			getPainter().getConf().setPaintMode(PaintMode.HorizontalMirror);
-			break;
-		}
-		case "Kaleidoscope": {
-			getPainter().getConf().setPaintMode(PaintMode.Kaleidoscope);
-			break;
-		}
-		}
-	}
-
+	/*
+	 * private void setPaintMode(String paintMode) { switch (paintMode) { case
+	 * "Pixel": { getPainter().getConf().setPaintMode(PaintMode.Simple); break; }
+	 * case "VerticalMirror": {
+	 * getPainter().getConf().setPaintMode(PaintMode.VerticalMirror); break; } case
+	 * "HorizontalMirror": {
+	 * getPainter().getConf().setPaintMode(PaintMode.HorizontalMirror); break; }
+	 * case "Kaleidoscope": {
+	 * getPainter().getConf().setPaintMode(PaintMode.Kaleidoscope); break; } } }
+	 */
 	/*
 	 * private void setPixelConfig(String pixelConfig) { switch (pixelConfig) { case
 	 * "BC1": { getPainter().getConf().setPixelConfig(PixelConfig.BC1);

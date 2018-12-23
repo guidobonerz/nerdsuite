@@ -6,7 +6,7 @@ import lombok.Data;
 public class GraphicMetadata {
 	private int width;
 	private int height;
-	private int rows;
-	private int columns;
+	private int tileRows;
+	private int tileColumns;
 	private boolean multicolor;
 }

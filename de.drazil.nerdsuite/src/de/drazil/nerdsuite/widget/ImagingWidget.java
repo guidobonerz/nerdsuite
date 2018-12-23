@@ -296,6 +296,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	protected void computeCursorPosition(int x, int y) {
+		System.out.println(conf.widgetName);
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
 		tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);

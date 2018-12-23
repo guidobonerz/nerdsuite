@@ -18,8 +18,8 @@
 		{ 
 			"width": 8,
 			"height": 8,
-			"rows": 25,
-			"columns": 40,
+			"tileRows": 25,
+			"tileColumns": 40,
 			"multicolor": false
 		}
 	},
@@ -30,8 +30,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 1,
-			"columns": 1,
+			"tileRows": 1,
+			"tileColumns": 1,
 			"multicolor": false
 		}
 	},
@@ -41,8 +41,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 1,
-			"columns": 2,
+			"tileRows": 1,
+			"tileColumns": 2,
 			"multicolor": false
 		}
 	},
@@ -52,8 +52,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 2,
-			"columns": 1,
+			"tileRows": 2,
+			"tileColumns": 1,
 			"multicolor": false
 		}
 	},
@@ -63,8 +63,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 2,
-			"columns": 1,
+			"tileRows": 2,
+			"tileColumns": 1,
 			"multicolor": false
 		}
 	},
@@ -75,8 +75,8 @@
 		{
 			"width": 24,
 			"height": 21,
-			"rows": 1,
-			"columns": 1,
+			"tileRows": 1,
+			"tileColumns": 1,
 			"multicolor": false
 		}
 	},
@@ -86,8 +86,8 @@
 		{
 			"width": 24,
 			"height": 21,
-			"rows": 1,
-			"columns": 2,
+			"tileRows": 1,
+			"tileColumns": 2,
 			"multicolor": false
 		}
 	},
@@ -97,8 +97,8 @@
 		{
 			"width": 24,
 			"height": 21,
-			"rows": 2,
-			"columns": 1,
+			"tileRows": 2,
+			"tileColumns": 1,
 			"multicolor": false
 		}
 	},
@@ -108,8 +108,8 @@
 		{
 			"width": 24,
 			"height": 21,
-			"rows": 2,
-			"columns": 2,
+			"tileRows": 2,
+			"tileColumns": 2,
 			"multicolor": false
 		}
 	},
@@ -120,8 +120,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 25,
-			"columns": 40,
+			"tileRows": 25,
+			"tileColumns": 40,
 			"multicolor": true
 		}
 	},
@@ -132,8 +132,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 1,
-			"columns": 1,
+			"tileRows": 1,
+			"tileColumns": 1,
 			"multicolor": true
 		}
 	},
@@ -143,8 +143,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 1,
-			"columns": 2,
+			"tileRows": 1,
+			"tileColumns": 2,
 			"multicolor": true
 		}
 	},
@@ -154,8 +154,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 2,
-			"columns": 1,
+			"tileRows": 2,
+			"tileColumns": 1,
 			"multicolor": true
 		}
 	},
@@ -165,8 +165,8 @@
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 2,
-			"columns": 2,
+			"tileRows": 2,
+			"tileColumns": 2,
 			"multicolor": true
 		}
 	},
@@ -176,8 +176,8 @@
 		{
 			"width": 24,
 			"height": 21,
-			"rows": 1,
-			"columns": 1,
+			"tileRows": 1,
+			"tileColumns": 1,
 			"multicolor": true
 		}
 	},
@@ -187,8 +187,8 @@
 		{
 			"width": 24,
 			"height": 21,
-			"rows": 1,
-			"columns": 2,
+			"tileRows": 1,
+			"tileColumns": 2,
 			"multicolor": true
 		}
 	},
@@ -198,8 +198,8 @@
 		{
 			"width": 24,
 			"height": 21,
-			"rows": 2,
-			"columns": 1,
+			"tileRows": 2,
+			"tileColumns": 1,
 			"multicolor": true
 		}
 	},
@@ -209,8 +209,8 @@
 		{
 			"width": 24,
 			"height": 21,
-			"rows": 2,
-			"columns": 2,
+			"tileRows": 2,
+			"tileColumns": 2,
 			"multicolor": true
 		}
 	}

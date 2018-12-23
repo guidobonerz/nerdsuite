@@ -18,6 +18,7 @@ public class PreviewView {
 
 	private ImageViewer previewer = null;
 	private Composite parent = null;
+	private byte blankData[] = null;
 
 	public PreviewView() {
 
@@ -26,31 +27,37 @@ public class PreviewView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
-		getPreviewer();
+		parent.addListener(SWT.Resize, e -> {
+			System.out.println(parent.getClientArea());
+
+		});
+		getWidget();
 	}
 
 	@Inject
 	@Optional
 	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
-		System.out.print(gf.getId());
+		getWidget().getConf().setWidth(gf.getMetadata().getWidth());
+		getWidget().getConf().setHeight(gf.getMetadata().getHeight());
+		getWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
+		getWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getWidget().recalc();
 	}
 
-	public ImageViewer getPreviewer() {
+	public ImageViewer getWidget() {
 		if (previewer == null) {
 			previewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			previewer.getConf().setWidgetName("Preview :");
-			previewer.getConf().setWidth(8);
-			previewer.getConf().setHeight(8);
-			previewer.getConf().setPixelSize(3);
-			previewer.getConf().setTileRows(1);
-			previewer.getConf().setTileColumns(1);
+			previewer.getConf().setPixelSize(1);
+			previewer.getConf().setRows(1);
+			previewer.getConf().setColumns(1);
 			previewer.getConf().setPixelGridEnabled(false);
 			previewer.getConf().setGridStyle(GridStyle.Dot);
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
 			previewer.getConf().setSeparatorEnabled(false);
 			previewer.setSelectedTileOffset(0, 0, false);
-			previewer.setBitplane(new byte[65535]);
+			previewer.setBitplane(getBlankData());
 			previewer.setImagePainterFactory(null);
 			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
 			previewer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
@@ -60,5 +67,14 @@ public class PreviewView {
 			previewer.recalc();
 		}
 		return previewer;
+	}
+
+	private byte[] getBlankData() {
+		if (blankData == null) {
+			blankData = new byte[0x1f40];
+			for (int i = 0; i < blankData.length; i++)
+				blankData[i] = 32;// (byte) (Math.random() * 80);
+		}
+		return blankData;
 	}
 }
