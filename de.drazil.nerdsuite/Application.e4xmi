@@ -43,7 +43,7 @@
           </children>
         </children>
       </children>
-      <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.GfxEditor" label="GfxEditor">
+      <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.Gfx" label="GfxEditor">
         <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_EyKI8AUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partsashcontainer.5">
             <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.5">
@@ -54,11 +54,11 @@
                 </menus>
               </children>
             </children>
-            <children xsi:type="basic:Part" xmi:id="_Ib-vUAUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.part.repository" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.RepositoryView" label="Repository"/>
+            <children xsi:type="basic:Part" xmi:id="_Ib-vUAUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.part.Repository" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.RepositoryView" label="Repository"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_vkk_4AR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.4">
             <children xsi:type="basic:PartStack" xmi:id="_iYxowASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.4">
-              <children xsi:type="basic:Part" xmi:id="_aN4D4ASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.preview" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.PreviewView" label="Preview"/>
+              <children xsi:type="basic:Part" xmi:id="_aN4D4ASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.Preview" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.PreviewView" label="Preview"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_Bx0W8ASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.1" containerData="">
               <children xsi:type="basic:Part" xmi:id="_gJRGcASVEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.colors" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ColorPaletteView" label="Colors" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/color_wheel.png"/>
@@ -93,15 +93,20 @@
         <children xsi:type="menu:Menu" xmi:id="_cSP6MKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.1" label="New">
           <children xsi:type="menu:HandledMenuItem" xmi:id="_fvfdIKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.5" label="Project" command="_ATMWMKaVEeOsl7k25iZUBw"/>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_YRilsKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handledmenuitem.6" label="Source File" command="_ka2AIOwWEeSYVemvddr_Tw"/>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_iZmZEKruEeO33ch1Zth4Ww" elementId="de.drazil.nerdsuite.handledmenuitem.15" label="SpriteProject" command="_nW-SAKruEeO33ch1Zth4Ww"/>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_b3A3YATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.15" label="Sprite 2X Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_ew1kMATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.15" label="Sprite 2Y Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_gH6E0ATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.15" label="Sprite 2XY Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_oRyWAATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.charscreenpro" label="CharScreen Project"/>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_uaQW0AT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newimage" label="New Image" command="_mWhJ4AT4EemsC5geQwPptA">
-            <parameters xmi:id="_-d0hEAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.parameter.width" name="de.drazil.nerdsuite.commandparameter.width" value="8"/>
-            <parameters xmi:id="_DNU9IAT5EemsC5geQwPptA" elementId="de.drazil.nerdsuite.parameter.height" name="de.drazil.nerdsuite.commandparameter.height" value="8"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_iZmZEKruEeO33ch1Zth4Ww" elementId="de.drazil.nerdsuite.handledmenuitem.newSpriteProject" label="SpriteProject" command="_nW-SAKruEeO33ch1Zth4Ww">
+            <parameters xmi:id="_iEG5AAY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.parameter.gfxFormat" value="MONO_SPRITE"/>
           </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_b3A3YATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newSprite2xProject" label="Sprite 2X Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_ew1kMATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newSprite2yProject" label="Sprite 2Y Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_gH6E0ATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newSprite2xyProject" label="Sprite 2XY Project" command="_nW-SAKruEeO33ch1Zth4Ww"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_oRyWAATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.charscreenProject" label="CharScreen Project"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_uaQW0AT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newGfxProject" label="Graphic Project" command="_mWhJ4AT4EemsC5geQwPptA">
+            <parameters xmi:id="_cPuDEAY3EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.parameter.gfxFormat" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_SPRITE"/>
+          </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_SNAdcAY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.handledmenuitem.newCharsetProject" label="Charset Project"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_X5thkAY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.handledmenuitem.newCharset2xProject" label="Charset 2X Project"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_Z05b4AY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.handledmenuitem.newCharset2yProject" label="Charset 2Y Project"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_bbbU0AY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.handledmenuitem.newCharset2xyProject" label="Charset 2XY Project"/>
         </children>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_UgTn4KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.0" label="Close Project"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_VUSCgKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.1" label="Close File"/>
@@ -124,9 +129,9 @@
       </children>
       <children xsi:type="menu:Menu" xmi:id="_FUN4MKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.disassemble" label="Disassemble"/>
       <children xsi:type="menu:Menu" xmi:id="_r7g4cL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.menu.perspective" label="Perspective">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6UAA8L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.CodingPerspective" label="Coding Perspective" command="_XZnhsL62Eeaij7VdtYSbPw"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_iT-AIJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handledmenuitem.IconPerspective" label="Icon Perspective" command="_Uw3ngJXLEeiXIq2xmOFdHg"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_HCEdcJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handledmenuitem.BitmapPerspective" label="Bitmap Perspective" command="_9k6mgJdEEeiWU4p0leyFHA"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6UAA8L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.CodingPerspective" label="Coding Perspective"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_iT-AIJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handledmenuitem.IconPerspective" label="Icon Perspective"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_HCEdcJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handledmenuitem.BitmapPerspective" label="Bitmap Perspective"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.0">
@@ -151,10 +156,7 @@
   <handlers xmi:id="_CGhuAMySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.buildAndRun" command="_yWlqYMyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_ElMI0MySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.runToolchain" command="_3H-80MyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
-  <handlers xmi:id="_idGn0L63Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handler.CodingPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CodingPerspectiveHandler" command="_XZnhsL62Eeaij7VdtYSbPw"/>
-  <handlers xmi:id="_PlHUUJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handler.IconPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.IconPerspectiveHandler" command="_Uw3ngJXLEeiXIq2xmOFdHg"/>
-  <handlers xmi:id="_3-IkMJdEEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handler.BitmapPerspectiveHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.BitmapPerspectiveHandler" command="_9k6mgJdEEeiWU4p0leyFHA"/>
-  <handlers xmi:id="_zoCDQAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewImageHandler" command="_mWhJ4AT4EemsC5geQwPptA"/>
+  <handlers xmi:id="_zoCDQAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.newGfxProject" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewGraphicProjectHandler" command="_mWhJ4AT4EemsC5geQwPptA"/>
   <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.addLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.AddLayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
   <handlers xmi:id="_akHrIAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.removeLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RemoveLayerHandler" command="_F2WbkAT-EemsC5geQwPptA"/>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
@@ -167,13 +169,9 @@
   <commands xmi:id="_yWlqYMyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.build_and_run" commandName="Build and Run"/>
   <commands xmi:id="_3H-80MyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.run_toolchain" commandName="Run ToolChain"/>
   <commands xmi:id="_ka2AIOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.command.newSourceFile" commandName="New Source File"/>
-  <commands xmi:id="_XZnhsL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.command.CodingPerspective" commandName="Coding Perspective"/>
-  <commands xmi:id="_Uw3ngJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.command.IconPerspective" commandName="Icon Perspective"/>
-  <commands xmi:id="_9k6mgJdEEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.command.BitmapPerspective" commandName="Bitmap Perspective"/>
   <commands xmi:id="_D6FtcAGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.command.SwapTile" commandName="SwapTile"/>
-  <commands xmi:id="_mWhJ4AT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.newImageProject" commandName="New Image Project">
-    <parameters xmi:id="_HNiqQAT5EemsC5geQwPptA" elementId="de.drazil.nerdsuite.commandparameter.width" name="width" optional="false"/>
-    <parameters xmi:id="_JTaxoAT5EemsC5geQwPptA" elementId="de.drazil.nerdsuite.commandparameter.height" name="height" optional="false"/>
+  <commands xmi:id="_mWhJ4AT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.newGfxProject" commandName="Graphic Project Command">
+    <parameters xmi:id="_DHEjoAY3EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.commandparameter.gfxFormat" name="gfxFormat"/>
   </commands>
   <commands xmi:id="_CYRyMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.addLayer" commandName="Add Layer"/>
   <commands xmi:id="_F2WbkAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.removeLayer" commandName="Remove Layer"/>
