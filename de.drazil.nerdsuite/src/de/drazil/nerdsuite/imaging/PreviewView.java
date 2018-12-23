@@ -4,10 +4,13 @@ package de.drazil.nerdsuite.imaging;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageViewer;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
 
@@ -16,7 +19,6 @@ public class PreviewView {
 	private ImageViewer previewer = null;
 	private Composite parent = null;
 
-	@Inject
 	public PreviewView() {
 
 	}
@@ -25,6 +27,12 @@ public class PreviewView {
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
 		getPreviewer();
+	}
+
+	@Inject
+	@Optional
+	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
+		System.out.print(gf.getId());
 	}
 
 	public ImageViewer getPreviewer() {

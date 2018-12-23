@@ -1,14 +1,15 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.IOException;
-import java.lang.annotation.Inherited;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
@@ -23,7 +24,6 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
-import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.ImagePainter;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
@@ -54,14 +54,10 @@ public class GfxEditorView // implements IConfigurationListener {
 	private boolean isAnimationRunning = false;
 	private ImagePainterFactory imagePainterFactory = null;
 
-	
-
-	@Inject
 	public GfxEditorView() {
-		// System.out.println("create new " + format + " project");
-		// GraphicFormat gf = GraphicFormatFactory.getFormatByName(format);
-		int a = 0;
+
 	}
+
 	/*
 	 * @Execute public void execute(MWindow window, EModelService modelService) {
 	 * 
@@ -78,11 +74,16 @@ public class GfxEditorView // implements IConfigurationListener {
 	// @Inject
 	// EMenuService menuService;
 
+	@Inject
+	@Optional
+	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
+		System.out.print(gf.getId());
+	}
+
 	@PostConstruct
 	public void postConstruct(Composite parent, MPart part, EMenuService menuService) {
 		this.parent = parent;
-		// GraphicFormat gf = GraphicFormatFactory.getFormatByName(format);
-		// int a = 0;
+
 		getPainter();
 		/*
 		 * parent.setLayout(new MigLayout());

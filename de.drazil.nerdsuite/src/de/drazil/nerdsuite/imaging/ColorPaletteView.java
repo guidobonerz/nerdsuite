@@ -33,7 +33,7 @@ public class ColorPaletteView {
 		viewer.getTable().setLinesVisible(true);
 		TableViewerColumn colorIndexColumn = new TableViewerColumn(viewer, SWT.NONE);
 		colorIndexColumn.getColumn().setText("Index");
-		colorIndexColumn.getColumn().setWidth(60);
+		colorIndexColumn.getColumn().setWidth(40);
 		colorIndexColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -42,7 +42,7 @@ public class ColorPaletteView {
 		});
 		TableViewerColumn visibilityColumn = new TableViewerColumn(viewer, SWT.CHECK);
 		visibilityColumn.getColumn().setText("Name");
-		visibilityColumn.getColumn().setWidth(50);
+		visibilityColumn.getColumn().setWidth(65);
 		visibilityColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -52,12 +52,12 @@ public class ColorPaletteView {
 		});
 		TableViewerColumn colorCodeColumn = new TableViewerColumn(viewer, SWT.NONE);
 		colorCodeColumn.getColumn().setText("Code");
-		colorCodeColumn.getColumn().setWidth(100);
+		colorCodeColumn.getColumn().setWidth(80);
 		colorCodeColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				PlatformColor platformColor = (PlatformColor) element;
-				return platformColor.getValue();
+				return platformColor.getValue().toUpperCase();
 			}
 		});
 

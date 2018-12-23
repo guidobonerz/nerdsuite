@@ -8,12 +8,15 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 
@@ -23,15 +26,16 @@ public class CharSetView {
 	private Composite parent = null;
 	private byte binaryData[] = null;
 
-	@Inject
-	public CharSetView() {
-
-	}
-
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
 		getReferenceSelector();
+	}
+
+	@Inject
+	@Optional
+	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
+		System.out.print(gf.getId());
 	}
 
 	public ImagingWidget getReferenceSelector() {

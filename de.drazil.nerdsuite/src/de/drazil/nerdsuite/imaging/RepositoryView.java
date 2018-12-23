@@ -8,12 +8,15 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageRepository;
 
 public class RepositoryView {
@@ -22,7 +25,6 @@ public class RepositoryView {
 	private byte binaryData[] = null;
 	private byte blankData[] = null;
 
-	@Inject
 	public RepositoryView() {
 
 	}
@@ -31,6 +33,12 @@ public class RepositoryView {
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
 		getRepository();
+	}
+
+	@Inject
+	@Optional
+	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
+		System.out.print(gf.getId());
 	}
 
 	private ImageRepository getRepository() {
@@ -69,7 +77,7 @@ public class RepositoryView {
 			repository.getConf().setWidgetName("Selector:");
 			repository.getConf().setWidth(40);
 			repository.getConf().setHeight(25);
-			 repository.getConf().setTileColumns(1);
+			repository.getConf().setTileColumns(1);
 			repository.getConf().setTileRows(1);
 			repository.getConf().setColumns(8);
 			repository.getConf().setRows(4);
