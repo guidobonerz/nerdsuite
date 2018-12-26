@@ -44,7 +44,8 @@ public class RepositoryView {
 		int columns = (r.width - getWidget().getVerticalBar().getSize().x) / getWidget().getConf().getTileWidth();
 		columns = columns == 0 ? 1 : columns;
 		int tileCount = blankData.length / getWidget().getConf().getTileSize();
-		int rows = tileCount / columns;
+		int rows = (tileCount / columns)+1;
+		System.out.println(tileCount);
 
 		getWidget().getConf().setColumns(columns);
 		getWidget().getConf().setRows(rows);

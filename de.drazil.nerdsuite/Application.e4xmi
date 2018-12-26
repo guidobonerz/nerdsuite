@@ -76,15 +76,6 @@
               <children xsi:type="basic:Part" xmi:id="_QKqSgASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.part.tools" label="Tools" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/toolbox.png"/>
             </children>
           </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_RgGR4AbrEemoetwiUKVekQ" elementId="de.drazil.nerdsuite.partsashcontainer.6" horizontal="true">
-            <children xsi:type="basic:PartStack" xmi:id="_oo6AgAbrEemoetwiUKVekQ" elementId="de.drazil.nerdsuite.partstack.6">
-              <children xsi:type="basic:Part" xmi:id="_UCEfYAbrEemoetwiUKVekQ" elementId="de.drazil.nerdsuite.part.tools2" label="Tools2">
-                <toolbar xmi:id="_ibNvMAbrEemoetwiUKVekQ" elementId="de.drazil.nerdsuite.toolbar.5">
-                  <children xsi:type="menu:HandledToolItem" xmi:id="_kyr84AbrEemoetwiUKVekQ" elementId="de.drazil.nerdsuite.handledtoolitem.test" label="Test"/>
-                </toolbar>
-              </children>
-            </children>
-          </children>
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_QbE0MJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.perspective.bitmapeditor" label="BitmapEditor">

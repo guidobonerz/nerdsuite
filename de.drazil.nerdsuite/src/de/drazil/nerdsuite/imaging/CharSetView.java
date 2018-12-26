@@ -74,7 +74,7 @@ public class CharSetView {
 		if (binaryData == null) {
 
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-			URL url = bundle.getEntry("fonts/c64_lower.64c");
+			URL url = bundle.getEntry("fonts/5x5.64c");
 
 			try {
 				binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
