@@ -5,8 +5,8 @@ Currently I work mostly on the graphics part.
 
 | System | OS | Works | Performance | Java Version
 | -- | -- | -- | -- | -- |
-| Windows (4GHz i7 / 32GB) | 8.1 | yes | excellent| 1.8.0_191
-| Linux (2.5GHz i5 / 6GB) | Mint 18.2 Cinnamon | yes | ok | 1.8.0_191
+| Windows (4GHz i7 / 32GB) | Windows 8.1 | yes | excellent| 1.8.0_191
+| Linux (2.5GHz i5 / 6GB) | Linux Mint 18.2 Cinnamon | yes | ok | 1.8.0_191
 | Mac (2GHz Core2Duo / 8GB) | MacOS 10.11.6 (El Capitan) | yes | very slow | 1.8.0_25
 
 ## CharEditor View
