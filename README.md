@@ -7,7 +7,7 @@ Currently I work mostly on the graphics part.
 | -- | -- | -- | -- | -- |
 | Windows (4GHz i7 / 32GB) | Windows 8.1 | yes | excellent| 1.8.0_191
 | Linux (2.5GHz i5 / 6GB) | Linux Mint 18.2 Cinnamon | yes | ok | 1.8.0_191
-| Mac (2GHz Core2Duo / 8GB) | MacOS 10.11.6 (El Capitan) | yes | very slow | 1.8.0_25
+| Mac (2GHz Core2Duo / 8GB) | MacOS 10.11.6 El Capitan | yes | very slow | 1.8.0_25
 
 ## CharEditor View
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/char_view.png)
