@@ -3,11 +3,11 @@ Nerdsuite is an IDE (based on eclipse 4.10/2018-12) to develop for old 8Bit mach
 Once finished, it will contain a SourceCode Editor, Disassembler, IconEditor (for CharSets,Sprites,Screens and Bitmaps)  
 Currently I work mostly on the graphics part.  
 
-| System | Works |
-| -- | -- |
-| Windows | yes |
-| Linux | yes |
-| Mac | not tested |
+| System | Version | Works | Java Version
+| -- | -- | -- | -- |
+| Windows | 8.1 | yes | 1.8.0_191
+| Linux | Ubuntu 16.04 | yes | 1.8.0_130
+| Mac | El Capitan (10.11.6) | yes | 1.8.0_25
 
 ## CharEditor View
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/char_view.png)
