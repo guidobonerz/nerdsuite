@@ -7,5 +7,9 @@ public class Layer {
 	private byte bitplane[] = null;
 	private boolean isActive = false;
 	private boolean visible = true;
-	private String name = "rename me";
+	private String name = "<rename me>";
+
+	public Layer(String name) {
+		this.name = null == name ? this.name : name;
+	}
 }

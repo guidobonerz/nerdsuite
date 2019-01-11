@@ -8,11 +8,11 @@ Bundle-ClassPath: ext_libs/commons-exec-1.2.jar,
  ext_libs/jackson-core-2.1.4.jar,
  ext_libs/jackson-databind-2.1.4.jar,
  ext_libs/lombok.jar,
- ext_libs/KickAss_4.19.jar,
  ext_libs/commons-io-2.6.jar,
  ext_libs/miglayout-4.0-swt.jar,
+ ext_libs/zt-exec-1.10.jar,
+ ext_libs/KickAss_5.2.jar,
  .,
- swing2swt.jar,
  images/,
  fonts/,
  css/,
@@ -33,6 +33,8 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.core.databinding.property;bundle-version="1.6.300",
  org.eclipse.e4.core.services;bundle-version="2.1.300",
  org.eclipse.ui;bundle-version="3.111.0",
- org.eclipse.ui.intro;bundle-version="3.5.400"
+ org.eclipse.ui.intro;bundle-version="3.5.400",
+ org.eclipse.ui.workbench
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: javax.inject;version="1.0.0"
+Import-Package: javax.annotation;version="1.0.0";resolution:=optional,
+ javax.inject;version="1.0.0"

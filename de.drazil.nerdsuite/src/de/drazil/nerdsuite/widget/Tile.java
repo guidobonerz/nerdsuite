@@ -13,15 +13,24 @@ public class Tile {
 	private List<Layer> layerList = null;
 	private List<Integer> layerIndexOrderList = null;
 	@Setter
-	private String name = "rename me";
+	private String name = "<rename me>";
 
 	public Tile(ImagingWidgetConfiguration configuration) {
 		this.configuration = configuration;
 		layerList = new ArrayList<>();
+		layerIndexOrderList = new ArrayList<Integer>();
+	}
+
+	public List<Layer> getLayerList() {
+		return layerList;
 	}
 
 	public void addLayer() {
-		Layer layer = new Layer();
+		addLayer(null);
+	}
+
+	public void addLayer(String name) {
+		Layer layer = new Layer(name);
 		if (layerList.size() == 0) {
 			layer.setActive(true);
 		}

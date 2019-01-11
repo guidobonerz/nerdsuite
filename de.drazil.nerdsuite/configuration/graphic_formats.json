@@ -1,93 +1,216 @@
 [
 	{
 		"id": "KOALA",
-		"metaData": 
-		{
-			"width": 8,
-			"height": 8,
-			"rows": 25,
-			"columns": 40,
-			"multicolor": true
-		},
-
-		"content": 
+		"metadataRefId":"MULTICOLOR_BITMAP",
+		"contentStructure": 
 		{
 			"dataOffset": 2,
 			"bitmapOffset": 0,
-			"screenOffset": 8000,
-			"colorOffset": 9000,
-			"backgroundOffset": 10000
+			"screenRamOffset": 8000,
+			"colorRamOffset": 9000,
+			"backgroundColorOffset": 10000
 		}
 	},
 
 	{
 		"id": "MONO_BITMAP",
-		"metaData": 
-		{
+		"metadata": 
+		{ 
 			"width": 8,
 			"height": 8,
-			"rows": 25,
-			"columns": 40,
+			"tileRows": 25,
+			"tileColumns": 40,
 			"multicolor": false
 		}
 	},
 
 	{
 		"id": "MONO_CHAR",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 1,
-			"columns": 1,
+			"tileRows": 1,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_CHAR_2X",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 1,
+			"tileColumns": 2,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_CHAR_2Y",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_CHAR_2XY",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 2,
+			"tileColumns": 1,
 			"multicolor": false
 		}
 	},
 
 	{
 		"id": "MONO_SPRITE",
-		"metaData": 
+		"metadata": 
 		{
-			"width": 8,
-			"height": 1,
-			"rows": 21,
-			"columns": 3,
+			"width": 24,
+			"height": 21,
+			"tileRows": 1,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_SPRITE_2X",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 1,
+			"tileColumns": 2,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_SPRITE_2Y",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_SPRITE_2XY",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 2,
+			"tileColumns": 2,
 			"multicolor": false
 		}
 	},
 
 	{
 		"id": "MULTICOLOR_BITMAP",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 25,
-			"columns": 40,
+			"tileRows": 25,
+			"tileColumns": 40,
 			"multicolor": true
 		}
 	},
 
 	{
 		"id": "MULTICOLOR_CHAR",
-		"metaData": 
+		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
-			"rows": 1,
-			"columns": 1,
+			"tileRows": 1,
+			"tileColumns": 1,
 			"multicolor": true
 		}
 	},
-
 	{
-		"id": "MULTICOLOR_SPRITE",
-		"metaData": 
+		"id": "MULTICOLOR_CHAR_2X",
+		"metadata": 
 		{
 			"width": 8,
-			"height": 1,
-			"rows": 21,
-			"columns": 3,
+			"height": 8,
+			"tileRows": 1,
+			"tileColumns": 2,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_CHAR_2Y",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_CHAR_2XY",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 2,
+			"tileColumns": 2,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_SPRITE",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 1,
+			"tileColumns": 1,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_SPRITE_2X",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 1,
+			"tileColumns": 2,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_SPRITE_2Y",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_SPRITE_2XY",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 2,
+			"tileColumns": 2,
 			"multicolor": true
 		}
 	}

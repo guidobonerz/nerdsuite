@@ -2,7 +2,7 @@ package de.drazil.nerdsuite.widget;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class ImageReferenceSelector extends ImageSelector {
+public class ImageReferenceSelector extends ImageRepository {
 
 	public ImageReferenceSelector(Composite parent, int style) {
 		super(parent, style);
