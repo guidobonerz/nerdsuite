@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Layer {
-	private byte bitplane[] = null;
+	private int content[] = null;
 	private boolean isActive = false;
 	private boolean visible = true;
 	private String name = "<rename me>";

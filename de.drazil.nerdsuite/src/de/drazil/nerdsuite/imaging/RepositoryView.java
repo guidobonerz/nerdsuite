@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -30,6 +31,9 @@ public class RepositoryView {
 
 	}
 
+	@Inject
+	EMenuService menuService;
+
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
@@ -44,7 +48,7 @@ public class RepositoryView {
 		int columns = (r.width - getWidget().getVerticalBar().getSize().x) / getWidget().getConf().getTileWidth();
 		columns = columns == 0 ? 1 : columns;
 		int tileCount = blankData.length / getWidget().getConf().getTileSize();
-		int rows = (tileCount / columns)+1;
+		int rows = (tileCount / columns) + 1;
 		System.out.println(tileCount);
 
 		getWidget().getConf().setColumns(columns);
@@ -65,7 +69,7 @@ public class RepositoryView {
 	private ImageRepository getWidget() {
 		if (repository == null) {
 			repository = new ImageRepository(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
-
+				
 				/*
 				 * 
 				 * @Override protected void setHasTileSelection(int count) {
@@ -117,6 +121,7 @@ public class RepositoryView {
 			// selector.addDrawListener(getPreviewer());
 
 		}
+		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.popupmenu");
 		return repository;
 
 	}

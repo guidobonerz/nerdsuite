@@ -49,12 +49,13 @@
             <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.5">
               <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.GfxEditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView" label="GfxEditor" closeable="true">
                 <handlers xmi:id="_N4cM8AGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.handler.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SwapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
-                <menus xsi:type="menu:PopupMenu" xmi:id="_t22uwADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.popupmenu.iconeditor" label="iconeditor">
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_wYIYsADaEemjz5aAfdI8cA" elementId="de.drazil.nerdsuite.handledmenuitem.test" label="Swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
-                </menus>
               </children>
             </children>
-            <children xsi:type="basic:Part" xmi:id="_Ib-vUAUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.part.Repository" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.RepositoryView" label="Repository"/>
+            <children xsi:type="basic:Part" xmi:id="_Ib-vUAUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.part.Repository" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.RepositoryView" label="Repository">
+              <menus xsi:type="menu:PopupMenu" xmi:id="_wnxCABUkEemZcu7Wc9QgWQ" elementId="de.drazil.nerdsuite.popupmenu.popupmenu">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_xbAc0BUkEemZcu7Wc9QgWQ" elementId="de.drazil.nerdsuite.handledmenuitem.swap" label="swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
+              </menus>
+            </children>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_vkk_4AR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.4">
             <children xsi:type="basic:PartStack" xmi:id="_iYxowASGEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partstack.4">
