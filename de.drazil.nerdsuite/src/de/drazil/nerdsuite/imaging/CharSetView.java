@@ -18,7 +18,7 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
-import de.drazil.nerdsuite.widget.ImagingWidget2;
+import de.drazil.nerdsuite.widget.ImagingWidget;
 
 public class CharSetView {
 
@@ -38,7 +38,7 @@ public class CharSetView {
 		System.out.print(gf.getId());
 	}
 
-	public ImagingWidget2 getReferenceSelector() {
+	public ImagingWidget getReferenceSelector() {
 		if (referenceSelector == null) {
 			referenceSelector = new ImageReferenceSelector(parent,
 					SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);

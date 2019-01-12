@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class ImageWriterService extends AbstractImagingService {
 
@@ -31,7 +31,7 @@ public class ImageWriterService extends AbstractImagingService {
 	}
 
 	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration2 configuration) {
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
 		// TODO Auto-generated method stub
 		return false;
 	}

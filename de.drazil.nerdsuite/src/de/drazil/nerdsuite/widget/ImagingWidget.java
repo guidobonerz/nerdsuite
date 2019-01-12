@@ -25,8 +25,8 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 
-public abstract class ImagingWidget2 extends BaseImagingWidget2
-		implements IDrawListener2, PaintListener, IImagingCallback {
+public abstract class ImagingWidget extends BaseImagingWidget
+		implements IDrawListener, PaintListener, IImagingCallback {
 
 	private final static int DRAW_NOTHING = 0;
 	private final static int DRAW_ALL_TILES = 1;
@@ -72,7 +72,7 @@ public abstract class ImagingWidget2 extends BaseImagingWidget2
 	private IColorProvider colorProvider;
 	private ScrollBar hBar = null;
 	private ScrollBar vBar = null;
-	private List<IDrawListener2> drawListenerList = null;
+	private List<IDrawListener> drawListenerList = null;
 	private List<TileLocation> tileSelectionList = null;
 	private List<TileLocation> selectionRangeBuffer = null;
 
@@ -81,18 +81,18 @@ public abstract class ImagingWidget2 extends BaseImagingWidget2
 	private ImagePainterFactory imagePainterFactory = null;
 	private Tile tile = null;
 
-	public ImagingWidget2(Composite parent, int style) {
+	public ImagingWidget(Composite parent, int style) {
 		this(parent, style, null);
 	}
 
-	public ImagingWidget2(Composite parent, int style, ImagingWidgetConfiguration2 configuration) {
+	public ImagingWidget(Composite parent, int style, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
 
 		serviceCacheMap = new HashMap<>();
 
 		selectionRangeBuffer = new ArrayList<>();
 		tileSelectionList = new ArrayList<>();
-		drawListenerList = new ArrayList<IDrawListener2>();
+		drawListenerList = new ArrayList<IDrawListener>();
 
 		hBar = getHorizontalBar();
 		vBar = getVerticalBar();
@@ -124,13 +124,13 @@ public abstract class ImagingWidget2 extends BaseImagingWidget2
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
 			selectedTileIndex = (tileY * conf.columns) + tileX;
-			fireSetSelectedTile(ImagingWidget2.this, tile);
+			fireSetSelectedTile(ImagingWidget.this, tile);
 			// computeSelection(false, false);
 			doDrawAllTiles();
 		} else if (supportsPainting()) {
 			ServiceFactory.getService(PaintService.class).setPixel(tile, cursorX, cursorY, 100, conf);
 			doDrawTile();
-			fireDoDrawTile(ImagingWidget2.this);
+			fireDoDrawTile(ImagingWidget.this);
 		}
 
 	}
@@ -169,7 +169,7 @@ public abstract class ImagingWidget2 extends BaseImagingWidget2
 				oldCursorY = cursorY;
 				ServiceFactory.getService(PaintService.class).setPixel(tile, cursorX, cursorY, 100, conf);
 				doDrawTile();
-				fireDoDrawTile(ImagingWidget2.this);
+				fireDoDrawTile(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
 			// computeSelection(false, false);
@@ -470,7 +470,7 @@ public abstract class ImagingWidget2 extends BaseImagingWidget2
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
-		fireSetSelectedTile(ImagingWidget2.this, tile);
+		fireSetSelectedTile(ImagingWidget.this, tile);
 		doDrawAllTiles();
 	}
 
@@ -496,40 +496,40 @@ public abstract class ImagingWidget2 extends BaseImagingWidget2
 		return this.selectedTileOffset;
 	}
 
-	public void addDrawListener(IDrawListener2 redrawListener) {
+	public void addDrawListener(IDrawListener redrawListener) {
 		drawListenerList.add(redrawListener);
 	}
 
-	public void removeDrawListener(IDrawListener2 redrawListener) {
+	public void removeDrawListener(IDrawListener redrawListener) {
 		drawListenerList.remove(redrawListener);
 	}
 
-	private void fireDoDrawTile(BaseImagingWidget2 source) {
-		for (IDrawListener2 listener : drawListenerList) {
+	private void fireDoDrawTile(BaseImagingWidget source) {
+		for (IDrawListener listener : drawListenerList) {
 			listener.doDrawTile();
 		}
 	}
 
-	private void fireDoDrawAllTiles(BaseImagingWidget2 source) {
-		for (IDrawListener2 listener : drawListenerList) {
+	private void fireDoDrawAllTiles(BaseImagingWidget source) {
+		for (IDrawListener listener : drawListenerList) {
 			listener.doDrawAllTiles();
 		}
 	}
 
-	private void fireSetSelectedTile(BaseImagingWidget2 source, Tile tile) {
-		for (IDrawListener2 listener : drawListenerList) {
+	private void fireSetSelectedTile(BaseImagingWidget source, Tile tile) {
+		for (IDrawListener listener : drawListenerList) {
 			listener.setSelectedTile(tile);
 		}
 	}
 
-	private void fireDoDrawPixel(BaseImagingWidget2 source, int x, int y, PencilMode pencilMode) {
-		for (IDrawListener2 listener : drawListenerList) {
+	private void fireDoDrawPixel(BaseImagingWidget source, int x, int y, PencilMode pencilMode) {
+		for (IDrawListener listener : drawListenerList) {
 			listener.doDrawPixel(source, x, y, pencilMode);
 		}
 	}
 
 	@Override
-	public void doDrawPixel(BaseImagingWidget2 source, int x, int y, PencilMode pencilMode) {
+	public void doDrawPixel(BaseImagingWidget source, int x, int y, PencilMode pencilMode) {
 		conf.pencilMode = pencilMode;
 		cursorX = x + (selectedTileIndexX * conf.width * conf.tileColumns);
 		cursorY = y + (selectedTileIndexY * conf.height * conf.tileRows);

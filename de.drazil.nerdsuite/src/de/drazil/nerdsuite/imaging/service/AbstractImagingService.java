@@ -4,12 +4,12 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.IImagingCallback;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.Setter;
 
 public abstract class AbstractImagingService extends AbstractService implements IImagingService {
 	@Setter
-	protected ImagingWidgetConfiguration2 imagingWidgetConfiguration = null;
+	protected ImagingWidgetConfiguration imagingWidgetConfiguration = null;
 	@Setter
 	protected IImagingCallback callback = null;
 	@Setter
@@ -32,7 +32,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	}
 
 	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration2 configuration) {
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -110,7 +110,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 		return new byte[imagingWidgetConfiguration.getTileSize() * (imagingWidgetConfiguration.pixelConfig.mul)];
 	}
 
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration2 configuration, int offset,
+	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte workArray[], int width, int height) {
 		return null;
 	}

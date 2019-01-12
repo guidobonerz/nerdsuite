@@ -8,7 +8,7 @@ public class ImageReferenceSelector extends ImageRepository {
 		super(parent, style);
 	}
 
-	public ImageReferenceSelector(Composite parent, int style, ImagingWidgetConfiguration2 configuration) {
+	public ImageReferenceSelector(Composite parent, int style, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
 	}
 

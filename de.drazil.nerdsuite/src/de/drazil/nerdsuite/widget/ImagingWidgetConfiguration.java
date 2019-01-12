@@ -7,7 +7,7 @@ import de.drazil.nerdsuite.constants.PixelConfig;
 import lombok.Getter;
 
 @Getter
-public class ImagingWidgetConfiguration2 {
+public class ImagingWidgetConfiguration {
 	public int width = 8;
 	public int currentWidth = 0;
 	public int height = 8;

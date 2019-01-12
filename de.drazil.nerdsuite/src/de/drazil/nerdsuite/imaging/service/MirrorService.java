@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class MirrorService extends AbstractImagingService {
 	public final static int UPPER_HALF = 1;
@@ -24,7 +24,7 @@ public class MirrorService extends AbstractImagingService {
 	}
 
 	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration2 configuration) {
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -36,7 +36,7 @@ public class MirrorService extends AbstractImagingService {
 	}
 
 	@Override
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration2 configuration, int offset,
+	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte[] workArray, int width, int height) {
 
 		if (action == UPPER_HALF) {

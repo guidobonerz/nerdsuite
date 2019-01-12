@@ -1,11 +1,11 @@
 package de.drazil.nerdsuite.imaging.service;
 
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class PaintService extends AbstractImagingService {
 
-	public void setPixel(Tile tile, int x, int y, int value, ImagingWidgetConfiguration2 conf) {
+	public void setPixel(Tile tile, int x, int y, int value, ImagingWidgetConfiguration conf) {
 		int layerContent[] = tile.getActiveLayer().getContent();
 
 		switch (conf.paintMode) {
@@ -41,11 +41,11 @@ public class PaintService extends AbstractImagingService {
 		}
 	}
 
-	private void setPixel(int layerContent[], int x, int y, int value, ImagingWidgetConfiguration2 conf) {
+	private void setPixel(int layerContent[], int x, int y, int value, ImagingWidgetConfiguration conf) {
 		layerContent[y * conf.tileHeight + x] = value;
 	}
 
-	public void paint(Tile tile, ImagingWidgetConfiguration2 conf) {
+	public void paint(Tile tile, ImagingWidgetConfiguration conf) {
 
 	}
 }

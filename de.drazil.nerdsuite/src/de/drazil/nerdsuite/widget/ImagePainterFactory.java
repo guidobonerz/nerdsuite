@@ -18,7 +18,7 @@ public class ImagePainterFactory {
 		imagePool = new HashMap<>();
 	}
 
-	public Image getImage(Display display, int index, boolean needsUpdate, ImagingWidgetConfiguration2 conf,
+	public Image getImage(Display display, int index, boolean needsUpdate, ImagingWidgetConfiguration conf,
 			byte bitplane[], IColorProvider colorProvider, Map<String, Color> palette) {
 		Image image = imagePool.get("ICON-" + index);
 		if (null == image || needsUpdate) {
@@ -37,7 +37,7 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image createOrUpdateImage(Display display, int index, ImagingWidgetConfiguration2 conf, byte bitplane[],
+	private Image createOrUpdateImage(Display display, int index, ImagingWidgetConfiguration conf, byte bitplane[],
 			IColorProvider colorProvider, Map<String, Color> palette) {
 		Image image = new Image(display, 10, 10);
 		// ImageData id = image.getImageData().scaledTo(10, 10);

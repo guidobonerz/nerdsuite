@@ -11,10 +11,14 @@ public class Tile {
 	private List<Layer> layerList = null;
 	private List<Integer> layerIndexOrderList = null;
 	@Setter
-	private String name = "<rename me>";
+	private String name = null;
 
 	public Tile() {
+		this("<rename me>");
+	}
 
+	public Tile(String name) {
+		this.name = name;
 		layerList = new ArrayList<>();
 		layerIndexOrderList = new ArrayList<Integer>();
 		tileListenerList = new ArrayList<ITileListener>();
@@ -25,7 +29,7 @@ public class Tile {
 	}
 
 	public void addLayer() {
-		addLayer(null);
+		addLayer("<rename me>");
 	}
 
 	public void addLayer(String name) {
@@ -39,8 +43,9 @@ public class Tile {
 	}
 
 	public void removeLayer(int index) {
-		layerList.get(index);
-		layerList.remove(index);
+		int layerIndex = layerIndexOrderList.get(index);
+		layerList.remove(layerIndex);
+		layerIndexOrderList.remove(index);
 		fireLayerRemoved();
 	}
 

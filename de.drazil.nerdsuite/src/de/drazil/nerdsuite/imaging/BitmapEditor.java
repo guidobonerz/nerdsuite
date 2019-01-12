@@ -18,7 +18,7 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.PixelConfig;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.ImageViewer;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class BitmapEditor {
 
@@ -47,7 +47,7 @@ public class BitmapEditor {
 
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 
-		ImagingWidgetConfiguration2 ic = new ImagingWidgetConfiguration2();
+		ImagingWidgetConfiguration ic = new ImagingWidgetConfiguration();
 		ic.setWidgetName("Viewer:");
 		ic.setWidth(8);
 		ic.setHeight(8);

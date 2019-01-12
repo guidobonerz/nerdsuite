@@ -2,9 +2,9 @@ package de.drazil.nerdsuite.widget;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class ImageRepository extends ImagingWidget2 {
+public class ImageRepository extends ImagingWidget {
 
-	public ImageRepository(Composite parent, int style, ImagingWidgetConfiguration2 configuration) {
+	public ImageRepository(Composite parent, int style, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
 	}
 

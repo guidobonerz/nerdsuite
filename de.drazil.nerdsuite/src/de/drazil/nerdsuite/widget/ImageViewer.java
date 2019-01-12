@@ -2,9 +2,9 @@ package de.drazil.nerdsuite.widget;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class ImageViewer extends ImagingWidget2 {
+public class ImageViewer extends ImagingWidget {
 
-	public ImageViewer(Composite parent, int style, ImagingWidgetConfiguration2 configuration) {
+	public ImageViewer(Composite parent, int style, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
 	}
 
