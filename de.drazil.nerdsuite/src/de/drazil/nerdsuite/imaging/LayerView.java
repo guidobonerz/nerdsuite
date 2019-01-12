@@ -12,7 +12,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -25,7 +24,7 @@ public class LayerView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 
-		Tile tile = new Tile(new ImagingWidgetConfiguration());
+		Tile tile = new Tile();
 		tile.addLayer("Frame");
 		tile.addLayer("Body");
 		tile.addLayer("Eyes");

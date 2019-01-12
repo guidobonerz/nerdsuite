@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
 
 public class ClipboardService extends AbstractImagingService implements IImagingService {
 
@@ -28,7 +28,7 @@ public class ClipboardService extends AbstractImagingService implements IImaging
 	}
 
 	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration2 configuration) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -41,7 +41,8 @@ public class ClipboardService extends AbstractImagingService implements IImaging
 
 	@Override
 	public void execute(int action) {
-		int offset = imagingWidgetConfiguration.computeTileOffset(tileSelectionList.get(0).x, tileSelectionList.get(0).y, navigationOffset);
+		int offset = imagingWidgetConfiguration.computeTileOffset(tileSelectionList.get(0).x,
+				tileSelectionList.get(0).y, navigationOffset);
 		if (action == CUT || action == COPY) {
 			currentAction = action;
 			cutCopyOffset = offset;

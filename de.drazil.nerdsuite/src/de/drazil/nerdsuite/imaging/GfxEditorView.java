@@ -8,7 +8,6 @@ import javax.inject.Inject;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
@@ -21,20 +20,19 @@ import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
-import de.drazil.nerdsuite.widget.ImagePainter;
+import de.drazil.nerdsuite.widget.ImagePainter2;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
 import de.drazil.nerdsuite.widget.ImageRepository;
 import de.drazil.nerdsuite.widget.ImageViewer;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PaintMode;
 
 public class GfxEditorView // implements IConfigurationListener {
 {
-	private ImagePainter painter;
+	private ImagePainter2 painter;
 	private ImageViewer previewer;
 	private ImageRepository selector;
 	private ImageReferenceSelector referenceSelector;
@@ -310,9 +308,9 @@ public class GfxEditorView // implements IConfigurationListener {
 	 * getSelector().getService(AnimationService.class).setDelay(step); } }); }
 	 * return animationTimerDelayScale; }
 	 */
-	public ImagePainter getWidget() {
+	public ImagePainter2 getWidget() {
 		if (painter == null) {
-			painter = new ImagePainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			painter = new ImagePainter2(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setPixelSize(15);
 			painter.getConf().setPixelGridEnabled(true);

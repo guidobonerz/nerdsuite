@@ -4,12 +4,12 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.IImagingCallback;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
 import lombok.Setter;
 
 public abstract class AbstractImagingService extends AbstractService implements IImagingService {
 	@Setter
-	protected ImagingWidgetConfiguration imagingWidgetConfiguration = null;
+	protected ImagingWidgetConfiguration2 imagingWidgetConfiguration = null;
 	@Setter
 	protected IImagingCallback callback = null;
 	@Setter
@@ -25,8 +25,6 @@ public abstract class AbstractImagingService extends AbstractService implements 
 		toWorkArray, toBitplane
 	}
 
-	
-
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		// TODO Auto-generated method stub
@@ -34,7 +32,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	}
 
 	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration2 configuration) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -70,7 +68,8 @@ public abstract class AbstractImagingService extends AbstractService implements 
 				convert(workArray, bitplane, x, y, ConversionMode.toWorkArray);
 			}
 			int ofs = imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
-			workArray = each(action, tileSelectionList.get(i), imagingWidgetConfiguration, ofs, bitplane, workArray, width, height);
+			workArray = each(action, tileSelectionList.get(i), imagingWidgetConfiguration, ofs, bitplane, workArray,
+					width, height);
 			if (needsConversion()) {
 				convert(workArray, bitplane, x, y, ConversionMode.toBitplane);
 			}
@@ -86,9 +85,12 @@ public abstract class AbstractImagingService extends AbstractService implements 
 		int mask = imagingWidgetConfiguration.pixelConfig.mask;
 		for (int si = 0, s = 0; si < tileSize; si += imagingWidgetConfiguration.bytesPerRow, s += imagingWidgetConfiguration.bytesPerRow) {
 			s = (si % (iconSize)) == 0 ? 0 : s;
-			int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1)) * imagingWidgetConfiguration.width;
-			int yo = (si / (iconSize * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
-			int ro = ((s / imagingWidgetConfiguration.bytesPerRow) * imagingWidgetConfiguration.width) * imagingWidgetConfiguration.tileColumns;
+			int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1))
+					* imagingWidgetConfiguration.width;
+			int yo = (si / (iconSize * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height
+					* imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
+			int ro = ((s / imagingWidgetConfiguration.bytesPerRow) * imagingWidgetConfiguration.width)
+					* imagingWidgetConfiguration.tileColumns;
 			int wai = ro + xo + yo;
 
 			for (int i = 0; i < imagingWidgetConfiguration.bytesPerRow; i++) {
@@ -108,7 +110,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 		return new byte[imagingWidgetConfiguration.getTileSize() * (imagingWidgetConfiguration.pixelConfig.mul)];
 	}
 
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
+	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration2 configuration, int offset,
 			byte[] bitplane, byte workArray[], int width, int height) {
 		return null;
 	}

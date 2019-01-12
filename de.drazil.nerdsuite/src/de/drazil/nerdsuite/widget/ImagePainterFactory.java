@@ -18,7 +18,7 @@ public class ImagePainterFactory {
 		imagePool = new HashMap<>();
 	}
 
-	public Image getImage(Display display, int index, boolean needsUpdate, ImagingWidgetConfiguration conf,
+	public Image getImage(Display display, int index, boolean needsUpdate, ImagingWidgetConfiguration2 conf,
 			byte bitplane[], IColorProvider colorProvider, Map<String, Color> palette) {
 		Image image = imagePool.get("ICON-" + index);
 		if (null == image || needsUpdate) {
@@ -37,7 +37,7 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image createOrUpdateImage(Display display, int index, ImagingWidgetConfiguration conf, byte bitplane[],
+	private Image createOrUpdateImage(Display display, int index, ImagingWidgetConfiguration2 conf, byte bitplane[],
 			IColorProvider colorProvider, Map<String, Color> palette) {
 		Image image = new Image(display, 10, 10);
 		// ImageData id = image.getImageData().scaledTo(10, 10);
@@ -60,12 +60,9 @@ public class ImagePainterFactory {
 		int byteOffset = 0;
 		int pix = conf.isPixelGridEnabled() ? 1 : 0;
 		/*
-		if (supportsMultiTileView()) {
-			byteOffset = conf.computeTileOffset(tileX, tileY, navigationOffset);
-		} else {
-			byteOffset = selectedTileOffset;
-		}
-		*/
+		 * if (supportsMultiTileView()) { byteOffset = conf.computeTileOffset(tileX,
+		 * tileY, navigationOffset); } else { byteOffset = selectedTileOffset; }
+		 */
 
 		for (int i = byteOffset, k = 0; i < (byteOffset + conf.tileSize); i++, k++) {
 			int xi = (k % conf.bytesPerRow) * (8 / bc);

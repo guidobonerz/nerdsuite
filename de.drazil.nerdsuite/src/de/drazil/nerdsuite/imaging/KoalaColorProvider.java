@@ -3,9 +3,8 @@ package de.drazil.nerdsuite.imaging;
 import org.eclipse.swt.graphics.Color;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.constants.PixelConfig;
 import de.drazil.nerdsuite.widget.IColorProvider;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
 
 public class KoalaColorProvider implements IColorProvider {
 
@@ -31,7 +30,7 @@ public class KoalaColorProvider implements IColorProvider {
 
 	@Override
 	public PixelConfig getPixelConfig() {
-		return ImagingWidgetConfiguration.PixelConfig.BC2;
+		return PixelConfig.BC2;
 	}
 
 }

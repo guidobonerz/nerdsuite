@@ -1,9 +1,13 @@
 package de.drazil.nerdsuite.widget;
 
+import de.drazil.nerdsuite.constants.GridStyle;
+import de.drazil.nerdsuite.constants.PaintMode;
+import de.drazil.nerdsuite.constants.PencilMode;
+import de.drazil.nerdsuite.constants.PixelConfig;
 import lombok.Getter;
 
 @Getter
-public class ImagingWidgetConfiguration {
+public class ImagingWidgetConfiguration2 {
 	public int width = 8;
 	public int currentWidth = 0;
 	public int height = 8;
@@ -16,7 +20,6 @@ public class ImagingWidgetConfiguration {
 	public int pixelSize = 15;
 	public int currentPixelWidth;
 	public int currentPixelHeight;
-	public int bytesPerRow;
 	public int tileSize;
 	public int iconSize;
 	public int cursorLineWidth = 1;
@@ -39,42 +42,6 @@ public class ImagingWidgetConfiguration {
 	public GridStyle gridStyle = GridStyle.Line;
 
 	public IConfigurationListener cl;
-
-	public enum PaintMode {
-		Simple, VerticalMirror, HorizontalMirror, Kaleidoscope
-	}
-
-	public enum PencilMode {
-		Draw, Erase
-	}
-
-	public enum GridStyle {
-		Dot, Line
-	};
-
-	public enum BrushStyle {
-		Dot, Pattern
-	}
-
-	public enum PixelConfig {
-		BC8("MultiColor256", 8, 0, 256, 1, 1), BC2("MultiColor4", 2, 3, 3, 4, 2), BC1("MonoColor", 1, 3, 1, 8, 1);
-
-		public final String name;
-		public final int bitCount;
-		public final int shift;
-		public final int mask;
-		public final int mul;
-		public final int pixmul;
-
-		PixelConfig(String name, int bitCount, int shift, int mask, int mul, int pixmul) {
-			this.name = name;
-			this.bitCount = bitCount;
-			this.shift = shift;
-			this.mask = mask;
-			this.mul = mul;
-			this.pixmul = pixmul;
-		}
-	}
 
 	public String widgetName = "<unknown>";
 
@@ -197,17 +164,11 @@ public class ImagingWidgetConfiguration {
 	public void computeSizes() {
 		currentPixelWidth = pixelSize;
 		currentPixelHeight = pixelSize;
-		bytesPerRow = width >> pixelConfig.shift;
-		iconSize = bytesPerRow * height;
+		iconSize = width * height;
 		tileSize = iconSize * tileColumns * tileRows;
 		tileWidth = width * tileColumns * pixelSize;
 		tileHeight = height * tileRows * pixelSize;
 		fullWidth = tileWidth * columns;
 		fullHeight = tileHeight * rows;
-
-	}
-
-	public int computeTileOffset(int x, int y, int offset) {
-		return tileSize * (x + (y * columns)) + offset;
 	}
 }

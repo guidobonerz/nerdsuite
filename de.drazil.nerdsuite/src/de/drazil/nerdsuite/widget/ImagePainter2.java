@@ -2,13 +2,12 @@ package de.drazil.nerdsuite.widget;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class ImagePainter extends ImagingWidget {
-
-	public ImagePainter(Composite parent, int style, ImagingWidgetConfiguration configuration) {
+public class ImagePainter2 extends ImagingWidget2 {
+	public ImagePainter2(Composite parent, int style, ImagingWidgetConfiguration2 configuration) {
 		super(parent, style, configuration);
 	}
 
-	public ImagePainter(Composite parent, int style) {
+	public ImagePainter2(Composite parent, int style) {
 		super(parent, style);
 	}
 

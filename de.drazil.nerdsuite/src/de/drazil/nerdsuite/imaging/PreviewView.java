@@ -10,9 +10,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageViewer;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.GridStyle;
 
 public class PreviewView {
 

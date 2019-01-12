@@ -12,13 +12,13 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.osgi.framework.Bundle; 
+import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.constants.PixelConfig;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.widget.ImageViewer;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
 
 public class BitmapEditor {
 
@@ -47,7 +47,7 @@ public class BitmapEditor {
 
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 
-		ImagingWidgetConfiguration ic = new ImagingWidgetConfiguration();
+		ImagingWidgetConfiguration2 ic = new ImagingWidgetConfiguration2();
 		ic.setWidgetName("Viewer:");
 		ic.setWidth(8);
 		ic.setHeight(8);

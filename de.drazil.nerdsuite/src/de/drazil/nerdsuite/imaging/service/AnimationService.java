@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.model.TileLocation;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration2;
 import lombok.Setter;
 
 public class AnimationService extends AbstractImagingService {
@@ -28,7 +28,8 @@ public class AnimationService extends AbstractImagingService {
 			}
 			TileLocation tl = tileSelectionList.get(pos);
 			pos++;
-			callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x, tl.y, navigationOffset), tl.x, tl.y, true);
+			callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x, tl.y, navigationOffset), tl.x,
+					tl.y, true);
 			((Composite) source).getDisplay().timerExec(delay, this);
 		}
 	}
@@ -46,7 +47,7 @@ public class AnimationService extends AbstractImagingService {
 	}
 
 	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
+	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration2 configuration) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -59,11 +60,10 @@ public class AnimationService extends AbstractImagingService {
 
 	/*
 	 * public void startAnimation() { if (tileSelectionList.size() < 1) {
-	 * showNotification(null, null,
-	 * "You have to select an animation range first.", null); } else if
-	 * (tileSelectionList.size() == 1) { showNotification(null, null,
-	 * "You have to select at least two tiles to start the animation.", null); }
-	 * else { animationIsRunning = true;
+	 * showNotification(null, null, "You have to select an animation range first.",
+	 * null); } else if (tileSelectionList.size() == 1) { showNotification(null,
+	 * null, "You have to select at least two tiles to start the animation.", null);
+	 * } else { animationIsRunning = true;
 	 * showNotification(ImagingServiceDescription.Animation,
 	 * ImagingServiceAction.Start, isAnimationRunning() ? "Stop Animation (" +
 	 * (animationTimerDelay) + " ms)" : "Start Animation", animationIsRunning);
