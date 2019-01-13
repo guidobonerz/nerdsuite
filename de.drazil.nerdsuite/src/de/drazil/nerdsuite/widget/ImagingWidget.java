@@ -19,13 +19,15 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
+import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
+import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 
 public abstract class ImagingWidget extends BaseImagingWidget
-		implements IDrawListener, PaintListener, IImagingCallback {
+		implements IDrawListener, PaintListener, IImagingCallback, ITileSelectionListener, ITileManagementListener {
 
 	private final static int DRAW_NOTHING = 0;
 	private final static int DRAW_ALL_TILES = 1;
@@ -40,8 +42,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private int selectedTileIndexX = 0;
 	private int selectedTileIndexY = 0;
 	private int selectedTileIndex = 0;
-
-	private int referenceIndex = 0;
 
 	private int oldCursorX = 0;
 	private int oldCursorY = 0;
@@ -64,8 +64,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	private int paintControlMode = DRAW_NOTHING;
 
-	private byte bitplane[];
-
 	private boolean mouseIn = false;
 
 	private IColorProvider colorProvider;
@@ -77,7 +75,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	private Map<String, IImagingService> serviceCacheMap = null;
 
-	private ImagePainterFactory imagePainterFactory = null;
 	private Tile tile = null;
 
 	public ImagingWidget(Composite parent, int style) {
@@ -110,6 +107,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	public void setTile(Tile tile) {
 		this.tile = tile;
+		redraw();
 	}
 
 	@Override
@@ -211,7 +209,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	private boolean checkKeyPressed(int modifierKey, char charCode) {
-
 		return (modifierMask & modifierKey) == modifierKey && currentCharacterPressed == charCode && keyPressed;
 	}
 
@@ -347,73 +344,9 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	/*
-	 * private void paintTile(GC gc, int tileX, int tileY) { int x = 0; int y = 0;
-	 * int b1 = conf.bytesPerRow * conf.height; int b2 = b1 * conf.tileColumns; int
-	 * bc = conf.pixelConfig.bitCount; int pix = conf.isPixelGridEnabled() ? 1 : 0;
-	 * 
-	 * for (int i = 0, k = 0; i < conf.tileSize; i++, k++) { int xi = (k %
-	 * conf.bytesPerRow) * (8 / bc); int xo = (k / b1) % conf.tileColumns; x = (xi +
-	 * (xo * conf.currentWidth) + (tileX * conf.currentWidth * conf.tileColumns));
-	 * 
-	 * int yi = (k / conf.bytesPerRow) % conf.height; int yo = (k / b2) %
-	 * conf.tileRows; y = (yi + (yo * conf.height) + (tileY * conf.height *
-	 * conf.tileRows));
-	 * 
-	 * if (i < bitplane.length) { int b = (bitplane[i] & 0xff); switch
-	 * (conf.pixelConfig) { case BC1: { for (int j = 128; j > 0; j >>= 1) {
-	 * gc.setBackground((b & j) == j ?
-	 * palette.get(String.valueOf(selectedColorIndex)) :
-	 * Constants.BITMAP_BACKGROUND_COLOR); gc.fillRectangle((x *
-	 * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-	 * conf.currentPixelWidth - pix, conf.currentPixelHeight - pix); x++; } break; }
-	 * case BC2: { for (int j = 6; j >= 0; j -= 2) { int colorIndex = (b >> j) & 3;
-	 * Color color = palette != null ? palette.get(String.valueOf(colorIndex)) :
-	 * null; if (colorProvider != null) { color =
-	 * colorProvider.getColorByIndex((byte) colorIndex, bitplane, tileX, tileY,
-	 * conf.columns); }
-	 * 
-	 * gc.setBackground(color); gc.fillRectangle((x * conf.currentPixelWidth) + pix,
-	 * (y * conf.currentPixelHeight) + pix, conf.currentPixelWidth - pix,
-	 * conf.currentPixelHeight - pix); x++; }
-	 * 
-	 * break; } case BC8: {
-	 * 
-	 * if (null != imagePainterFactory) { gc.drawImage(
-	 * imagePainterFactory.getImage(getDisplay(), b, false, conf, bitplane,
-	 * colorProvider, palette), (x * conf.currentPixelWidth) + pix, (y *
-	 * conf.currentPixelHeight) + pix); }
-	 * 
-	 * 
-	 * x++; break; } } } } }
-	 */
-	/*
-	 * private void paintPixel(GC gc, int x, int y) { if (x < conf.currentWidth *
-	 * conf.tileColumns && y < conf.height * conf.tileRows) {
-	 * 
-	 * int pix = conf.isPixelGridEnabled() ? 1 : 0; switch (conf.pixelConfig) { case
-	 * BC1: { gc.setBackground(conf.pencilMode == PencilMode.Draw ?
-	 * palette.get(String.valueOf(selectedColorIndex)) :
-	 * Constants.BITMAP_BACKGROUND_COLOR); gc.fillRectangle((x *
-	 * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-	 * conf.currentPixelWidth - pix, conf.currentPixelHeight - pix); break; } case
-	 * BC2: { gc.setBackground(conf.pencilMode == PencilMode.Draw ?
-	 * Constants.DEFAULT_BINARY_COLOR : Constants.BITMAP_BACKGROUND_COLOR);
-	 * gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y *
-	 * conf.currentPixelHeight) + pix, conf.currentPixelWidth - pix,
-	 * conf.currentPixelHeight - pix); break; } case BC8: {
-	 * 
-	 * gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
-	 * gc.drawString(String.valueOf((x * y)), (x * conf.currentPixelWidth) + pix, (y
-	 * * conf.currentPixelHeight) + pix); break; } } } }
-	 */
 	public void setColorProvider(IColorProvider colorProvider) {
 		this.colorProvider = colorProvider;
 		conf.setPixelConfig(colorProvider.getPixelConfig());
-	}
-
-	public void setBitplane(byte bitplane[]) {
-		this.bitplane = bitplane;
 	}
 
 	public void recalc() {
@@ -429,36 +362,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		monoColorDefaultIndex = index;
 	}
 
-	@Override
-	public void setSelectedTile(Tile tile) {
-		doDrawAllTiles();
-	}
-
-	public int getSelectedTileOffset() {
-		return this.selectedTileOffset;
-	}
-
-	/*
-	 * public void addDrawListener(IDrawListener redrawListener) {
-	 * drawListenerList.add(redrawListener); }
-	 * 
-	 * public void removeDrawListener(IDrawListener redrawListener) {
-	 * drawListenerList.remove(redrawListener); }
-	 * 
-	 * private void fireDoDrawTile(BaseImagingWidget source) { for (IDrawListener
-	 * listener : drawListenerList) { listener.doDrawTile(); } }
-	 * 
-	 * private void fireDoDrawAllTiles(BaseImagingWidget source) { for
-	 * (IDrawListener listener : drawListenerList) { listener.doDrawAllTiles(); } }
-	 * 
-	 * private void fireSetSelectedTile(BaseImagingWidget source, Tile tile) { for
-	 * (IDrawListener listener : drawListenerList) { listener.setSelectedTile(tile);
-	 * } }
-	 * 
-	 * private void fireDoDrawPixel(BaseImagingWidget source, int x, int y,
-	 * PencilMode pencilMode) { for (IDrawListener listener : drawListenerList) {
-	 * listener.doDrawPixel(source, x, y, pencilMode); } }
-	 */
 	@Override
 	public void doDrawPixel(BaseImagingWidget source, int x, int y, PencilMode pencilMode) {
 		conf.pencilMode = pencilMode;
@@ -529,55 +432,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		redraw();
 	}
 
-	protected void setHasTileSelection(int count) {
-
-	}
-
-	/*
-	 * public <S extends IService> S getService(Class<? super S> serviceClass) { S
-	 * service = ServiceFactory.getService(serviceClass); if
-	 * (AbstractImagingService.class.isAssignableFrom(serviceClass)) {
-	 * ((AbstractImagingService) service).setCallback(this);
-	 * ((AbstractImagingService) service).setSource(this); ((AbstractImagingService)
-	 * service).setImagingWidgetConfiguration(conf); ((AbstractImagingService)
-	 * service).setTileSelectionList(tileSelectionList); ((AbstractImagingService)
-	 * service).setNavigationOffset(navigationOffset); ((AbstractImagingService)
-	 * service).setBitplane(bitplane); } return service; }
-	 */
-	@Override
-	public void afterRunService() {
-		tileX = oldTileX;
-		tileY = oldTileY;
-		updateCursorLocation = false;
-		doDrawAllTiles();
-		// fireDoDrawAllTiles(this);
-	}
-
-	@Override
-	public void beforeRunService() {
-		oldTileX = tileX;
-		oldTileY = tileY;
-	}
-
-	@Override
-	public void onRunService(int offset, int x, int y, boolean updateCursorLocation) {
-		tileX = x;
-		tileY = y;
-		this.updateCursorLocation = updateCursorLocation;
-		// fireSetSelectedTileOffset(this, offset, 0,
-		// supportsReferenceIndexSelection());
-		doDrawAllTiles();
-	}
-
-	private boolean isTileSelected(int x, int y) {
-		for (TileLocation tl : tileSelectionList) {
-			if (tl.x == x && tl.y == y) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		Point hsb = hBar != null ? hBar.getSize() : new Point(0, 0);
@@ -587,10 +441,6 @@ public abstract class ImagingWidget extends BaseImagingWidget
 						+ (conf.cursorLineWidth * (conf.columns + 1)) + vsb.x - conf.columns,
 				(conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows)
 						+ (conf.cursorLineWidth * (conf.rows + 1)) + hsb.x - conf.rows);
-	}
-
-	public void setImagePainterFactory(ImagePainterFactory imagePainterFactory) {
-		this.imagePainterFactory = imagePainterFactory;
 	}
 
 	protected boolean supportsPainting() {
@@ -615,5 +465,46 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	protected boolean supportsDrawCursor() {
 		return false;
+	}
+
+	@Override
+	public void beforeRunService() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onRunService(int offset, int x, int y, boolean updateCursorLocation) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void afterRunService() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tileAdded() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tileRemoved() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tileReordered() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tileSelected(Tile tile) {
+		setTile(tile);
 	}
 }

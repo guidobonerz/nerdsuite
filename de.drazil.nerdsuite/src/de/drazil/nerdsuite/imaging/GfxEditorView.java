@@ -25,6 +25,8 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.imaging.service.TileService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
@@ -64,22 +66,6 @@ public class GfxEditorView // implements IConfigurationListener {
 	public GfxEditorView() {
 
 	}
-
-	/*
-	 * @Execute public void execute(MWindow window, EModelService modelService) {
-	 * 
-	 * MUIElement findElement = modelService.find("menu:com.test.filesubmenu",
-	 * window.getMainMenu());
-	 * 
-	 * MUIElement doSomethingElement =
-	 * modelService.find("com.test.handledmenuitem.dosomething",
-	 * window.getMainMenu());
-	 * 
-	 * logger.debug("Found submenu " + findElement); logger.debug(
-	 * "Found do something element " + doSomethingElement); }
-	 */
-	// @Inject
-	// EMenuService menuService;
 
 	@Inject
 	@Optional
@@ -135,40 +121,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		getWidget().getConf().setHeight(gf.getMetadata().getHeight());
 		getWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
 		getWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
-
 		getWidget().recalc();
-		Tile tile = new Tile("test", painter.getConf().getTileSize());
-		Layer a = tile.addLayer("1");
-		// Layer b = tile.addLayer("2");
-		// Layer c = tile.addLayer("3");
-
-		a.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		a.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		a.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		a.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		a.setSelectedColorIndex(1);
-		/*
-		 * b.setColor(0,
-		 * InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		 * b.setColor(1,
-		 * InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		 * b.setColor(2,
-		 * InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		 * b.setColor(3,
-		 * InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		 * b.setSelectedColorIndex(2);
-		 * 
-		 * c.setColor(0,
-		 * InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		 * c.setColor(1,
-		 * InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		 * c.setColor(2,
-		 * InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		 * c.setColor(3,
-		 * InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		 * c.setSelectedColorIndex(3);
-		 */
-		getWidget().setTile(tile);
 	}
 
 	@PostConstruct
@@ -407,15 +360,9 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.getConf().setGridStyle(GridStyle.Dot);
 			painter.getConf().setTileGridEnabled(true);
 			painter.getConf().setTileCursorEnabled(false);
-
-			// painter.setSelectedTileOffset(0, 0, false);
-			painter.setBitplane(getBlankData());
-			painter.setImagePainterFactory(imagePainterFactory);
-			painter.setSelectedColor(1);
-
 			painter.recalc();
-			// painter.addDrawListener(getSelector());
-			// painter.addDrawListener(getPreviewer());
+			ServiceFactory.getService("REPOSITORY", TileService.class).addTileSelectionListener(painter);
+
 			// menuService.registerContextMenu(painter, "de.drazil.nerdsuite.menu.3");
 		}
 		return painter;

@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
 import lombok.Setter;
 
 public class Tile {
@@ -12,6 +13,7 @@ public class Tile {
 	private List<Integer> layerIndexOrderList = null;
 
 	@Setter
+	@Getter
 	private String name = null;
 	private int size = 0;
 
@@ -25,6 +27,7 @@ public class Tile {
 		layerList = new ArrayList<>();
 		layerIndexOrderList = new ArrayList<Integer>();
 		tileListenerList = new ArrayList<ITileListener>();
+		addLayer();
 	}
 
 	public List<Integer> getLayerIndexOrderList() {

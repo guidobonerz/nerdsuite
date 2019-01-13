@@ -16,9 +16,13 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
+import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.imaging.service.TileService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageRepository;
+import de.drazil.nerdsuite.widget.Layer;
 
 public class RepositoryView {
 	private ImageRepository repository = null;
@@ -32,30 +36,27 @@ public class RepositoryView {
 
 	@Inject
 	EMenuService menuService;
-	
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
-		parent.addListener(SWT.Resize, e -> {
-			computeVisibility();
-		});
+		/*
+		 * parent.addListener(SWT.Resize, e -> { computeVisibility(); });
+		 */
 		getWidget();
 	}
 
-	private void computeVisibility() {
-		Rectangle r = parent.getClientArea();
-		int columns = (r.width - getWidget().getVerticalBar().getSize().x) / getWidget().getConf().getTileWidthPixel();
-		columns = columns == 0 ? 1 : columns;
-		int tileCount = blankData.length / getWidget().getConf().getTileSize();
-		int rows = (tileCount / columns) + 1;
-		System.out.println(tileCount);
-
-		getWidget().getConf().setColumns(columns);
-		getWidget().getConf().setRows(rows);
-		getWidget().recalc();
-	}
-
+	/*
+	 * private void computeVisibility() { Rectangle r = parent.getClientArea(); int
+	 * columns = (r.width - getWidget().getVerticalBar().getSize().x) /
+	 * getWidget().getConf().getTileWidthPixel(); columns = columns == 0 ? 1 :
+	 * columns; int tileCount = blankData.length /
+	 * getWidget().getConf().getTileSize(); int rows = (tileCount / columns) + 1;
+	 * System.out.println(tileCount);
+	 * 
+	 * getWidget().getConf().setColumns(columns);
+	 * getWidget().getConf().setRows(rows); getWidget().recalc(); }
+	 */
 	@Inject
 	@Optional
 	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
@@ -64,6 +65,7 @@ public class RepositoryView {
 		getWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
 		getWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
 		getWidget().recalc();
+
 	}
 
 	private ImageRepository getWidget() {
@@ -108,9 +110,6 @@ public class RepositoryView {
 			repository.getConf().setTileSubGridEnabled(false);
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
-			// repository.setSelectedTileOffset(0, 0, false);
-			repository.setBitplane(getBlankData());
-			repository.setImagePainterFactory(null);
 
 			repository.setSelectedColor(1);
 			repository.recalc();

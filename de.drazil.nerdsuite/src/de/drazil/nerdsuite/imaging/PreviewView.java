@@ -55,10 +55,6 @@ public class PreviewView {
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
 			previewer.getConf().setSeparatorEnabled(false);
-			// previewer.setSelectedTileOffset(0, 0, false);
-			previewer.setBitplane(getBlankData());
-			previewer.setImagePainterFactory(null);
-
 			previewer.recalc();
 		}
 		return previewer;

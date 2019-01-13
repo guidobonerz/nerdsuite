@@ -9,12 +9,14 @@ public class TileService extends AbstractImagingService {
 
 	private List<Tile> tileList = null;
 	private List<Integer> tileIndexOrderList = null;
-	private List<ITileServiceListener> tileServiceListener = null;
+	private List<ITileManagementListener> tileServiceManagementListener = null;
+	private List<ITileSelectionListener> tileServiceSelectionListener = null;
 
 	public TileService() {
 		tileList = new ArrayList<Tile>();
 		tileIndexOrderList = new ArrayList<Integer>();
-		tileServiceListener = new ArrayList<ITileServiceListener>();
+		tileServiceManagementListener = new ArrayList<ITileManagementListener>();
+		tileServiceSelectionListener = new ArrayList<ITileSelectionListener>();
 	}
 
 	public void addTile(String name, int size) {
@@ -31,23 +33,43 @@ public class TileService extends AbstractImagingService {
 		fireTileRemoved();
 	}
 
-	public void addTileListener(ITileServiceListener listener) {
-		tileServiceListener.add(listener);
+	public void setSelectedTile(int index) {
+		fireTileSelected(getTile(index));
 	}
 
-	public void removeTileListener(ITileServiceListener listener) {
-		tileServiceListener.remove(listener);
+	public Tile getTile(int index) {
+		return tileList.get(tileIndexOrderList.get(index));
+	}
+
+	public void addTileManagementListener(ITileManagementListener listener) {
+		tileServiceManagementListener.add(listener);
+	}
+
+	public void removeTileManagementListener(ITileManagementListener listener) {
+		tileServiceManagementListener.remove(listener);
+	}
+
+	public void addTileSelectionListener(ITileSelectionListener listener) {
+		tileServiceSelectionListener.add(listener);
+	}
+
+	public void removeTileSelectionListener(ITileSelectionListener listener) {
+		tileServiceSelectionListener.remove(listener);
 	}
 
 	private void fireTileAdded() {
-		tileServiceListener.forEach(listener -> listener.tileAdded());
+		tileServiceManagementListener.forEach(listener -> listener.tileAdded());
 	}
 
 	private void fireTileRemoved() {
-		tileServiceListener.forEach(listener -> listener.tileRemoved());
+		tileServiceManagementListener.forEach(listener -> listener.tileRemoved());
 	}
 
 	private void fireTileReordered() {
-		tileServiceListener.forEach(listener -> listener.tileReordered());
+		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
+	}
+
+	public void fireTileSelected(Tile tile) {
+		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
 	}
 }

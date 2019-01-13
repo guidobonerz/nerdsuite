@@ -61,7 +61,6 @@ public class BitmapEditor {
 		ImageViewer viewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
 
 		viewer.setColorProvider(new KoalaColorProvider());
-		viewer.setBitplane(binaryData);
 
 		viewer.setSelectedColor(0);
 

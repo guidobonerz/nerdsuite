@@ -2,13 +2,15 @@ package de.drazil.nerdsuite.imaging.service;
 
 import org.eclipse.swt.graphics.GC;
 
-import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.constants.PencilMode;
+import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class PaintTileService extends AbstractImagingService {
+
+	private ImagePainterFactory imagePainterFactory = new ImagePainterFactory();
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
 		Layer layer = tile.getActiveLayer();
@@ -47,7 +49,7 @@ public class PaintTileService extends AbstractImagingService {
 	}
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
-		if (x < conf.tileWidth && y < conf.tileHeight) {
+		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
 			layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
 					? layer.getSelectedColorIndex()
 					: 0;
@@ -55,21 +57,7 @@ public class PaintTileService extends AbstractImagingService {
 	}
 
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
-		int width = conf.tileWidth;
-		tile.getLayerIndexOrderList().forEach(index -> {
-			Layer layer = tile.getLayer(index);
-			int content[] = layer.getContent();
-			int x = 0;
-			int y = 0;
-			for (int i = 0; i < content.length; i++) {
-				if (i % width == 0 && i > 0) {
-					x = 0;
-					y++;
-				}
-				gc.setBackground(layer.getColor(content[i]));
-				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
-				x++;
-			}
-		});
+		gc.drawImage(imagePainterFactory.getImage(tile, true, conf), 0, 0);
 	}
+
 }

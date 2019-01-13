@@ -14,7 +14,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
-import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
@@ -55,8 +54,6 @@ public class CharSetView {
 			referenceSelector.getConf().setTileSubGridEnabled(false);
 			referenceSelector.getConf().setTileCursorEnabled(true);
 			referenceSelector.getConf().setSeparatorEnabled(false);
-			// referenceSelector.setSelectedTileOffset(0, 0, true);
-			referenceSelector.setBitplane(getBinaryData());
 			referenceSelector.recalc();
 			// referenceSelector.addDrawListener(getPainter());
 

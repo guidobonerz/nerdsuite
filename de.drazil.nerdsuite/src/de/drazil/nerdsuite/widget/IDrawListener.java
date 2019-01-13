@@ -10,6 +10,4 @@ public interface IDrawListener {
 
 	public void doDrawAllTiles();
 
-	public void setSelectedTile(Tile tile);
-
 }
