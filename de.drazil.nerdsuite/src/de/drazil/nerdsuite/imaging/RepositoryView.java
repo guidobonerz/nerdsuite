@@ -16,7 +16,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
-import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageRepository;
@@ -33,6 +32,7 @@ public class RepositoryView {
 
 	@Inject
 	EMenuService menuService;
+	
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -45,7 +45,7 @@ public class RepositoryView {
 
 	private void computeVisibility() {
 		Rectangle r = parent.getClientArea();
-		int columns = (r.width - getWidget().getVerticalBar().getSize().x) / getWidget().getConf().getTileWidth();
+		int columns = (r.width - getWidget().getVerticalBar().getSize().x) / getWidget().getConf().getTileWidthPixel();
 		columns = columns == 0 ? 1 : columns;
 		int tileCount = blankData.length / getWidget().getConf().getTileSize();
 		int rows = (tileCount / columns) + 1;
@@ -69,7 +69,7 @@ public class RepositoryView {
 	private ImageRepository getWidget() {
 		if (repository == null) {
 			repository = new ImageRepository(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL) {
-				
+
 				/*
 				 * 
 				 * @Override protected void setHasTileSelection(int count) {
@@ -108,13 +108,10 @@ public class RepositoryView {
 			repository.getConf().setTileSubGridEnabled(false);
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
-			repository.setSelectedTileOffset(0, 0, false);
+			// repository.setSelectedTileOffset(0, 0, false);
 			repository.setBitplane(getBlankData());
 			repository.setImagePainterFactory(null);
-			repository.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-			repository.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-			repository.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-			repository.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+
 			repository.setSelectedColor(1);
 			repository.recalc();
 			// selector.addDrawListener(getPainter());

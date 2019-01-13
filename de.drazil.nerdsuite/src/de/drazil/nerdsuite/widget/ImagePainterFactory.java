@@ -20,11 +20,11 @@ public class ImagePainterFactory {
 
 	public Image getImage(Display display, int index, boolean needsUpdate, ImagingWidgetConfiguration conf,
 			byte bitplane[], IColorProvider colorProvider, Map<String, Color> palette) {
-		Image image = imagePool.get("ICON-" + index);
+		Image image = imagePool.get("IMAGE-" + index);
 		if (null == image || needsUpdate) {
 			image = createOrUpdateImage(display, index, conf, bitplane, colorProvider, palette);
-			imagePool.put("ICON-" + index, image);
-			System.out.println("create new ICON-" + index);
+			imagePool.put("IMAGE-" + index, image);
+			System.out.println("create new IMAGE-" + index);
 		}
 		return image;
 	}

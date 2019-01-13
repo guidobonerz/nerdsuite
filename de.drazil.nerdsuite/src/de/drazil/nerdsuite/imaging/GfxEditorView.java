@@ -9,8 +9,11 @@ import javax.inject.Inject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolItem;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -29,6 +32,8 @@ import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
 import de.drazil.nerdsuite.widget.ImageRepository;
 import de.drazil.nerdsuite.widget.ImageViewer;
+import de.drazil.nerdsuite.widget.Layer;
+import de.drazil.nerdsuite.widget.Tile;
 
 public class GfxEditorView // implements IConfigurationListener {
 {
@@ -52,6 +57,9 @@ public class GfxEditorView // implements IConfigurationListener {
 	private boolean isAnimationRunning = false;
 	private ImagePainterFactory imagePainterFactory = null;
 
+	@Inject
+	EMenuService menuService;
+
 	public GfxEditorView() {
 
 	}
@@ -74,12 +82,59 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
+	void updateGridState(@UIEventTopic("DotGridEnabled") boolean state, EModelService service, MPart part) {
+		MToolItem item = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showGrid", part.getToolbar());
+		item.setSelected(state);
+	}
+
+	@Inject
+	@Optional
+	void updateDotGridState(@UIEventTopic("GridEnabled") boolean state, EModelService service, MPart part) {
+		MToolItem item = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showDotGrid", part.getToolbar());
+		item.setSelected(state);
+	}
+
+	@Inject
+	@Optional
 	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
 		getWidget().getConf().setWidth(gf.getMetadata().getWidth());
 		getWidget().getConf().setHeight(gf.getMetadata().getHeight());
 		getWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
 		getWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+
 		getWidget().recalc();
+		Tile tile = new Tile("test", painter.getConf().getTileSize());
+		Layer a = tile.addLayer("1");
+		// Layer b = tile.addLayer("2");
+		// Layer c = tile.addLayer("3");
+
+		a.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		a.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		a.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		a.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		a.setSelectedColorIndex(1);
+		/*
+		 * b.setColor(0,
+		 * InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		 * b.setColor(1,
+		 * InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		 * b.setColor(2,
+		 * InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		 * b.setColor(3,
+		 * InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		 * b.setSelectedColorIndex(2);
+		 * 
+		 * c.setColor(0,
+		 * InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		 * c.setColor(1,
+		 * InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		 * c.setColor(2,
+		 * InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		 * c.setColor(3,
+		 * InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		 * c.setSelectedColorIndex(3);
+		 */
+		getWidget().setTile(tile);
 	}
 
 	@PostConstruct
@@ -310,6 +365,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	 */
 	public ImagePainter getWidget() {
 		if (painter == null) {
+
 			painter = new ImagePainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setPixelSize(15);
@@ -317,17 +373,16 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.getConf().setGridStyle(GridStyle.Dot);
 			painter.getConf().setTileGridEnabled(true);
 			painter.getConf().setTileCursorEnabled(false);
-			painter.setSelectedTileOffset(0, 0, false);
+
+			// painter.setSelectedTileOffset(0, 0, false);
 			painter.setBitplane(getBlankData());
 			painter.setImagePainterFactory(imagePainterFactory);
-			painter.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-			painter.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-			painter.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-			painter.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 			painter.setSelectedColor(1);
+
 			painter.recalc();
 			// painter.addDrawListener(getSelector());
 			// painter.addDrawListener(getPreviewer());
+			// menuService.registerContextMenu(painter, "de.drazil.nerdsuite.menu.3");
 		}
 		return painter;
 	}

@@ -62,7 +62,7 @@ public class BitmapEditor {
 
 		viewer.setColorProvider(new KoalaColorProvider());
 		viewer.setBitplane(binaryData);
-		viewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
+
 		viewer.setSelectedColor(0);
 
 		viewer.recalc();

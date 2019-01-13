@@ -8,7 +8,6 @@ import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
@@ -20,7 +19,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
-import de.drazil.nerdsuite.imaging.service.PaintService;
+import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
@@ -68,7 +67,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	private byte bitplane[];
 
 	private boolean mouseIn = false;
-	private Map<String, Color> palette;
+
 	private IColorProvider colorProvider;
 	private ScrollBar hBar = null;
 	private ScrollBar vBar = null;
@@ -109,6 +108,10 @@ public abstract class ImagingWidget extends BaseImagingWidget
 
 	}
 
+	public void setTile(Tile tile) {
+		this.tile = tile;
+	}
+
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
 		if (supportsPainting()) {
@@ -124,13 +127,13 @@ public abstract class ImagingWidget extends BaseImagingWidget
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
 			selectedTileIndex = (tileY * conf.columns) + tileX;
-			fireSetSelectedTile(ImagingWidget.this, tile);
+			//fireSetSelectedTile(ImagingWidget.this, tile);
 			// computeSelection(false, false);
 			doDrawAllTiles();
 		} else if (supportsPainting()) {
-			ServiceFactory.getService(PaintService.class).setPixel(tile, cursorX, cursorY, 100, conf);
+			ServiceFactory.getService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 			doDrawTile();
-			fireDoDrawTile(ImagingWidget.this);
+			//fireDoDrawTile(ImagingWidget.this);
 		}
 
 	}
@@ -167,9 +170,9 @@ public abstract class ImagingWidget extends BaseImagingWidget
 			if (oldCursorX != cursorX || oldCursorY != cursorY) {
 				oldCursorX = cursorX;
 				oldCursorY = cursorY;
-				ServiceFactory.getService(PaintService.class).setPixel(tile, cursorX, cursorY, 100, conf);
+				ServiceFactory.getService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 				doDrawTile();
-				fireDoDrawTile(ImagingWidget.this);
+				//fireDoDrawTile(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
 			// computeSelection(false, false);
@@ -221,36 +224,21 @@ public abstract class ImagingWidget extends BaseImagingWidget
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
 
-		if ((paintControlMode & DRAW_ALL_TILES) == DRAW_ALL_TILES) {
-			paintTiles(gc);
-		}
 		if ((paintControlMode & DRAW_TILE) == DRAW_TILE) {
-			paintTile(gc, selectedTileIndexX, selectedTileIndexY);
+			ServiceFactory.getService(this, PaintTileService.class).paintTile(gc, tile, conf);
 		}
-
-		if (paintPixelGrid) {
-			paintPixelGrid(gc);
-		}
-		if (paintSeparator) {
-			paintSeparator(gc);
-		}
-		if (paintTileGrid) {
-			paintTileGrid(gc);
-		}
-
-		if (paintTileSubGrid) {
-			paintTileSubGrid(gc);
-		}
-
-		paintSelection(gc);
-
-		if (paintTileCursor) {
-			paintTileCursor(gc, mouseIn, updateCursorLocation);
-		}
-
-		if (paintTelevisionMode) {
-			paintTelevisionRaster(gc);
-		}
+		/*
+		 * if (paintPixelGrid) { paintPixelGrid(gc); } if (paintSeparator) {
+		 * paintSeparator(gc); } if (paintTileGrid) { paintTileGrid(gc); }
+		 * 
+		 * if (paintTileSubGrid) { paintTileSubGrid(gc); }
+		 * 
+		 * paintSelection(gc);
+		 * 
+		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
+		 * 
+		 * if (paintTelevisionMode) { paintTelevisionRaster(gc); }
+		 */
 		/*
 		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
 		 */
@@ -355,88 +343,46 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		}
 	}
 
-	private void paintTiles(GC gc) {
-		for (int ty = 0; ty < conf.rows; ty++) {
-			for (int tx = 0; tx < conf.columns; tx++) {
-				paintTile(gc, tx, ty);
-			}
-		}
-	}
-
-	private void paintTile(GC gc, int index) {
-		int y = index / conf.tileColumns;
-		int x = index - (y * conf.tileColumns);
-	}
-
-	private void paintTile(GC gc, int tileX, int tileY) {
-		int x = 0;
-		int y = 0;
-		int b1 = conf.bytesPerRow * conf.height;
-		int b2 = b1 * conf.tileColumns;
-		int bc = conf.pixelConfig.bitCount;
-		int pix = conf.isPixelGridEnabled() ? 1 : 0;
-
-		for (int i = 0, k = 0; i < conf.tileSize; i++, k++) {
-			int xi = (k % conf.bytesPerRow) * (8 / bc);
-			int xo = (k / b1) % conf.tileColumns;
-			x = (xi + (xo * conf.currentWidth) + (tileX * conf.currentWidth * conf.tileColumns));
-
-			int yi = (k / conf.bytesPerRow) % conf.height;
-			int yo = (k / b2) % conf.tileRows;
-			y = (yi + (yo * conf.height) + (tileY * conf.height * conf.tileRows));
-
-			if (i < bitplane.length) {
-				int b = (bitplane[i] & 0xff);
-				switch (conf.pixelConfig) {
-				case BC1: {
-					for (int j = 128; j > 0; j >>= 1) {
-						gc.setBackground((b & j) == j ? palette.get(String.valueOf(selectedColorIndex))
-								: Constants.BITMAP_BACKGROUND_COLOR);
-						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
-						x++;
-					}
-					break;
-				}
-				case BC2: {
-					for (int j = 6; j >= 0; j -= 2) {
-						int colorIndex = (b >> j) & 3;
-						Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
-						if (colorProvider != null) {
-							color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tileX, tileY,
-									conf.columns);
-						}
-
-						gc.setBackground(color);
-						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
-						x++;
-					}
-
-					break;
-				}
-				case BC8: {
-
-					if (null != imagePainterFactory) {
-						gc.drawImage(
-								imagePainterFactory.getImage(getDisplay(), b, false, conf, bitplane, colorProvider,
-										palette),
-								(x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix);
-					}
-
-					/*
-					 * gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
-					 * gc.drawString(String.valueOf(b), (x * conf.currentPixelWidth) + pix, (y *
-					 * conf.currentPixelHeight) + pix);
-					 */
-					x++;
-					break;
-				}
-				}
-			}
-		}
-	}
-
+	/*
+	 * private void paintTile(GC gc, int tileX, int tileY) { int x = 0; int y = 0;
+	 * int b1 = conf.bytesPerRow * conf.height; int b2 = b1 * conf.tileColumns; int
+	 * bc = conf.pixelConfig.bitCount; int pix = conf.isPixelGridEnabled() ? 1 : 0;
+	 * 
+	 * for (int i = 0, k = 0; i < conf.tileSize; i++, k++) { int xi = (k %
+	 * conf.bytesPerRow) * (8 / bc); int xo = (k / b1) % conf.tileColumns; x = (xi +
+	 * (xo * conf.currentWidth) + (tileX * conf.currentWidth * conf.tileColumns));
+	 * 
+	 * int yi = (k / conf.bytesPerRow) % conf.height; int yo = (k / b2) %
+	 * conf.tileRows; y = (yi + (yo * conf.height) + (tileY * conf.height *
+	 * conf.tileRows));
+	 * 
+	 * if (i < bitplane.length) { int b = (bitplane[i] & 0xff); switch
+	 * (conf.pixelConfig) { case BC1: { for (int j = 128; j > 0; j >>= 1) {
+	 * gc.setBackground((b & j) == j ?
+	 * palette.get(String.valueOf(selectedColorIndex)) :
+	 * Constants.BITMAP_BACKGROUND_COLOR); gc.fillRectangle((x *
+	 * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
+	 * conf.currentPixelWidth - pix, conf.currentPixelHeight - pix); x++; } break; }
+	 * case BC2: { for (int j = 6; j >= 0; j -= 2) { int colorIndex = (b >> j) & 3;
+	 * Color color = palette != null ? palette.get(String.valueOf(colorIndex)) :
+	 * null; if (colorProvider != null) { color =
+	 * colorProvider.getColorByIndex((byte) colorIndex, bitplane, tileX, tileY,
+	 * conf.columns); }
+	 * 
+	 * gc.setBackground(color); gc.fillRectangle((x * conf.currentPixelWidth) + pix,
+	 * (y * conf.currentPixelHeight) + pix, conf.currentPixelWidth - pix,
+	 * conf.currentPixelHeight - pix); x++; }
+	 * 
+	 * break; } case BC8: {
+	 * 
+	 * if (null != imagePainterFactory) { gc.drawImage(
+	 * imagePainterFactory.getImage(getDisplay(), b, false, conf, bitplane,
+	 * colorProvider, palette), (x * conf.currentPixelWidth) + pix, (y *
+	 * conf.currentPixelHeight) + pix); }
+	 * 
+	 * 
+	 * x++; break; } } } } }
+	 */
 	/*
 	 * private void paintPixel(GC gc, int x, int y) { if (x < conf.currentWidth *
 	 * conf.tileColumns && y < conf.height * conf.tileRows) {
@@ -470,16 +416,8 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
-		fireSetSelectedTile(ImagingWidget.this, tile);
+		//fireSetSelectedTile(ImagingWidget.this, tile);
 		doDrawAllTiles();
-	}
-
-	public void setColor(int index, Color color) {
-		if (palette == null) {
-			palette = new HashMap<String, Color>();
-		}
-		palette.put(String.valueOf(index), color);
-		redraw();
 	}
 
 	public void setSelectedColor(int index) {
@@ -496,6 +434,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		return this.selectedTileOffset;
 	}
 
+	/*
 	public void addDrawListener(IDrawListener redrawListener) {
 		drawListenerList.add(redrawListener);
 	}
@@ -527,7 +466,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 			listener.doDrawPixel(source, x, y, pencilMode);
 		}
 	}
-
+*/
 	@Override
 	public void doDrawPixel(BaseImagingWidget source, int x, int y, PencilMode pencilMode) {
 		conf.pencilMode = pencilMode;
@@ -619,7 +558,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		tileY = oldTileY;
 		updateCursorLocation = false;
 		doDrawAllTiles();
-		fireDoDrawAllTiles(this);
+		//fireDoDrawAllTiles(this);
 	}
 
 	@Override

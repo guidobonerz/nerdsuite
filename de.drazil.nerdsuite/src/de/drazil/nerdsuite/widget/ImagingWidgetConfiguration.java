@@ -23,8 +23,10 @@ public class ImagingWidgetConfiguration {
 	public int tileSize;
 	public int iconSize;
 	public int cursorLineWidth = 1;
-	public int fullWidth = 0;
-	public int fullHeight = 0;
+	public int fullWidthPixel = 0;
+	public int fullHeightPixel = 0;
+	public int tileWidthPixel = 0;
+	public int tileHeightPixel = 0;
 	public int tileWidth = 0;
 	public int tileHeight = 0;
 
@@ -166,9 +168,11 @@ public class ImagingWidgetConfiguration {
 		currentPixelHeight = pixelSize;
 		iconSize = width * height;
 		tileSize = iconSize * tileColumns * tileRows;
-		tileWidth = width * tileColumns * pixelSize;
-		tileHeight = height * tileRows * pixelSize;
-		fullWidth = tileWidth * columns;
-		fullHeight = tileHeight * rows;
+		tileWidth = width * tileColumns;
+		tileHeight = height * tileRows;
+		tileWidthPixel = tileWidth * pixelSize;
+		tileHeightPixel = tileHeight * pixelSize;
+		fullWidthPixel = tileWidthPixel * columns;
+		fullHeightPixel = tileHeightPixel * rows;
 	}
 }

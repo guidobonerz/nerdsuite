@@ -48,13 +48,22 @@
           <children xsi:type="basic:PartSashContainer" xmi:id="_EyKI8AUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partsashcontainer.5">
             <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.5">
               <children xsi:type="basic:Part" xmi:id="_FHuBAJXOEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.part.GfxEditor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView" label="GfxEditor" closeable="true">
-                <handlers xmi:id="_N4cM8AGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.handler.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SwapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
+                <toolbar xmi:id="_zut8ABa9EemiVvU0vymBxA" elementId="de.drazil.nerdsuite.toolbar.5">
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_REtloBa-EemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.showGrid" label="Grid" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/grid.png" type="Check" command="_9D16gBbMEemiVvU0vymBxA"/>
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_4z1M8BbDEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.showDotGrid" label="DotGrid" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/grid_dot.png" selected="true" type="Check" command="__w26YBbMEemiVvU0vymBxA"/>
+                </toolbar>
               </children>
             </children>
-            <children xsi:type="basic:Part" xmi:id="_Ib-vUAUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.part.Repository" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.RepositoryView" label="Repository">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_wnxCABUkEemZcu7Wc9QgWQ" elementId="de.drazil.nerdsuite.popupmenu.popupmenu">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_xbAc0BUkEemZcu7Wc9QgWQ" elementId="de.drazil.nerdsuite.handledmenuitem.swap" label="swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
-              </menus>
+            <children xsi:type="basic:PartStack" xmi:id="_BZ9KsBbDEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.partstack.6">
+              <children xsi:type="basic:Part" xmi:id="_Ib-vUAUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.part.Repository" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.RepositoryView" label="Repository">
+                <menus xsi:type="menu:PopupMenu" xmi:id="_wnxCABUkEemZcu7Wc9QgWQ" elementId="de.drazil.nerdsuite.popupmenu.popupmenu">
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_xbAc0BUkEemZcu7Wc9QgWQ" elementId="de.drazil.nerdsuite.handledmenuitem.swap" label="swap" command="_D6FtcAGAEem64ORYJm-_tw"/>
+                </menus>
+                <toolbar xmi:id="___gQ0BbAEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.toolbar.6">
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_AiheUBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.3" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/add.png" command="_C9g6EBbBEemiVvU0vymBxA"/>
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_tNmbkBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.4" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/delete.png" command="_Ftz3cBbBEemiVvU0vymBxA"/>
+                </toolbar>
+              </children>
             </children>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_vkk_4AR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.4">
@@ -160,6 +169,11 @@
   <handlers xmi:id="_zoCDQAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.newGfxProject" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewGraphicProjectHandler" command="_mWhJ4AT4EemsC5geQwPptA"/>
   <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.addLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.AddLayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
   <handlers xmi:id="_akHrIAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.removeLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RemoveLayerHandler" command="_F2WbkAT-EemsC5geQwPptA"/>
+  <handlers xmi:id="_QTJ68BbAEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.swapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
+  <handlers xmi:id="_IGtBcBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.addTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.AddTileHandler" command="_C9g6EBbBEemiVvU0vymBxA"/>
+  <handlers xmi:id="_Mvl4IBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.removeTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RemoveTileHandler" command="_Ftz3cBbBEemiVvU0vymBxA"/>
+  <handlers xmi:id="_CFlWEBbNEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ShowGridHandler" command="_9D16gBbMEemiVvU0vymBxA"/>
+  <handlers xmi:id="_KzOboBbNEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.showDotGrid" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ShowDotGridHandler" command="__w26YBbMEemiVvU0vymBxA"/>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
@@ -176,6 +190,10 @@
   </commands>
   <commands xmi:id="_CYRyMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.addLayer" commandName="Add Layer"/>
   <commands xmi:id="_F2WbkAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.removeLayer" commandName="Remove Layer"/>
+  <commands xmi:id="_C9g6EBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.command.addTile" commandName="AddTile"/>
+  <commands xmi:id="_Ftz3cBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.command.removeTile" commandName="RemoveTile"/>
+  <commands xmi:id="_9D16gBbMEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.command.showGrid" commandName="ShowGrid"/>
+  <commands xmi:id="__w26YBbMEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.command.showDotGrid" commandName="ShowDotGrid"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

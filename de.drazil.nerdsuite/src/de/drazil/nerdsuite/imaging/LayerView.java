@@ -24,7 +24,7 @@ public class LayerView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 
-		Tile tile = new Tile();
+		Tile tile = new Tile("name", 0);
 		tile.addLayer("Frame");
 		tile.addLayer("Body");
 		tile.addLayer("Eyes");
@@ -71,6 +71,6 @@ public class LayerView {
 			}
 		});
 		viewer.setContentProvider(new ArrayContentProvider());
-		viewer.setInput(tile.getLayerList());
+		// viewer.setInput(tile.getLayerList());
 	}
 }

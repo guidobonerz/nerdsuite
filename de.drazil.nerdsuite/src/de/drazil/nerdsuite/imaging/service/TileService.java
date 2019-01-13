@@ -17,8 +17,8 @@ public class TileService extends AbstractImagingService {
 		tileServiceListener = new ArrayList<ITileServiceListener>();
 	}
 
-	public void addTile(String name) {
-		Tile tile = new Tile(name);
+	public void addTile(String name, int size) {
+		Tile tile = new Tile(name, size);
 		tileList.add(tile);
 		tileIndexOrderList.add(tileList.indexOf(tile));
 		fireTileAdded();

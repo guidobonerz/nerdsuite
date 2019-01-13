@@ -10,36 +10,44 @@ public class Tile {
 	private List<ITileListener> tileListenerList = null;
 	private List<Layer> layerList = null;
 	private List<Integer> layerIndexOrderList = null;
+
 	@Setter
 	private String name = null;
+	private int size = 0;
 
-	public Tile() {
-		this("<rename me>");
+	public Tile(int size) {
+		this("<rename me>", size);
 	}
 
-	public Tile(String name) {
+	public Tile(String name, int size) {
 		this.name = name;
+		this.size = size;
 		layerList = new ArrayList<>();
 		layerIndexOrderList = new ArrayList<Integer>();
 		tileListenerList = new ArrayList<ITileListener>();
 	}
 
-	public List<Layer> getLayerList() {
-		return layerList;
+	public List<Integer> getLayerIndexOrderList() {
+		return layerIndexOrderList;
+	}
+
+	public Layer getLayer(int index) {
+		return layerList.get(index);
 	}
 
 	public void addLayer() {
 		addLayer("<rename me>");
 	}
 
-	public void addLayer(String name) {
-		Layer layer = new Layer(name);
+	public Layer addLayer(String name) {
+		Layer layer = new Layer(name, size);
 		if (layerList.size() == 0) {
 			layer.setActive(true);
 		}
 		layerList.add(layer);
 		layerIndexOrderList.add(layerList.indexOf(layer));
 		fireLayerAdded();
+		return layer;
 	}
 
 	public void removeLayer(int index) {
@@ -136,4 +144,5 @@ public class Tile {
 	private void fireActiveLayerChanged(int layer) {
 		tileListenerList.forEach(listener -> listener.activeLayerChanged(layer));
 	}
+
 }

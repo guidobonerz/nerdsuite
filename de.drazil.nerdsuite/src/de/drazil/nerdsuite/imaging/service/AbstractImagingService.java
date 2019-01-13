@@ -55,7 +55,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	}
 
 	public void execute(int action) {
-
+/*
 		int width = imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
 		int height = imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows;
 		callback.beforeRunService();
@@ -75,9 +75,11 @@ public abstract class AbstractImagingService extends AbstractService implements 
 			}
 		}
 		callback.afterRunService();
+		*/
 	}
 
 	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {
+		/*
 		int iconSize = imagingWidgetConfiguration.getIconSize();
 		int tileSize = imagingWidgetConfiguration.getTileSize();
 		int tileOffset = imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
@@ -104,6 +106,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 				}
 			}
 		}
+		*/
 	}
 
 	protected byte[] createWorkArray() {

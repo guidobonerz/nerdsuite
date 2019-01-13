@@ -55,13 +55,8 @@ public class CharSetView {
 			referenceSelector.getConf().setTileSubGridEnabled(false);
 			referenceSelector.getConf().setTileCursorEnabled(true);
 			referenceSelector.getConf().setSeparatorEnabled(false);
-			referenceSelector.setSelectedTileOffset(0, 0, true);
+			// referenceSelector.setSelectedTileOffset(0, 0, true);
 			referenceSelector.setBitplane(getBinaryData());
-			referenceSelector.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-			referenceSelector.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-			referenceSelector.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-			referenceSelector.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-			referenceSelector.setSelectedColor(1);
 			referenceSelector.recalc();
 			// referenceSelector.addDrawListener(getPainter());
 

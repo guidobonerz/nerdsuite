@@ -9,7 +9,6 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageViewer;
@@ -56,14 +55,10 @@ public class PreviewView {
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
 			previewer.getConf().setSeparatorEnabled(false);
-			previewer.setSelectedTileOffset(0, 0, false);
+			// previewer.setSelectedTileOffset(0, 0, false);
 			previewer.setBitplane(getBlankData());
 			previewer.setImagePainterFactory(null);
-			previewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-			previewer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-			previewer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-			previewer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-			previewer.setSelectedColor(1);
+
 			previewer.recalc();
 		}
 		return previewer;
