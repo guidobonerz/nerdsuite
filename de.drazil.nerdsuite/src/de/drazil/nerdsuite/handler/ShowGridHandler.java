@@ -9,9 +9,8 @@ public class ShowGridHandler {
 	@Execute
 	public void execute(final MToolItem item, IEventBroker broker) {
 		if (item.isSelected()) {
-			broker.post("DotGridEnabled", item.isSelected());
 			broker.post("GridEnabled", !item.isSelected());
+			broker.post("DotGridEnabled", item.isSelected());
 		}
 	}
-
 }
