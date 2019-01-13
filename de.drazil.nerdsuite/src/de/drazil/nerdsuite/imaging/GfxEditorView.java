@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolItem;
 import org.eclipse.e4.ui.services.EMenuService;
@@ -24,6 +23,7 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridStyle;
+import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
@@ -83,8 +83,38 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
+	void updatePaintMode(@UIEventTopic("PaintMode") PaintMode paintMode, EModelService service, MPart part) {
+		MToolItem single = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.singlePaintMode",
+				part.getToolbar());
+		MToolItem vertical = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.verticalMirrorPaintMode",
+				part.getToolbar());
+		MToolItem horizontal = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.horizontalMirrorPaintMode",
+				part.getToolbar());
+		MToolItem kaleidoscope = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.kaleidoscopePaintMode",
+				part.getToolbar());
+		single.setSelected(false);
+		vertical.setSelected(false);
+		horizontal.setSelected(false);
+		kaleidoscope.setSelected(false);
+
+		if (paintMode == PaintMode.Single) {
+			single.setSelected(true);
+		} else if (paintMode == PaintMode.VerticalMirror) {
+			vertical.setSelected(true);
+		} else if (paintMode == PaintMode.HorizontalMirror) {
+			horizontal.setSelected(true);
+		} else if (paintMode == PaintMode.Kaleidoscope) {
+			kaleidoscope.setSelected(true);
+		} else {
+		}
+
+		getWidget().getConf().setPaintMode(paintMode);
+	}
+
+	@Inject
+	@Optional
 	void updateGridState(@UIEventTopic("GridState") GridState state, EModelService service, MPart part) {
-		MToolItem itemGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showGrid",
+		MToolItem itemGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showLineGrid",
 				part.getToolbar());
 		MToolItem itemDotGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showDotGrid",
 				part.getToolbar());

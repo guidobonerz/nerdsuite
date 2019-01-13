@@ -39,7 +39,7 @@ public class ImagingWidgetConfiguration {
 	public boolean televisionModeEnabled = false;
 
 	public PixelConfig pixelConfig = PixelConfig.BC1;
-	public PaintMode paintMode = PaintMode.Simple;
+	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
 	public GridStyle gridStyle = GridStyle.Line;
 

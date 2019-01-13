@@ -14,7 +14,7 @@ public class PaintTileService extends AbstractImagingService {
 		Layer layer = tile.getActiveLayer();
 
 		switch (conf.paintMode) {
-		case Simple: {
+		case Single: {
 			setPixel(layer, x, y, conf);
 			break;
 		}

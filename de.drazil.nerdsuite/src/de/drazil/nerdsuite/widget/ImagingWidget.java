@@ -472,7 +472,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		int inset = conf.isPixelGridEnabled() ? 1 : 0;
 
 		switch (conf.paintMode) {
-		case Simple: {
+		case Single: {
 			redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
 					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
 			break;
