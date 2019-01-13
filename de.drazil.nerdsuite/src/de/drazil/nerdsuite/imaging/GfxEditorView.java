@@ -26,6 +26,7 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.ImagePainter;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
@@ -82,16 +83,19 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
-	void updateGridState(@UIEventTopic("DotGridEnabled") boolean state, EModelService service, MPart part) {
-		MToolItem item = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showGrid", part.getToolbar());
-		item.setSelected(state);
-	}
-
-	@Inject
-	@Optional
-	void updateDotGridState(@UIEventTopic("GridEnabled") boolean state, EModelService service, MPart part) {
-		MToolItem item = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showDotGrid", part.getToolbar());
-		item.setSelected(state);
+	void updateGridState(@UIEventTopic("GridState") GridState state, EModelService service, MPart part) {
+		MToolItem itemGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showGrid",
+				part.getToolbar());
+		MToolItem itemDotGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showDotGrid",
+				part.getToolbar());
+		if (state.gridStyle == GridStyle.Dot && state.isEnabled()) {
+			itemGrid.setSelected(!state.isEnabled());
+		}
+		if (state.gridStyle == GridStyle.Line && state.isEnabled()) {
+			itemDotGrid.setSelected(!state.isEnabled());
+		}
+		getWidget().getConf().setGridStyle(state.gridStyle);
+		getWidget().getConf().setPixelGridEnabled(state.isEnabled());
 	}
 
 	@Inject

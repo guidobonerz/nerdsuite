@@ -127,13 +127,13 @@ public abstract class ImagingWidget extends BaseImagingWidget
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
 			selectedTileIndex = (tileY * conf.columns) + tileX;
-			//fireSetSelectedTile(ImagingWidget.this, tile);
+			// fireSetSelectedTile(ImagingWidget.this, tile);
 			// computeSelection(false, false);
 			doDrawAllTiles();
 		} else if (supportsPainting()) {
 			ServiceFactory.getService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 			doDrawTile();
-			//fireDoDrawTile(ImagingWidget.this);
+			// fireDoDrawTile(ImagingWidget.this);
 		}
 
 	}
@@ -172,7 +172,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 				oldCursorY = cursorY;
 				ServiceFactory.getService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 				doDrawTile();
-				//fireDoDrawTile(ImagingWidget.this);
+				// fireDoDrawTile(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
 			// computeSelection(false, false);
@@ -227,9 +227,13 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		if ((paintControlMode & DRAW_TILE) == DRAW_TILE) {
 			ServiceFactory.getService(this, PaintTileService.class).paintTile(gc, tile, conf);
 		}
+
+		if (paintPixelGrid) {
+			paintPixelGrid(gc);
+		}
 		/*
-		 * if (paintPixelGrid) { paintPixelGrid(gc); } if (paintSeparator) {
-		 * paintSeparator(gc); } if (paintTileGrid) { paintTileGrid(gc); }
+		 * if (paintSeparator) { paintSeparator(gc); } if (paintTileGrid) {
+		 * paintTileGrid(gc); }
 		 * 
 		 * if (paintTileSubGrid) { paintTileSubGrid(gc); }
 		 * 
@@ -416,7 +420,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
-		//fireSetSelectedTile(ImagingWidget.this, tile);
+		// fireSetSelectedTile(ImagingWidget.this, tile);
 		doDrawAllTiles();
 	}
 
@@ -435,38 +439,26 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	/*
-	public void addDrawListener(IDrawListener redrawListener) {
-		drawListenerList.add(redrawListener);
-	}
-
-	public void removeDrawListener(IDrawListener redrawListener) {
-		drawListenerList.remove(redrawListener);
-	}
-
-	private void fireDoDrawTile(BaseImagingWidget source) {
-		for (IDrawListener listener : drawListenerList) {
-			listener.doDrawTile();
-		}
-	}
-
-	private void fireDoDrawAllTiles(BaseImagingWidget source) {
-		for (IDrawListener listener : drawListenerList) {
-			listener.doDrawAllTiles();
-		}
-	}
-
-	private void fireSetSelectedTile(BaseImagingWidget source, Tile tile) {
-		for (IDrawListener listener : drawListenerList) {
-			listener.setSelectedTile(tile);
-		}
-	}
-
-	private void fireDoDrawPixel(BaseImagingWidget source, int x, int y, PencilMode pencilMode) {
-		for (IDrawListener listener : drawListenerList) {
-			listener.doDrawPixel(source, x, y, pencilMode);
-		}
-	}
-*/
+	 * public void addDrawListener(IDrawListener redrawListener) {
+	 * drawListenerList.add(redrawListener); }
+	 * 
+	 * public void removeDrawListener(IDrawListener redrawListener) {
+	 * drawListenerList.remove(redrawListener); }
+	 * 
+	 * private void fireDoDrawTile(BaseImagingWidget source) { for (IDrawListener
+	 * listener : drawListenerList) { listener.doDrawTile(); } }
+	 * 
+	 * private void fireDoDrawAllTiles(BaseImagingWidget source) { for
+	 * (IDrawListener listener : drawListenerList) { listener.doDrawAllTiles(); } }
+	 * 
+	 * private void fireSetSelectedTile(BaseImagingWidget source, Tile tile) { for
+	 * (IDrawListener listener : drawListenerList) { listener.setSelectedTile(tile);
+	 * } }
+	 * 
+	 * private void fireDoDrawPixel(BaseImagingWidget source, int x, int y,
+	 * PencilMode pencilMode) { for (IDrawListener listener : drawListenerList) {
+	 * listener.doDrawPixel(source, x, y, pencilMode); } }
+	 */
 	@Override
 	public void doDrawPixel(BaseImagingWidget source, int x, int y, PencilMode pencilMode) {
 		conf.pencilMode = pencilMode;
@@ -558,7 +550,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		tileY = oldTileY;
 		updateCursorLocation = false;
 		doDrawAllTiles();
-		//fireDoDrawAllTiles(this);
+		// fireDoDrawAllTiles(this);
 	}
 
 	@Override
