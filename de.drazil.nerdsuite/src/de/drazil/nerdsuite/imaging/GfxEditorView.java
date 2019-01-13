@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 
-import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
@@ -35,8 +34,6 @@ import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImageReferenceSelector;
 import de.drazil.nerdsuite.widget.ImageRepository;
 import de.drazil.nerdsuite.widget.ImageViewer;
-import de.drazil.nerdsuite.widget.Layer;
-import de.drazil.nerdsuite.widget.Tile;
 
 public class GfxEditorView // implements IConfigurationListener {
 {
@@ -122,6 +119,12 @@ public class GfxEditorView // implements IConfigurationListener {
 		getWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
 		getWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
 		getWidget().recalc();
+	}
+
+	@Inject
+	@Optional
+	void setSelectedTile(@UIEventTopic("setSelectedTile") int index) {
+		ServiceFactory.getService("REPOSITORY", TileService.class).setSelectedTile(index );
 	}
 
 	@PostConstruct

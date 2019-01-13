@@ -58,6 +58,7 @@ public class NewGraphicProjectHandler {
 		layer.setSelectedColorIndex(1);
 
 		eventBroker.post("gfxFormat", gf);
+		eventBroker.post("setSelectedTile", 0);
 
 	}
 }

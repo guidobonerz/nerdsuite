@@ -23,6 +23,7 @@ import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.imaging.service.TileService;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 
@@ -212,6 +213,10 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		return (modifierMask & modifierKey) == modifierKey && currentCharacterPressed == charCode && keyPressed;
 	}
 
+	private boolean checkPaintControlMode(int mode) {
+		return (paintControlMode & mode) == mode;
+	}
+
 	public void paintControl(PaintEvent e) {
 		paintControl(e.gc, paintControlMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(),
 				conf.isTileGridEnabled(), conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), false);
@@ -221,8 +226,11 @@ public abstract class ImagingWidget extends BaseImagingWidget
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
 
-		if ((paintControlMode & DRAW_TILE) == DRAW_TILE) {
+		if (checkPaintControlMode(DRAW_TILE)) {
 			ServiceFactory.getService(this, PaintTileService.class).paintTile(gc, tile, conf);
+		}
+		if (checkPaintControlMode(DRAW_ALL_TILES)) {
+			ServiceFactory.getService(this, PaintTileService.class).paintAllTiles(gc, conf);
 		}
 
 		if (paintPixelGrid) {

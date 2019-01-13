@@ -12,17 +12,12 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
-import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
-import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.TileService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.ImageRepository;
-import de.drazil.nerdsuite.widget.Layer;
 
 public class RepositoryView {
 	private ImageRepository repository = null;
@@ -110,9 +105,8 @@ public class RepositoryView {
 			repository.getConf().setTileSubGridEnabled(false);
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
-
-			repository.setSelectedColor(1);
 			repository.recalc();
+
 			// selector.addDrawListener(getPainter());
 			// selector.addDrawListener(getPreviewer());
 

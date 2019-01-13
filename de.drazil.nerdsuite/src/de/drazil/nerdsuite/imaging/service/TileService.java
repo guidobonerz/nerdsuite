@@ -41,6 +41,10 @@ public class TileService extends AbstractImagingService {
 		return tileList.get(tileIndexOrderList.get(index));
 	}
 
+	public int getSize() {
+		return tileList.size();
+	}
+
 	public void addTileManagementListener(ITileManagementListener listener) {
 		tileServiceManagementListener.add(listener);
 	}

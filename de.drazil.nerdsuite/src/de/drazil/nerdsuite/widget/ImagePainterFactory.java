@@ -35,7 +35,7 @@ public class ImagePainterFactory {
 	}
 
 	private Image createOrUpdateImage(Tile tile, ImagingWidgetConfiguration conf) {
-		Image image = new Image(Display.getDefault(), conf.fullWidthPixel,conf.getFullHeightPixel());
+		Image image = new Image(Display.getDefault(), conf.fullWidthPixel,conf.fullHeightPixel);
 		// ImageData id = image.getImageData().scaledTo(10, 10);
 
 		GC gc = new GC(image);
