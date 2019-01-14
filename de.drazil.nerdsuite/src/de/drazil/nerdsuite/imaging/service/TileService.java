@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class TileService extends AbstractImagingService {
@@ -11,12 +12,14 @@ public class TileService extends AbstractImagingService {
 	private List<Integer> tileIndexOrderList = null;
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	private List<ITileSelectionListener> tileServiceSelectionListener = null;
+	private ImagePainterFactory imagePainterFactory;
 
 	public TileService() {
 		tileList = new ArrayList<Tile>();
 		tileIndexOrderList = new ArrayList<Integer>();
 		tileServiceManagementListener = new ArrayList<ITileManagementListener>();
 		tileServiceSelectionListener = new ArrayList<ITileSelectionListener>();
+		imagePainterFactory = new ImagePainterFactory();
 	}
 
 	public void addTile(String name, int size) {
@@ -43,6 +46,10 @@ public class TileService extends AbstractImagingService {
 
 	public int getSize() {
 		return tileList.size();
+	}
+
+	public ImagePainterFactory getImagePainterFactory() {
+		return imagePainterFactory;
 	}
 
 	public void addTileManagementListener(ITileManagementListener listener) {

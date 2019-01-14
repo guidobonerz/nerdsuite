@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.imaging.service;
 
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
@@ -10,7 +11,7 @@ import de.drazil.nerdsuite.widget.Tile;
 
 public class PaintTileService extends AbstractImagingService {
 
-	private ImagePainterFactory imagePainterFactory = new ImagePainterFactory();
+	private TileService tileService = ServiceFactory.getService("REPOSITORY", TileService.class);
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
 		Layer layer = tile.getActiveLayer();
@@ -57,17 +58,17 @@ public class PaintTileService extends AbstractImagingService {
 	}
 
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
-		gc.drawImage(imagePainterFactory.getImage(tile, true, conf), 0, 0);
+		gc.drawImage(tileService.getImagePainterFactory().getImage(tile, true, conf), 0, 0);
 	}
 
 	public void paintAllTiles(GC gc, ImagingWidgetConfiguration conf) {
-		TileService tileService = ServiceFactory.getService("REPOSITORY", TileService.class);
 		int x = 0;
 		int y = 0;
 		for (int i = 0; i < tileService.getSize(); i++) {
 			Tile tile = tileService.getTile(i);
-			gc.drawImage(imagePainterFactory.getImage(tile, true, conf), x, y);
-			x += conf.getFullWidthPixel();
+			Image image = tileService.getImagePainterFactory().getImage(tile, false, conf);
+			gc.drawImage(image, x, y);
+			x += image.getBounds().width;
 		}
 	}
 
