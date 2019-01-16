@@ -171,7 +171,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 				oldCursorY = cursorY;
 				ServiceFactory.getService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 				doDrawTile();
-				// fireDoDrawTile(ImagingWidget.this);
+				//fireDoDrawTile(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
 			// computeSelection(false, false);
@@ -475,6 +475,26 @@ public abstract class ImagingWidget extends BaseImagingWidget
 		return false;
 	}
 
+	public void addDrawListener(IDrawListener redrawListener) {
+		drawListenerList.add(redrawListener);
+	}
+
+	public void removeDrawListener(IDrawListener redrawListener) {
+		drawListenerList.remove(redrawListener);
+	}
+
+	private void fireDoDrawTile(BaseImagingWidget source) {
+		for (IDrawListener listener : drawListenerList) {
+			listener.doDrawTile();
+		}
+	}
+
+	private void fireDoDrawAllTiles(BaseImagingWidget source) {
+		for (IDrawListener listener : drawListenerList) {
+			listener.doDrawAllTiles();
+		}
+	}
+	
 	@Override
 	public void beforeRunService() {
 		// TODO Auto-generated method stub

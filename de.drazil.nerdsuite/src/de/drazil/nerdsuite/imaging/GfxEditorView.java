@@ -132,6 +132,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		this.parent = parent;
 
 		getWidget();
+		
 		/*
 		 * parent.setLayout(new MigLayout());
 		 * 
@@ -365,8 +366,8 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.getConf().setTileCursorEnabled(false);
 			painter.recalc();
 			ServiceFactory.getService("REPOSITORY", TileService.class).addTileSelectionListener(painter);
+			menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.popupmenu");
 
-			// menuService.registerContextMenu(painter, "de.drazil.nerdsuite.menu.3");
 		}
 		return painter;
 	}
