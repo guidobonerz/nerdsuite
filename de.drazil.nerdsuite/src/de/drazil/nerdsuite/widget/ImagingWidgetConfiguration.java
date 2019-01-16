@@ -37,6 +37,12 @@ public class ImagingWidgetConfiguration {
 	public boolean separatorEnabled = true;
 	public boolean layerViewEnabled = false;
 	public boolean televisionModeEnabled = false;
+	public boolean supportsPainting = false;
+	public boolean supportsMultiTileView = false;
+	public boolean supportsSingleSelection = false;
+	public boolean supportsMultiSelection = false;
+	public boolean supportsReferenceIndexSelection = false;
+	public boolean supportsDrawCursor = false;
 
 	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public PaintMode paintMode = PaintMode.Single;
@@ -161,6 +167,30 @@ public class ImagingWidgetConfiguration {
 
 	public void setTelevisonModeEnabled(boolean televisionModeEnabled) {
 		this.televisionModeEnabled = televisionModeEnabled;
+	}
+
+	protected boolean supportsPainting() {
+		return supportsPainting;
+	}
+
+	protected boolean supportsMultiTileView() {
+		return supportsMultiTileView;
+	}
+
+	protected boolean supportsSingleSelection() {
+		return supportsSingleSelection;
+	}
+
+	protected boolean supportsMultiSelection() {
+		return supportsMultiSelection;
+	}
+
+	protected boolean supportsReferenceIndexSelection() {
+		return supportsReferenceIndexSelection;
+	}
+
+	protected boolean supportsDrawCursor() {
+		return supportsDrawCursor;
 	}
 
 	public void computeSizes() {

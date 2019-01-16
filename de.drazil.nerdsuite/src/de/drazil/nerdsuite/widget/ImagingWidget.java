@@ -23,11 +23,10 @@ import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.TileService;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 
-public abstract class ImagingWidget extends BaseImagingWidget
+public class ImagingWidget extends BaseImagingWidget
 		implements IDrawListener, PaintListener, IImagingCallback, ITileSelectionListener, ITileManagementListener {
 
 	private final static int DRAW_NOTHING = 0;
@@ -171,7 +170,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 				oldCursorY = cursorY;
 				ServiceFactory.getService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 				doDrawTile();
-				//fireDoDrawTile(ImagingWidget.this);
+				// fireDoDrawTile(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
 			// computeSelection(false, false);
@@ -452,27 +451,27 @@ public abstract class ImagingWidget extends BaseImagingWidget
 	}
 
 	protected boolean supportsPainting() {
-		return false;
+		return conf.supportsPainting;
 	}
 
 	protected boolean supportsMultiTileView() {
-		return false;
+		return conf.supportsMultiTileView;
 	}
 
 	protected boolean supportsSingleSelection() {
-		return false;
+		return conf.supportsSingleSelection;
 	}
 
 	protected boolean supportsMultiSelection() {
-		return false;
+		return conf.supportsMultiSelection;
 	}
 
 	protected boolean supportsReferenceIndexSelection() {
-		return false;
+		return conf.supportsReferenceIndexSelection;
 	}
 
 	protected boolean supportsDrawCursor() {
-		return false;
+		return conf.supportsDrawCursor;
 	}
 
 	public void addDrawListener(IDrawListener redrawListener) {
@@ -494,7 +493,7 @@ public abstract class ImagingWidget extends BaseImagingWidget
 			listener.doDrawAllTiles();
 		}
 	}
-	
+
 	@Override
 	public void beforeRunService() {
 		// TODO Auto-generated method stub

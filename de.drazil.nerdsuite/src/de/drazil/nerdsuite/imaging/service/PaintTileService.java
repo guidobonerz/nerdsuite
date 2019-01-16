@@ -50,6 +50,7 @@ public class PaintTileService extends AbstractImagingService {
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
+			System.out.println(x+":"+y);
 			layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
 					? layer.getSelectedColorIndex()
 					: 0;

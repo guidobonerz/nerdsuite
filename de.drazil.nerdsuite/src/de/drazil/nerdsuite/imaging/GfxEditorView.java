@@ -29,18 +29,16 @@ import de.drazil.nerdsuite.imaging.service.TileService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
-import de.drazil.nerdsuite.widget.ImagePainter;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
-import de.drazil.nerdsuite.widget.ImageReferenceSelector;
-import de.drazil.nerdsuite.widget.ImageRepository;
-import de.drazil.nerdsuite.widget.ImageViewer;
+import de.drazil.nerdsuite.widget.ImagingWidget;
+import net.miginfocom.swt.MigLayout;
 
 public class GfxEditorView // implements IConfigurationListener {
 {
-	private ImagePainter painter;
-	private ImageViewer previewer;
-	private ImageRepository selector;
-	private ImageReferenceSelector referenceSelector;
+	private ImagingWidget painter;
+	private ImagingWidget previewer;
+	private ImagingWidget repository;
+
 	private Scale animationTimerDelayScale;
 	private Composite parent;
 	private Button multicolor;
@@ -91,7 +89,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		} else {
 		}
 
-		getWidget().getConf().setPaintMode(paintMode);
+		getPainterWidget().getConf().setPaintMode(paintMode);
 	}
 
 	@Inject
@@ -107,32 +105,44 @@ public class GfxEditorView // implements IConfigurationListener {
 		if (state.gridStyle == GridStyle.Line && state.isEnabled()) {
 			itemDotGrid.setSelected(!state.isEnabled());
 		}
-		getWidget().getConf().setGridStyle(state.gridStyle);
-		getWidget().getConf().setPixelGridEnabled(state.isEnabled());
+		getPainterWidget().getConf().setGridStyle(state.gridStyle);
+		getPainterWidget().getConf().setPixelGridEnabled(state.isEnabled());
 	}
 
 	@Inject
 	@Optional
 	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
-		getWidget().getConf().setWidth(gf.getMetadata().getWidth());
-		getWidget().getConf().setHeight(gf.getMetadata().getHeight());
-		getWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
-		getWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
-		getWidget().recalc();
+		getPainterWidget().getConf().setWidth(gf.getMetadata().getWidth());
+		getPainterWidget().getConf().setHeight(gf.getMetadata().getHeight());
+		getPainterWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
+		getPainterWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getPainterWidget().recalc();
+		getPreviewerWidget().getConf().setWidth(gf.getMetadata().getWidth());
+		getPreviewerWidget().getConf().setHeight(gf.getMetadata().getHeight());
+		getPreviewerWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
+		getPreviewerWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getPreviewerWidget().recalc();
+		getRepositoryWidget().getConf().setWidth(gf.getMetadata().getWidth());
+		getRepositoryWidget().getConf().setHeight(gf.getMetadata().getHeight());
+		getRepositoryWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
+		getRepositoryWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getRepositoryWidget().recalc();
 	}
 
 	@Inject
 	@Optional
 	void setSelectedTile(@UIEventTopic("setSelectedTile") int index) {
-		ServiceFactory.getService("REPOSITORY", TileService.class).setSelectedTile(index );
+		ServiceFactory.getService("REPOSITORY", TileService.class).setSelectedTile(index);
 	}
 
 	@PostConstruct
 	public void postConstruct(Composite parent, MPart part, EMenuService menuService) {
 		this.parent = parent;
+		parent.setLayout(new MigLayout());
+		getPainterWidget().setLayoutData("cell 0 0");
+		getPreviewerWidget().setLayoutData("cell 1 0");
+		getRepositoryWidget().setLayoutData("cell 0 1 2 1");
 
-		getWidget();
-		
 		/*
 		 * parent.setLayout(new MigLayout());
 		 * 
@@ -354,49 +364,68 @@ public class GfxEditorView // implements IConfigurationListener {
 	 * getSelector().getService(AnimationService.class).setDelay(step); } }); }
 	 * return animationTimerDelayScale; }
 	 */
-	public ImagePainter getWidget() {
+	public ImagingWidget getPainterWidget() {
 		if (painter == null) {
 
-			painter = new ImagePainter(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setPixelSize(15);
 			painter.getConf().setPixelGridEnabled(true);
 			painter.getConf().setGridStyle(GridStyle.Dot);
 			painter.getConf().setTileGridEnabled(true);
 			painter.getConf().setTileCursorEnabled(false);
+			painter.getConf().supportsPainting = true;
+			painter.getConf().supportsDrawCursor = true;
 			painter.recalc();
 			ServiceFactory.getService("REPOSITORY", TileService.class).addTileSelectionListener(painter);
-			menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.popupmenu");
+			// menuService.registerContextMenu(painter,
+			// "de.drazil.nerdsuite.popupmenu.popupmenu");
 
 		}
 		return painter;
 	}
 
-	/*
-	 * private ImageViewer getPreviewer() { if (previewer == null) { previewer = new
-	 * ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-	 * previewer.getConf().setWidgetName("Preview :");
-	 * previewer.getConf().setWidth(8); previewer.getConf().setHeight(8);
-	 * previewer.getConf().setPixelSize(3);
-	 * previewer.getConf().setPixelGridEnabled(false);
-	 * previewer.getConf().setGridStyle(GridStyle.Dot);
-	 * previewer.getConf().setTileGridEnabled(false);
-	 * previewer.getConf().setTileCursorEnabled(false);
-	 * previewer.getConf().setSeparatorEnabled(false);
-	 * previewer.setSelectedTileOffset(0, 0, false);
-	 * previewer.setBitplane(getBlankData());
-	 * previewer.setImagePainterFactory(imagePainterFactory); previewer.setColor(0,
-	 * InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-	 * previewer.setColor(1,
-	 * InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-	 * previewer.setColor(2,
-	 * InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-	 * previewer.setColor(3,
-	 * InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-	 * previewer.setSelectedColor(1);
-	 * 
-	 * } return previewer; }
-	 */
+	public ImagingWidget getPreviewerWidget() {
+		if (previewer == null) {
+			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			previewer.getConf().setWidgetName("Preview :");
+			previewer.getConf().setPixelSize(1);
+			previewer.getConf().setRows(1);
+			previewer.getConf().setColumns(1);
+			previewer.getConf().setPixelGridEnabled(false);
+			previewer.getConf().setGridStyle(GridStyle.Dot);
+			previewer.getConf().setTileGridEnabled(false);
+			previewer.getConf().setTileCursorEnabled(false);
+			previewer.getConf().setSeparatorEnabled(false);
+			previewer.recalc();
+		}
+		return previewer;
+	}
+
+	private ImagingWidget getRepositoryWidget() {
+		if (repository == null) {
+			repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
+			repository.getConf().setWidgetName("Selector:");
+			repository.getConf().setColumns(4);
+			repository.getConf().setRows(4);
+			repository.getConf().setPixelSize(3);
+			repository.getConf().setPixelGridEnabled(false);
+			repository.getConf().setTileGridEnabled(true);
+			repository.getConf().setTileSubGridEnabled(false);
+			repository.getConf().setTileCursorEnabled(true);
+			repository.getConf().setSeparatorEnabled(false);
+			repository.recalc();
+
+			// selector.addDrawListener(getPainter());
+			// selector.addDrawListener(getPreviewer());
+
+		}
+		// menuService.registerContextMenu(repository,
+		// "de.drazil.nerdsuite.popupmenu.popupmenu");
+		return repository;
+
+	}
+
 	/*
 	 * private ImagingWidget getReferenceSelector() { if (referenceSelector == null)
 	 * { referenceSelector = new ImageReferenceSelector(controls,
