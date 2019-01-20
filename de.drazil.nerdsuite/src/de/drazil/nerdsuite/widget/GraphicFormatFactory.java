@@ -18,7 +18,7 @@ public class GraphicFormatFactory {
 	private static List<GraphicFormat> graphicFormatList;
 
 	public static GraphicFormat getFormatByName(String name) {
-		GraphicFormat returnValue = null;
+		// GraphicFormat returnValue = null;
 		if (null == graphicFormatList) {
 			graphicFormatList = new ArrayList<>();
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
@@ -37,12 +37,6 @@ public class GraphicFormatFactory {
 				e.printStackTrace();
 			}
 		}
-		for (GraphicFormat gf : graphicFormatList) {
-			if (gf.getId().equals(name)) {
-				returnValue = gf;
-				break;
-			}
-		}
-		return returnValue;
+		return graphicFormatList.stream().filter(gf -> gf.getId().equals(name)).findFirst().orElse(null);
 	}
 }

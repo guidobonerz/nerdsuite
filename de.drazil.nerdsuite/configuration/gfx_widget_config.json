@@ -1,0 +1,217 @@
+[
+	{
+		"id": "KOALA",
+		"metadataRefId":"MULTICOLOR_BITMAP",
+		"contentStructure": 
+		{
+			"dataOffset": 2,
+			"bitmapOffset": 0,
+			"screenRamOffset": 8000,
+			"colorRamOffset": 9000,
+			"backgroundColorOffset": 10000
+		}
+	},
+
+	{
+		"id": "MONO_BITMAP",
+		"metadata": 
+		{ 
+			"width": 8,
+			"height": 8,
+			"tileRows": 25,
+			"tileColumns": 40,
+			"multicolor": false
+		}
+	},
+
+	{
+		"id": "MONO_CHAR",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 1,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_CHAR_2X",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 1,
+			"tileColumns": 2,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_CHAR_2Y",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_CHAR_2XY",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+
+	{
+		"id": "MONO_SPRITE",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 1,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_SPRITE_2X",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 1,
+			"tileColumns": 2,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_SPRITE_2Y",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": false
+		}
+	},
+	{
+		"id": "MONO_SPRITE_2XY",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 2,
+			"tileColumns": 2,
+			"multicolor": false
+		}
+	},
+
+	{
+		"id": "MULTICOLOR_BITMAP",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 25,
+			"tileColumns": 40,
+			"multicolor": true
+		}
+	},
+
+	{
+		"id": "MULTICOLOR_CHAR",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 1,
+			"tileColumns": 1,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_CHAR_2X",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 1,
+			"tileColumns": 2,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_CHAR_2Y",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_CHAR_2XY",
+		"metadata": 
+		{
+			"width": 8,
+			"height": 8,
+			"tileRows": 2,
+			"tileColumns": 2,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_SPRITE",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 1,
+			"tileColumns": 1,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_SPRITE_2X",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 1,
+			"tileColumns": 2,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_SPRITE_2Y",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 2,
+			"tileColumns": 1,
+			"multicolor": true
+		}
+	},
+	{
+		"id": "MULTICOLOR_SPRITE_2XY",
+		"metadata": 
+		{
+			"width": 24,
+			"height": 21,
+			"tileRows": 2,
+			"tileColumns": 2,
+			"multicolor": true
+		}
+	}
+]

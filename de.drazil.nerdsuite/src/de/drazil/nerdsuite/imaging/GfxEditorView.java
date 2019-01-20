@@ -67,6 +67,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	void updatePaintMode(@UIEventTopic("PaintMode") PaintMode paintMode, EModelService service, MPart part) {
 		MToolItem single = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.singlePaintMode",
 				part.getToolbar());
+	
 		MToolItem vertical = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.verticalMirrorPaintMode",
 				part.getToolbar());
 		MToolItem horizontal = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.horizontalMirrorPaintMode",
@@ -127,6 +128,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		getRepositoryWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
 		getRepositoryWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
 		getRepositoryWidget().recalc();
+		parent.layout();
 	}
 
 	@Inject
