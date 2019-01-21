@@ -67,7 +67,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	void updatePaintMode(@UIEventTopic("PaintMode") PaintMode paintMode, EModelService service, MPart part) {
 		MToolItem single = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.singlePaintMode",
 				part.getToolbar());
-	
+
 		MToolItem vertical = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.verticalMirrorPaintMode",
 				part.getToolbar());
 		MToolItem horizontal = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.horizontalMirrorPaintMode",
@@ -113,22 +113,13 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
-		getPainterWidget().getConf().setWidth(gf.getMetadata().getWidth());
-		getPainterWidget().getConf().setHeight(gf.getMetadata().getHeight());
-		getPainterWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
-		getPainterWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getPainterWidget().getConf().setMetaData(gf.getMetadata());
 		getPainterWidget().recalc();
-		getPreviewerWidget().getConf().setWidth(gf.getMetadata().getWidth());
-		getPreviewerWidget().getConf().setHeight(gf.getMetadata().getHeight());
-		getPreviewerWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
-		getPreviewerWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getPreviewerWidget().getConf().setMetaData(gf.getMetadata());
 		getPreviewerWidget().recalc();
-		getRepositoryWidget().getConf().setWidth(gf.getMetadata().getWidth());
-		getRepositoryWidget().getConf().setHeight(gf.getMetadata().getHeight());
-		getRepositoryWidget().getConf().setTileRows(gf.getMetadata().getTileRows());
-		getRepositoryWidget().getConf().setTileColumns(gf.getMetadata().getTileColumns());
+		getRepositoryWidget().getConf().setMetaData(gf.getMetadata());
 		getRepositoryWidget().recalc();
-		parent.layout();
+		// parent.layout();
 	}
 
 	@Inject

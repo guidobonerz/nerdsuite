@@ -362,6 +362,8 @@ public class ImagingWidget extends BaseImagingWidget
 		conf.currentWidth = conf.width / pixmul;
 		// fireSetSelectedTile(ImagingWidget.this, tile);
 		doDrawAllTiles();
+		Composite composite = getParent();
+		composite.layout();
 	}
 
 	public void setSelectedColor(int index) {
@@ -437,6 +439,7 @@ public class ImagingWidget extends BaseImagingWidget
 		paintControlMode = DRAW_ALL_TILES;
 		// setNotification(selectedTileOffset, conf.getTileSize());
 		redraw();
+
 	}
 
 	@Override

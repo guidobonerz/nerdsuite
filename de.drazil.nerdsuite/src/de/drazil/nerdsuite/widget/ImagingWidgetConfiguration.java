@@ -4,6 +4,7 @@ import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.constants.PixelConfig;
+import de.drazil.nerdsuite.model.GraphicMetadata;
 import lombok.Getter;
 
 @Getter
@@ -49,12 +50,13 @@ public class ImagingWidgetConfiguration {
 	public PencilMode pencilMode = PencilMode.Draw;
 	public GridStyle gridStyle = GridStyle.Line;
 
-	public IConfigurationListener cl;
-
 	public String widgetName = "<unknown>";
 
-	public void setConfigurationListener(IConfigurationListener cl) {
-		this.cl = cl;
+	public void setMetaData(GraphicMetadata metaData) {
+		setWidth(metaData.getWidth());
+		setHeight(metaData.getHeight());
+		setTileRows(metaData.getTileRows());
+		setTileColumns(metaData.getTileColumns());
 	}
 
 	public void setPixelSize(int pixelSize) {
