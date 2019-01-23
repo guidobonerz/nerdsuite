@@ -40,6 +40,7 @@ public class ImagingWidgetConfiguration {
 	public boolean televisionModeEnabled = false;
 	public boolean supportsPainting = false;
 	public boolean supportsMultiTileView = false;
+	public boolean supportsSingleTileView = false;
 	public boolean supportsSingleSelection = false;
 	public boolean supportsMultiSelection = false;
 	public boolean supportsReferenceIndexSelection = false;

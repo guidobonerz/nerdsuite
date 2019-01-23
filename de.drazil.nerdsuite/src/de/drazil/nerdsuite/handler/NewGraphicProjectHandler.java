@@ -15,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.TileService;
+import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.Layer;
@@ -38,7 +38,7 @@ public class NewGraphicProjectHandler {
 
 		GraphicFormat gf = GraphicFormatFactory.getFormatByName(format);
 
-		TileService tileService = ServiceFactory.getService("REPOSITORY", TileService.class);
+		TileRepositoryService tileService = ServiceFactory.getService("REPOSITORY", TileRepositoryService.class);
 		tileService.addTile("test1", gf.getMetadata().getContentSize());
 		tileService.addTile("test2", gf.getMetadata().getContentSize());
 		Layer layer = null;

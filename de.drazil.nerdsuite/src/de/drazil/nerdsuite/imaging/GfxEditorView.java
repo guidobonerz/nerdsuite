@@ -25,7 +25,7 @@ import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.TileService;
+import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
@@ -67,7 +67,6 @@ public class GfxEditorView // implements IConfigurationListener {
 	void updatePaintMode(@UIEventTopic("PaintMode") PaintMode paintMode, EModelService service, MPart part) {
 		MToolItem single = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.singlePaintMode",
 				part.getToolbar());
-
 		MToolItem vertical = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.verticalMirrorPaintMode",
 				part.getToolbar());
 		MToolItem horizontal = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.horizontalMirrorPaintMode",
@@ -119,13 +118,12 @@ public class GfxEditorView // implements IConfigurationListener {
 		getPreviewerWidget().recalc();
 		getRepositoryWidget().getConf().setMetaData(gf.getMetadata());
 		getRepositoryWidget().recalc();
-		// parent.layout();
 	}
 
 	@Inject
 	@Optional
 	void setSelectedTile(@UIEventTopic("setSelectedTile") int index) {
-		ServiceFactory.getService("REPOSITORY", TileService.class).setSelectedTile(index);
+		ServiceFactory.getService("REPOSITORY", TileRepositoryService.class).setSelectedTile(index);
 	}
 
 	@PostConstruct
@@ -370,7 +368,9 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.getConf().supportsPainting = true;
 			painter.getConf().supportsDrawCursor = true;
 			painter.recalc();
-			ServiceFactory.getService("REPOSITORY", TileService.class).addTileSelectionListener(painter);
+			painter.addDrawListener(getRepositoryWidget());
+			painter.addDrawListener(getPreviewerWidget());
+			ServiceFactory.getService("REPOSITORY", TileRepositoryService.class).addTileSelectionListener(painter);
 			// menuService.registerContextMenu(painter,
 			// "de.drazil.nerdsuite.popupmenu.popupmenu");
 
@@ -408,9 +408,8 @@ public class GfxEditorView // implements IConfigurationListener {
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
 			repository.recalc();
-
-			// selector.addDrawListener(getPainter());
-			// selector.addDrawListener(getPreviewer());
+			repository.addDrawListener(getPainterWidget());
+			repository.addDrawListener(getPreviewerWidget());
 
 		}
 		// menuService.registerContextMenu(repository,

@@ -6,7 +6,7 @@ import java.util.List;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
-public class TileService extends AbstractImagingService {
+public class TileRepositoryService extends AbstractImagingService {
 
 	private List<Tile> tileList = null;
 	private List<Integer> tileIndexOrderList = null;
@@ -14,7 +14,7 @@ public class TileService extends AbstractImagingService {
 	private List<ITileSelectionListener> tileServiceSelectionListener = null;
 	private ImagePainterFactory imagePainterFactory;
 
-	public TileService() {
+	public TileRepositoryService() {
 		tileList = new ArrayList<Tile>();
 		tileIndexOrderList = new ArrayList<Integer>();
 		tileServiceManagementListener = new ArrayList<ITileManagementListener>();

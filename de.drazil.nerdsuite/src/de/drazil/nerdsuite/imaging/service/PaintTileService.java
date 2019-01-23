@@ -10,7 +10,7 @@ import de.drazil.nerdsuite.widget.Tile;
 
 public class PaintTileService extends AbstractImagingService {
 
-	private TileService tileService = ServiceFactory.getService("REPOSITORY", TileService.class);
+	private TileRepositoryService tileService = ServiceFactory.getService("REPOSITORY", TileRepositoryService.class);
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
 		Layer layer = tile.getActiveLayer();
