@@ -1,5 +1,10 @@
 package de.drazil.nerdsuite.widget;
 
+import de.drazil.nerdsuite.constants.GridStyle;
+import de.drazil.nerdsuite.constants.PaintMode;
+import de.drazil.nerdsuite.constants.PencilMode;
+import de.drazil.nerdsuite.constants.PixelConfig;
+import de.drazil.nerdsuite.model.GraphicMetadata;
 import lombok.Getter;
 
 @Getter
@@ -16,12 +21,13 @@ public class ImagingWidgetConfiguration {
 	public int pixelSize = 15;
 	public int currentPixelWidth;
 	public int currentPixelHeight;
-	public int bytesPerRow;
 	public int tileSize;
 	public int iconSize;
 	public int cursorLineWidth = 1;
-	public int fullWidth = 0;
-	public int fullHeight = 0;
+	public int fullWidthPixel = 0;
+	public int fullHeightPixel = 0;
+	public int tileWidthPixel = 0;
+	public int tileHeightPixel = 0;
 	public int tileWidth = 0;
 	public int tileHeight = 0;
 
@@ -32,54 +38,26 @@ public class ImagingWidgetConfiguration {
 	public boolean separatorEnabled = true;
 	public boolean layerViewEnabled = false;
 	public boolean televisionModeEnabled = false;
+	public boolean supportsPainting = false;
+	public boolean supportsMultiTileView = false;
+	public boolean supportsSingleTileView = false;
+	public boolean supportsSingleSelection = false;
+	public boolean supportsMultiSelection = false;
+	public boolean supportsReferenceIndexSelection = false;
+	public boolean supportsDrawCursor = false;
 
 	public PixelConfig pixelConfig = PixelConfig.BC1;
-	public PaintMode paintMode = PaintMode.Simple;
+	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
 	public GridStyle gridStyle = GridStyle.Line;
 
-	public IConfigurationListener cl;
-
-	public enum PaintMode {
-		Simple, VerticalMirror, HorizontalMirror, Kaleidoscope
-	}
-
-	public enum PencilMode {
-		Draw, Erase
-	}
-
-	public enum GridStyle {
-		Dot, Line
-	};
-
-	public enum BrushStyle {
-		Dot, Pattern
-	}
-
-	public enum PixelConfig {
-		BC8("MultiColor256", 8, 0, 256, 1, 1), BC2("MultiColor4", 2, 3, 3, 4, 2), BC1("MonoColor", 1, 3, 1, 8, 1);
-
-		public final String name;
-		public final int bitCount;
-		public final int shift;
-		public final int mask;
-		public final int mul;
-		public final int pixmul;
-
-		PixelConfig(String name, int bitCount, int shift, int mask, int mul, int pixmul) {
-			this.name = name;
-			this.bitCount = bitCount;
-			this.shift = shift;
-			this.mask = mask;
-			this.mul = mul;
-			this.pixmul = pixmul;
-		}
-	}
-
 	public String widgetName = "<unknown>";
 
-	public void setConfigurationListener(IConfigurationListener cl) {
-		this.cl = cl;
+	public void setMetaData(GraphicMetadata metaData) {
+		setWidth(metaData.getWidth());
+		setHeight(metaData.getHeight());
+		setTileRows(metaData.getTileRows());
+		setTileColumns(metaData.getTileColumns());
 	}
 
 	public void setPixelSize(int pixelSize) {
@@ -194,20 +172,40 @@ public class ImagingWidgetConfiguration {
 		this.televisionModeEnabled = televisionModeEnabled;
 	}
 
+	protected boolean supportsPainting() {
+		return supportsPainting;
+	}
+
+	protected boolean supportsMultiTileView() {
+		return supportsMultiTileView;
+	}
+
+	protected boolean supportsSingleSelection() {
+		return supportsSingleSelection;
+	}
+
+	protected boolean supportsMultiSelection() {
+		return supportsMultiSelection;
+	}
+
+	protected boolean supportsReferenceIndexSelection() {
+		return supportsReferenceIndexSelection;
+	}
+
+	protected boolean supportsDrawCursor() {
+		return supportsDrawCursor;
+	}
+
 	public void computeSizes() {
 		currentPixelWidth = pixelSize;
 		currentPixelHeight = pixelSize;
-		bytesPerRow = width >> pixelConfig.shift;
-		iconSize = bytesPerRow * height;
+		iconSize = width * height;
 		tileSize = iconSize * tileColumns * tileRows;
-		tileWidth = width * tileColumns * pixelSize;
-		tileHeight = height * tileRows * pixelSize;
-		fullWidth = tileWidth * columns;
-		fullHeight = tileHeight * rows;
-
-	}
-
-	public int computeTileOffset(int x, int y, int offset) {
-		return tileSize * (x + (y * columns)) + offset;
+		tileWidth = width * tileColumns;
+		tileHeight = height * tileRows;
+		tileWidthPixel = tileWidth * pixelSize;
+		tileHeightPixel = tileHeight * pixelSize;
+		fullWidthPixel = tileWidthPixel * columns;
+		fullHeightPixel = tileHeightPixel * rows;
 	}
 }

@@ -12,13 +12,11 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.osgi.framework.Bundle; 
+import org.osgi.framework.Bundle;
 
-import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.constants.PixelConfig;
 import de.drazil.nerdsuite.disassembler.BinaryFileReader;
-import de.drazil.nerdsuite.widget.ImageViewer;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PixelConfig;
 
 public class BitmapEditor {
 
@@ -58,29 +56,30 @@ public class BitmapEditor {
 		ic.setTileSubGridEnabled(false);
 		ic.setTileGridEnabled(true);
 		ic.setPixelConfig(PixelConfig.BC2);
-		ImageViewer viewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, ic);
+		// ImageViewer viewer = new ImageViewer(parent, SWT.NO_REDRAW_RESIZE |
+		// SWT.DOUBLE_BUFFERED, ic);
 
-		viewer.setColorProvider(new KoalaColorProvider());
-		viewer.setBitplane(binaryData);
-		viewer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
-		viewer.setSelectedColor(0);
+		// viewer.setColorProvider(new KoalaColorProvider());
 
-		viewer.recalc();
+		// viewer.setSelectedColor(0);
+
+		// viewer.recalc();
 		parent.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		Button multicolor = new Button(parent, SWT.CHECK);
 		multicolor.setSelection(ic.getPixelConfig() == PixelConfig.BC2);
 		multicolor.setText("MultiColor");
-		multicolor.addListener(SWT.Selection, e -> {
-			viewer.getConf().setPixelConfig(multicolor.getSelection() ? PixelConfig.BC2 : PixelConfig.BC1);
-			viewer.recalc();
-		});
+		// multicolor.addListener(SWT.Selection, e -> {
+		// viewer.getConf().setPixelConfig(multicolor.getSelection() ? PixelConfig.BC2 :
+		// PixelConfig.BC1);
+		// viewer.recalc();
+		// });
 		Button grid = new Button(parent, SWT.CHECK);
 		grid.setSelection(ic.isTileGridEnabled());
 		grid.setText("Grid");
 		grid.addListener(SWT.Selection, e -> {
 			ic.setTileGridEnabled(grid.getSelection());
-			viewer.recalc();
+			// viewer.recalc();
 		});
 
 	}

@@ -5,13 +5,26 @@ import java.util.Map;
 
 public class ServiceFactory {
 
-	private static Map<String, IService> serviceCacheMap = new HashMap<>();
+	private static final String COMMON = "COMMON";
+	private static Map<String, Map<String, IService>> serviceOwnerMap = new HashMap<String, Map<String, IService>>();
 
 	private ServiceFactory() {
 
 	}
 
 	public static <S extends IService> S getService(Class<? super S> serviceClass) {
+		return getService(COMMON, serviceClass);
+	}
+
+	public static <S extends IService> S getService(Object owner, Class<? super S> serviceClass) {
+
+		String serviceOwner = owner.toString();
+		Map<String, IService> serviceCacheMap = serviceOwnerMap.get(serviceOwner);
+		if (serviceCacheMap == null) {
+			serviceCacheMap = new HashMap<String, IService>();
+			serviceOwnerMap.put(serviceOwner, serviceCacheMap);
+		}
+
 		String name = serviceClass.getName();
 		S service = (S) serviceCacheMap.get(name);
 		if (null == service) {

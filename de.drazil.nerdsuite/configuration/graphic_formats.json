@@ -25,7 +25,7 @@
 	},
 
 	{
-		"id": "MONO_CHAR",
+		"id": "MONO_CHARSET",
 		"metadata": 
 		{
 			"width": 8,
@@ -36,7 +36,7 @@
 		}
 	},
 	{
-		"id": "MONO_CHAR_2X",
+		"id": "MONO_CHARSET_2X",
 		"metadata": 
 		{
 			"width": 8,
@@ -47,7 +47,7 @@
 		}
 	},
 	{
-		"id": "MONO_CHAR_2Y",
+		"id": "MONO_CHARSET_2Y",
 		"metadata": 
 		{
 			"width": 8,
@@ -58,13 +58,13 @@
 		}
 	},
 	{
-		"id": "MONO_CHAR_2XY",
+		"id": "MONO_CHARSET_2XY",
 		"metadata": 
 		{
 			"width": 8,
 			"height": 8,
 			"tileRows": 2,
-			"tileColumns": 1,
+			"tileColumns": 2,
 			"multicolor": false
 		}
 	},
@@ -127,7 +127,7 @@
 	},
 
 	{
-		"id": "MULTICOLOR_CHAR",
+		"id": "MULTICOLOR_CHARSET",
 		"metadata": 
 		{
 			"width": 8,
@@ -138,7 +138,7 @@
 		}
 	},
 	{
-		"id": "MULTICOLOR_CHAR_2X",
+		"id": "MULTICOLOR_CHARSET_2X",
 		"metadata": 
 		{
 			"width": 8,
@@ -149,7 +149,7 @@
 		}
 	},
 	{
-		"id": "MULTICOLOR_CHAR_2Y",
+		"id": "MULTICOLOR_CHARSET_2Y",
 		"metadata": 
 		{
 			"width": 8,
@@ -160,7 +160,7 @@
 		}
 	},
 	{
-		"id": "MULTICOLOR_CHAR_2XY",
+		"id": "MULTICOLOR_CHARSET_2XY",
 		"metadata": 
 		{
 			"width": 8,

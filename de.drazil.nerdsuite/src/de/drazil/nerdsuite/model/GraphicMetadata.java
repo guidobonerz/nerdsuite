@@ -9,4 +9,8 @@ public class GraphicMetadata {
 	private int tileRows;
 	private int tileColumns;
 	private boolean multicolor;
+
+	public int getContentSize() {
+		return width * height * tileColumns * tileRows;
+	}
 }

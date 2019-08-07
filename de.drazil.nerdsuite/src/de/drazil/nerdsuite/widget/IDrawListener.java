@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration.PencilMode;
+import de.drazil.nerdsuite.constants.PencilMode;
 
 public interface IDrawListener {
 
@@ -9,7 +9,5 @@ public interface IDrawListener {
 	public void doDrawTile();
 
 	public void doDrawAllTiles();
-
-	public void setSelectedTileOffset(int offset, int index, boolean useIndexAsReference);
 
 }

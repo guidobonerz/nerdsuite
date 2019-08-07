@@ -81,7 +81,7 @@ public class BasicParser
 				instruction = basicTokenMap.get(NumericConverter.toHexString(getCPU().getByte(byteArray, linePos), 2));
 				if (instruction != null)
 				{
-					lineBuffer.append(instruction.getCommand().toUpperCase());
+					lineBuffer.append(instruction.getInstruction().toUpperCase());
 				}
 			}
 			if (instruction == null)

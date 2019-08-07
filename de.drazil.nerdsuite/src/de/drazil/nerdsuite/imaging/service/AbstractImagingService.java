@@ -25,8 +25,6 @@ public abstract class AbstractImagingService extends AbstractService implements 
 		toWorkArray, toBitplane
 	}
 
-	
-
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		// TODO Auto-generated method stub
@@ -57,7 +55,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	}
 
 	public void execute(int action) {
-
+/*
 		int width = imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
 		int height = imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows;
 		callback.beforeRunService();
@@ -70,15 +68,18 @@ public abstract class AbstractImagingService extends AbstractService implements 
 				convert(workArray, bitplane, x, y, ConversionMode.toWorkArray);
 			}
 			int ofs = imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
-			workArray = each(action, tileSelectionList.get(i), imagingWidgetConfiguration, ofs, bitplane, workArray, width, height);
+			workArray = each(action, tileSelectionList.get(i), imagingWidgetConfiguration, ofs, bitplane, workArray,
+					width, height);
 			if (needsConversion()) {
 				convert(workArray, bitplane, x, y, ConversionMode.toBitplane);
 			}
 		}
 		callback.afterRunService();
+		*/
 	}
 
 	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {
+		/*
 		int iconSize = imagingWidgetConfiguration.getIconSize();
 		int tileSize = imagingWidgetConfiguration.getTileSize();
 		int tileOffset = imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
@@ -86,9 +87,12 @@ public abstract class AbstractImagingService extends AbstractService implements 
 		int mask = imagingWidgetConfiguration.pixelConfig.mask;
 		for (int si = 0, s = 0; si < tileSize; si += imagingWidgetConfiguration.bytesPerRow, s += imagingWidgetConfiguration.bytesPerRow) {
 			s = (si % (iconSize)) == 0 ? 0 : s;
-			int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1)) * imagingWidgetConfiguration.width;
-			int yo = (si / (iconSize * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
-			int ro = ((s / imagingWidgetConfiguration.bytesPerRow) * imagingWidgetConfiguration.width) * imagingWidgetConfiguration.tileColumns;
+			int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1))
+					* imagingWidgetConfiguration.width;
+			int yo = (si / (iconSize * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height
+					* imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
+			int ro = ((s / imagingWidgetConfiguration.bytesPerRow) * imagingWidgetConfiguration.width)
+					* imagingWidgetConfiguration.tileColumns;
 			int wai = ro + xo + yo;
 
 			for (int i = 0; i < imagingWidgetConfiguration.bytesPerRow; i++) {
@@ -102,6 +106,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 				}
 			}
 		}
+		*/
 	}
 
 	protected byte[] createWorkArray() {
