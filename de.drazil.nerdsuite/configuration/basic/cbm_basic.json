@@ -1,0 +1,1966 @@
+{
+	"stringQuote": "\"",
+	"instructionSeparator": ":",
+	"parameterSeparator": ",",
+	"defaultVersion": 10,
+	"basicInstructionList": [
+		{
+			"instruction": "end",
+			"token": "80",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "for",
+			"token": "81",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "next",
+			"token": "82",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 255
+		},
+		{
+			"instruction": "data",
+			"token": "83",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 1,
+			"maxParameters": -1
+		},
+		{
+			"instruction": "input#",
+			"token": "84",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "input",
+			"token": "85",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "dim",
+			"token": "86",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "read",
+			"token": "87",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "let",
+			"token": "88",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "goto",
+			"token": "89",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "run",
+			"token": "8a",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "if",
+			"token": "8b",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "restore",
+			"token": "8c",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "gosub",
+			"token": "8d",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "return",
+			"token": "8e",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rem",
+			"token": "8f",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 255
+		},
+		{
+			"instruction": "stop",
+			"token": "90",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "on",
+			"token": "91",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "wait",
+			"token": "92",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "load",
+			"token": "93",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "save",
+			"token": "94",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "verify",
+			"token": "95",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "def",
+			"token": "96",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "poke",
+			"token": "97",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 2,
+			"maxParameters": 2
+		},
+		{
+			"instruction": "print#",
+			"token": "98",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 1,
+			"maxParameters": 0,
+			"inParameter": [
+				"any"
+			]
+		},
+		{
+			"instruction": "print",
+			"token": "99",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cont",
+			"token": "9a",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "list",
+			"token": "9b",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "clr",
+			"token": "9c",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cmd",
+			"token": "9d",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "sys",
+			"token": "9e",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "open",
+			"token": "9f",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "close",
+			"token": "a0",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "get",
+			"token": "a1",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "new",
+			"token": "a2",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "tab(",
+			"token": "a3",
+			"description": "",
+			"includesOpenBrace": true,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "string"
+		},
+		{
+			"instruction": "to",
+			"token": "a4",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "fn",
+			"token": "a5",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "spc(",
+			"token": "a6",
+			"description": "",
+			"includesOpenBrace": true,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "string"
+		},
+		{
+			"instruction": "then",
+			"token": "a7",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "not",
+			"token": "a8",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "step",
+			"token": "a9",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "+",
+			"token": "aa",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "-",
+			"token": "ab",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "*",
+			"token": "ac",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "/",
+			"token": "ad",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "^",
+			"token": "ae",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "and",
+			"token": "af",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "or",
+			"token": "b0",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "<",
+			"token": "b1",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "=",
+			"token": "b2",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": ">",
+			"token": "b3",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "sgn",
+			"token": "b4",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "int",
+			"token": "b5",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "abs",
+			"token": "b6",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "usr",
+			"token": "b7",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"any"
+			],
+			"outValue": "any"
+		},
+		{
+			"instruction": "fre",
+			"token": "b8",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "pos",
+			"token": "b9",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"any"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "sqr",
+			"token": "ba",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "rnd",
+			"token": "bb",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "log",
+			"token": "bc",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "exp",
+			"token": "bd",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "cos",
+			"token": "be",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "sin",
+			"token": "bf",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "tan",
+			"token": "c0",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "atn",
+			"token": "c1",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "peek",
+			"token": "c2",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "len",
+			"token": "c3",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"string"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "str$",
+			"token": "c4",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "string"
+		},
+		{
+			"instruction": "val",
+			"token": "c5",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"string"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "asc",
+			"token": "c6",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"string"
+			],
+			"outValue": "number"
+		},
+		{
+			"instruction": "chr$",
+			"token": "c7",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 1,
+			"maxParameters": 1,
+			"inParameter": [
+				"number"
+			],
+			"outValue": "string"
+		},
+		{
+			"instruction": "left$",
+			"token": "c8",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 2,
+			"maxParameters": 2,
+			"inParameter": [
+				"string",
+				"number"
+			],
+			"outValue": "string"
+		},
+		{
+			"instruction": "right$",
+			"token": "c9",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 2,
+			"maxParameters": 2,
+			"inParameter": [
+				"string",
+				"number"
+			],
+			"outValue": "string"
+		},
+		{
+			"instruction": "mid$",
+			"token": "ca",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": true,
+			"isCommand": false,
+			"minParameters": 2,
+			"maxParameters": 3,
+			"inParameter": [
+				"string",
+				"number",
+				"number"
+			],
+			"outValue": "string"
+		},
+		{
+			"instruction": "go",
+			"token": "cb",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 20
+		},
+		{
+			"instruction": "rgr",
+			"token": "cc",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "rclr",
+			"token": "cd",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "rlum",
+			"token": "ce",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35,
+			"maxVersion": 35
+		},
+		{
+			"instruction": "joy",
+			"token": "cf",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "rdot",
+			"token": "d0",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "dec",
+			"token": "d1",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "HEX$",
+			"token": "d2",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "err$",
+			"token": "d3",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "instr",
+			"token": "d4",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "else",
+			"token": "d5",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "resume",
+			"token": "d6",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "trap",
+			"token": "d7",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "tron",
+			"token": "d8",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "troff",
+			"token": "d9",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "sound",
+			"token": "da",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "vol",
+			"token": "db",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "auto",
+			"token": "dc",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "pudef",
+			"token": "dd",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "graphic",
+			"token": "de",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "paint",
+			"token": "df",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "char",
+			"token": "e0",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "box",
+			"token": "e1",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "circle",
+			"token": "cd",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "gshape",
+			"token": "e3",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "sshape",
+			"token": "e4",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "draw",
+			"token": "e5",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "locate",
+			"token": "e6",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "color",
+			"token": "e7",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "scnclr",
+			"token": "e8",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "scale",
+			"token": "e9",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "help",
+			"token": "ea",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "do",
+			"token": "eb",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "loop",
+			"token": "ec",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "exit",
+			"token": "ed",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "directory",
+			"token": "ee",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "dsave",
+			"token": "ef",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "dload",
+			"token": "f0",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "header",
+			"token": "f1",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "scratch",
+			"token": "f2",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "collect",
+			"token": "f3",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "copy",
+			"token": "f4",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "rename",
+			"token": "f5",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "backup",
+			"token": "f6",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "delete",
+			"token": "f7",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "renumber",
+			"token": "f8",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "key",
+			"token": "f9",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "monitor",
+			"token": "fa",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "using",
+			"token": "fb",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "until",
+			"token": "fc",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "while",
+			"token": "fd",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "π",
+			"token": "ff",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 35
+		},
+		{
+			"instruction": "pot",
+			"prefix": "ce",
+			"token": "02",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "bump",
+			"prefix": "ce",
+			"token": "03",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "pen",
+			"prefix": "ce",
+			"token": "04",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "rsppos",
+			"prefix": "ce",
+			"token": "05",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "rsprite",
+			"prefix": "ce",
+			"token": "06",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "rspcolor",
+			"prefix": "ce",
+			"token": "07",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "xor",
+			"prefix": "ce",
+			"token": "08",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "rwindow",
+			"prefix": "ce",
+			"token": "09",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "pointer",
+			"prefix": "ce",
+			"token": "0a",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "bank",
+			"prefix": "fe",
+			"token": "02",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "filter",
+			"prefix": "fe",
+			"token": "03",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "play",
+			"prefix": "fe",
+			"token": "04",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "tempo",
+			"prefix": "fe",
+			"token": "05",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "movspr",
+			"prefix": "fe",
+			"token": "06",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "sprite",
+			"prefix": "fe",
+			"token": "07",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "sprcolor",
+			"prefix": "fe",
+			"token": "08",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "rreg",
+			"prefix": "fe",
+			"token": "09",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "envelope",
+			"prefix": "fe",
+			"token": "0a",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "sleep",
+			"prefix": "fe",
+			"token": "0b",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "catalog",
+			"prefix": "fe",
+			"token": "0c",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "dopen",
+			"prefix": "fe",
+			"token": "0d",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "append",
+			"prefix": "fe",
+			"token": "0e",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "dclose",
+			"prefix": "fe",
+			"token": "0f",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "bsave",
+			"prefix": "fe",
+			"token": "10",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "bload",
+			"prefix": "fe",
+			"token": "11",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "record",
+			"prefix": "fe",
+			"token": "12",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "concat",
+			"prefix": "fe",
+			"token": "13",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "dverify",
+			"prefix": "fe",
+			"token": "14",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "dclear",
+			"prefix": "fe",
+			"token": "15",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "sprsav",
+			"prefix": "fe",
+			"token": "16",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "collision",
+			"prefix": "fe",
+			"token": "17",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "begin",
+			"prefix": "fe",
+			"token": "18",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "bend",
+			"prefix": "fe",
+			"token": "19",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "window",
+			"prefix": "fe",
+			"token": "1a",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "boot",
+			"prefix": "fe",
+			"token": "1b",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "width",
+			"prefix": "fe",
+			"token": "1c",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "sprdef",
+			"prefix": "fe",
+			"token": "1d",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "(quit)",
+			"prefix": "fe",
+			"token": "1e",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "stash",
+			"prefix": "fe",
+			"token": "1f",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "fetch",
+			"prefix": "fe",
+			"token": "21",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "swap",
+			"prefix": "fe",
+			"token": "23",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "(off)",
+			"prefix": "fe",
+			"token": "24",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "fast",
+			"prefix": "fe",
+			"token": "25",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		},
+		{
+			"instruction": "slow",
+			"prefix": "fe",
+			"token": "26",
+			"description": "",
+			"includesOpenBrace": false,
+			"isFunction": false,
+			"isCommand": true,
+			"minParameters": 0,
+			"maxParameters": 0,
+			"minVersion": 70
+		}
+	]
+}
