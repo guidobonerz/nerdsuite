@@ -89,6 +89,7 @@
 	[
 		{
 			"address": "314",
+			"constName":"HWIRQ",
 			"description":"Vector: Hardware Interrupt (IRQ)"
 		}
 	],
