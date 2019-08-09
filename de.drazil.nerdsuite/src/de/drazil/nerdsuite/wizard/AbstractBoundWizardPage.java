@@ -13,7 +13,7 @@ public abstract class AbstractBoundWizardPage<MODEL> extends WizardPage implemen
 	{
 		super(pageName);
 		this.modelClass = modelClass;
-		setPageComplete(false);
+		setPageComplete(true);
 		
 	}
 

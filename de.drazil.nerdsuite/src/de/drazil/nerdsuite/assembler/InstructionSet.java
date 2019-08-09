@@ -28,7 +28,7 @@ public final class InstructionSet {
 
 	public static void init(Bundle bundle) throws Exception {
 
-		createPlatformspecificData(bundle, "configuration/c64_platform.json");
+		createPlatformspecificData(bundle, "configuration/platform/c64_platform.json");
 		createDirectiveList(bundle, "configuration/kickass_syntax.json");
 	}
 

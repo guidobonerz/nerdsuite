@@ -20,15 +20,16 @@ public class ProjectWizard extends Wizard
 	private Project project;
 	private NewProjectWizardPage newProjectWizardPage;
 
-	public ProjectWizard()
+	public ProjectWizard(String projectType)
 	{
 		super();
-		newProjectWizardPage = new NewProjectWizardPage();
+		newProjectWizardPage = new NewProjectWizardPage(projectType);
 	}
 
 	@Override
 	public boolean performFinish()
 	{
+		/*
 		project = newProjectWizardPage.getModel();
 		project.setId(project.getName().toUpperCase());
 		try
@@ -42,7 +43,7 @@ public class ProjectWizard extends Wizard
 		{
 			e.printStackTrace();
 		}
-
+*/
 		return true;
 	}
 
