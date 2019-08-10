@@ -2,6 +2,44 @@
 	"cpuInstructionSource": "configuration/cpu/6510_instructions.json",
 	"basicInstructionSource": "configuration/basic/cbm_basic.json",
 	"basicVersion": 20,
+	"graphic": [
+		{
+			"id": "SPRITE",
+			"width": 24,
+			"height": 21,
+			"maxPixelByByte": 8,
+			"maxColorIndex": 2,
+			"storage": "linear"
+		},
+		{
+			"id": "CHAR",
+			"width": 8,
+			"height": 8,
+			"maxPixelByByte": 8,
+			"maxColorIndex": 2,
+			"storage": "linear"
+		},
+		{
+			"id": "SCREEN",
+			"width": 40,
+			"height": 25,
+			"maxPixelByByte": 1,
+			"maxColorIndex": 15,
+			"storage": "linear"
+		},
+		{
+			"id": "BITMAP",
+			"width": 320,
+			"height": 200,
+			"maxPixelByByte": 8,
+			"maxColorIndex": 2,
+			"storage": "tiled",
+			"tileSize": {
+				"width": 8,
+				"height": 8
+			}
+		}
+	],
 	"colorPalette": [
 		{
 			"value": "#000000",

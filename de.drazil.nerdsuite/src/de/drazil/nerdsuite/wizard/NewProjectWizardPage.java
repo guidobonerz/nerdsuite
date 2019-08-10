@@ -43,6 +43,7 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 	private Label projectNameLabel;
 	private Label targetPlatformLabel;
+	private Label gfxFormatLabel;
 	private Label separatorLabel;
 	private Label basePathLabel;
 	private Label sourcePathLabel;
@@ -57,6 +58,7 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 	private Text symbolPathText;
 	private Button createExampleButton;
 	private ComboViewer targetPlatformCombo;
+	private ComboViewer gfxFormatCombo;
 	private ProjectType projectType;
 	private List<TargetPlatform> targetPlatformnList;
 
@@ -86,27 +88,13 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		projectNameLabel.setText("Project Name");
 		targetPlatformLabel = new Label(container, SWT.NONE);
 		targetPlatformLabel.setText("Target Platform");
-		separatorLabel = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
-		basePathLabel = new Label(container, SWT.NONE);
-		basePathLabel.setText("Base Path");
-		sourcePathLabel = new Label(container, SWT.NONE);
-		sourcePathLabel.setText("Source Path");
-		binaryPathLabel = new Label(container, SWT.NONE);
-		binaryPathLabel.setText("Binary Path");
-		includePathLabel = new Label(container, SWT.NONE);
-		includePathLabel.setText("Include Path");
-		symbolPathLabel = new Label(container, SWT.NONE);
-		symbolPathLabel.setText("Symbol Path");
+		gfxFormatLabel = new Label(container, SWT.NONE);
+		gfxFormatLabel.setText("Graphic Format");
 
 		projectNameText = new Text(container, SWT.BORDER);
-		basePathText = new Text(container, SWT.BORDER);
-		basePathText.setEditable(false);
-		sourcePathText = new Text(container, SWT.BORDER);
-		binaryPathText = new Text(container, SWT.BORDER);
-		includePathText = new Text(container, SWT.BORDER);
-		symbolPathText = new Text(container, SWT.BORDER);
 		targetPlatformCombo = new ComboViewer(container, SWT.NONE);
 		targetPlatformCombo.setContentProvider(ArrayContentProvider.getInstance());
+		targetPlatformCombo.setInput(getTargetPlatFormList());
 		targetPlatformCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -118,14 +106,53 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 				return super.getText(element);
 			}
 		});
-
-		targetPlatformnList = getTargetPlatFormList();
-		TargetPlatform tp[] = new TargetPlatform[targetPlatformnList.size()];
-		tp = targetPlatformnList.toArray(tp);
-		targetPlatformCombo.setInput(tp);
 		targetPlatformCombo.getCombo().select(0);
-		createExampleButton = new Button(container, SWT.CHECK);
-		createExampleButton.setText("Create Example SourceFile");
+
+		gfxFormatCombo = new ComboViewer(container, SWT.NONE);
+
+		separatorLabel = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+
+		basePathLabel = new Label(container, SWT.NONE);
+		basePathLabel.setText("Base Path");
+		sourcePathLabel = new Label(container, SWT.NONE);
+		sourcePathLabel.setText("Source Path");
+		binaryPathLabel = new Label(container, SWT.NONE);
+		binaryPathLabel.setText("Binary Path");
+		includePathLabel = new Label(container, SWT.NONE);
+		includePathLabel.setText("Include Path");
+		symbolPathLabel = new Label(container, SWT.NONE);
+		symbolPathLabel.setText("Symbol Path");
+
+		basePathText = new Text(container, SWT.BORDER);
+		basePathText.setEditable(false);
+		sourcePathText = new Text(container, SWT.BORDER);
+		binaryPathText = new Text(container, SWT.BORDER);
+		includePathText = new Text(container, SWT.BORDER);
+		symbolPathText = new Text(container, SWT.BORDER);
+
+		/*
+		 * targetPlatformCombo = new ComboViewer(container,
+		 * 
+		 * SWT.NONE);
+		 *
+		 * targetPlatformCombo.setLabelProvider(new LabelProvider() {
+		 * 
+		 * @Override public String getText(Object element) { if (element instanceof
+		 * TargetPlatform) { TargetPlatform current = (TargetPlatform) element;
+		 * 
+		 * return current.getName(); } return super.getText(element); } });
+		 * 
+		 * targetPlatformnList = getTargetPlatFormList(); TargetPlatform tp[] = new
+		 * TargetPlatform[targetPlatformnList.size()]; tp =
+		 * targetPlatformnList.toArray(tp);
+		 * 
+		 * gfxFormatCombo = new ComboViewer(container, SWT.NONE);
+		 * 
+		 * createExampleButton = new Button(container, SWT.CHECK);
+		 * createExampleButton.setText("Create Example SourceFile");
+		 * 
+		 * 
+		 */
 
 		formData = new FormData();
 		formData.top = new FormAttachment(container, 0);
@@ -133,88 +160,178 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		projectNameLabel.setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(projectNameLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(projectNameLabel, 30);
-		formData.right = new FormAttachment(projectNameLabel, 300);
-		projectNameText.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(projectNameLabel, 10);
+		formData.top = new FormAttachment(projectNameLabel, 15, SWT.BOTTOM);
 		formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
 		targetPlatformLabel.setLayoutData(formData);
 
 		formData = new FormData();
+		formData.top = new FormAttachment(targetPlatformLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(targetPlatformLabel, 0, SWT.LEFT);
+		gfxFormatLabel.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(projectNameLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		projectNameText.setLayoutData(formData);
+
+		formData = new FormData();
 		formData.top = new FormAttachment(targetPlatformLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(projectNameText, 0, SWT.LEFT);
-		formData.right = new FormAttachment(projectNameText, 0, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
 		targetPlatformCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(targetPlatformCombo.getControl(), 5);
-		formData.left = new FormAttachment(targetPlatformCombo.getControl(), 0, SWT.LEFT);
-		createExampleButton.setLayoutData(formData);
+		formData.top = new FormAttachment(gfxFormatLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		gfxFormatCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(createExampleButton, 5);
+		formData.top = new FormAttachment(gfxFormatLabel, 15, SWT.BOTTOM);
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, 0);
 		separatorLabel.setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(separatorLabel, 10);
-		formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		formData.top = new FormAttachment(separatorLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(separatorLabel, 0, SWT.LEFT);
 		basePathLabel.setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(basePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(projectNameText, 0, SWT.LEFT);
-		formData.right = new FormAttachment(projectNameText, 0, SWT.RIGHT);
-		basePathText.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(basePathLabel, 10);
-		formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		formData.top = new FormAttachment(basePathLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(basePathLabel, 0, SWT.LEFT);
 		sourcePathLabel.setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(sourcePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(projectNameText, 0, SWT.LEFT);
-		formData.right = new FormAttachment(projectNameText, 0, SWT.RIGHT);
-		sourcePathText.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(sourcePathLabel, 10);
-		formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		formData.top = new FormAttachment(sourcePathLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(sourcePathLabel, 0, SWT.LEFT);
 		binaryPathLabel.setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(binaryPathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(projectNameText, 0, SWT.LEFT);
-		formData.right = new FormAttachment(projectNameText, 0, SWT.RIGHT);
-		binaryPathText.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(binaryPathLabel, 10);
-		formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		formData.top = new FormAttachment(binaryPathLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(binaryPathLabel, 0, SWT.LEFT);
 		includePathLabel.setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(includePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(projectNameText, 0, SWT.LEFT);
-		formData.right = new FormAttachment(projectNameText, 0, SWT.RIGHT);
-		includePathText.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(includePathLabel, 10);
-		formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		formData.top = new FormAttachment(includePathLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(includePathLabel, 0, SWT.LEFT);
 		symbolPathLabel.setLayoutData(formData);
 
 		formData = new FormData();
+		formData.top = new FormAttachment(basePathLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		basePathText.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(sourcePathLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		sourcePathText.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(binaryPathLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		binaryPathText.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(includePathLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		includePathText.setLayoutData(formData);
+
+		formData = new FormData();
 		formData.top = new FormAttachment(symbolPathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(projectNameText, 0, SWT.LEFT);
-		formData.right = new FormAttachment(projectNameText, 0, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
 		symbolPathText.setLayoutData(formData);
 
+		// LayoutUtil.layout(container, 0, SWT.TOP, 0, SWT.LEFT, projectNameLabel);
+		// LayoutUtil.layout(projectNameLabel, 10, SWT.BOTTOM, 0, SWT.NONE,
+		// targetPlatformLabel);
+		// LayoutUtil.layout(targetPlatformLabel, 10, SWT.BOTTOM, 0, SWT.NONE,
+		// gfxFormatLabel);
+		/*
+		 * formData = new FormData(); formData.top = new FormAttachment(container, 0);
+		 * formData.left = new FormAttachment(container, 0);
+		 * projectNameLabel.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new
+		 * FormAttachment(projectNameLabel, 0, SWT.TOP); formData.left = new
+		 * FormAttachment(projectNameLabel, 30); formData.right = new
+		 * FormAttachment(projectNameLabel, 300);
+		 * projectNameText.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new
+		 * FormAttachment(projectNameLabel, 10); formData.left = new
+		 * FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		 * targetPlatformLabel.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new
+		 * FormAttachment(targetPlatformLabel, 0, SWT.TOP); formData.left = new
+		 * FormAttachment(projectNameText, 0, SWT.LEFT); formData.right = new
+		 * FormAttachment(projectNameText, 0, SWT.RIGHT);
+		 * targetPlatformCombo.getControl().setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new
+		 * FormAttachment(targetPlatformCombo.getControl(), 5); formData.left = new
+		 * FormAttachment(targetPlatformCombo.getControl(), 0, SWT.LEFT);
+		 * createExampleButton.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new
+		 * FormAttachment(createExampleButton, 5); formData.left = new FormAttachment(0,
+		 * 0); formData.right = new FormAttachment(100, 0);
+		 * separatorLabel.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new FormAttachment(separatorLabel,
+		 * 10); formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		 * basePathLabel.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new FormAttachment(basePathLabel,
+		 * 0, SWT.TOP); formData.left = new FormAttachment(projectNameText, 0,
+		 * SWT.LEFT); formData.right = new FormAttachment(projectNameText, 0,
+		 * SWT.RIGHT); basePathText.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new FormAttachment(basePathLabel,
+		 * 10); formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		 * sourcePathLabel.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new FormAttachment(sourcePathLabel,
+		 * 0, SWT.TOP); formData.left = new FormAttachment(projectNameText, 0,
+		 * SWT.LEFT); formData.right = new FormAttachment(projectNameText, 0,
+		 * SWT.RIGHT); sourcePathText.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new FormAttachment(sourcePathLabel,
+		 * 10); formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		 * binaryPathLabel.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new FormAttachment(binaryPathLabel,
+		 * 0, SWT.TOP); formData.left = new FormAttachment(projectNameText, 0,
+		 * SWT.LEFT); formData.right = new FormAttachment(projectNameText, 0,
+		 * SWT.RIGHT); binaryPathText.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new FormAttachment(binaryPathLabel,
+		 * 10); formData.left = new FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		 * includePathLabel.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new
+		 * FormAttachment(includePathLabel, 0, SWT.TOP); formData.left = new
+		 * FormAttachment(projectNameText, 0, SWT.LEFT); formData.right = new
+		 * FormAttachment(projectNameText, 0, SWT.RIGHT);
+		 * includePathText.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new
+		 * FormAttachment(includePathLabel, 10); formData.left = new
+		 * FormAttachment(projectNameLabel, 0, SWT.LEFT);
+		 * symbolPathLabel.setLayoutData(formData);
+		 * 
+		 * formData = new FormData(); formData.top = new FormAttachment(symbolPathLabel,
+		 * 0, SWT.TOP); formData.left = new FormAttachment(projectNameText, 0,
+		 * SWT.LEFT); formData.right = new FormAttachment(projectNameText, 0,
+		 * SWT.RIGHT); symbolPathText.setLayoutData(formData);
+		 */
 		initDataBindings();
 	}
 
@@ -268,8 +385,6 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		}
 	}
 
-	
-	
 	private List<TargetPlatform> getTargetPlatFormList() {
 		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 		ObjectMapper mapper = new ObjectMapper();
