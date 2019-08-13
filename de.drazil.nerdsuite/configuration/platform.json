@@ -3,7 +3,25 @@
 		"id": "C64",
 		"name": "C64",
 		"source": "configuration/platform/64_platform.json",
-		"enabled": true
+		"enabled": true,
+		"supportedGraphicTypes": [
+			{
+				"id": "SPRITE",
+				"name": "Sprite"
+			},
+			{
+				"id": "CHAR",
+				"name": "Charset"
+			},
+			{
+				"id": "CHARSCREEN",
+				"name": "PetASCII Screen"
+			},
+			{
+				"id": "BITMAP",
+				"name": "Bitmap"
+			}
+		]
 	},
 	{
 		"id": "ATARI800XL",
@@ -24,4 +42,3 @@
 		"enabled": false
 	}
 ]
- 

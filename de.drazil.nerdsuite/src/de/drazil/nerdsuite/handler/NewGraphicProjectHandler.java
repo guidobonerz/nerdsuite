@@ -26,7 +26,7 @@ public class NewGraphicProjectHandler {
 
 	@Execute
 	public void execute(MPerspective activePerspective, MApplication app, EPartService partService,
-			EModelService modelService, @Named("de.drazil.nerdsuite.commandparameter.gfxFormat") String format) {
+			EModelService modelService, @Named("de.drazil.nerdsuite.commandparameter.gfxFormat") String gfxFormat) {
 
 		List<MPerspective> perspectives = modelService.findElements(app, "de.drazil.nerdsuite.perspective.Gfx",
 				MPerspective.class, null);
@@ -36,7 +36,7 @@ public class NewGraphicProjectHandler {
 			}
 		}
 
-		GraphicFormat gf = GraphicFormatFactory.getFormatByName(format);
+		GraphicFormat gf = GraphicFormatFactory.getFormatByName(gfxFormat);
 
 		TileRepositoryService tileService = ServiceFactory.getService("REPOSITORY", TileRepositoryService.class);
 		tileService.addTile("test1", gf.getMetadata().getContentSize());

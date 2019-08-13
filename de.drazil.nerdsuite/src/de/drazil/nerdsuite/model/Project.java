@@ -1,38 +1,25 @@
 package de.drazil.nerdsuite.model;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import de.drazil.nerdsuite.xml.ProjectFolderAdapter;
 
 @Data
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Project
-{
-	@XmlAttribute
+
+@AllArgsConstructor
+public class Project {
+
 	private String id;
-	@XmlAttribute
 	private String name;
-	@XmlAttribute
 	private boolean open;
-	@XmlElement(name = "folders")
-	@XmlJavaTypeAdapter(ProjectFolderAdapter.class)
-	private Map<String, ProjectFolder> projectFolderMap;
+	private String targetPlaform;
+	private String projectType;
+	private List<ProjectFolder> folderList;
 
-	public Project()
-	{
-		projectFolderMap = new LinkedHashMap<String, ProjectFolder>();
+	public Project() {
+		folderList = new ArrayList<ProjectFolder>();
 	}
 
-	public void add(ProjectFolder projectFolder)
-	{
-		projectFolderMap.put(projectFolder.getName(), projectFolder);
-	}
 }

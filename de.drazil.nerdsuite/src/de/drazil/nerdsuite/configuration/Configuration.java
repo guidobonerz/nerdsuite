@@ -5,16 +5,16 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.Bundle;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
@@ -27,13 +27,13 @@ public class Configuration {
 	private Font font = null;
 
 	public final Workspace getWorkspace() {
-		return createWorkspace();
+		return createOrReadWorkspace();
 	}
 
 	public void initialize() {
 		try {
 
-			 workspace = getWorkspace();
+			workspace = getWorkspace();
 
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 			InstructionSet.init(bundle);
@@ -47,9 +47,9 @@ public class Configuration {
 			boolean b;
 			try {
 				file = new File(FileLocator.resolve(fileURL1).toURI());
-				//b = Display.getCurrent().loadFont(file.toString());
-				b = Display.getCurrent().loadFont(new URL("platform:/plugin/de.drazil.nerdsuite/fonts/C64_Pro_Mono-STYLE.ttf").toString());
-				
+				// b = Display.getCurrent().loadFont(file.toString());
+				b = Display.getCurrent().loadFont(
+						new URL("platform:/plugin/de.drazil.nerdsuite/fonts/C64_Pro_Mono-STYLE.ttf").toString());
 
 				file = new File(FileLocator.resolve(fileURL2).toURI());
 				b = Display.getCurrent().loadFont(file.toString());
@@ -73,7 +73,8 @@ public class Configuration {
 		}
 	}
 
-	private final Workspace createWorkspace() {
+	private final Workspace createOrReadWorkspace() {
+
 		try {
 			if (!WORKSPACE_PATH.exists()) {
 				System.out.println("create new workspace folder...");
@@ -83,25 +84,37 @@ public class Configuration {
 			} else {
 				if (workspace == null) {
 					System.out.println("read workspace file...");
-					JAXBContext jaxbContext = JAXBContext.newInstance(Workspace.class);
-					Unmarshaller jaxbMarschaller = jaxbContext.createUnmarshaller();
-					workspace = (Workspace) jaxbMarschaller
-							.unmarshal(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"));
+					ObjectMapper mapper = new ObjectMapper();
+					workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"),
+							Workspace.class);
 				}
 			}
-		} catch (Exception e) {
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return workspace;
 	}
 
 	public final void writeWorkspace(Workspace workspace) {
+		ObjectMapper mapper = new ObjectMapper();
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(Workspace.class);
-			Marshaller jaxbMarschaller = jaxbContext.createMarshaller();
-			jaxbMarschaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			jaxbMarschaller.marshal(workspace, new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"));
-		} catch (JAXBException e) {
+			mapper.writeValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"), workspace);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

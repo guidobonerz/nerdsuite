@@ -2,7 +2,7 @@ package de.drazil.nerdsuite.wizard;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.observable.ChangeEvent;
@@ -11,7 +11,10 @@ import org.eclipse.core.databinding.observable.IObservableCollection;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -29,6 +32,7 @@ import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.ProjectType;
+import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
 import de.drazil.nerdsuite.util.WidgetDataBinder;
 import de.drazil.nerdsuite.validator.DuplicateNameValidator;
@@ -91,10 +95,14 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		gfxFormatLabel = new Label(container, SWT.NONE);
 		gfxFormatLabel.setText("Graphic Format");
 
+		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
+		List<SimpleEntity> gfxFormat = targetPlatformList.get(0).getSupportedGraphicTypes();
+
 		projectNameText = new Text(container, SWT.BORDER);
 		targetPlatformCombo = new ComboViewer(container, SWT.NONE);
 		targetPlatformCombo.setContentProvider(ArrayContentProvider.getInstance());
-		targetPlatformCombo.setInput(getTargetPlatFormList());
+		targetPlatformCombo.setInput(targetPlatformList);
+		targetPlatformCombo.setSelection(new StructuredSelection(targetPlatformList.get(0)));
 		targetPlatformCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -106,9 +114,32 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 				return super.getText(element);
 			}
 		});
-		targetPlatformCombo.getCombo().select(0);
+		targetPlatformCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				StructuredSelection selection = (StructuredSelection) event.getSelection();
+				TargetPlatform targetPlatform = (TargetPlatform) selection.getFirstElement();
+				gfxFormatCombo.setContentProvider(ArrayContentProvider.getInstance());
+				gfxFormatCombo.setInput(targetPlatform.getSupportedGraphicTypes());
+
+			}
+		});
 
 		gfxFormatCombo = new ComboViewer(container, SWT.NONE);
+		gfxFormatCombo.setContentProvider(ArrayContentProvider.getInstance());
+		gfxFormatCombo.setInput(gfxFormat);
+		gfxFormatCombo.setSelection(new StructuredSelection(gfxFormat.get(0)));
+		gfxFormatCombo.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof SimpleEntity) {
+					SimpleEntity current = (SimpleEntity) element;
+
+					return current.getName();
+				}
+				return super.getText(element);
+			}
+		});
 
 		separatorLabel = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
 
@@ -336,30 +367,44 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 	}
 
 	protected void initDataBindings() {
-		getModel().add(new ProjectFolder(Constants.SOURCE_FOLDER, Constants.DEFAULT_SOURCE_PATH));
-		getModel().add(new ProjectFolder(Constants.BINARY_FOLDER, Constants.DEFAULT_BINARY_PATH));
-		getModel().add(new ProjectFolder(Constants.INCLUDE_FOLDER, Constants.DEFAULT_INCLUDE_PATH));
-		getModel().add(new ProjectFolder(Constants.SYMBOL_FOLDER, Constants.DEFAULT_SYMBOL_PATH));
+		getModel().getFolderList().add(new ProjectFolder(Constants.SOURCE_FOLDER, Constants.DEFAULT_SOURCE_PATH));
+		getModel().getFolderList().add(new ProjectFolder(Constants.BINARY_FOLDER, Constants.DEFAULT_BINARY_PATH));
+		getModel().getFolderList().add(new ProjectFolder(Constants.INCLUDE_FOLDER, Constants.DEFAULT_INCLUDE_PATH));
+		getModel().getFolderList().add(new ProjectFolder(Constants.SYMBOL_FOLDER, Constants.DEFAULT_SYMBOL_PATH));
 
-		Map<String, ProjectFolder> folderMap = getModel().getProjectFolderMap();
+		List<ProjectFolder> folderList = getModel().getFolderList();
 
 		final WidgetDataBinder widgetDataBinder = new WidgetDataBinder(this);
 		widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME,
 				new LengthValidator("Projectname", 1, CheckType.Min));
 		widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new DuplicateNameValidator<Project>(
-				"Projectname", Initializer.getConfiguration().getWorkspace().getProjectMap()));
-		widgetDataBinder.bind(sourcePathText, folderMap.get("src"), Constants.NAME,
-				new LengthValidator("Sourcefolder Name", 1, CheckType.Min));
-		widgetDataBinder.bind(binaryPathText, folderMap.get("bin"), Constants.NAME,
-				new LengthValidator("Binaryfolder Name", 1, CheckType.Min));
-		widgetDataBinder.bind(includePathText, folderMap.get("include"), Constants.NAME,
-				new LengthValidator("Includefolder Name", 1, CheckType.Min));
-		widgetDataBinder.bind(symbolPathText, folderMap.get("symbol"), Constants.NAME,
-				new LengthValidator("Symbolfolder Name", 1, CheckType.Min));
+				"Projectname", Initializer.getConfiguration().getWorkspace().getProjects()) {
+			@Override
+			protected boolean exists(List<Project> list, Object value) {
+				boolean exists = false;
+				if (value instanceof String && value != null) {
+					exists = list.stream().filter(c -> c.getName().equals(Constants.NAME)).findFirst().isPresent();
+				}
+				return exists;
+			}
+		});
+		widgetDataBinder.bind(sourcePathText, getFolder(folderList, Constants.SOURCE_FOLDER).get().getName(),
+				Constants.NAME, new LengthValidator("Sourcefolder Name", 1, CheckType.Min));
+		widgetDataBinder.bind(binaryPathText, getFolder(folderList, Constants.BINARY_FOLDER).get().getName(),
+				Constants.NAME, new LengthValidator("Binaryfolder Name", 1, CheckType.Min));
+		widgetDataBinder.bind(includePathText, getFolder(folderList, Constants.INCLUDE_FOLDER).get().getName(),
+				Constants.NAME, new LengthValidator("Includefolder Name", 1, CheckType.Min));
+		widgetDataBinder.bind(symbolPathText, getFolder(folderList, Constants.SYMBOL_FOLDER).get().getName(),
+				Constants.NAME, new LengthValidator("Symbolfolder Name", 1, CheckType.Min));
 		IObservableCollection oc = widgetDataBinder.getDataBindingContext().getBindings();
 		AggregateValidationStatus aggregateValidationStatus = new AggregateValidationStatus(oc,
 				AggregateValidationStatus.MAX_SEVERITY);
 		aggregateValidationStatus.addChangeListener(new AggregatedValidationChangeListener(oc, this));
+
+	}
+
+	private Optional<ProjectFolder> getFolder(List<ProjectFolder> folderList, String folderName) {
+		return folderList.stream().filter(c -> c.getId().equals(folderName)).findFirst();
 	}
 
 	private static class AggregatedValidationChangeListener implements IChangeListener {
@@ -396,4 +441,5 @@ public class NewProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		}
 		return targetPlatformnList;
 	}
+
 }
