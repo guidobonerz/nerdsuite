@@ -1,15 +1,27 @@
 package de.drazil.nerdsuite.model;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Data
 public class Address {
-	private int address;
+	@JsonIgnore 
+	private Value value;
+	private String address;
 	private String constName;
 	private String description;
 
+	public Address(String address, String constName, String description) {
+		this.value = new Value(address);
+		this.constName = constName;
+		this.description = description;
+	}
+
 	public int getAddressValue() {
-		return address;
+		return value.getValue();
 	}
 
 	public boolean matches(int value) {

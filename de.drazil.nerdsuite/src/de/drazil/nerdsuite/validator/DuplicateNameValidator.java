@@ -1,35 +1,28 @@
 package de.drazil.nerdsuite.validator;
 
-import java.util.Map;
+import java.util.List;
 
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
-public class DuplicateNameValidator<MODEL> extends BaseValidator
-{
+public abstract class DuplicateNameValidator<MODEL> extends BaseValidator {
 	private String messagePrefix;
-	private Map<String, MODEL> map;;
+	private List<MODEL> list;
 
-	public DuplicateNameValidator(String messagePrefix, Map<String, MODEL> map)
-	{
+	public DuplicateNameValidator(String messagePrefix, List<MODEL> list) {
 		super("");
 		this.messagePrefix = messagePrefix;
-		this.map = map;
+		this.list = list;
 	}
 
 	@Override
-	public IStatus validate(Object value)
-	{
+	public IStatus validate(Object value) {
 		IStatus validationStatus = ValidationStatus.ok();
-		if (value != null && value instanceof String)
-		{
-			String s = (String) value;
-
-			if (map.get(s.toUpperCase()) != null)
-			{
-				validationStatus = ValidationStatus.error(messagePrefix + " already exist.");
-			}
+		if (exists(list, value)) {
+			validationStatus = ValidationStatus.error(messagePrefix + " already exist.");
 		}
 		return validationStatus;
 	}
+
+	protected abstract boolean exists(List<MODEL> list, Object value);
 }

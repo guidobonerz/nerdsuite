@@ -2,6 +2,9 @@
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_POZZwKF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ide.application" bindingContexts="_POaA2KF9EeOMYoHAic2wfQ">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_POaA0KF9EeOMYoHAic2wfQ" label="Nerdsuite" width="1024" height="768">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_xWeSMKMFEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.perspectivestack.0">
+      <children xsi:type="advanced:Perspective" xmi:id="_S9RCQLrLEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.perspective.welcome" label="Welcome">
+        <children xsi:type="basic:Part" xmi:id="_lHiaULrLEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.part.0" contributionURI=""/>
+      </children>
       <children xsi:type="advanced:Perspective" xmi:id="_zdg3MKMFEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.perspective.coding" label="Coding">
         <children xsi:type="basic:PartSashContainer" xmi:id="_x-55YKF_EeOMYoHAic2wfQ" elementId="de.drazil.nerdsuite.partsashcontainer.0" containerData="" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_Nd0FkKGAEeOMYoHAic2wfQ" elementId="de.drazil.nerdsuite.partsashcontainer.2" containerData="1500">
@@ -123,59 +126,13 @@
       </children>
       <children xsi:type="menu:Menu" xmi:id="_5MQn4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.file" label="File" iconURI="">
         <children xsi:type="menu:Menu" xmi:id="_cSP6MKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.1" label="New">
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_fvfdIKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.5" label="Project" command="_ATMWMKaVEeOsl7k25iZUBw"/>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_YRilsKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handledmenuitem.6" label="Source File" command="_ka2AIOwWEeSYVemvddr_Tw"/>
-          <children xsi:type="menu:Menu" xmi:id="_w_EqILk4EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.menu.graphicproject" label="Graphic Project">
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_SNAdcAY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.handledmenuitem.newCharsetProject" label="Charset" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_Gi_JcLk3EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.4" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_CHARSET"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_2QN-MLk5EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.handledmenuitem.charset-multicolor" label="Charset - Multicolor" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_S_MrILk6EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.15" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MULTICOLOR_CHARSET"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_X5thkAY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.handledmenuitem.newCharset2xProject" label="Charset 2X" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_VLsfQLk3EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.5" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_CHARSET_2X"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_129wsLk5EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.handledmenuitem.charset2x-multicolor" label="Charset 2X - Multicolor" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_SbkZoLk6EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.14" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MULTICOLOR_CHARSET_2X"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_Z05b4AY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.handledmenuitem.newCharset2yProject" label="Charset 2Y" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_WzLacLk3EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.6" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_CHARSET_2Y"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_1klnQLk5EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.handledmenuitem.charset2y-multicolor" label="Charset 2Y - Multicolor" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_R7GJ0Lk6EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.13" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MULTICOLOR_CHARSET_2Y"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_bbbU0AY2EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.handledmenuitem.newCharset2xyProject" label="Charset 2XY" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_XPrJMLk3EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.7" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_CHARSET_2XY"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_1Rr5YLk5EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.handledmenuitem.charset2xy-multicolor" label="Charset 2XY - Multicolor" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_Rb_zALk6EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.12" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MULTICOLOR_CHARSET_2XY"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_iZmZEKruEeO33ch1Zth4Ww" elementId="de.drazil.nerdsuite.handledmenuitem.newSpriteProject" label="Sprite" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_qUAyQLk2EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.1" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_SPRITE"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_0_PegLk5EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.handledmenuitem.sprite-multicolor" label="Sprite - Multicolor" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_Q9w-4Lk6EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.11" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MULTICOLOR_SPRITE"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_b3A3YATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newSprite2xProject" label="Sprite 2X" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_g4kykLk2EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.0" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_SPRITE_2X"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_0aWBsLk5EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.handledmenuitem.sprite2xy" label="Sprite 2X - Multicolor" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_PcbvALk6EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.9" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MULTICOLOR_SPRITE_2X"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_ew1kMATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newSprite2yProject" label="Sprite 2Y" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_yulK0Lk2EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.2" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_SPRITE_2Y"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_0sTUYLk5EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.handledmenuitem.sprite2y-multicolor" label="Sprite 2Y - Multicolor" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_QHOYcLk6EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.10" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MULTICOLOR_SPRITE_2Y"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_gH6E0ATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.newSprite2xyProject" label="Sprite 2XY" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_3HmZgLk2EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.3" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MONO_SPRITE_2XY"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_x3ylYLk5EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.handledmenuitem.sprite2xy" label="Sprite 2XY - Multicolor" command="_mWhJ4AT4EemsC5geQwPptA">
-              <parameters xmi:id="_O-rcALk6EemUCsIYn8dKOw" elementId="de.drazil.nerdsuite.parameter.8" name="de.drazil.nerdsuite.commandparameter.gfxFormat" value="MULTICOLOR_SPRITE_2XY"/>
-            </children>
-            <children xsi:type="menu:HandledMenuItem" xmi:id="_oRyWAATzEemsC5geQwPptA" elementId="de.drazil.nerdsuite.handledmenuitem.charscreenProject" label="CharScreen" command="_mWhJ4AT4EemsC5geQwPptA"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_fvfdIKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.codingproject" label="Coding Project" command="_ATMWMKaVEeOsl7k25iZUBw">
+            <parameters xmi:id="_Cv3pwLrPEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.parameter.16" name="de.drazil.nerdsuite.commandparameter.projectType" value="CODING_PROJECT"/>
           </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_F4tfcLrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.handledmenuitem.graphicproject" label="Graphic Project" command="_ATMWMKaVEeOsl7k25iZUBw">
+            <parameters xmi:id="_HFfmMLrPEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.parameter.17" name="de.drazil.nerdsuite.commandparameter.projectType" value="GRAPHIC_PROJECT"/>
+          </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_YRilsKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handledmenuitem.6" label="Source File" command="_ka2AIOwWEeSYVemvddr_Tw"/>
         </children>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_UgTn4KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.0" label="Close Project"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_VUSCgKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.1" label="Close File"/>
@@ -220,7 +177,6 @@
     </trimBars>
   </children>
   <handlers xmi:id="_cSk5kKaSEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handler.newProject" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewProjectHandler" command="_ATMWMKaVEeOsl7k25iZUBw"/>
-  <handlers xmi:id="_zU5ckKruEeO33ch1Zth4Ww" elementId="de.drazil.nerdsuite.handler.newSpriteProject" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSpriteEditorHandler" command="_nW-SAKruEeO33ch1Zth4Ww"/>
   <handlers xmi:id="_8ov2sMyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.build" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.BuildHandler" command="_sVcnUMyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_CGhuAMySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.buildAndRun" command="_yWlqYMyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_ElMI0MySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.runToolchain" command="_3H-80MyREeOnSbGKqjX4ww"/>
@@ -241,8 +197,9 @@
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
-  <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.newProject" commandName="New Project"/>
-  <commands xmi:id="_nW-SAKruEeO33ch1Zth4Ww" elementId="de.drazil.nerdsuite.command.newSpriteProject" commandName="New Sprite Project"/>
+  <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.newProject" commandName="New Project">
+    <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.projectType" name="projectType" optional="false"/>
+  </commands>
   <commands xmi:id="_sVcnUMyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.build" commandName="Build"/>
   <commands xmi:id="_yWlqYMyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.build_and_run" commandName="Build and Run"/>
   <commands xmi:id="_3H-80MyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.run_toolchain" commandName="Run ToolChain"/>

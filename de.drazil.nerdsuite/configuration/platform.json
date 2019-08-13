@@ -1,0 +1,54 @@
+[
+	{
+		"id": "C64",
+		"name": "C64",
+		"source": "configuration/platform/64_platform.json",
+		"enabled": true,
+		"supportedGraphicTypes": [
+			{
+				"id": "SPRITE",
+				"name": "Sprite"
+			},
+			{
+				"id": "CHAR",
+				"name": "Charset"
+			},
+			{
+				"id": "CHARSCREEN",
+				"name": "PetASCII Screen"
+			},
+			{
+				"id": "BITMAP",
+				"name": "Bitmap"
+			}
+		],
+		"supportedCodingLanguages": [
+			{
+				"id": "ASM",
+				"name": "Assembler"
+			},
+			{
+				"id": "BASIC",
+				"name": "Basic"
+			}
+		]
+	},
+	{
+		"id": "ATARI800XL",
+		"name": "Atari 800 XL",
+		"source": "configuration/platform/unkown.json",
+		"enabled": false
+	},
+	{
+		"id": "ATARI2600",
+		"name": "Atari 2600",
+		"source": "configuration/platform/unkown.json",
+		"enabled": false
+	},
+	{
+		"id": "CPC6128",
+		"name": "Schneider/Amstrad CPC 6128",
+		"source": "configuration/platform/unkown.json",
+		"enabled": false
+	}
+]

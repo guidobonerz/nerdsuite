@@ -1,40 +1,24 @@
 package de.drazil.nerdsuite.model;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
-import de.drazil.nerdsuite.xml.ProjectListAdapter;
 
 @Data
-@XmlRootElement()
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Workspace
-{
+public class Workspace {
 
-	@XmlElement(name = "projects")
-	@XmlJavaTypeAdapter(ProjectListAdapter.class)
-	private Map<String, Project> projectMap;
+	private List<Project> projects;
 
-	public Workspace()
-	{
-		projectMap = new LinkedHashMap<String, Project>();
+	public Workspace() {
+		projects = new ArrayList<Project>();
 	}
 
-	public void add(Project project)
-	{
-		projectMap.put(project.getId(), project);
+	public void add(Project project) {
+		projects.add(project);
 	}
 
-	public void removeProject(String projectName)
-	{
-		projectMap.remove(projectName);
+	public void remove(Project project) {
+		projects.remove(project);
 	}
-
 }

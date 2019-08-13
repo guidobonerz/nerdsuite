@@ -1,217 +1,109 @@
 [
 	{
-		"id": "KOALA",
-		"metadataRefId":"MULTICOLOR_BITMAP",
-		"contentStructure": 
-		{
-			"dataOffset": 2,
-			"bitmapOffset": 0,
-			"screenRamOffset": 8000,
-			"colorRamOffset": 9000,
-			"backgroundColorOffset": 10000
-		}
-	},
-
-	{
-		"id": "MONO_BITMAP",
-		"metadata": 
-		{ 
-			"width": 8,
-			"height": 8,
-			"tileRows": 25,
-			"tileColumns": 40,
-			"multicolor": false
-		}
-	},
-
-	{
-		"id": "MONO_CHARSET",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 1,
-			"tileColumns": 1,
-			"multicolor": false
-		}
+		"id": "BITMAP",
+		"formats": [
+			{
+				"id": "STANDARD",
+				"name": "Bitmap",
+				"metadata": {
+					"tileRows": 1,
+					"tileColumns": 1,
+					"supportsMulticolor": true
+				}
+			},
+			{
+				"id": "KOALA",
+				"metadataRefId": "STANDARD",
+				"contentStructure": {
+					"dataOffset": 2,
+					"bitmapOffset": 0,
+					"screenRamOffset": 8000,
+					"colorRamOffset": 9000,
+					"backgroundColorOffset": 10000
+				}
+			}
+		]
 	},
 	{
-		"id": "MONO_CHARSET_2X",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 1,
-			"tileColumns": 2,
-			"multicolor": false
-		}
+		"id": "CHAR",
+		"formats": [
+			{
+				"id": "STANDARD",
+				"name": "8x8 Pixel",
+				"metadata": {
+					"tileRows": 1,
+					"tileColumns": 1,
+					"supportsMulticolor": true
+				}
+			},
+			{
+				"id": "2X",
+				"name": "16x8 Pixel",
+				"metadata": {
+					"tileRows": 1,
+					"tileColumns": 2,
+					"supportsMulticolor": true
+				}
+			},
+			{
+				"id": "2Y",
+				"name": "8x16 Pixel",
+				"metadata": {
+					"tileRows": 2,
+					"tileColumns": 1,
+					"supportsMulticolor": true
+				}
+			},
+			{
+				"id": "2XY",
+				"name": "16x16 Pixel",
+				"metadata": {
+					"tileRows": 2,
+					"tileColumns": 2,
+					"supportsMulticolor": true
+				}
+			}
+		]
 	},
 	{
-		"id": "MONO_CHARSET_2Y",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 2,
-			"tileColumns": 1,
-			"multicolor": false
-		}
-	},
-	{
-		"id": "MONO_CHARSET_2XY",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 2,
-			"tileColumns": 2,
-			"multicolor": false
-		}
-	},
-
-	{
-		"id": "MONO_SPRITE",
-		"metadata": 
-		{
-			"width": 24,
-			"height": 21,
-			"tileRows": 1,
-			"tileColumns": 1,
-			"multicolor": false
-		}
-	},
-	{
-		"id": "MONO_SPRITE_2X",
-		"metadata": 
-		{
-			"width": 24,
-			"height": 21,
-			"tileRows": 1,
-			"tileColumns": 2,
-			"multicolor": false
-		}
-	},
-	{
-		"id": "MONO_SPRITE_2Y",
-		"metadata": 
-		{
-			"width": 24,
-			"height": 21,
-			"tileRows": 2,
-			"tileColumns": 1,
-			"multicolor": false
-		}
-	},
-	{
-		"id": "MONO_SPRITE_2XY",
-		"metadata": 
-		{
-			"width": 24,
-			"height": 21,
-			"tileRows": 2,
-			"tileColumns": 2,
-			"multicolor": false
-		}
-	},
-
-	{
-		"id": "MULTICOLOR_BITMAP",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 25,
-			"tileColumns": 40,
-			"multicolor": true
-		}
-	},
-
-	{
-		"id": "MULTICOLOR_CHARSET",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 1,
-			"tileColumns": 1,
-			"multicolor": true
-		}
-	},
-	{
-		"id": "MULTICOLOR_CHARSET_2X",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 1,
-			"tileColumns": 2,
-			"multicolor": true
-		}
-	},
-	{
-		"id": "MULTICOLOR_CHARSET_2Y",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 2,
-			"tileColumns": 1,
-			"multicolor": true
-		}
-	},
-	{
-		"id": "MULTICOLOR_CHARSET_2XY",
-		"metadata": 
-		{
-			"width": 8,
-			"height": 8,
-			"tileRows": 2,
-			"tileColumns": 2,
-			"multicolor": true
-		}
-	},
-	{
-		"id": "MULTICOLOR_SPRITE",
-		"metadata": 
-		{
-			"width": 24,
-			"height": 21,
-			"tileRows": 1,
-			"tileColumns": 1,
-			"multicolor": true
-		}
-	},
-	{
-		"id": "MULTICOLOR_SPRITE_2X",
-		"metadata": 
-		{
-			"width": 24,
-			"height": 21,
-			"tileRows": 1,
-			"tileColumns": 2,
-			"multicolor": true
-		}
-	},
-	{
-		"id": "MULTICOLOR_SPRITE_2Y",
-		"metadata": 
-		{
-			"width": 24,
-			"height": 21,
-			"tileRows": 2,
-			"tileColumns": 1,
-			"multicolor": true
-		}
-	},
-	{
-		"id": "MULTICOLOR_SPRITE_2XY",
-		"metadata": 
-		{
-			"width": 24,
-			"height": 21,
-			"tileRows": 2,
-			"tileColumns": 2,
-			"multicolor": true
-		}
+		"id": "SPRITE",
+		"formats": [
+			{
+				"id": "STANDARD",
+				"name": "24x21 Pixel",
+				"metadata": {
+					"tileRows": 1,
+					"tileColumns": 1,
+					"supportsMulticolor": true
+				}
+			},
+			{
+				"id": "2X",
+				"name": "28x21 Pixel",
+				"metadata": {
+					"tileRows": 1,
+					"tileColumns": 2,
+					"supportsMulticolor": true
+				}
+			},
+			{
+				"id": "2Y",
+				"name": "24x42 Pixel",
+				"metadata": {
+					"tileRows": 2,
+					"tileColumns": 1,
+					"supportsMulticolor": true
+				}
+			},
+			{
+				"id": "2XY",
+				"name": "48x42 Pixel",
+				"metadata": {
+					"tileRows": 2,
+					"tileColumns": 2,
+					"supportsMulticolor": true
+				}
+			}
+		]
 	}
 ]

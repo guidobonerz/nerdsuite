@@ -4,8 +4,7 @@ import de.drazil.nerdsuite.util.NumericConverter;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Value
-{
+public class Value {
 	public final static int DWORD = 1;
 	public final static int WORD = 2;
 	public final static int HIGHWORD = 21;
@@ -21,94 +20,83 @@ public class Value
 	private int value;
 	private int mode;
 
-	public Value(int value)
-	{
-		setValue(value);
-		setMode(WORD);
+	public Value(String hexValue) {
+		this(hexValue, WORD);
 	}
 
-	public Value(int value, int mode)
-	{
+	public Value(String hexValue, int mode) {
+		this(Integer.parseInt(hexValue, 16));
+	}
+
+	public Value(int value) {
+		this(value, WORD);
+	}
+
+	public Value(int value, int mode) {
 		setValue(value);
 		setMode(mode);
 	}
 
-	public Value add(int x)
-	{
+	public Value add(int x) {
 		return new Value(value + x);
 	}
 
-	public Value sub(int x)
-	{
+	public Value sub(int x) {
 		return new Value(value - x);
 	}
 
-	public Value sub(Value x)
-	{
+	public Value sub(Value x) {
 		return sub(x.getValue());
 	}
 
-	public Value add(Value x)
-	{
+	public Value add(Value x) {
 		return add(x.getValue());
 	}
 
-	public boolean matches(Value x)
-	{
+	public boolean matches(Value x) {
 		return value == x.getValue();
 	}
 
-	public void clear()
-	{
+	public void clear() {
 		value = 0;
 	}
 
-	public int getMode()
-	{
+	public int getMode() {
 		return mode;
 	}
 
-	public void setMode(int mode)
-	{
+	public void setMode(int mode) {
 		this.mode = mode;
 	}
 
-	public int getLowByte()
-	{
+	public int getLowByte() {
 		return value & 0xff;
 	}
 
-	public int getHighByte()
-	{
+	public int getHighByte() {
 		return ((value >> 8) & 0xff);
 	}
 
-	public int getLowNibble()
-	{
+	public int getLowNibble() {
 		return value & 0x0f;
 	}
 
-	public int getHighNibble()
-	{
+	public int getHighNibble() {
 		return ((value >> 4) & 0x0f);
 	}
-	
-	public int getLowWord()
-	{
+
+	public int getLowWord() {
 		return value & 0xffff;
 	}
 
-	public int getHighWord()
-	{
+	public int getHighWord() {
 		return ((value >> 16) & 0xffff);
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String value = "";
-		switch (mode)
-		{
+		switch (mode) {
 		case DWORD:
 			value = NumericConverter.toHexString(this.value, 8);
 			break;
