@@ -9,12 +9,12 @@ import org.osgi.framework.Bundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.drazil.nerdsuite.model.ProjectType;
+import de.drazil.nerdsuite.model.SimpleEntity;
 
 public class ProjectTypeFactory {
-	private static List<ProjectType> projectTypeList;
+	private static List<SimpleEntity> projectTypeList;
 
-	public static ProjectType getProjectTypeByName(String name) {
+	public static SimpleEntity getProjectTypeByName(String name) {
 
 		if (null == projectTypeList) {
 			projectTypeList = new ArrayList<>();
@@ -22,7 +22,7 @@ public class ProjectTypeFactory {
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				projectTypeList = Arrays.asList(
-						mapper.readValue(bundle.getEntry("configuration/project_types.json"), ProjectType[].class));
+						mapper.readValue(bundle.getEntry("configuration/project_types.json"), SimpleEntity[].class));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

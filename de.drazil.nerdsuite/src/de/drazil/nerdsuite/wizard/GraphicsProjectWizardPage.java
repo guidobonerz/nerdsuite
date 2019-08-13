@@ -30,7 +30,6 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
-import de.drazil.nerdsuite.model.ProjectType;
 import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
 import de.drazil.nerdsuite.util.WidgetDataBinder;
@@ -61,7 +60,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	private Text symbolPathText;
 	private ComboViewer targetPlatformCombo;
 	private ComboViewer gfxFormatCombo;
-	private ProjectType projectType;
+	private SimpleEntity projectType;
 	private List<TargetPlatform> targetPlatformnList;
 
 	/**
@@ -340,6 +339,13 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 			e.printStackTrace();
 		}
 		return targetPlatformnList;
+	}
+
+	@Override
+	public boolean isPageComplete() {
+		getModel().setId(projectNameText.getText().toUpperCase());
+		getModel().setName(projectNameText.getText());
+		return true;
 	}
 
 }
