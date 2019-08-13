@@ -21,6 +21,16 @@
 				"id": "BITMAP",
 				"name": "Bitmap"
 			}
+		],
+		"supportedCodingLanguages": [
+			{
+				"id": "ASM",
+				"name": "Assembler"
+			},
+			{
+				"id": "BASIC",
+				"name": "Basic"
+			}
 		]
 	},
 	{
@@ -30,14 +40,14 @@
 		"enabled": false
 	},
 	{
-		"id": "CPC6128",
-		"name": "Schneider/Amstrad CPC 6128",
+		"id": "ATARI2600",
+		"name": "Atari 2600",
 		"source": "configuration/platform/unkown.json",
 		"enabled": false
 	},
 	{
-		"id": "ATARI2600",
-		"name": "Atari 2600",
+		"id": "CPC6128",
+		"name": "Schneider/Amstrad CPC 6128",
 		"source": "configuration/platform/unkown.json",
 		"enabled": false
 	}

@@ -13,5 +13,6 @@ public class TargetPlatform {
 	private String source;
 	private boolean enabled;
 	private List<SimpleEntity> supportedGraphicTypes;
+	private List<SimpleEntity> supportedCodingLanguages;
 
 }

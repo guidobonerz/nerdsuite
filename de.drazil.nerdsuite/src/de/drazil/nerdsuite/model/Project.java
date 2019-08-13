@@ -16,6 +16,8 @@ public class Project {
 	private boolean open;
 	private String targetPlaform;
 	private String projectType;
+	private String projectSubType;
+
 	private List<ProjectFolder> folderList;
 
 	public Project() {
