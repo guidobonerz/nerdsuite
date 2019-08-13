@@ -23,7 +23,7 @@ public class ProjectWizard extends Wizard {
 
 		if (projectType.equals("CODING_PROJECT")) {
 			projectWizardPage = new CodingProjectWizardPage(projectType);
-		} else if (projectType.equals("GRAPHICS_PROJECT")) {
+		} else if (projectType.equals("GRAPHIC_PROJECT")) {
 			projectWizardPage = new GraphicsProjectWizardPage(projectType);
 		}
 	}

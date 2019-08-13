@@ -4,19 +4,7 @@
 		"name": "Coding Project"
 	},
 	{
-		"id": "SPRITE_PROJECT",
-		"name": "Sprite Project"
-	},
-	{
-		"id": "CHARSET_PROJECT",
-		"name": "Charset Project"
-	},
-	{
-		"id": "SCREEN_PROJECT",
-		"name": "Screen Project"
-	},
-	{
-		"id": "BITMAP_PROJECT",
-		"name": "Bitmap Project"
+		"id": "GRAPHIC_PROJECT",
+		"name": "Graphic Project"
 	}
 ]

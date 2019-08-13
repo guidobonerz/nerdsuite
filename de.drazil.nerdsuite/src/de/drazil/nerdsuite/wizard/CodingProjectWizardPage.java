@@ -120,7 +120,7 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				TargetPlatform targetPlatform = (TargetPlatform) selection.getFirstElement();
 				languageTypeCombo.setContentProvider(ArrayContentProvider.getInstance());
-				languageTypeCombo.setInput(targetPlatform.getSupportedGraphicTypes());
+				languageTypeCombo.setInput(targetPlatform.getSupportedCodingLanguages());
 
 			}
 		});

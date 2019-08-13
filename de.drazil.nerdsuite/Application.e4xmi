@@ -130,7 +130,7 @@
             <parameters xmi:id="_Cv3pwLrPEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.parameter.16" name="de.drazil.nerdsuite.commandparameter.projectType" value="CODING_PROJECT"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_F4tfcLrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.handledmenuitem.graphicproject" label="Graphic Project" command="_ATMWMKaVEeOsl7k25iZUBw">
-            <parameters xmi:id="_HFfmMLrPEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.parameter.17" name="de.drazil.nerdsuite.commandparameter.projectType" value="SPRITE_PROJECT"/>
+            <parameters xmi:id="_HFfmMLrPEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.parameter.17" name="de.drazil.nerdsuite.commandparameter.projectType" value="GRAPHIC_PROJECT"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_YRilsKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handledmenuitem.6" label="Source File" command="_ka2AIOwWEeSYVemvddr_Tw"/>
         </children>
