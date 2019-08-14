@@ -3,35 +3,25 @@
 		"id": "C64",
 		"name": "C64",
 		"source": "configuration/platform/64_platform.json",
-		"enabled": true,
-		"supportedGraphicTypes": [
-			{
-				"id": "SPRITE",
-				"name": "Sprite"
-			},
-			{
-				"id": "CHAR",
-				"name": "Charset"
-			},
-			{
-				"id": "CHARSCREEN",
-				"name": "PetASCII Screen"
-			},
-			{
-				"id": "BITMAP",
-				"name": "Bitmap"
-			}
-		],
-		"supportedCodingLanguages": [
-			{
-				"id": "ASM",
-				"name": "Assembler"
-			},
-			{
-				"id": "BASIC",
-				"name": "Basic"
-			}
-		]
+		"enabled": true
+	},
+	{
+		"id": "C128",
+		"name": "C64",
+		"source": "configuration/platform/unkown.json",
+		"enabled": true
+	},
+	{
+		"id": "C16",
+		"name": "C16",
+		"source": "configuration/platform/unkown.json",
+		"enabled": true
+	},
+	{
+		"id": "PLUS4",
+		"name": "Plus/4",
+		"source": "configuration/platform/unkown.json",
+		"enabled": true
 	},
 	{
 		"id": "ATARI800XL",
