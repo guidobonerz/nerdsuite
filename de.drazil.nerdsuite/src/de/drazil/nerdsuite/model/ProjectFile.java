@@ -1,7 +1,5 @@
 package de.drazil.nerdsuite.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -11,15 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 
-public class ProjectFolder {
+public class ProjectFile {
 	private String id;
 	private String name;
 	@JsonInclude(Include.NON_NULL)
 	private String mountLocation;
-	@JsonInclude(Include.NON_NULL)
-	private List<ProjectFile> openFiles;
 
-	public ProjectFolder(String id, String name) {
+	public ProjectFile(String id, String name) {
 		setId(id);
 		setName(name);
 	}

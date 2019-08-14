@@ -5,10 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservableCollection;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -27,16 +31,11 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
-import de.drazil.nerdsuite.util.WidgetDataBinder;
-import de.drazil.nerdsuite.validator.DuplicateNameValidator;
 import de.drazil.nerdsuite.validator.IValidatable;
-import de.drazil.nerdsuite.validator.LengthValidator;
-import de.drazil.nerdsuite.validator.LengthValidator.CheckType;
 import de.drazil.nerdsuite.widget.ProjectTypeFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -93,7 +92,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		gfxFormatLabel.setText("Graphic Format");
 
 		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
-		getModel().setTargetPlaform(targetPlatformList.get(0).getId());
+		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
 		List<SimpleEntity> gfxFormat = targetPlatformList.get(0).getSupportedGraphicTypes();
 		getModel().setProjectType(gfxFormat.get(0).getId());
 
@@ -271,35 +270,47 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		getModel().getFolderList().add(new ProjectFolder(Constants.INCLUDE_FOLDER, Constants.DEFAULT_INCLUDE_PATH));
 		getModel().getFolderList().add(new ProjectFolder(Constants.SYMBOL_FOLDER, Constants.DEFAULT_SYMBOL_PATH));
 
+		DataBindingContext dbx = new DataBindingContext();
+		IObservableValue<String> projectNameField = WidgetProperties.text(SWT.Modify).observe(projectNameText);
+		IObservableValue<String> projectNameModel = BeanProperties.value(Project.class, Constants.NAME).observe(getModel());
+
+		dbx.bindValue(projectNameModel, projectNameField);
+
 		List<ProjectFolder> folderList = getModel().getFolderList();
 
-		final WidgetDataBinder widgetDataBinder = new WidgetDataBinder(this);
-		widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME,
-				new LengthValidator("Projectname", 1, CheckType.Min));
-		widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new DuplicateNameValidator<Project>(
-				"Projectname", Initializer.getConfiguration().getWorkspace().getProjects()) {
-			@Override
-			protected boolean exists(List<Project> list, Object value) {
-				boolean exists = false;
-				if (value instanceof String && value != null) {
-					exists = list.stream().filter(c -> c.getName().equals(Constants.NAME)).findFirst().isPresent();
-				}
-				return exists;
-			}
-		});
-		widgetDataBinder.bind(sourcePathText, getFolder(folderList, Constants.SOURCE_FOLDER).get().getName(),
-				Constants.NAME, new LengthValidator("Sourcefolder Name", 1, CheckType.Min));
-		widgetDataBinder.bind(binaryPathText, getFolder(folderList, Constants.BINARY_FOLDER).get().getName(),
-				Constants.NAME, new LengthValidator("Binaryfolder Name", 1, CheckType.Min));
-		widgetDataBinder.bind(includePathText, getFolder(folderList, Constants.INCLUDE_FOLDER).get().getName(),
-				Constants.NAME, new LengthValidator("Includefolder Name", 1, CheckType.Min));
-		widgetDataBinder.bind(symbolPathText, getFolder(folderList, Constants.SYMBOL_FOLDER).get().getName(),
-				Constants.NAME, new LengthValidator("Symbolfolder Name", 1, CheckType.Min));
-		IObservableCollection oc = widgetDataBinder.getDataBindingContext().getBindings();
-		AggregateValidationStatus aggregateValidationStatus = new AggregateValidationStatus(oc,
-				AggregateValidationStatus.MAX_SEVERITY);
-		aggregateValidationStatus.addChangeListener(new AggregatedValidationChangeListener(oc, this));
-
+		/*
+		 * final WidgetDataBinder widgetDataBinder = new WidgetDataBinder(this);
+		 * widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new
+		 * LengthValidator("Projectname", 1, CheckType.Min));
+		 * widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new
+		 * DuplicateNameValidator<Project>( "Projectname",
+		 * Initializer.getConfiguration().getWorkspace().getProjects()) {
+		 * 
+		 * @Override protected boolean exists(List<Project> list, Object value) {
+		 * boolean exists = false; if (value instanceof String && value != null) {
+		 * exists = list.stream().filter(c ->
+		 * c.getName().equals(Constants.NAME)).findFirst().isPresent(); } return exists;
+		 * } });
+		 * 
+		 * widgetDataBinder.bind(sourcePathText, getFolder(folderList,
+		 * Constants.SOURCE_FOLDER).get().getName(), Constants.NAME, new
+		 * LengthValidator("Sourcefolder Name", 1, CheckType.Min));
+		 * widgetDataBinder.bind(binaryPathText, getFolder(folderList,
+		 * Constants.BINARY_FOLDER).get().getName(), Constants.NAME, new
+		 * LengthValidator("Binaryfolder Name", 1, CheckType.Min));
+		 * widgetDataBinder.bind(includePathText, getFolder(folderList,
+		 * Constants.INCLUDE_FOLDER).get().getName(), Constants.NAME, new
+		 * LengthValidator("Includefolder Name", 1, CheckType.Min));
+		 * widgetDataBinder.bind(symbolPathText, getFolder(folderList,
+		 * Constants.SYMBOL_FOLDER).get().getName(), Constants.NAME, new
+		 * LengthValidator("Symbolfolder Name", 1, CheckType.Min));
+		 * IObservableCollection oc =
+		 * widgetDataBinder.getDataBindingContext().getBindings();
+		 * AggregateValidationStatus aggregateValidationStatus = new
+		 * AggregateValidationStatus(oc, AggregateValidationStatus.MAX_SEVERITY);
+		 * aggregateValidationStatus.addChangeListener(new
+		 * AggregatedValidationChangeListener(oc, this));
+		 */
 	}
 
 	private Optional<ProjectFolder> getFolder(List<ProjectFolder> folderList, String folderName) {

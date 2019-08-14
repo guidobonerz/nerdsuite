@@ -30,6 +30,7 @@ public class Constants
 	public final static int UNSTABLE_ILLEGAL_OPCODE = 3;
 
 	public final static String DEFAULT_WORKSPACE_NAME = ".nerdsuiteWorkspace";
+	
 	public final static String USER_HOME = System.getProperty("user.home");
 	public final static String FILE_SEPARATOR = System.getProperty("file.separator");
 

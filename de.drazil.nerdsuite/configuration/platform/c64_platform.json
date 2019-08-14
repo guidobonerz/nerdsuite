@@ -2,37 +2,7 @@
 	"cpuInstructionSource": "configuration/cpu/6510_instructions.json",
 	"basicInstructionSource": "configuration/basic/cbm_basic.json",
 	"basicVersion": 20,
-	"imagingServiceClass":"de.drazil.nerdsuite.imaging.C64ImageService",
-	"imageTypes": [
-		{
-			"id": "SPRITE",
-			"width": 24,
-			"height": 21,
-			"storage": "linear"
-		},
-		{
-			"id": "CHAR",
-			"width": 8,
-			"height": 8,
-			"storage": "linear"
-		},
-		{
-			"id": "CHARSCREEN",
-			"width": 40,
-			"height": 25,
-			"storage": "linear"
-		},
-		{
-			"id": "BITMAP",
-			"width": 320,
-			"height": 200,
-			"storage": "tiled",
-			"tileSize": {
-				"width": 8,
-				"height": 8
-			}
-		}
-	],
+	"imagingServiceClass": "de.drazil.nerdsuite.imaging.C64ImageService",
 	"colorPalette": [
 		{
 			"value": "#000000",

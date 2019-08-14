@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
@@ -81,14 +82,15 @@ public class Configuration {
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
 				writeWorkspace(workspace);
-			} else {
-				if (workspace == null) {
-					System.out.println("read workspace file...");
-					ObjectMapper mapper = new ObjectMapper();
-					workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"),
-							Workspace.class);
-				}
 			}
+
+			if (workspace == null) {
+				System.out.println("read workspace file...");
+				ObjectMapper mapper = new ObjectMapper();
+				workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"),
+						Workspace.class);
+			}
+
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,6 +108,7 @@ public class Configuration {
 	public final void writeWorkspace(Workspace workspace) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 			mapper.writeValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"), workspace);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block

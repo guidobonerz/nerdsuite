@@ -184,7 +184,6 @@
   <handlers xmi:id="_CGhuAMySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.buildAndRun" command="_yWlqYMyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_ElMI0MySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.runToolchain" command="_3H-80MyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
-  <handlers xmi:id="_zoCDQAT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.newGfxProject" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewGraphicProjectHandler" command="_mWhJ4AT4EemsC5geQwPptA"/>
   <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.addLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.AddLayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
   <handlers xmi:id="_akHrIAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.removeLayer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RemoveLayerHandler" command="_F2WbkAT-EemsC5geQwPptA"/>
   <handlers xmi:id="_QTJ68BbAEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.swapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
