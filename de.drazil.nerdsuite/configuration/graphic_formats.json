@@ -1,41 +1,7 @@
 [
 	{
-		"id": "C64_BITMAP",
-		"width": 320,
-		"height": 200,
-		"storageEntity": 8,
-		"storageType": "tiled",
-		"tileSize": {
-			"width": 8,
-			"height": 8
-		},
-		"properties": {
-			"supportsMultiColor": true
-		},
-		"variants": [
-			{
-				"id": "STANDARD",
-				"name": "Bitmap",
-				"tileRows": 1,
-				"tileColumns": 1
-			},
-			{
-				"id": "KOALA",
-				"name": "Koala Picture",
-				"referenceVariant": "STANDARD",
-				"properties": {
-					"supportsMultiColor": true,
-					"backgroundColorOffset": 10000,
-					"bitmapOffset": 0,
-					"screenRamOffset": 8000,
-					"dataOffset": 2,
-					"colorRamOffset": 9000
-				}
-			}
-		]
-	},
-	{
 		"id": "C64_CHAR",
+		"name": "Char",
 		"width": 8,
 		"height": 8,
 		"storageEntity": 8,
@@ -72,6 +38,7 @@
 	},
 	{
 		"id": "C64_SPRITE",
+		"name": "Sprite",
 		"width": 24,
 		"height": 21,
 		"storageEntity": 8,
@@ -107,6 +74,7 @@
 	},
 	{
 		"id": "C64_SCREEN",
+		"name": "Screen",
 		"width": 40,
 		"height": 25,
 		"storageEntity": 1,
@@ -122,6 +90,41 @@
 				"tileColumns": 1
 			}
 		]
+	},
+	{
+		"id": "C64_BITMAP",
+		"name": "Bitmap",
+		"width": 320,
+		"height": 200,
+		"storageEntity": 8,
+		"storageType": "tiled",
+		"tileSize": {
+			"width": 8,
+			"height": 8
+		},
+		"properties": {
+			"supportsMultiColor": true
+		},
+		"variants": [
+			{
+				"id": "STANDARD",
+				"name": "Bitmap",
+				"tileRows": 1,
+				"tileColumns": 1
+			},
+			{
+				"id": "KOALA",
+				"name": "Koala Picture",
+				"referenceVariant": "STANDARD",
+				"properties": {
+					"supportsMultiColor": true,
+					"backgroundColorOffset": 10000,
+					"bitmapOffset": 0,
+					"screenRamOffset": 8000,
+					"dataOffset": 2,
+					"colorRamOffset": 9000
+				}
+			}
+		]
 	}
-]
 ]

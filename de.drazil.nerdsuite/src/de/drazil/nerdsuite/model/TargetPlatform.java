@@ -1,7 +1,5 @@
 package de.drazil.nerdsuite.model;
 
-import java.util.List;
-
 import lombok.Data;
 import lombok.ToString;
 
@@ -12,7 +10,4 @@ public class TargetPlatform {
 	private String name;
 	private String source;
 	private boolean enabled;
-	private List<SimpleEntity> supportedGraphicTypes;
-	private List<SimpleEntity> supportedCodingLanguages;
-
 }

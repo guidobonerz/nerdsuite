@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.wizard;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -31,6 +32,7 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
@@ -60,7 +62,8 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	private ComboViewer targetPlatformCombo;
 	private ComboViewer gfxFormatCombo;
 	private SimpleEntity projectType;
-	private List<TargetPlatform> targetPlatformnList;
+	private List<TargetPlatform> targetPlatformList;
+	private List<GraphicFormat> graphicFormatList;
 
 	/**
 	 * Create the wizard.
@@ -93,8 +96,8 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 
 		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
 		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
-		List<SimpleEntity> gfxFormat = targetPlatformList.get(0).getSupportedGraphicTypes();
-		getModel().setProjectType(gfxFormat.get(0).getId());
+		List<GraphicFormat> graphicFormatList = getGraphicFormatList(targetPlatformList.get(0));
+		getModel().setProjectType(graphicFormatList.get(0).getId());
 
 		projectNameText = new Text(container, SWT.BORDER);
 		targetPlatformCombo = new ComboViewer(container, SWT.NONE);
@@ -118,20 +121,20 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				TargetPlatform targetPlatform = (TargetPlatform) selection.getFirstElement();
 				gfxFormatCombo.setContentProvider(ArrayContentProvider.getInstance());
-				gfxFormatCombo.setInput(targetPlatform.getSupportedGraphicTypes());
+				gfxFormatCombo.setInput(getGraphicFormatList(targetPlatform));
 
 			}
 		});
 
 		gfxFormatCombo = new ComboViewer(container, SWT.NONE);
 		gfxFormatCombo.setContentProvider(ArrayContentProvider.getInstance());
-		gfxFormatCombo.setInput(gfxFormat);
-		gfxFormatCombo.setSelection(new StructuredSelection(gfxFormat.get(0)));
+		gfxFormatCombo.setInput(graphicFormatList);
+		gfxFormatCombo.setSelection(new StructuredSelection(graphicFormatList.get(0)));
 		gfxFormatCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element instanceof SimpleEntity) {
-					SimpleEntity current = (SimpleEntity) element;
+				if (element instanceof GraphicFormat) {
+					GraphicFormat current = (GraphicFormat) element;
 
 					return current.getName();
 				}
@@ -272,7 +275,8 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 
 		DataBindingContext dbx = new DataBindingContext();
 		IObservableValue<String> projectNameField = WidgetProperties.text(SWT.Modify).observe(projectNameText);
-		IObservableValue<String> projectNameModel = BeanProperties.value(Project.class, Constants.NAME).observe(getModel());
+		IObservableValue<String> projectNameModel = BeanProperties.value(Project.class, Constants.NAME)
+				.observe(getModel());
 
 		dbx.bindValue(projectNameModel, projectNameField);
 
@@ -344,12 +348,27 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			targetPlatformnList = Arrays
+			targetPlatformList = Arrays
 					.asList(mapper.readValue(bundle.getEntry("configuration/platform.json"), TargetPlatform[].class));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return targetPlatformnList;
+		return targetPlatformList;
+	}
+
+	private List<GraphicFormat> getGraphicFormatList(TargetPlatform targetPlatform) {
+		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			graphicFormatList = Arrays
+					.asList(mapper.readValue(bundle.getEntry("configuration/graphic_formats.json"),
+							GraphicFormat[].class))
+					.stream().filter(c -> c.getId().startsWith(targetPlatform.getId())).collect(Collectors.toList());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return graphicFormatList;
 	}
 
 	@Override
