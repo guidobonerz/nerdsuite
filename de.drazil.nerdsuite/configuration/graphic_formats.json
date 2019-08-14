@@ -1,109 +1,127 @@
- [
+[
 	{
-		"id": "BITMAP",
-		"formats": [
+		"id": "C64_BITMAP",
+		"width": 320,
+		"height": 200,
+		"storageEntity": 8,
+		"storageType": "tiled",
+		"tileSize": {
+			"width": 8,
+			"height": 8
+		},
+		"properties": {
+			"supportsMultiColor": true
+		},
+		"variants": [
 			{
 				"id": "STANDARD",
 				"name": "Bitmap",
-				"metadata": {
-					"tileRows": 1,
-					"tileColumns": 1,
-					"supportsMulticolor": true
-				}
+				"tileRows": 1,
+				"tileColumns": 1
 			},
 			{
 				"id": "KOALA",
-				"metadataRefId": "STANDARD",
-				"contentStructure": {
-					"dataOffset": 2,
+				"name": "Koala Picture",
+				"referenceVariant": "STANDARD",
+				"properties": {
+					"supportsMultiColor": true,
+					"backgroundColorOffset": 10000,
 					"bitmapOffset": 0,
 					"screenRamOffset": 8000,
-					"colorRamOffset": 9000,
-					"backgroundColorOffset": 10000
+					"dataOffset": 2,
+					"colorRamOffset": 9000
 				}
 			}
 		]
 	},
 	{
-		"id": "CHAR",
-		"formats": [
+		"id": "C64_CHAR",
+		"width": 8,
+		"height": 8,
+		"storageEntity": 8,
+		"storageType": "linear",
+		"properties": {
+			"supportsMultiColor": true
+		},
+		"variants": [
 			{
 				"id": "STANDARD",
 				"name": "8x8 Pixel",
-				"metadata": {
-					"tileRows": 1,
-					"tileColumns": 1,
-					"supportsMulticolor": true
-				}
+				"tileRows": 1,
+				"tileColumns": 1
 			},
 			{
 				"id": "2X",
 				"name": "16x8 Pixel",
-				"metadata": {
-					"tileRows": 1,
-					"tileColumns": 2,
-					"supportsMulticolor": true
-				}
+				"tileRows": 1,
+				"tileColumns": 2
 			},
 			{
 				"id": "2Y",
 				"name": "8x16 Pixel",
-				"metadata": {
-					"tileRows": 2,
-					"tileColumns": 1,
-					"supportsMulticolor": true
-				}
+				"tileRows": 2,
+				"tileColumns": 1
 			},
 			{
 				"id": "2XY",
 				"name": "16x16 Pixel",
-				"metadata": {
-					"tileRows": 2,
-					"tileColumns": 2,
-					"supportsMulticolor": true
-				}
+				"tileRows": 2,
+				"tileColumns": 2
 			}
 		]
 	},
 	{
-		"id": "SPRITE",
-		"formats": [
+		"id": "C64_SPRITE",
+		"width": 24,
+		"height": 21,
+		"storageEntity": 8,
+		"storageType": "linear",
+		"properties": {
+			"supportsMultiColor": true
+		},
+		"variants": [
 			{
 				"id": "STANDARD",
 				"name": "24x21 Pixel",
-				"metadata": {
-					"tileRows": 1,
-					"tileColumns": 1,
-					"supportsMulticolor": true
-				}
+				"tileRows": 1,
+				"tileColumns": 1
 			},
 			{
 				"id": "2X",
 				"name": "28x21 Pixel",
-				"metadata": {
-					"tileRows": 1,
-					"tileColumns": 2,
-					"supportsMulticolor": true
-				}
+				"tileRows": 1,
+				"tileColumns": 2
 			},
 			{
 				"id": "2Y",
 				"name": "24x42 Pixel",
-				"metadata": {
-					"tileRows": 2,
-					"tileColumns": 1,
-					"supportsMulticolor": true
-				}
+				"tileRows": 2,
+				"tileColumns": 1
 			},
 			{
 				"id": "2XY",
-				"name": "48x42 Pixel",
-				"metadata": {
-					"tileRows": 2,
-					"tileColumns": 2,
-					"supportsMulticolor": true
-				}
+				"tileRows": 2,
+				"tileColumns": 2
+			}
+		]
+	},
+	{
+		"id": "C64_SCREEN",
+		"width": 40,
+		"height": 25,
+		"storageEntity": 1,
+		"storageType": "linear",
+		"properties": {
+			"supportsMultiColor": true
+		},
+		"variants": [
+			{
+				"id": "STANDARD",
+				"name": "40x25 Chars",
+				"tileRows": 1,
+				"tileColumns": 1
 			}
 		]
 	}
+]
 ]

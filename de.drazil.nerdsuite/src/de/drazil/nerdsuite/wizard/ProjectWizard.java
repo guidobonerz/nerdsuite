@@ -13,7 +13,7 @@ public class ProjectWizard extends Wizard {
 
 	public ProjectWizard(String projectType) {
 		super();
-
+		setWindowTitle("New Project");
 		if (projectType.equals("CODING_PROJECT")) {
 			projectWizardPage = new CodingProjectWizardPage(projectType);
 		} else if (projectType.equals("GRAPHIC_PROJECT")) {

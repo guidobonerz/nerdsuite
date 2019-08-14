@@ -82,14 +82,15 @@ public class Configuration {
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
 				writeWorkspace(workspace);
-			} else {
-				if (workspace == null) {
-					System.out.println("read workspace file...");
-					ObjectMapper mapper = new ObjectMapper();
-					workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"),
-							Workspace.class);
-				}
 			}
+
+			if (workspace == null) {
+				System.out.println("read workspace file...");
+				ObjectMapper mapper = new ObjectMapper();
+				workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"),
+						Workspace.class);
+			}
+
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
