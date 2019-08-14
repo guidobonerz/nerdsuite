@@ -6,6 +6,24 @@
 		"enabled": true
 	},
 	{
+		"id": "C128",
+		"name": "C64",
+		"source": "configuration/platform/unkown.json",
+		"enabled": true
+	},
+	{
+		"id": "C16",
+		"name": "C16",
+		"source": "configuration/platform/unkown.json",
+		"enabled": true
+	},
+	{
+		"id": "PLUS4",
+		"name": "Plus/4",
+		"source": "configuration/platform/unkown.json",
+		"enabled": true
+	},
+	{
 		"id": "ATARI800XL",
 		"name": "Atari 800 XL",
 		"source": "configuration/platform/unkown.json",

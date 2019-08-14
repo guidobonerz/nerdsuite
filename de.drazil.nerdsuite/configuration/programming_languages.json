@@ -1,0 +1,37 @@
+[
+	{
+		"id": "C64_BASIC",
+		"name": "Basic V2.0",
+		"version": 20
+	},
+	{
+		"id": "C16_BASIC",
+		"name": "Basic V3.5",
+		"version": 35
+	},
+	{
+		"id": "C116_BASIC",
+		"name": "Basic V3.5",
+		"version": 35
+	},
+	{
+		"id": "C128_BASIC",
+		"name": "Basic V7.0",
+		"version": 70
+	},
+	{
+		"id": "VC20_BASIC",
+		"name": "Basic V2.0",
+		"version": 20
+	},
+	{
+		"id": "ATARI800XL_BASIC",
+		"name": "Basic V2.0",
+		"version": 20
+	},
+	{
+		"id": "CPC6128_BASIC",
+		"name": "Locomotive Basic V1.0",
+		"version": 10
+	}
+]
