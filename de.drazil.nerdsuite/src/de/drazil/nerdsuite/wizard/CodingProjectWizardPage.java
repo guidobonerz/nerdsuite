@@ -11,8 +11,10 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservableCollection;
+import org.eclipse.core.databinding.observable.sideeffect.ISideEffect;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -334,11 +336,13 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 		List<ProjectFolder> folderList = getModel().getFolderList();
 
-		DataBindingContext dbx = new DataBindingContext();
-		IObservableValue<String> projectNameField = WidgetProperties.text(SWT.Modify).observe(projectNameText);
-		IObservableValue<String> projectNameModel = PojoProperties.value(Project.class, Constants.NAME)
-				.observe(getModel());
-		dbx.bindValue(projectNameModel, projectNameField);
+		ISWTObservableValue projectNameObservable = WidgetProperties.text(SWT.Modify).observe(projectNameText);
+
+		ISideEffect.create(() -> {
+			Object value = projectNameObservable.getValue();
+			getModel().setName((String) value);
+		});
+
 		/*
 		 * final WidgetDataBinder widgetDataBinder = new WidgetDataBinder(this);
 		 * widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new

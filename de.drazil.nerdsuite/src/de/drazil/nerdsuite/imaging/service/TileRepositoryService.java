@@ -15,10 +15,10 @@ public class TileRepositoryService extends AbstractImagingService {
 	private ImagePainterFactory imagePainterFactory;
 
 	public TileRepositoryService() {
-		tileList = new ArrayList<Tile>();
-		tileIndexOrderList = new ArrayList<Integer>();
-		tileServiceManagementListener = new ArrayList<ITileManagementListener>();
-		tileServiceSelectionListener = new ArrayList<ITileSelectionListener>();
+		tileList = new ArrayList<>();
+		tileIndexOrderList = new ArrayList<>();
+		tileServiceManagementListener = new ArrayList<>();
+		tileServiceSelectionListener = new ArrayList<>();
 		imagePainterFactory = new ImagePainterFactory();
 	}
 

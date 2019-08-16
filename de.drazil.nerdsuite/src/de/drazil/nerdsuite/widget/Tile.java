@@ -25,8 +25,8 @@ public class Tile {
 		this.name = name;
 		this.size = size;
 		layerList = new ArrayList<>();
-		layerIndexOrderList = new ArrayList<Integer>();
-		tileListenerList = new ArrayList<ITileListener>();
+		layerIndexOrderList = new ArrayList<>();
+		tileListenerList = new ArrayList<>();
 		addLayer();
 	}
 

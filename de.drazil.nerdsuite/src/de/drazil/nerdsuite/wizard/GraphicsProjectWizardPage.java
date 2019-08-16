@@ -11,8 +11,10 @@ import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservableCollection;
+import org.eclipse.core.databinding.observable.sideeffect.ISideEffect;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -152,8 +154,8 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
-				SimpleEntity subType = (SimpleEntity) selection.getFirstElement();
-				getModel().setProjectType(subType.getId());
+				//SimpleEntity subType = (SimpleEntity) selection.getFirstElement();
+				//getModel().setProjectType(subType.getId());
 			}
 		});
 
@@ -243,25 +245,25 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 
 		formData = new FormData();
 		formData.top = new FormAttachment(basePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		basePathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(sourcePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		sourcePathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(binaryPathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		binaryPathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(includePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		includePathText.setLayoutData(formData);
 
@@ -280,12 +282,12 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		getModel().getFolderList().add(new ProjectFolder(Constants.INCLUDE_FOLDER, Constants.DEFAULT_INCLUDE_PATH));
 		getModel().getFolderList().add(new ProjectFolder(Constants.SYMBOL_FOLDER, Constants.DEFAULT_SYMBOL_PATH));
 
-		DataBindingContext dbx = new DataBindingContext();
-		IObservableValue<String> projectNameField = WidgetProperties.text(SWT.Modify).observe(projectNameText);
-		IObservableValue<String> projectNameModel = BeanProperties.value(Project.class, Constants.NAME)
-				.observe(getModel());
+		ISWTObservableValue projectNameObservable = WidgetProperties.text(SWT.Modify).observe(projectNameText);
 
-		dbx.bindValue(projectNameModel, projectNameField);
+		ISideEffect.create(() -> {
+			Object value = projectNameObservable.getValue();
+			getModel().setName((String) value);
+		});
 
 		List<ProjectFolder> folderList = getModel().getFolderList();
 
