@@ -4,7 +4,8 @@ import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.constants.PixelConfig;
-import de.drazil.nerdsuite.model.GraphicMetadata;
+import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import lombok.Getter;
 
 @Getter
@@ -53,11 +54,12 @@ public class ImagingWidgetConfiguration {
 
 	public String widgetName = "<unknown>";
 
-	public void setMetaData(GraphicMetadata metaData) {
-		setWidth(metaData.getWidth());
-		setHeight(metaData.getHeight());
-		setTileRows(metaData.getTileRows());
-		setTileColumns(metaData.getTileColumns());
+	public void setGraphicFormat(GraphicFormat format) {
+		GraphicFormatVariant variant = format.getVariants().get(0);
+		setWidth(format.getWidth());
+		setHeight(format.getHeight());
+		setTileRows(variant.getTileRows());
+		setTileColumns(variant.getTileColumns());
 	}
 
 	public void setPixelSize(int pixelSize) {

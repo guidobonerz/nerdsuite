@@ -78,7 +78,6 @@ public class NewProjectHandler {
 
 				eventBroker.post("project", project);
 				eventBroker.post("gfxFormat", gf);
-				eventBroker.post("gfxFormatVariant", 0);
 				eventBroker.post("setSelectedTile", 0);
 			}
 
