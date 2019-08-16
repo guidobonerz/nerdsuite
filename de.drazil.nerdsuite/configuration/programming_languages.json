@@ -2,12 +2,23 @@
 	{
 		"id": "C64_BASIC",
 		"name": "Basic V2.0",
-		"version": 20
+		"version": 20,
+		"supportsExampleFile": true
 	},
 	{
 		"id": "C64_ASSEMBLER",
 		"name": "Assembler",
-		"version": 0
+		"version": 0,
+		"assemblers": [
+			{
+				"id": "KICKASS",
+				"name": "KickAssembler"
+			},
+			{
+				"id": "ACME",
+				"name": "Acme"
+			}
+		]
 	},
 	{
 		"id": "C16_BASIC",
