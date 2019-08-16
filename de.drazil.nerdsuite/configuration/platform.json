@@ -7,21 +7,33 @@
 	},
 	{
 		"id": "C128",
-		"name": "C64",
+		"name": "C128",
 		"source": "configuration/platform/unkown.json",
-		"enabled": true
+		"enabled": false
 	},
 	{
 		"id": "C16",
 		"name": "C16",
 		"source": "configuration/platform/unkown.json",
-		"enabled": true
+		"enabled": false
+	},
+	{
+		"id": "C116",
+		"name": "C116",
+		"source": "configuration/platform/unkown.json",
+		"enabled": false
+	},
+	{
+		"id": "VC20",
+		"name": "VC20",
+		"source": "configuration/platform/unkown.json",
+		"enabled": false
 	},
 	{
 		"id": "PLUS4",
 		"name": "Plus/4",
 		"source": "configuration/platform/unkown.json",
-		"enabled": true
+		"enabled": false
 	},
 	{
 		"id": "ATARI800XL",

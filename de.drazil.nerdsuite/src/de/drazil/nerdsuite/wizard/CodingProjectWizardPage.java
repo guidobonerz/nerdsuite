@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.wizard;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -32,6 +33,7 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.model.ProgrammingLanguage;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
@@ -65,7 +67,8 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 	private ComboViewer assemblerCombo;
 	private Button createExampleButton;
 	private SimpleEntity projectType;
-	private List<TargetPlatform> targetPlatformnList;
+	private List<TargetPlatform> targetPlatformList;
+	private List<ProgrammingLanguage> programmingLanguageList;
 
 	/**
 	 * Create the wizard.
@@ -96,7 +99,7 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		languageTypeLabel = new Label(container, SWT.NONE);
 		languageTypeLabel.setText("Coding Language");
 		assemblerLabel = new Label(container, SWT.NONE);
-		assemblerLabel.setText("Assembler");
+		assemblerLabel.setText("Assembler/Compiler");
 		assemblerLabel.setEnabled(enableAssembler);
 
 		createExampleButton = new Button(container, SWT.CHECK);
@@ -104,8 +107,8 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
 		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
-		List<SimpleEntity> codingLanguage = targetPlatformList.get(0).getSupportedCodingLanguages();
-		getModel().setProjectType(codingLanguage.get(0).getId());
+		List<ProgrammingLanguage> programmingLanguageList = getProgrammingLanguageList(targetPlatformList.get(0));
+		getModel().setProjectType(programmingLanguageList.get(0).getId());
 
 		projectNameText = new Text(container, SWT.BORDER);
 		targetPlatformCombo = new ComboViewer(container, SWT.NONE);
@@ -128,22 +131,28 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				TargetPlatform targetPlatform = (TargetPlatform) selection.getFirstElement();
-				languageTypeCombo.setContentProvider(ArrayContentProvider.getInstance());
-				languageTypeCombo.setInput(targetPlatform.getSupportedCodingLanguages());
+
+				List<ProgrammingLanguage> l = getProgrammingLanguageList(targetPlatform);
+				languageTypeCombo.setInput(l);
+				if (l.size() > 0) {
+					languageTypeCombo.getCombo().setEnabled(true);
+					languageTypeCombo.setSelection(new StructuredSelection(l.get(0)));
+				} else {
+					languageTypeCombo.getCombo().setEnabled(false);
+				}
 
 			}
 		});
 
 		languageTypeCombo = new ComboViewer(container, SWT.NONE);
 		languageTypeCombo.setContentProvider(ArrayContentProvider.getInstance());
-		languageTypeCombo.setInput(codingLanguage);
-		languageTypeCombo.setSelection(new StructuredSelection(codingLanguage.get(0)));
+		languageTypeCombo.setInput(programmingLanguageList);
+		languageTypeCombo.setSelection(new StructuredSelection(programmingLanguageList.get(0)));
 		languageTypeCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element instanceof SimpleEntity) {
-					SimpleEntity current = (SimpleEntity) element;
-
+				if (element instanceof ProgrammingLanguage) {
+					ProgrammingLanguage current = (ProgrammingLanguage) element;
 					return current.getName();
 				}
 				return super.getText(element);
@@ -326,7 +335,8 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 		DataBindingContext dbx = new DataBindingContext();
 		IObservableValue<String> projectNameField = WidgetProperties.text(SWT.Modify).observe(projectNameText);
-		IObservableValue<String> projectNameModel = PojoProperties.value(Project.class, Constants.NAME).observe(getModel());
+		IObservableValue<String> projectNameModel = PojoProperties.value(Project.class, Constants.NAME)
+				.observe(getModel());
 		dbx.bindValue(projectNameModel, projectNameField);
 		/*
 		 * final WidgetDataBinder widgetDataBinder = new WidgetDataBinder(this);
@@ -392,12 +402,28 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			targetPlatformnList = Arrays
-					.asList(mapper.readValue(bundle.getEntry("configuration/platform.json"), TargetPlatform[].class));
+			targetPlatformList = Arrays
+					.asList(mapper.readValue(bundle.getEntry("configuration/platform.json"), TargetPlatform[].class))
+					.stream().filter(c -> c.isEnabled()).collect(Collectors.toList());
 		} catch (Exception e) {
-			e.printStackTrace();
+			targetPlatformList = null;
 		}
-		return targetPlatformnList;
+		return targetPlatformList;
+	}
+
+	private List<ProgrammingLanguage> getProgrammingLanguageList(TargetPlatform targetPlatform) {
+		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			programmingLanguageList = Arrays
+					.asList(mapper.readValue(bundle.getEntry("configuration/programming_languages.json"),
+							ProgrammingLanguage[].class))
+					.stream().filter(c -> c.getId().startsWith(targetPlatform.getId())).collect(Collectors.toList());
+		} catch (Exception e) {
+			programmingLanguageList = null;
+
+		}
+		return programmingLanguageList;
 	}
 
 	@Override

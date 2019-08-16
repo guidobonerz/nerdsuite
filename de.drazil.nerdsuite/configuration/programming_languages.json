@@ -5,9 +5,19 @@
 		"version": 20
 	},
 	{
+		"id": "C64_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
+	},
+	{
 		"id": "C16_BASIC",
 		"name": "Basic V3.5",
 		"version": 35
+	},
+	{
+		"id": "C16_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
 	},
 	{
 		"id": "C116_BASIC",
@@ -15,9 +25,29 @@
 		"version": 35
 	},
 	{
+		"id": "C116_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
+	},
+	{
+		"id": "PLUS4_BASIC",
+		"name": "Basic V3.5",
+		"version": 35
+	},
+	{
+		"id": "PLUS4_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
+	},
+	{
 		"id": "C128_BASIC",
 		"name": "Basic V7.0",
 		"version": 70
+	},
+	{
+		"id": "C128_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
 	},
 	{
 		"id": "VC20_BASIC",
@@ -25,13 +55,33 @@
 		"version": 20
 	},
 	{
+		"id": "VC20_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
+	},
+	{
 		"id": "ATARI800XL_BASIC",
-		"name": "Basic V2.0",
-		"version": 20
+		"name": "Atari Basic",
+		"version": 1
+	},
+	{
+		"id": "ATARI800XL_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
+	},
+	{
+		"id": "ATARI2600_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
 	},
 	{
 		"id": "CPC6128_BASIC",
 		"name": "Locomotive Basic V1.0",
 		"version": 10
+	},
+	{
+		"id": "CPC6128_ASSEMBLER",
+		"name": "Assembler",
+		"version": 0
 	}
 ]
