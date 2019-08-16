@@ -92,6 +92,11 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 		FormData formData;
 
+		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
+		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
+		List<ProgrammingLanguage> programmingLanguageList = getProgrammingLanguageList(targetPlatformList.get(0));
+		getModel().setProjectType(programmingLanguageList.get(0).getId());
+
 		projectNameLabel = new Label(container, SWT.NONE);
 		projectNameLabel.setText("Project Name");
 		targetPlatformLabel = new Label(container, SWT.NONE);
@@ -104,11 +109,7 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 		createExampleButton = new Button(container, SWT.CHECK);
 		createExampleButton.setText("Create example file");
-
-		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
-		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
-		List<ProgrammingLanguage> programmingLanguageList = getProgrammingLanguageList(targetPlatformList.get(0));
-		getModel().setProjectType(programmingLanguageList.get(0).getId());
+		createExampleButton.setEnabled(programmingLanguageList.get(0).isSupportsExampleFile());
 
 		projectNameText = new Text(container, SWT.BORDER);
 		targetPlatformCombo = new ComboViewer(container, SWT.NONE);
@@ -140,7 +141,6 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 				} else {
 					languageTypeCombo.getCombo().setEnabled(false);
 				}
-
 			}
 		});
 
@@ -162,7 +162,8 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
-				SimpleEntity subType = (SimpleEntity) selection.getFirstElement();
+				ProgrammingLanguage subType = (ProgrammingLanguage) selection.getFirstElement();
+				createExampleButton.setEnabled(subType.isSupportsExampleFile());
 				getModel().setProjectType(subType.getId());
 			}
 		});
@@ -234,25 +235,25 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 		formData = new FormData();
 		formData.top = new FormAttachment(projectNameLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		projectNameText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(targetPlatformLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		targetPlatformCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(languageTypeLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		languageTypeCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(assemblerLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		assemblerCombo.getControl().setLayoutData(formData);
 
@@ -264,7 +265,7 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		formData = new FormData();
 		formData.top = new FormAttachment(createExampleButton, 15, SWT.BOTTOM);
 		formData.left = new FormAttachment(0, 0);
-		formData.right = new FormAttachment(100, 0);
+		formData.right = new FormAttachment(140, 0);
 		separatorLabel.setLayoutData(formData);
 
 		formData = new FormData();
@@ -294,31 +295,31 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 		formData = new FormData();
 		formData.top = new FormAttachment(basePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		basePathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(sourcePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		sourcePathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(binaryPathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		binaryPathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(includePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		includePathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(symbolPathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		symbolPathText.setLayoutData(formData);
 

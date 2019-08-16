@@ -243,25 +243,25 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 
 		formData = new FormData();
 		formData.top = new FormAttachment(basePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		basePathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(sourcePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		sourcePathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(binaryPathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		binaryPathText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(includePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		includePathText.setLayoutData(formData);
 
