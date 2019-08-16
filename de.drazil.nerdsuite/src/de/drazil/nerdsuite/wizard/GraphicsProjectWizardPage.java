@@ -120,8 +120,15 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				TargetPlatform targetPlatform = (TargetPlatform) selection.getFirstElement();
-				gfxFormatCombo.setContentProvider(ArrayContentProvider.getInstance());
-				gfxFormatCombo.setInput(getGraphicFormatList(targetPlatform));
+				List<GraphicFormat> l = getGraphicFormatList(targetPlatform);
+				gfxFormatCombo.setInput(l);
+
+				if (l.size() > 0) {
+					gfxFormatCombo.getCombo().setEnabled(true);
+					gfxFormatCombo.setSelection(new StructuredSelection(l.get(0)));
+				} else {
+					gfxFormatCombo.getCombo().setEnabled(false);
+				}
 
 			}
 		});
@@ -349,9 +356,10 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			targetPlatformList = Arrays
-					.asList(mapper.readValue(bundle.getEntry("configuration/platform.json"), TargetPlatform[].class));
+					.asList(mapper.readValue(bundle.getEntry("configuration/platform.json"), TargetPlatform[].class))
+					.stream().filter(c -> c.isEnabled()).collect(Collectors.toList());
 		} catch (Exception e) {
-			e.printStackTrace();
+			targetPlatformList = null;
 		}
 		return targetPlatformList;
 	}
@@ -366,7 +374,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 					.stream().filter(c -> c.getId().startsWith(targetPlatform.getId())).collect(Collectors.toList());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			graphicFormatList = null;
 		}
 		return graphicFormatList;
 	}
