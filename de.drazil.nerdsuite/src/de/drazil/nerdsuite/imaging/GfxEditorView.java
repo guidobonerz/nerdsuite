@@ -28,6 +28,7 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
+import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImagingWidget;
@@ -38,6 +39,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
+	private Project project;
 
 	private Scale animationTimerDelayScale;
 	private Composite parent;
@@ -112,18 +114,24 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
-		getPainterWidget().getConf().setMetaData(gf.getMetadata());
+		getPainterWidget().getConf().setGraphicFormat(gf);
 		getPainterWidget().recalc();
-		getPreviewerWidget().getConf().setMetaData(gf.getMetadata());
+		getPreviewerWidget().getConf().setGraphicFormat(gf);
 		getPreviewerWidget().recalc();
-		getRepositoryWidget().getConf().setMetaData(gf.getMetadata());
+		getRepositoryWidget().getConf().setGraphicFormat(gf);
 		getRepositoryWidget().recalc();
 	}
 
 	@Inject
 	@Optional
+	void setProject(@UIEventTopic("project") Project project) {
+		this.project = project;
+	}
+
+	@Inject
+	@Optional
 	void setSelectedTile(@UIEventTopic("setSelectedTile") int index) {
-		ServiceFactory.getService("REPOSITORY", TileRepositoryService.class).setSelectedTile(index);
+		ServiceFactory.getService(project.getId() + "_REPOSITORY", TileRepositoryService.class).setSelectedTile(index);
 	}
 
 	@PostConstruct
