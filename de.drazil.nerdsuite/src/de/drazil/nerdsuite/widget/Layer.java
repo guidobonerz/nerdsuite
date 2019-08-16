@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 public class Layer {
-	private int content[] = null;
+	private int[] content = null;
 	private boolean isActive = false;
 	private boolean visible = true;
 	private String name = "<rename me>";
@@ -31,7 +31,7 @@ public class Layer {
 
 	public void setColor(int index, Color color) {
 		if (colorPalette == null) {
-			colorPalette = new HashMap<String, Color>();
+			colorPalette = new HashMap<>();
 		}
 		colorPalette.put(String.valueOf(index), color);
 	}

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="ext_libs/KickAss.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext_libs/jackson-annotations-2.9.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext_libs/jackson-core-2.9.9.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext_libs/jackson-databind-2.9.9.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext_libs/zt-exec-1.10.jar"/>
-	<classpathentry exported="true" kind="lib" path="ext_libs/KickAss_5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="icons/"/>
 	<classpathentry exported="true" kind="lib" path="css/"/>
 	<classpathentry exported="true" kind="lib" path="fonts/"/>

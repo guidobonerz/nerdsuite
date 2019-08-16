@@ -60,15 +60,13 @@ public class NewProjectHandler {
 			}
 
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
-				GraphicFormat gf = GraphicFormatFactory
-						.getFormatByName(project.getTargetPlatform() + "_" + project.getProjectType());
+				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
 
-				TileRepositoryService tileService = ServiceFactory.getService("REPOSITORY",
+				TileRepositoryService tileService = ServiceFactory.getService(project.getId() + "_REPOSITORY",
 						TileRepositoryService.class);
 				int contentSize = gf.getWidth() / gf.getStorageEntity() * gf.getHeight();
 
 				tileService.addTile("test1", contentSize);
-				tileService.addTile("test2", contentSize);
 				Layer layer = null;
 
 				layer = tileService.getTile(0).getActiveLayer();
@@ -78,14 +76,9 @@ public class NewProjectHandler {
 				layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 				layer.setSelectedColorIndex(1);
 
-				layer = tileService.getTile(1).getActiveLayer();
-				layer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-				layer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-				layer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-				layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-				layer.setSelectedColorIndex(1);
-
+				eventBroker.post("project", project);
 				eventBroker.post("gfxFormat", gf);
+				eventBroker.post("gfxFormatVariant", 0);
 				eventBroker.post("setSelectedTile", 0);
 			}
 
