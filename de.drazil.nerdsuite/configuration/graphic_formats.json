@@ -12,25 +12,25 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "8x8 Pixel",
+				"name": "Default Size",
 				"tileRows": 1,
 				"tileColumns": 1
 			},
 			{
 				"id": "2X",
-				"name": "16x8 Pixel",
+				"name": "Double Width",
 				"tileRows": 1,
 				"tileColumns": 2
 			},
 			{
 				"id": "2Y",
-				"name": "8x16 Pixel",
+				"name": "Double Height",
 				"tileRows": 2,
 				"tileColumns": 1
 			},
 			{
 				"id": "2XY",
-				"name": "16x16 Pixel",
+				"name": "Double Size",
 				"tileRows": 2,
 				"tileColumns": 2
 			}
@@ -49,24 +49,25 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "24x21 Pixel",
+				"name": "Default Size",
 				"tileRows": 1,
 				"tileColumns": 1
 			},
 			{
 				"id": "2X",
-				"name": "28x21 Pixel",
+				"name": "Double Width",
 				"tileRows": 1,
 				"tileColumns": 2
 			},
 			{
 				"id": "2Y",
-				"name": "24x42 Pixel",
+				"name": "Double Height",
 				"tileRows": 2,
 				"tileColumns": 1
 			},
 			{
 				"id": "2XY",
+				"name": "Double Size",
 				"tileRows": 2,
 				"tileColumns": 2
 			}
@@ -85,7 +86,7 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "40x25 Chars",
+				"name": "Default Size",
 				"tileRows": 1,
 				"tileColumns": 1
 			}
@@ -108,7 +109,7 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "Bitmap",
+				"name": "Default Size",
 				"tileRows": 1,
 				"tileColumns": 1
 			},

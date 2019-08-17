@@ -66,7 +66,7 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
-	void updatePaintMode(@UIEventTopic("PaintMode") PaintMode paintMode, EModelService service, MPart part) {
+	void controlPaintMode(@UIEventTopic("PaintMode") PaintMode paintMode, EModelService service, MPart part) {
 		MToolItem single = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.singlePaintMode",
 				part.getToolbar());
 		MToolItem vertical = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.verticalMirrorPaintMode",
@@ -96,7 +96,20 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
-	void updateGridState(@UIEventTopic("GridState") GridState state, EModelService service, MPart part) {
+	void controlLayer(@UIEventTopic("addOrRemoveLayer") int index) {
+		System.out.println("addOrRemoveLayer:" + index);
+	}
+
+	@Inject
+	@Optional
+	void controlTile(@UIEventTopic("addOrRemoveTile") int index) {
+		System.out.println("addOrRemoveTile:" + index);
+		
+	}
+
+	@Inject
+	@Optional
+	void controlGridState(@UIEventTopic("GridState") GridState state, EModelService service, MPart part) {
 		MToolItem itemGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showLineGrid",
 				part.getToolbar());
 		MToolItem itemDotGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showDotGrid",
@@ -109,11 +122,12 @@ public class GfxEditorView // implements IConfigurationListener {
 		}
 		getPainterWidget().getConf().setGridStyle(state.gridStyle);
 		getPainterWidget().getConf().setPixelGridEnabled(state.isEnabled());
+		getPainterWidget().recalc();
 	}
 
 	@Inject
 	@Optional
-	void eventReceived(@UIEventTopic("gfxFormat") GraphicFormat gf) {
+	void controlGraphicFormat(@UIEventTopic("gfxFormat") GraphicFormat gf) {
 		getPainterWidget().getConf().setGraphicFormat(gf);
 		getPainterWidget().recalc();
 		getPreviewerWidget().getConf().setGraphicFormat(gf);
@@ -124,7 +138,7 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
-	void setProject(@UIEventTopic("project") Project project) {
+	void processNewProject(@UIEventTopic("project") Project project) {
 		this.project = project;
 	}
 
