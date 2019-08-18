@@ -1,39 +1,41 @@
 package de.drazil.nerdsuite.imaging.service;
 
-public class OneBitPerPixelPaintService {
-	private void setPixel(int x, int y) {
-		if (x < conf.currentWidth * conf.tileColumns && y < conf.height * conf.tileRows) {
-			int ix = x % conf.currentWidth;
-			int iy = y % conf.height;
-			int ax = (x / conf.currentWidth);
-			int ay = (y / conf.height) * conf.tileColumns;
-			int offset = (ax + ay) * (conf.height * conf.bytesPerRow);
-			int index = 0;
-			switch (conf.pixelConfig) {
-			case BC1: {
-				index = (((iy * conf.currentWidth) + ix) >> 3) + offset;
-				byte byteMask = bitplane[index + getSelectedTileOffset()];
-				int pixelMask = (1 << (7 - (ix % 8)) & 0xff);
-				bitplane[index + getSelectedTileOffset()] = conf.pencilMode == PencilMode.Draw
-						? (byte) (byteMask | pixelMask)
-						: (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
-				break;
-			}
-			case BC2: {
-				index = (((iy * conf.currentWidth) + ix) >> 2) + offset;
-				ix &= 3;
-				int mask = (3 << ((3 - ix) * 2) ^ 0xff) & 0xff;
-				byte byteMask = (byte) ((bitplane[index + getSelectedTileOffset()] & mask));
-				byteMask |= selectedColorIndex << ((3 - ix) * 2);
-				bitplane[index + getSelectedTileOffset()] = byteMask;
-				break;
-			}
-			case BC8: {
-				index = ((iy * conf.currentWidth) + ix) + offset;
-				bitplane[index + getSelectedTileOffset()] = (byte) referenceIndex;
-				break;
-			}
-			}
+import java.awt.Color;
+
+import org.eclipse.swt.graphics.GC;
+
+import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.constants.PencilMode;
+
+public class C64ImageService extends AbstractImageService {
+
+	public void setPixel(int x, int y) {
+
+		int[] bitplane = activeLayer.getContent();
+		int ix = x % conf.currentWidth;
+		int iy = y % conf.height;
+		int ax = (x / conf.currentWidth);
+		int ay = (y / conf.height) * conf.tileColumns;
+		int offset = (ax + ay) * (conf.height * conf.bytesPerRow);
+		int index = 0;
+		switch (conf.pixelConfig) {
+		case BC1: {
+			index = (((iy * conf.currentWidth) + ix) >> 3) + offset;
+			int byteMask = bitplane[index];
+			int pixelMask = (1 << (7 - (ix % 8)) & 0xff);
+			bitplane[index] = conf.pencilMode == PencilMode.Draw ? (byte) (byteMask | pixelMask)
+					: (byte) (byteMask & ((pixelMask ^ 0xff) & 0xff));
+			break;
+		}
+		case BC2: {
+			index = (((iy * conf.currentWidth) + ix) >> 2) + offset;
+			ix &= 3;
+			int mask = (3 << ((3 - ix) * 2) ^ 0xff) & 0xff;
+			int byteMask = ((bitplane[index] & mask));
+			byteMask |= activeLayer.getSelectedColorIndex() << ((3 - ix) * 2);
+			bitplane[index] = byteMask;
+			break;
+		}
 		}
 	}
 

@@ -1,7 +1,7 @@
 {
 	"cpuInstructionSource": "configuration/cpu/6510_instructions.json",
 	"basicInstructionSource": "configuration/basic/cbm_basic.json",
-	"imagingServiceClass": "de.drazil.nerdsuite.imaging.C64ImageService",
+	"graphicFormatSource":"configuration/graphicformat/c64_graphicformats",
 	"colorPalette": [
 		{
 			"value": "#000000",

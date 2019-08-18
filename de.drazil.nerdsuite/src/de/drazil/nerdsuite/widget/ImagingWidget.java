@@ -129,7 +129,7 @@ public class ImagingWidget extends BaseImagingWidget
 			// computeSelection(false, false);
 			doDrawAllTiles();
 		} else if (supportsPainting()) {
-			ServiceFactory.getService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
+			ServiceFactory.getCommonService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 			doDrawTile();
 			// fireDoDrawTile(ImagingWidget.this);
 		}
@@ -168,7 +168,7 @@ public class ImagingWidget extends BaseImagingWidget
 			if (oldCursorX != cursorX || oldCursorY != cursorY) {
 				oldCursorX = cursorX;
 				oldCursorY = cursorY;
-				ServiceFactory.getService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
+				ServiceFactory.getCommonService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 				doDrawTile();
 				// fireDoDrawTile(ImagingWidget.this);
 			}

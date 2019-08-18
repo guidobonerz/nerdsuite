@@ -3,7 +3,14 @@
   <children xsi:type="basic:TrimmedWindow" xmi:id="_POaA0KF9EeOMYoHAic2wfQ" label="Nerdsuite" width="1024" height="768">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_xWeSMKMFEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.perspectivestack.0">
       <children xsi:type="advanced:Perspective" xmi:id="_S9RCQLrLEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.perspective.welcome" label="Welcome">
-        <children xsi:type="basic:Part" xmi:id="_lHiaULrLEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.part.0" contributionURI=""/>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_XmMJEMG5EemOl7LqsJ-5CQ" elementId="de.drazil.nerdsuite.partsashcontainer.7" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_8-omMMG5EemOl7LqsJ-5CQ" elementId="de.drazil.nerdsuite.partstack.4">
+            <children xsi:type="basic:Part" xmi:id="_lHiaULrLEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.part.projectexplorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Project Explorer"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_C8QbMMG6EemOl7LqsJ-5CQ" elementId="de.drazil.nerdsuite.partstack.6">
+            <children xsi:type="basic:Part" xmi:id="_sj1nsMG5EemOl7LqsJ-5CQ" elementId="de.drazil.nerdsuite.part.welcome" label="Welcome"/>
+          </children>
+        </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_zdg3MKMFEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.perspective.coding" label="Coding">
         <children xsi:type="basic:PartSashContainer" xmi:id="_x-55YKF_EeOMYoHAic2wfQ" elementId="de.drazil.nerdsuite.partsashcontainer.0" containerData="" horizontal="true">
