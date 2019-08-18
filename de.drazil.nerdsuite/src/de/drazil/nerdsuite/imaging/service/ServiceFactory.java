@@ -6,13 +6,13 @@ import java.util.Map;
 public class ServiceFactory {
 
 	private static final String COMMON = "COMMON";
-	private static Map<String, Map<String, IService>> serviceOwnerMap = new HashMap<String, Map<String, IService>>();
+	private static Map<String, Map<String, IService>> serviceOwnerMap = new HashMap<>();
 
 	private ServiceFactory() {
 
 	}
 
-	public static <S extends IService> S getService(Class<? super S> serviceClass) {
+	public static <S extends IService> S getCommonService(Class<? super S> serviceClass) {
 		return getService(COMMON, serviceClass);
 	}
 

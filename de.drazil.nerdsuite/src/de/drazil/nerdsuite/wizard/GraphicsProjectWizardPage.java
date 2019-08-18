@@ -154,8 +154,8 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
-				//SimpleEntity subType = (SimpleEntity) selection.getFirstElement();
-				//getModel().setProjectType(subType.getId());
+				GraphicFormat graphicFormat = (GraphicFormat) selection.getFirstElement();
+				getModel().setProjectType(graphicFormat.getId());
 			}
 		});
 

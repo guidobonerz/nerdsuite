@@ -1,7 +1,7 @@
 package de.drazil.nerdsuite.explorer;
 
 import java.io.File;
-import java.util.List;
+import java.io.FileFilter;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -16,9 +16,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
+import de.drazil.nerdsuite.util.ImageFactory;
 
 public class Explorer {
 	private TreeViewer treeViewer;
@@ -42,21 +43,13 @@ public class Explorer {
 	}
 
 	private void listFiles() {
-
-		List<Project> projectList = Initializer.getConfiguration().getWorkspace().getProjects();
-
-		Project project[] = projectList.toArray(new Project[projectList.size()]);
-
-		treeViewer.setInput(project);
-
-		/*
-		 * 
-		 * Configuration.WORKSPACE_PATH.listFiles(new FileFilter() {
-		 * 
-		 * @Override public boolean accept(File pathname) { return
-		 * pathname.isDirectory(); } })
-		 */
-
+		File[] files = Configuration.WORKSPACE_PATH.listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				return !pathname.getName().startsWith(".");
+			}
+		});
+		treeViewer.setInput(files);
 	}
 
 	private class ProjectStructureLabelProvider extends StyledCellLabelProvider {
@@ -66,43 +59,40 @@ public class Explorer {
 
 			if (o instanceof Project) {
 				cell.setText(((Project) o).getName());
+				cell.setImage(ImageFactory.createImage("icons/bricks.png"));
 
 			} else if (o instanceof ProjectFolder) {
 				cell.setText(((ProjectFolder) o).getName());
+				cell.setImage(ImageFactory.createImage("icons/folder.png"));
+			} else {
+				File file = (File) o;
+				cell.setText(file.getName());
 			}
 		}
 	}
 
 	private class ProjectStructureProvider implements ITreeContentProvider {
-
 		@Override
 		public void dispose() {
 
 		}
-
 		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
-
 		@Override
 		public Object[] getElements(Object inputElement) {
-			if (inputElement instanceof Project[]) {
-				return (Project[]) inputElement;
-			} else {
-				return null;
-			}
-
+			return (Object[]) inputElement;
 		}
-
 		@Override
 		public Object[] getChildren(Object parentElement) {
-			if (parentElement instanceof Project) {
-				Project project = (Project) parentElement;
-				List<ProjectFolder> folderList = project.getFolderList();
-				return folderList.toArray(new ProjectFolder[folderList.size()]);
-
+			Object[] entries;
+			File parentFile = (File) parentElement;
+			if (parentFile.getName().matches(".*\\.[dD]64")) {
+				entries = null;
+			} else {
+				entries = parentFile.listFiles();
 			}
-			return null;
+			return entries;
 		}
 
 		@Override
@@ -114,10 +104,13 @@ public class Explorer {
 		@Override
 		public boolean hasChildren(Object element) {
 			boolean hasChildren = false;
-			if (element instanceof Project) {
-				hasChildren = ((Project) element).getFolderList().size() > 0;
+			File file = (File) element;
+			if (file.isFile() && file.getName().matches(".*\\.[dD]64")) {
+				hasChildren = true;
+			} else if (file.isFile()) {
+				hasChildren = false;
 			} else {
-
+				hasChildren = file.list().length > 0;
 			}
 			return hasChildren;
 		}

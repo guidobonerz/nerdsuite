@@ -8,7 +8,7 @@ import lombok.Data;
 public class PlatformData {
 	private String cpuInstructionSource;
 	private String basicInstructionSource;
-	private String imagingServiceClass;
+	private String graphicFormatSource;
 	private List<Address> platformAddressList;
 	private List<Pointer> platformPointerList;
 	private List<PlatformColor> colorPalette;

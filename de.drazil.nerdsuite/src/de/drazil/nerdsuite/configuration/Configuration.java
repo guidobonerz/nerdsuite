@@ -22,7 +22,7 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.model.Workspace;
 
 public class Configuration {
-	public final static File WORKSPACE_PATH = new File(
+	public static final File WORKSPACE_PATH = new File(
 			Constants.USER_HOME + Constants.FILE_SEPARATOR + Constants.DEFAULT_WORKSPACE_NAME);
 	private Workspace workspace;
 	private Font font = null;
