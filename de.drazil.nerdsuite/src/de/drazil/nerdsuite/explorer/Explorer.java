@@ -16,11 +16,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
+import de.drazil.nerdsuite.util.AtariFont;
 import de.drazil.nerdsuite.util.ImageFactory;
 import de.drazil.nersuite.storagemedia.IMediaProvider;
+import de.drazil.nersuite.storagemedia.MediaEntry;
 import de.drazil.nersuite.storagemedia.MediaMountFactory;
 
 public class Explorer {
@@ -66,9 +69,14 @@ public class Explorer {
 			} else if (o instanceof ProjectFolder) {
 				cell.setText(((ProjectFolder) o).getName());
 				cell.setImage(ImageFactory.createImage("icons/folder.png"));
+			} else if (o instanceof MediaEntry) {
+				MediaEntry file = (MediaEntry) o;
+				cell.setText(file.getName());
+				cell.setFont(Constants.PetMe64_FONT);
 			} else {
 				File file = (File) o;
 				cell.setText(file.getName());
+				
 			}
 		}
 	}
@@ -114,6 +122,10 @@ public class Explorer {
 		@Override
 		public boolean hasChildren(Object element) {
 			boolean hasChildren = false;
+
+			if (element instanceof MediaEntry) {
+				return false;
+			}
 			File file = (File) element;
 			if (MediaMountFactory.isMountable(file)) {
 				try {

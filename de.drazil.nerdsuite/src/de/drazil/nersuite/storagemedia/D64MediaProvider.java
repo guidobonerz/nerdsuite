@@ -2,7 +2,6 @@ package de.drazil.nersuite.storagemedia;
 
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
-import de.drazil.nerdsuite.util.NumericConverter;
 
 public class D64MediaProvider extends AbstractBaseMediaProvider {
 
@@ -20,15 +19,21 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 	protected void parse() {
 		ICPU cpu = new CPU_6510();
 
-		int base = 0x16500;
-		int i = base;
-		while (!(content[i] == 0 && content[i + 0x1] == 0)) {
-			System.out.printf("Next entry at track:%d sector:%d\n", content[i], content[i + 0x1]);
-			System.out.printf("FileType: %s\n", getFileType(content[i + 0x2]));
-			System.out.printf("First file entry at track:%d sector:%d\n", content[i + 0x3], content[i + 0x4]);
-			System.out.printf("Filename %s\n", getFilename(i + 0x5, 0x10));
-			System.out.printf("Filesize %s\n\n", getFileSize(cpu, i + 0x1e));
-			i += 0x20;
+		int bamBase = 0x16500;
+		System.out.printf("Filename %s\n", getFilename(bamBase + 0x90, 0x0f, 0x0a));
+
+		int dirEntryBase = bamBase + 0x100;
+		while (dirEntryBase < bamBase + 0x100 + 0xe0) {
+			System.out.printf("Next entry at track:%d sector:%d\n", content[dirEntryBase], content[dirEntryBase + 0x1]);
+			System.out.printf("FileType: %s\n", getFileType(content[dirEntryBase + 0x2]));
+			System.out.printf("First file entry at track:%d sector:%d\n", content[dirEntryBase + 0x3],
+					content[dirEntryBase + 0x4]);
+			System.out.printf("Filename %s\n", getFilename(dirEntryBase + 0x5, 0x10, 0xa0));
+			System.out.printf("Filesize %s\n\n", getFileSize(cpu, dirEntryBase + 0x1e));
+			mediaEntryList.add(
+					new MediaEntry(getFilename(dirEntryBase + 0x5, 0x10, 0xa0), getFileSize(cpu, dirEntryBase + 0x1e)));
+			dirEntryBase += 0x20;
+
 		}
 	}
 
@@ -36,13 +41,20 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		return cpu.getWord(content, start);
 	}
 
-	private String getFilename(int start, int length) {
+	private String getFilename(int start, int length, int skipByte) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = start; i < start + length; i++) {
 			int c = content[i];
-			sb.append((char) c);
+			if (c != skipByte) {
+
+				sb.append(new String(Character.toChars(0xe100 + c)));
+
+				// sb.append(Character.toChars(0xe051));
+
+			}
 		}
 		return sb.toString();
+
 	}
 
 	private String getFileType(byte type) {

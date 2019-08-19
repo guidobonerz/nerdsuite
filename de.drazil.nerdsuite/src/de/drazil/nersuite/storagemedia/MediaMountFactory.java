@@ -15,9 +15,9 @@ public class MediaMountFactory {
 	public static IMediaProvider mount(File file, File parent) throws Exception {
 		IMediaProvider mediaProvider = mediaStore.get(file.getName());
 		if (mediaProvider == null && isMountable(file)) {
-			IMediaProvider provider = new D64MediaProvider();
-			provider.read(file);
-			mediaStore.put(file.getName(), provider);
+			mediaProvider = new D64MediaProvider();
+			mediaProvider.read(file);
+			mediaStore.put(file.getName(), mediaProvider);
 		}
 		return mediaProvider;
 	}
