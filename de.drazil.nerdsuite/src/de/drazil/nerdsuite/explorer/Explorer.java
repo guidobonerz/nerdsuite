@@ -20,6 +20,8 @@ import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.util.ImageFactory;
+import de.drazil.nersuite.storagemedia.IMediaProvider;
+import de.drazil.nersuite.storagemedia.MediaMountFactory;
 
 public class Explorer {
 	private TreeViewer treeViewer;
@@ -76,19 +78,27 @@ public class Explorer {
 		public void dispose() {
 
 		}
+
 		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
+
 		@Override
 		public Object[] getElements(Object inputElement) {
 			return (Object[]) inputElement;
 		}
+
 		@Override
 		public Object[] getChildren(Object parentElement) {
 			Object[] entries;
 			File parentFile = (File) parentElement;
-			if (parentFile.getName().matches(".*\\.[dD]64")) {
-				entries = null;
+			if (MediaMountFactory.isMountable(parentFile)) {
+				try {
+					IMediaProvider mediaProvider = MediaMountFactory.mount(parentFile, null);
+					entries = mediaProvider.getEntries();
+				} catch (Exception e) {
+					entries = null;
+				}
 			} else {
 				entries = parentFile.listFiles();
 			}
@@ -105,8 +115,13 @@ public class Explorer {
 		public boolean hasChildren(Object element) {
 			boolean hasChildren = false;
 			File file = (File) element;
-			if (file.isFile() && file.getName().matches(".*\\.[dD]64")) {
-				hasChildren = true;
+			if (MediaMountFactory.isMountable(file)) {
+				try {
+					IMediaProvider mediaProvider = MediaMountFactory.mount(file, null);
+					hasChildren = mediaProvider.hasEntries();
+				} catch (Exception e) {
+					hasChildren = false;
+				}
 			} else if (file.isFile()) {
 				hasChildren = false;
 			} else {
