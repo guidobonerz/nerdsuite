@@ -1,7 +1,16 @@
 package de.drazil.nersuite.storagemedia;
 
+import java.util.List;
+
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
+
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
+import de.drazil.nerdsuite.model.AsciiMap;
 
 public class D64MediaProvider extends AbstractBaseMediaProvider {
 
@@ -47,7 +56,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 			int c = content[i];
 			if (c != skipByte) {
 
-				sb.append(new String(Character.toChars(0xe100 + c)));
+				sb.append(new String(Character.toChars(0xe000 + getChar(c))));
 
 				// sb.append(Character.toChars(0xe051));
 
@@ -87,4 +96,21 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		return (locked ? ">" : "") + fileType + (closed ? "*" : "");
 	}
 
+	private int getChar(int c) {
+		int result = 0;
+
+		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+
+			JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, AsciiMap.class);
+			List<AsciiMap> list = mapper.readValue(bundle.getEntry("configuration/petascii_map.json"), listType);
+			result = Integer.parseInt(list.stream().filter(le -> Integer.parseInt(le.getSource(), 16) == (c & 0xff))
+					.findAny().get().getTarget(), 16);
+
+		} catch (Exception e) {
+
+		}
+		return result;
+	}
 }
