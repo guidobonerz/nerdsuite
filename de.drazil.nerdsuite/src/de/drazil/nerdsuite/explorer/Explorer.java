@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.explorer;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileFilter;
 import java.text.MessageFormat;
@@ -41,8 +42,10 @@ public class Explorer {
 	public void postConstruct(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
+		
 
 		treeViewer = new TreeViewer(container, SWT.NONE);
+	
 		treeViewer.getControl().addListener(SWT.MeasureItem, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -73,19 +76,28 @@ public class Explorer {
 			if (o instanceof Project) {
 				cell.setText(((Project) o).getName());
 				cell.setImage(ImageFactory.createImage("icons/bricks.png"));
+				
 
 			} else if (o instanceof ProjectFolder) {
 				cell.setText(((ProjectFolder) o).getName());
 				cell.setImage(ImageFactory.createImage("icons/folder.png"));
+				
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
-				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(), file.getType());
+				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(),
+						file.getType());
 				cell.setText(s);
 				cell.setFont(Constants.PetMe64_FONT);
+				cell.setBackground(Constants.CBM_BG_COLOR);
+				cell.setForeground(Constants.CBM_FG_COLOR);
 
 			} else {
 				File file = (File) o;
 				cell.setText(file.getName());
+				
+				if (file.getName().matches(".*\\.[dD]64")) {
+					cell.setImage(ImageFactory.createImage("icons/disk.png"));
+				}
 
 			}
 		}

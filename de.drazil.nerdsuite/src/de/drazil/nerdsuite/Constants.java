@@ -61,6 +61,8 @@ public class Constants
 	public final static Color CURRENT_ROW_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#F0F0FF"));
 	public final static Color LINENUMBER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A0A0A0"));
 	public final static Color DEFAULT_COMMENT_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#20CB6E"));
+	public final static Color CBM_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#786abd"));
+	public final static Color CBM_BG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#403285"));
 
 	// public final static Color DEFAULT_STRING_COLOR = new
 	// Color(Display.getCurrent(), SwtUtil.toRGB("#485CCB"));
