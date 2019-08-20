@@ -44,6 +44,7 @@ public class Configuration {
 			URL fileURL4 = bundle.getEntry("/fonts/SourceCodePro-Regular.ttf");
 			URL fileURL5 = bundle.getEntry("/fonts/PetMe2Y.ttf");
 			URL fileURL6 = bundle.getEntry("/fonts/PetMe642Y.ttf");
+			URL fileURL7 = bundle.getEntry("/fonts/PetMe64.ttf");
 			File file = null;
 			boolean b;
 			try {
@@ -63,6 +64,8 @@ public class Configuration {
 				file = new File(FileLocator.resolve(fileURL5).toURI());
 				b = Display.getCurrent().loadFont(file.toString());
 				file = new File(FileLocator.resolve(fileURL6).toURI());
+				b = Display.getCurrent().loadFont(file.toString());
+				file = new File(FileLocator.resolve(fileURL7).toURI());
 				b = Display.getCurrent().loadFont(file.toString());
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();

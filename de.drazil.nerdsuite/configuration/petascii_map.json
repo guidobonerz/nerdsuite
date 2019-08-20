@@ -195,512 +195,777 @@
 
 		{
 			"petscii": "20",
-			"ascii": "0",
+			"ascii": "20",
 			"symbol": " "
 		},
 
 		{
 			"petscii": "21",
-			"ascii": "0",
+			"ascii": "21",
 			"symbol": "!"
 		},
 
 		{
 			"petscii": "22",
-			"ascii": "0",
+			"ascii": "22",
 			"symbol": "\""
 		},
 
 		{
 			"petscii": "23",
-			"ascii": "0",
+			"ascii": "23",
 			"symbol": "#"
 		},
 
 		{
 			"petscii": "24",
-			"ascii": "0",
+			"ascii": "24",
 			"symbol": "$"
 		},
 
 		{
 			"petscii": "25",
-			"ascii": "0",
+			"ascii": "25",
 			"symbol": "%"
 		},
 
 		{
 			"petscii": "26",
-			"ascii": "0",
+			"ascii": "26",
 			"symbol": "&"
 		},
 
 		{
 			"petscii": "27",
-			"ascii": "0",
+			"ascii": "27",
 			"symbol": "'"
 		},
 
 		{
 			"petscii": "28",
-			"ascii": "0",
+			"ascii": "28",
 			"symbol": "("
 		},
 
 		{
 			"petscii": "29",
-			"ascii": "0",
+			"ascii": "29",
 			"symbol": ")"
 		},
 
 		{
 			"petscii": "2a",
-			"ascii": "0",
+			"ascii": "2a",
 			"symbol": "*"
 		},
 
 		{
 			"petscii": "2b",
-			"ascii": "0",
+			"ascii": "2b",
 			"symbol": "+"
 		},
 
 		{
 			"petscii": "2c",
-			"ascii": "0",
+			"ascii": "2c",
 			"symbol": ","
 		},
 
 		{
 			"petscii": "2d",
-			"ascii": "0",
+			"ascii": "2d",
 			"symbol": "-"
 		},
 
 		{
 			"petscii": "2e",
-			"ascii": "0",
+			"ascii": "2e",
 			"symbol": "."
 		},
 
 		{
 			"petscii": "2f",
-			"ascii": "0",
+			"ascii": "2f",
 			"symbol": "/"
 		},
 
 		{
 			"petscii": "30",
-			"ascii": "0",
+			"ascii": "30",
 			"symbol": "0"
 		},
 
 		{
 			"petscii": "31",
-			"ascii": "0",
+			"ascii": "31",
 			"symbol": "1"
 		},
 
 		{
 			"petscii": "32",
-			"ascii": "0",
+			"ascii": "32",
 			"symbol": "2"
 		},
 
 		{
 			"petscii": "33",
-			"ascii": "0",
+			"ascii": "33",
 			"symbol": "3"
 		},
 
 		{
 			"petscii": "34",
-			"ascii": "0",
+			"ascii": "34",
 			"symbol": "4"
 		},
 
 		{
 			"petscii": "35",
-			"ascii": "0",
+			"ascii": "35",
 			"symbol": "5"
 		},
 
 		{
 			"petscii": "36",
-			"ascii": "0",
+			"ascii": "36",
 			"symbol": "6"
 		},
 
 		{
 			"petscii": "37",
-			"ascii": "0",
+			"ascii": "37",
 			"symbol": "7"
 		},
 
 		{
 			"petscii": "38",
-			"ascii": "0",
+			"ascii": "38",
 			"symbol": "8"
 		},
 
 		{
 			"petscii": "39",
-			"ascii": "0",
+			"ascii": "39",
 			"symbol": "9"
 		},
 
 		{
 			"petscii": "3a",
-			"ascii": "0",
+			"ascii": "3a",
 			"symbol": ":"
 		},
 
 		{
 			"petscii": "3b",
-			"ascii": "0",
+			"ascii": "3b",
 			"symbol": ";"
 		},
 
 		{
 			"petscii": "3c",
-			"ascii": "0",
+			"ascii": "3c",
 			"symbol": "<"
 		},
 
 		{
 			"petscii": "3d",
-			"ascii": "0",
+			"ascii": "3d",
 			"symbol": "="
 		},
 
 		{
 			"petscii": "3e",
-			"ascii": "0",
+			"ascii": "3e",
 			"symbol": ">"
 		},
 
 		{
 			"petscii": "3f",
-			"ascii": "0",
+			"ascii": "3f",
 			"symbol": "?"
 		},
 
 		{
 			"petscii": "40",
-			"ascii": "0",
+			"ascii": "00",
 			"symbol": "@"
 		},
 
 		{
 			"petscii": "41",
-			"ascii": "0",
+			"ascii": "01",
 			"symbol": "A"
 		},
 
 		{
 			"petscii": "42",
-			"ascii": "0",
+			"ascii": "02",
 			"symbol": "B"
 		},
 
 		{
 			"petscii": "43",
-			"ascii": "0",
+			"ascii": "03",
 			"symbol": "C"
 		},
 
 		{
 			"petscii": "44",
-			"ascii": "0",
+			"ascii": "04",
 			"symbol": "D"
 		},
 
 		{
 			"petscii": "45",
-			"ascii": "0",
+			"ascii": "05",
 			"symbol": "E"
 		},
 
 		{
 			"petscii": "46",
-			"ascii": "0",
+			"ascii": "06",
 			"symbol": "F"
 		},
 
 		{
 			"petscii": "47",
-			"ascii": "0",
+			"ascii": "07",
 			"symbol": "G"
 		},
 
 		{
 			"petscii": "48",
-			"ascii": "0",
+			"ascii": "08",
 			"symbol": "H"
 		},
 
 		{
 			"petscii": "49",
-			"ascii": "0",
+			"ascii": "09",
 			"symbol": "I"
 		},
 
 		{
 			"petscii": "4a",
-			"ascii": "0",
+			"ascii": "0a",
 			"symbol": "J"
 		},
 
 		{
 			"petscii": "4b",
-			"ascii": "0",
+			"ascii": "0b",
 			"symbol": "K"
 		},
 
 		{
 			"petscii": "4c",
-			"ascii": "0",
+			"ascii": "0c",
 			"symbol": "L"
 		},
 
 		{
 			"petscii": "4d",
-			"ascii": "0",
+			"ascii": "0d",
 			"symbol": "M"
 		},
 
 		{
 			"petscii": "4e",
-			"ascii": "0",
+			"ascii": "0e",
 			"symbol": "N"
 		},
 
 		{
 			"petscii": "4f",
-			"ascii": "0",
+			"ascii": "0f",
 			"symbol": "O"
 		},
 
 		{
 			"petscii": "50",
-			"ascii": "0",
+			"ascii": "10",
 			"symbol": "P"
 		},
 
 		{
 			"petscii": "51",
-			"ascii": "0",
+			"ascii": "11",
 			"symbol": "Q"
 		},
 
 		{
 			"petscii": "52",
-			"ascii": "0",
+			"ascii": "12",
 			"symbol": "R"
 		},
 
 		{
 			"petscii": "53",
-			"ascii": "0",
+			"ascii": "13",
 			"symbol": "S"
 		},
 
 		{
 			"petscii": "54",
-			"ascii": "0",
+			"ascii": "14",
 			"symbol": "T"
 		},
 
 		{
 			"petscii": "55",
-			"ascii": "0",
+			"ascii": "15",
 			"symbol": "U"
 		},
 
 		{
 			"petscii": "56",
-			"ascii": "0",
+			"ascii": "16",
 			"symbol": "V"
 		},
 
 		{
 			"petscii": "57",
-			"ascii": "0",
+			"ascii": "17",
 			"symbol": "W"
 		},
 
 		{
 			"petscii": "58",
-			"ascii": "0",
+			"ascii": "18",
 			"symbol": "X"
 		},
 
 		{
 			"petscii": "59",
-			"ascii": "0",
+			"ascii": "19",
 			"symbol": "Y"
 		},
 
 		{
 			"petscii": "5a",
-			"ascii": "0",
+			"ascii": "1a",
 			"symbol": "Z"
 		},
 
 		{
 			"petscii": "5b",
-			"ascii": "0",
+			"ascii": "1b",
 			"symbol": "\\["
 		},
 
 		{
 			"petscii": "5c",
-			"ascii": "0",
-			"symbol": ""
+			"ascii": "1c",
+			"symbol": "Pound"
 		},
 
 		{
 			"petscii": "5d",
-			"ascii": "0",
+			"ascii": "1d",
 			"symbol": "\\]"
 		},
 
 		{
 			"petscii": "5e",
-			"ascii": "0",
-			"symbol": "^"
+			"ascii": "1e",
+			"symbol": "Arrow Up"
 		},
 
 		{
 			"petscii": "5f",
-			"ascii": "0",
-			"symbol": "_"
+			"ascii": "1f",
+			"symbol": "Arrow Left"
 		},
 
 		{
 			"petscii": "60",
-			"ascii": "0",
+			"ascii": "40",
 			"symbol": "`"
 		},
 
 		{
 			"petscii": "61",
-			"ascii": "0",
+			"ascii": "41",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "62",
-			"ascii": "0",
+			"ascii": "42",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "63",
-			"ascii": "0",
+			"ascii": "43",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "64",
-			"ascii": "0",
+			"ascii": "44",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "65",
-			"ascii": "0",
+			"ascii": "45",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "66",
-			"ascii": "0",
+			"ascii": "46",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "67",
-			"ascii": "0",
+			"ascii": "47",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "68",
-			"ascii": "0",
+			"ascii": "48",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "69",
-			"ascii": "0",
+			"ascii": "49",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "6a",
-			"ascii": "0",
+			"ascii": "4a",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "6b",
-			"ascii": "0",
+			"ascii": "4b",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "6c",
-			"ascii": "0",
+			"ascii": "4c",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "6d",
-			"ascii": "0",
+			"ascii": "4d",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "6e",
-			"ascii": "0",
+			"ascii": "4e",
 			"symbol": ""
 		},
 
 		{
 			"petscii": "6f",
-			"ascii": "0",
+			"ascii": "4f",
 			"symbol": ""
 		},
 
 		{
-			"petscii": "65",
-			"ascii": "0",
+			"petscii": "70",
+			"ascii": "50",
 			"symbol": ""
 		},
 
 		{
-			"petscii": "65",
-			"ascii": "0",
+			"petscii": "71",
+			"ascii": "51",
 			"symbol": ""
 		},
 
 		{
-			"petscii": "65",
-			"ascii": "0",
+			"petscii": "72",
+			"ascii": "52",
 			"symbol": ""
 		},
 
 		{
-			"petscii": "65",
-			"ascii": "0",
+			"petscii": "73",
+			"ascii": "53",
 			"symbol": ""
 		},
 
 		{
-			"petscii": "65",
-			"ascii": "0",
+			"petscii": "74",
+			"ascii": "53",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "75",
+			"ascii": "55",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "76",
+			"ascii": "56",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "77",
+			"ascii": "57",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "78",
+			"ascii": "58",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "79",
+			"ascii": "59",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "7a",
+			"ascii": "5a",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "7b",
+			"ascii": "5b",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "7c4",
+			"ascii": "5c",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "7d",
+			"ascii": "5d",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "7e",
+			"ascii": "5e",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "7f",
+			"ascii": "5f",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a0",
+			"ascii": "60",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a1",
+			"ascii": "61",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a2",
+			"ascii": "62",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a3",
+			"ascii": "63",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a4",
+			"ascii": "64",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a5",
+			"ascii": "65",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a6",
+			"ascii": "66",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a7",
+			"ascii": "67",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a8",
+			"ascii": "68",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "a9",
+			"ascii": "69",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "aa",
+			"ascii": "6a",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "ab",
+			"ascii": "6b",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "ac",
+			"ascii": "6c",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "ad",
+			"ascii": "6d",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "ae",
+			"ascii": "6e",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "af",
+			"ascii": "6f",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b0",
+			"ascii": "70",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b1",
+			"ascii": "71",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b2",
+			"ascii": "72",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b3",
+			"ascii": "73",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b4",
+			"ascii": "74",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b5",
+			"ascii": "75",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b6",
+			"ascii": "76",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b7",
+			"ascii": "77",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b8",
+			"ascii": "78",
+			"symbol": ""
+		},
+
+		{
+			"petscii": "b9",
+			"ascii": "79",
 			"symbol": ""
 		}
+		,
+
+		{
+			"petscii": "ba",
+			"ascii": "7a",
+			"symbol": ""
+		}
+		,
+
+		{
+			"petscii": "bb",
+			"ascii": "7b",
+			"symbol": ""
+		}
+		,
+
+		{
+			"petscii": "bc",
+			"ascii": "7c",
+			"symbol": ""
+		}
+		,
+
+		{
+			"petscii": "bd",
+			"ascii": "7d",
+			"symbol": ""
+		}
+		,
+
+		{
+			"petscii": "be",
+			"ascii": "7e",
+			"symbol": ""
+		}
+		,
+
+		{
+			"petscii": "bf",
+			"ascii": "7f",
+			"symbol": ""
+		}
+		
 	]
 }
