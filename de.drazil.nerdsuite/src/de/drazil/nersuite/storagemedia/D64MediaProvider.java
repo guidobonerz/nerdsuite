@@ -75,7 +75,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 
 		switch ((int) type & 0b111) {
 		case 0x0: {
-			fileType = "Scratched";
+			fileType = "DEL";
 			break;
 		}
 		case 0x1: {
@@ -95,7 +95,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 			break;
 		}
 		}
-		return (locked ? ">" : " ") + fileType + (closed ? "*" : " ");
+		return fileType + (locked ? "<" : "");
 	}
 
 	private int getChar(int c) {
