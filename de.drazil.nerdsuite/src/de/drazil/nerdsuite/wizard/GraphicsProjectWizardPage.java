@@ -6,13 +6,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservableCollection;
 import org.eclipse.core.databinding.observable.sideeffect.ISideEffect;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;

@@ -61,6 +61,8 @@ public class Constants
 	public final static Color CURRENT_ROW_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#F0F0FF"));
 	public final static Color LINENUMBER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A0A0A0"));
 	public final static Color DEFAULT_COMMENT_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#20CB6E"));
+	public final static Color CBM_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#786abd"));
+	public final static Color CBM_BG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#403285"));
 
 	// public final static Color DEFAULT_STRING_COLOR = new
 	// Color(Display.getCurrent(), SwtUtil.toRGB("#485CCB"));
@@ -94,6 +96,7 @@ public class Constants
 	public final static Font Atari_Classic_FONT = new Font(Display.getCurrent(), "Atari Classic", 12, SWT.NORMAL);
 	public final static Font PetMe2Y_FONT = new Font(Display.getCurrent(), "Pet Me 2Y", 12, SWT.NORMAL);
 	public final static Font PetMe642Y_FONT = new Font(Display.getCurrent(), "Pet Me 64 2Y", 12, SWT.NORMAL);
+	public final static Font PetMe64_FONT = new Font(Display.getCurrent(), "Pet Me 64", 6, SWT.NORMAL);
 
 	
 	public final static TextStyle TEXTSTYLE_PetMe642Y_ASCII = new TextStyle(PetMe642Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
