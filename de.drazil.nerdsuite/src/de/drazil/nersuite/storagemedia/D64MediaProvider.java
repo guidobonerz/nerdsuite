@@ -39,8 +39,10 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 					content[dirEntryBase + 0x4]);
 			System.out.printf("Filename %s\n", getFilename(dirEntryBase + 0x5, 0x10, 0xa0));
 			System.out.printf("Filesize %s\n\n", getFileSize(cpu, dirEntryBase + 0x1e));
-			mediaEntryList.add(
-					new MediaEntry(getFilename(dirEntryBase + 0x5, 0x10, 0xa0), getFileSize(cpu, dirEntryBase + 0x1e)));
+			if (content[dirEntryBase + 0x5] != 0) {
+				mediaEntryList.add(new MediaEntry(getFilename(dirEntryBase + 0x5, 0x10, 0xa0),
+						getFileSize(cpu, dirEntryBase + 0x1e), getFileType(content[dirEntryBase + 0x2])));
+			}
 			dirEntryBase += 0x20;
 
 		}
@@ -93,7 +95,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 			break;
 		}
 		}
-		return (locked ? ">" : "") + fileType + (closed ? "*" : "");
+		return (locked ? ">" : " ") + fileType + (closed ? "*" : " ");
 	}
 
 	private int getChar(int c) {

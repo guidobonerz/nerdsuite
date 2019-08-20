@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.explorer;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -15,12 +16,13 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
-import de.drazil.nerdsuite.util.AtariFont;
 import de.drazil.nerdsuite.util.ImageFactory;
 import de.drazil.nersuite.storagemedia.IMediaProvider;
 import de.drazil.nersuite.storagemedia.MediaEntry;
@@ -41,6 +43,12 @@ public class Explorer {
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		treeViewer = new TreeViewer(container, SWT.NONE);
+		treeViewer.getControl().addListener(SWT.MeasureItem, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				event.height = 10;
+			}
+		});
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
 		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.explorer");
@@ -71,10 +79,11 @@ public class Explorer {
 				cell.setImage(ImageFactory.createImage("icons/folder.png"));
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
-				cell.setText(file.getName());
+				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(), file.getType());
+				cell.setText(s);
 				cell.setFont(Constants.PetMe64_FONT);
 
-				} else {
+			} else {
 				File file = (File) o;
 				cell.setText(file.getName());
 
