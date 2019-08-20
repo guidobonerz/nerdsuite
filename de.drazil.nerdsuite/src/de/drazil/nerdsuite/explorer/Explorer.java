@@ -73,10 +73,11 @@ public class Explorer {
 				MediaEntry file = (MediaEntry) o;
 				cell.setText(file.getName());
 				cell.setFont(Constants.PetMe64_FONT);
-			} else {
+
+				} else {
 				File file = (File) o;
 				cell.setText(file.getName());
-				
+
 			}
 		}
 	}
