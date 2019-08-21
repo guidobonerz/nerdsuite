@@ -87,10 +87,10 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		int currentDirEntryOffset = currentDirEntryBaseOffset;
 
 		String diskName = getFilename(currentTrackBamOffset + 0x90, 0x0f, 0x0a, false, true);
-		String diskId = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa0])))
-				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa1])));
-		String dosType = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa5])))
-				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa6])));
+		String diskId = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa0], false, true)))
+				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa1], false, true)));
+		String dosType = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa5], false, true)))
+				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa6], false, true)));
 		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + " " + dosType, 0, ""));
 
 		while (currentDirTrack != 0) {
@@ -114,17 +114,13 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		return cpu.getWord(content, start);
 	}
 
-	private String getFilename(int start, int length, int skipByte, boolean switchCharset, boolean invert) {
+	private String getFilename(int start, int length, int skipByte, boolean switchCharset, boolean shift) {
 
 		StringBuilder sb = new StringBuilder();
 		for (int i = start; i < start + length; i++) {
 			int c = content[i];
 			if (c != skipByte) {
-
-				// sb.append(new String(Character.toChars(0xe000 + getChar(invert ? (c + 0x40) :
-				// c))));
-				sb.append(new String(
-						Character.toChars((switchCharset ? 0xe000 : 0xe100) + (invert ? (c | 0x80) : c) & 0xffff)));
+				sb.append(new String(Character.toChars(getChar(c, switchCharset, shift))));
 			}
 		}
 		return sb.toString();
@@ -160,7 +156,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		return fileType + (locked ? "<" : " ");
 	}
 
-	private int getChar(int c) {
+	private int getChar(int c, boolean switchCharset, boolean shift) {
 		int result = 0;
 		try {
 
@@ -176,6 +172,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 				System.out.println("symbol:" + c + " not found");
 			}
 
+			result = (switchCharset ? 0xe000 : 0xe100) + ((shift ? (c | 0x80) : c) & 0xff);
 		} catch (Exception e) {
 
 		}
