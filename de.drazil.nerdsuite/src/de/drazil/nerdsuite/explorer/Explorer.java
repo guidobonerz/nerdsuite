@@ -1,6 +1,5 @@
 package de.drazil.nerdsuite.explorer;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileFilter;
 import java.text.MessageFormat;
@@ -15,6 +14,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -85,7 +85,8 @@ public class Explorer {
 				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(),
 						file.getType());
 				cell.setText(s);
-				cell.setFont(Constants.PetMe64_FONT);
+				Font f = Constants.C64_Pro_Mono_FONT;
+				cell.setFont(f);
 				cell.setBackground(Constants.CBM_BG_COLOR);
 				cell.setForeground(Constants.CBM_FG_COLOR);
 

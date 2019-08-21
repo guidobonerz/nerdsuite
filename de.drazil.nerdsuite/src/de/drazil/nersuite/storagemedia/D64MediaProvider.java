@@ -87,23 +87,25 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		int currentDirEntryOffset = currentDirEntryBaseOffset;
 
 		String diskName = getFilename(currentTrackBamOffset + 0x90, 0x0f, 0x0a, false, true);
-		String diskId = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa0], false, true)))
-				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa1], false, true)));
-		String dosType = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa5], false, true)))
-				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa6], false, true)));
-		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + " " + dosType, 0, ""));
-
+		String diskId = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa2], true, true)))
+				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa3], true, true)));
+		String dummy = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa4], true, true)));
+		String dosType = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa5], true, true)))
+				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa6], true, true)));
+		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + dummy + dosType, 0, ""));
+		System.out.println("-------------------------");
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirEntryOffset];
 			int nextSector = content[currentDirEntryOffset + 0x1];
 			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
-					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x10, 0xa0, false, false);
+					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, true, false);
 					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
 					String fileType = getFileType(content[currentDirEntryOffset + 0x2]);
 					mediaEntryList.add(new MediaEntry(fileName, fileSize, fileType));
 				}
 				currentDirEntryOffset += 0x20;
+				System.out.println("-------------------------");
 			}
 			currentDirEntryBaseOffset = currentTrackBamOffset + (nextSector * sectorSize);
 			currentDirEntryOffset = currentDirEntryBaseOffset;
@@ -114,13 +116,13 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		return cpu.getWord(content, start);
 	}
 
-	private String getFilename(int start, int length, int skipByte, boolean switchCharset, boolean shift) {
+	private String getFilename(int start, int length, int skipByte, boolean shift, boolean invers) {
 
 		StringBuilder sb = new StringBuilder();
-		for (int i = start; i < start + length; i++) {
+		for (int i = start; i <= start + length; i++) {
 			int c = content[i];
 			if (c != skipByte) {
-				sb.append(new String(Character.toChars(getChar(c, switchCharset, shift))));
+				sb.append(new String(Character.toChars(getChar(c, shift, invers))));
 			}
 		}
 		return sb.toString();
@@ -156,23 +158,43 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		return fileType + (locked ? "<" : " ");
 	}
 
-	private int getChar(int c, boolean switchCharset, boolean shift) {
+	private int getChar(int c, boolean shift, boolean invers) {
 		int result = 0;
 		try {
-
+			int cx = c & 0x7f;
 			if (list == null) {
 				Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 				ObjectMapper mapper = new ObjectMapper();
 				JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, AsciiMap.class);
 				list = mapper.readValue(bundle.getEntry("configuration/petascii_map.json"), listType);
 			}
-			result = Integer.parseInt(list.stream().filter(le -> Integer.parseInt(le.getSource(), 16) == (c & 0xff))
-					.findAny().get().getTarget(), 16);
-			if (result == 0) {
-				System.out.println("symbol:" + c + " not found");
+
+			/*
+			 * for (AsciiMap am : list) { int v = Integer.parseInt(am.getSource(), 16); if
+			 * (v == (cx & 0xff)) { int r = Integer.parseInt(am.getTarget(), 16); result =
+			 * r; break; } }
+			 */
+			/*
+			 * result = Integer.parseInt(list.stream().filter(le ->
+			 * Integer.parseInt(le.getSource(), 16) == (cx & 0xff))
+			 * .findAny().get().getTarget(), 16);
+			 * 
+			 * if (result == 0) { System.out.println("symbol:" + c + " not found"); }
+			 */
+			int base = 0;
+			if (!shift && !invers) {
+				base = 0xe000;
+			} else if (shift && !invers) {
+				base = 0xe100;
+			} else if (!shift && invers) {
+				base = 0xe200;
+			} else if (shift && invers) {
+				base = 0xe300;
 			}
 
-			result = (switchCharset ? 0xe000 : 0xe100) + ((shift ? (c | 0x80) : c) & 0xff);
+			result = base + (cx|0x80);
+
+			System.out.println(Integer.toHexString(cx) + " " + Integer.toHexString(result));
 		} catch (Exception e) {
 
 		}
