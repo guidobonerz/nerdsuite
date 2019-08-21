@@ -73,7 +73,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 
 	@Override
 	public boolean hasEntries() {
-		return !mediaEntryList.isEmpty();
+		return true;
 	}
 
 	@Override
@@ -86,18 +86,22 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		int currentDirEntryBaseOffset = currentTrackBamOffset + sectorSize;
 		int currentDirEntryOffset = currentDirEntryBaseOffset;
 
-		System.out.printf("Next entry at track:%d sector:%d\n", content[currentDirEntryOffset],
-				content[currentDirEntryOffset + 0x1]);
-		mediaEntryList.add(new MediaEntry(getFilename(currentTrackBamOffset + 0x90, 0x0f, 0x0a, false), 0, ""));
+		String diskName = getFilename(currentTrackBamOffset + 0x90, 0x0f, 0x0a, false, true);
+		String diskId = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa0])))
+				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa1])));
+		String dosType = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa5])))
+				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa6])));
+		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + " " + dosType, 0, ""));
 
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirEntryOffset];
 			int nextSector = content[currentDirEntryOffset + 0x1];
 			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
-					mediaEntryList.add(new MediaEntry(getFilename(currentDirEntryOffset + 0x5, 0x10, 0xa0, false),
-							getFileSize(cpu, currentDirEntryOffset + 0x1e),
-							getFileType(content[currentDirEntryOffset + 0x2])));
+					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x10, 0xa0, false, false);
+					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
+					String fileType = getFileType(content[currentDirEntryOffset + 0x2]);
+					mediaEntryList.add(new MediaEntry(fileName, fileSize, fileType));
 				}
 				currentDirEntryOffset += 0x20;
 			}
@@ -110,8 +114,8 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		return cpu.getWord(content, start);
 	}
 
-	private String getFilename(int start, int length, int skipByte, boolean invert) {
-		System.out.println("get filename");
+	private String getFilename(int start, int length, int skipByte, boolean switchCharset, boolean invert) {
+
 		StringBuilder sb = new StringBuilder();
 		for (int i = start; i < start + length; i++) {
 			int c = content[i];
@@ -119,7 +123,8 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 
 				// sb.append(new String(Character.toChars(0xe000 + getChar(invert ? (c + 0x40) :
 				// c))));
-				sb.append(new String(Character.toChars(0xe100 + (invert ? (c | 0x80) : c))));
+				sb.append(new String(
+						Character.toChars((switchCharset ? 0xe000 : 0xe100) + (invert ? (c | 0x80) : c) & 0xffff)));
 			}
 		}
 		return sb.toString();

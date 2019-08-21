@@ -42,10 +42,9 @@ public class Explorer {
 	public void postConstruct(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
 
 		treeViewer = new TreeViewer(container, SWT.NONE);
-	
+
 		treeViewer.getControl().addListener(SWT.MeasureItem, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -76,12 +75,11 @@ public class Explorer {
 			if (o instanceof Project) {
 				cell.setText(((Project) o).getName());
 				cell.setImage(ImageFactory.createImage("icons/bricks.png"));
-				
 
 			} else if (o instanceof ProjectFolder) {
 				cell.setText(((ProjectFolder) o).getName());
 				cell.setImage(ImageFactory.createImage("icons/folder.png"));
-				
+
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
 				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(),
@@ -94,7 +92,7 @@ public class Explorer {
 			} else {
 				File file = (File) o;
 				cell.setText(file.getName());
-				
+
 				if (file.getName().matches(".*\\.[dD]64")) {
 					cell.setImage(ImageFactory.createImage("icons/disk.png"));
 				}
@@ -151,8 +149,9 @@ public class Explorer {
 			File file = (File) element;
 			if (MediaMountFactory.isMountable(file)) {
 				try {
-					IMediaProvider mediaProvider = MediaMountFactory.mount(file, null);
-					hasChildren = mediaProvider.hasEntries();
+					// IMediaProvider mediaProvider = MediaMountFactory.mount(file, null);
+					// hasChildren = mediaProvider.hasEntries();
+					hasChildren = true;
 				} catch (Exception e) {
 					hasChildren = false;
 				}
