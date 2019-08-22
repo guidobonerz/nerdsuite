@@ -9,4 +9,6 @@ public interface IMediaProvider {
 	public boolean hasEntries();
 
 	public Object[] getEntries();
+
+	public byte[] getContentById(int id);
 }

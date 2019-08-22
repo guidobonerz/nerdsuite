@@ -11,4 +11,9 @@ public class MediaEntry {
 	private String name;
 	private int size;
 	private String type;
+	private byte[] content;
+
+	public MediaEntry(String name, int size, String type) {
+		this(name, size, type, null);
+	}
 }

@@ -18,9 +18,11 @@ public abstract class AbstractBaseMediaProvider implements IMediaProvider {
 	@Override
 	public byte[] read(File file) throws Exception {
 		content = BinaryFileReader.readFile(file, 0);
-		parse();
+		readStructure();
 		return content;
 	}
 
-	protected abstract void parse();
+	protected abstract void readStructure();
+
+	protected abstract void readContent();
 }

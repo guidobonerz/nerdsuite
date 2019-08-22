@@ -77,7 +77,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 	}
 
 	@Override
-	protected void parse() {
+	protected void readStructure() {
 		ICPU cpu = new CPU_6510();
 
 		int currentTrackBamOffset = trackOffsetMap.get(String.valueOf(directoryTrack));
@@ -110,6 +110,12 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 			currentDirEntryBaseOffset = currentTrackBamOffset + (nextSector * sectorSize);
 			currentDirEntryOffset = currentDirEntryBaseOffset;
 		}
+	}
+
+	@Override
+	protected void readContent() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private int getFileSize(ICPU cpu, int start) {
@@ -192,7 +198,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 				base = 0xe300;
 			}
 
-			result = base + (cx|0x80);
+			result = base + (cx | 0x80);
 
 			System.out.println(Integer.toHexString(cx) + " " + Integer.toHexString(result));
 		} catch (Exception e) {
@@ -200,4 +206,11 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		}
 		return result;
 	}
+
+	@Override
+	public byte[] getContentById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
