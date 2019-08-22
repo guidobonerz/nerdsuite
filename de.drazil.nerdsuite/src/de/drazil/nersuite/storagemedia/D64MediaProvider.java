@@ -80,18 +80,18 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 	protected void readStructure() {
 		ICPU cpu = new CPU_6510();
 
-		int currentTrackBamOffset = trackOffsetMap.get(String.valueOf(directoryTrack));
+		int bamOffset = trackOffsetMap.get(String.valueOf(directoryTrack));
 		int currentDirTrack = directoryTrack;
 
-		int currentDirEntryBaseOffset = currentTrackBamOffset + sectorSize;
+		int currentDirEntryBaseOffset = bamOffset + sectorSize;
 		int currentDirEntryOffset = currentDirEntryBaseOffset;
 
-		String diskName = getFilename(currentTrackBamOffset + 0x90, 0x0f, 0x0a, false, true);
-		String diskId = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa2], true, true)))
-				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa3], true, true)));
-		String dummy = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa4], true, true)));
-		String dosType = "" + new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa5], true, true)))
-				+ new String(Character.toChars(getChar(content[currentTrackBamOffset + 0xa6], true, true)));
+		String diskName = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
+		String diskId = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa2], true, true)))
+				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], true, true)));
+		String dummy = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa4], true, true)));
+		String dosType = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa5], true, true)))
+				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], true, true)));
 		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + dummy + dosType, 0, ""));
 		System.out.println("-------------------------");
 		while (currentDirTrack != 0) {
@@ -101,13 +101,34 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
 					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, true, false);
 					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
+					int fileTrack = content[currentDirEntryBaseOffset + 0x03];
+					int fileSector = content[currentDirEntryBaseOffset + 0x04];
+					// int b1 = content[bamOffset + 0x04 + ((fileTrack - 1) * 4)] & 0xff;
+					// int b2 = content[bamOffset + 0x05 + ((fileTrack - 1) * 4)] & 0xff;
+					// int b3 = content[bamOffset + 0x06 + ((fileTrack - 1) * 4)] & 0xff;
+					// int b4 = content[bamOffset + 0x07 + ((fileTrack - 1) * 4)] & 0xff;
+					System.out.println(fileName);
+					System.out.printf("Next:%05x %02d / %02d\n",
+							trackOffsetMap.get(String.valueOf(fileTrack)).intValue(), fileTrack, fileSector);
 					String fileType = getFileType(content[currentDirEntryOffset + 0x2]);
 					mediaEntryList.add(new MediaEntry(fileName, fileSize, fileType));
+					if (!fileType.equals("DEL")) {
+						while (fileTrack != 0) {
+							int nextFileTrackOffset = trackOffsetMap.get(String.valueOf(fileTrack));
+							int nextFileSectorOffset = nextFileTrackOffset + fileSector * 0x100;
+							fileTrack = content[nextFileSectorOffset];
+							fileSector = content[nextFileSectorOffset] + 1;
+							System.out.printf("Next:%05x %02d / %02d\n", nextFileSectorOffset, fileTrack, fileSector);
+
+						}
+					}
+					// System.out.printf("%02x %02x %02x %02x\n", b1, b2, b3, b4);
+
 				}
 				currentDirEntryOffset += 0x20;
 				System.out.println("-------------------------");
 			}
-			currentDirEntryBaseOffset = currentTrackBamOffset + (nextSector * sectorSize);
+			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
 			currentDirEntryOffset = currentDirEntryBaseOffset;
 		}
 	}
