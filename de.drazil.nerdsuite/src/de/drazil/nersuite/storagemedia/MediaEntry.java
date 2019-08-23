@@ -11,9 +11,10 @@ public class MediaEntry {
 	private String name;
 	private int size;
 	private String type;
+	private int contentOffset;
 	private byte[] content;
 
-	public MediaEntry(String name, int size, String type) {
-		this(name, size, type, null);
+	public MediaEntry(String name, int size, String type, int contentOffset) {
+		this(name, size, type, contentOffset, null);
 	}
 }

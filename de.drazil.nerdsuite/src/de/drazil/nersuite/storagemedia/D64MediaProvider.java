@@ -1,7 +1,6 @@
 package de.drazil.nersuite.storagemedia;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
@@ -55,7 +54,7 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 		String dummy = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa4], true, true)));
 		String dosType = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa5], true, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], true, true)));
-		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + dummy + dosType, 0, ""));
+		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + dummy + dosType, 0, "", 0));
 		System.out.println("-------------------------");
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirEntryOffset];
@@ -68,7 +67,8 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 					int fileSector = content[currentDirEntryBaseOffset + 0x04];
 					int block = 1;
 					String fileType = getFileType(content[currentDirEntryOffset + 0x02]);
-					mediaEntryList.add(new MediaEntry(fileName, fileSize, fileType));
+					mediaEntryList.add(new MediaEntry(fileName, fileSize, fileType,
+							trackOffsets[fileTrack - 1] + fileSector * 0x100));
 					if (!fileType.equals("DEL")) {
 						while (fileTrack != 0) {
 							int fileSectorOffset = trackOffsets[fileTrack - 1] + fileSector * 0x100;
