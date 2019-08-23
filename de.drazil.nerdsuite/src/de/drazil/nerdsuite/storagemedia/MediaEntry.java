@@ -1,4 +1,4 @@
-package de.drazil.nersuite.storagemedia;
+package de.drazil.nerdsuite.storagemedia;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

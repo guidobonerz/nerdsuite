@@ -1,4 +1,4 @@
-package de.drazil.nersuite.storagemedia;
+package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 import java.util.HashMap;

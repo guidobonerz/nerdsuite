@@ -24,10 +24,10 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
+import de.drazil.nerdsuite.storagemedia.IMediaManager;
+import de.drazil.nerdsuite.storagemedia.MediaEntry;
+import de.drazil.nerdsuite.storagemedia.MediaMountFactory;
 import de.drazil.nerdsuite.util.ImageFactory;
-import de.drazil.nersuite.storagemedia.IMediaManager;
-import de.drazil.nersuite.storagemedia.MediaEntry;
-import de.drazil.nersuite.storagemedia.MediaMountFactory;
 
 public class Explorer {
 	private TreeViewer treeViewer;
