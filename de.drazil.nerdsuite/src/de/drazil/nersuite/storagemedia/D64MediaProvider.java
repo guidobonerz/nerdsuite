@@ -108,17 +108,20 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 					// int b3 = content[bamOffset + 0x06 + ((fileTrack - 1) * 4)] & 0xff;
 					// int b4 = content[bamOffset + 0x07 + ((fileTrack - 1) * 4)] & 0xff;
 					System.out.println(fileName);
-					System.out.printf("Next:%05x %02d / %02d\n",
+					int block = 1;
+					System.out.printf("%03d  Next:%05x %02d / %02d\n", block,
 							trackOffsetMap.get(String.valueOf(fileTrack)).intValue(), fileTrack, fileSector);
 					String fileType = getFileType(content[currentDirEntryOffset + 0x2]);
 					mediaEntryList.add(new MediaEntry(fileName, fileSize, fileType));
 					if (!fileType.equals("DEL")) {
 						while (fileTrack != 0) {
-							int nextFileTrackOffset = trackOffsetMap.get(String.valueOf(fileTrack));
-							int nextFileSectorOffset = nextFileTrackOffset + fileSector * 0x100;
+							block++;
+							int nextFileSectorOffset = trackOffsetMap.get(String.valueOf(fileTrack))
+									+ fileSector * 0x100;
 							fileTrack = content[nextFileSectorOffset];
-							fileSector = content[nextFileSectorOffset] + 1;
-							System.out.printf("Next:%05x %02d / %02d\n", nextFileSectorOffset, fileTrack, fileSector);
+							fileSector = content[nextFileSectorOffset + 1];
+							System.out.printf("%03d  Next:%05x %02d / %02d\n", block, nextFileSectorOffset, fileTrack,
+									fileSector);
 
 						}
 					}
