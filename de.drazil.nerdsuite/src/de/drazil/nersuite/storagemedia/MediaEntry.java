@@ -11,4 +11,7 @@ public class MediaEntry {
 	private String name;
 	private int size;
 	private String type;
+	private int track;
+	private int sector;
+
 }

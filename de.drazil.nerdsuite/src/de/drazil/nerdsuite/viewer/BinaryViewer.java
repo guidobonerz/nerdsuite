@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.osgi.framework.Bundle;
 
-import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.util.C64Font;
 import de.drazil.nerdsuite.util.IFont;
 
@@ -36,7 +36,7 @@ public class BinaryViewer {
 		URL url = bundle.getEntry("images/Image by Almighty God.koa");
 
 		try {
-			binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
+			binaryData = BinaryFileHandler.readFile(url.openConnection().getInputStream(), 2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

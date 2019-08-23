@@ -1,6 +1,5 @@
 package de.drazil.nerdsuite.explorer;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileFilter;
 import java.text.MessageFormat;
@@ -15,6 +14,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -25,7 +25,7 @@ import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.util.ImageFactory;
-import de.drazil.nersuite.storagemedia.IMediaProvider;
+import de.drazil.nersuite.storagemedia.IMediaManager;
 import de.drazil.nersuite.storagemedia.MediaEntry;
 import de.drazil.nersuite.storagemedia.MediaMountFactory;
 
@@ -42,10 +42,9 @@ public class Explorer {
 	public void postConstruct(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
 
 		treeViewer = new TreeViewer(container, SWT.NONE);
-	
+
 		treeViewer.getControl().addListener(SWT.MeasureItem, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -76,25 +75,25 @@ public class Explorer {
 			if (o instanceof Project) {
 				cell.setText(((Project) o).getName());
 				cell.setImage(ImageFactory.createImage("icons/bricks.png"));
-				
 
 			} else if (o instanceof ProjectFolder) {
 				cell.setText(((ProjectFolder) o).getName());
 				cell.setImage(ImageFactory.createImage("icons/folder.png"));
-				
+
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
 				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(),
 						file.getType());
 				cell.setText(s);
-				cell.setFont(Constants.PetMe64_FONT);
+				Font f = Constants.C64_Pro_Mono_FONT;
+				cell.setFont(f);
 				cell.setBackground(Constants.CBM_BG_COLOR);
 				cell.setForeground(Constants.CBM_FG_COLOR);
 
 			} else {
 				File file = (File) o;
 				cell.setText(file.getName());
-				
+
 				if (file.getName().matches(".*\\.[dD]64")) {
 					cell.setImage(ImageFactory.createImage("icons/disk.png"));
 				}
@@ -124,7 +123,7 @@ public class Explorer {
 			File parentFile = (File) parentElement;
 			if (MediaMountFactory.isMountable(parentFile)) {
 				try {
-					IMediaProvider mediaProvider = MediaMountFactory.mount(parentFile, null);
+					IMediaManager mediaProvider = MediaMountFactory.mount(parentFile, null);
 					entries = mediaProvider.getEntries();
 				} catch (Exception e) {
 					entries = null;
@@ -151,8 +150,9 @@ public class Explorer {
 			File file = (File) element;
 			if (MediaMountFactory.isMountable(file)) {
 				try {
-					IMediaProvider mediaProvider = MediaMountFactory.mount(file, null);
-					hasChildren = mediaProvider.hasEntries();
+					// IMediaProvider mediaProvider = MediaMountFactory.mount(file, null);
+					// hasChildren = mediaProvider.hasEntries();
+					hasChildren = true;
 				} catch (Exception e) {
 					hasChildren = false;
 				}

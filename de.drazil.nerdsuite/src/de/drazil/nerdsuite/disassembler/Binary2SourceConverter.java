@@ -26,7 +26,7 @@ public class Binary2SourceConverter {
 		StringBuilder sb = new StringBuilder();
 		byte binaryData[] = null;
 		try {
-			binaryData = BinaryFileReader.readFile(file,0);
+			binaryData = BinaryFileHandler.readFile(file,0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

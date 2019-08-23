@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.constants.PixelConfig;
-import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class BitmapEditor {
@@ -34,7 +34,7 @@ public class BitmapEditor {
 		URL url = bundle.getEntry("images/Image by Almighty God.koa");
 
 		try {
-			binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
+			binaryData = BinaryFileHandler.readFile(url.openConnection().getInputStream(), 2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
