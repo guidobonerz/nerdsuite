@@ -1,4 +1,4 @@
-package de.drazil.nersuite.storagemedia;
+package de.drazil.nerdsuite.storagemedia;
 
 public class D64MediaManager extends CBMDiskImageManager {
 
