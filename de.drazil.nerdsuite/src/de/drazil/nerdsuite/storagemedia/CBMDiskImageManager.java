@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.storagemedia;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
@@ -35,17 +36,19 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		int currentDirTrack = directoryTrack;
 		int currentDirEntryBaseOffset = bamOffset + sectorSize;
 		int currentDirEntryOffset = currentDirEntryBaseOffset;
-		String diskName = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
-		String diskId = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa2], true, true)))
-				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], true, true)));
-		String dummy = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa4], true, true)));
-		String dosType = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa5], true, true)))
-				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], true, true)));
-		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + dummy + dosType, 0, "", 0, 0));
+		String name = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
+		String diskId = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa2], false, true)))
+				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], false, true)));
+		String dummy = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa4], false, true)));
+		String dosType = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
+				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], false, true)));
+		String diskName = name + " " + diskId + dummy + dosType;
+		diskName = StringUtils.rightPad(diskName, 22, ' ');
+		mediaEntryList.add(new MediaEntry(diskName, 0, "", 0, 0));
 
 		while (currentDirTrack != 0) {
-			currentDirTrack = content[currentDirEntryOffset];
-			int nextSector = content[currentDirEntryOffset + 0x1];
+			currentDirTrack = content[currentDirEntryOffset] & 0xff;
+			int nextSector = content[currentDirEntryOffset + 0x1] & 0xff;
 			int id = 0;
 			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
@@ -54,12 +57,14 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					int fileTrack = content[currentDirEntryOffset + 0x03];
 					int fileSector = content[currentDirEntryOffset + 0x04];
 					String fileType = getFileType(content[currentDirEntryOffset + 0x02]);
+					fileName = StringUtils.rightPad(fileName, 18, ' ');
 					MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector);
 					mediaEntryList.add(me);
-					byte[] data = readContent(me);
+					// byte[] data = readContent(me);
 					try {
-						BinaryFileHandler.write(
-								new File(Configuration.WORKSPACE_PATH.getAbsolutePath(), "test" + id + ".prg"), data);
+						// BinaryFileHandler.write(
+						// new File(Configuration.WORKSPACE_PATH.getAbsolutePath(), "test" + id +
+						// ".prg"), data);
 
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -77,7 +82,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 	@Override
 	protected byte[] readContent(MediaEntry entry) {
 		byte[] fileContent = null;
-		if (!entry.getType().equals("DEL")) {
+		if (!entry.getType().trim().equals("DEL")) {
 			int fileTrack = entry.getTrack();
 			int fileSector = entry.getSector();
 			while (fileTrack != 0) {
@@ -112,8 +117,8 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		for (int i = start; i <= start + length; i++) {
 			int c = content[i];
 			if (c != skipByte) {
-				System.out.printf("char: %02x\n", c);
-				sb.append(new String(Character.toChars(getChar(c, shift, invers))));
+				// System.out.printf("char: %02x\n", c);
+				sb.append(new String(Character.toChars(getChar(c & 0xff, shift, invers))));
 			}
 		}
 		return sb.toString();
@@ -163,7 +168,10 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 
 			AsciiMap map = list.stream().filter(le -> le.getId() == (c & 0xff)).findFirst().get();
 
-			int cx = map.getScreenCode() & 0xff;
+			int cx = map.getScreenCode();
+			if (cx == 0) {
+				System.out.println(c + " is empty");
+			}
 
 			int base = 0;
 			if (!shift && !invers) {

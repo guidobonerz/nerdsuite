@@ -565,14 +565,14 @@
 	},
 	{
 		"id": 94,
-		"ascii": 94,
-		"screenCode": 0,
+		"ascii": 0,
+		"screenCode": 30,
 		"unicode": 0
 	},
 	{
 		"id": 95,
 		"ascii": 95,
-		"screenCode": 0,
+		"screenCode": 31,
 		"unicode": 0
 	},
 	{

@@ -24,6 +24,7 @@ import de.drazil.nerdsuite.model.Workspace;
 public class Configuration {
 	public static final File WORKSPACE_PATH = new File(
 			Constants.USER_HOME + Constants.FILE_SEPARATOR + Constants.DEFAULT_WORKSPACE_NAME);
+
 	private Workspace workspace;
 	private Font font = null;
 

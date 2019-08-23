@@ -84,6 +84,7 @@ public class Explorer {
 				MediaEntry file = (MediaEntry) o;
 				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(),
 						file.getType());
+				System.out.println(s.length());
 				cell.setText(s);
 				Font f = Constants.C64_Pro_Mono_FONT;
 				cell.setFont(f);
@@ -92,7 +93,14 @@ public class Explorer {
 
 			} else {
 				File file = (File) o;
-				cell.setText(file.getName());
+
+				if (file.getName().startsWith("prj")) {
+					cell.setText(file.getName().substring(4));
+					cell.setImage(ImageFactory.createImage("icons/bricks.png"));
+				} else {
+					cell.setText(file.getName());
+					cell.setImage(ImageFactory.createImage("icons/folder.png"));
+				}
 
 				if (file.getName().matches(".*\\.[dD]64")) {
 					cell.setImage(ImageFactory.createImage("icons/disk.png"));
@@ -168,4 +176,5 @@ public class Explorer {
 	public static void refreshExplorer(Explorer explorer, Project project) {
 		explorer.listFiles();
 	}
+
 }
