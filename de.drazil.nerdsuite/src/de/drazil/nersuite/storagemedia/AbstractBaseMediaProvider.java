@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 
 public abstract class AbstractBaseMediaProvider implements IMediaProvider {
 
@@ -17,12 +17,12 @@ public abstract class AbstractBaseMediaProvider implements IMediaProvider {
 
 	@Override
 	public byte[] read(File file) throws Exception {
-		content = BinaryFileReader.readFile(file, 0);
+		content = BinaryFileHandler.readFile(file, 0);
 		readStructure();
 		return content;
 	}
 
 	protected abstract void readStructure();
 
-	protected abstract void readContent();
+	protected abstract byte[] readContent(MediaEntry entry);
 }

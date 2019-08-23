@@ -23,7 +23,7 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PaintMode;
-import de.drazil.nerdsuite.disassembler.BinaryFileReader;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
@@ -743,7 +743,7 @@ public class GfxEditorView // implements IConfigurationListener {
 			URL url = bundle.getEntry("fonts/c64_lower.64c");
 
 			try {
-				binaryData = BinaryFileReader.readFile(url.openConnection().getInputStream(), 2);
+				binaryData = BinaryFileHandler.readFile(url.openConnection().getInputStream(), 2);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

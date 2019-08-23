@@ -30,7 +30,7 @@ public class Disassembler {
 	public void start(String file) {
 
 		try {
-			byteArray = BinaryFileReader.readFile(new File(file), 0);
+			byteArray = BinaryFileHandler.readFile(new File(file), 0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

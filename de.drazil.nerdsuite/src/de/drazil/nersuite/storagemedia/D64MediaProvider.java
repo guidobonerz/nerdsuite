@@ -1,5 +1,6 @@
 package de.drazil.nersuite.storagemedia;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
@@ -8,6 +9,8 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.drazil.nerdsuite.configuration.Configuration;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.model.AsciiMap;
@@ -39,49 +42,45 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 
 	@Override
 	protected void readStructure() {
-
 		ICPU cpu = new CPU_6510();
-
 		int bamOffset = trackOffsets[directoryTrack - 1];
 		int currentDirTrack = directoryTrack;
-
 		int currentDirEntryBaseOffset = bamOffset + sectorSize;
 		int currentDirEntryOffset = currentDirEntryBaseOffset;
-
 		String diskName = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
 		String diskId = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa2], true, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], true, true)));
 		String dummy = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa4], true, true)));
 		String dosType = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa5], true, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], true, true)));
-		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + dummy + dosType, 0, "", 0));
+		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + dummy + dosType, 0, "", 0, 0));
 		System.out.println("-------------------------");
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirEntryOffset];
 			int nextSector = content[currentDirEntryOffset + 0x1];
+			int id = 0;
 			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
 					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, true, false);
 					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
 					int fileTrack = content[currentDirEntryBaseOffset + 0x03];
 					int fileSector = content[currentDirEntryBaseOffset + 0x04];
-					int block = 1;
 					String fileType = getFileType(content[currentDirEntryOffset + 0x02]);
-					mediaEntryList.add(new MediaEntry(fileName, fileSize, fileType,
-							trackOffsets[fileTrack - 1] + fileSector * 0x100));
-					if (!fileType.equals("DEL")) {
-						while (fileTrack != 0) {
-							int fileSectorOffset = trackOffsets[fileTrack - 1] + fileSector * 0x100;
-							fileTrack = content[fileSectorOffset];
-							fileSector = content[fileSectorOffset + 0x01];
-							System.out.printf("%03d  Next:%05x %02d / %02d\n", block, fileSectorOffset, fileTrack,
-									fileSector);
-							block++;
-						}
+					MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector);
+					mediaEntryList.add(me);
+					byte[] data = readContent(me);
+					try {
+						BinaryFileHandler.write(
+								new File(Configuration.WORKSPACE_PATH.getAbsolutePath(), "test" + id + ".prg"), data);
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 				currentDirEntryOffset += 0x20;
 				System.out.println("-------------------------");
+				id++;
 			}
 			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
 			currentDirEntryOffset = currentDirEntryBaseOffset;
@@ -89,9 +88,31 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 	}
 
 	@Override
-	protected void readContent() {
-		// TODO Auto-generated method stub
-
+	protected byte[] readContent(MediaEntry entry) {
+		byte[] fileContent = null;
+		if (!entry.getType().equals("DEL")) {
+			int fileTrack = entry.getTrack();
+			int fileSector = entry.getSector();
+			while (fileTrack != 0) {
+				int fileSectorOffset = trackOffsets[fileTrack - 1] + fileSector * 0x100;
+				fileTrack = content[fileSectorOffset];
+				fileSector = content[fileSectorOffset + 0x01];
+				int copySize = (fileTrack != 0 ? 0xff : fileSector);
+				if (fileContent == null) {
+					fileContent = new byte[copySize];
+					System.arraycopy(content, fileSectorOffset + 0x02, fileContent, 0, copySize);
+				} else {
+					byte[] sectorData = new byte[copySize];
+					System.arraycopy(content, fileSectorOffset + 0x02, sectorData, 0, copySize);
+					byte[] temp = new byte[fileContent.length + sectorData.length];
+					System.arraycopy(fileContent, 0, temp, 0, fileContent.length);
+					System.arraycopy(sectorData, 0, temp, fileContent.length, copySize);
+					fileContent = temp;
+				}
+				System.out.printf("Next:%05x %02d / %02d\n", fileSectorOffset, fileTrack, fileSector);
+			}
+		}
+		return fileContent;
 	}
 
 	private int getFileSize(ICPU cpu, int start) {
@@ -181,12 +202,6 @@ public class D64MediaProvider extends AbstractBaseMediaProvider {
 
 		}
 		return result;
-	}
-
-	@Override
-	public byte[] getContentById(int id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

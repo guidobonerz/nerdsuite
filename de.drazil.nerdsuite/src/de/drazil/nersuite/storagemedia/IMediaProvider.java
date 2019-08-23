@@ -10,5 +10,4 @@ public interface IMediaProvider {
 
 	public Object[] getEntries();
 
-	public byte[] getContentById(int id);
 }
