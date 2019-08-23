@@ -25,7 +25,7 @@ import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.util.ImageFactory;
-import de.drazil.nersuite.storagemedia.IMediaProvider;
+import de.drazil.nersuite.storagemedia.IMediaManager;
 import de.drazil.nersuite.storagemedia.MediaEntry;
 import de.drazil.nersuite.storagemedia.MediaMountFactory;
 
@@ -123,7 +123,7 @@ public class Explorer {
 			File parentFile = (File) parentElement;
 			if (MediaMountFactory.isMountable(parentFile)) {
 				try {
-					IMediaProvider mediaProvider = MediaMountFactory.mount(parentFile, null);
+					IMediaManager mediaProvider = MediaMountFactory.mount(parentFile, null);
 					entries = mediaProvider.getEntries();
 				} catch (Exception e) {
 					entries = null;

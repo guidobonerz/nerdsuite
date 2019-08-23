@@ -6,13 +6,23 @@ import java.util.List;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 
-public abstract class AbstractBaseMediaProvider implements IMediaProvider {
+public abstract class AbstractBaseMediaManager implements IMediaManager {
 
 	protected byte[] content;
 	protected List<MediaEntry> mediaEntryList;
 
-	public AbstractBaseMediaProvider() {
+	public AbstractBaseMediaManager() {
 		mediaEntryList = new ArrayList<>();
+	}
+
+	@Override
+	public MediaEntry[] getEntries() {
+		return mediaEntryList.toArray(new MediaEntry[mediaEntryList.size()]);
+	}
+
+	@Override
+	public boolean hasEntries() {
+		return true;
 	}
 
 	@Override
