@@ -19,8 +19,8 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 
 	private int sectorSize = 0x100;
 	protected int directoryTrack = 18;
-	protected int directorySectorInterleave=1;
-	protected int fileSectorInterleave=1;
+	protected int directorySectorInterleave = 1;
+	protected int fileSectorInterleave = 1;
 	private List<AsciiMap> list;
 	protected int[] trackOffsets;
 
@@ -49,7 +49,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 			int id = 0;
 			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
-					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, true, false);
+					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, false, false);
 					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
 					int fileTrack = content[currentDirEntryOffset + 0x03];
 					int fileSector = content[currentDirEntryOffset + 0x04];
@@ -112,6 +112,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		for (int i = start; i <= start + length; i++) {
 			int c = content[i];
 			if (c != skipByte) {
+				System.out.printf("char: %02x\n", c);
 				sb.append(new String(Character.toChars(getChar(c, shift, invers))));
 			}
 		}
@@ -150,8 +151,9 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 
 	private int getChar(int c, boolean shift, boolean invers) {
 		int result = 0;
+
 		try {
-			int cx = c & 0x7f;
+
 			if (list == null) {
 				Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 				ObjectMapper mapper = new ObjectMapper();
@@ -159,32 +161,25 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 				list = mapper.readValue(bundle.getEntry("configuration/petascii_map.json"), listType);
 			}
 
-			/*
-			 * for (AsciiMap am : list) { int v = Integer.parseInt(am.getSource(), 16); if
-			 * (v == (cx & 0xff)) { int r = Integer.parseInt(am.getTarget(), 16); result =
-			 * r; break; } }
-			 */
-			/*
-			 * result = Integer.parseInt(list.stream().filter(le ->
-			 * Integer.parseInt(le.getSource(), 16) == (cx & 0xff))
-			 * .findAny().get().getTarget(), 16);
-			 * 
-			 * if (result == 0) { System.out.println("symbol:" + c + " not found"); }
-			 */
+			AsciiMap map = list.stream().filter(le -> le.getId() == (c & 0xff)).findFirst().get();
+
+			int cx = map.getScreenCode() & 0xff;
+
 			int base = 0;
 			if (!shift && !invers) {
-				base = 0xe000;
+				base = 0xee00;
 			} else if (shift && !invers) {
-				base = 0xe100;
+				base = 0xef00;
 			} else if (!shift && invers) {
-				base = 0xe200;
+				base = 0xee00;
 			} else if (shift && invers) {
-				base = 0xe300;
+				base = 0xef00;
 			}
+			int x = cx | (invers ? 0x80 : 0);
+			result = base + x;
 
-			result = base + (cx | 0x80);
-
-			System.out.println(Integer.toHexString(cx) + " " + Integer.toHexString(result));
+			// System.out.println(Integer.toHexString(cx) + " " +
+			// Integer.toHexString(result));
 		} catch (Exception e) {
 
 		}
