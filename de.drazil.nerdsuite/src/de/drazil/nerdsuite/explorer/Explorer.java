@@ -84,12 +84,12 @@ public class Explorer {
 				MediaEntry file = (MediaEntry) o;
 				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(),
 						file.getType());
-				System.out.println(s.length());
+				
 				cell.setText(s);
 				Font f = Constants.C64_Pro_Mono_FONT;
 				cell.setFont(f);
-				cell.setBackground(Constants.CBM_BG_COLOR);
-				cell.setForeground(Constants.CBM_FG_COLOR);
+				//cell.setBackground(Constants.CBM_BG_COLOR);
+				//cell.setForeground(Constants.CBM_FG_COLOR);
 
 			} else {
 				File file = (File) o;

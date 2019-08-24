@@ -37,29 +37,32 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		int currentDirEntryBaseOffset = bamOffset + sectorSize;
 		int currentDirEntryOffset = currentDirEntryBaseOffset;
 		String name = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
-		String diskId = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa2], false, true)))
+		String diskId = new String(Character.toChars(getChar(content[bamOffset + 0xa2], false, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], false, true)));
-		String dummy = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa4], false, true)));
-		String dosType = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
+		String dummy = new String(Character.toChars(getChar(content[bamOffset + 0xa4], false, true)));
+		String dosType = new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], false, true)));
-		String diskName = name + " " + diskId + dummy + dosType;
-		diskName = StringUtils.rightPad(diskName, 22, ' ');
-		mediaEntryList.add(new MediaEntry(diskName, 0, "", 0, 0));
+		String diskName = name + "\uee20" + diskId + dummy + dosType;
+		diskName = StringUtils.rightPad(diskName, 22, "\uee20");
+		mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0));
 
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirEntryOffset] & 0xff;
 			int nextSector = content[currentDirEntryOffset + 0x1] & 0xff;
 			int id = 0;
-			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
+			// while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
+			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0x100) {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
 					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, false, false);
 					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
 					int fileTrack = content[currentDirEntryOffset + 0x03];
 					int fileSector = content[currentDirEntryOffset + 0x04];
 					String fileType = getFileType(content[currentDirEntryOffset + 0x02]);
-					fileName = StringUtils.rightPad(fileName, 18, ' ');
-					MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector);
-					mediaEntryList.add(me);
+					fileName = StringUtils.rightPad(fileName, 19, "\uee20");
+					if (content[currentDirEntryOffset + 0x02] != 0) {
+						MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector);
+						mediaEntryList.add(me);
+					}
 					// byte[] data = readContent(me);
 					try {
 						// BinaryFileHandler.write(
@@ -76,6 +79,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 			}
 			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
 			currentDirEntryOffset = currentDirEntryBaseOffset;
+
 		}
 	}
 
@@ -151,11 +155,11 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 			break;
 		}
 		}
-		return fileType + (locked ? "<" : " ");
+		return fileType + (locked ? "\uee3c\uee20" : "\uee20\uee20");
 	}
 
 	private int getChar(int c, boolean shift, boolean invers) {
-		int result = 0;
+		int mappedChar = 0;
 
 		try {
 
@@ -173,25 +177,14 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 				System.out.println(c + " is empty");
 			}
 
-			int base = 0;
-			if (!shift && !invers) {
-				base = 0xee00;
-			} else if (shift && !invers) {
-				base = 0xef00;
-			} else if (!shift && invers) {
-				base = 0xee00;
-			} else if (shift && invers) {
-				base = 0xef00;
-			}
-			int x = cx | (invers ? 0x80 : 0);
-			result = base + x;
+			mappedChar = (!shift ? 0xee00 : 0xef00) + cx | (invers ? 0x80 : 0);
 
 			// System.out.println(Integer.toHexString(cx) + " " +
 			// Integer.toHexString(result));
 		} catch (Exception e) {
 
 		}
-		return result;
+		return mappedChar;
 	}
 
 }
