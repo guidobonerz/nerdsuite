@@ -37,3 +37,6 @@ Image by Almighty God
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-19_14_01_08-Nerdsuite.png)
 ## ScreenShot
 ![screenshot12](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2019-08-07_20_40_12-Nerdsuite.png)
+## Project Explorer
+###Project Explorer is able to show d64/d71/d81 images al well as CPC DSK images
+![screenshot12](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/project_explorer.png)

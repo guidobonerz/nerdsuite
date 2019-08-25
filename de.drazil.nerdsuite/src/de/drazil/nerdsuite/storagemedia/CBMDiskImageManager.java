@@ -1,16 +1,14 @@
 package de.drazil.nerdsuite.storagemedia;
 
-import java.io.File;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.drazil.nerdsuite.configuration.Configuration;
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.model.AsciiMap;
@@ -19,8 +17,8 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 
 	private int sectorSize = 0x100;
 	protected int directoryTrack = 18;
-	protected int directorySectorInterleave=1;
-	protected int fileSectorInterleave=1;
+	protected int directorySectorInterleave = 1;
+	protected int fileSectorInterleave = 1;
 	private List<AsciiMap> list;
 	protected int[] trackOffsets;
 
@@ -35,31 +33,38 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		int currentDirTrack = directoryTrack;
 		int currentDirEntryBaseOffset = bamOffset + sectorSize;
 		int currentDirEntryOffset = currentDirEntryBaseOffset;
-		String diskName = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
-		String diskId = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa2], true, true)))
-				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], true, true)));
-		String dummy = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa4], true, true)));
-		String dosType = "" + new String(Character.toChars(getChar(content[bamOffset + 0xa5], true, true)))
-				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], true, true)));
-		mediaEntryList.add(new MediaEntry(diskName + " " + diskId + dummy + dosType, 0, "", 0, 0));
+		String name = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
+		String diskId = new String(Character.toChars(getChar(content[bamOffset + 0xa2], false, true)))
+				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], false, true)));
+		String dummy = new String(Character.toChars(getChar(content[bamOffset + 0xa4], false, true)));
+		String dosType = new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
+				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], false, true)));
+		String diskName = name + "\uee20" + diskId + dummy + dosType;
+		diskName = StringUtils.rightPad(diskName, 22, "\uee20");
+		mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0));
 
 		while (currentDirTrack != 0) {
-			currentDirTrack = content[currentDirEntryOffset];
-			int nextSector = content[currentDirEntryOffset + 0x1];
+			currentDirTrack = content[currentDirEntryOffset] & 0xff;
+			int nextSector = content[currentDirEntryOffset + 0x1] & 0xff;
 			int id = 0;
-			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
+			// while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
+			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0x100) {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
-					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, true, false);
+					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, false, false);
 					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
 					int fileTrack = content[currentDirEntryOffset + 0x03];
 					int fileSector = content[currentDirEntryOffset + 0x04];
 					String fileType = getFileType(content[currentDirEntryOffset + 0x02]);
-					MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector);
-					mediaEntryList.add(me);
-					byte[] data = readContent(me);
+					fileName = StringUtils.rightPad(fileName, 19, "\uee20");
+					if (content[currentDirEntryOffset + 0x02] != 0) {
+						MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector);
+						mediaEntryList.add(me);
+					}
+					// byte[] data = readContent(me);
 					try {
-						BinaryFileHandler.write(
-								new File(Configuration.WORKSPACE_PATH.getAbsolutePath(), "test" + id + ".prg"), data);
+						// BinaryFileHandler.write(
+						// new File(Configuration.WORKSPACE_PATH.getAbsolutePath(), "test" + id +
+						// ".prg"), data);
 
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -71,13 +76,14 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 			}
 			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
 			currentDirEntryOffset = currentDirEntryBaseOffset;
+
 		}
 	}
 
 	@Override
 	protected byte[] readContent(MediaEntry entry) {
 		byte[] fileContent = null;
-		if (!entry.getType().equals("DEL")) {
+		if (!entry.getType().trim().equals("DEL")) {
 			int fileTrack = entry.getTrack();
 			int fileSector = entry.getSector();
 			while (fileTrack != 0) {
@@ -112,7 +118,8 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		for (int i = start; i <= start + length; i++) {
 			int c = content[i];
 			if (c != skipByte) {
-				sb.append(new String(Character.toChars(getChar(c, shift, invers))));
+				// System.out.printf("char: %02x\n", c);
+				sb.append(new String(Character.toChars(getChar(c & 0xff, shift, invers))));
 			}
 		}
 		return sb.toString();
@@ -145,13 +152,14 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 			break;
 		}
 		}
-		return fileType + (locked ? "<" : " ");
+		return fileType + (locked ? "\uee3c\uee20" : "\uee20\uee20");
 	}
 
 	private int getChar(int c, boolean shift, boolean invers) {
-		int result = 0;
+		int mappedChar = 0;
+
 		try {
-			int cx = c & 0x7f;
+
 			if (list == null) {
 				Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 				ObjectMapper mapper = new ObjectMapper();
@@ -159,36 +167,21 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 				list = mapper.readValue(bundle.getEntry("configuration/petascii_map.json"), listType);
 			}
 
-			/*
-			 * for (AsciiMap am : list) { int v = Integer.parseInt(am.getSource(), 16); if
-			 * (v == (cx & 0xff)) { int r = Integer.parseInt(am.getTarget(), 16); result =
-			 * r; break; } }
-			 */
-			/*
-			 * result = Integer.parseInt(list.stream().filter(le ->
-			 * Integer.parseInt(le.getSource(), 16) == (cx & 0xff))
-			 * .findAny().get().getTarget(), 16);
-			 * 
-			 * if (result == 0) { System.out.println("symbol:" + c + " not found"); }
-			 */
-			int base = 0;
-			if (!shift && !invers) {
-				base = 0xe000;
-			} else if (shift && !invers) {
-				base = 0xe100;
-			} else if (!shift && invers) {
-				base = 0xe200;
-			} else if (shift && invers) {
-				base = 0xe300;
+			AsciiMap map = list.stream().filter(le -> le.getId() == (c & 0xff)).findFirst().get();
+
+			int cx = map.getScreenCode();
+			if (cx == 0) {
+				System.out.println(c + " is empty");
 			}
 
-			result = base + (cx | 0x80);
+			mappedChar = (!shift ? 0xee00 : 0xef00) + cx | (invers ? 0x80 : 0);
 
-			System.out.println(Integer.toHexString(cx) + " " + Integer.toHexString(result));
+			// System.out.println(Integer.toHexString(cx) + " " +
+			// Integer.toHexString(result));
 		} catch (Exception e) {
 
 		}
-		return result;
+		return mappedChar;
 	}
 
 }

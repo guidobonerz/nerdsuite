@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class AsciiMap {
-	private String source;
-	private String target;
-	private String symbol;
+	private int id;
+	private int ascii;
+	private int screenCode;
+	private String unicode;
 }
