@@ -84,12 +84,12 @@ public class Explorer {
 				MediaEntry file = (MediaEntry) o;
 				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(),
 						file.getType());
-				
+
 				cell.setText(s);
 				Font f = Constants.C64_Pro_Mono_FONT;
 				cell.setFont(f);
-				//cell.setBackground(Constants.CBM_BG_COLOR);
-				//cell.setForeground(Constants.CBM_FG_COLOR);
+				// cell.setBackground(Constants.CBM_BG_COLOR);
+				// cell.setForeground(Constants.CBM_FG_COLOR);
 
 			} else {
 				File file = (File) o;
@@ -129,16 +129,16 @@ public class Explorer {
 		public Object[] getChildren(Object parentElement) {
 			Object[] entries;
 			File parentFile = (File) parentElement;
-			if (MediaMountFactory.isMountable(parentFile)) {
-				try {
-					IMediaManager mediaProvider = MediaMountFactory.mount(parentFile, null);
-					entries = mediaProvider.getEntries();
-				} catch (Exception e) {
-					entries = null;
-				}
+
+			IMediaManager mediaManager = MediaMountFactory.getMediaManager(parentFile, null);
+
+			if (mediaManager != null) {
+				MediaMountFactory.read(mediaManager, parentFile);
+				entries = mediaManager.getEntries();
 			} else {
 				entries = parentFile.listFiles();
 			}
+
 			return entries;
 		}
 
@@ -156,21 +156,20 @@ public class Explorer {
 				return false;
 			}
 			File file = (File) element;
-			if (MediaMountFactory.isMountable(file)) {
-				try {
-					// IMediaProvider mediaProvider = MediaMountFactory.mount(file, null);
-					// hasChildren = mediaProvider.hasEntries();
-					hasChildren = true;
-				} catch (Exception e) {
-					hasChildren = false;
-				}
+
+			IMediaManager mediaManager = MediaMountFactory.getMediaManager(file, null);
+
+			if (file.isFile() && mediaManager != null) {
+				hasChildren = true;
 			} else if (file.isFile()) {
 				hasChildren = false;
 			} else {
 				hasChildren = file.list().length > 0;
 			}
+
 			return hasChildren;
 		}
+
 	}
 
 	public static void refreshExplorer(Explorer explorer, Project project) {

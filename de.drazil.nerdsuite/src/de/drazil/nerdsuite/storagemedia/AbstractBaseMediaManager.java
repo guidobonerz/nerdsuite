@@ -27,6 +27,7 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 
 	@Override
 	public byte[] read(File file) throws Exception {
+		mediaEntryList.clear();
 		content = BinaryFileHandler.readFile(file, 0);
 		readStructure();
 		return content;

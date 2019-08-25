@@ -3,28 +3,50 @@ package de.drazil.nerdsuite.storagemedia;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MediaMountFactory {
 
 	private static Map<String, IMediaManager> mediaStore = new HashMap<>();
 
-	public static boolean isMountable(File file) {
-		return file != null && file.isFile() && file.getName().matches(".*\\.[dD](64|71|81)");
-	}
+	public static IMediaManager getMediaManager(File file, File parent) {
+		IMediaManager mediaProvider = null;
+		String fileName = file.getName();
+		Matcher matcher = Pattern.compile(".*\\.(.*)").matcher(fileName);
+		if (matcher.find()) {
+			String suffix = matcher.group(1);
+			mediaProvider = mediaStore.get(suffix);
+			if (mediaProvider == null) {
+				if (suffix.equalsIgnoreCase("d64")) {
+					mediaProvider = new D64_MediaManager();
+				} else if (suffix.equalsIgnoreCase("d71")) {
+					mediaProvider = new D71_MediaManager();
+				} else if (suffix.equalsIgnoreCase("d81")) {
+					mediaProvider = new D81_MediaManager();
+				} else if (suffix.equalsIgnoreCase("dsk")) {
+					mediaProvider = new DSK_MediaManager();
+				} else if (suffix.equalsIgnoreCase("atr")) {
+					mediaProvider = new ATR_MediaManager();
+				} else {
 
-	public static IMediaManager mount(File file, File parent) throws Exception {
-		IMediaManager mediaProvider = mediaStore.get(file.getName());
-		if (mediaProvider == null && isMountable(file)) {
-			mediaProvider = new D64MediaManager();
-			mediaProvider.read(file);
-			mediaStore.put(file.getName(), mediaProvider);
+				}
+				mediaStore.put(suffix, mediaProvider);
+
+			}
+		} else {
+
 		}
 		return mediaProvider;
 	}
 
-	public static void unmount(File file) {
-
+	public static void read(IMediaManager mediaManager, File file) {
+		try {
+			mediaManager.read(file);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-		
-	
+
 }

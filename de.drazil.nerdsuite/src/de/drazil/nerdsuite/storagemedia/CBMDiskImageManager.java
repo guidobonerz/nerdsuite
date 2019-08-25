@@ -1,6 +1,5 @@
 package de.drazil.nerdsuite.storagemedia;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +9,6 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.drazil.nerdsuite.configuration.Configuration;
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.model.AsciiMap;

@@ -1,8 +1,8 @@
 package de.drazil.nerdsuite.storagemedia;
 
-public class D64MediaManager extends CBMDiskImageManager {
+public class ATR_MediaManager extends CBMDiskImageManager {
 
-	public D64MediaManager() {
+	public ATR_MediaManager() {
 		directorySectorInterleave = 3;
 		fileSectorInterleave = 10;
 		trackOffsets = new int[] { 0x00000, 0x01500, 0x02a00, 0x03f00, 0x05400, 0x06900, 0x07e00, 0x09300, 0x0a800,

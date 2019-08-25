@@ -1,8 +1,8 @@
 package de.drazil.nerdsuite.storagemedia;
 
-public class D81MediaManager extends CBMDiskImageManager {
+public class D81_MediaManager extends CBMDiskImageManager {
 
-	public D81MediaManager() {
+	public D81_MediaManager() {
 		directoryTrack = 40;
 		trackOffsets = new int[] { 0x00000, 0x02800, 0x05000, 0x07800, 0x0A000, 0x0C800, 0x0F000, 0x11800, 0x14000,
 				0x16800, 0x19000, 0x1B800, 0x1E000, 0x20800, 0x23000, 0x25800, 0x28000, 0x2A800, 0x2D000, 0x2F800,
