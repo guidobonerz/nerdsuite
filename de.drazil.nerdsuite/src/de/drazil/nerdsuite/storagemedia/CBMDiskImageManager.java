@@ -52,13 +52,18 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 				if (content[currentDirEntryOffset + 0x5] != 0) {
 					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, false, false);
 					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
+					byte fileType = content[currentDirEntryOffset + 0x02];
 					int fileTrack = content[currentDirEntryOffset + 0x03];
 					int fileSector = content[currentDirEntryOffset + 0x04];
-					String fileType = getFileType(content[currentDirEntryOffset + 0x02]);
+
+					String fileTypeName = getFileType(fileType);
+					boolean isClosed = isClosed(fileType);
+					boolean isLocked = isLocked(fileType);
+
 					fileName = StringUtils.rightPad(fileName, 19, "\uee20");
 					if (content[currentDirEntryOffset + 0x02] != 0) {
-						MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector,
-								new CBMFileAttributes(false, false));
+						MediaEntry me = new MediaEntry(fileName, fileSize, fileTypeName, fileTrack, fileSector,
+								new CBMFileAttributes(isLocked, isClosed));
 						mediaEntryList.add(me);
 					}
 					// byte[] data = readContent(me);
@@ -126,10 +131,16 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		return sb.toString();
 	}
 
+	private boolean isLocked(byte type) {
+		return (type & 64) == 64;
+	}
+
+	private boolean isClosed(byte type) {
+		return (type & 128) == 128;
+	}
+
 	private String getFileType(byte type) {
 		String fileType = "unkown";
-		boolean locked = (type & 64) == 64;
-		boolean closed = (type & 128) == 128;
 
 		switch ((int) type & 0b111) {
 		case 0x0: {
@@ -153,7 +164,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 			break;
 		}
 		}
-		return fileType + (locked ? "\uee3c\uee20" : "\uee20\uee20");
+		return fileType;
 	}
 
 	private int getChar(int c, boolean shift, boolean invers) {
