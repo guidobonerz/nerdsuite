@@ -40,8 +40,10 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		String dosType = new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], false, true)));
 		String diskName = name + "\uee20" + diskId + dummy + dosType;
-		diskName = StringUtils.rightPad(diskName, 22, "\uee20");
-		mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0, new CBMFileAttributes(false, false)));
+
+		diskName = String.format("%1$4s", StringUtils.rightPad(diskName, 22, "\uee20"));
+
+		mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0, new CBMFileAttributes(false, false), "C64 Pro|6"));
 
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirEntryOffset] & 0xff;
@@ -62,8 +64,11 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 
 					fileName = StringUtils.rightPad(fileName, 19, "\uee20");
 					if (content[currentDirEntryOffset + 0x02] != 0) {
+
+						fileName = String.format("%1$3d %2$s %3$s", fileSize, fileName, fileTypeName);
+
 						MediaEntry me = new MediaEntry(fileName, fileSize, fileTypeName, fileTrack, fileSector,
-								new CBMFileAttributes(isLocked, isClosed));
+								new CBMFileAttributes(isLocked, isClosed), "C64 Pro|6");
 						mediaEntryList.add(me);
 					}
 					// byte[] data = readContent(me);

@@ -9,11 +9,13 @@ import java.util.regex.Pattern;
 public class MediaMountFactory {
 
 	private static Map<String, IMediaManager> mediaStore = new HashMap<>();
+	private static Pattern pattern = Pattern.compile(".*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR])");
 
-	public static IMediaManager getMediaManager(File file, File parent) {
+	public static IMediaManager mount(File file) {
 		IMediaManager mediaProvider = null;
 		String fileName = file.getName();
-		Matcher matcher = Pattern.compile(".*\\.(.*)").matcher(fileName);
+
+		Matcher matcher = pattern.matcher(fileName);
 		if (matcher.find()) {
 			String suffix = matcher.group(1);
 			mediaProvider = mediaStore.get(suffix);
@@ -31,13 +33,14 @@ public class MediaMountFactory {
 				} else {
 
 				}
-				mediaStore.put(suffix, mediaProvider);
-
+				mediaStore.put(fileName, mediaProvider);
 			}
-		} else {
-
 		}
 		return mediaProvider;
+	}
+
+	public static void unmount(File file) {
+
 	}
 
 	public static void read(IMediaManager mediaManager, File file) {

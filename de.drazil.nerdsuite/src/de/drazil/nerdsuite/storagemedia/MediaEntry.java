@@ -14,5 +14,6 @@ public class MediaEntry {
 	private int track;
 	private int sector;
 	IAttributes attributes;
+	private String fontName;
 
 }
