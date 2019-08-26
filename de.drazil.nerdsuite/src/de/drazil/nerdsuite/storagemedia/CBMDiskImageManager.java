@@ -41,7 +41,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], false, true)));
 		String diskName = name + "\uee20" + diskId + dummy + dosType;
 		diskName = StringUtils.rightPad(diskName, 22, "\uee20");
-		mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0));
+		mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0, new CBMFileAttributes(false, false)));
 
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirEntryOffset] & 0xff;
@@ -57,7 +57,8 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					String fileType = getFileType(content[currentDirEntryOffset + 0x02]);
 					fileName = StringUtils.rightPad(fileName, 19, "\uee20");
 					if (content[currentDirEntryOffset + 0x02] != 0) {
-						MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector);
+						MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector,
+								new CBMFileAttributes(false, false));
 						mediaEntryList.add(me);
 					}
 					// byte[] data = readContent(me);
