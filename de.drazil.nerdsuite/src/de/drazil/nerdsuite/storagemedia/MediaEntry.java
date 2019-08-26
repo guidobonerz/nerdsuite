@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.storagemedia;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,5 +14,6 @@ public class MediaEntry {
 	private String type;
 	private int track;
 	private int sector;
+	IAttributes attributes;
 
 }

@@ -31,7 +31,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 	@Override
 	protected void readStructure() {
-		
+
 		String diskInfo = getString(0x00, 0x21);
 		String creator = getString(0x22, 0x2f);
 		int tracks = getByte(0x30);
@@ -72,9 +72,10 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 		while (!isEmptyTrack(currentDirectoryOffset)) {
 			if (isVisibleInCatalog(currentDirectoryOffset)) {
-				mediaEntryList
-						.add(new MediaEntry(getString(currentDirectoryOffset + 1, currentDirectoryOffset + 1 + 0xb)
-								+ (isDeletable(currentDirectoryOffset) ? "" : "*"), 0, "", 0, 0));
+				mediaEntryList.add(new MediaEntry(
+						getString(currentDirectoryOffset + 1, currentDirectoryOffset + 1 + 0xb)
+								+ (isDeletable(currentDirectoryOffset) ? "" : "*"),
+						0, "", 0, 0, new CPMFileAttributes(false, false, 0)));
 			}
 			currentDirectoryOffset += 0x20;
 		}
@@ -89,9 +90,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		int sectorCount = getByte(trackInfoBaseOffset + 0x15);
 
 		System.out.printf("TrackInfo: $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
-		System.out.println("TrackNo:" +
-
-				getByte(trackInfoBaseOffset + 0x10));
+		System.out.println("TrackNo:" + getByte(trackInfoBaseOffset + 0x10));
 		System.out.println("SideNo:" + getByte(trackInfoBaseOffset + 0x11));
 		System.out.println("SectorSize:" + sectorSize);
 		System.out.println("SectorCount:" + sectorCount);
