@@ -78,8 +78,9 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 				String fileType = getString(currentDirectoryEntryOffset + 0x09, currentDirectoryEntryOffset + 0xb,
 						false);
 				boolean b = StringUtils.isAsciiPrintable(fileType);
-				fileName = String.format("%1$s" + (StringUtils.isAsciiPrintable(fileType) ? "" : ".%3$s") + " (%2$4d Kb )",
-						fileName, (int) 1 + (fileSize / 1024), fileType);
+				fileName = String.format(
+						"%1$s" + (StringUtils.isAsciiPrintable(fileType) ? "" : ".%3$s") + " (%2$4d Kb )", fileName,
+						(int) 1 + (fileSize / 1024), fileType);
 
 				// fileName = String.format("%1$s.%2$3s%3$1s %4$4dK",
 				// StringUtils.rightPad(fileName, 8, ' '), fileType,
@@ -164,23 +165,6 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 	}
 
-	private String getString(int start, int end, boolean skipCharCheck) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = start; i <= end; i++) {
-			char c = (char) content[i];
-			if (Character.isLetter(c) || Character.isDigit(c) || skipCharCheck) {
-				sb.append(Character.toString(c));
-			}
-		}
-		return sb.toString();
-	}
-
-	private int getWord(int start, Endianness endianess) {
-		return NumericConverter.getWordAsInt(content, start, endianess);
-	}
-
-	private int getByte(int start) {
-		return NumericConverter.getByteAsInt(content, start);
-	}
+	
 
 }
