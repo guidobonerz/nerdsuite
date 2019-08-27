@@ -66,7 +66,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					boolean isClosed = isClosed(fileType);
 					boolean isLocked = isLocked(fileType);
 
-					fileName = StringUtils.rightPad(fileName, 19, "\uee20");
+					//fileName = StringUtils.rightPad(fileName, 19, "\uee20");
 					if (content[currentDirectoryEntryOffset + 0x02] != 0) {
 
 						// fileName = String.format("%1$3d %2$s %3$s", fileSize, fileName,
@@ -147,7 +147,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		StringBuilder sb = new StringBuilder();
 		for (int i = start; i <= start + length; i++) {
 			int c = content[i];
-			if (c != skipByte) {
+			if (Character.isLetter(c) || Character.isDigit(c) || Character.isWhitespace(c) || c == ' ') {
 				sb.append(new String(Character.toChars((char) c)));
 			}
 		}

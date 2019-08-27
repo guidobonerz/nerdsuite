@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class MediaMountFactory {
 
 	private static Map<String, IMediaManager> mediaStore = new HashMap<>();
-	private static Pattern pattern = Pattern.compile(".*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR])");
+	public static Pattern pattern = Pattern.compile(".*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR])");
 
 	public static IMediaManager mount(File file) {
 		IMediaManager mediaProvider = null;

@@ -83,9 +83,9 @@ public class Explorer {
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
 				cell.setText(file.getName());
-				//Font f = FontFactory.getFont(file.getFontName());
-				//cell.setFont(f);
-				
+				// Font f = FontFactory.getFont(file.getFontName());
+				// cell.setFont(f);
+
 				// cell.setBackground(Constants.CBM_BG_COLOR);
 				// cell.setForeground(Constants.CBM_FG_COLOR);
 
@@ -100,7 +100,7 @@ public class Explorer {
 					cell.setImage(ImageFactory.createImage("icons/folder.png"));
 				}
 
-				if (file.getName().matches(".*\\.[dD]64")) {
+				if (MediaMountFactory.pattern.matcher(file.getName()).find()) {
 					cell.setImage(ImageFactory.createImage("icons/disk.png"));
 				}
 
