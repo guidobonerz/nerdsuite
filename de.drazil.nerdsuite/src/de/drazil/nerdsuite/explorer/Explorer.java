@@ -2,7 +2,6 @@ package de.drazil.nerdsuite.explorer;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -27,6 +26,7 @@ import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.storagemedia.IMediaManager;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaMountFactory;
+import de.drazil.nerdsuite.util.FontFactory;
 import de.drazil.nerdsuite.util.ImageFactory;
 
 public class Explorer {
@@ -82,12 +82,11 @@ public class Explorer {
 
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
-				String s = MessageFormat.format("{0} {1} {2}", String.format("%1$4s", file.getSize()), file.getName(),
-						file.getType());
+				cell.setText(file.getName());
+				cell.setImage(ImageFactory.createImage("icons/document-binary.png"));
+				// Font f = FontFactory.getFont(file.getFontName());
+				// cell.setFont(f);
 
-				cell.setText(s);
-				Font f = Constants.C64_Pro_Mono_FONT;
-				cell.setFont(f);
 				// cell.setBackground(Constants.CBM_BG_COLOR);
 				// cell.setForeground(Constants.CBM_FG_COLOR);
 
@@ -102,7 +101,7 @@ public class Explorer {
 					cell.setImage(ImageFactory.createImage("icons/folder.png"));
 				}
 
-				if (file.getName().matches(".*\\.[dD]64")) {
+				if (MediaMountFactory.pattern.matcher(file.getName()).find()) {
 					cell.setImage(ImageFactory.createImage("icons/disk.png"));
 				}
 
@@ -130,7 +129,7 @@ public class Explorer {
 			Object[] entries;
 			File parentFile = (File) parentElement;
 
-			IMediaManager mediaManager = MediaMountFactory.getMediaManager(parentFile, null);
+			IMediaManager mediaManager = MediaMountFactory.mount(parentFile);
 
 			if (mediaManager != null) {
 				MediaMountFactory.read(mediaManager, parentFile);
@@ -157,7 +156,7 @@ public class Explorer {
 			}
 			File file = (File) element;
 
-			IMediaManager mediaManager = MediaMountFactory.getMediaManager(file, null);
+			IMediaManager mediaManager = MediaMountFactory.mount(file);
 
 			if (file.isFile() && mediaManager != null) {
 				hasChildren = true;

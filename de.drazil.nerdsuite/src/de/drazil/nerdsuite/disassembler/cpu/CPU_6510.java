@@ -27,7 +27,7 @@ public class CPU_6510 extends AbstractCPU {
 
 	@Override
 	public int getWord(byte byteArray[], int offset) {
-		return NumericConverter.getWordAsInt(byteArray, offset, true);
+		return NumericConverter.getWordAsInt(byteArray, offset, Endianness.LittleEndian);
 	}
 
 	private void printDisassembly(InstructionLine instructionLine, byte byteArray[]) {
@@ -75,8 +75,9 @@ public class CPU_6510 extends AbstractCPU {
 					boolean doSplitLine = true;
 					// branches
 					if (addressingMode.equals("rel")) {
-						value = currentLine.getProgramCounter().add(((value.getValue() & 0x80) == 0x80
-								? -(((value.getValue() ^ 0xff) & 0xff) - 1) : value.add(2).getValue()));
+						value = currentLine.getProgramCounter()
+								.add(((value.getValue() & 0x80) == 0x80 ? -(((value.getValue() ^ 0xff) & 0xff) - 1)
+										: value.add(2).getValue()));
 					} else if (addressingMode.equals("ind")) {
 						// detect jump table
 						if (value.getValue() <= pc.getValue() + byteArray.length - 2) {
@@ -161,23 +162,22 @@ public class CPU_6510 extends AbstractCPU {
 	}
 
 	/*
-	 * private InstructionLine getNextLine(InstructionLine instructionLine,
-	 * Value pc, Value offset, int value) { return getNextLine(instructionLine,
-	 * pc, offset, value, instructionLine.getType(),
+	 * private InstructionLine getNextLine(InstructionLine instructionLine, Value
+	 * pc, Value offset, int value) { return getNextLine(instructionLine, pc,
+	 * offset, value, instructionLine.getType(),
 	 * instructionLine.getReferenceType()); }
 	 * 
-	 * private InstructionLine getNextLine(InstructionLine instructionLine,
-	 * Value pc, Value offset, int value, Type type, ReferenceType
-	 * referenceType) { InstructionLine nextLine = null; if
-	 * (instructionLine.getRange().getOffset() > offset.getValue()) {
-	 * InstructionLine refLine = getInstructionLineByPC(value); if (refLine !=
-	 * null) { refLine.setReferenceType(referenceType); } nextLine =
+	 * private InstructionLine getNextLine(InstructionLine instructionLine, Value
+	 * pc, Value offset, int value, Type type, ReferenceType referenceType) {
+	 * InstructionLine nextLine = null; if (instructionLine.getRange().getOffset() >
+	 * offset.getValue()) { InstructionLine refLine = getInstructionLineByPC(value);
+	 * if (refLine != null) { refLine.setReferenceType(referenceType); } nextLine =
 	 * instructionLine; } else { InstructionLine refLine =
 	 * getInstructionLineByPC(value); if (refLine == null) { InstructionLine
-	 * matchLine = findInstructionLineByOffset(offset); nextLine =
-	 * split(matchLine, pc, offset, type, referenceType); } else { nextLine =
-	 * refLine.getType() == Type.AsmInstruction ? instructionLine : refLine; } }
-	 * return type == Type.Data ? instructionLine : nextLine; }
+	 * matchLine = findInstructionLineByOffset(offset); nextLine = split(matchLine,
+	 * pc, offset, type, referenceType); } else { nextLine = refLine.getType() ==
+	 * Type.AsmInstruction ? instructionLine : refLine; } } return type == Type.Data
+	 * ? instructionLine : nextLine; }
 	 */
 	private InstructionLine split(InstructionLine instructionLine, Value pc, Value offset) {
 

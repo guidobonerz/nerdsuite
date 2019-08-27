@@ -1,0 +1,18 @@
+﻿The FontStruction “Amstrad CPC correct”
+(https://fontstruct.com/fontstructions/show/447296) by Damien Guard is licensed
+under a Creative Commons Attribution Share Alike license
+(http://creativecommons.org/licenses/by-sa/3.0/).
+“Amstrad CPC correct” was originally cloned (copied) from the FontStruction
+“Amstrad CPC Latin” (https://fontstruct.com/fontstructions/show/424281) by
+“JailDoctor”, which is licensed under a Creative Commons Attribution Share
+Alike license (http://creativecommons.org/licenses/by-sa/3.0/).
+“Amstrad CPC Latin” was in turn cloned (copied) from the FontStruction
+“Amstrad CPC Extended Tweak”
+(https://fontstruct.com/fontstructions/show/253051) by “gecko.jsc”, which is
+licensed under a Creative Commons Attribution Share Alike license
+(http://creativecommons.org/licenses/by-sa/3.0/).
+“Amstrad CPC Extended Tweak” was in turn cloned (copied) from the
+FontStruction “Amstrad CPC extended”
+(https://fontstruct.com/fontstructions/show/25590) by “ruboku”, which is
+licensed under a Creative Commons Attribution license
+(http://creativecommons.org/licenses/by/3.0/).

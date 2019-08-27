@@ -32,7 +32,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		int bamOffset = trackOffsets[directoryTrack - 1];
 		int currentDirTrack = directoryTrack;
 		int currentDirEntryBaseOffset = bamOffset + sectorSize;
-		int currentDirEntryOffset = currentDirEntryBaseOffset;
+		int currentDirectoryEntryOffset = currentDirEntryBaseOffset;
 		String name = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
 		String diskId = new String(Character.toChars(getChar(content[bamOffset + 0xa2], false, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], false, true)));
@@ -40,25 +40,41 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		String dosType = new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], false, true)));
 		String diskName = name + "\uee20" + diskId + dummy + dosType;
-		diskName = StringUtils.rightPad(diskName, 22, "\uee20");
-		mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0, new CBMFileAttributes(false, false)));
+
+		diskName = String.format("%1$4s", StringUtils.rightPad(diskName, 22, "\uee20"));
+
+		// mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0, new
+		// CBMFileAttributes(false, false), "C64 Pro|6"));
 
 		while (currentDirTrack != 0) {
-			currentDirTrack = content[currentDirEntryOffset] & 0xff;
-			int nextSector = content[currentDirEntryOffset + 0x1] & 0xff;
+			currentDirTrack = content[currentDirectoryEntryOffset] & 0xff;
+			int nextSector = content[currentDirectoryEntryOffset + 0x1] & 0xff;
 			int id = 0;
 			// while (currentDirEntryOffset < currentDirEntryBaseOffset + 0xe0) {
-			while (currentDirEntryOffset < currentDirEntryBaseOffset + 0x100) {
-				if (content[currentDirEntryOffset + 0x5] != 0) {
-					String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, false, false);
-					int fileSize = getFileSize(cpu, currentDirEntryOffset + 0x1e);
-					int fileTrack = content[currentDirEntryOffset + 0x03];
-					int fileSector = content[currentDirEntryOffset + 0x04];
-					String fileType = getFileType(content[currentDirEntryOffset + 0x02]);
-					fileName = StringUtils.rightPad(fileName, 19, "\uee20");
-					if (content[currentDirEntryOffset + 0x02] != 0) {
-						MediaEntry me = new MediaEntry(fileName, fileSize, fileType, fileTrack, fileSector,
-								new CBMFileAttributes(false, false));
+			while (currentDirectoryEntryOffset < currentDirEntryBaseOffset + 0x100) {
+				byte fileType = content[currentDirectoryEntryOffset + 0x02];
+				if (content[currentDirectoryEntryOffset + 0x5] != 0 && (fileType & 0b111) != 0) {
+					// String fileName = getFilename(currentDirEntryOffset + 0x5, 0x0f, 0xa0, false,
+					// false);
+					String fileName = getFilename(currentDirectoryEntryOffset + 0x5, 0x0f, 0xa0);
+					int fileSize = getFileSize(cpu, currentDirectoryEntryOffset + 0x1e);
+
+					int fileTrack = content[currentDirectoryEntryOffset + 0x03];
+					int fileSector = content[currentDirectoryEntryOffset + 0x04];
+
+					String fileTypeName = getFileType(fileType);
+					boolean isClosed = isClosed(fileType);
+					boolean isLocked = isLocked(fileType);
+
+					//fileName = StringUtils.rightPad(fileName, 19, "\uee20");
+					if (content[currentDirectoryEntryOffset + 0x02] != 0) {
+
+						// fileName = String.format("%1$3d %2$s %3$s", fileSize, fileName,
+						// fileTypeName);
+						fileName = String.format("%2$s.%3$s (%1$3d Blocks )", fileSize, fileName, fileTypeName);
+
+						MediaEntry me = new MediaEntry(fileName, fileSize, fileTypeName, fileTrack, fileSector,
+								new CBMFileAttributes(isLocked, isClosed), "C64 Pro|6");
 						mediaEntryList.add(me);
 					}
 					// byte[] data = readContent(me);
@@ -72,11 +88,11 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 						e.printStackTrace();
 					}
 				}
-				currentDirEntryOffset += 0x20;
+				currentDirectoryEntryOffset += 0x20;
 				id++;
 			}
 			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
-			currentDirEntryOffset = currentDirEntryBaseOffset;
+			currentDirectoryEntryOffset = currentDirEntryBaseOffset;
 
 		}
 	}
@@ -126,10 +142,28 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		return sb.toString();
 	}
 
+	private String getFilename(int start, int length, int skipByte) {
+
+		StringBuilder sb = new StringBuilder();
+		for (int i = start; i <= start + length; i++) {
+			int c = content[i];
+			if (Character.isLetter(c) || Character.isDigit(c) || Character.isWhitespace(c) || c == ' ') {
+				sb.append(new String(Character.toChars((char) c)));
+			}
+		}
+		return sb.toString();
+	}
+
+	private boolean isLocked(byte type) {
+		return (type & 64) == 64;
+	}
+
+	private boolean isClosed(byte type) {
+		return (type & 128) == 128;
+	}
+
 	private String getFileType(byte type) {
 		String fileType = "unkown";
-		boolean locked = (type & 64) == 64;
-		boolean closed = (type & 128) == 128;
 
 		switch ((int) type & 0b111) {
 		case 0x0: {
@@ -153,7 +187,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 			break;
 		}
 		}
-		return fileType + (locked ? "\uee3c\uee20" : "\uee20\uee20");
+		return fileType;
 	}
 
 	private int getChar(int c, boolean shift, boolean invers) {
