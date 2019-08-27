@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.storagemedia;
 import org.apache.commons.lang3.StringUtils;
 
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
-import de.drazil.nerdsuite.util.NumericConverter;
 import lombok.Getter;
 
 public class DSK_MediaManager extends AbstractBaseMediaManager {
@@ -165,7 +164,4 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 	}
 
-	
-
 }
-
