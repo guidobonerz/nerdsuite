@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.storagemedia;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.util.NumericConverter;
 import lombok.Getter;
@@ -75,8 +77,9 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 						false);
 				String fileType = getString(currentDirectoryEntryOffset + 0x09, currentDirectoryEntryOffset + 0xb,
 						false);
-
-				fileName = String.format("%1$s.%2$s (%3$4dKb)", fileName, fileType, (int) 1 + (fileSize / 1024));
+				boolean b = StringUtils.isAsciiPrintable(fileType);
+				fileName = String.format("%1$s" + (StringUtils.isAsciiPrintable(fileType) ? "" : ".%3$s") + " (%2$4d Kb )",
+						fileName, (int) 1 + (fileSize / 1024), fileType);
 
 				// fileName = String.format("%1$s.%2$3s%3$1s %4$4dK",
 				// StringUtils.rightPad(fileName, 8, ' '), fileType,

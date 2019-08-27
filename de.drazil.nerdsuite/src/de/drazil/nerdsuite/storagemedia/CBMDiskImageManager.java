@@ -71,7 +71,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 
 						// fileName = String.format("%1$3d %2$s %3$s", fileSize, fileName,
 						// fileTypeName);
-						fileName = String.format("%2$s.%3$s (%1$3d Blocks)", fileSize, fileName, fileTypeName);
+						fileName = String.format("%2$s.%3$s (%1$3d Blocks )", fileSize, fileName, fileTypeName);
 
 						MediaEntry me = new MediaEntry(fileName, fileSize, fileTypeName, fileTrack, fileSector,
 								new CBMFileAttributes(isLocked, isClosed), "C64 Pro|6");
