@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.storagemedia;
 
+import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.util.NumericConverter;
 import lombok.Getter;
 
@@ -53,7 +54,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		case Standard:
 			for (int s = 0; s < sides; s++) {
 				for (int t = 0; t < tracks; t++) {
-					trackSizes[s][t] = getWord(0x32, true);
+					trackSizes[s][t] = getWord(0x32, Endianness.LittleEndian);
 				}
 			}
 			break;
@@ -171,8 +172,8 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		return sb.toString();
 	}
 
-	private int getWord(int start, boolean swap) {
-		return NumericConverter.getWordAsInt(content, start, swap);
+	private int getWord(int start, Endianness endianess) {
+		return NumericConverter.getWordAsInt(content, start, endianess);
 	}
 
 	private int getByte(int start) {
