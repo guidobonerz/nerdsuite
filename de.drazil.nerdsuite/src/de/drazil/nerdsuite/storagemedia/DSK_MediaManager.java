@@ -67,24 +67,29 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 			}
 			break;
 		}
-		int currentDirectoryOffset = getDirectoryOffset(directoryBaseOffset, sides, tracks);
+		int currentDirectoryEntryOffset = getDirectoryOffset(directoryBaseOffset, sides, tracks);
 
-		while (!isEmptyTrack(currentDirectoryOffset)) {
-			if (isVisibleInCatalog(currentDirectoryOffset)) {
-				int fileSize = (content[currentDirectoryOffset + 0x0f] * 0x80) & 0xfffff;
-				String fileName = getString(currentDirectoryOffset + 0x01, currentDirectoryOffset + 0x8, false);
-				String fileType = getString(currentDirectoryOffset + 0x09, currentDirectoryOffset + 0xb, false);
+		while (!isEmptyTrack(currentDirectoryEntryOffset)) {
+			if (isVisibleInCatalog(currentDirectoryEntryOffset)) {
+				int fileSize = (content[currentDirectoryEntryOffset + 0x0f] * 0x80) & 0xfffff;
+				String fileName = getString(currentDirectoryEntryOffset + 0x01, currentDirectoryEntryOffset + 0x8, false);
+				String fileType = getString(currentDirectoryEntryOffset + 0x09, currentDirectoryEntryOffset + 0xb, false);
 
-				fileName = String.format("%1$s.%2$3s%3$1s  %4$4dK", StringUtils.rightPad(fileName, 8, ' '), fileType,
-						!isDeletable(currentDirectoryOffset) ? "*" : " ", (int) 1 + (fileSize / 1024));
+				fileName = String.format("%1$s.%2$s (%3$4dKb)", fileName, fileType, (int) 1 + (fileSize / 1024));
+
+				// fileName = String.format("%1$s.%2$3s%3$1s %4$4dK",
+				// StringUtils.rightPad(fileName, 8, ' '), fileType,
+				// !isDeletable(currentDirectoryOffset) ? "*" : " ", (int) 1 + (fileSize /
+				// 1024));
+
 				MediaEntry entry = new MediaEntry(fileName, fileSize, "", 0, 0, new CPMFileAttributes(false, false, 0),
 						"Amstrad CPC correct|6");
 				mediaEntryList.add(entry);
 			}
-			currentDirectoryOffset += 0x20;
+			currentDirectoryEntryOffset += 0x20;
 		}
 
-		System.out.printf("Directory Offset: $%05x\n", currentDirectoryOffset);
+		System.out.printf("Directory Offset: $%05x\n", currentDirectoryEntryOffset);
 
 		System.out.printf("TrackSize: $%05x / %02d\n", trackSizes[0][0], trackSizes[0][0]);
 

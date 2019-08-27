@@ -83,8 +83,9 @@ public class Explorer {
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
 				cell.setText(file.getName());
-				Font f = FontFactory.getFont(file.getFontName());
-				cell.setFont(f);
+				//Font f = FontFactory.getFont(file.getFontName());
+				//cell.setFont(f);
+				
 				// cell.setBackground(Constants.CBM_BG_COLOR);
 				// cell.setForeground(Constants.CBM_FG_COLOR);
 
