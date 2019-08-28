@@ -84,7 +84,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 		MediaEntry entry = null;
 
-		while (currentDirectoryEntryOffset < base + 0x7e0) {
+		while (currentDirectoryEntryOffset < base + 0x600) {
 			if (isEmptyTrack(currentDirectoryEntryOffset)) {
 				currentDirectoryEntryOffset += 0x200;
 			} else {

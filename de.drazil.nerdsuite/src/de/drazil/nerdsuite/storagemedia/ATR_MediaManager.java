@@ -33,6 +33,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 					false);
 			int usedSectorBytes = getByte(currentDirectoryEntryOffset);
 			if (entryFlag != 0x00 && entryFlag != 0x80) {
+				fileName = String.format("%1$s.%2$s (%3$3d Blocks )", fileName, fileExtension, 0);
 				mediaEntryList.add(new MediaEntry(id, fileName, fileName, fileExtension, 0, 0, 0, 0, null, null));
 			}
 			currentDirectoryEntryOffset += 0x10;
