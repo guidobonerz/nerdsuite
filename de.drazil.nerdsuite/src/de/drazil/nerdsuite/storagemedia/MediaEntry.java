@@ -8,11 +8,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class MediaEntry {
+	private int id;
+	private String fullName;
 	private String name;
-	private int size;
 	private String type;
+	private int size;
 	private int track;
 	private int sector;
+	private int offset;
 	IAttributes attributes;
 	private String fontName;
 

@@ -64,7 +64,6 @@ public class NumericConverter {
 		for (int i = 0; i < len; i++) {
 			sb.append(String.format("%8s", Integer.toBinaryString((byteArray[offset + i] & 0xff))).replace(" ", "0"));
 		}
-
 		return sb.toString();
 	}
 
@@ -110,8 +109,6 @@ public class NumericConverter {
 				bytes[i] = 0;
 			}
 		}
-
 		return bytes;
 	}
-
 }

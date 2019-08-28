@@ -23,7 +23,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 		int vtocStartOffset = 0x167;
 		int directoryBaseOffset = (sectorSize == 0x80 ? (0x168 * sectorSize) : (3 * 0x80 + 0x165 * sectorSize)) + 0x10;
 		int currentDirectoryEntryOffset = directoryBaseOffset;
-
+		int id = 0;
 		while (currentDirectoryEntryOffset < directoryBaseOffset + 0x100) {
 			int entryFlag = content[currentDirectoryEntryOffset];
 			int entrySectorCount = getWord(currentDirectoryEntryOffset + 0x01);
@@ -33,9 +33,10 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 					false);
 			int usedSectorBytes = getByte(currentDirectoryEntryOffset);
 			if (entryFlag != 0x00 && entryFlag != 0x80) {
-				mediaEntryList.add(new MediaEntry(fileName + "." + fileExtension, 0, null, 0, 0, null, null));
+				mediaEntryList.add(new MediaEntry(id, fileName, fileName, fileExtension, 0, 0, 0, 0, null, null));
 			}
 			currentDirectoryEntryOffset += 0x10;
+			id++;
 		}
 
 	}
