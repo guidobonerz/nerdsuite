@@ -2,10 +2,12 @@ package de.drazil.nerdsuite.storagemedia;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import lombok.Getter;
 
 public class DSK_MediaManager extends AbstractBaseMediaManager {
+
+	private final static int SECTOR_SIZE = 512;
+	private final static int RECORD_SIZE = SECTOR_SIZE >> 2;
 
 	enum DiskFormat {
 		Standard(0), Extended(2), Unkown(-1);
@@ -23,11 +25,20 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 	protected int directoryTrack = 2;
 
 	public DSK_MediaManager() {
+
 	}
 
 	@Override
 	protected byte[] readContent(MediaEntry entry) {
-		// TODO Auto-generated method stub
+		int offset = entry.getOffset();
+		int i = 0;
+		int block = 0;
+		while ((block = content[offset + i]) != 0x00) {
+			int track = (int) ((block * 2 + 18) / 9);
+			int sector = (int) ((block * 2 + 18) % 9);
+
+			i++;
+		}
 		return null;
 	}
 
@@ -49,48 +60,67 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		int trackInfoBaseOffset = 0x100;
 		int directoryBaseOffset = trackInfoBaseOffset + 0x100;
 
-		trackSizes = new int[sides][tracks];
+		trackSizes = new int[tracks][sides];
 
 		switch (diskFormat) {
 		case Standard:
 			for (int s = 0; s < sides; s++) {
 				for (int t = 0; t < tracks; t++) {
-					trackSizes[s][t] = getWord(0x32, Endianness.LittleEndian);
+					trackSizes[t][s] = getWord(0x32);
 				}
 			}
 			break;
 		case Extended:
 			for (int t = 0; t < tracks; t++) {
 				for (int s = 0; s < sides; s++) {
-					trackSizes[s][t] = content[0x34 + (t * 2) + s] * 0x100;
+					trackSizes[t][s] = content[0x34 + (t * 2) + s] * 0x100;
 				}
 			}
 			break;
 		}
-		int currentDirectoryEntryOffset = getDirectoryOffset(directoryBaseOffset, sides, tracks);
+		int base = getDirectoryOffset(directoryBaseOffset, sides, tracks);
+		int currentDirectoryEntryOffset = base;
+		int id = 0;
 
-		while (!isEmptyTrack(currentDirectoryEntryOffset)) {
-			if (isVisibleInCatalog(currentDirectoryEntryOffset)) {
-				int fileSize = (content[currentDirectoryEntryOffset + 0x0f] * 0x80) & 0xfffff;
+		MediaEntry entry = null;
+
+		while (currentDirectoryEntryOffset < base + 0x600) {
+			if (isEmptyTrack(currentDirectoryEntryOffset)) {
+				currentDirectoryEntryOffset += 0x200;
+			} else {
 				String fileName = getString(currentDirectoryEntryOffset + 0x01, currentDirectoryEntryOffset + 0x8,
 						false);
 				String fileType = getString(currentDirectoryEntryOffset + 0x09, currentDirectoryEntryOffset + 0xb,
 						false);
-				boolean b = StringUtils.isAsciiPrintable(fileType);
-				fileName = String.format(
-						"%1$s" + (StringUtils.isAsciiPrintable(fileType) ? "" : ".%3$s") + " (%2$4d Kb )", fileName,
+				int extent = content[currentDirectoryEntryOffset + 0x0c];
+				int fileSize = getByte(currentDirectoryEntryOffset + 0x0f) * 0x80;
+				if (extent > 0) {
+					for (MediaEntry me : mediaEntryList) {
+						if (me.getName().equals(fileName) && me.getType().equals(fileType)) {
+							fileSize = me.getSize() + fileSize;
+							entry = me;
+							entry.setSize(fileSize);
+							break;
+						}
+					}
+				}
+
+				String fullName = String.format(
+						"%1$s" + (StringUtils.isAsciiPrintable(fileType) ? ".%3$s" : "") + " (%2$4d K )", fileName,
 						(int) 1 + (fileSize / 1024), fileType);
 
-				// fileName = String.format("%1$s.%2$3s%3$1s %4$4dK",
-				// StringUtils.rightPad(fileName, 8, ' '), fileType,
-				// !isDeletable(currentDirectoryOffset) ? "*" : " ", (int) 1 + (fileSize /
-				// 1024));
+				// readContent(entry);
+				if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0) {
+					entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
+							currentDirectoryEntryOffset + 0x10, new CPMFileAttributes(false, false, 0),
+							"Amstrad CPC correct|6");
+					mediaEntryList.add(entry);
+					id++;
+				}
 
-				MediaEntry entry = new MediaEntry(fileName, fileSize, "", 0, 0, new CPMFileAttributes(false, false, 0),
-						"Amstrad CPC correct|6");
-				mediaEntryList.add(entry);
+				entry.setFullName(fullName);
+				currentDirectoryEntryOffset += 0x20;
 			}
-			currentDirectoryEntryOffset += 0x20;
 		}
 
 		System.out.printf("Directory Offset: $%05x\n", currentDirectoryEntryOffset);
@@ -127,6 +157,10 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		return (content[directoryOffset + 0x09] & 0x80) == 0;
 	}
 
+	private int getExtent(int directoryOffset) {
+		return content[directoryOffset + 0x0c];
+	}
+
 	private int getDirectoryOffset(int directoryBaseOffset, int sides, int tracks) {
 		int trackOffset = directoryBaseOffset;
 		for (int s = 0; s < sides; s++) {
@@ -135,22 +169,22 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 					break;
 				}
 
-				trackOffset += trackSizes[s][t];
+				trackOffset += trackSizes[t][s];
 			}
 		}
 		return trackOffset;
 	}
 
 	private boolean isEmptyTrack(int trackInfoBase) {
-		int lastValue = 0;
+		int lastValue = content[trackInfoBase];
 		int count = 0;
-		for (int i = trackInfoBase; i <= trackInfoBase + 0x5; i++) {
+		for (int i = trackInfoBase; i < trackInfoBase + 0x8; i++) {
 			if (i > 0) {
 				count += (content[i] == lastValue ? 1 : 0);
 			}
 			lastValue = content[i];
 		}
-		return count == 0x5;
+		return count == 0x8;
 	}
 
 	private DiskFormat getDiskFormat(String diskInfo) {

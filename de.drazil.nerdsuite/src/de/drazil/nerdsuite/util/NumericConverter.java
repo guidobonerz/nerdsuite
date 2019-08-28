@@ -64,7 +64,6 @@ public class NumericConverter {
 		for (int i = 0; i < len; i++) {
 			sb.append(String.format("%8s", Integer.toBinaryString((byteArray[offset + i] & 0xff))).replace(" ", "0"));
 		}
-
 		return sb.toString();
 	}
 
@@ -73,7 +72,7 @@ public class NumericConverter {
 	}
 
 	public static int getWordAsInt(byte byteArray[], int offset) {
-		return getWordAsInt(byteArray, offset, Endianness.BigEndian);
+		return getWordAsInt(byteArray, offset, Endianness.LittleEndian);
 	}
 
 	public static int getWordAsInt(byte byteArray[], int offset, Endianness endianess) {
@@ -86,7 +85,7 @@ public class NumericConverter {
 	}
 
 	public static byte[] getWord(byte byteArray[], int offset) {
-		return getWord(byteArray, offset, Endianness.BigEndian);
+		return getWord(byteArray, offset, Endianness.LittleEndian);
 	}
 
 	public static byte[] getWord(byte byteArray[], int offset, Endianness endianess) {
@@ -110,8 +109,6 @@ public class NumericConverter {
 				bytes[i] = 0;
 			}
 		}
-
 		return bytes;
 	}
-
 }
