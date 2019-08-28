@@ -35,6 +35,10 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 		return content;
 	}
 
+	
+	protected int getWord(int start) {
+		return getWord(start, Endianness.LittleEndian);
+	}
 	protected int getWord(int start, Endianness endianess) {
 		return NumericConverter.getWordAsInt(content, start, endianess);
 	}

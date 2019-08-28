@@ -73,7 +73,7 @@ public class NumericConverter {
 	}
 
 	public static int getWordAsInt(byte byteArray[], int offset) {
-		return getWordAsInt(byteArray, offset, Endianness.BigEndian);
+		return getWordAsInt(byteArray, offset, Endianness.LittleEndian);
 	}
 
 	public static int getWordAsInt(byte byteArray[], int offset, Endianness endianess) {
@@ -86,7 +86,7 @@ public class NumericConverter {
 	}
 
 	public static byte[] getWord(byte byteArray[], int offset) {
-		return getWord(byteArray, offset, Endianness.BigEndian);
+		return getWord(byteArray, offset, Endianness.LittleEndian);
 	}
 
 	public static byte[] getWord(byte byteArray[], int offset, Endianness endianess) {

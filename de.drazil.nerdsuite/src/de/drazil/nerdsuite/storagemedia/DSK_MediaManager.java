@@ -55,7 +55,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		case Standard:
 			for (int s = 0; s < sides; s++) {
 				for (int t = 0; t < tracks; t++) {
-					trackSizes[s][t] = getWord(0x32, Endianness.LittleEndian);
+					trackSizes[s][t] = getWord(0x32);
 				}
 			}
 			break;
