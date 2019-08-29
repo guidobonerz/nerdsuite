@@ -21,11 +21,17 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 		int diskFlag = getByte(8);
 		int firstTypicalSector = getWord(9);
 		int vtocStartOffset = 0x167;
+
+		int typeCode = content[vtocStartOffset];
+		int sectorCount = getWord(vtocStartOffset + 0x01);
+		int unusedSectorCount = getWord(vtocStartOffset + 0x03);
+		
+
 		int directoryBaseOffset = (sectorSize == 0x80 ? (0x168 * sectorSize) : (3 * 0x80 + 0x165 * sectorSize)) + 0x10;
 		int currentDirectoryEntryOffset = directoryBaseOffset;
 		int id = 0;
-		while (currentDirectoryEntryOffset < directoryBaseOffset + 0xd810 ) //sectorSize) 
-			{
+		while (currentDirectoryEntryOffset < directoryBaseOffset + 0xd810) // sectorSize)
+		{
 			int entryFlag = content[currentDirectoryEntryOffset];
 			int entrySectorCount = getWord(currentDirectoryEntryOffset + 0x01);
 			int entrySector = getWord(currentDirectoryEntryOffset + 0x03);
