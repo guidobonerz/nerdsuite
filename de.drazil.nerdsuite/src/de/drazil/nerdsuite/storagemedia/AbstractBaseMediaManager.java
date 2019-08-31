@@ -1,8 +1,6 @@
 package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
@@ -11,34 +9,53 @@ import de.drazil.nerdsuite.util.NumericConverter;
 public abstract class AbstractBaseMediaManager implements IMediaManager {
 
 	protected byte[] content;
-	protected List<MediaEntry> mediaEntryList;
+	private MediaEntry root;
 
 	public AbstractBaseMediaManager() {
-		mediaEntryList = new ArrayList<>();
+		root = new MediaEntry();
 	}
 
 	@Override
-	public MediaEntry[] getEntries() {
-		return mediaEntryList.toArray(new MediaEntry[mediaEntryList.size()]);
+	public MediaEntry[] getEntries(Object parentEntry) {
+		MediaEntry[] list = new MediaEntry[] {};
+
+		MediaEntry mediaEntry = getRoot();
+		if (parentEntry instanceof MediaEntry) {
+			mediaEntry = (MediaEntry) parentEntry;
+		}
+		readEntries(mediaEntry);
+		list = root.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
+
+		return list;
 	}
 
 	@Override
-	public boolean hasEntries() {
-		return true;
+	public boolean hasEntries(Object entry) {
+		boolean hasChildren = false;
+		if (entry instanceof MediaEntry) {
+			MediaEntry me = (MediaEntry) entry;
+
+			hasChildren = me.hasChildren();
+		}
+		return hasChildren;
+	}
+
+	public MediaEntry getRoot() {
+		return root;
 	}
 
 	@Override
 	public byte[] read(File file) throws Exception {
-		mediaEntryList.clear();
+		getRoot().clear();
 		content = BinaryFileHandler.readFile(file, 0);
-		readStructure();
+		readHeader();
 		return content;
 	}
 
-	
 	protected int getWord(int start) {
 		return getWord(start, Endianness.LittleEndian);
 	}
+
 	protected int getWord(int start, Endianness endianess) {
 		return NumericConverter.getWordAsInt(content, start, endianess);
 	}
@@ -58,7 +75,9 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 		return sb.toString();
 	}
 
-	protected abstract void readStructure();
+	protected abstract void readHeader();
+
+	protected abstract void readEntries(MediaEntry parent);
 
 	protected abstract byte[] readContent(MediaEntry entry);
 }

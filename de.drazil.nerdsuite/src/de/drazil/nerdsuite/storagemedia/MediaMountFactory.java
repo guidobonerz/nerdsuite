@@ -34,22 +34,17 @@ public class MediaMountFactory {
 
 				}
 				mediaStore.put(fileName, mediaProvider);
+				try {
+					mediaProvider.read(file);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		return mediaProvider;
 	}
 
 	public static void unmount(File file) {
-
 	}
-
-	public static void read(IMediaManager mediaManager, File file) {
-		try {
-			mediaManager.read(file);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

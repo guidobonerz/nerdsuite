@@ -28,37 +28,35 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 	}
 
+	private String diskInfo;
+	private String creator;
+	private int tracks;
+	private int sides;
+	private DiskFormat diskFormat;
+	private int trackInfoBaseOffset = 0x100;
+	private int directoryBaseOffset = trackInfoBaseOffset + 0x100;
+	private int base;
+	private int tempBase;
+	private int currentDirectoryEntryOffset;
+	private int sectorInfobase;
+	private String trackInfoText;
+	private int sectorSize;
+	private int sectorCount;
+
 	@Override
-	protected byte[] readContent(MediaEntry entry) {
-		int offset = entry.getOffset();
-		int i = 0;
-		int block = 0;
-		while ((block = content[offset + i]) != 0x00) {
-			int track = (int) ((block * 2 + 18) / 9);
-			int sector = (int) ((block * 2 + 18) % 9);
+	protected void readHeader() {
 
-			i++;
-		}
-		return null;
-	}
-
-	@Override
-	protected void readStructure() {
-
-		String diskInfo = getString(0x00, 0x21, true);
-		String creator = getString(0x22, 0x2f, true);
-		int tracks = getByte(0x30);
-		int sides = getByte(0x31);
+		diskInfo = getString(0x00, 0x21, true);
+		creator = getString(0x22, 0x2f, true);
+		tracks = getByte(0x30);
+		sides = getByte(0x31);
 
 		System.out.println("DiskInfo:" + diskInfo);
 		System.out.println("Creator:" + creator);
 		System.out.println("Tracks:" + tracks);
 		System.out.println("Sides:" + sides);
 
-		DiskFormat diskFormat = getDiskFormat(diskInfo);
-
-		int trackInfoBaseOffset = 0x100;
-		int directoryBaseOffset = trackInfoBaseOffset + 0x100;
+		diskFormat = getDiskFormat(diskInfo);
 
 		trackSizes = new int[tracks][sides];
 
@@ -79,19 +77,18 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 			break;
 		}
 
-		int base = getDirectoryOffset(directoryBaseOffset, sides, tracks);
-		int tempBase = base;
-		int currentDirectoryEntryOffset = base;
-		int id = 0;
+		base = getDirectoryOffset(directoryBaseOffset, sides, tracks);
+		tempBase = base;
+		currentDirectoryEntryOffset = base;
 
 		System.out.printf("Directory Offset: $%05x\n", currentDirectoryEntryOffset);
 
 		System.out.printf("TrackSize: $%05x / %02d\n", trackSizes[0][0], trackSizes[0][0]);
 
-		int sectorInfobase = trackInfoBaseOffset + 0x18;
-		String trackInfoText = getString(trackInfoBaseOffset, trackInfoBaseOffset + 0x0b, true);
-		int sectorSize = getByte(trackInfoBaseOffset + 0x14);
-		int sectorCount = getByte(trackInfoBaseOffset + 0x15);
+		sectorInfobase = trackInfoBaseOffset + 0x18;
+		trackInfoText = getString(trackInfoBaseOffset, trackInfoBaseOffset + 0x0b, true);
+		sectorSize = getByte(trackInfoBaseOffset + 0x14);
+		sectorCount = getByte(trackInfoBaseOffset + 0x15);
 
 		System.out.printf("TrackInfo: $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
 		System.out.println("TrackNo:" + getByte(trackInfoBaseOffset + 0x10));
@@ -107,7 +104,11 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 			int sectorSize2 = getByte(i + 0x03);
 			System.out.printf("  SectorInfo: Id:$%05x - Size:%s \n", sectorId, sectorSize2);
 		}
+	}
 
+	@Override
+	protected void readEntries(MediaEntry parent) {
+		int id = 0;
 		while (currentDirectoryEntryOffset < base + 0x1200) {
 			MediaEntry entry = null;
 			if (isEmptyTrack(currentDirectoryEntryOffset)) {
@@ -121,7 +122,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 				int extent = content[currentDirectoryEntryOffset + 0x0c];
 				int fileSize = getByte(currentDirectoryEntryOffset + 0x0f) * 0x80;
 				if (extent > 0) {
-					for (MediaEntry me : mediaEntryList) {
+					for (MediaEntry me : getRoot().getChildrenList()) {
 						if (me.getName().equals(fileName) && me.getType().equals(fileType)) {
 							fileSize = me.getSize() + fileSize;
 							entry = me;
@@ -138,9 +139,8 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 				// readContent(entry);
 				if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0) {
 					entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
-							currentDirectoryEntryOffset + 0x10, new CPMFileAttributes(false, false, 0),
-							"Amstrad CPC correct|6");
-					mediaEntryList.add(entry);
+							currentDirectoryEntryOffset + 0x10, new CPMFileAttributes(false, false, 0));
+					getRoot().addChildEntry(entry);
 					id++;
 				}
 				if (entry != null) {
@@ -149,7 +149,20 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 				currentDirectoryEntryOffset += 0x20;
 			}
 		}
+	}
 
+	@Override
+	protected byte[] readContent(MediaEntry entry) {
+		int offset = entry.getOffset();
+		int i = 0;
+		int block = 0;
+		while ((block = content[offset + i]) != 0x00) {
+			int track = (int) ((block * 2 + 18) / 9);
+			int sector = (int) ((block * 2 + 18) % 9);
+
+			i++;
+		}
+		return null;
 	}
 
 	private boolean isVisibleInCatalog(int directoryOffset) {

@@ -6,8 +6,8 @@ public interface IMediaManager {
 
 	public byte[] read(File file) throws Exception;
 
-	public boolean hasEntries();
+	public boolean hasEntries(Object entry);
 
-	public Object[] getEntries();
+	public Object[] getEntries(Object parent);
 
 }

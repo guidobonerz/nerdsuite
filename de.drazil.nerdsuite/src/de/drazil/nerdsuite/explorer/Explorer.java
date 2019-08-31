@@ -132,8 +132,7 @@ public class Explorer {
 			IMediaManager mediaManager = MediaMountFactory.mount(parentFile);
 
 			if (mediaManager != null) {
-				MediaMountFactory.read(mediaManager, parentFile);
-				entries = mediaManager.getEntries();
+				entries = mediaManager.getEntries(parentElement);
 			} else {
 				entries = parentFile.listFiles();
 			}
@@ -151,21 +150,19 @@ public class Explorer {
 		public boolean hasChildren(Object element) {
 			boolean hasChildren = false;
 
-			if (element instanceof MediaEntry) {
-				return false;
-			}
-			File file = (File) element;
-
-			IMediaManager mediaManager = MediaMountFactory.mount(file);
-
-			if (file.isFile() && mediaManager != null) {
-				hasChildren = true;
-			} else if (file.isFile()) {
-				hasChildren = false;
+			if (element instanceof File) {
+				File file = (File) element;
+				if (file.isDirectory()) {
+					hasChildren = true;
+				} else if (MediaMountFactory.mount(file) != null) {
+					hasChildren = true;
+				} else {
+					hasChildren = false;
+				}
 			} else {
-				hasChildren = file.list().length > 0;
-			}
+				MediaEntry me = (MediaEntry) element;
 
+			}
 			return hasChildren;
 		}
 
