@@ -19,6 +19,8 @@ public class MediaEntry {
 	private int offset;
 	IAttributes attributes;
 	private String fontName;
+	private MediaEntry parent;
+	private boolean isDirectory;
 
 	public MediaEntry() {
 		childList = new ArrayList<>();
@@ -55,5 +57,10 @@ public class MediaEntry {
 
 	public void clear() {
 		childList.clear();
+	}
+
+	public static void addChildEntry(MediaEntry parent, MediaEntry child) {
+		child.setParent(parent);
+		parent.addChildEntry(child);
 	}
 }

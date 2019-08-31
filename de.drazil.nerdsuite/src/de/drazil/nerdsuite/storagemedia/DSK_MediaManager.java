@@ -111,7 +111,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		int id = 0;
 		while (currentDirectoryEntryOffset < base + 0x1200) {
 			MediaEntry entry = null;
-			if (isEmptyTrack(currentDirectoryEntryOffset)) {
+			if (isEmptyEntry(currentDirectoryEntryOffset, 8)) {
 				tempBase += (trackSizes[0][0] - 0x100) / sectorSize;
 				currentDirectoryEntryOffset = tempBase;
 			} else {
@@ -140,7 +140,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 				if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0) {
 					entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
 							currentDirectoryEntryOffset + 0x10, new CPMFileAttributes(false, false, 0));
-					getRoot().addChildEntry(entry);
+					MediaEntry.addChildEntry(parent, entry);
 					id++;
 				}
 				if (entry != null) {
@@ -181,7 +181,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		int trackOffset = directoryBaseOffset;
 		for (int s = 0; s < sides; s++) {
 			for (int t = 0; t < tracks; t++) {
-				if (!isEmptyTrack(trackOffset)) {
+				if (!isEmptyEntry(trackOffset, 8)) {
 					break;
 				}
 
@@ -189,18 +189,6 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 			}
 		}
 		return trackOffset;
-	}
-
-	private boolean isEmptyTrack(int trackInfoBase) {
-		int lastValue = content[trackInfoBase];
-		int count = 0;
-		for (int i = trackInfoBase; i < trackInfoBase + 0x8; i++) {
-			if (i > 0) {
-				count += (content[i] == lastValue ? 1 : 0);
-			}
-			lastValue = content[i];
-		}
-		return count == 0x8;
 	}
 
 	private DiskFormat getDiskFormat(String diskInfo) {

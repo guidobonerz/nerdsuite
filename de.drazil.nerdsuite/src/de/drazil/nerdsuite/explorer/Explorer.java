@@ -83,7 +83,8 @@ public class Explorer {
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
 				cell.setText(file.getFullName());
-				cell.setImage(ImageFactory.createImage("icons/document-binary.png"));
+				cell.setImage(ImageFactory
+						.createImage(file.isDirectory() ? "icons/folder.png" : "icons/document-binary.png"));
 				// Font f = FontFactory.getFont(file.getFontName());
 				// cell.setFont(f);
 

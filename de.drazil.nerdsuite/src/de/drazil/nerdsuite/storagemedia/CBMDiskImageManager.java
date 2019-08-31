@@ -76,9 +76,9 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					boolean isLocked = isLocked(fileType);
 					if (content[currentDirectoryEntryOffset + 0x02] != 0) {
 						fileName = String.format("%2$s.%3$s (%1$3d Blocks )", fileSize, fileName, fileTypeName);
-						MediaEntry me = new MediaEntry(id, fileName, fileName, fileTypeName, fileSize, fileTrack,
+						MediaEntry entry = new MediaEntry(id, fileName, fileName, fileTypeName, fileSize, fileTrack,
 								fileSector, 0, new CBMFileAttributes(isLocked, isClosed));
-						getRoot().addChildEntry(me);
+						MediaEntry.addChildEntry(parent, entry);
 					}
 					// byte[] data = readContent(me);
 					try {
