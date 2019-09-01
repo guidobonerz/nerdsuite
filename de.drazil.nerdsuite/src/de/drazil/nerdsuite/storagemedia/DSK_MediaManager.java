@@ -127,7 +127,6 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 					}
 				}
 			}
-
 			String fullName = String.format(
 					"%1$s" + (StringUtils.isAsciiPrintable(fileType) ? ".%3$s" : "") + " (%2$4d K )", fileName,
 					(int) 1 + (fileSize / 1024), fileType);
