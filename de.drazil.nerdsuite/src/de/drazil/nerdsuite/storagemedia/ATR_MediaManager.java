@@ -59,7 +59,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 		int currentDirectoryEntryOffset = currentDirectorySectorOffset;
 
 		while (hasMoreEntries) {
-			int entryFlag = content[currentDirectoryEntryOffset];
+			int entryFlag = getByte(currentDirectoryEntryOffset);
 			int entrySectorCount = getWord(currentDirectoryEntryOffset + 0x01);
 			int entrySector = getWord(currentDirectoryEntryOffset + 0x03);
 			String fileName = getString(currentDirectoryEntryOffset + 0x05, currentDirectoryEntryOffset + 0x0c, false);
@@ -87,7 +87,27 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 
 	@Override
 	public byte[] readContent(MediaEntry entry) {
-		// TODO Auto-generated method stub
+		int dataOffset = getSectorOffset(entry.getSector() - 1);
+		int exeHeader = getWord(dataOffset);
+		dataOffset += 2;
+		boolean hasMore = true;
+		while (hasMore) {
+			int binaryStart = getWord(dataOffset);
+			int binaryEnd = getWord(dataOffset + 2);
+			int diff = (binaryEnd - binaryStart) + 1;
+			dataOffset += 4;
+			System.out.println(String.format("load segment $%4x-$%4x", binaryStart, binaryEnd));
+			for (int i = 0; i < diff; i++) {
+
+			}
+
+			dataOffset += diff;
+			
+
+		}
+
+		// int bytesUsedInSector = getByte(dataOffset + 125);
+		// int nextDataSector = getWord(dataOffset + 126);
 		return null;
 	}
 
