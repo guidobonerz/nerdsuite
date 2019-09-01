@@ -1,6 +1,8 @@
 package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
@@ -31,7 +33,16 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 			mediaEntry = (MediaEntry) parentEntry;
 		}
 		readEntries(mediaEntry);
+		Collections.sort(mediaEntry.getChildrenList(), new Comparator<MediaEntry>() {
+			@Override
+			public int compare(MediaEntry me1, MediaEntry me2) {
+				String s1 = me1.getName() + me1.getType();
+				String s2 = me2.getName() + me2.getType();
+				return s1.compareTo(s2);
+			}
+		});
 		list = mediaEntry.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
+
 		return list;
 	}
 
@@ -81,14 +92,10 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 		return sb.toString();
 	}
 
-	public boolean isEmptyEntry(int base, int maxCount,int checkValue) {
-		int lastValue = content[base];
+	public boolean isEmptyEntry(int base, int maxCount, int checkValue) {
 		int count = 0;
 		for (int i = base; i < base + maxCount; i++) {
-			if (i > 0) {
-				count += (content[i] == lastValue ? 1 : 0);
-			}
-			lastValue = content[i];
+			count += ((content[i] & 0xff) == checkValue ? 1 : 0);
 		}
 		return count == maxCount;
 	}

@@ -38,8 +38,8 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 	private int trackInfoBaseOffset = 0x100;
 	private int directoryBaseOffset = trackInfoBaseOffset + 0x100;
 	private int base;
-	private int tempBase;
-	private int currentDirectoryEntryOffset;
+	// private int tempBase;
+	// private int currentDirectoryEntryOffset;
 	private int sectorInfobase;
 	private String trackInfoText;
 	private int sectorSize;
@@ -80,10 +80,8 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		}
 
 		base = getDirectoryOffset(directoryBaseOffset, sides, tracks);
-		tempBase = base;
-		currentDirectoryEntryOffset = base;
 
-		System.out.printf("Directory Offset: $%05x\n", currentDirectoryEntryOffset);
+		// System.out.printf("Directory Offset: $%05x\n", currentDirectoryEntryOffset);
 
 		System.out.printf("TrackSize: $%05x / %02d\n", trackSizes[0][0], trackSizes[0][0]);
 
@@ -110,46 +108,48 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 	@Override
 	protected void readEntries(MediaEntry parent) {
+		int currentDirectoryEntryOffset = base;
 		int id = 0;
-		while (currentDirectoryEntryOffset < base + 0x800) {
+		boolean hasMoreEntries = true;
+		while (hasMoreEntries) {
 			MediaEntry entry = null;
-			if (isEmptyEntry(currentDirectoryEntryOffset, 8, 0xe5)) {
-				tempBase += (trackSizes[0][0] - 0x100) / sectorSize;
-				currentDirectoryEntryOffset = tempBase;
-			} else {
-				String fileName = getString(currentDirectoryEntryOffset + 0x01, currentDirectoryEntryOffset + 0x8,
-						false);
-				String fileType = getString(currentDirectoryEntryOffset + 0x09, currentDirectoryEntryOffset + 0xb,
-						false);
-				int extent = content[currentDirectoryEntryOffset + 0x0c];
-				int fileSize = getByte(currentDirectoryEntryOffset + 0x0f) * 0x80;
-				if (extent > 0) {
-					for (MediaEntry me : parent.getChildrenList()) {
-						if (me.getName().equals(fileName) && me.getType().equals(fileType)) {
-							fileSize = me.getSize() + fileSize;
-							entry = me;
-							entry.setSize(fileSize);
-							break;
-						}
+			String fileName = getString(currentDirectoryEntryOffset + 0x01, currentDirectoryEntryOffset + 0x8, false);
+			String fileType = getString(currentDirectoryEntryOffset + 0x09, currentDirectoryEntryOffset + 0xb, false);
+			int extent = content[currentDirectoryEntryOffset + 0x0c];
+			int fileSize = getByte(currentDirectoryEntryOffset + 0x0f) * 0x80;
+			if (extent > 0) {
+				for (MediaEntry me : parent.getChildrenList()) {
+					if (me.getName().equals(fileName) && me.getType().equals(fileType)) {
+						fileSize = me.getSize() + fileSize;
+						entry = me;
+						entry.setSize(fileSize);
+						break;
 					}
 				}
+			}
+			String fullName = String.format(
+					"%1$s" + (StringUtils.isAsciiPrintable(fileType) ? ".%3$s" : "") + " (%2$4d K )", fileName,
+					(int) 1 + (fileSize / 1024), fileType);
 
-				String fullName = String.format(
-						"%1$s" + (StringUtils.isAsciiPrintable(fileType) ? ".%3$s" : "") + " (%2$4d K )", fileName,
-						(int) 1 + (fileSize / 1024), fileType);
+			if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0) {
+				entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
+						currentDirectoryEntryOffset + 0x10, null);
+				entry.setUserObject(getContainer());
+				entry.setOffset(currentDirectoryEntryOffset);
+				MediaMountFactory.addChildEntry(parent, entry);
 
-				// readContent(entry);
-				if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0) {
-					entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
-							currentDirectoryEntryOffset + 0x10, null);
-					entry.setUserObject(getContainer());
-					MediaMountFactory.addChildEntry(parent, entry);
-					id++;
-				}
-				if (entry != null) {
-					entry.setFullName(fullName);
-				}
-				currentDirectoryEntryOffset += 0x20;
+			}
+			if (entry != null) {
+				entry.setFullName(fullName);
+			}
+			currentDirectoryEntryOffset += 0x20;
+			id++;
+			if (id % 16 == 0 && isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0)) {
+				hasMoreEntries = true;
+				currentDirectoryEntryOffset += 0x200;
+			}
+			if (isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0xe5)) {
+				hasMoreEntries = false;
 			}
 		}
 	}
@@ -162,7 +162,6 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		while ((block = content[offset + i]) != 0x00) {
 			int track = (int) ((block * 2 + 18) / 9);
 			int sector = (int) ((block * 2 + 18) % 9);
-
 			i++;
 		}
 		return null;
