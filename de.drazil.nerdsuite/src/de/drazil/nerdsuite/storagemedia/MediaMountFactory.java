@@ -55,7 +55,7 @@ public class MediaMountFactory {
 
 	public static void addChildEntry(MediaEntry parent, MediaEntry child) {
 		child.setParent(parent);
-		parent.addChildEntry(child);
+		parent.addChildrenEntry(child);
 	}
 
 	public static MediaEntry[] getChildren(MediaEntry entry) {

@@ -124,7 +124,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 				int extent = content[currentDirectoryEntryOffset + 0x0c];
 				int fileSize = getByte(currentDirectoryEntryOffset + 0x0f) * 0x80;
 				if (extent > 0) {
-					for (MediaEntry me : getRoot().getChildrenList()) {
+					for (MediaEntry me : parent.getChildrenList()) {
 						if (me.getName().equals(fileName) && me.getType().equals(fileType)) {
 							fileSize = me.getSize() + fileSize;
 							entry = me;

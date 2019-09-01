@@ -94,7 +94,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					}
 				}
 				currentDirectoryEntryOffset += 0x20;
-				id++;
+				id++; 
 			}
 			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
 			currentDirectoryEntryOffset = currentDirEntryBaseOffset;
