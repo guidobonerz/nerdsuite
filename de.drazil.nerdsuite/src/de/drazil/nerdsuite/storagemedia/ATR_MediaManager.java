@@ -79,9 +79,9 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 				currentDirectorySectorOffset += sectorSize;
 				currentDirectoryEntryOffset = currentDirectorySectorOffset;
 			}
-			hasMoreEntries = !isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0);
+
 			id++;
-			hasMoreEntries = !(id > 64);
+			hasMoreEntries = !isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0) && !(id > 64);
 		}
 	}
 
