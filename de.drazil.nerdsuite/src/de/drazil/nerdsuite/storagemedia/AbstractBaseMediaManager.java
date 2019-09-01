@@ -102,7 +102,10 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 
 	protected abstract void readHeader();
 
-	protected abstract void readEntries(MediaEntry parent);
+	@Override
+	public abstract byte[] readContent(MediaEntry entry);
 
-	protected abstract byte[] readContent(MediaEntry entry);
+	@Override
+	public abstract void readEntries(MediaEntry parent);
+
 }

@@ -107,7 +107,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 	}
 
 	@Override
-	protected void readEntries(MediaEntry parent) {
+	public void readEntries(MediaEntry parent) {
 		int currentDirectoryEntryOffset = base;
 		int id = 0;
 		boolean hasMoreEntries = true;
@@ -155,7 +155,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 	}
 
 	@Override
-	protected byte[] readContent(MediaEntry entry) {
+	public byte[] readContent(MediaEntry entry) {
 		int offset = entry.getOffset();
 		int i = 0;
 		int block = 0;

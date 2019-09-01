@@ -49,7 +49,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 	}
 
 	@Override
-	protected void readEntries(MediaEntry parent) {
+	public void readEntries(MediaEntry parent) {
 		int id = 1;
 		boolean hasMoreEntries = true;
 		int currentDirectorySectorOffset = getSectorOffset(parent.getSector());
@@ -86,7 +86,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 	}
 
 	@Override
-	protected byte[] readContent(MediaEntry entry) {
+	public byte[] readContent(MediaEntry entry) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -6,9 +6,13 @@ import java.io.FileFilter;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -43,7 +47,25 @@ public class Explorer {
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
 
 		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.projectexplorer");
+
 		listFiles();
+	}
+
+	@Inject
+	@Optional
+	void doExportFile(@UIEventTopic("doExportFile") boolean process) {
+		TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
+		Object o = treeNode.getFirstElement();
+		if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
+			MediaEntry entry = (MediaEntry) o;
+			IMediaManager mediaManager = MediaMountFactory.mount((File) entry.getUserObject());
+			mediaManager.readContent(entry);
+		} else {
+			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
+					"This entry can not be exported.");
+		}
+
+		System.out.println("doExportFile:");
 	}
 
 	private void listFiles() {

@@ -57,7 +57,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 	}
 
 	@Override
-	protected void readEntries(MediaEntry parent) {
+	public void readEntries(MediaEntry parent) {
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirectoryEntryOffset] & 0xff;
 			int nextSector = content[currentDirectoryEntryOffset + 0x1] & 0xff;
@@ -94,7 +94,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					}
 				}
 				currentDirectoryEntryOffset += 0x20;
-				id++; 
+				id++;
 			}
 			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
 			currentDirectoryEntryOffset = currentDirEntryBaseOffset;
@@ -103,7 +103,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 	}
 
 	@Override
-	protected byte[] readContent(MediaEntry entry) {
+	public byte[] readContent(MediaEntry entry) {
 		byte[] fileContent = null;
 		if (!entry.getType().trim().equals("DEL")) {
 			int fileTrack = entry.getTrack();

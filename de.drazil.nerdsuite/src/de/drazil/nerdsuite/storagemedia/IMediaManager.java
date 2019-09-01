@@ -12,4 +12,7 @@ public interface IMediaManager {
 
 	public MediaEntry[] getEntries(Object parent);
 
+	public void readEntries(MediaEntry parent);
+
+	public byte[] readContent(MediaEntry entry);
 }
