@@ -71,7 +71,6 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 				MediaEntry entry = new MediaEntry(id, fileName, fileName, fileExtension, 0, 0, 0, 0, null);
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
 				entry.setUserObject(getContainer());
-
 				entry.setSector(entrySector);
 				MediaMountFactory.addChildEntry(parent, entry);
 			}
