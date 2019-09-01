@@ -42,7 +42,7 @@ public class Explorer {
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
 
-		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.explorer");
+		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.projectexplorer");
 		listFiles();
 	}
 
