@@ -62,10 +62,6 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 			int entryFlag = content[currentDirectoryEntryOffset];
 			int entrySectorCount = getWord(currentDirectoryEntryOffset + 0x01);
 			int entrySector = getWord(currentDirectoryEntryOffset + 0x03);
-			/*
-			 * int subfolderOffset = (sectorSize == 0x80 ? (entrySector * sectorSize) : (3 *
-			 * 0x80 + entrySector * sectorSize)) + 0x10 - 0x270;
-			 */
 			String fileName = getString(currentDirectoryEntryOffset + 0x05, currentDirectoryEntryOffset + 0x0c, false);
 			String fileExtension = getString(currentDirectoryEntryOffset + 0x0d, currentDirectoryEntryOffset + 0x0f,
 					false);

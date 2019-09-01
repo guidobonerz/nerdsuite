@@ -111,7 +111,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 	@Override
 	protected void readEntries(MediaEntry parent) {
 		int id = 0;
-		while (currentDirectoryEntryOffset < base + 0x1200) {
+		while (currentDirectoryEntryOffset < base + 0x800) {
 			MediaEntry entry = null;
 			if (isEmptyEntry(currentDirectoryEntryOffset, 8)) {
 				tempBase += (trackSizes[0][0] - 0x100) / sectorSize;
