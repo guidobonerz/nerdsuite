@@ -113,7 +113,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		int id = 0;
 		while (currentDirectoryEntryOffset < base + 0x800) {
 			MediaEntry entry = null;
-			if (isEmptyEntry(currentDirectoryEntryOffset, 8)) {
+			if (isEmptyEntry(currentDirectoryEntryOffset, 8, 0xe5)) {
 				tempBase += (trackSizes[0][0] - 0x100) / sectorSize;
 				currentDirectoryEntryOffset = tempBase;
 			} else {
@@ -184,7 +184,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 		int trackOffset = directoryBaseOffset;
 		for (int s = 0; s < sides; s++) {
 			for (int t = 0; t < tracks; t++) {
-				if (!isEmptyEntry(trackOffset, 8)) {
+				if (!isEmptyEntry(trackOffset, 8, 0xe5)) {
 					break;
 				}
 

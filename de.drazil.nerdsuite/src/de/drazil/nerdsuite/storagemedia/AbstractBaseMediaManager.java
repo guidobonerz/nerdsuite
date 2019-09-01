@@ -81,7 +81,7 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 		return sb.toString();
 	}
 
-	public boolean isEmptyEntry(int base, int maxCount) {
+	public boolean isEmptyEntry(int base, int maxCount,int checkValue) {
 		int lastValue = content[base];
 		int count = 0;
 		for (int i = base; i < base + maxCount; i++) {
