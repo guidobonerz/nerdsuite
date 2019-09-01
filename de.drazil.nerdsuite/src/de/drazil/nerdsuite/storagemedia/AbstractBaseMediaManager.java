@@ -1,8 +1,6 @@
 package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
@@ -11,34 +9,59 @@ import de.drazil.nerdsuite.util.NumericConverter;
 public abstract class AbstractBaseMediaManager implements IMediaManager {
 
 	protected byte[] content;
-	protected List<MediaEntry> mediaEntryList;
+	private MediaEntry root;
+	private File container;
 
-	public AbstractBaseMediaManager() {
-		mediaEntryList = new ArrayList<>();
+	public AbstractBaseMediaManager(File file) {
+		container = file;
+		root = new MediaEntry();
+		root.setRoot(true);
+		root.setUserObject(file);
+	}
+
+	public File getContainer() {
+		return container;
 	}
 
 	@Override
-	public MediaEntry[] getEntries() {
-		return mediaEntryList.toArray(new MediaEntry[mediaEntryList.size()]);
+	public MediaEntry[] getEntries(Object parentEntry) {
+		MediaEntry[] list = new MediaEntry[] {};
+		MediaEntry mediaEntry = getRoot();
+		if (parentEntry instanceof MediaEntry) {
+			mediaEntry = (MediaEntry) parentEntry;
+		}
+		readEntries(mediaEntry);
+		list = mediaEntry.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
+		return list;
 	}
 
 	@Override
-	public boolean hasEntries() {
-		return true;
+	public boolean hasEntries(Object entry) {
+		boolean hasChildren = false;
+		if (entry instanceof MediaEntry) {
+			MediaEntry me = (MediaEntry) entry;
+
+			hasChildren = me.hasChildren();
+		}
+		return hasChildren;
+	}
+
+	public MediaEntry getRoot() {
+		return root;
 	}
 
 	@Override
 	public byte[] read(File file) throws Exception {
-		mediaEntryList.clear();
+		getRoot().clear();
 		content = BinaryFileHandler.readFile(file, 0);
-		readStructure();
+		readHeader();
 		return content;
 	}
 
-	
 	protected int getWord(int start) {
 		return getWord(start, Endianness.LittleEndian);
 	}
+
 	protected int getWord(int start, Endianness endianess) {
 		return NumericConverter.getWordAsInt(content, start, endianess);
 	}
@@ -58,7 +81,21 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 		return sb.toString();
 	}
 
-	protected abstract void readStructure();
+	public boolean isEmptyEntry(int base, int maxCount,int checkValue) {
+		int lastValue = content[base];
+		int count = 0;
+		for (int i = base; i < base + maxCount; i++) {
+			if (i > 0) {
+				count += (content[i] == lastValue ? 1 : 0);
+			}
+			lastValue = content[i];
+		}
+		return count == maxCount;
+	}
+
+	protected abstract void readHeader();
+
+	protected abstract void readEntries(MediaEntry parent);
 
 	protected abstract byte[] readContent(MediaEntry entry);
 }

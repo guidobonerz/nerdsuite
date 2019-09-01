@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.storagemedia;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,8 +10,6 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
-import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.model.AsciiMap;
 
 public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
@@ -22,30 +21,43 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 	private List<AsciiMap> list;
 	protected int[] trackOffsets;
 
-	public CBMDiskImageManager() {
-		super();
+	private int bamOffset;
+	private int currentDirTrack;
+	private int currentDirEntryBaseOffset;
+	private int currentDirectoryEntryOffset;
+	private String name;
+	private String diskId;
+	private String dummy;
+	private String dosType;
+	private String diskName;
+
+	public CBMDiskImageManager(File file) {
+		super(file);
 	}
 
 	@Override
-	protected void readStructure() {
-		ICPU cpu = new CPU_6510();
-		int bamOffset = trackOffsets[directoryTrack - 1];
-		int currentDirTrack = directoryTrack;
-		int currentDirEntryBaseOffset = bamOffset + sectorSize;
-		int currentDirectoryEntryOffset = currentDirEntryBaseOffset;
-		String name = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
-		String diskId = new String(Character.toChars(getChar(content[bamOffset + 0xa2], false, true)))
+	protected void readHeader() {
+		bamOffset = trackOffsets[directoryTrack - 1];
+		currentDirTrack = directoryTrack;
+		currentDirEntryBaseOffset = bamOffset + sectorSize;
+		currentDirectoryEntryOffset = currentDirEntryBaseOffset;
+		name = getFilename(bamOffset + 0x90, 0x0f, 0x0a, false, true);
+		diskId = new String(Character.toChars(getChar(content[bamOffset + 0xa2], false, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa3], false, true)));
-		String dummy = new String(Character.toChars(getChar(content[bamOffset + 0xa4], false, true)));
-		String dosType = new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
+		dummy = new String(Character.toChars(getChar(content[bamOffset + 0xa4], false, true)));
+		dosType = new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], false, true)));
-		String diskName = name + "\uee20" + diskId + dummy + dosType;
+		diskName = name + "\uee20" + diskId + dummy + dosType;
 
 		diskName = String.format("%1$4s", StringUtils.rightPad(diskName, 22, "\uee20"));
 
 		// mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0, new
 		// CBMFileAttributes(false, false), "C64 Pro|6"));
 
+	}
+
+	@Override
+	protected void readEntries(MediaEntry parent) {
 		while (currentDirTrack != 0) {
 			currentDirTrack = content[currentDirectoryEntryOffset] & 0xff;
 			int nextSector = content[currentDirectoryEntryOffset + 0x1] & 0xff;
@@ -55,7 +67,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 				if (content[currentDirectoryEntryOffset + 0x5] != 0 && (fileType & 0b111) != 0) {
 
 					String fileName = getFilename(currentDirectoryEntryOffset + 0x5, 0x0f, 0xa0);
-					int fileSize = getFileSize(cpu, currentDirectoryEntryOffset + 0x1e);
+					int fileSize = getFileSize(currentDirectoryEntryOffset + 0x1e);
 
 					int fileTrack = content[currentDirectoryEntryOffset + 0x03];
 					int fileSector = content[currentDirectoryEntryOffset + 0x04];
@@ -65,9 +77,10 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					boolean isLocked = isLocked(fileType);
 					if (content[currentDirectoryEntryOffset + 0x02] != 0) {
 						fileName = String.format("%2$s.%3$s (%1$3d Blocks )", fileSize, fileName, fileTypeName);
-						MediaEntry me = new MediaEntry(id, fileName, fileName, fileTypeName, fileSize, fileTrack,
-								fileSector, 0, new CBMFileAttributes(isLocked, isClosed), "C64 Pro|6");
-						mediaEntryList.add(me);
+						MediaEntry entry = new MediaEntry(id, fileName, fileName, fileTypeName, fileSize, fileTrack,
+								fileSector, 0, null);
+						entry.setUserObject(getContainer());
+						MediaMountFactory.addChildEntry(parent, entry);
 					}
 					// byte[] data = readContent(me);
 					try {
@@ -81,7 +94,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					}
 				}
 				currentDirectoryEntryOffset += 0x20;
-				id++;
+				id++; 
 			}
 			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
 			currentDirectoryEntryOffset = currentDirEntryBaseOffset;
@@ -117,8 +130,8 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 		return fileContent;
 	}
 
-	private int getFileSize(ICPU cpu, int start) {
-		return cpu.getWord(content, start);
+	private int getFileSize(int start) {
+		return getWord(start);
 	}
 
 	private String getFilename(int start, int length, int skipByte, boolean shift, boolean invers) {

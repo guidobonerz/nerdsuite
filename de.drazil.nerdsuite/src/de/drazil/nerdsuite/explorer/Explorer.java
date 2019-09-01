@@ -13,20 +13,15 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 
-import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.storagemedia.IMediaManager;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaMountFactory;
-import de.drazil.nerdsuite.util.FontFactory;
 import de.drazil.nerdsuite.util.ImageFactory;
 
 public class Explorer {
@@ -44,15 +39,9 @@ public class Explorer {
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		treeViewer = new TreeViewer(container, SWT.NONE);
-
-		treeViewer.getControl().addListener(SWT.MeasureItem, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				event.height = 10;
-			}
-		});
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
+
 		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.explorer");
 		listFiles();
 	}
@@ -83,7 +72,8 @@ public class Explorer {
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
 				cell.setText(file.getFullName());
-				cell.setImage(ImageFactory.createImage("icons/document-binary.png"));
+				cell.setImage(ImageFactory
+						.createImage(file.isDirectory() ? "icons/folder.png" : "icons/document-binary.png"));
 				// Font f = FontFactory.getFont(file.getFontName());
 				// cell.setFont(f);
 
@@ -112,7 +102,7 @@ public class Explorer {
 	private class ProjectStructureProvider implements ITreeContentProvider {
 		@Override
 		public void dispose() {
-
+			int a = 0;
 		}
 
 		@Override
@@ -126,46 +116,60 @@ public class Explorer {
 
 		@Override
 		public Object[] getChildren(Object parentElement) {
-			Object[] entries;
-			File parentFile = (File) parentElement;
+			Object[] entries = null;
 
-			IMediaManager mediaManager = MediaMountFactory.mount(parentFile);
+			if (parentElement instanceof File) {
+				File parentFile = (File) parentElement;
 
-			if (mediaManager != null) {
-				MediaMountFactory.read(mediaManager, parentFile);
-				entries = mediaManager.getEntries();
+				if (MediaMountFactory.isMountable(parentFile)) {
+					IMediaManager mediaManager = MediaMountFactory.mount(parentFile);
+					entries = mediaManager.getEntries(parentElement);
+				} else {
+					entries = parentFile.listFiles();
+				}
 			} else {
-				entries = parentFile.listFiles();
+				MediaEntry me = (MediaEntry) parentElement;
+				IMediaManager mediaManager = MediaMountFactory.mount((File) me.getUserObject());
+				entries = mediaManager.getEntries(parentElement);
 			}
-
 			return entries;
 		}
 
 		@Override
 		public Object getParent(Object element) {
-			File file = (File) element;
-			return file.getParentFile();
+			Object parent = null;
+			if (element instanceof File) {
+				File file = (File) element;
+				parent = file.getParentFile();
+			} else {
+				MediaEntry me = (MediaEntry) element;
+				if (me.isRoot()) {
+					parent = me.getUserObject();
+				} else {
+					parent = me.getParent();
+				}
+			}
+			return parent;
 		}
 
 		@Override
 		public boolean hasChildren(Object element) {
 			boolean hasChildren = false;
 
-			if (element instanceof MediaEntry) {
-				return false;
-			}
-			File file = (File) element;
-
-			IMediaManager mediaManager = MediaMountFactory.mount(file);
-
-			if (file.isFile() && mediaManager != null) {
-				hasChildren = true;
-			} else if (file.isFile()) {
-				hasChildren = false;
+			if (element instanceof File) {
+				File file = (File) element;
+				if (file.isDirectory()) {
+					hasChildren = true;
+				} else if (MediaMountFactory.isMountable(file)) {
+					hasChildren = true;
+				} else {
+					hasChildren = false;
+				}
 			} else {
-				hasChildren = file.list().length > 0;
-			}
+				MediaEntry me = (MediaEntry) element;
+				hasChildren = me.isDirectory();
 
+			}
 			return hasChildren;
 		}
 

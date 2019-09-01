@@ -1,13 +1,16 @@
 package de.drazil.nerdsuite.storagemedia;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class MediaEntry {
+
+	private List<MediaEntry> childrenList;
 	private int id;
 	private String fullName;
 	private String name;
@@ -16,7 +19,47 @@ public class MediaEntry {
 	private int track;
 	private int sector;
 	private int offset;
-	IAttributes attributes;
+	private IAttributes attributes;
 	private String fontName;
+	private MediaEntry parent;
+	private boolean isDirectory;
+	private boolean isRoot;
+	private Object userObject;
 
+	public MediaEntry() {
+		childrenList = new ArrayList<>();
+	}
+
+	public MediaEntry(int id, String fullName, String name, String type, int size, int track, int sector, int offset,
+			IAttributes attributes) {
+		this();
+		this.id = id;
+		this.fullName = fullName;
+		this.name = name;
+		this.type = type;
+		this.size = size;
+		this.track = track;
+		this.sector = sector;
+		this.offset = offset;
+	}
+
+	public int getChildrenCount() {
+		return childrenList.size();
+	}
+
+	public boolean hasChildren() {
+		return !childrenList.isEmpty();
+	}
+
+	public List<MediaEntry> getChildrenList() {
+		return childrenList;
+	}
+
+	public void addChildrenEntry(MediaEntry entry) {
+		childrenList.add(entry);
+	}
+
+	public void clear() {
+		childrenList.clear();
+	}
 }
