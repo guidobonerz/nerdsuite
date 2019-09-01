@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.storagemedia;
 
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
@@ -24,8 +26,8 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 	protected int directoryTrack = 2;
 
-	public DSK_MediaManager() {
-
+	public DSK_MediaManager(File file) {
+		super(file);
 	}
 
 	private String diskInfo;
@@ -139,8 +141,9 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 				// readContent(entry);
 				if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0) {
 					entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
-							currentDirectoryEntryOffset + 0x10, new CPMFileAttributes(false, false, 0));
-					MediaEntry.addChildEntry(parent, entry);
+							currentDirectoryEntryOffset + 0x10, null);
+					entry.setUserObject(getContainer());
+					MediaMountFactory.addChildEntry(parent, entry);
 					id++;
 				}
 				if (entry != null) {

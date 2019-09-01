@@ -10,22 +10,28 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 
 	protected byte[] content;
 	private MediaEntry root;
+	private File container;
 
-	public AbstractBaseMediaManager() {
+	public AbstractBaseMediaManager(File file) {
+		container = file;
 		root = new MediaEntry();
+		root.setRoot(true);
+		root.setUserObject(file);
+	}
+
+	public File getContainer() {
+		return container;
 	}
 
 	@Override
 	public MediaEntry[] getEntries(Object parentEntry) {
 		MediaEntry[] list = new MediaEntry[] {};
-
 		MediaEntry mediaEntry = getRoot();
 		if (parentEntry instanceof MediaEntry) {
 			mediaEntry = (MediaEntry) parentEntry;
 		}
 		readEntries(mediaEntry);
-		list = root.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
-
+		list = mediaEntry.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
 		return list;
 	}
 

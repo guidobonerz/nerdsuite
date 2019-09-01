@@ -1,8 +1,11 @@
 package de.drazil.nerdsuite.storagemedia;
 
+import java.io.File;
+
 public class D64_MediaManager extends CBMDiskImageManager {
 
-	public D64_MediaManager() {
+	public D64_MediaManager(File file) {
+		super(file);
 		directorySectorInterleave = 3;
 		fileSectorInterleave = 10;
 		trackOffsets = new int[] { 0x00000, 0x01500, 0x02a00, 0x03f00, 0x05400, 0x06900, 0x07e00, 0x09300, 0x0a800,

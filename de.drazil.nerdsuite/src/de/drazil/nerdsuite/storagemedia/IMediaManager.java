@@ -4,10 +4,12 @@ import java.io.File;
 
 public interface IMediaManager {
 
+	public MediaEntry getRoot();
+
 	public byte[] read(File file) throws Exception;
 
 	public boolean hasEntries(Object entry);
 
-	public Object[] getEntries(Object parent);
+	public MediaEntry[] getEntries(Object parent);
 
 }

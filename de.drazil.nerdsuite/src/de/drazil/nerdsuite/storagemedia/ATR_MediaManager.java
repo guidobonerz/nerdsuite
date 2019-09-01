@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.storagemedia;
 
+import java.io.File;
+
 public class ATR_MediaManager extends AbstractBaseMediaManager {
 
 	private int atariDiskId;
@@ -21,8 +23,8 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 	private int currentDirectoryEntryOffset;
 	private int currentDirectorySectorOffset;
 
-	public ATR_MediaManager() {
-
+	public ATR_MediaManager(File file) {
+		super(file);
 	}
 
 	@Override
@@ -68,7 +70,8 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 				fileName = String.format("%1$s.%2$s (%3$3d )", fileName, fileExtension, entrySectorCount);
 				MediaEntry entry = new MediaEntry(id, fileName, fileName, fileExtension, 0, 0, 0, 0, null);
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
-				MediaEntry.addChildEntry(parent, entry);
+				entry.setUserObject(getContainer());
+				MediaMountFactory.addChildEntry(parent, entry);
 			}
 			currentDirectoryEntryOffset += 0x10;
 

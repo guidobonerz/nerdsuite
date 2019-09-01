@@ -9,7 +9,12 @@ import java.util.regex.Pattern;
 public class MediaMountFactory {
 
 	private static Map<String, IMediaManager> mediaStore = new HashMap<>();
-	public static Pattern pattern = Pattern.compile(".*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR])");
+	public static String FILE_PATTERN = ".*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR])";
+	public static Pattern pattern = Pattern.compile(FILE_PATTERN);
+
+	public static boolean isMountable(File file) {
+		return file.getName().matches(FILE_PATTERN);
+	}
 
 	public static IMediaManager mount(File file) {
 		IMediaManager mediaProvider = null;
@@ -21,15 +26,15 @@ public class MediaMountFactory {
 			mediaProvider = mediaStore.get(suffix);
 			if (mediaProvider == null) {
 				if (suffix.equalsIgnoreCase("d64")) {
-					mediaProvider = new D64_MediaManager();
+					mediaProvider = new D64_MediaManager(file);
 				} else if (suffix.equalsIgnoreCase("d71")) {
-					mediaProvider = new D71_MediaManager();
+					mediaProvider = new D71_MediaManager(file);
 				} else if (suffix.equalsIgnoreCase("d81")) {
-					mediaProvider = new D81_MediaManager();
+					mediaProvider = new D81_MediaManager(file);
 				} else if (suffix.equalsIgnoreCase("dsk")) {
-					mediaProvider = new DSK_MediaManager();
+					mediaProvider = new DSK_MediaManager(file);
 				} else if (suffix.equalsIgnoreCase("atr")) {
-					mediaProvider = new ATR_MediaManager();
+					mediaProvider = new ATR_MediaManager(file);
 				} else {
 
 				}
@@ -46,5 +51,15 @@ public class MediaMountFactory {
 	}
 
 	public static void unmount(File file) {
+	}
+
+	public static void addChildEntry(MediaEntry parent, MediaEntry child) {
+		child.setParent(parent);
+		parent.addChildEntry(child);
+	}
+
+	public static MediaEntry[] getChildren(MediaEntry entry) {
+		IMediaManager mediaManager = MediaMountFactory.mount((File) entry.getUserObject());
+		return mediaManager.getEntries(entry);
 	}
 }

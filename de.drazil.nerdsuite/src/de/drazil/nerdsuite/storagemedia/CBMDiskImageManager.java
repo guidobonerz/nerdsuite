@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.storagemedia;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,8 +31,8 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 	private String dosType;
 	private String diskName;
 
-	public CBMDiskImageManager() {
-		super();
+	public CBMDiskImageManager(File file) {
+		super(file);
 	}
 
 	@Override
@@ -77,8 +78,9 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 					if (content[currentDirectoryEntryOffset + 0x02] != 0) {
 						fileName = String.format("%2$s.%3$s (%1$3d Blocks )", fileSize, fileName, fileTypeName);
 						MediaEntry entry = new MediaEntry(id, fileName, fileName, fileTypeName, fileSize, fileTrack,
-								fileSector, 0, new CBMFileAttributes(isLocked, isClosed));
-						MediaEntry.addChildEntry(parent, entry);
+								fileSector, 0, null);
+						entry.setUserObject(getContainer());
+						MediaMountFactory.addChildEntry(parent, entry);
 					}
 					// byte[] data = readContent(me);
 					try {
