@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 
-public class DSK_MediaManager extends AbstractBaseMediaManager {
+public class DSK_MediaReader extends AbstractBaseMediaReader {
 
 	private final static int SECTOR_SIZE = 512;
 	private final static int RECORD_SIZE = SECTOR_SIZE >> 2;
@@ -26,7 +26,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 
 	protected int directoryTrack = 2;
 
-	public DSK_MediaManager(File file) {
+	public DSK_MediaReader(File file) {
 		super(file);
 	}
 
@@ -115,7 +115,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 			MediaEntry entry = null;
 			String fileName = getString(currentDirectoryEntryOffset + 0x01, currentDirectoryEntryOffset + 0x8, false);
 			String fileType = getString(currentDirectoryEntryOffset + 0x09, currentDirectoryEntryOffset + 0xb, false);
-			int extent = content[currentDirectoryEntryOffset + 0x0c];
+			int extent = content[currentDirectoryEntryOffset + 0x0c] & 0xff;
 			int fileSize = getByte(currentDirectoryEntryOffset + 0x0f) * 0x80;
 			if (extent > 0) {
 				for (MediaEntry me : parent.getChildrenList()) {
@@ -136,7 +136,7 @@ public class DSK_MediaManager extends AbstractBaseMediaManager {
 						currentDirectoryEntryOffset + 0x10, null);
 				entry.setUserObject(getContainer());
 				entry.setOffset(currentDirectoryEntryOffset);
-				MediaMountFactory.addChildEntry(parent, entry);
+				MediaFactory.addChildEntry(parent, entry);
 
 			}
 			if (entry != null) {

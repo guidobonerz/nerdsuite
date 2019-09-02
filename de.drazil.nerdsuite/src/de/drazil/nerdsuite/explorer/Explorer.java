@@ -23,9 +23,9 @@ import org.eclipse.swt.widgets.Composite;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
-import de.drazil.nerdsuite.storagemedia.IMediaManager;
+import de.drazil.nerdsuite.storagemedia.IMediaReader;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
-import de.drazil.nerdsuite.storagemedia.MediaMountFactory;
+import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.ImageFactory;
 
 public class Explorer {
@@ -58,7 +58,7 @@ public class Explorer {
 		Object o = treeNode.getFirstElement();
 		if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
 			MediaEntry entry = (MediaEntry) o;
-			IMediaManager mediaManager = MediaMountFactory.mount((File) entry.getUserObject());
+			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
 			mediaManager.readContent(entry);
 		} else {
 			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
@@ -113,7 +113,7 @@ public class Explorer {
 					cell.setImage(ImageFactory.createImage("icons/folder.png"));
 				}
 
-				if (MediaMountFactory.pattern.matcher(file.getName()).find()) {
+				if (MediaFactory.pattern.matcher(file.getName()).find()) {
 					cell.setImage(ImageFactory.createImage("icons/disk.png"));
 				}
 
@@ -143,15 +143,15 @@ public class Explorer {
 			if (parentElement instanceof File) {
 				File parentFile = (File) parentElement;
 
-				if (MediaMountFactory.isMountable(parentFile)) {
-					IMediaManager mediaManager = MediaMountFactory.mount(parentFile);
+				if (MediaFactory.isMountable(parentFile)) {
+					IMediaReader mediaManager = MediaFactory.mount(parentFile);
 					entries = mediaManager.getEntries(parentElement);
 				} else {
 					entries = parentFile.listFiles();
 				}
 			} else {
 				MediaEntry me = (MediaEntry) parentElement;
-				IMediaManager mediaManager = MediaMountFactory.mount((File) me.getUserObject());
+				IMediaReader mediaManager = MediaFactory.mount((File) me.getUserObject());
 				entries = mediaManager.getEntries(parentElement);
 			}
 			return entries;
@@ -182,7 +182,7 @@ public class Explorer {
 				File file = (File) element;
 				if (file.isDirectory()) {
 					hasChildren = true;
-				} else if (MediaMountFactory.isMountable(file)) {
+				} else if (MediaFactory.isMountable(file)) {
 					hasChildren = true;
 				} else {
 					hasChildren = false;

@@ -2,7 +2,7 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 
-public class ATR_MediaManager extends AbstractBaseMediaManager {
+public class ATR_MediaReader extends AbstractBaseMediaReader {
 
 	private int atariDiskId;
 	private int diskImageSize;
@@ -21,7 +21,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 	private int largeDiskCorrectionCount;
 	// private int directoryBaseOffset;
 
-	public ATR_MediaManager(File file) {
+	public ATR_MediaReader(File file) {
 		super(file);
 	}
 
@@ -72,7 +72,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
 				entry.setUserObject(getContainer());
 				entry.setSector(entrySector);
-				MediaMountFactory.addChildEntry(parent, entry);
+				MediaFactory.addChildEntry(parent, entry);
 			}
 			currentDirectoryEntryOffset += 0x10;
 			if (id % 8 == 0) {

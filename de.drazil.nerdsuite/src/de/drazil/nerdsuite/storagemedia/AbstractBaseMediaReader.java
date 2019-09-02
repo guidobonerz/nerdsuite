@@ -8,13 +8,13 @@ import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.util.NumericConverter;
 
-public abstract class AbstractBaseMediaManager implements IMediaManager {
+public abstract class AbstractBaseMediaReader implements IMediaReader {
 
 	protected byte[] content;
 	private MediaEntry root;
 	private File container;
 
-	public AbstractBaseMediaManager(File file) {
+	public AbstractBaseMediaReader(File file) {
 		container = file;
 		root = new MediaEntry();
 		root.setRoot(true);

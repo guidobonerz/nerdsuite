@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.AsciiMap;
 
-public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
+public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 
 	private int sectorSize = 0x100;
 	protected int directoryTrack = 18;
@@ -31,7 +31,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 	private String dosType;
 	private String diskName;
 
-	public CBMDiskImageManager(File file) {
+	public CBMDiskImageReader(File file) {
 		super(file);
 	}
 
@@ -80,7 +80,7 @@ public abstract class CBMDiskImageManager extends AbstractBaseMediaManager {
 						MediaEntry entry = new MediaEntry(id, fileName, fileName, fileTypeName, fileSize, fileTrack,
 								fileSector, 0, null);
 						entry.setUserObject(getContainer());
-						MediaMountFactory.addChildEntry(parent, entry);
+						MediaFactory.addChildEntry(parent, entry);
 					}
 					// byte[] data = readContent(me);
 					try {
