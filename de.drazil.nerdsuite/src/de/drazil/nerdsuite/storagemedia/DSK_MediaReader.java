@@ -108,6 +108,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 
 	@Override
 	public void readEntries(MediaEntry parent) {
+		int tempBase = base;
 		int currentDirectoryEntryOffset = base;
 		int id = 0;
 		boolean hasMoreEntries = true;
@@ -135,7 +136,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 				entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
 						currentDirectoryEntryOffset + 0x10, null);
 				entry.setUserObject(getContainer());
-				entry.setOffset(currentDirectoryEntryOffset);
+				entry.setDataLocation(currentDirectoryEntryOffset);
 				MediaFactory.addChildEntry(parent, entry);
 
 			}
@@ -144,11 +145,13 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 			}
 			currentDirectoryEntryOffset += 0x20;
 			id++;
-			if (id % 16 == 0 && isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0)) {
+			if (isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0)
+					|| isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0xe5)) {
 				hasMoreEntries = true;
-				currentDirectoryEntryOffset += 0x200;
+				tempBase = currentDirectoryEntryOffset - 0x10 + (tempBase + 0x200 - currentDirectoryEntryOffset) + 0x10;
+				currentDirectoryEntryOffset = tempBase;
 			}
-			if (isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0xe5)) {
+			if (currentDirectoryEntryOffset > base + 0x800) {
 				hasMoreEntries = false;
 			}
 		}
@@ -156,7 +159,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 
 	@Override
 	public byte[] readContent(MediaEntry entry) {
-		int offset = entry.getOffset();
+		int offset = (int) entry.getDataLocation();
 		int i = 0;
 		int block = 0;
 		while ((block = content[offset + i]) != 0x00) {
