@@ -84,7 +84,7 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 	protected String getString(int start, int end, boolean skipCharCheck) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = start; i <= end; i++) {
-			char c = (char) content[i];
+			char c = (char) (content[i] & 0x7f);
 			if (Character.isLetter(c) || Character.isDigit(c) || skipCharCheck) {
 				sb.append(Character.toString(c));
 			}
