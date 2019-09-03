@@ -6,22 +6,28 @@ import java.io.FileFilter;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 
 import de.drazil.nerdsuite.configuration.Configuration;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
-import de.drazil.nerdsuite.storagemedia.IMediaManager;
+import de.drazil.nerdsuite.storagemedia.IMediaReader;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
-import de.drazil.nerdsuite.storagemedia.MediaMountFactory;
+import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.ImageFactory;
 
 public class Explorer {
@@ -42,8 +48,37 @@ public class Explorer {
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
 
-		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.explorer");
+		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.projectexplorer");
+
 		listFiles();
+	}
+
+	@Inject
+	@Optional
+	void doExportFile(@UIEventTopic("doExportFile") boolean process) {
+		TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
+		Object o = treeNode.getFirstElement();
+		if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
+			MediaEntry entry = (MediaEntry) o;
+			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
+			byte[] content = mediaManager.readContent(entry);
+			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
+			saveDialog.setFileName(entry.getName() + "." + entry.getType());
+			String fileName = saveDialog.open();
+
+			try {
+				BinaryFileHandler.write(new File(fileName), content);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		} else {
+			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
+					"This entry can not be exported.");
+		}
+
+		System.out.println("doExportFile:");
 	}
 
 	private void listFiles() {
@@ -91,7 +126,7 @@ public class Explorer {
 					cell.setImage(ImageFactory.createImage("icons/folder.png"));
 				}
 
-				if (MediaMountFactory.pattern.matcher(file.getName()).find()) {
+				if (MediaFactory.pattern.matcher(file.getName()).find()) {
 					cell.setImage(ImageFactory.createImage("icons/disk.png"));
 				}
 
@@ -121,15 +156,15 @@ public class Explorer {
 			if (parentElement instanceof File) {
 				File parentFile = (File) parentElement;
 
-				if (MediaMountFactory.isMountable(parentFile)) {
-					IMediaManager mediaManager = MediaMountFactory.mount(parentFile);
+				if (MediaFactory.isMountable(parentFile)) {
+					IMediaReader mediaManager = MediaFactory.mount(parentFile);
 					entries = mediaManager.getEntries(parentElement);
 				} else {
 					entries = parentFile.listFiles();
 				}
 			} else {
 				MediaEntry me = (MediaEntry) parentElement;
-				IMediaManager mediaManager = MediaMountFactory.mount((File) me.getUserObject());
+				IMediaReader mediaManager = MediaFactory.mount((File) me.getUserObject());
 				entries = mediaManager.getEntries(parentElement);
 			}
 			return entries;
@@ -160,7 +195,7 @@ public class Explorer {
 				File file = (File) element;
 				if (file.isDirectory()) {
 					hasChildren = true;
-				} else if (MediaMountFactory.isMountable(file)) {
+				} else if (MediaFactory.isMountable(file)) {
 					hasChildren = true;
 				} else {
 					hasChildren = false;

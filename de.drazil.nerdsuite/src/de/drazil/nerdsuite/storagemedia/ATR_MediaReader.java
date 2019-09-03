@@ -2,7 +2,7 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 
-public class ATR_MediaManager extends AbstractBaseMediaManager {
+public class ATR_MediaReader extends AbstractBaseMediaReader {
 
 	private int atariDiskId;
 	private int diskImageSize;
@@ -21,7 +21,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 	private int largeDiskCorrectionCount;
 	// private int directoryBaseOffset;
 
-	public ATR_MediaManager(File file) {
+	public ATR_MediaReader(File file) {
 		super(file);
 	}
 
@@ -49,7 +49,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 	}
 
 	@Override
-	protected void readEntries(MediaEntry parent) {
+	public void readEntries(MediaEntry parent) {
 		int id = 1;
 		boolean hasMoreEntries = true;
 		int currentDirectorySectorOffset = getSectorOffset(parent.getSector());
@@ -59,7 +59,7 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 		int currentDirectoryEntryOffset = currentDirectorySectorOffset;
 
 		while (hasMoreEntries) {
-			int entryFlag = content[currentDirectoryEntryOffset];
+			int entryFlag = getByte(currentDirectoryEntryOffset);
 			int entrySectorCount = getWord(currentDirectoryEntryOffset + 0x01);
 			int entrySector = getWord(currentDirectoryEntryOffset + 0x03);
 			String fileName = getString(currentDirectoryEntryOffset + 0x05, currentDirectoryEntryOffset + 0x0c, false);
@@ -72,22 +72,42 @@ public class ATR_MediaManager extends AbstractBaseMediaManager {
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
 				entry.setUserObject(getContainer());
 				entry.setSector(entrySector);
-				MediaMountFactory.addChildEntry(parent, entry);
+				MediaFactory.addChildEntry(parent, entry);
 			}
 			currentDirectoryEntryOffset += 0x10;
 			if (id % 8 == 0) {
 				currentDirectorySectorOffset += sectorSize;
 				currentDirectoryEntryOffset = currentDirectorySectorOffset;
 			}
-			hasMoreEntries = !isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0);
+
 			id++;
-			hasMoreEntries = !(id > 64);
+			hasMoreEntries = !isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0) && !(id > 64);
 		}
 	}
 
 	@Override
-	protected byte[] readContent(MediaEntry entry) {
-		// TODO Auto-generated method stub
+	public byte[] readContent(MediaEntry entry) {
+		int dataOffset = getSectorOffset(entry.getSector() - 1);
+		int exeHeader = getWord(dataOffset);
+		dataOffset += 2;
+		boolean hasMore = true;
+		while (hasMore) {
+			int binaryStart = getWord(dataOffset);
+			int binaryEnd = getWord(dataOffset + 2);
+			int diff = (binaryEnd - binaryStart) + 1;
+			dataOffset += 4;
+			System.out.println(String.format("load segment $%4x-$%4x", binaryStart, binaryEnd));
+			for (int i = 0; i < diff; i++) {
+
+			}
+
+			dataOffset += diff;
+			
+
+		}
+
+		// int bytesUsedInSector = getByte(dataOffset + 125);
+		// int nextDataSector = getWord(dataOffset + 126);
 		return null;
 	}
 

@@ -2,9 +2,9 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 
-public class D64_MediaManager extends CBMDiskImageManager {
+public class D64_MediaReader extends CBMDiskImageReader {
 
-	public D64_MediaManager(File file) {
+	public D64_MediaReader(File file) {
 		super(file);
 		directorySectorInterleave = 3;
 		fileSectorInterleave = 10;

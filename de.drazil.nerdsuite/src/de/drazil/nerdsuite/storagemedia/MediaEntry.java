@@ -18,7 +18,7 @@ public class MediaEntry {
 	private int size;
 	private int track;
 	private int sector;
-	private int offset;
+	private Object dataLocation;
 	private IAttributes attributes;
 	private String fontName;
 	private MediaEntry parent;
@@ -30,8 +30,8 @@ public class MediaEntry {
 		childrenList = new ArrayList<>();
 	}
 
-	public MediaEntry(int id, String fullName, String name, String type, int size, int track, int sector, int offset,
-			IAttributes attributes) {
+	public MediaEntry(int id, String fullName, String name, String type, int size, int track, int sector,
+			Object dataLocation, IAttributes attributes) {
 		this();
 		this.id = id;
 		this.fullName = fullName;
@@ -40,7 +40,7 @@ public class MediaEntry {
 		this.size = size;
 		this.track = track;
 		this.sector = sector;
-		this.offset = offset;
+		this.dataLocation = dataLocation;
 	}
 
 	public int getChildrenCount() {

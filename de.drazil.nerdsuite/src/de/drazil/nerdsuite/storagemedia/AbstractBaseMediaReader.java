@@ -4,17 +4,19 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.google.common.collect.ComparisonChain;
+
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.util.NumericConverter;
 
-public abstract class AbstractBaseMediaManager implements IMediaManager {
+public abstract class AbstractBaseMediaReader implements IMediaReader {
 
 	protected byte[] content;
 	private MediaEntry root;
 	private File container;
 
-	public AbstractBaseMediaManager(File file) {
+	public AbstractBaseMediaReader(File file) {
 		container = file;
 		root = new MediaEntry();
 		root.setRoot(true);
@@ -36,13 +38,11 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 		Collections.sort(mediaEntry.getChildrenList(), new Comparator<MediaEntry>() {
 			@Override
 			public int compare(MediaEntry me1, MediaEntry me2) {
-				String s1 = me1.getName() + me1.getType();
-				String s2 = me2.getName() + me2.getType();
-				return s1.compareTo(s2);
+				return ComparisonChain.start().compareTrueFirst(me1.isDirectory(), me2.isDirectory())
+						.compare(me1.getName(), me2.getName()).compare(me1.getType(), me2.getType()).result();
 			}
 		});
 		list = mediaEntry.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
-
 		return list;
 	}
 
@@ -51,7 +51,6 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 		boolean hasChildren = false;
 		if (entry instanceof MediaEntry) {
 			MediaEntry me = (MediaEntry) entry;
-
 			hasChildren = me.hasChildren();
 		}
 		return hasChildren;
@@ -84,12 +83,24 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 	protected String getString(int start, int end, boolean skipCharCheck) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = start; i <= end; i++) {
-			char c = (char) content[i];
+			char c = (char) (content[i] & 0x7f);
 			if (Character.isLetter(c) || Character.isDigit(c) || skipCharCheck) {
 				sb.append(Character.toString(c));
 			}
 		}
 		return sb.toString();
+	}
+
+	public boolean isEmptyEntry(int base, int maxCount) {
+		int lastValue = content[base];
+		int count = 0;
+		for (int i = base; i < base + maxCount; i++) {
+			if (i > 0) {
+				count += (content[i] == lastValue ? 1 : 0);
+			}
+			lastValue = content[i];
+		}
+		return count == maxCount;
 	}
 
 	public boolean isEmptyEntry(int base, int maxCount, int checkValue) {
@@ -102,7 +113,10 @@ public abstract class AbstractBaseMediaManager implements IMediaManager {
 
 	protected abstract void readHeader();
 
-	protected abstract void readEntries(MediaEntry parent);
+	@Override
+	public abstract byte[] readContent(MediaEntry entry);
 
-	protected abstract byte[] readContent(MediaEntry entry);
+	@Override
+	public abstract void readEntries(MediaEntry parent);
+
 }

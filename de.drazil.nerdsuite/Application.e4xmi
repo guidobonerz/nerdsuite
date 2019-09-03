@@ -5,7 +5,9 @@
       <children xsi:type="advanced:Perspective" xmi:id="_S9RCQLrLEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.perspective.welcome" label="Welcome">
         <children xsi:type="basic:PartSashContainer" xmi:id="_XmMJEMG5EemOl7LqsJ-5CQ" elementId="de.drazil.nerdsuite.partsashcontainer.7" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_8-omMMG5EemOl7LqsJ-5CQ" elementId="de.drazil.nerdsuite.partstack.4">
-            <children xsi:type="basic:Part" xmi:id="_lHiaULrLEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.part.projectexplorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Project Explorer"/>
+            <children xsi:type="basic:Part" xmi:id="_lHiaULrLEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.part.projectexplorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Project Explorer">
+              <menus xsi:type="menu:PopupMenu" xmi:id="_HR0QcMziEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.popupmenu.projectexplorer"/>
+            </children>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_C8QbMMG6EemOl7LqsJ-5CQ" elementId="de.drazil.nerdsuite.partstack.6">
             <children xsi:type="basic:Part" xmi:id="_sj1nsMG5EemOl7LqsJ-5CQ" elementId="de.drazil.nerdsuite.part.welcome" label="Welcome"/>
@@ -20,11 +22,6 @@
                 <menus xsi:type="menu:PopupMenu" xmi:id="_ObdMIOwgEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.popupmenu.explorer">
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_7-72YOwzEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.newSourceFile" label="New SourceFile" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white.png" command="_ka2AIOwWEeSYVemvddr_Tw"/>
                   <children xsi:type="menu:MenuSeparator" xmi:id="_l0apEOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.menuseparator.2"/>
-                  <children xsi:type="menu:Menu" xmi:id="_NzveUOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.menu.OpenWith" label="Open With...">
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_SKmw4OxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.binaryViewer" label="BinaryViewer"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_V2RKUOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.imageViewer" label="ImageViewer"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="CharsetViewer"/>
-                  </children>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_hoQZYOw6EeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.refresh" label="Refresh" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_circle_double.png"/>
                 </menus>
               </children>
@@ -202,10 +199,20 @@
   <handlers xmi:id="_b3t3wBcXEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handler.verticalMirrorPaintMode" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.VerticalMirrorPaintModeHandler" command="_IDp3YBcXEemaxdgLPSY0VQ"/>
   <handlers xmi:id="_j4OKgBcXEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handler.horizontalMirrorPaintMode" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.HorizontalPaintModeHandler" command="_LtC_8BcXEemaxdgLPSY0VQ"/>
   <handlers xmi:id="_qSF2oBcXEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handler.kaleidoscopePaintMode" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.KaleidoscopePaintModeHandler" command="_PMlo8BcXEemaxdgLPSY0VQ"/>
+  <handlers xmi:id="_9CBz8MznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handler.export" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ExportHandler" command="_2QmjcMznEemJh_xLPhHI6A"/>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
+  <menuContributions xmi:id="_mJ-CoMzdEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menucontribution.openWith" positionInParent="1" parentId="de.drazil.nerdsuite.popupmenu.projectexplorer">
+    <children xsi:type="menu:Menu" xmi:id="_rpkFkMziEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menu.openwith" label="Open with...">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_SKmw4OxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.binaryViewer" label="Binary Inspector"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_V2RKUOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.imageViewer" label="Graphic Editor"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="Code Editor"/>
+    </children>
+    <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
+    <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A"/>
+  </menuContributions>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.newProject" commandName="New Project">
     <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.projectType" name="projectType" optional="false"/>
   </commands>
@@ -227,6 +234,7 @@
   <commands xmi:id="_IDp3YBcXEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.command.verticalMirrorPaintMode" commandName="VerticalMirror PaintMode"/>
   <commands xmi:id="_LtC_8BcXEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.command.horizontalMirrorPaintMode" commandName="HorizontalMirror PaintMode"/>
   <commands xmi:id="_PMlo8BcXEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.command.kaleidoscopePaintMode" commandName="Kaleidoscope PaintMode"/>
+  <commands xmi:id="_2QmjcMznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.command.export" commandName="Export"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

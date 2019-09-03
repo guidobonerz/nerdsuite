@@ -2,7 +2,7 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 
-public interface IMediaManager {
+public interface IMediaReader {
 
 	public MediaEntry getRoot();
 
@@ -12,4 +12,7 @@ public interface IMediaManager {
 
 	public MediaEntry[] getEntries(Object parent);
 
+	public void readEntries(MediaEntry parent);
+
+	public byte[] readContent(MediaEntry entry);
 }

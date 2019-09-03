@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MediaMountFactory {
+public class MediaFactory {
 
-	private static Map<String, IMediaManager> mediaStore = new HashMap<>();
+	private static Map<String, IMediaReader> mediaStore = new HashMap<>();
 	public static String FILE_PATTERN = ".*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR])";
 	public static Pattern pattern = Pattern.compile(FILE_PATTERN);
 
@@ -16,8 +16,8 @@ public class MediaMountFactory {
 		return file.getName().matches(FILE_PATTERN);
 	}
 
-	public static IMediaManager mount(File file) {
-		IMediaManager mediaProvider = null;
+	public static IMediaReader mount(File file) {
+		IMediaReader mediaProvider = null;
 		String fileName = file.getName();
 
 		Matcher matcher = pattern.matcher(fileName);
@@ -26,15 +26,15 @@ public class MediaMountFactory {
 			mediaProvider = mediaStore.get(suffix);
 			if (mediaProvider == null) {
 				if (suffix.equalsIgnoreCase("d64")) {
-					mediaProvider = new D64_MediaManager(file);
+					mediaProvider = new D64_MediaReader(file);
 				} else if (suffix.equalsIgnoreCase("d71")) {
-					mediaProvider = new D71_MediaManager(file);
+					mediaProvider = new D71_MediaReader(file);
 				} else if (suffix.equalsIgnoreCase("d81")) {
-					mediaProvider = new D81_MediaManager(file);
+					mediaProvider = new D81_MediaReader(file);
 				} else if (suffix.equalsIgnoreCase("dsk")) {
-					mediaProvider = new DSK_MediaManager(file);
+					mediaProvider = new DSK_MediaReader(file);
 				} else if (suffix.equalsIgnoreCase("atr")) {
-					mediaProvider = new ATR_MediaManager(file);
+					mediaProvider = new ATR_MediaReader(file);
 				} else {
 
 				}
@@ -59,7 +59,7 @@ public class MediaMountFactory {
 	}
 
 	public static MediaEntry[] getChildren(MediaEntry entry) {
-		IMediaManager mediaManager = MediaMountFactory.mount((File) entry.getUserObject());
+		IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
 		return mediaManager.getEntries(entry);
 	}
 }
