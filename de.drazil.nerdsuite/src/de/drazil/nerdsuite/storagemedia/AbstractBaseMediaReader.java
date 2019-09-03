@@ -54,7 +54,6 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 		boolean hasChildren = false;
 		if (entry instanceof MediaEntry) {
 			MediaEntry me = (MediaEntry) entry;
-
 			hasChildren = me.hasChildren();
 		}
 		return hasChildren;

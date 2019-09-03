@@ -1,6 +1,8 @@
 package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -112,6 +114,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		int currentDirectoryEntryOffset = base;
 		int id = 0;
 		boolean hasMoreEntries = true;
+		List<Integer> contentOffsetList = null;
 		while (hasMoreEntries) {
 			MediaEntry entry = null;
 			String fileName = getString(currentDirectoryEntryOffset + 0x01, currentDirectoryEntryOffset + 0x8, false);
@@ -124,6 +127,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 						fileSize = me.getSize() + fileSize;
 						entry = me;
 						entry.setSize(fileSize);
+						addContentOffset(contentOffsetList, currentDirectoryEntryOffset);
 						break;
 					}
 				}
@@ -132,11 +136,13 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 					"%1$s" + (StringUtils.isAsciiPrintable(fileType) ? ".%3$s" : "") + " (%2$4d K )", fileName,
 					(int) 1 + (fileSize / 1024), fileType);
 
-			if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0) {
+			if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0 && !StringUtils.isBlank(fileName)) {
+				contentOffsetList = new ArrayList<>();
 				entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
 						currentDirectoryEntryOffset + 0x10, null);
 				entry.setUserObject(getContainer());
-				entry.setDataLocation(currentDirectoryEntryOffset);
+				entry.setDataLocation(contentOffsetList);
+				addContentOffset(contentOffsetList, currentDirectoryEntryOffset);
 				MediaFactory.addChildEntry(parent, entry);
 
 			}
@@ -157,15 +163,28 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		}
 	}
 
+	private void addContentOffset(List<Integer> offsetList, int offset) {
+		for (int i = (offset + 0x10); i < (offset + 0x20); i++) {
+			int v = content[i] & 0xff;
+			if (v == 0) {
+				break;
+			}
+			offsetList.add(new Integer(v));
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public byte[] readContent(MediaEntry entry) {
-		int offset = (int) entry.getDataLocation();
-		int i = 0;
-		int block = 0;
-		while ((block = content[offset + i]) != 0x00) {
+		List<Integer> contentOffsetList = (List<Integer>) entry.getDataLocation();
+		System.out.println(entry.getFullName());
+		for (int i = 0; i < contentOffsetList.size(); i++) {
+			int block = contentOffsetList.get(i) & 0xff;
 			int track = (int) ((block * 2 + 18) / 9);
 			int sector = (int) ((block * 2 + 18) % 9);
-			i++;
+			int offset = (trackSizes[0][0] * track + 0x200 * sector) - (trackSizes[0][0] * (sides + 1))
+					+ (diskFormat == DiskFormat.Standard ? 0x200 : 0);
+			System.out.printf("%02d %02x T:%02x S:%02x %05x\n", i, block, track, sector, offset);
 		}
 		return null;
 	}

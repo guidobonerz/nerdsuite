@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.model.Project;
@@ -60,6 +61,8 @@ public class Explorer {
 			MediaEntry entry = (MediaEntry) o;
 			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
 			mediaManager.readContent(entry);
+			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell());
+			saveDialog.open();
 		} else {
 			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
 					"This entry can not be exported.");
