@@ -171,7 +171,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 	}
 
 	private boolean isVisibleInCatalog(int directoryOffset) {
-		return (content[directoryOffset + 0x0a] & 0x80) == 0;
+		return (content[directoryOffset + 0x0a] & 0x80) == 0 && content[directoryOffset] == 0;
 	}
 
 	private boolean isDeletable(int directoryOffset) {
@@ -186,7 +186,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		int trackOffset = directoryBaseOffset;
 		for (int s = 0; s < sides; s++) {
 			for (int t = 0; t < tracks; t++) {
-				if (!isEmptyEntry(trackOffset, 8, 0xe5)) {
+				if (!isEmptyEntry(trackOffset, 8)) {
 					break;
 				}
 
