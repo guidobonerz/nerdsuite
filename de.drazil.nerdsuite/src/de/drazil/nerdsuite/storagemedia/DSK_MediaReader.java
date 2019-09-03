@@ -176,14 +176,17 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 	@SuppressWarnings("unchecked")
 	@Override
 	public byte[] readContent(MediaEntry entry) {
-		List<Integer> contentOffsetList = (List<Integer>) entry.getDataLocation();
+		List<Integer> blockList = (List<Integer>) entry.getDataLocation();
 		System.out.println(entry.getFullName());
-		for (int i = 0; i < contentOffsetList.size(); i++) {
-			int block = contentOffsetList.get(i) & 0xff;
+		for (int i = 0; i < blockList.size(); i++) {
+			int block = blockList.get(i) & 0xff;
 			int track = (int) ((block * 2 + 18) / 9);
 			int sector = (int) ((block * 2 + 18) % 9);
-			int offset = (trackSizes[0][0] * track + 0x200 * sector) - (trackSizes[0][0] * (sides + 1))
-					+ (diskFormat == DiskFormat.Standard ? 0x200 : 0);
+			// int offset = (trackSizes[0][0] * track + 0x200 * sector) - (trackSizes[0][0]
+			// * (sides + 1))
+			// + (diskFormat == DiskFormat.Standard ? 0x200 : 0) + base;
+			int offset = base + (trackSizes[0][0] * track + 0x200 * sector) - (trackSizes[0][0] * (sides + 1))
+					+ (diskFormat == DiskFormat.Extended ? 0x300 : 0);
 			System.out.printf("%02d %02x T:%02x S:%02x %05x\n", i, block, track, sector, offset);
 		}
 		return null;
