@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 import com.google.common.collect.ComparisonChain;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
