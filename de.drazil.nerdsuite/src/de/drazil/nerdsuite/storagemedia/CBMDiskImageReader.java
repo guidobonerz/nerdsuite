@@ -48,12 +48,9 @@ public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 		dosType = new String(Character.toChars(getChar(content[bamOffset + 0xa5], false, true)))
 				+ new String(Character.toChars(getChar(content[bamOffset + 0xa6], false, true)));
 		diskName = name + "\uee20" + diskId + dummy + dosType;
-
 		diskName = String.format("%1$4s", StringUtils.rightPad(diskName, 22, "\uee20"));
-
 		// mediaEntryList.add(new MediaEntry(diskName, 0, "\uee20", 0, 0, new
 		// CBMFileAttributes(false, false), "C64 Pro|6"));
-
 	}
 
 	@Override
@@ -65,32 +62,19 @@ public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 			while (currentDirectoryEntryOffset < currentDirEntryBaseOffset + 0x100) {
 				byte fileType = content[currentDirectoryEntryOffset + 0x02];
 				if (content[currentDirectoryEntryOffset + 0x5] != 0 && (fileType & 0b111) != 0) {
-
 					String fileName = getFilename(currentDirectoryEntryOffset + 0x5, 0x0f, 0xa0);
 					int fileSize = getFileSize(currentDirectoryEntryOffset + 0x1e);
-
 					int fileTrack = content[currentDirectoryEntryOffset + 0x03];
 					int fileSector = content[currentDirectoryEntryOffset + 0x04];
-
 					String fileTypeName = getFileType(fileType);
 					boolean isClosed = isClosed(fileType);
 					boolean isLocked = isLocked(fileType);
 					if (content[currentDirectoryEntryOffset + 0x02] != 0) {
-						fileName = String.format("%2$s.%3$s (%1$3d Blocks )", fileSize, fileName, fileTypeName);
-						MediaEntry entry = new MediaEntry(id, fileName, fileName, fileTypeName, fileSize, fileTrack,
+						String fullName = String.format("%2$s.%3$s (%1$3d Blocks )", fileSize, fileName, fileTypeName);
+						MediaEntry entry = new MediaEntry(id, fullName, fileName, fileTypeName, fileSize, fileTrack,
 								fileSector, 0, null);
 						entry.setUserObject(getContainer());
 						MediaFactory.addChildEntry(parent, entry);
-					}
-					// byte[] data = readContent(me);
-					try {
-						// BinaryFileHandler.write(
-						// new File(Configuration.WORKSPACE_PATH.getAbsolutePath(), "test" + id +
-						// ".prg"), data);
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
 				}
 				currentDirectoryEntryOffset += 0x20;
@@ -98,7 +82,6 @@ public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 			}
 			currentDirEntryBaseOffset = bamOffset + (nextSector * sectorSize);
 			currentDirectoryEntryOffset = currentDirEntryBaseOffset;
-
 		}
 	}
 

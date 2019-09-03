@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 
 import de.drazil.nerdsuite.configuration.Configuration;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.storagemedia.IMediaReader;
@@ -60,9 +61,18 @@ public class Explorer {
 		if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
 			MediaEntry entry = (MediaEntry) o;
 			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
-			mediaManager.readContent(entry);
-			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell());
-			saveDialog.open();
+			byte[] content = mediaManager.readContent(entry);
+			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
+			saveDialog.setFileName(entry.getName() + "." + entry.getType());
+			String fileName = saveDialog.open();
+
+			try {
+				BinaryFileHandler.write(new File(fileName), content);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		} else {
 			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
 					"This entry can not be exported.");

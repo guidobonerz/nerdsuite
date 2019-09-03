@@ -4,6 +4,10 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
+import com.google.common.collect.ComparisonChain;
+
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.util.NumericConverter;
@@ -33,19 +37,14 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 			mediaEntry = (MediaEntry) parentEntry;
 		}
 		readEntries(mediaEntry);
-
 		Collections.sort(mediaEntry.getChildrenList(), new Comparator<MediaEntry>() {
-
 			@Override
 			public int compare(MediaEntry me1, MediaEntry me2) {
-				String s1 = me1.getName() + me1.getType();
-				String s2 = me2.getName() + me2.getType();
-				return s1.compareTo(s2);
+				return ComparisonChain.start().compareTrueFirst(me1.isDirectory(), me2.isDirectory())
+						.compare(me1.getName(), me2.getName()).compare(me1.getType(), me2.getType()).result();
 			}
 		});
-
 		list = mediaEntry.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
-
 		return list;
 	}
 

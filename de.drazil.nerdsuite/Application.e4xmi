@@ -211,7 +211,7 @@
       <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="Code Editor"/>
     </children>
     <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
-    <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export" command="_2QmjcMznEemJh_xLPhHI6A"/>
+    <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A"/>
   </menuContributions>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.newProject" commandName="New Project">
     <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.projectType" name="projectType" optional="false"/>

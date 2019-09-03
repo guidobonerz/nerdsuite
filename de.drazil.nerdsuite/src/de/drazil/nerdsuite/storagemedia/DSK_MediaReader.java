@@ -51,6 +51,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 	protected void readHeader() {
 
 		diskInfo = getString(0x00, 0x21, true);
+		diskFormat = getDiskFormat(diskInfo);
 		creator = getString(0x22, 0x2f, true);
 		tracks = getByte(0x30);
 		sides = getByte(0x31);
@@ -59,8 +60,6 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		System.out.println("Creator:" + creator);
 		System.out.println("Tracks:" + tracks);
 		System.out.println("Sides:" + sides);
-
-		diskFormat = getDiskFormat(diskInfo);
 
 		trackSizes = new int[tracks][sides];
 
@@ -93,8 +92,11 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		sectorCount = getByte(trackInfoBaseOffset + 0x15);
 
 		System.out.printf("TrackInfo: $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
+		System.out.printf("unused: 0c-0f  %04x %04x\n", getWord(trackInfoBaseOffset + 0x0c),
+				getWord(trackInfoBaseOffset + 0x0e));
 		System.out.println("TrackNo:" + getByte(trackInfoBaseOffset + 0x10));
 		System.out.println("SideNo:" + getByte(trackInfoBaseOffset + 0x11));
+		System.out.printf("unused: 12-13  %04x\n", getWord(trackInfoBaseOffset + 0x12));
 		System.out.println("SectorSize:" + sectorSize);
 		System.out.println("SectorCount:" + sectorCount);
 		System.out.println("GAP#3 Length:" + getByte(trackInfoBaseOffset + 0x16));
