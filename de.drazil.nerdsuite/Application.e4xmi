@@ -209,6 +209,7 @@
       <children xsi:type="menu:HandledMenuItem" xmi:id="_SKmw4OxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.binaryViewer" label="Binary Inspector"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_V2RKUOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.imageViewer" label="Graphic Editor"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="Code Editor"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_Zx9K4M6PEem6S-8Nx2mqeA" elementId="de.drazil.nerdsuite.handledmenuitem.emulator" label="Emulator"/>
     </children>
     <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
     <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A"/>

@@ -75,7 +75,7 @@ public class Explorer {
 
 		} else {
 			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
-					"This entry can not be exported.");
+					"Folders can not be exported.");
 		}
 
 		System.out.println("doExportFile:");
