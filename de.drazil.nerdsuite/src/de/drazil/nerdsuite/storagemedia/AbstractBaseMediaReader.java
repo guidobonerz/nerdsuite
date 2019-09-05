@@ -9,10 +9,12 @@ import com.google.common.collect.ComparisonChain;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.util.NumericConverter;
+import lombok.Getter;
 
 public abstract class AbstractBaseMediaReader implements IMediaReader {
 
-	protected byte[] content;
+	@Getter
+	public byte[] content;
 	private MediaEntry root;
 	private File container;
 
@@ -114,7 +116,7 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 	protected abstract void readHeader();
 
 	@Override
-	public abstract byte[] readContent(MediaEntry entry);
+	public abstract byte[] readContent(MediaEntry entry, IContentReader reader);
 
 	@Override
 	public abstract void readEntries(MediaEntry parent);

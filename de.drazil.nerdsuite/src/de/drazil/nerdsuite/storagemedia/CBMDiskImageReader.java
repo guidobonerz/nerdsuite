@@ -86,7 +86,7 @@ public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 	}
 
 	@Override
-	public byte[] readContent(MediaEntry entry) {
+	public byte[] readContent(MediaEntry entry, IContentReader reader) {
 		byte[] fileContent = null;
 		if (!entry.getType().trim().equals("DEL")) {
 			int fileTrack = entry.getTrack();

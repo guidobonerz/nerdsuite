@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 
+import com.google.common.primitives.UnsignedInteger;
+
 public class ATR_MediaReader extends AbstractBaseMediaReader {
 
 	private int atariDiskId;
@@ -70,6 +72,7 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 				fileName = String.format("%1$s.%2$s (%3$3d )", fileName, fileExtension, entrySectorCount);
 				MediaEntry entry = new MediaEntry(id, fileName, fileName, fileExtension, entrySectorCount, 0, 0, 0,
 						null);
+
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
 				entry.setUserObject(getContainer());
 				entry.setSector(entrySector);
@@ -87,48 +90,32 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 	}
 
 	@Override
-	public byte[] readContent(MediaEntry entry) {
-		int dataOffset = getSectorOffset(509 - 1);
-		System.out.printf("dataoffset  $%04x\n", dataOffset);
-		/*
-		 * System.out.printf("bytes used  $%02x\n", content[dataOffset + 0x7d]);
-		 * System.out.printf("file no     $%02x\n", (content[dataOffset + 0x7e] >> 2));
-		 * 
-		 * int h = (content[dataOffset + 0x7e] & 0x03) << 8; int l = content[dataOffset
-		 * + 0x7f];
-		 * 
-		 * int nextSectorDataOffset = getSectorOffset(h + l - 1);
-		 * System.out.printf("next sector $%02x\n", h + l);
-		 * System.out.printf("next sector data $%04x\n", nextSectorDataOffset);
-		 */
-		int exeHeader = getWord(dataOffset);
-		System.out.printf("exeheader $%04x\n", exeHeader);
-		dataOffset += 2;
+	public byte[] readContent(MediaEntry entry, IContentReader reader) {
 
-		int start = 0;
-		int end = 0;
-		int c = 0;
-		while (c < 10) {
-			start = getWord(dataOffset);
-			dataOffset += 2;
-			end = getWord(dataOffset);
-			System.out.printf("\n$%04x $%04x\n", start, end);
-			dataOffset += 2;
-			int x = end - start + 1;
-			int id = 1;
-			for (int i = 0; i < x; i++) {
-				System.out.printf("%02x ", content[dataOffset]);
-				if (id % 16 == 0) {
-					System.out.printf(" $%04x\n",dataOffset);
-				}
-				id++;
-				dataOffset++;
-			}
-			c++;
+		int sector = entry.getSector() - 1;
+		long sectorOffset = getSectorOffset(sector);
+		int sectorSize = (sector < 3 ? 0x80 : this.sectorSize);
+		boolean hasMoreData = true;
+		int sc = 0;
+		while (hasMoreData) {
+			int fileNo = content[(int) sectorOffset + sectorSize - 3] >> 2;
+			int h = ((content[(int) sectorOffset + sectorSize - 3] & 0x03) << 8) & 0xff;
+			int l = content[(int) sectorOffset + sectorSize - 2] & 0xff;
+			long bytesToRead = content[(int) sectorOffset + sectorSize - 1] & 0xff;
+			hasMoreData = sc < entry.getSize() - 1;
+			reader.read(entry, (int) sectorOffset, (int) bytesToRead, !hasMoreData);
+
+			System.out.printf("sc  %4d of %4d | %4x\n", sc, entry.getSize(), sectorOffset);
+			sc++;
+			sector = (h + l - 1);
+			sectorOffset = getSectorOffset(sector) & 0xfffff;
+
+			// System.out.printf("dataoffset $%04x\n", sectorOffset);
+			// System.out.printf("bytesToRead $%02x\n", bytesToRead);
+			// System.out.printf("file no $%02x\n", fileNo);
+			// System.out.printf("next sector $%02x\n", sector);
+			// System.out.printf("next sector data $%04x\n", sectorOffset);
 		}
-		// int bytesUsedInSector = getByte(dataOffset + 125);
-		// int nextDataSector = getWord(dataOffset + 126);
 		return null;
 	}
-
 }

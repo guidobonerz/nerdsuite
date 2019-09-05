@@ -14,5 +14,7 @@ public interface IMediaReader {
 
 	public void readEntries(MediaEntry parent);
 
-	public byte[] readContent(MediaEntry entry);
+	public byte[] readContent(MediaEntry entry, IContentReader reader);
+
+	public byte[] getContent();
 }

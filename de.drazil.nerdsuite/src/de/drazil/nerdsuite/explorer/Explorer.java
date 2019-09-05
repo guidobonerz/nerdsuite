@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.explorer;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -25,16 +26,19 @@ import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
+import de.drazil.nerdsuite.storagemedia.IContentReader;
 import de.drazil.nerdsuite.storagemedia.IMediaReader;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.ImageFactory;
 
-public class Explorer {
+public class Explorer implements IContentReader {
 	private TreeViewer treeViewer;
+	private IMediaReader mediaManager;
 
 	@Inject
 	EMenuService menuService;
+	private FileOutputStream fos;
 
 	public Explorer() {
 	}
@@ -60,25 +64,35 @@ public class Explorer {
 		Object o = treeNode.getFirstElement();
 		if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
 			MediaEntry entry = (MediaEntry) o;
-			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
-			byte[] content = mediaManager.readContent(entry);
+			mediaManager = MediaFactory.mount((File) entry.getUserObject());
 			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
 			saveDialog.setFileName(entry.getName() + "." + entry.getType());
 			String fileName = saveDialog.open();
 
 			try {
-				BinaryFileHandler.write(new File(fileName), content);
+				fos = new FileOutputStream(new File(fileName));
+				mediaManager.readContent(entry, this);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		} else {
 			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
 					"Folders can not be exported.");
 		}
-
 		System.out.println("doExportFile:");
+	}
+
+	@Override
+	public void read(MediaEntry entry, int start, int len, boolean finished) {
+		try {
+			BinaryFileHandler.write(fos, mediaManager.getContent(), start, len);
+			if (finished) {
+				fos.close();
+				fos = null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void listFiles() {
