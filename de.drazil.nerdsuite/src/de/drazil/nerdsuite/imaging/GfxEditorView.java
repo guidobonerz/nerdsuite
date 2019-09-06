@@ -104,7 +104,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Optional
 	void controlTile(@UIEventTopic("addOrRemoveTile") int index) {
 		System.out.println("addOrRemoveTile:" + index);
-		
+
 	}
 
 	@Inject
@@ -123,6 +123,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		getPainterWidget().getConf().setGridStyle(state.gridStyle);
 		getPainterWidget().getConf().setPixelGridEnabled(state.isEnabled());
 		getPainterWidget().recalc();
+
 	}
 
 	@Inject
@@ -130,16 +131,19 @@ public class GfxEditorView // implements IConfigurationListener {
 	void controlGraphicFormat(@UIEventTopic("gfxFormat") GraphicFormat gf) {
 		getPainterWidget().getConf().setGraphicFormat(gf);
 		getPainterWidget().recalc();
-		getPreviewerWidget().getConf().setGraphicFormat(gf);
-		getPreviewerWidget().recalc();
-		getRepositoryWidget().getConf().setGraphicFormat(gf);
-		getRepositoryWidget().recalc();
+		// getPreviewerWidget().getConf().setGraphicFormat(gf);
+		// getPreviewerWidget().recalc();
+		// getRepositoryWidget().getConf().setGraphicFormat(gf);
+		// getRepositoryWidget().recalc();
 	}
 
 	@Inject
 	@Optional
 	void processNewProject(@UIEventTopic("project") Project project) {
 		this.project = project;
+		ServiceFactory.getService(project.getId() + "_REPOSITORY", TileRepositoryService.class)
+				.addTileSelectionListener(getPainterWidget());
+
 	}
 
 	@Inject
@@ -153,8 +157,8 @@ public class GfxEditorView // implements IConfigurationListener {
 		this.parent = parent;
 		parent.setLayout(new MigLayout());
 		getPainterWidget().setLayoutData("cell 0 0");
-		getPreviewerWidget().setLayoutData("cell 1 0");
-		getRepositoryWidget().setLayoutData("cell 0 1 2 1");
+		// getPreviewerWidget().setLayoutData("cell 1 0");
+		// getRepositoryWidget().setLayoutData("cell 0 1 2 1");
 
 		/*
 		 * parent.setLayout(new MigLayout());
@@ -390,8 +394,8 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.getConf().supportsPainting = true;
 			painter.getConf().supportsDrawCursor = true;
 			painter.recalc();
-			painter.addDrawListener(getRepositoryWidget());
-			painter.addDrawListener(getPreviewerWidget());
+			// painter.addDrawListener(getRepositoryWidget());
+			// painter.addDrawListener(getPreviewerWidget());
 			ServiceFactory.getService("REPOSITORY", TileRepositoryService.class).addTileSelectionListener(painter);
 			// menuService.registerContextMenu(painter,
 			// "de.drazil.nerdsuite.popupmenu.popupmenu");
@@ -430,8 +434,8 @@ public class GfxEditorView // implements IConfigurationListener {
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
 			repository.recalc();
-			repository.addDrawListener(getPainterWidget());
-			repository.addDrawListener(getPreviewerWidget());
+			// repository.addDrawListener(getPainterWidget());
+			// repository.addDrawListener(getPreviewerWidget());
 
 		}
 		// menuService.registerContextMenu(repository,

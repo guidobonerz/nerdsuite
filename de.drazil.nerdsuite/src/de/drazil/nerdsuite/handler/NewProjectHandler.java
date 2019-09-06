@@ -39,6 +39,7 @@ public class NewProjectHandler {
 	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
 			EPartService partService, EModelService modelService,
 			@Named("de.drazil.nerdsuite.commandparameter.projectType") String projectTypeId) {
+
 		ProjectWizard projectWizard = new ProjectWizard(projectTypeId);
 		WizardDialog wizardDialog = new WizardDialog(shell, projectWizard);
 		if (wizardDialog.open() == WizardDialog.OK) {
@@ -66,7 +67,7 @@ public class NewProjectHandler {
 						TileRepositoryService.class);
 				int contentSize = gf.getWidth() / gf.getStorageEntity() * gf.getHeight();
 
-				tileService.addTile("test1", contentSize);
+				tileService.addTile("first+tile", contentSize);
 				Layer layer = null;
 
 				layer = tileService.getTile(0).getActiveLayer();

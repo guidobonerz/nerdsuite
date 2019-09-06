@@ -257,7 +257,7 @@ public class AdvancedMouseAdaper {
 
 	public void fireMouseButtonPressed(MouseButton button, int modifierMask, int x, int y) {
 		if (isMouseActionEnabled()) {
-			for (IAdvancedMouseListener ml : mouseListenerList) {
+			mouseListenerList.forEach(ml -> {
 				if (button == MouseButton.Left) {
 					ml.leftMouseButtonPressed(modifierMask, x, y);
 				} else if (button == MouseButton.Middle) {
@@ -265,13 +265,13 @@ public class AdvancedMouseAdaper {
 				} else if (button == MouseButton.Right) {
 					ml.rightMouseButtonPressed(modifierMask, x, y);
 				}
-			}
+			});
 		}
 	}
 
 	public void fireMouseButtonReleased(MouseButton button, int modifierMask, int x, int y) {
 		if (isMouseActionEnabled()) {
-			for (IAdvancedMouseListener ml : mouseListenerList) {
+			mouseListenerList.forEach(ml -> {
 				if (button == MouseButton.Left) {
 					ml.leftMouseButtonReleased(modifierMask, x, y);
 				} else if (button == MouseButton.Middle) {
@@ -279,13 +279,13 @@ public class AdvancedMouseAdaper {
 				} else if (button == MouseButton.Right) {
 					ml.rightMouseButtonReleased(modifierMask, x, y);
 				}
-			}
+			});
 		}
 	}
 
 	public void fireMouseButtonTimesClicked(MouseButton button, int modifierMask, int x, int y, int count) {
 		if (isMouseActionEnabled()) {
-			for (IAdvancedMouseListener ml : mouseListenerList) {
+			mouseListenerList.forEach(ml -> {
 				if (button == MouseButton.Left) {
 					ml.leftMouseButtonTimesClicked(modifierMask, x, y, count);
 				} else if (button == MouseButton.Middle) {
@@ -293,13 +293,13 @@ public class AdvancedMouseAdaper {
 				} else if (button == MouseButton.Right) {
 					ml.rightMouseButtonTimesClicked(modifierMask, x, y, count);
 				}
-			}
+			});
 		}
 	}
 
 	public void fireMouseButtonClicked(MouseButton button, int modifierMask, int x, int y) {
 		if (isMouseActionEnabled()) {
-			for (IAdvancedMouseListener ml : mouseListenerList) {
+			mouseListenerList.forEach(ml -> {
 				if (button == MouseButton.Left) {
 					ml.leftMouseButtonClicked(modifierMask, x, y);
 				} else if (button == MouseButton.Middle) {
@@ -307,13 +307,13 @@ public class AdvancedMouseAdaper {
 				} else if (button == MouseButton.Right) {
 					ml.rightMouseButtonClicked(modifierMask, x, y);
 				}
-			}
+			});
 		}
 	}
 
 	public void fireMouseButtonDoubleClicked(MouseButton button, int modifierMask, int x, int y) {
 		if (isMouseActionEnabled()) {
-			for (IAdvancedMouseListener ml : mouseListenerList) {
+			mouseListenerList.forEach(ml -> {
 				if (button == MouseButton.Left) {
 					ml.leftMouseButtonDoubleClicked(modifierMask, x, y);
 				} else if (button == MouseButton.Middle) {
@@ -321,25 +321,25 @@ public class AdvancedMouseAdaper {
 				} else if (button == MouseButton.Right) {
 					ml.rightMouseButtonDoubleClicked(modifierMask, x, y);
 				}
-			}
+			});
 		}
 	}
 
 	public void fireMouseTrack(MouseTrack mouseTrack, int modifierMask, int x, int y) {
 		if (isMouseActionEnabled()) {
-			for (IAdvancedMouseTrackListener ml : mouseTrackListenerList) {
+			mouseTrackListenerList.forEach(ml -> {
 				if (mouseTrack == MouseTrack.Enter) {
 					ml.mouseEnter(modifierMask, x, y);
 				} else if (mouseTrack == MouseTrack.Exit) {
 					ml.mouseExit(modifierMask, x, y);
 				}
-			}
+			});
 		}
 	}
 
 	public void fireMouseMove(MouseMove move, int modifierMask, int x, int y) {
 		if (isMouseActionEnabled()) {
-			for (IAdvancedMouseMoveListener ml : mouseMoveListenerList) {
+			mouseMoveListenerList.forEach(ml -> {
 				if (move == MouseMove.Move) {
 					ml.mouseMove(modifierMask, x, y);
 				} else if (move == MouseMove.Drag) {
@@ -347,15 +347,15 @@ public class AdvancedMouseAdaper {
 				} else if (move == MouseMove.Drop) {
 					ml.mouseDropped(modifierMask, x, y);
 				}
-			}
+			});
 		}
 	}
 
 	public void fireMouseScrolled(int modifierMask, int x, int y, int count) {
 		if (isMouseActionEnabled()) {
-			for (IAdvancedMouseWheelListener ml : mouseWheelListenerList) {
+			mouseWheelListenerList.forEach(ml -> {
 				ml.mouseScrolled(modifierMask, x, y, count);
-			}
+			});
 		}
 	}
 }

@@ -84,6 +84,8 @@ public class ImagingWidget extends BaseImagingWidget
 	public ImagingWidget(Composite parent, int style, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
 
+		
+
 		serviceCacheMap = new HashMap<>();
 
 		selectionRangeBuffer = new ArrayList<>();
