@@ -2,8 +2,6 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 
-import com.google.common.primitives.UnsignedInteger;
-
 public class ATR_MediaReader extends AbstractBaseMediaReader {
 
 	private int atariDiskId;
@@ -90,7 +88,7 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 	}
 
 	@Override
-	public byte[] readContent(MediaEntry entry, IContentReader reader) {
+	public void readContent(MediaEntry entry, IContentWriter writer) throws Exception {
 
 		int sector = entry.getSector() - 1;
 		long sectorOffset = getSectorOffset(sector);
@@ -103,7 +101,7 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 			int l = content[(int) sectorOffset + sectorSize - 2] & 0xff;
 			long bytesToRead = content[(int) sectorOffset + sectorSize - 1] & 0xff;
 			hasMoreData = sc < entry.getSize() - 1;
-			reader.read(entry, (int) sectorOffset, (int) bytesToRead, !hasMoreData);
+			writer.write(entry, (int) sectorOffset, (int) bytesToRead, !hasMoreData);
 
 			System.out.printf("sc  %4d of %4d | %4x\n", sc, entry.getSize(), sectorOffset);
 			sc++;
@@ -116,6 +114,5 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 			// System.out.printf("next sector $%02x\n", sector);
 			// System.out.printf("next sector data $%04x\n", sectorOffset);
 		}
-		return null;
 	}
 }

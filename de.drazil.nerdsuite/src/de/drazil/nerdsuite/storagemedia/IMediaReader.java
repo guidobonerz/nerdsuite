@@ -14,7 +14,7 @@ public interface IMediaReader {
 
 	public void readEntries(MediaEntry parent);
 
-	public byte[] readContent(MediaEntry entry, IContentReader reader);
+	public void readContent(MediaEntry entry, IContentWriter writer) throws Exception;
 
-	public byte[] getContent();
+	public void exportEntry(MediaEntry entry, File file) throws Exception;
 }

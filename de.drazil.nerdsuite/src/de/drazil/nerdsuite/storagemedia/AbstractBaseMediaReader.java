@@ -1,6 +1,8 @@
 package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -9,11 +11,9 @@ import com.google.common.collect.ComparisonChain;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.util.NumericConverter;
-import lombok.Getter;
 
 public abstract class AbstractBaseMediaReader implements IMediaReader {
 
-	@Getter
 	public byte[] content;
 	private MediaEntry root;
 	private File container;
@@ -113,10 +113,27 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 		return count == maxCount;
 	}
 
+	public void exportEntry(MediaEntry entry, File file) throws Exception {
+		try {
+			final OutputStream os = new FileOutputStream(file);
+			readContent(entry, new IContentWriter() {
+				@Override
+				public void write(MediaEntry entry, int start, int len, boolean finished) throws Exception {
+					BinaryFileHandler.write(os, content, start, len);
+					if (finished) {
+						os.close();
+					}
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	protected abstract void readHeader();
 
 	@Override
-	public abstract byte[] readContent(MediaEntry entry, IContentReader reader);
+	public abstract void readContent(MediaEntry entry, IContentWriter writer) throws Exception;
 
 	@Override
 	public abstract void readEntries(MediaEntry parent);
