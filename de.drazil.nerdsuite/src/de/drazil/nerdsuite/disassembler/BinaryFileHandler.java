@@ -37,7 +37,7 @@ public class BinaryFileHandler {
 		f.write(content, start, len);
 		if (closeStream) {
 			f.close();
+			f = null;
 		}
-		f = null;
 	}
 }

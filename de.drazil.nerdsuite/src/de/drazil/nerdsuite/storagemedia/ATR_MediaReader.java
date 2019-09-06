@@ -67,8 +67,8 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 					false);
 			int usedSectorBytes = getByte(currentDirectoryEntryOffset);
 			if (entryFlag != 0x00 && entryFlag != 0x80) {
-				fileName = String.format("%1$s.%2$s (%3$3d )", fileName, fileExtension, entrySectorCount);
-				MediaEntry entry = new MediaEntry(id, fileName, fileName, fileExtension, entrySectorCount, 0, 0, 0,
+				String fullName = String.format("%1$s.%2$s (%3$3d )", fileName, fileExtension, entrySectorCount);
+				MediaEntry entry = new MediaEntry(id, fullName, fileName, fileExtension, entrySectorCount, 0, 0, 0,
 						null);
 
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
@@ -96,23 +96,17 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 		boolean hasMoreData = true;
 		int sc = 0;
 		while (hasMoreData) {
-			int fileNo = content[(int) sectorOffset + sectorSize - 3] >> 2;
-			int h = ((content[(int) sectorOffset + sectorSize - 3] & 0x03) << 8) & 0xff;
-			int l = content[(int) sectorOffset + sectorSize - 2] & 0xff;
+			// int fileNo = content[(int) sectorOffset + sectorSize - 3] >> 3;
+			// int h = ((content[(int) (sectorOffset + sectorSize - 3)] & 0x07) << 8);
+			int fileNo = 0;// content[(int) sectorOffset + sectorSize - 3] >> 3;
+			int h = (content[(int) (sectorOffset + sectorSize - 3)] << 8);
+			int l = content[(int) (sectorOffset + sectorSize - 2)] & 0xff;
 			long bytesToRead = content[(int) sectorOffset + sectorSize - 1] & 0xff;
 			hasMoreData = sc < entry.getSize() - 1;
 			writer.write(entry, (int) sectorOffset, (int) bytesToRead, !hasMoreData);
-
-			System.out.printf("sc  %4d of %4d | %4x\n", sc, entry.getSize(), sectorOffset);
 			sc++;
 			sector = (h + l - 1);
-			sectorOffset = getSectorOffset(sector) & 0xfffff;
-
-			// System.out.printf("dataoffset $%04x\n", sectorOffset);
-			// System.out.printf("bytesToRead $%02x\n", bytesToRead);
-			// System.out.printf("file no $%02x\n", fileNo);
-			// System.out.printf("next sector $%02x\n", sector);
-			// System.out.printf("next sector data $%04x\n", sectorOffset);
+			sectorOffset = getSectorOffset(sector);// & 0xfffff;
 		}
 	}
 }
