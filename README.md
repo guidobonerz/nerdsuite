@@ -3,10 +3,6 @@ Nerdsuite is an IDE (based on eclipse 4.10/2018-12) to develop for old 8Bit mach
 Once finished, it will contain a SourceCode Editor, Visual Disassembler, IconEditor (for CharSets, Sprites, Screens and Bitmaps)  
 Currently I work mostly on the graphics part.  
 
-New features:
-- D64|D71|D81|DSK|ATR(incl. subfolders) image reader
-- File extration works for D64 and D71
-
 | System | OS | Works | Performance | Java Version
 | -- | -- | -- | -- | -- |
 | Windows (4 GHz i7 / 32GB) | Windows 8.1 | yes | excellent| 1.8.0_191
@@ -44,3 +40,12 @@ Image by Almighty God
 ## Project Explorer
 Project Explorer is able to show d64 / d71 / d81 / CPC DSK as well as atr images
 ![screenshot12](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/project_explorer.png)
+
+Features
+|Feature|Implmentation State|
+|--|--|
+|RW D64|RO|
+|RW D71|RO|
+|RW D81|--|
+|RW DSK|RO Directory|
+|RW ATR|RO Directory(incl. subfolders) & Extract files|
