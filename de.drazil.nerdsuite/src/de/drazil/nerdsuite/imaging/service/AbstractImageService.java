@@ -18,6 +18,6 @@ public abstract class AbstractImageService implements IImageService {
 	}
 
 	@Override
-	public abstract void setPixel(int x, int y, int colorIndex);
+	public abstract void setPixel(int x, int y);
 
 }

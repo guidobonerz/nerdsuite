@@ -9,6 +9,7 @@ public class GraphicFormatVariant {
 	private String id;
 	private String name;
 	private String referenceVariant;
+	private String colorRendererClass;
 	private Map<String, Object> properties;
 	private int tileRows;
 	private int tileColumns;

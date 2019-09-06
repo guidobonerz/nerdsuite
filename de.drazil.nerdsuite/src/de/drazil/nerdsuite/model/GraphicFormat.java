@@ -14,6 +14,7 @@ public class GraphicFormat {
 	private int height;
 	private int storageEntity;
 	private String storageType;
+	private String colorRendererClass;
 	private TileSize tileSize;
 	private Map<String, Object> properties;
 	private List<GraphicFormatVariant> variants;

@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.imaging;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -36,6 +37,7 @@ import net.miginfocom.swt.MigLayout;
 
 public class GfxEditorView // implements IConfigurationListener {
 {
+	private String serviceOwnerId;
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -128,8 +130,9 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
-	void controlGraphicFormat(@UIEventTopic("gfxFormat") GraphicFormat gf) {
-		getPainterWidget().getConf().setGraphicFormat(gf);
+	void controlGraphicFormat(@UIEventTopic("gfxSetup") Map<String, Object> gfxSetup) {
+		getPainterWidget().getConf().setGraphicFormat((GraphicFormat) gfxSetup.get("gfxFormat"),
+				(int) gfxSetup.get("gfxFormatVariant"));
 		getPainterWidget().recalc();
 		// getPreviewerWidget().getConf().setGraphicFormat(gf);
 		// getPreviewerWidget().recalc();
@@ -139,9 +142,12 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
-	void processNewProject(@UIEventTopic("project") Project project) {
+	void startNewProject(@UIEventTopic("project") Project project) {
 		this.project = project;
-		ServiceFactory.getService(project.getId() + "_REPOSITORY", TileRepositoryService.class)
+		serviceOwnerId = project.getId() + "_REPOSITORY";
+		ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class)
+				.addTileSelectionListener(getPainterWidget());
+		ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class)
 				.addTileSelectionListener(getPainterWidget());
 
 	}
@@ -149,7 +155,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void setSelectedTile(@UIEventTopic("setSelectedTile") int index) {
-		ServiceFactory.getService(project.getId() + "_REPOSITORY", TileRepositoryService.class).setSelectedTile(index);
+		ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class).setSelectedTile(index);
 	}
 
 	@PostConstruct
@@ -396,7 +402,7 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.recalc();
 			// painter.addDrawListener(getRepositoryWidget());
 			// painter.addDrawListener(getPreviewerWidget());
-			ServiceFactory.getService("REPOSITORY", TileRepositoryService.class).addTileSelectionListener(painter);
+
 			// menuService.registerContextMenu(painter,
 			// "de.drazil.nerdsuite.popupmenu.popupmenu");
 

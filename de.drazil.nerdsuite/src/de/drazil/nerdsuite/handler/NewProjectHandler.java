@@ -1,7 +1,9 @@
 package de.drazil.nerdsuite.handler;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -65,9 +67,9 @@ public class NewProjectHandler {
 
 				TileRepositoryService tileService = ServiceFactory.getService(project.getId() + "_REPOSITORY",
 						TileRepositoryService.class);
-				int contentSize = gf.getWidth() / gf.getStorageEntity() * gf.getHeight();
+				int contentSize = gf.getWidth() * gf.getHeight();
 
-				tileService.addTile("first+tile", contentSize);
+				tileService.addTile("first_tile", contentSize);
 				Layer layer = null;
 
 				layer = tileService.getTile(0).getActiveLayer();
@@ -77,8 +79,12 @@ public class NewProjectHandler {
 				layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 				layer.setSelectedColorIndex(1);
 
+				Map<String, Object> gfxSetup = new HashMap<String, Object>();
+				gfxSetup.put("gfxFormat", gf);
+				gfxSetup.put("gfxFormatVariant", 0);
+
 				eventBroker.post("project", project);
-				eventBroker.post("gfxFormat", gf);
+				eventBroker.post("gfxSetup", gfxSetup);
 				eventBroker.post("setSelectedTile", 0);
 			}
 

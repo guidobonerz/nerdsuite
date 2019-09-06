@@ -84,8 +84,6 @@ public class ImagingWidget extends BaseImagingWidget
 	public ImagingWidget(Composite parent, int style, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
 
-		
-
 		serviceCacheMap = new HashMap<>();
 
 		selectionRangeBuffer = new ArrayList<>();
@@ -170,7 +168,7 @@ public class ImagingWidget extends BaseImagingWidget
 			if (oldCursorX != cursorX || oldCursorY != cursorY) {
 				oldCursorX = cursorX;
 				oldCursorY = cursorY;
-				ServiceFactory.getCommonService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
+				ServiceFactory.getService(this, PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
 				doDrawTile();
 				// fireDoDrawTile(ImagingWidget.this);
 			}
@@ -196,7 +194,7 @@ public class ImagingWidget extends BaseImagingWidget
 	}
 
 	protected void computeCursorPosition(int x, int y) {
-		System.out.println(conf.widgetName);
+		//System.out.println(conf.widgetName);
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
 		tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);

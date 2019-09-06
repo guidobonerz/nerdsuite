@@ -11,6 +11,8 @@ import lombok.Data;
 public class Layer {
 	private int[] content = null;
 	private boolean isActive = false;
+	private boolean isLocked = false;
+	private int opacity = 100;
 	private boolean visible = true;
 	private String name = "<rename me>";
 	private Map<String, Color> colorPalette;

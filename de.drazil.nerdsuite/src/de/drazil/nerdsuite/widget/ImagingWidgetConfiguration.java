@@ -51,15 +51,23 @@ public class ImagingWidgetConfiguration {
 	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
 	public GridStyle gridStyle = GridStyle.Line;
+	public GraphicFormat gfxFormat;
+	public GraphicFormatVariant gfxFormatVariant;
 
 	public String widgetName = "<unknown>";
+	public String serviceOwnerId;
 
-	public void setGraphicFormat(GraphicFormat format) {
-		GraphicFormatVariant variant = format.getVariants().get(0);
-		setWidth(format.getWidth());
-		setHeight(format.getHeight());
-		setTileRows(variant.getTileRows());
-		setTileColumns(variant.getTileColumns());
+	public void setGraphicFormat(GraphicFormat gfxFormat, int variantIndex) {
+		this.gfxFormat = gfxFormat;
+		this.gfxFormatVariant = gfxFormat.getVariants().get(variantIndex);
+		setWidth(gfxFormat.getWidth());
+		setHeight(gfxFormat.getHeight());
+		setTileRows(gfxFormatVariant.getTileRows());
+		setTileColumns(gfxFormatVariant.getTileColumns());
+	}
+
+	public void setServiceOwner(String serviceOwnerId) {
+		this.serviceOwnerId = serviceOwnerId;
 	}
 
 	public void setPixelSize(int pixelSize) {

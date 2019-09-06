@@ -18,10 +18,12 @@ public class ImagePainterFactory {
 	public Image getImage(Tile tile, boolean needsUpdate, ImagingWidgetConfiguration conf) {
 		String name = tile.getName();
 		Image image = imagePool.get("IMAGE-" + name);
-		if (null == image || needsUpdate) {
-			image = createOrUpdateImage(tile, conf);
+		if (null == image) {
+			image = createOrUpdateImage(tile, conf, null);
 			imagePool.put("IMAGE-" + name, image);
 			System.out.println("create new IMAGE-" + name);
+		} else {
+			image = createOrUpdateImage(tile, conf, image);
 		}
 		return image;
 	}
@@ -34,11 +36,16 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image createOrUpdateImage(Tile tile, ImagingWidgetConfiguration conf) {
-		Image image = new Image(Display.getDefault(), conf.fullWidthPixel,conf.fullHeightPixel);
+	private Image createOrUpdateImage(Tile tile, ImagingWidgetConfiguration conf, Image image) {
+
+		Image img = image;
+		if (img == null) {
+			img = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
+		}
+
 		// ImageData id = image.getImageData().scaledTo(10, 10);
 
-		GC gc = new GC(image);
+		GC gc = new GC(img);
 		int width = conf.tileWidth;
 		tile.getLayerIndexOrderList().forEach(index -> {
 			Layer layer = tile.getLayer(index);
@@ -56,7 +63,7 @@ public class ImagePainterFactory {
 			}
 		});
 		gc.dispose();
-		return image;
+		return img;
 	}
 
 }

@@ -7,7 +7,8 @@
 		"storageEntity": 8,
 		"storageType": "linear",
 		"properties": {
-			"supportsMultiColor": true
+			"supportsMultiColor": true,
+			"multiColorPixelWidth": 2
 		},
 		"variants": [
 			{
@@ -117,6 +118,7 @@
 				"id": "KOALA",
 				"name": "Koala Picture",
 				"referenceVariant": "STANDARD",
+				"colorRendererClass": "",
 				"properties": {
 					"supportsMultiColor": true,
 					"backgroundColorOffset": 10000,
