@@ -88,7 +88,7 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 	}
 
 	@Override
-	public void readContent(MediaEntry entry, IContentWriter writer) throws Exception {
+	public void readContent(MediaEntry entry, IContentReader writer) throws Exception {
 
 		int sector = entry.getSector() - 1;
 		long sectorOffset = getSectorOffset(sector);

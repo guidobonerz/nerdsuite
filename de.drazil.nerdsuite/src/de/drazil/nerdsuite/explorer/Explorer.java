@@ -6,6 +6,7 @@ import java.io.FileFilter;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
@@ -19,6 +20,7 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
 import de.drazil.nerdsuite.configuration.Configuration;
@@ -64,11 +66,13 @@ public class Explorer {
 			String fileName = saveDialog.open();
 			try {
 				mediaManager.exportEntry(entry, new File(fileName));
+				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
+						"\""+fileName+"\" was successfully exported.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning",
 					"Folders can not be exported.");
 		}
 	}

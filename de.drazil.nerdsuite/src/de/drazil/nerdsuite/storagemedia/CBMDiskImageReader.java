@@ -86,7 +86,7 @@ public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 	}
 
 	@Override
-	public void readContent(MediaEntry entry, IContentWriter writer) throws Exception {
+	public void readContent(MediaEntry entry, IContentReader writer) throws Exception {
 		if (!entry.getType().trim().equals("DEL")) {
 			int fileTrack = entry.getTrack();
 			int fileSector = entry.getSector();

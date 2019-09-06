@@ -177,7 +177,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void readContent(MediaEntry entry, IContentWriter writer) throws Exception {
+	public void readContent(MediaEntry entry, IContentReader writer) throws Exception {
 		List<Integer> blockList = (List<Integer>) entry.getDataLocation();
 		System.out.println(entry.getFullName());
 		for (int i = 0; i < blockList.size(); i++) {

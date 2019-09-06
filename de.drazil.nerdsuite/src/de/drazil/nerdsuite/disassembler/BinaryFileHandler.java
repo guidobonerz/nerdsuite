@@ -29,12 +29,15 @@ public class BinaryFileHandler {
 		return resultReduced;
 	}
 
-	public static void write(File file, byte[] content, int start, int len) throws Exception {
-		write(new FileOutputStream(file), content, start, len);
+	public static void write(File file, byte[] content, int start, int len, boolean closeStream) throws Exception {
+		write(new FileOutputStream(file), content, start, len, closeStream);
 	}
 
-	public static void write(OutputStream f, byte[] content, int start, int len) throws Exception {
+	public static void write(OutputStream f, byte[] content, int start, int len, boolean closeStream) throws Exception {
 		f.write(content, start, len);
-		//f.close();
+		if (closeStream) {
+			f.close();
+		}
+		f = null;
 	}
 }
