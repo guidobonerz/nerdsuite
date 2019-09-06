@@ -86,31 +86,22 @@ public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 	}
 
 	@Override
-	public byte[] readContent(MediaEntry entry) {
-		byte[] fileContent = null;
+	public void readContent(MediaEntry entry, IContentReader writer) throws Exception {
 		if (!entry.getType().trim().equals("DEL")) {
 			int fileTrack = entry.getTrack();
 			int fileSector = entry.getSector();
-			while (fileTrack != 0) {
+			int copySize = 0;
+			boolean hasMoreData = true;
+			while (hasMoreData) {
 				int fileSectorOffset = trackOffsets[fileTrack - 1] + fileSector * 0x100;
 				fileTrack = content[fileSectorOffset] & 0xff;
 				fileSector = content[fileSectorOffset + 0x01] & 0xff;
-				int copySize = (fileTrack != 0 ? 0xfe : fileSector) & 0xff;
-				if (fileContent == null) {
-					fileContent = new byte[copySize];
-					System.arraycopy(content, fileSectorOffset + 0x02, fileContent, 0, copySize);
-				} else {
-					byte[] sectorData = new byte[copySize];
-					System.arraycopy(content, fileSectorOffset + 0x02, sectorData, 0, copySize);
-					byte[] temp = new byte[fileContent.length + sectorData.length];
-					System.arraycopy(fileContent, 0, temp, 0, fileContent.length);
-					System.arraycopy(sectorData, 0, temp, fileContent.length, copySize);
-					fileContent = temp;
-				}
+				hasMoreData = fileTrack != 0;
+				copySize = (hasMoreData ? 0xfe : fileSector) & 0xff;
+				writer.write(entry, fileSectorOffset + 0x02, copySize, !hasMoreData);
 				System.out.printf("Next:%05x %02d / %02d\n", fileSectorOffset, fileTrack, fileSector);
 			}
 		}
-		return fileContent;
 	}
 
 	private int getFileSize(int start) {

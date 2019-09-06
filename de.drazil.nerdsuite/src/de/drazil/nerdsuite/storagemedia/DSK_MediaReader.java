@@ -177,7 +177,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public byte[] readContent(MediaEntry entry) {
+	public void readContent(MediaEntry entry, IContentReader writer) throws Exception {
 		List<Integer> blockList = (List<Integer>) entry.getDataLocation();
 		System.out.println(entry.getFullName());
 		for (int i = 0; i < blockList.size(); i++) {
@@ -191,7 +191,6 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 					+ (diskFormat == DiskFormat.Extended ? 0x300 : 0);
 			System.out.printf("%02d %02x T:%02x S:%02x %05x\n", i, block, track, sector, offset);
 		}
-		return null;
 	}
 
 	private boolean isVisibleInCatalog(int directoryOffset) {

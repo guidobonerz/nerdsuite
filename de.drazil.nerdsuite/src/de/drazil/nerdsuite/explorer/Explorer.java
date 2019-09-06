@@ -6,6 +6,7 @@ import java.io.FileFilter;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
@@ -19,10 +20,10 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
 import de.drazil.nerdsuite.configuration.Configuration;
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.storagemedia.IMediaReader;
@@ -47,7 +48,6 @@ public class Explorer {
 		treeViewer = new TreeViewer(container, SWT.NONE);
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
-
 		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.projectexplorer");
 
 		listFiles();
@@ -61,24 +61,20 @@ public class Explorer {
 		if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
 			MediaEntry entry = (MediaEntry) o;
 			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
-			byte[] content = mediaManager.readContent(entry);
 			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
 			saveDialog.setFileName(entry.getName() + "." + entry.getType());
 			String fileName = saveDialog.open();
-
 			try {
-				BinaryFileHandler.write(new File(fileName), content);
+				mediaManager.exportEntry(entry, new File(fileName));
+				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
+						"\""+fileName+"\" was successfully exported.");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		} else {
-			MessageDialog.openInformation(treeViewer.getControl().getShell(), "Information",
-					"This entry can not be exported.");
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning",
+					"Folders can not be exported.");
 		}
-
-		System.out.println("doExportFile:");
 	}
 
 	private void listFiles() {

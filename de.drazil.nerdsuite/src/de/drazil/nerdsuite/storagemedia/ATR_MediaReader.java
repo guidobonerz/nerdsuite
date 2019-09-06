@@ -67,8 +67,10 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 					false);
 			int usedSectorBytes = getByte(currentDirectoryEntryOffset);
 			if (entryFlag != 0x00 && entryFlag != 0x80) {
-				fileName = String.format("%1$s.%2$s (%3$3d )", fileName, fileExtension, entrySectorCount);
-				MediaEntry entry = new MediaEntry(id, fileName, fileName, fileExtension, 0, 0, 0, 0, null);
+				String fullName = String.format("%1$s.%2$s (%3$3d )", fileName, fileExtension, entrySectorCount);
+				MediaEntry entry = new MediaEntry(id, fullName, fileName, fileExtension, entrySectorCount, 0, 0, 0,
+						null);
+
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
 				entry.setUserObject(getContainer());
 				entry.setSector(entrySector);
@@ -86,29 +88,25 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 	}
 
 	@Override
-	public byte[] readContent(MediaEntry entry) {
-		int dataOffset = getSectorOffset(entry.getSector() - 1);
-		int exeHeader = getWord(dataOffset);
-		dataOffset += 2;
-		boolean hasMore = true;
-		while (hasMore) {
-			int binaryStart = getWord(dataOffset);
-			int binaryEnd = getWord(dataOffset + 2);
-			int diff = (binaryEnd - binaryStart) + 1;
-			dataOffset += 4;
-			System.out.println(String.format("load segment $%4x-$%4x", binaryStart, binaryEnd));
-			for (int i = 0; i < diff; i++) {
+	public void readContent(MediaEntry entry, IContentReader writer) throws Exception {
 
-			}
-
-			dataOffset += diff;
-			
-
+		int sector = entry.getSector() - 1;
+		long sectorOffset = getSectorOffset(sector);
+		int sectorSize = (sector < 3 ? 0x80 : this.sectorSize);
+		boolean hasMoreData = true;
+		int sc = 0;
+		while (hasMoreData) {
+			// int fileNo = content[(int) sectorOffset + sectorSize - 3] >> 3;
+			// int h = ((content[(int) (sectorOffset + sectorSize - 3)] & 0x07) << 8);
+			int fileNo = 0;// content[(int) sectorOffset + sectorSize - 3] >> 3;
+			int h = (content[(int) (sectorOffset + sectorSize - 3)] << 8);
+			int l = content[(int) (sectorOffset + sectorSize - 2)] & 0xff;
+			long bytesToRead = content[(int) sectorOffset + sectorSize - 1] & 0xff;
+			hasMoreData = sc < entry.getSize() - 1;
+			writer.write(entry, (int) sectorOffset, (int) bytesToRead, !hasMoreData);
+			sc++;
+			sector = (h + l - 1);
+			sectorOffset = getSectorOffset(sector);// & 0xfffff;
 		}
-
-		// int bytesUsedInSector = getByte(dataOffset + 125);
-		// int nextDataSector = getWord(dataOffset + 126);
-		return null;
 	}
-
 }
