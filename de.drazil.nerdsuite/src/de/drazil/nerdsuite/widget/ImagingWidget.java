@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
@@ -23,7 +25,6 @@ import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.TileLocation;
 
 public class ImagingWidget extends BaseImagingWidget
@@ -75,15 +76,20 @@ public class ImagingWidget extends BaseImagingWidget
 
 	private Map<String, IImagingService> serviceCacheMap = null;
 
-	private Tile tile = null;
+	private PaintTileService paintTileService;
 
-	public ImagingWidget(Composite parent, int style) {
-		this(parent, style, null);
+	private Tile tile = null;
+	private int mouseWheel = 0;
+	private int lastMouseWheel = 0;
+	private int color = 0;
+
+	public ImagingWidget(Composite parent, int style, String owner) {
+		this(parent, style, owner, null);
 	}
 
-	public ImagingWidget(Composite parent, int style, ImagingWidgetConfiguration configuration) {
+	public ImagingWidget(Composite parent, int style, String owner, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
-
+		conf.setServiceOwner(owner);
 		serviceCacheMap = new HashMap<>();
 
 		selectionRangeBuffer = new ArrayList<>();
@@ -93,8 +99,7 @@ public class ImagingWidget extends BaseImagingWidget
 		hBar = getHorizontalBar();
 		vBar = getVerticalBar();
 
-		setBackground(Constants.BLACK);
-
+		paintTileService = ServiceFactory.getCommonService(PaintTileService.class);
 		addPaintListener(this);
 		parent.getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
@@ -102,19 +107,27 @@ public class ImagingWidget extends BaseImagingWidget
 				doDrawAllTiles();
 			}
 		});
-
 	}
 
-	public void setTile(Tile tile) {
-		this.tile = tile;
-		redraw();
+	@Override
+	public void mouseScrolled(int modifierMask, int x, int y, int count) {
+		mouseWheel += (count > 0 ? 1 : -1);
+
+		if (Math.abs((lastMouseWheel) - mouseWheel) > 3) {
+			lastMouseWheel = mouseWheel;
+			color += (count > 0 ? 1 : -1);
+			int c = color & 0x03;
+			System.out.println(c);
+			tile.getActiveLayer().setSelectedColorIndex(c);
+			redraw();
+		}
 	}
 
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
 		if (supportsPainting()) {
 			conf.pencilMode = conf.pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
-			Console.println("PencilMode:" + conf.pencilMode);
+			// Console.println("PencilMode:" + conf.pencilMode);
 		}
 	}
 
@@ -129,7 +142,7 @@ public class ImagingWidget extends BaseImagingWidget
 			// computeSelection(false, false);
 			doDrawAllTiles();
 		} else if (supportsPainting()) {
-			ServiceFactory.getCommonService(PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
+			paintTileService.setPixel(tile, cursorX, cursorY, conf);
 			doDrawTile();
 			// fireDoDrawTile(ImagingWidget.this);
 		}
@@ -168,7 +181,7 @@ public class ImagingWidget extends BaseImagingWidget
 			if (oldCursorX != cursorX || oldCursorY != cursorY) {
 				oldCursorX = cursorX;
 				oldCursorY = cursorY;
-				ServiceFactory.getService(this, PaintTileService.class).setPixel(tile, cursorX, cursorY, conf);
+				paintTileService.setPixel(tile, cursorX, cursorY, conf);
 				doDrawTile();
 				// fireDoDrawTile(ImagingWidget.this);
 			}
@@ -194,7 +207,7 @@ public class ImagingWidget extends BaseImagingWidget
 	}
 
 	protected void computeCursorPosition(int x, int y) {
-		//System.out.println(conf.widgetName);
+		// System.out.println(conf.widgetName);
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
 		tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);
@@ -226,10 +239,10 @@ public class ImagingWidget extends BaseImagingWidget
 			boolean paintTelevisionMode) {
 
 		if (checkPaintControlMode(DRAW_TILE)) {
-			ServiceFactory.getService(this, PaintTileService.class).paintTile(gc, tile, conf);
+			paintTileService.paintTile(gc, tile, conf);
 		}
 		if (checkPaintControlMode(DRAW_ALL_TILES)) {
-			ServiceFactory.getService(this, PaintTileService.class).paintAllTiles(gc, conf);
+			paintTileService.paintAllTiles(gc, conf);
 		}
 
 		if (paintPixelGrid) {
@@ -486,15 +499,11 @@ public class ImagingWidget extends BaseImagingWidget
 	}
 
 	private void fireDoDrawTile(BaseImagingWidget source) {
-		for (IDrawListener listener : drawListenerList) {
-			listener.doDrawTile();
-		}
+		drawListenerList.forEach(l -> l.doDrawTile());
 	}
 
 	private void fireDoDrawAllTiles(BaseImagingWidget source) {
-		for (IDrawListener listener : drawListenerList) {
-			listener.doDrawAllTiles();
-		}
+		drawListenerList.forEach(l -> l.doDrawAllTiles());
 	}
 
 	@Override
@@ -535,6 +544,7 @@ public class ImagingWidget extends BaseImagingWidget
 
 	@Override
 	public void tileSelected(Tile tile) {
-		setTile(tile);
+		this.tile = tile;
+		redraw();
 	}
 }

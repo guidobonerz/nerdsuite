@@ -50,7 +50,7 @@ public class NewProjectHandler {
 			Workspace workspace = Initializer.getConfiguration().getWorkspace();
 			workspace.add(project);
 			Initializer.getConfiguration().writeWorkspace(workspace);
-			createProjectStructure(project);
+			// createProjectStructure(project);
 
 			String perspectiveId = projectTypeId.equals("CODING_PROJECT") ? "de.drazil.nerdsuite.perspective.coding"
 					: "de.drazil.nerdsuite.perspective.gfx";
@@ -65,27 +65,13 @@ public class NewProjectHandler {
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
 
-				TileRepositoryService tileService = ServiceFactory.getService(project.getId() + "_REPOSITORY",
-						TileRepositoryService.class);
-				int contentSize = gf.getWidth() * gf.getHeight();
+				Map<String, Object> projectSetup = new HashMap<String, Object>();
+				projectSetup.put("project", project);
+				projectSetup.put("gfxFormat", gf);
+				projectSetup.put("gfxFormatVariant", 0);
+				projectSetup.put("setSelectedTile", 0);
 
-				tileService.addTile("first_tile", contentSize);
-				Layer layer = null;
-
-				layer = tileService.getTile(0).getActiveLayer();
-				layer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-				layer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-				layer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-				layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-				layer.setSelectedColorIndex(1);
-
-				Map<String, Object> gfxSetup = new HashMap<String, Object>();
-				gfxSetup.put("gfxFormat", gf);
-				gfxSetup.put("gfxFormatVariant", 0);
-
-				eventBroker.post("project", project);
-				eventBroker.post("gfxSetup", gfxSetup);
-				eventBroker.post("setSelectedTile", 0);
+				eventBroker.post("projectSetup", projectSetup);
 			}
 
 			/*

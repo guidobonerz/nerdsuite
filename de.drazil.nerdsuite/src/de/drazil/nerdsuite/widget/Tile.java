@@ -16,6 +16,9 @@ public class Tile {
 	@Getter
 	private String name = null;
 	private int size = 0;
+	@Setter
+	@Getter
+	private int backgroundColorIndex = 0;
 
 	public Tile(int size) {
 		this("<rename me>", size);
@@ -39,25 +42,36 @@ public class Tile {
 	}
 
 	public void addLayer() {
-		addLayer("<rename me>");
+		addLayer("<rename me>").setOpacity(100 / (layerList.size() + 1));
 	}
 
 	public Layer addLayer(String name) {
 		Layer layer = new Layer(name, size);
-		if (layerList.size() == 0) {
-			layer.setActive(true);
-		}
 		layerList.add(layer);
 		layerIndexOrderList.add(layerList.indexOf(layer));
+		layerList.forEach(l -> l.setActive(false));
+		layerList.get(layerIndexOrderList.size() - 1).setActive(true);
+		if (layerList.size() > 0) {
+			layer.setColorPalette(layerList.get(0).getColorPalette());
+		}
+		layer.setSelectedColorIndex(layerList.size());
 		fireLayerAdded();
 		return layer;
 	}
 
+	public void removeLastLayer() {
+		if (layerIndexOrderList.size() > 0) {
+			removeLayer(layerIndexOrderList.get(layerIndexOrderList.size()) - 1);
+		}
+	}
+
 	public void removeLayer(int index) {
-		int layerIndex = layerIndexOrderList.get(index);
-		layerList.remove(layerIndex);
-		layerIndexOrderList.remove(index);
-		fireLayerRemoved();
+		if (layerIndexOrderList.size() > 0) {
+			int layerIndex = layerIndexOrderList.get(index);
+			layerList.remove(layerIndex);
+			layerIndexOrderList.remove(index);
+			fireLayerRemoved();
+		}
 	}
 
 	public void moveToFront(int index) {
@@ -147,5 +161,4 @@ public class Tile {
 	private void fireActiveLayerChanged(int layer) {
 		tileListenerList.forEach(listener -> listener.activeLayerChanged(layer));
 	}
-
 }

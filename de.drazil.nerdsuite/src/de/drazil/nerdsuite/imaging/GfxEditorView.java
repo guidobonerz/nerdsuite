@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 
+import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
@@ -33,11 +34,12 @@ import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImagingWidget;
+import de.drazil.nerdsuite.widget.Layer;
+import de.drazil.nerdsuite.widget.Tile;
 import net.miginfocom.swt.MigLayout;
 
 public class GfxEditorView // implements IConfigurationListener {
 {
-	private String serviceOwnerId;
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -98,14 +100,21 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
-	void controlLayer(@UIEventTopic("addOrRemoveLayer") int index) {
-		System.out.println("addOrRemoveLayer:" + index);
+	void controlLayer(@UIEventTopic("addOrRemoveLayer") boolean addOrRemove) {
+		Tile tile = ServiceFactory.getService(getOwner(), TileRepositoryService.class).getSelectedTile();
+		if (addOrRemove) {
+			tile.addLayer();
+		} else {
+			tile.removeLastLayer();
+		}
 	}
 
 	@Inject
 	@Optional
 	void controlTile(@UIEventTopic("addOrRemoveTile") int index) {
 		System.out.println("addOrRemoveTile:" + index);
+		// ServiceFactory.getService(serviceOwnerId,
+		// TileRepositoryService.class).addTile("", size);;
 
 	}
 
@@ -128,34 +137,35 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	}
 
-	@Inject
 	@Optional
-	void controlGraphicFormat(@UIEventTopic("gfxSetup") Map<String, Object> gfxSetup) {
-		getPainterWidget().getConf().setGraphicFormat((GraphicFormat) gfxSetup.get("gfxFormat"),
-				(int) gfxSetup.get("gfxFormatVariant"));
-		getPainterWidget().recalc();
+	@Inject
+	void startNewProject(@UIEventTopic("projectSetup") Map<String, Object> projectSetup) {
+		getPainterWidget().getConf().setGraphicFormat((GraphicFormat) projectSetup.get("gfxFormat"), 0);
+		// (int) projectSetup.get("gfxFormatVariant")
+		int startIndex = (int) projectSetup.get("setSelectedTile");
+
+		TileRepositoryService tileRepositoryService = ServiceFactory.getService(getOwner(),
+				TileRepositoryService.class);
+		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
+
+		tileRepositoryService.addTile("first_tile", contentSize);
+		Layer layer = null;
+
+		layer = tileRepositoryService.getTile(0).getActiveLayer();
+		layer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
+		layer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
+		layer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
+		layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		layer.setSelectedColorIndex(2);
+
 		// getPreviewerWidget().getConf().setGraphicFormat(gf);
 		// getPreviewerWidget().recalc();
 		// getRepositoryWidget().getConf().setGraphicFormat(gf);
 		// getRepositoryWidget().recalc();
-	}
+		tileRepositoryService.addTileSelectionListener(getPainterWidget());
+		tileRepositoryService.setSelectedTile(startIndex);
 
-	@Inject
-	@Optional
-	void startNewProject(@UIEventTopic("project") Project project) {
-		this.project = project;
-		serviceOwnerId = project.getId() + "_REPOSITORY";
-		ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class)
-				.addTileSelectionListener(getPainterWidget());
-		ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class)
-				.addTileSelectionListener(getPainterWidget());
-
-	}
-
-	@Inject
-	@Optional
-	void setSelectedTile(@UIEventTopic("setSelectedTile") int index) {
-		ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class).setSelectedTile(index);
+		getPainterWidget().recalc();
 	}
 
 	@PostConstruct
@@ -390,7 +400,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	public ImagingWidget getPainterWidget() {
 		if (painter == null) {
 
-			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setPixelSize(15);
 			painter.getConf().setPixelGridEnabled(true);
@@ -412,7 +422,8 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	public ImagingWidget getPreviewerWidget() {
 		if (previewer == null) {
-			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+
+			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
 			previewer.getConf().setWidgetName("Preview :");
 			previewer.getConf().setPixelSize(1);
 			previewer.getConf().setRows(1);
@@ -429,7 +440,9 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	private ImagingWidget getRepositoryWidget() {
 		if (repository == null) {
-			repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
+
+			repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL,
+					getOwner());
 			repository.getConf().setWidgetName("Selector:");
 			repository.getConf().setColumns(4);
 			repository.getConf().setRows(4);
@@ -772,6 +785,10 @@ public class GfxEditorView // implements IConfigurationListener {
 				blankData[i] = 32;// (byte) (Math.random() * 80);
 		}
 		return blankData;
+	}
+
+	private String getOwner() {
+		return this.getClass().getClass() + ":" + this.hashCode();
 	}
 
 }

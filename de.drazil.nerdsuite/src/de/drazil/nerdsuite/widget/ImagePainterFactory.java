@@ -3,9 +3,12 @@ package de.drazil.nerdsuite.widget;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+
+import de.drazil.nerdsuite.Constants;
 
 public class ImagePainterFactory {
 
@@ -41,6 +44,7 @@ public class ImagePainterFactory {
 		Image img = image;
 		if (img == null) {
 			img = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
+			img.setBackground(Constants.BLACK);
 		}
 
 		// ImageData id = image.getImageData().scaledTo(10, 10);
@@ -57,8 +61,11 @@ public class ImagePainterFactory {
 					x = 0;
 					y++;
 				}
-				gc.setBackground(layer.getColor(content[i]));
-				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+				Color c = layer.getColor(content[i]);
+				if (content[i] != tile.getBackgroundColorIndex()) {
+					gc.setBackground(c);
+					gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+				}
 				x++;
 			}
 		});
