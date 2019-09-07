@@ -1,22 +1,31 @@
 package de.drazil.nerdsuite.imaging.service;
 
-import java.awt.Color;
-
 import org.eclipse.swt.graphics.GC;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.constants.PencilMode;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.Tile;
 
 public class C64ImageService extends AbstractImageService {
 
-	public void setPixel(int x, int y) {
+	private int bytesPerRow = 0;
 
+	
+	
+	@Override
+	public void setTile(Tile tile, ImagingWidgetConfiguration conf) {
+		super.setTile(tile, conf);
+		bytesPerRow = conf.getWidth() / conf.gfxFormat.getStorageEntity();
+	}
+
+	public void setPixel(int x, int y) {
 		int[] bitplane = activeLayer.getContent();
 		int ix = x % conf.currentWidth;
 		int iy = y % conf.height;
 		int ax = (x / conf.currentWidth);
 		int ay = (y / conf.height) * conf.tileColumns;
-		int offset = (ax + ay) * (conf.height * conf.bytesPerRow);
+		int offset = (ax + ay) * (conf.height * bytesPerRow);
 		int index = 0;
 		switch (conf.pixelConfig) {
 		case BC1: {
@@ -42,73 +51,47 @@ public class C64ImageService extends AbstractImageService {
 	private void paintTile(GC gc, int tileX, int tileY) {
 		int x = 0;
 		int y = 0;
-		int b1 = conf.bytesPerRow * conf.height;
+		int b1 = bytesPerRow * conf.height;
 		int b2 = b1 * conf.tileColumns;
 		int bc = conf.pixelConfig.bitCount;
 		int byteOffset = 0;
 		int pix = conf.isPixelGridEnabled() ? 1 : 0;
-		if (supportsMultiTileView()) {
-			byteOffset = conf.computeTileOffset(tileX, tileY, navigationOffset);
-		} else {
-			byteOffset = selectedTileOffset;
-		}
 
-		for (int i = byteOffset, k = 0; i < (byteOffset + conf.tileSize); i++, k++) {
-			int xi = (k % conf.bytesPerRow) * (8 / bc);
+		tileX = 0;
+		tileY = 0;
+
+		for (int i = 0, k = 0; i < conf.tileSize; i++, k++) {
+			int xi = (k % bytesPerRow) * (8 / bc);
 			int xo = (k / b1) % conf.tileColumns;
 			x = (xi + (xo * conf.currentWidth) + (tileX * conf.currentWidth * conf.tileColumns));
 
-			int yi = (k / conf.bytesPerRow) % conf.height;
+			int yi = (k / bytesPerRow) % conf.height;
 			int yo = (k / b2) % conf.tileRows;
 			y = (yi + (yo * conf.height) + (tileY * conf.height * conf.tileRows));
 
-			if (i < bitplane.length) {
-				int b = (bitplane[i] & 0xff);
-				switch (conf.pixelConfig) {
-				case BC1: {
-					for (int j = 128; j > 0; j >>= 1) {
-						gc.setBackground((b & j) == j ? palette.get(String.valueOf(selectedColorIndex))
-								: Constants.BITMAP_BACKGROUND_COLOR);
-						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
-						x++;
-					}
-					break;
-				}
-				case BC2: {
-					for (int j = 6; j >= 0; j -= 2) {
-						int bi = b;
-						int colorIndex = (bi >> j) & 3;
-						Color color = palette != null ? palette.get(String.valueOf(colorIndex)) : null;
-						if (colorProvider != null) {
-							color = colorProvider.getColorByIndex((byte) colorIndex, bitplane, tileX, tileY,
-									conf.columns);
-						}
-						gc.setBackground(color);
-						gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
-								conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
-						x++;
-					}
-					break;
-				}
-				case BC8: {
-
-					if (null != imagePainterFactory) {
-						gc.drawImage(
-								imagePainterFactory.getImage(getDisplay(), b, false, conf, bitplane, colorProvider,
-										palette),
-								(x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix);
-					}
-
-					/*
-					 * gc.setForeground(Constants.DEFAULT_BINARY_COLOR);
-					 * gc.drawString(String.valueOf(b), (x * conf.currentPixelWidth) + pix, (y *
-					 * conf.currentPixelHeight) + pix);
-					 */
+			int b = (activeLayer.getContent()[i] & 0xff);
+			switch (conf.pixelConfig) {
+			case BC1: {
+				for (int j = 128; j > 0; j >>= 1) {
+					gc.setBackground((b & j) == j ? activeLayer.getSelectedColor() : Constants.BITMAP_BACKGROUND_COLOR);
+					gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
+							conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
 					x++;
-					break;
 				}
-				}
+				break;
+			}
+			case BC2: {
+				/*
+				 * for (int j = 6; j >= 0; j -= 2) { int bi = b; int colorIndex = (bi >> j) & 3;
+				 * Color color = palette != null ? palette.get(String.valueOf(colorIndex)) :
+				 * null; if (colorProvider != null) { color =
+				 * colorProvider.getColorByIndex((byte) colorIndex, bitplane, tileX, tileY,
+				 * conf.columns); } gc.setBackground(color); gc.fillRectangle((x *
+				 * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
+				 * conf.currentPixelWidth - pix, conf.currentPixelHeight - pix); x++;
+				 */
+			}
+				break;
 			}
 		}
 	}

@@ -6,18 +6,24 @@ import java.io.FileFilter;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -44,8 +50,30 @@ public class Explorer {
 	public void postConstruct(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
-
+		Transfer[] transferTypes = { LocalSelectionTransfer.getTransfer() };
 		treeViewer = new TreeViewer(container, SWT.NONE);
+		treeViewer.addDragSupport(DND.DROP_COPY, transferTypes, new DragSourceAdapter() {
+			@Override
+			public void dragSetData(DragSourceEvent event) {
+			
+				super.dragSetData(event);
+			}
+		});
+		treeViewer.addDropSupport(DND.DROP_COPY, transferTypes, new ViewerDropAdapter(treeViewer) {
+
+			@Override
+			public boolean validateDrop(Object target, int operation, TransferData transferType) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean performDrop(Object data) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
 		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.projectexplorer");
@@ -67,13 +95,12 @@ public class Explorer {
 			try {
 				mediaManager.exportEntry(entry, new File(fileName));
 				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
-						"\""+fileName+"\" was successfully exported.");
+						"\"" + fileName + "\" was successfully exported.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning",
-					"Folders can not be exported.");
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be exported.");
 		}
 	}
 

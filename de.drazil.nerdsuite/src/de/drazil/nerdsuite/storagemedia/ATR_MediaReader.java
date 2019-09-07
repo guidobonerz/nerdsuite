@@ -70,7 +70,6 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 				String fullName = String.format("%1$s.%2$s (%3$3d )", fileName, fileExtension, entrySectorCount);
 				MediaEntry entry = new MediaEntry(id, fullName, fileName, fileExtension, entrySectorCount, 0, 0, 0,
 						null);
-
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
 				entry.setUserObject(getContainer());
 				entry.setSector(entrySector);
@@ -81,7 +80,6 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 				currentDirectorySectorOffset += sectorSize;
 				currentDirectoryEntryOffset = currentDirectorySectorOffset;
 			}
-
 			id++;
 			hasMoreEntries = !isEmptyEntry(currentDirectoryEntryOffset, 0x10, 0) && !(id > 64);
 		}
@@ -99,14 +97,14 @@ public class ATR_MediaReader extends AbstractBaseMediaReader {
 			// int fileNo = content[(int) sectorOffset + sectorSize - 3] >> 3;
 			// int h = ((content[(int) (sectorOffset + sectorSize - 3)] & 0x07) << 8);
 			int fileNo = 0;// content[(int) sectorOffset + sectorSize - 3] >> 3;
-			int h = (content[(int) (sectorOffset + sectorSize - 3)] << 8);
+			int h = (content[(int) (sectorOffset + sectorSize - 3)] << 8) & 0xffff;
 			int l = content[(int) (sectorOffset + sectorSize - 2)] & 0xff;
 			long bytesToRead = content[(int) sectorOffset + sectorSize - 1] & 0xff;
 			hasMoreData = sc < entry.getSize() - 1;
 			writer.write(entry, (int) sectorOffset, (int) bytesToRead, !hasMoreData);
 			sc++;
 			sector = (h + l - 1);
-			sectorOffset = getSectorOffset(sector);// & 0xfffff;
+			sectorOffset = getSectorOffset(sector);
 		}
 	}
 }

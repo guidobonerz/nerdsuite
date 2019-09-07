@@ -16,7 +16,8 @@ public class ServiceFactory {
 		return getService(COMMON, serviceClass);
 	}
 
-	public static <S extends IService> S getService(Object owner, Class<? super S> serviceClass) {
+	@SuppressWarnings("unchecked")
+	public static <S extends IService> S getService(String owner, Class<? super S> serviceClass) {
 
 		String serviceOwner = owner.toString();
 		Map<String, IService> serviceCacheMap = serviceOwnerMap.get(serviceOwner);

@@ -10,8 +10,6 @@ import de.drazil.nerdsuite.widget.Tile;
 
 public class PaintTileService extends AbstractImagingService {
 
-	private TileRepositoryService tileService = ServiceFactory.getService("REPOSITORY", TileRepositoryService.class);
-
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
 		Layer layer = tile.getActiveLayer();
 
@@ -50,7 +48,7 @@ public class PaintTileService extends AbstractImagingService {
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
-			System.out.println(x+":"+y);
+			System.out.println(x + ":" + y);
 			layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
 					? layer.getSelectedColorIndex()
 					: 0;
@@ -58,20 +56,27 @@ public class PaintTileService extends AbstractImagingService {
 	}
 
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
-		gc.drawImage(tileService.getImagePainterFactory().getImage(tile, true, conf), 0, 0);
+		TileRepositoryService service = ServiceFactory.getService(conf.getServiceOwnerId(),
+				TileRepositoryService.class);
+		gc.drawImage(service.getImagePainterFactory().getImage(tile, true, conf), 0, 0);
 	}
 
 	public void paintTileAt(GC gc, int x, int y, ImagingWidgetConfiguration conf) {
-		Tile tile = tileService.getTile(x);
-		gc.drawImage(tileService.getImagePainterFactory().getImage(tile, true, conf), 0, 0);
+		TileRepositoryService service = ServiceFactory.getService(conf.getServiceOwnerId(),
+				TileRepositoryService.class);
+		Tile tile = service.getTile(x);
+		gc.drawImage(service.getImagePainterFactory().getImage(tile, true, conf), 0, 0);
 	}
 
 	public void paintAllTiles(GC gc, ImagingWidgetConfiguration conf) {
+		TileRepositoryService service = ServiceFactory.getService(conf.getServiceOwnerId(),
+				TileRepositoryService.class);
 		int x = 0;
 		int y = 0;
-		for (int i = 0; i < tileService.getSize(); i++) {
-			Tile tile = tileService.getTile(i);
-			Image image = tileService.getImagePainterFactory().getImage(tile, false, conf);
+		for (int i = 0; i < service.getSize(); i++) {
+			Tile tile = service.getTile(i);
+			Image image = service.getImagePainterFactory().getImage(tile, false, conf);
+
 			// image = new
 			// Image(Display.getDefault(),image.getImageData().scaledTo(conf.getFullWidthPixel()
 			// / 2, conf.getFullHeightPixel() / 2));

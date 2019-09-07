@@ -16,6 +16,11 @@ public class Tile {
 	@Getter
 	private String name = null;
 	private int size = 0;
+	@Setter
+	@Getter
+	private int backgroundColorIndex = 0;
+	@Getter
+	private boolean showOnlyActiveLayer = false;
 
 	public Tile(int size) {
 		this("<rename me>", size);
@@ -39,25 +44,33 @@ public class Tile {
 	}
 
 	public void addLayer() {
-		addLayer("<rename me>");
+		addLayer("<rename me>").setOpacity(100 / (layerList.size() + 1));
 	}
 
 	public Layer addLayer(String name) {
 		Layer layer = new Layer(name, size);
-		if (layerList.size() == 0) {
-			layer.setActive(true);
-		}
 		layerList.add(layer);
 		layerIndexOrderList.add(layerList.indexOf(layer));
+		layerList.forEach(l -> l.setActive(false));
+		layerList.get(layerIndexOrderList.size() - 1).setActive(true);
+		layer.setSelectedColorIndex(0);
 		fireLayerAdded();
 		return layer;
 	}
 
+	public void removeLastLayer() {
+		if (layerIndexOrderList.size() > 0) {
+			removeLayer(layerIndexOrderList.get(layerIndexOrderList.size()) - 1);
+		}
+	}
+
 	public void removeLayer(int index) {
-		int layerIndex = layerIndexOrderList.get(index);
-		layerList.remove(layerIndex);
-		layerIndexOrderList.remove(index);
-		fireLayerRemoved();
+		if (layerIndexOrderList.size() > 0) {
+			int layerIndex = layerIndexOrderList.get(index);
+			layerList.remove(layerIndex);
+			layerIndexOrderList.remove(index);
+			fireLayerRemoved();
+		}
 	}
 
 	public void moveToFront(int index) {
@@ -94,6 +107,11 @@ public class Tile {
 		layerIndexOrderList.remove(index);
 		layerIndexOrderList.add(index + 1, index);
 		fireLayerReordered();
+	}
+
+	public void setShowOnlyActiveLayer(boolean showOnlyActiveLayer) {
+		this.showOnlyActiveLayer = showOnlyActiveLayer;
+		fireLayerVisibilityChanged(-1);
 	}
 
 	public void setLayerVisible(int index, boolean visible) {
@@ -147,5 +165,4 @@ public class Tile {
 	private void fireActiveLayerChanged(int layer) {
 		tileListenerList.forEach(listener -> listener.activeLayerChanged(layer));
 	}
-
 }

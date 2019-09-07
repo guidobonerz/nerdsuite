@@ -1,7 +1,9 @@
 package de.drazil.nerdsuite.handler;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,17 +19,13 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
-import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.Workspace;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
-import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
 public class NewProjectHandler {
@@ -39,6 +37,7 @@ public class NewProjectHandler {
 	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
 			EPartService partService, EModelService modelService,
 			@Named("de.drazil.nerdsuite.commandparameter.projectType") String projectTypeId) {
+
 		ProjectWizard projectWizard = new ProjectWizard(projectTypeId);
 		WizardDialog wizardDialog = new WizardDialog(shell, projectWizard);
 		if (wizardDialog.open() == WizardDialog.OK) {
@@ -47,7 +46,7 @@ public class NewProjectHandler {
 			Workspace workspace = Initializer.getConfiguration().getWorkspace();
 			workspace.add(project);
 			Initializer.getConfiguration().writeWorkspace(workspace);
-			createProjectStructure(project);
+			// createProjectStructure(project);
 
 			String perspectiveId = projectTypeId.equals("CODING_PROJECT") ? "de.drazil.nerdsuite.perspective.coding"
 					: "de.drazil.nerdsuite.perspective.gfx";
@@ -62,23 +61,13 @@ public class NewProjectHandler {
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
 
-				TileRepositoryService tileService = ServiceFactory.getService(project.getId() + "_REPOSITORY",
-						TileRepositoryService.class);
-				int contentSize = gf.getWidth() / gf.getStorageEntity() * gf.getHeight();
+				Map<String, Object> projectSetup = new HashMap<String, Object>();
+				projectSetup.put("project", project);
+				projectSetup.put("gfxFormat", gf);
+				projectSetup.put("gfxFormatVariant", 0);
+				projectSetup.put("setSelectedTile", 0);
 
-				tileService.addTile("test1", contentSize);
-				Layer layer = null;
-
-				layer = tileService.getTile(0).getActiveLayer();
-				layer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-				layer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-				layer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-				layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-				layer.setSelectedColorIndex(1);
-
-				eventBroker.post("project", project);
-				eventBroker.post("gfxFormat", gf);
-				eventBroker.post("setSelectedTile", 0);
+				eventBroker.post("projectSetup", projectSetup);
 			}
 
 			/*

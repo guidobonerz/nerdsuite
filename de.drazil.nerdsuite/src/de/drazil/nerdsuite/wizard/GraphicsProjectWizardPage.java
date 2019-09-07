@@ -37,6 +37,7 @@ import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
 import de.drazil.nerdsuite.validator.IValidatable;
+import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.ProjectTypeFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -364,18 +365,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	}
 
 	private List<GraphicFormat> getGraphicFormatList(TargetPlatform targetPlatform) {
-		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			graphicFormatList = Arrays
-					.asList(mapper.readValue(bundle.getEntry("configuration/graphic_formats.json"),
-							GraphicFormat[].class))
-					.stream().filter(c -> c.getId().startsWith(targetPlatform.getId())).collect(Collectors.toList());
-
-		} catch (Exception e) {
-			graphicFormatList = null;
-		}
-		return graphicFormatList;
+		return GraphicFormatFactory.getFormatByPrefix(targetPlatform.getId());
 	}
 
 	@Override

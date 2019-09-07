@@ -13,6 +13,7 @@ public class TileRepositoryService extends AbstractImagingService {
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	private List<ITileSelectionListener> tileServiceSelectionListener = null;
 	private ImagePainterFactory imagePainterFactory;
+	private int selectedTileIndex = 0;
 
 	public TileRepositoryService() {
 		tileList = new ArrayList<>();
@@ -29,15 +30,33 @@ public class TileRepositoryService extends AbstractImagingService {
 		fireTileAdded();
 	}
 
+	public void removeLast() {
+		if (tileIndexOrderList.size() > 0) {
+			removeTile(tileIndexOrderList.size() - 1);
+		}
+
+	}
+
+	public void removeSelected() {
+
+	}
+
 	public void removeTile(int index) {
-		int tileIndex = tileIndexOrderList.get(index);
-		tileList.remove(tileIndex);
-		tileIndexOrderList.remove(index);
-		fireTileRemoved();
+		if (tileIndexOrderList.size() > 0) {
+			int tileIndex = tileIndexOrderList.get(index);
+			tileList.remove(tileIndex);
+			tileIndexOrderList.remove(index);
+			fireTileRemoved();
+		}
 	}
 
 	public void setSelectedTile(int index) {
+		selectedTileIndex = index;
 		fireTileSelected(getTile(index));
+	}
+
+	public Tile getSelectedTile() {
+		return getTile(selectedTileIndex);
 	}
 
 	public Tile getTile(int index) {

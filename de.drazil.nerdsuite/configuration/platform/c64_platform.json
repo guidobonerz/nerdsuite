@@ -1,7 +1,7 @@
 {
 	"cpuInstructionSource": "configuration/cpu/6510_instructions.json",
 	"basicInstructionSource": "configuration/basic/cbm_basic.json",
-	"graphicFormatSource":"configuration/graphicformat/c64_graphicformats",
+	"graphicFormatSource": "configuration/graphicformat/c64_graphic_formats",
 	"colorPalette": [
 		{
 			"value": "#000000",

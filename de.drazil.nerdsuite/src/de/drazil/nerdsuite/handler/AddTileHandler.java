@@ -8,7 +8,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.MToolItem;
 public class AddTileHandler {
 	@Execute
 	public void execute(final MToolItem item, IEventBroker broker) {
-		broker.post("addOrRemoveTile", 1);
+		broker.post("addOrRemoveTile", true);
 	}
 		
 }
