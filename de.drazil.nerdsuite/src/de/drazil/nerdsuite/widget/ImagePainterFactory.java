@@ -53,20 +53,22 @@ public class ImagePainterFactory {
 		int width = conf.tileWidth;
 		tile.getLayerIndexOrderList().forEach(index -> {
 			Layer layer = tile.getLayer(index);
-			int content[] = layer.getContent();
-			int x = 0;
-			int y = 0;
-			for (int i = 0; i < content.length; i++) {
-				if (i % width == 0 && i > 0) {
-					x = 0;
-					y++;
+			if (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() && layer.isActive())) {
+				int content[] = layer.getContent();
+				int x = 0;
+				int y = 0;
+				for (int i = 0; i < content.length; i++) {
+					if (i % width == 0 && i > 0) {
+						x = 0;
+						y++;
+					}
+					Color c = layer.getColor(content[i]);
+					if (content[i] != tile.getBackgroundColorIndex() || tile.isShowOnlyActiveLayer()) {
+						gc.setBackground(c);
+						gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+					}
+					x++;
 				}
-				Color c = layer.getColor(content[i]);
-				if (content[i] != tile.getBackgroundColorIndex()) {
-					gc.setBackground(c);
-					gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
-				}
-				x++;
 			}
 		});
 		gc.dispose();

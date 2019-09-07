@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
@@ -27,8 +25,8 @@ import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.TileLocation;
 
-public class ImagingWidget extends BaseImagingWidget
-		implements IDrawListener, PaintListener, IImagingCallback, ITileSelectionListener, ITileManagementListener {
+public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IImagingCallback,
+		ITileSelectionListener, ITileManagementListener, ITileListener {
 
 	private final static int DRAW_NOTHING = 0;
 	private final static int DRAW_ALL_TILES = 1;
@@ -544,7 +542,46 @@ public class ImagingWidget extends BaseImagingWidget
 
 	@Override
 	public void tileSelected(Tile tile) {
+		if (this.tile != null) {
+			this.tile.removeTileListener(this);
+		}
 		this.tile = tile;
+		tile.addTileListener(this);
 		redraw();
 	}
+
+	@Override
+	public void layerRemoved() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void layerAdded() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void activeLayerChanged(int layer) {
+		redraw();
+	}
+
+	@Override
+	public void layerContentChanged(int layer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void layerReordered() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void layerVisibilityChanged(int layer) {
+		redraw();
+	}
+
 }

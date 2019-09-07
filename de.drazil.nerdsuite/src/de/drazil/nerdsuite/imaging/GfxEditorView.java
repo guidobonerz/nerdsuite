@@ -18,6 +18,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
@@ -60,6 +62,19 @@ public class GfxEditorView // implements IConfigurationListener {
 	private ConfigurationDialog configurationDialog = null;
 	private boolean isAnimationRunning = false;
 	private ImagePainterFactory imagePainterFactory = null;
+	private TileRepositoryService tileRepositoryService;
+
+	private Button layer1;
+	private Button layer2;
+	private Button layer3;
+	private Button layer4;
+
+	private Button color1;
+	private Button color2;
+	private Button color3;
+	private Button color4;
+
+	private Button showOnlyActiveLayer;
 
 	@Inject
 	EMenuService menuService;
@@ -101,7 +116,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void controlLayer(@UIEventTopic("addOrRemoveLayer") boolean addOrRemove) {
-		Tile tile = ServiceFactory.getService(getOwner(), TileRepositoryService.class).getSelectedTile();
+		Tile tile = tileRepositoryService.getSelectedTile();
 		if (addOrRemove) {
 			tile.addLayer();
 		} else {
@@ -144,19 +159,35 @@ public class GfxEditorView // implements IConfigurationListener {
 		// (int) projectSetup.get("gfxFormatVariant")
 		int startIndex = (int) projectSetup.get("setSelectedTile");
 
-		TileRepositoryService tileRepositoryService = ServiceFactory.getService(getOwner(),
-				TileRepositoryService.class);
 		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
 
 		tileRepositoryService.addTile("first_tile", contentSize);
-		Layer layer = null;
+		Layer layer1 = null;
 
-		layer = tileRepositoryService.getTile(0).getActiveLayer();
-		layer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
-		layer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
-		layer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
-		layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		layer.setSelectedColorIndex(2);
+		layer1 = tileRepositoryService.getTile(0).getActiveLayer();
+		layer1.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer1.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
+		layer1.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
+		layer1.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(6).getColor());
+		layer1.setSelectedColorIndex(0);
+		Layer layer2 = tileRepositoryService.getTile(0).addLayer("layer2");
+		layer2.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer2.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
+		layer2.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(9).getColor());
+		layer2.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
+		layer2.setSelectedColorIndex(0);
+		Layer layer3 = tileRepositoryService.getTile(0).addLayer("layer3");
+		layer3.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer3.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
+		layer3.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
+		layer3.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
+		layer3.setSelectedColorIndex(0);
+		Layer layer4 = tileRepositoryService.getTile(0).addLayer("layer4");
+		layer4.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer4.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(6).getColor());
+		layer4.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
+		layer4.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(14).getColor());
+		layer4.setSelectedColorIndex(0);
 
 		// getPreviewerWidget().getConf().setGraphicFormat(gf);
 		// getPreviewerWidget().recalc();
@@ -171,8 +202,69 @@ public class GfxEditorView // implements IConfigurationListener {
 	@PostConstruct
 	public void postConstruct(Composite parent, MPart part, EMenuService menuService) {
 		this.parent = parent;
+		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 		parent.setLayout(new MigLayout());
 		getPainterWidget().setLayoutData("cell 0 0");
+
+		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
+		showOnlyActiveLayer.setText("Active Only");
+		showOnlyActiveLayer.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).setShowOnlyActiveLayer(((Button) e.widget).getSelection());
+		});
+
+		layer1 = new Button(parent, SWT.NONE);
+		layer1.setText("layer1");
+		layer1.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).setLayerActive(0, true);
+		});
+		layer2 = new Button(parent, SWT.NONE);
+		layer2.setText("layer2");
+		layer2.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).setLayerActive(1, true);
+		});
+		layer3 = new Button(parent, SWT.NONE);
+		layer3.setText("layer3");
+		layer3.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).setLayerActive(2, true);
+		});
+		layer4 = new Button(parent, SWT.NONE);
+		layer4.setText("layer4");
+		layer4.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).setLayerActive(3, true);
+		});
+		color1 = new Button(parent, SWT.NONE);
+		color1.setText("color1");
+		color1.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).getActiveLayer().setSelectedColorIndex(0);
+		});
+		color2 = new Button(parent, SWT.NONE);
+		color2.setText("color2");
+		color2.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).getActiveLayer().setSelectedColorIndex(1);
+		});
+		color3 = new Button(parent, SWT.NONE);
+		color3.setText("color3");
+		color3.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).getActiveLayer().setSelectedColorIndex(2);
+		});
+		color4 = new Button(parent, SWT.NONE);
+		color4.setText("color4");
+		color4.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).getActiveLayer().setSelectedColorIndex(3);
+		});
+
+		layer1.setLayoutData("cell 1 0");
+		layer2.setLayoutData("cell 2 0");
+		layer3.setLayoutData("cell 3 0");
+		layer4.setLayoutData("cell 4 0");
+
+		color1.setLayoutData("cell 1 1");
+		color2.setLayoutData("cell 2 1");
+		color3.setLayoutData("cell 3 1");
+		color4.setLayoutData("cell 4 1");
+		
+		showOnlyActiveLayer.setLayoutData("cell 1 2");
+
 		// getPreviewerWidget().setLayoutData("cell 1 0");
 		// getRepositoryWidget().setLayoutData("cell 0 1 2 1");
 
@@ -597,148 +689,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	 * } getPreviewer().recalc(); getSelector().recalc(); getPainter().recalc();
 	 * parent.layout(); }
 	 */
-	/*
-	 * private void setPaintFormat(String format) { switch (format) { case "Screen":
-	 * { getPainter().getConf().setWidth(40); getPainter().getConf().setHeight(25);
-	 * getPainter().getConf().setTileColumns(1);
-	 * getPainter().getConf().setTileRows(1);
-	 * getPainter().getConf().setPixelSize(16);
-	 * getPreviewer().getConf().setWidth(40);
-	 * getPreviewer().getConf().setHeight(25);
-	 * getPreviewer().getConf().setTileColumns(1);
-	 * getPreviewer().getConf().setTileRows(1);
-	 * getPreviewer().getConf().setPixelSize(4);
-	 * getSelector().getConf().setWidth(40); getSelector().getConf().setHeight(25);
-	 * getSelector().getConf().setTileColumns(1);
-	 * getSelector().getConf().setTileRows(1);
-	 * getSelector().getConf().setColumns(8); getSelector().getConf().setRows(1);
-	 * getSelector().getConf().setPixelSize(8); break; } case "Char": {
-	 * getPainter().getConf().setWidth(8); getPainter().getConf().setHeight(8);
-	 * getPainter().getConf().setTileColumns(1);
-	 * getPainter().getConf().setTileRows(1);
-	 * getPainter().getConf().setPixelSize(40);
-	 * getPreviewer().getConf().setWidth(8); getPreviewer().getConf().setHeight(8);
-	 * getPreviewer().getConf().setTileColumns(1);
-	 * getPreviewer().getConf().setTileRows(1); getSelector().getConf().setWidth(8);
-	 * getSelector().getConf().setHeight(8);
-	 * getSelector().getConf().setTileColumns(1);
-	 * getSelector().getConf().setTileRows(1);
-	 * getSelector().getConf().setColumns(16); getSelector().getConf().setRows(16);
-	 * getSelector().getConf().setPixelSize(3); break; } case "Char 2X": {
-	 * getPainter().getConf().setWidth(8); getPainter().getConf().setHeight(8);
-	 * getPainter().getConf().setTileColumns(2);
-	 * getPainter().getConf().setTileRows(1);
-	 * getPainter().getConf().setPixelSize(20);
-	 * getPreviewer().getConf().setWidth(8); getPreviewer().getConf().setHeight(8);
-	 * getPreviewer().getConf().setTileColumns(2);
-	 * getPreviewer().getConf().setTileRows(1); getSelector().getConf().setWidth(8);
-	 * getSelector().getConf().setHeight(8);
-	 * getSelector().getConf().setTileColumns(2);
-	 * getSelector().getConf().setTileRows(1);
-	 * getSelector().getConf().setColumns(8); getSelector().getConf().setRows(16);
-	 * getSelector().getConf().setPixelSize(3); break; }
-	 * 
-	 * case "Char 2Y": { getPainter().getConf().setWidth(8);
-	 * getPainter().getConf().setHeight(8);
-	 * getPainter().getConf().setTileColumns(1);
-	 * getPainter().getConf().setTileRows(2);
-	 * getPainter().getConf().setPixelSize(20);
-	 * getPreviewer().getConf().setWidth(8); getPreviewer().getConf().setHeight(8);
-	 * getPreviewer().getConf().setTileColumns(1);
-	 * getPreviewer().getConf().setTileRows(2); getSelector().getConf().setWidth(8);
-	 * getSelector().getConf().setHeight(8);
-	 * getSelector().getConf().setTileColumns(1);
-	 * getSelector().getConf().setTileRows(2);
-	 * getSelector().getConf().setColumns(16); getSelector().getConf().setRows(8);
-	 * getSelector().getConf().setPixelSize(3); break; }
-	 * 
-	 * case "Char 2XY": { getPainter().getConf().setWidth(8);
-	 * getPainter().getConf().setHeight(8);
-	 * getPainter().getConf().setTileColumns(2);
-	 * getPainter().getConf().setTileRows(2);
-	 * getPainter().getConf().setPixelSize(20);
-	 * getPreviewer().getConf().setWidth(8); getPreviewer().getConf().setHeight(8);
-	 * getPreviewer().getConf().setTileColumns(2);
-	 * getPreviewer().getConf().setTileRows(2); getSelector().getConf().setWidth(8);
-	 * getSelector().getConf().setHeight(8);
-	 * getSelector().getConf().setTileColumns(2);
-	 * getSelector().getConf().setTileRows(2);
-	 * getSelector().getConf().setColumns(8); getSelector().getConf().setRows(8);
-	 * getSelector().getConf().setPixelSize(3); break; }
-	 * 
-	 * case "Sprite": { getPainter().getConf().setWidth(24);
-	 * getPainter().getConf().setHeight(21);
-	 * getPainter().getConf().setTileColumns(1);
-	 * getPainter().getConf().setTileRows(1);
-	 * getPainter().getConf().setPixelSize(10);
-	 * getPreviewer().getConf().setWidth(24);
-	 * getPreviewer().getConf().setHeight(21);
-	 * getPreviewer().getConf().setTileColumns(1);
-	 * getPreviewer().getConf().setTileRows(1);
-	 * getSelector().getConf().setWidth(24); getSelector().getConf().setHeight(21);
-	 * getSelector().getConf().setTileColumns(1);
-	 * getSelector().getConf().setTileRows(1);
-	 * getSelector().getConf().setPixelSize(2);
-	 * getSelector().getConf().setColumns(16); getSelector().getConf().setRows(6);
-	 * break; }
-	 * 
-	 * case "Sprite 2X": { getPainter().getConf().setWidth(24);
-	 * getPainter().getConf().setHeight(21);
-	 * getPainter().getConf().setTileColumns(2);
-	 * getPainter().getConf().setTileRows(1);
-	 * getPainter().getConf().setPixelSize(10);
-	 * getPreviewer().getConf().setWidth(24);
-	 * getPreviewer().getConf().setHeight(21);
-	 * getPreviewer().getConf().setTileColumns(2);
-	 * getPreviewer().getConf().setTileRows(1);
-	 * getSelector().getConf().setWidth(24); getSelector().getConf().setHeight(21);
-	 * getSelector().getConf().setTileColumns(2);
-	 * getSelector().getConf().setTileRows(1);
-	 * getSelector().getConf().setPixelSize(2);
-	 * getSelector().getConf().setColumns(8); getSelector().getConf().setRows(6);
-	 * break; }
-	 * 
-	 * case "Sprite 2Y": { getPainter().getConf().setWidth(24);
-	 * getPainter().getConf().setHeight(21);
-	 * getPainter().getConf().setTileColumns(1);
-	 * getPainter().getConf().setTileRows(2);
-	 * getPainter().getConf().setPixelSize(10);
-	 * getPreviewer().getConf().setWidth(24);
-	 * getPreviewer().getConf().setHeight(21);
-	 * getPreviewer().getConf().setTileColumns(1);
-	 * getPreviewer().getConf().setTileRows(2);
-	 * getSelector().getConf().setWidth(24); getSelector().getConf().setHeight(21);
-	 * getSelector().getConf().setTileColumns(1);
-	 * getSelector().getConf().setTileRows(2);
-	 * getSelector().getConf().setPixelSize(2);
-	 * getSelector().getConf().setColumns(16); getSelector().getConf().setRows(3);
-	 * break; }
-	 * 
-	 * case "Sprite 2XY": { getPainter().getConf().setWidth(24);
-	 * getPainter().getConf().setHeight(21);
-	 * getPainter().getConf().setTileColumns(2);
-	 * getPainter().getConf().setTileRows(2);
-	 * getPainter().getConf().setPixelSize(10);
-	 * getPreviewer().getConf().setWidth(24);
-	 * getPreviewer().getConf().setHeight(21);
-	 * getPreviewer().getConf().setTileColumns(2);
-	 * getPreviewer().getConf().setTileRows(2);
-	 * getSelector().getConf().setWidth(24); getSelector().getConf().setHeight(21);
-	 * getSelector().getConf().setTileColumns(2);
-	 * getSelector().getConf().setTileRows(2);
-	 * getSelector().getConf().setPixelSize(2);
-	 * getSelector().getConf().setColumns(8); getSelector().getConf().setRows(3);
-	 * break; } case "Custom ...": {
-	 * configurationDialog.setConfiguration(getPainter().getConf().getWidth(),
-	 * getPainter().getConf().getHeight(), getPainter().getConf().getTileColumns(),
-	 * getPainter().getConf().getTileRows(), getPainter().getConf().getPixelSize(),
-	 * getSelector().getConf().getPixelSize()); configurationDialog.open();
-	 * 
-	 * break; } } getPainter().recalc(); getPreviewer().recalc();
-	 * getSelector().recalc(); parent.layout();
-	 * 
-	 * }
-	 */
+
 	/*
 	 * @Override public void configurationChanged(int width, int height, int
 	 * tileColumns, int tileRows, int painterPixelSize, int selectorPixelSize, int

@@ -13,5 +13,4 @@ public interface ITileListener {
 
 	public void layerContentChanged(int layer);
 
-	
 }

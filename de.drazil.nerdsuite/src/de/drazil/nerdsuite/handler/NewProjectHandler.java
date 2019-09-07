@@ -19,17 +19,13 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
-import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.Workspace;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
-import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
 public class NewProjectHandler {

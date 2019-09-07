@@ -19,6 +19,8 @@ public class Tile {
 	@Setter
 	@Getter
 	private int backgroundColorIndex = 0;
+	@Getter
+	private boolean showOnlyActiveLayer = false;
 
 	public Tile(int size) {
 		this("<rename me>", size);
@@ -51,10 +53,7 @@ public class Tile {
 		layerIndexOrderList.add(layerList.indexOf(layer));
 		layerList.forEach(l -> l.setActive(false));
 		layerList.get(layerIndexOrderList.size() - 1).setActive(true);
-		if (layerList.size() > 0) {
-			layer.setColorPalette(layerList.get(0).getColorPalette());
-		}
-		layer.setSelectedColorIndex(layerList.size());
+		layer.setSelectedColorIndex(0);
 		fireLayerAdded();
 		return layer;
 	}
@@ -108,6 +107,11 @@ public class Tile {
 		layerIndexOrderList.remove(index);
 		layerIndexOrderList.add(index + 1, index);
 		fireLayerReordered();
+	}
+
+	public void setShowOnlyActiveLayer(boolean showOnlyActiveLayer) {
+		this.showOnlyActiveLayer = showOnlyActiveLayer;
+		fireLayerVisibilityChanged(-1);
 	}
 
 	public void setLayerVisible(int index, boolean visible) {
