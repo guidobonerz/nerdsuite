@@ -18,8 +18,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
@@ -28,13 +26,13 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridStyle;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
+import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.widget.ConfigurationDialog;
-import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -64,6 +62,9 @@ public class GfxEditorView // implements IConfigurationListener {
 	private ImagePainterFactory imagePainterFactory = null;
 	private TileRepositoryService tileRepositoryService;
 
+	Button tile1;
+	Button tile2;
+
 	private Button layer1;
 	private Button layer2;
 	private Button layer3;
@@ -75,6 +76,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	private Button color4;
 
 	private Button showOnlyActiveLayer;
+	private Button showInactiveLayersTranslucent;
 
 	@Inject
 	EMenuService menuService;
@@ -161,33 +163,61 @@ public class GfxEditorView // implements IConfigurationListener {
 
 		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
 
-		tileRepositoryService.addTile("first_tile", contentSize);
+		tileRepositoryService.addTile("tile1", contentSize);
 		Layer layer1 = null;
 
 		layer1 = tileRepositoryService.getTile(0).getActiveLayer();
 		layer1.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer1.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
-		layer1.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
-		layer1.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(6).getColor());
+		layer1.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		layer1.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		layer1.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
 		layer1.setSelectedColorIndex(0);
 		Layer layer2 = tileRepositoryService.getTile(0).addLayer("layer2");
 		layer2.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer2.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
-		layer2.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(9).getColor());
-		layer2.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
+		layer2.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
+		layer2.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
+		layer2.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(6).getColor());
 		layer2.setSelectedColorIndex(0);
 		Layer layer3 = tileRepositoryService.getTile(0).addLayer("layer3");
 		layer3.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer3.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
-		layer3.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
-		layer3.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
+		layer3.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
+		layer3.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
+		layer3.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(9).getColor());
 		layer3.setSelectedColorIndex(0);
 		Layer layer4 = tileRepositoryService.getTile(0).addLayer("layer4");
 		layer4.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer4.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(6).getColor());
-		layer4.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
-		layer4.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(14).getColor());
+		layer4.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
+		layer4.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(11).getColor());
+		layer4.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(12).getColor());
 		layer4.setSelectedColorIndex(0);
+
+		tileRepositoryService.addTile("tile2", contentSize);
+		Layer layer1b = null;
+
+		layer1b = tileRepositoryService.getTile(1).getActiveLayer();
+		layer1b.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer1b.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		layer1b.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		layer1b.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		layer1b.setSelectedColorIndex(0);
+		Layer layer2b = tileRepositoryService.getTile(1).addLayer("layer2");
+		layer2b.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer2b.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		layer2b.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
+		layer2b.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
+		layer2b.setSelectedColorIndex(0);
+		Layer layer3b = tileRepositoryService.getTile(1).addLayer("layer3");
+		layer3b.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer3b.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(6).getColor());
+		layer3b.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
+		layer3b.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
+		layer3b.setSelectedColorIndex(0);
+		Layer layer4b = tileRepositoryService.getTile(1).addLayer("layer4");
+		layer4b.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer4b.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(9).getColor());
+		layer4b.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
+		layer4b.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(11).getColor());
+		layer4b.setSelectedColorIndex(0);
 
 		// getPreviewerWidget().getConf().setGraphicFormat(gf);
 		// getPreviewerWidget().recalc();
@@ -204,66 +234,111 @@ public class GfxEditorView // implements IConfigurationListener {
 		this.parent = parent;
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 		parent.setLayout(new MigLayout());
-		getPainterWidget().setLayoutData("cell 0 0");
+		getPainterWidget().setLayoutData("span 6 6");
 
-		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
-		showOnlyActiveLayer.setText("Active Only");
-		showOnlyActiveLayer.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).setShowOnlyActiveLayer(((Button) e.widget).getSelection());
+		tile1 = new Button(parent, SWT.NONE);
+		tile1.setText("tile1");
+		tile1.addListener(SWT.Selection, e -> {
+			tileRepositoryService.setSelectedTile(0);
 		});
+
+		tile2 = new Button(parent, SWT.NONE);
+		tile2.setText("tile2");
+		tile2.addListener(SWT.Selection, e -> {
+			tileRepositoryService.setSelectedTile(1);
+		});
+		tile2.setLayoutData("wrap");
 
 		layer1 = new Button(parent, SWT.NONE);
 		layer1.setText("layer1");
 		layer1.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).setLayerActive(0, true);
+			tileRepositoryService.getSelectedTile().setLayerActive(0, true);
+			Layer l = tileRepositoryService.getSelectedTile().getActiveLayer();
+			color1.setBackground(l.getColor(0));
+			color2.setBackground(l.getColor(1));
+			color3.setBackground(l.getColor(2));
+			color4.setBackground(l.getColor(3));
 		});
 		layer2 = new Button(parent, SWT.NONE);
 		layer2.setText("layer2");
 		layer2.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).setLayerActive(1, true);
+			tileRepositoryService.getSelectedTile().setLayerActive(1, true);
+			Layer l = tileRepositoryService.getSelectedTile().getActiveLayer();
+			color1.setBackground(l.getColor(0));
+			color2.setBackground(l.getColor(1));
+			color3.setBackground(l.getColor(2));
+			color4.setBackground(l.getColor(3));
 		});
 		layer3 = new Button(parent, SWT.NONE);
 		layer3.setText("layer3");
 		layer3.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).setLayerActive(2, true);
+			tileRepositoryService.getSelectedTile().setLayerActive(2, true);
+			Layer l = tileRepositoryService.getSelectedTile().getActiveLayer();
+			color1.setBackground(l.getColor(0));
+			color2.setBackground(l.getColor(1));
+			color3.setBackground(l.getColor(2));
+			color4.setBackground(l.getColor(3));
 		});
 		layer4 = new Button(parent, SWT.NONE);
 		layer4.setText("layer4");
 		layer4.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).setLayerActive(3, true);
+			tileRepositoryService.getSelectedTile().setLayerActive(3, true);
+			Layer l = tileRepositoryService.getSelectedTile().getActiveLayer();
+			color1.setBackground(l.getColor(0));
+			color2.setBackground(l.getColor(1));
+			color3.setBackground(l.getColor(2));
+			color4.setBackground(l.getColor(3));
 		});
+		layer4.setLayoutData("wrap");
+
 		color1 = new Button(parent, SWT.NONE);
 		color1.setText("color1");
 		color1.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).getActiveLayer().setSelectedColorIndex(0);
+			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(0);
 		});
 		color2 = new Button(parent, SWT.NONE);
 		color2.setText("color2");
 		color2.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).getActiveLayer().setSelectedColorIndex(1);
+			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(1);
 		});
 		color3 = new Button(parent, SWT.NONE);
 		color3.setText("color3");
 		color3.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).getActiveLayer().setSelectedColorIndex(2);
+			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(2);
 		});
 		color4 = new Button(parent, SWT.NONE);
 		color4.setText("color4");
 		color4.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).getActiveLayer().setSelectedColorIndex(3);
+			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(3);
+		});
+		color4.setLayoutData("wrap");
+
+		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
+		showOnlyActiveLayer.setText("Show active layer only");
+		showOnlyActiveLayer.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).setShowOnlyActiveLayer(((Button) e.widget).getSelection());
 		});
 
-		layer1.setLayoutData("cell 1 0");
-		layer2.setLayoutData("cell 2 0");
-		layer3.setLayoutData("cell 3 0");
-		layer4.setLayoutData("cell 4 0");
+		showOnlyActiveLayer.setLayoutData("span 4, wrap");
 
-		color1.setLayoutData("cell 1 1");
-		color2.setLayoutData("cell 2 1");
-		color3.setLayoutData("cell 3 1");
-		color4.setLayoutData("cell 4 1");
-		
-		showOnlyActiveLayer.setLayoutData("cell 1 2");
+		showInactiveLayersTranslucent = new Button(parent, SWT.CHECK);
+		showInactiveLayersTranslucent.setText("Show inactive layers translucent");
+		showInactiveLayersTranslucent.addListener(SWT.Selection, e -> {
+			tileRepositoryService.getTile(0).setShowOnlyActiveLayer(((Button) e.widget).getSelection());
+		});
+		showInactiveLayersTranslucent.setLayoutData("span 4, wrap");
+
+		/*
+		 * showOnlyActiveLayer.setLayoutData("cell 1 2");
+		 * showInactiveLayersTranslucent.setLayoutData("cell 1 3");
+		 * 
+		 * layer1.setLayoutData("cell 1 1"); layer2.setLayoutData("cell 2 1");
+		 * layer3.setLayoutData("cell 3 1"); layer4.setLayoutData("cell 4 1");
+		 * 
+		 * color1.setLayoutData("cell 1 2"); color2.setLayoutData("cell 2 2");
+		 * color3.setLayoutData("cell 3 2"); color4.setLayoutData("cell 4 2");
+		 * 
+		 */
 
 		// getPreviewerWidget().setLayoutData("cell 1 0");
 		// getRepositoryWidget().setLayoutData("cell 0 1 2 1");

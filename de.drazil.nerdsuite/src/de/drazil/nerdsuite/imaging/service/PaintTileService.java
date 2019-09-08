@@ -58,14 +58,14 @@ public class PaintTileService extends AbstractImagingService {
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
 		TileRepositoryService service = ServiceFactory.getService(conf.getServiceOwnerId(),
 				TileRepositoryService.class);
-		gc.drawImage(service.getImagePainterFactory().getImage(tile, true, conf), 0, 0);
+		gc.drawImage(service.getImagePainterFactory().getImage(tile, conf), 0, 0);
 	}
 
 	public void paintTileAt(GC gc, int x, int y, ImagingWidgetConfiguration conf) {
 		TileRepositoryService service = ServiceFactory.getService(conf.getServiceOwnerId(),
 				TileRepositoryService.class);
 		Tile tile = service.getTile(x);
-		gc.drawImage(service.getImagePainterFactory().getImage(tile, true, conf), 0, 0);
+		gc.drawImage(service.getImagePainterFactory().getImage(tile, conf), 0, 0);
 	}
 
 	public void paintAllTiles(GC gc, ImagingWidgetConfiguration conf) {
@@ -75,7 +75,7 @@ public class PaintTileService extends AbstractImagingService {
 		int y = 0;
 		for (int i = 0; i < service.getSize(); i++) {
 			Tile tile = service.getTile(i);
-			Image image = service.getImagePainterFactory().getImage(tile, false, conf);
+			Image image = service.getImagePainterFactory().getImage(tile, conf);
 
 			// image = new
 			// Image(Display.getDefault(),image.getImageData().scaledTo(conf.getFullWidthPixel()

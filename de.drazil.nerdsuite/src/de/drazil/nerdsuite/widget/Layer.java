@@ -37,4 +37,8 @@ public class Layer {
 		}
 		colorPalette.put(String.valueOf(index), color);
 	}
+
+	public int size() {
+		return content.length;
+	}
 }

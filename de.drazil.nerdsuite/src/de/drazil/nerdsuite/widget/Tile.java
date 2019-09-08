@@ -3,12 +3,16 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Color;
+
+import de.drazil.nerdsuite.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Tile {
 
 	private List<ITileListener> tileListenerList = null;
+	@Getter
 	private List<Layer> layerList = null;
 	private List<Integer> layerIndexOrderList = null;
 
@@ -18,7 +22,7 @@ public class Tile {
 	private int size = 0;
 	@Setter
 	@Getter
-	private int backgroundColorIndex = 0;
+	private Color backgroundColor = Constants.BLACK;
 	@Getter
 	private boolean showOnlyActiveLayer = false;
 
