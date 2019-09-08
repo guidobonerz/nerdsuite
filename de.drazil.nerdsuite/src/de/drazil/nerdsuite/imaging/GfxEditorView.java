@@ -234,7 +234,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		this.parent = parent;
 		
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
-		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.gfxmod");
+		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.gfxmodpopup");
 		parent.setLayout(new MigLayout());
 		getPainterWidget().setLayoutData("span 6 6");
 

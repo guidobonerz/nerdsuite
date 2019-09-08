@@ -59,19 +59,21 @@ public class NewProjectHandler {
 			for (MPerspective perspective : perspectives) {
 				if (!perspective.equals(activePerspective)) {
 					partService.switchPerspective(perspective);
-
-					MPart part = MBasicFactory.INSTANCE.createPart();
-					part.setLabel(project.getProjectType() + "|" + project.getName());
-					part.setContributionURI(
-							"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView");
-					List<MPartStack> stacks = modelService.findElements(app,
-							"de.drazil.nerdsuite.partstack.editorStack", MPartStack.class, null);
-					stacks.get(0).getChildren().add(part);
-					partService.showPart(part, PartState.ACTIVATE);
 				}
 			}
 
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
+
+				MPart part = MBasicFactory.INSTANCE.createPart();
+				part.setLabel(project.getName());
+				part.setCloseable(true);
+
+				part.setContributionURI("bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView");
+				List<MPartStack> stacks = modelService.findElements(app, "de.drazil.nerdsuite.partstack.editorStack",
+						MPartStack.class, null);
+				stacks.get(0).getChildren().add(part);
+				partService.showPart(part, PartState.ACTIVATE);
+
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
 
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
