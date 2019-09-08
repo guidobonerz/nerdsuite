@@ -41,9 +41,9 @@ Image by Almighty God
 Project Explorer is able to show d64 / d71 / d81 / CPC DSK as well as atr images
 ![screenshot12](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/project_explorer.png)
 
-Layer1 Test
+##Layer1 Test
 ![screenshot13](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/layer1_test.png)
-Layer2 Test
+##Layer2 Test
 ![screenshot14](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/layer2_test.png)
-Combined Layers Test
+##Combined Layers Test
 ![screenshot15](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/layers_test.png)
