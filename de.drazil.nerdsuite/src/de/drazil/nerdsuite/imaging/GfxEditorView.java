@@ -324,7 +324,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		showInactiveLayersTranslucent = new Button(parent, SWT.CHECK);
 		showInactiveLayersTranslucent.setText("Show inactive layers translucent");
 		showInactiveLayersTranslucent.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).setShowOnlyActiveLayer(((Button) e.widget).getSelection());
+			tileRepositoryService.getTile(0).setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
 		});
 		showInactiveLayersTranslucent.setLayoutData("span 4, wrap");
 

@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGBA;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
@@ -57,9 +59,6 @@ public class ImagePainterFactory {
 		int width = conf.tileWidth;
 		int size = tile.getLayer(0).size();
 
-		// if (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() &&
-		// layer.isActive())) {
-
 		int x = 0;
 		int y = 0;
 		for (int i = 0; i < size; i++) {
@@ -71,14 +70,17 @@ public class ImagePainterFactory {
 			for (int l = 0; l < tile.getLayerList().size(); l++) {
 				Layer la = tile.getLayer(l);
 				int[] content = la.getContent();
-				if (l == 0 || (l > 0 && content[i] > tile.getLayer(l - 1).getContent()[i])
+				if (content[i] != 0
 						&& (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() && la.isActive()))) {
-					c = la.getColor(content[i]);
-					gc.setBackground(c);
-					gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
-				}
-			}
 
+					c = la.getColor(content[i]);
+					if (tile.isShowInactiveLayerTranslucent() && !la.isActive()) {
+						c = new Color(Display.getCurrent(), c.getRed(), c.getGreen(), c.getBlue(), 100);
+					}
+				}
+				gc.setBackground(c);
+				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+			}
 			x++;
 		}
 		gc.dispose();

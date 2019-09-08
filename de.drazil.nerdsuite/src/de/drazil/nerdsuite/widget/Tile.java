@@ -25,6 +25,8 @@ public class Tile {
 	private Color backgroundColor = Constants.BLACK;
 	@Getter
 	private boolean showOnlyActiveLayer = false;
+	@Getter
+	private boolean showInactiveLayerTranslucent = false;
 
 	public Tile(int size) {
 		this("<rename me>", size);
@@ -115,6 +117,11 @@ public class Tile {
 
 	public void setShowOnlyActiveLayer(boolean showOnlyActiveLayer) {
 		this.showOnlyActiveLayer = showOnlyActiveLayer;
+		fireLayerVisibilityChanged(-1);
+	}
+
+	public void setShowInactiveLayerTranslucent(boolean showInactiveLayerTranslucent) {
+		this.showInactiveLayerTranslucent = showInactiveLayerTranslucent;
 		fireLayerVisibilityChanged(-1);
 	}
 
