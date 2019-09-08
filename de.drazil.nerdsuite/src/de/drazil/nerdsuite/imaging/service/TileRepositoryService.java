@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.drazil.nerdsuite.widget.ImagePainterFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class TileRepositoryService extends AbstractImagingService {

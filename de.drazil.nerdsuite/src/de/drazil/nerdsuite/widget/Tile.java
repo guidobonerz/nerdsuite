@@ -3,12 +3,16 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Color;
+
+import de.drazil.nerdsuite.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Tile {
 
 	private List<ITileListener> tileListenerList = null;
+	@Getter
 	private List<Layer> layerList = null;
 	private List<Integer> layerIndexOrderList = null;
 
@@ -18,9 +22,11 @@ public class Tile {
 	private int size = 0;
 	@Setter
 	@Getter
-	private int backgroundColorIndex = 0;
+	private Color backgroundColor = Constants.BLACK;
 	@Getter
 	private boolean showOnlyActiveLayer = false;
+	@Getter
+	private boolean showInactiveLayerTranslucent = false;
 
 	public Tile(int size) {
 		this("<rename me>", size);
@@ -44,7 +50,7 @@ public class Tile {
 	}
 
 	public void addLayer() {
-		addLayer("<rename me>").setOpacity(100 / (layerList.size() + 1));
+		addLayer("<rename me>");
 	}
 
 	public Layer addLayer(String name) {
@@ -111,6 +117,11 @@ public class Tile {
 
 	public void setShowOnlyActiveLayer(boolean showOnlyActiveLayer) {
 		this.showOnlyActiveLayer = showOnlyActiveLayer;
+		fireLayerVisibilityChanged(-1);
+	}
+
+	public void setShowInactiveLayerTranslucent(boolean showInactiveLayerTranslucent) {
+		this.showInactiveLayerTranslucent = showInactiveLayerTranslucent;
 		fireLayerVisibilityChanged(-1);
 	}
 

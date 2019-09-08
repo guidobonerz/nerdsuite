@@ -1,6 +1,7 @@
-package de.drazil.nerdsuite.widget;
+package de.drazil.nerdsuite.imaging.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
@@ -9,6 +10,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.Layer;
+import de.drazil.nerdsuite.widget.Tile;
 
 public class ImagePainterFactory {
 
@@ -18,7 +22,7 @@ public class ImagePainterFactory {
 		imagePool = new HashMap<>();
 	}
 
-	public Image getImage(Tile tile, boolean needsUpdate, ImagingWidgetConfiguration conf) {
+	public Image getImage(Tile tile, ImagingWidgetConfiguration conf) {
 		String name = tile.getName();
 		Image image = imagePool.get("IMAGE-" + name);
 		if (null == image) {
@@ -46,33 +50,36 @@ public class ImagePainterFactory {
 			img = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
 			img.setBackground(Constants.BLACK);
 		}
-
 		// ImageData id = image.getImageData().scaledTo(10, 10);
 
 		GC gc = new GC(img);
 		int width = conf.tileWidth;
-		tile.getLayerIndexOrderList().forEach(index -> {
-			Layer layer = tile.getLayer(index);
-			if (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() && layer.isActive())) {
-				int content[] = layer.getContent();
-				int x = 0;
-				int y = 0;
-				for (int i = 0; i < content.length; i++) {
-					if (i % width == 0 && i > 0) {
-						x = 0;
-						y++;
-					}
-					Color c = layer.getColor(content[i]);
-					if (content[i] != tile.getBackgroundColorIndex() || tile.isShowOnlyActiveLayer()) {
-						gc.setBackground(c);
-						gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
-					}
-					x++;
-				}
+		int size = tile.getLayer(0).size();
+		System.out.println(tile.getName());
+
+		int x = 0;
+		int y = 0;
+		List<Layer> layerList = tile.getLayerList();
+		for (int i = 0; i < size; i++) {
+			if (i % width == 0 && i > 0) {
+				x = 0;
+				y++;
 			}
-		});
+			Color c = tile.getBackgroundColor();
+
+			for (Layer l : layerList) {
+				int[] content = l.getContent();
+				if (content[i] != 0 && (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() && l.isActive())
+						|| tile.isShowInactiveLayerTranslucent())) {
+					c = l.getColor(content[i]);
+					gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
+				}
+				gc.setBackground(c);
+				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+			}
+			x++;
+		}
 		gc.dispose();
 		return img;
 	}
-
 }

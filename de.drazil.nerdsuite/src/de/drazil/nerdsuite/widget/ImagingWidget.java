@@ -162,14 +162,22 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void mouseExit(int modifierMask, int x, int y) {
 		mouseIn = false;
-		doDrawAllTiles();
+		if (supportsPainting()) {
+			doDrawTile();
+		} else {
+			doDrawAllTiles();
+		}
 	}
 
 	@Override
 	public void mouseEnter(int modifierMask, int x, int y) {
 		setFocus();
 		mouseIn = true;
-		doDrawAllTiles();
+		if (supportsPainting()) {
+			doDrawTile();
+		} else {
+			doDrawAllTiles();
+		}
 	}
 
 	@Override
@@ -548,6 +556,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		this.tile = tile;
 		tile.addTileListener(this);
 		redraw();
+
 	}
 
 	@Override
