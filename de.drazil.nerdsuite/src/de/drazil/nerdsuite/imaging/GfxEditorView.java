@@ -240,12 +240,16 @@ public class GfxEditorView // implements IConfigurationListener {
 		tile1.setText("tile1");
 		tile1.addListener(SWT.Selection, e -> {
 			tileRepositoryService.setSelectedTile(0);
+			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(showInactiveLayersTranslucent.getSelection());
+			tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(showOnlyActiveLayer.getSelection());
 		});
 
 		tile2 = new Button(parent, SWT.NONE);
 		tile2.setText("tile2");
 		tile2.addListener(SWT.Selection, e -> {
 			tileRepositoryService.setSelectedTile(1);
+			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(showInactiveLayersTranslucent.getSelection());
+			tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(showOnlyActiveLayer.getSelection());
 		});
 		tile2.setLayoutData("wrap");
 
@@ -316,7 +320,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
 		showOnlyActiveLayer.setText("Show active layer only");
 		showOnlyActiveLayer.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).setShowOnlyActiveLayer(((Button) e.widget).getSelection());
+			tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(((Button) e.widget).getSelection());
 		});
 
 		showOnlyActiveLayer.setLayoutData("span 4, wrap");
@@ -324,7 +328,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		showInactiveLayersTranslucent = new Button(parent, SWT.CHECK);
 		showInactiveLayersTranslucent.setText("Show inactive layers translucent");
 		showInactiveLayersTranslucent.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getTile(0).setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
+			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
 		});
 		showInactiveLayersTranslucent.setLayoutData("span 4, wrap");
 

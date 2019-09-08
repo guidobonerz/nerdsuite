@@ -50,7 +50,7 @@ public class Tile {
 	}
 
 	public void addLayer() {
-		addLayer("<rename me>").setOpacity(100 / (layerList.size() + 1));
+		addLayer("<rename me>");
 	}
 
 	public Layer addLayer(String name) {
