@@ -9,7 +9,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
-import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -48,15 +47,13 @@ public class ImagePainterFactory {
 		Image img = image;
 		if (img == null) {
 			img = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
-			img.setBackground(Constants.BLACK);
 		}
 		// ImageData id = image.getImageData().scaledTo(10, 10);
 
 		GC gc = new GC(img);
+		gc.setAlpha(255);
 		int width = conf.tileWidth;
 		int size = tile.getLayer(0).size();
-		System.out.println(tile.getName());
-
 		int x = 0;
 		int y = 0;
 		List<Layer> layerList = tile.getLayerList();

@@ -23,6 +23,7 @@ import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.TileLocation;
 
 public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IImagingCallback,
@@ -97,7 +98,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		hBar = getHorizontalBar();
 		vBar = getVerticalBar();
 
-		paintTileService = ServiceFactory.getCommonService(PaintTileService.class);
+		paintTileService = ServiceFactory.getService(conf.getServiceOwnerId(), PaintTileService.class);
+		TileRepositoryService tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(),
+				TileRepositoryService.class);
+		paintTileService.setTileRepistoryService(tileRepositoryService);
+		paintTileService.setImagePainteFactory(tileRepositoryService.getImagePainterFactory());
 		addPaintListener(this);
 		parent.getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
