@@ -5,13 +5,21 @@ import java.net.URL;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.SideValue;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
+import org.eclipse.e4.ui.model.application.ui.basic.MTrimElement;
+import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolItem;
+import org.eclipse.e4.ui.model.application.ui.menu.impl.ToolBarImpl;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
@@ -40,6 +48,7 @@ import net.miginfocom.swt.MigLayout;
 
 public class GfxEditorView // implements IConfigurationListener {
 {
+
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -77,9 +86,6 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	private Button showOnlyActiveLayer;
 	private Button showInactiveLayersTranslucent;
-
-	@Inject
-	EMenuService menuService;
 
 	public GfxEditorView() {
 
@@ -226,11 +232,25 @@ public class GfxEditorView // implements IConfigurationListener {
 		getPainterWidget().recalc();
 	}
 
+	private void setToolbarVisible(MApplication app, MTrimmedWindow window, EModelService modelService,
+			boolean visible) {
+		MToolBar toolbar = (MToolBar) modelService.find("de.drazil.nerdsuite.toolbar.GfxToolbar", app);
+
+		toolbar.setVisible(visible);
+		toolbar.setToBeRendered(visible);
+	}
+
+	@PreDestroy
+	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService) {
+		setToolbarVisible(app, window, modelService, false);
+	}
+
 	@SuppressWarnings("unchecked")
 	@PostConstruct
-	public void postConstruct(Composite parent, MPart part, EMenuService menuService) {
+	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
+			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
-
+		setToolbarVisible(app, window, modelService, true);
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
 

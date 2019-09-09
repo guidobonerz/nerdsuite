@@ -54,14 +54,14 @@ public class NewProjectHandler {
 
 			String perspectiveId = projectTypeId.equals("CODING_PROJECT") ? "de.drazil.nerdsuite.perspective.coding"
 					: "de.drazil.nerdsuite.perspective.gfx";
-
+/*
 			List<MPerspective> perspectives = modelService.findElements(app, perspectiveId, MPerspective.class, null);
 			for (MPerspective perspective : perspectives) {
 				if (!perspective.equals(activePerspective)) {
 					partService.switchPerspective(perspective);
 				}
 			}
-
+*/
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
