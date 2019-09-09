@@ -183,7 +183,6 @@
   <handlers xmi:id="_ElMI0MySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.runToolchain" command="_3H-80MyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
   <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.Layer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.LayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
-  <handlers xmi:id="_QTJ68BbAEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.swapTile" command="_D6FtcAGAEem64ORYJm-_tw"/>
   <handlers xmi:id="_IGtBcBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.Tile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.TileHandler" command="_C9g6EBbBEemiVvU0vymBxA"/>
   <handlers xmi:id="_CFlWEBbNEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.GridType" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.GridTypeHandler" command="_9D16gBbMEemiVvU0vymBxA"/>
   <handlers xmi:id="_TdlkEBcXEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handler.PaintMode" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.PaintModeHandler" command="_B2H-IBcXEemaxdgLPSY0VQ"/>
@@ -242,7 +241,6 @@
   <commands xmi:id="_yWlqYMyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.build_and_run" commandName="Build and Run"/>
   <commands xmi:id="_3H-80MyREeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.command.run_toolchain" commandName="Run ToolChain"/>
   <commands xmi:id="_ka2AIOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.command.newSourceFile" commandName="New Source File"/>
-  <commands xmi:id="_D6FtcAGAEem64ORYJm-_tw" elementId="de.drazil.nerdsuite.command.SwapTile" commandName="SwapTile"/>
   <commands xmi:id="_mWhJ4AT4EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.newGfxProject" commandName="Graphic Project Command">
     <parameters xmi:id="_DHEjoAY3EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.commandparameter.gfxFormat" name="gfxFormat"/>
   </commands>
