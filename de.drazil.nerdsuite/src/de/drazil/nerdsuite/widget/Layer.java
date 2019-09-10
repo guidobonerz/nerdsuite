@@ -17,6 +17,7 @@ public class Layer {
 	private String name = "<rename me>";
 	private Map<String, Color> colorPalette;
 	private int selectedColorIndex = 0;
+	
 
 	public Layer(String name, int size) {
 		this.name = null == name ? this.name : name;
