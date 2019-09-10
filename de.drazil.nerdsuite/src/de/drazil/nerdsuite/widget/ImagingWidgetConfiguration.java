@@ -60,6 +60,7 @@ public class ImagingWidgetConfiguration {
 	public void setGraphicFormat(GraphicFormat gfxFormat, int variantIndex) {
 		this.gfxFormat = gfxFormat;
 		this.gfxFormatVariant = gfxFormat.getVariants().get(variantIndex);
+		setPixelSize(gfxFormat.getPixelSize());
 		setWidth(gfxFormat.getWidth());
 		setHeight(gfxFormat.getHeight());
 		setTileRows(gfxFormatVariant.getTileRows());

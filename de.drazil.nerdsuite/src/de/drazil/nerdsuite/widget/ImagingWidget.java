@@ -146,7 +146,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			doDrawAllTiles();
 		} else if (supportsPainting()) {
 			paintTileService.setPixel(tile, cursorX, cursorY, conf);
-			doDrawTile();
+			doDrawPixel();
 			// fireDoDrawTile(ImagingWidget.this);
 		}
 
@@ -179,7 +179,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		setFocus();
 		mouseIn = true;
 		if (supportsPainting()) {
-			doDrawTile();
+			 doDrawPixel();
+			//doDrawTile();
 		} else {
 			doDrawAllTiles();
 		}
@@ -193,7 +194,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				oldCursorX = cursorX;
 				oldCursorY = cursorY;
 				paintTileService.setPixel(tile, cursorX, cursorY, conf);
-				doDrawTile();
+				doDrawPixel();
+				// doDrawTile();
 				// fireDoDrawTile(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
@@ -248,6 +250,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private void paintControl(GC gc, int paintControlMode, boolean paintPixelGrid, boolean paintSeparator,
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
+
+		System.out.println(paintControlMode);
+
+		if (checkPaintControlMode(DRAW_PIXEL)) {
+			paintTileService.paintPixel(gc, tile, cursorX,cursorY, conf);
+		}
 
 		if (checkPaintControlMode(DRAW_TILE)) {
 			paintTileService.paintTile(gc, tile, conf);
@@ -403,51 +411,51 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		doDrawPixel();
 	}
 
-	protected void doDrawPixel() {
-		paintControlMode = DRAW_PIXEL;
-		int inset = conf.isPixelGridEnabled() ? 1 : 0;
+	/*
+	 * protected void doDrawPixel() { paintControlMode = DRAW_PIXEL; int inset =
+	 * conf.isPixelGridEnabled() ? 1 : 0;
+	 * 
+	 * switch (conf.paintMode) { case Single: { redraw((cursorX *
+	 * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
+	 * conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
+	 * break; } case VerticalMirror: { redraw((cursorX * conf.currentPixelWidth) +
+	 * inset, (cursorY * conf.currentPixelHeight) + inset, conf.currentPixelWidth -
+	 * inset, conf.currentPixelHeight - inset, true); int centerX =
+	 * ((conf.currentWidth * conf.tileColumns) / 2); int diff = centerX - cursorX -
+	 * 1; redraw(((centerX + diff) * conf.currentPixelWidth) + inset, (cursorY *
+	 * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
+	 * conf.currentPixelHeight - inset, true); break; } case HorizontalMirror: {
+	 * redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY *
+	 * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
+	 * conf.currentPixelHeight - inset, true); int centerY = ((conf.height *
+	 * conf.tileRows) / 2); int diff = centerY - cursorY - 1; redraw((cursorX *
+	 * conf.currentPixelWidth) + inset, ((centerY + diff) * conf.currentPixelHeight)
+	 * + inset, conf.currentPixelWidth - inset, conf.currentPixelHeight - inset,
+	 * true); break; } case Kaleidoscope: { redraw((cursorX *
+	 * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
+	 * conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true); int
+	 * centerX = ((conf.currentWidth * conf.tileColumns) / 2); int diffX = centerX -
+	 * cursorX - 1; redraw(((centerX + diffX) * conf.currentPixelWidth) + inset,
+	 * (cursorY * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
+	 * conf.currentPixelHeight - inset, true); int centerY = ((conf.height *
+	 * conf.tileRows) / 2); int diffY = centerY - cursorY - 1; redraw((cursorX *
+	 * conf.currentPixelWidth) + inset, ((centerY + diffY) *
+	 * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
+	 * conf.currentPixelHeight - inset, true); redraw(((centerX + diffX) *
+	 * conf.currentPixelWidth) + inset, ((centerY + diffY) *
+	 * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
+	 * conf.currentPixelHeight - inset, true); break; } } }
+	 */
 
-		switch (conf.paintMode) {
-		case Single: {
-			redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
-					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			break;
-		}
-		case VerticalMirror: {
-			redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
-					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			int centerX = ((conf.currentWidth * conf.tileColumns) / 2);
-			int diff = centerX - cursorX - 1;
-			redraw(((centerX + diff) * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
-					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			break;
-		}
-		case HorizontalMirror: {
-			redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
-					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			int centerY = ((conf.height * conf.tileRows) / 2);
-			int diff = centerY - cursorY - 1;
-			redraw((cursorX * conf.currentPixelWidth) + inset, ((centerY + diff) * conf.currentPixelHeight) + inset,
-					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			break;
-		}
-		case Kaleidoscope: {
-			redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
-					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			int centerX = ((conf.currentWidth * conf.tileColumns) / 2);
-			int diffX = centerX - cursorX - 1;
-			redraw(((centerX + diffX) * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
-					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			int centerY = ((conf.height * conf.tileRows) / 2);
-			int diffY = centerY - cursorY - 1;
-			redraw((cursorX * conf.currentPixelWidth) + inset, ((centerY + diffY) * conf.currentPixelHeight) + inset,
-					conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-			redraw(((centerX + diffX) * conf.currentPixelWidth) + inset,
-					((centerY + diffY) * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
-					conf.currentPixelHeight - inset, true);
-			break;
-		}
-		}
+	public void doDrawPixel() {
+		paintControlMode = DRAW_PIXEL;
+		redraw();
+		/*
+		 * redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
+		 * selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows, conf.width
+		 * * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize *
+		 * conf.tileRows, true);
+		 */
 	}
 
 	@Override

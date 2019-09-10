@@ -61,12 +61,12 @@ public class PaintTileService extends AbstractImagingService {
 		}
 	}
 
-	public void paintPixel(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
-		gc.drawImage(imagePainteFactory.getImage(tile, conf), 0, 0);
+	public void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
+		gc.drawImage(imagePainteFactory.getImage(tile, x, y, true, conf), 0, 0);
 	}
-	
+
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
-		gc.drawImage(imagePainteFactory.getImage(tile, conf), 0, 0);
+		gc.drawImage(imagePainteFactory.getImage(tile, 0, 0, false, conf), 0, 0);
 	}
 
 	public void paintAllTiles(GC gc, ImagingWidgetConfiguration conf) {
@@ -75,7 +75,7 @@ public class PaintTileService extends AbstractImagingService {
 		int y = 0;
 		for (int i = 0; i < tileRepistoryService.getSize(); i++) {
 			Tile tile = tileRepistoryService.getTile(i);
-			Image image = imagePainteFactory.getImage(tile, conf);
+			Image image = imagePainteFactory.getImage(tile, 0, 0, false, conf);
 
 			// image = new
 			// Image(Display.getDefault(),image.getImageData().scaledTo(conf.getFullWidthPixel()

@@ -217,7 +217,7 @@ public class GfxEditorView // implements IConfigurationListener {
 		setToolbarVisible(app, window, modelService, true);
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
-
+		
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.gfxmodpopup");
 		parent.setLayout(new MigLayout());
@@ -625,7 +625,6 @@ public class GfxEditorView // implements IConfigurationListener {
 
 			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
 			painter.getConf().setWidgetName("Painter :");
-			painter.getConf().setPixelSize(15);
 			painter.getConf().setPixelGridEnabled(true);
 			painter.getConf().setGridStyle(GridType.Dot);
 			painter.getConf().setTileGridEnabled(true);
