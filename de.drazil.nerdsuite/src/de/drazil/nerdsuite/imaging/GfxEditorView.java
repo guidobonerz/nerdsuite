@@ -144,9 +144,9 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void controlGridState(@UIEventTopic("GridState") GridState state, EModelService service, MPart part) {
-		MToolItem itemGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showLineGrid",
+		MToolItem itemGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.LineGrid",
 				part.getToolbar());
-		MToolItem itemDotGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.showDotGrid",
+		MToolItem itemDotGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.DottedGrid",
 				part.getToolbar());
 		if (state.gridStyle == GridStyle.Dot && state.isEnabled()) {
 			itemGrid.setSelected(!state.isEnabled());
