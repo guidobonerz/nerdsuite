@@ -65,6 +65,9 @@ public class ImagingWidgetConfiguration {
 		setHeight(gfxFormat.getHeight());
 		setTileRows(gfxFormatVariant.getTileRows());
 		setTileColumns(gfxFormatVariant.getTileColumns());
+		if (gfxFormat.getId().contains("BITMAP")) {
+			setPixelGridEnabled(false);
+		}
 	}
 
 	public void setServiceOwner(String serviceOwnerId) {
