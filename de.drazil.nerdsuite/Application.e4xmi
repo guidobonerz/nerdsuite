@@ -76,10 +76,10 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_jZW44NNDEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.toolbar.GfxToolbar" toBeRendered="false" visible="false">
         <children xsi:type="menu:HandledToolItem" xmi:id="_QizDYBcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handledtoolitem.SinglePaintMode" label="Single Pixel Mode" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/single_pixel_paint.png" selected="true" type="Radio" command="_B2H-IBcXEemaxdgLPSY0VQ">
-          <parameters xmi:id="_29EXoNMYEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.0" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="1"/>
+          <parameters xmi:id="_29EXoNMYEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.0" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="0"/>
         </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_QF4d4BcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handledtoolitem.VerticalMirrorPaintMode" label="VerticalMirrorPixel Mode" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/vertical_mirror_pixel_paint.png" type="Radio" command="_B2H-IBcXEemaxdgLPSY0VQ">
-          <parameters xmi:id="_F7xLkNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.1" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="2"/>
+          <parameters xmi:id="_F7xLkNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.1" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="1"/>
         </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_O3PggBcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handledtoolitem.HorizontalMirrorPaintMode" label="HorizontalMirrorPixel Mode" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/horizontal_mirror_pixel_paint.png" type="Radio" command="_B2H-IBcXEemaxdgLPSY0VQ">
           <parameters xmi:id="_G9_dkNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.2" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="3"/>
@@ -90,12 +90,15 @@
         <children xsi:type="menu:ToolBarSeparator" xmi:id="_OCjUMBcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.toolbarseparator.0"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_IRYQsNMcEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.handledtoolitem.NoGrid" label="NoGrid" tooltip="NoGrid" type="Radio" command="_9D16gBbMEemiVvU0vymBxA">
           <parameters xmi:id="_TfaPYNMcEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.8" name="de.drazil.nerdsuite.commandparameter.GridType" value="0"/>
+          <parameters xmi:id="_aUfeINObEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.parameter.13" name="de.drazil.nerdsuite.commandparameter.GridVisible" value="false"/>
         </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_REtloBa-EemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.LineGrid" label="LineGrid" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/grid.png" tooltip="Show LineGrid" type="Radio" command="_9D16gBbMEemiVvU0vymBxA">
           <parameters xmi:id="_2cQUINMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.4" name="de.drazil.nerdsuite.commandparameter.GridType" value="1"/>
+          <parameters xmi:id="_VTmXINObEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.parameter.11" name="de.drazil.nerdsuite.commandparameter.GridVisible" value="true"/>
         </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_4z1M8BbDEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.DottedGrid" label="DottedGrid" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/grid_dot.png" tooltip="Show DotGrid" selected="true" type="Radio" command="_9D16gBbMEemiVvU0vymBxA">
           <parameters xmi:id="_8E-QINMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.5" name="de.drazil.nerdsuite.commandparameter.GridType" value="2"/>
+          <parameters xmi:id="_YURS0NObEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.parameter.12" name="de.drazil.nerdsuite.commandparameter.GridVisible" value="true"/>
         </children>
         <children xsi:type="menu:ToolBarSeparator" xmi:id="_LeVsYBnGEem_0qzoA0aFQQ" elementId="de.drazil.nerdsuite.toolbarseparator.1"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_04Xe0AStEem0jsZqZTgKlw" elementId="de.drazil.nerdsuite.handledtoolitem.addlayer" label="Add ayer" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--plus.png" command="_CYRyMAT-EemsC5geQwPptA">
@@ -191,6 +194,7 @@
   </commands>
   <commands xmi:id="_9D16gBbMEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.command.GridType" commandName="GridType">
     <parameters xmi:id="_sg6FUNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.GridType" name="GridType"/>
+    <parameters xmi:id="_oN7voNOaEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.commandparameter.GridVisible" name="GridVisible"/>
   </commands>
   <commands xmi:id="_B2H-IBcXEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.command.PaintMode" commandName="PaintMode">
     <parameters xmi:id="_sbrucNMWEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.PaintMode" name="PaintMode"/>

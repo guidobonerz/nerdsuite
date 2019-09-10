@@ -12,14 +12,9 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.SideValue;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MTrimBar;
-import org.eclipse.e4.ui.model.application.ui.basic.MTrimElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
-import org.eclipse.e4.ui.model.application.ui.menu.MToolItem;
-import org.eclipse.e4.ui.model.application.ui.menu.impl.ToolBarImpl;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
@@ -30,8 +25,10 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 
+import com.google.common.util.concurrent.Service.State;
+
 import de.drazil.nerdsuite.assembler.InstructionSet;
-import de.drazil.nerdsuite.constants.GridStyle;
+import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
@@ -94,30 +91,6 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void controlPaintMode(@UIEventTopic("PaintMode") PaintMode paintMode, EModelService service, MPart part) {
-		MToolItem single = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.singlePaintMode",
-				part.getToolbar());
-		MToolItem vertical = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.verticalMirrorPaintMode",
-				part.getToolbar());
-		MToolItem horizontal = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.horizontalMirrorPaintMode",
-				part.getToolbar());
-		MToolItem kaleidoscope = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.kaleidoscopePaintMode",
-				part.getToolbar());
-		single.setSelected(false);
-		vertical.setSelected(false);
-		horizontal.setSelected(false);
-		kaleidoscope.setSelected(false);
-
-		if (paintMode == PaintMode.Single) {
-			single.setSelected(true);
-		} else if (paintMode == PaintMode.VerticalMirror) {
-			vertical.setSelected(true);
-		} else if (paintMode == PaintMode.HorizontalMirror) {
-			horizontal.setSelected(true);
-		} else if (paintMode == PaintMode.Kaleidoscope) {
-			kaleidoscope.setSelected(true);
-		} else {
-		}
-
 		getPainterWidget().getConf().setPaintMode(paintMode);
 	}
 
@@ -144,17 +117,8 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void controlGridState(@UIEventTopic("GridState") GridState state, EModelService service, MPart part) {
-		MToolItem itemGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.LineGrid",
-				part.getToolbar());
-		MToolItem itemDotGrid = (MToolItem) service.find("de.drazil.nerdsuite.handledtoolitem.DottedGrid",
-				part.getToolbar());
-		if (state.gridStyle == GridStyle.Dot && state.isEnabled()) {
-			itemGrid.setSelected(!state.isEnabled());
-		}
-		if (state.gridStyle == GridStyle.Line && state.isEnabled()) {
-			itemDotGrid.setSelected(!state.isEnabled());
-		}
-		getPainterWidget().getConf().setGridStyle(state.gridStyle);
+
+		getPainterWidget().getConf().setGridStyle(state.getGridStyle());
 		getPainterWidget().getConf().setPixelGridEnabled(state.isEnabled());
 		getPainterWidget().recalc();
 
@@ -663,7 +627,7 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setPixelSize(15);
 			painter.getConf().setPixelGridEnabled(true);
-			painter.getConf().setGridStyle(GridStyle.Dot);
+			painter.getConf().setGridStyle(GridType.Dot);
 			painter.getConf().setTileGridEnabled(true);
 			painter.getConf().setTileCursorEnabled(false);
 			painter.getConf().supportsPainting = true;
@@ -688,7 +652,7 @@ public class GfxEditorView // implements IConfigurationListener {
 			previewer.getConf().setRows(1);
 			previewer.getConf().setColumns(1);
 			previewer.getConf().setPixelGridEnabled(false);
-			previewer.getConf().setGridStyle(GridStyle.Dot);
+			previewer.getConf().setGridStyle(GridType.Dot);
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
 			previewer.getConf().setSeparatorEnabled(false);

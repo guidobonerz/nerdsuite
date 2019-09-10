@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
-import de.drazil.nerdsuite.constants.GridStyle;
+import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.constants.PixelConfig;
@@ -50,7 +50,7 @@ public class ImagingWidgetConfiguration {
 	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
-	public GridStyle gridStyle = GridStyle.Line;
+	public GridType gridStyle = GridType.Line;
 	public GraphicFormat gfxFormat;
 	public GraphicFormatVariant gfxFormatVariant;
 
@@ -158,7 +158,7 @@ public class ImagingWidgetConfiguration {
 		this.pixelGridEnabled = pixelGridEnabled;
 	}
 
-	public void setGridStyle(GridStyle gridStyle) {
+	public void setGridStyle(GridType gridStyle) {
 		this.gridStyle = gridStyle;
 	}
 

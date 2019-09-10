@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.constants.GridStyle;
+import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.imaging.service.IImagingService;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
@@ -320,7 +320,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		for (int x = 0; x <= conf.currentWidth * conf.tileColumns; x++) {
 			for (int y = 0; y <= conf.height * conf.tileRows; y++) {
 				gc.setForeground(Constants.PIXEL_GRID_COLOR);
-				if (conf.gridStyle == GridStyle.Line) {
+				if (conf.gridStyle == GridType.Line) {
 					gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
 							conf.height * conf.currentPixelHeight * conf.tileRows);
 					gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns,
