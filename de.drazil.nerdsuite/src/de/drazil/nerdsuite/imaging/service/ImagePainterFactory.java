@@ -16,20 +16,23 @@ import de.drazil.nerdsuite.widget.Tile;
 public class ImagePainterFactory {
 
 	private Map<String, Image> imagePool = null;
+	private Map<String, GC> gcCache = null;
+	private GC gc;
 
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
+		gcCache = new HashMap<>();
 	}
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf) {
 		String name = tile.getName();
-		Image image = imagePool.get("IMAGE-" + name);
+		Image image = imagePool.get(name);
 		if (null == image) {
-			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null);
-			imagePool.put("IMAGE-" + name, image);
-			System.out.println("create new IMAGE-" + name);
+			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name);
+			imagePool.put(name, image);
+			System.out.println("create new " + name);
 		} else {
-			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image);
+			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name);
 		}
 		return image;
 	}
@@ -43,15 +46,19 @@ public class ImagePainterFactory {
 	}
 
 	private Image createOrUpdateImage(Tile tile, int px, int py, boolean pixelOnly, ImagingWidgetConfiguration conf,
-			Image image) {
+			Image image, String imageName) {
 
 		Image img = image;
 		if (img == null) {
 			img = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
 		}
+		gc = gcCache.get(imageName);
+		if (gc == null) {
+			gc = new GC(img);
+			gcCache.put(imageName, gc);
+		}
 		// ImageData id = image.getImageData().scaledTo(10, 10);
 
-		GC gc = new GC(img);
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
 		int size = tile.getLayer(0).size();
@@ -59,11 +66,12 @@ public class ImagePainterFactory {
 		int y = 0;
 		List<Layer> layerList = tile.getLayerList();
 		if (pixelOnly) {
-
 			Color c = tile.getBackgroundColor();
 			int offset = py * width + px;
-			System.out.println("pixel only:" + px + " y:" + py + " offset:" + offset);
-			draw(gc, c, offset, layerList, tile, conf, px, py);
+			if (offset < size) {
+				System.out.println("pixel only:" + px + " y:" + py + " offset:" + offset);
+				draw(gc, c, offset, layerList, tile, conf, px, py);
+			}
 		} else {
 			for (int i = 0; i < size; i++) {
 				if (i % width == 0 && i > 0) {
@@ -75,7 +83,7 @@ public class ImagePainterFactory {
 				x++;
 			}
 		}
-		gc.dispose();
+		// gc.dispose();
 		return img;
 	}
 

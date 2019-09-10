@@ -255,10 +255,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 		if (checkPaintControlMode(DRAW_PIXEL)) {
 			paintTileService.paintPixel(gc, tile, cursorX,cursorY, conf);
+			//paintTelevisionRaster(gc);
 		}
 
 		if (checkPaintControlMode(DRAW_TILE)) {
 			paintTileService.paintTile(gc, tile, conf);
+			//paintTelevisionRaster(gc);
 		}
 		if (checkPaintControlMode(DRAW_ALL_TILES)) {
 			paintTileService.paintAllTiles(gc, conf);
