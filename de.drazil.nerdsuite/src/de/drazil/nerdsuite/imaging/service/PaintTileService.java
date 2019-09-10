@@ -61,6 +61,10 @@ public class PaintTileService extends AbstractImagingService {
 		}
 	}
 
+	public void paintPixel(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
+		gc.drawImage(imagePainteFactory.getImage(tile, conf), 0, 0);
+	}
+	
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
 		gc.drawImage(imagePainteFactory.getImage(tile, conf), 0, 0);
 	}
