@@ -1,9 +1,7 @@
 package de.drazil.nerdsuite.widget;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -18,7 +16,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PencilMode;
-import de.drazil.nerdsuite.imaging.service.IImagingService;
+import de.drazil.nerdsuite.constants.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
@@ -28,11 +26,6 @@ import de.drazil.nerdsuite.model.TileLocation;
 
 public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IImagingCallback,
 		ITileSelectionListener, ITileManagementListener, ITileListener {
-
-	private final static int DRAW_NOTHING = 0;
-	private final static int DRAW_ALL_TILES = 1;
-	private final static int DRAW_TILE = 2;
-	private final static int DRAW_PIXEL = 4;
 
 	private boolean keyPressed = false;
 	private int currentKeyCodePressed = 0;
@@ -56,31 +49,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	private boolean updateCursorLocation = false;
 
-	private int selectedColorIndex;
-	private int selectedTileOffset = 0;
-	private int monoColorDefaultIndex;
-	private int navigationOffset = 0;
-	private int colorCount;
-
-	private int paintControlMode = DRAW_NOTHING;
+	private RedrawMode redrawMode = RedrawMode.DrawNothing;
 
 	private boolean mouseIn = false;
 
-	private IColorProvider colorProvider;
 	private ScrollBar hBar = null;
 	private ScrollBar vBar = null;
 	private List<IDrawListener> drawListenerList = null;
 	private List<TileLocation> tileSelectionList = null;
 	private List<TileLocation> selectionRangeBuffer = null;
 
-	private Map<String, IImagingService> serviceCacheMap = null;
-
 	private PaintTileService paintTileService;
 
 	private Tile tile = null;
-	private int mouseWheel = 0;
-	private int lastMouseWheel = 0;
-	private int color = 0;
 
 	public ImagingWidget(Composite parent, int style, String owner) {
 		this(parent, style, owner, null);
@@ -89,7 +70,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public ImagingWidget(Composite parent, int style, String owner, ImagingWidgetConfiguration configuration) {
 		super(parent, style, configuration);
 		conf.setServiceOwner(owner);
-		serviceCacheMap = new HashMap<>();
 
 		selectionRangeBuffer = new ArrayList<>();
 		tileSelectionList = new ArrayList<>();
@@ -110,20 +90,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				doDrawAllTiles();
 			}
 		});
-	}
-
-	@Override
-	public void mouseScrolled(int modifierMask, int x, int y, int count) {
-		mouseWheel += (count > 0 ? 1 : -1);
-
-		if (Math.abs((lastMouseWheel) - mouseWheel) > 3) {
-			lastMouseWheel = mouseWheel;
-			color += (count > 0 ? 1 : -1);
-			int c = color & 0x03;
-			System.out.println(c);
-			tile.getActiveLayer().setSelectedColorIndex(c);
-			redraw();
-		}
 	}
 
 	@Override
@@ -149,7 +115,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			doDrawPixel();
 			// fireDoDrawTile(ImagingWidget.this);
 		}
-
 	}
 
 	@Override
@@ -179,8 +144,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		setFocus();
 		mouseIn = true;
 		if (supportsPainting()) {
-			 doDrawPixel();
-			//doDrawTile();
+			doDrawPixel();
+			// doDrawTile();
 		} else {
 			doDrawAllTiles();
 		}
@@ -220,7 +185,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	protected void computeCursorPosition(int x, int y) {
-		// System.out.println(conf.widgetName);
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
 		tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);
@@ -238,31 +202,25 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		return (modifierMask & modifierKey) == modifierKey && currentCharacterPressed == charCode && keyPressed;
 	}
 
-	private boolean checkPaintControlMode(int mode) {
-		return (paintControlMode & mode) == mode;
-	}
-
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, paintControlMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(),
-				conf.isTileGridEnabled(), conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), false);
+		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(),
+				conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), false);
 	}
 
-	private void paintControl(GC gc, int paintControlMode, boolean paintPixelGrid, boolean paintSeparator,
+	private void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
 
-		System.out.println(paintControlMode);
-
-		if (checkPaintControlMode(DRAW_PIXEL)) {
-			paintTileService.paintPixel(gc, tile, cursorX,cursorY, conf);
-			//paintTelevisionRaster(gc);
+		if (redrawMode == RedrawMode.DrawPixel) {
+			paintTileService.paintPixel(gc, tile, cursorX, cursorY, conf);
+			// paintTelevisionRaster(gc);
 		}
 
-		if (checkPaintControlMode(DRAW_TILE)) {
+		if (redrawMode == RedrawMode.DrawTile) {
 			paintTileService.paintTile(gc, tile, conf);
-			//paintTelevisionRaster(gc);
+			// paintTelevisionRaster(gc);
 		}
-		if (checkPaintControlMode(DRAW_ALL_TILES)) {
+		if (redrawMode == RedrawMode.DrawAllTiles) {
 			paintTileService.paintAllTiles(gc, conf);
 		}
 
@@ -284,7 +242,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		/*
 		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
 		 */
-		paintControlMode = DRAW_NOTHING;
+		redrawMode = RedrawMode.DrawNothing;
 	}
 
 	private void paintTelevisionRaster(GC gc) {
@@ -385,11 +343,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	public void setColorProvider(IColorProvider colorProvider) {
-		this.colorProvider = colorProvider;
-		conf.setPixelConfig(colorProvider.getPixelConfig());
-	}
-
 	public void recalc() {
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
@@ -400,11 +353,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		composite.layout();
 	}
 
-	public void setSelectedColor(int index) {
-		selectedColorIndex = index;
-		monoColorDefaultIndex = index;
-	}
-
 	@Override
 	public void doDrawPixel(BaseImagingWidget source, int x, int y, PencilMode pencilMode) {
 		conf.pencilMode = pencilMode;
@@ -413,44 +361,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		doDrawPixel();
 	}
 
-	/*
-	 * protected void doDrawPixel() { paintControlMode = DRAW_PIXEL; int inset =
-	 * conf.isPixelGridEnabled() ? 1 : 0;
-	 * 
-	 * switch (conf.paintMode) { case Single: { redraw((cursorX *
-	 * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
-	 * conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true);
-	 * break; } case VerticalMirror: { redraw((cursorX * conf.currentPixelWidth) +
-	 * inset, (cursorY * conf.currentPixelHeight) + inset, conf.currentPixelWidth -
-	 * inset, conf.currentPixelHeight - inset, true); int centerX =
-	 * ((conf.currentWidth * conf.tileColumns) / 2); int diff = centerX - cursorX -
-	 * 1; redraw(((centerX + diff) * conf.currentPixelWidth) + inset, (cursorY *
-	 * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
-	 * conf.currentPixelHeight - inset, true); break; } case HorizontalMirror: {
-	 * redraw((cursorX * conf.currentPixelWidth) + inset, (cursorY *
-	 * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
-	 * conf.currentPixelHeight - inset, true); int centerY = ((conf.height *
-	 * conf.tileRows) / 2); int diff = centerY - cursorY - 1; redraw((cursorX *
-	 * conf.currentPixelWidth) + inset, ((centerY + diff) * conf.currentPixelHeight)
-	 * + inset, conf.currentPixelWidth - inset, conf.currentPixelHeight - inset,
-	 * true); break; } case Kaleidoscope: { redraw((cursorX *
-	 * conf.currentPixelWidth) + inset, (cursorY * conf.currentPixelHeight) + inset,
-	 * conf.currentPixelWidth - inset, conf.currentPixelHeight - inset, true); int
-	 * centerX = ((conf.currentWidth * conf.tileColumns) / 2); int diffX = centerX -
-	 * cursorX - 1; redraw(((centerX + diffX) * conf.currentPixelWidth) + inset,
-	 * (cursorY * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
-	 * conf.currentPixelHeight - inset, true); int centerY = ((conf.height *
-	 * conf.tileRows) / 2); int diffY = centerY - cursorY - 1; redraw((cursorX *
-	 * conf.currentPixelWidth) + inset, ((centerY + diffY) *
-	 * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
-	 * conf.currentPixelHeight - inset, true); redraw(((centerX + diffX) *
-	 * conf.currentPixelWidth) + inset, ((centerY + diffY) *
-	 * conf.currentPixelHeight) + inset, conf.currentPixelWidth - inset,
-	 * conf.currentPixelHeight - inset, true); break; } } }
-	 */
-
 	public void doDrawPixel() {
-		paintControlMode = DRAW_PIXEL;
+		redrawMode = RedrawMode.DrawPixel;
 		redraw();
 		/*
 		 * redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
@@ -462,7 +374,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void doDrawTile() {
-		paintControlMode = DRAW_TILE;
+		redrawMode = RedrawMode.DrawTile;
 		redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
 				selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows,
 				conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows, true);
@@ -470,7 +382,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void doDrawAllTiles() {
-		paintControlMode = DRAW_ALL_TILES;
+		redrawMode = RedrawMode.DrawAllTiles;
 		// setNotification(selectedTileOffset, conf.getTileSize());
 		redraw();
 
