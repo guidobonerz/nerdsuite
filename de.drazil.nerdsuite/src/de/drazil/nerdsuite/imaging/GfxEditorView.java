@@ -219,7 +219,7 @@ public class GfxEditorView // implements IConfigurationListener {
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
 		
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
-		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.menu.0");
 		parent.setLayout(new MigLayout());
 		getPainterWidget().setLayoutData("span 6 6");
 
