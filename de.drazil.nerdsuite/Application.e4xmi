@@ -134,10 +134,10 @@
       <children xsi:type="menu:HandledMenuItem" xmi:id="_xpQ_QBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.inverttshifti" label="Invert\tShift+I" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/contrast.png"/>
     </menus>
     <toolbar xmi:id="_PbDRcNUyEem7aKaccBqojA" elementId="de.drazil.nerdsuite.toolbar.1">
-      <children xsi:type="menu:HandledToolItem" xmi:id="_AiheUBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.addtile" label="Add Tile" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/puzzle--plus.png" tooltip="Add Tile" command="_C9g6EBbBEemiVvU0vymBxA">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_AiheUBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.AddTile" label="Add Tile" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/puzzle--plus.png" tooltip="Add Tile" command="_C9g6EBbBEemiVvU0vymBxA">
         <parameters xmi:id="_iN-AcNMaEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.6" name="de.drazil.nerdsuite.commandparameter.Tile" value="add"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_tNmbkBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.removetile" label="Remove Tile" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/puzzle--minus.png" tooltip="Remove Tile" command="_C9g6EBbBEemiVvU0vymBxA">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_tNmbkBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handledtoolitem.RemoveTile" label="Remove Tile" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/puzzle--minus.png" tooltip="Remove Tile" command="_C9g6EBbBEemiVvU0vymBxA">
         <parameters xmi:id="_kPz8YNMaEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.7" name="de.drazil.nerdsuite.commandparameter.Tile" value="remove"/>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_dqmBcBnGEem_0qzoA0aFQQ" elementId="de.drazil.nerdsuite.toolbarseparator.2"/>
@@ -154,10 +154,10 @@
         <parameters xmi:id="_Hsb38NMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.3" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="4"/>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_OCjUMBcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.toolbarseparator.0"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_zPlAEASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.removelayer" label="Remove Layer" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--minus.png" tooltip="Remove Layer" command="_CYRyMAT-EemsC5geQwPptA">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_zPlAEASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.RemoveLayer" label="Remove Layer" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--minus.png" tooltip="Remove Layer" command="_CYRyMAT-EemsC5geQwPptA">
         <parameters xmi:id="_ePBzwNMcEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.10" name="de.drazil.nerdsuite.commandparameter.Layer" value="remove"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_04Xe0AStEem0jsZqZTgKlw" elementId="de.drazil.nerdsuite.handledtoolitem.addlayer" label="Add Layer" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--plus.png" tooltip="Add Layer" command="_CYRyMAT-EemsC5geQwPptA">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_04Xe0AStEem0jsZqZTgKlw" elementId="de.drazil.nerdsuite.handledtoolitem.AddLayer" label="Add Layer" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--plus.png" tooltip="Add Layer" command="_CYRyMAT-EemsC5geQwPptA">
         <parameters xmi:id="_c_Pm4NMcEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.9" name="de.drazil.nerdsuite.commandparameter.Layer" value="add"/>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_LeVsYBnGEem_0qzoA0aFQQ" elementId="de.drazil.nerdsuite.toolbarseparator.1"/>

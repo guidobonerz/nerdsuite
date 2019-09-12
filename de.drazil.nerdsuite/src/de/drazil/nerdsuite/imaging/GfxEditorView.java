@@ -12,18 +12,15 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.descriptor.basic.MPartDescriptor;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
-import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
-import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
@@ -117,81 +114,9 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	@Inject
 	@Optional
-	void controlGridState(@UIEventTopic("GridState") GridState state, EModelService service, MPart part) {
+	public void controlGridState(@UIEventTopic("GridState") GridState state) {
 		getPainterWidget().getConf().setGridStyle(state.getGridStyle());
 		getPainterWidget().getConf().setPixelGridEnabled(state.isEnabled());
-		getPainterWidget().recalc();
-	}
-
-	// @Optional
-	// @Inject
-	void startNewProject(@UIEventTopic("projectSetup") Map<String, Object> projectSetup) {
-		// getPainterWidget().getConf().setGraphicFormat((GraphicFormat)
-		// projectSetup.get("gfxFormat"), 0);
-		// (int) projectSetup.get("gfxFormatVariant")
-		int startIndex = (int) projectSetup.get("setSelectedTile");
-
-		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
-
-		tileRepositoryService.addTile("tile1", contentSize);
-		Layer layer1 = null;
-
-		layer1 = tileRepositoryService.getTile(0).getActiveLayer();
-		layer1.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer1.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		layer1.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		layer1.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		layer1.setSelectedColorIndex(0);
-		Layer layer2 = tileRepositoryService.getTile(0).addLayer("layer2");
-		layer2.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer2.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
-		layer2.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
-		layer2.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(6).getColor());
-		layer2.setSelectedColorIndex(0);
-		Layer layer3 = tileRepositoryService.getTile(0).addLayer("layer3");
-		layer3.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer3.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
-		layer3.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
-		layer3.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(9).getColor());
-		layer3.setSelectedColorIndex(0);
-		Layer layer4 = tileRepositoryService.getTile(0).addLayer("layer4");
-		layer4.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer4.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
-		layer4.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(11).getColor());
-		layer4.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(12).getColor());
-		layer4.setSelectedColorIndex(0);
-
-		tileRepositoryService.addTile("tile2", contentSize);
-		Layer layer1b = null;
-
-		layer1b = tileRepositoryService.getTile(1).getActiveLayer();
-		layer1b.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer1b.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		layer1b.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		layer1b.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		layer1b.setSelectedColorIndex(0);
-		Layer layer2b = tileRepositoryService.getTile(1).addLayer("layer2");
-		layer2b.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer2b.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
-		layer2b.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(4).getColor());
-		layer2b.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(5).getColor());
-		layer2b.setSelectedColorIndex(0);
-		Layer layer3b = tileRepositoryService.getTile(1).addLayer("layer3");
-		layer3b.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer3b.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(6).getColor());
-		layer3b.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(7).getColor());
-		layer3b.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(8).getColor());
-		layer3b.setSelectedColorIndex(0);
-		Layer layer4b = tileRepositoryService.getTile(1).addLayer("layer4");
-		layer4b.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer4b.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(9).getColor());
-		layer4b.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(10).getColor());
-		layer4b.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(11).getColor());
-		layer4b.setSelectedColorIndex(0);
-
-		tileRepositoryService.addTileSelectionListener(getPainterWidget());
-		tileRepositoryService.setSelectedTile(startIndex);
-
 		getPainterWidget().recalc();
 	}
 
