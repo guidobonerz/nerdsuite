@@ -9,9 +9,9 @@ import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.util.SwtUtil;
 
-public class Constants
-{
+public class Constants {
 	public final static String PLUGIN_BASE_PATH = "platform:/plugin/de.drazil.nerdsuite/";
+	public final static String OWNER = "OWNER";
 
 	public final static String PREFERENCES_TEXTCOLOR_OPCODE = "preferences.textcolor.instruction";
 	public final static String PREFERENCES_TEXTCOLOR_ILLEGAL_OPCODE = "preferences.textcolor.illegal_instruction";
@@ -30,7 +30,7 @@ public class Constants
 	public final static int UNSTABLE_ILLEGAL_OPCODE = 3;
 
 	public final static String DEFAULT_WORKSPACE_NAME = ".nerdsuiteWorkspace";
-	
+
 	public final static String USER_HOME = System.getProperty("user.home");
 	public final static String FILE_SEPARATOR = System.getProperty("file.separator");
 
@@ -49,10 +49,13 @@ public class Constants
 
 	public final static Color SWAP_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#0000C0"));
 	public final static Color SELECTION_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C00000"));
-	
-	public final static Color SOURCE_EDITOR_FOREGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C0C0C0"));
-	public final static Color SOURCE_EDITOR_BACKGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
-	public final static Color SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#404040"));
+
+	public final static Color SOURCE_EDITOR_FOREGROUND_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#C0C0C0"));
+	public final static Color SOURCE_EDITOR_BACKGROUND_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#000000"));
+	public final static Color SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#404040"));
 	public final static Color PIXEL_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C8C8C8"));
 	public final static Color TILE_SUB_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#FFC30D"));
 	public final static Color TILE_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#808080"));
@@ -75,14 +78,15 @@ public class Constants
 	public final static Color DEFAULT_DIRCETIVE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#809E35"));
 	public final static Color DEFAULT_OPCODE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#9090FF"));
 	public final static Color DEFAULT_ILLEGAL_OPCODE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A6924B"));
-	public final static Color DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A64425"));
+	public final static Color DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#A64425"));
 	public final static Color DEFAULT_CURLY_BRACES_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A3A3A3"));
 	public final static Color WHITE = new Color(Display.getCurrent(), SwtUtil.toRGB("#FFFFFF"));
 	public final static Color BLACK = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
 	public final static Color LIGHT_BLUE = new Color(Display.getCurrent(), SwtUtil.toRGB("#EFEFFF"));
 	public final static Color LIGHT_GREEN = new Color(Display.getCurrent(), SwtUtil.toRGB("#EFFFEF"));
 	public final static Color LIGHT_GREEN2 = new Color(Display.getCurrent(), SwtUtil.toRGB("#D0FFD0"));
-	
+
 	public final static Color RED = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF0000"));
 	public final static Color LIGHT_RED = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF9090"));
 
@@ -98,11 +102,12 @@ public class Constants
 	public final static Font PetMe642Y_FONT = new Font(Display.getCurrent(), "Pet Me 64 2Y", 12, SWT.NORMAL);
 	public final static Font PetMe64_FONT = new Font(Display.getCurrent(), "Pet Me 64", 6, SWT.NORMAL);
 
-	
-	public final static TextStyle TEXTSTYLE_PetMe642Y_ASCII = new TextStyle(PetMe642Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_PetMe642Y_ASCII = new TextStyle(PetMe642Y_FONT, DEFAULT_COMMENT_COLOR,
+			BLACK);
 	public final static TextStyle TEXTSTYLE_PetMe2Y_ASCII = new TextStyle(PetMe2Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_C64_ASCII = new TextStyle(C64_Pro_Mono_FONT, DEFAULT_COMMENT_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_ATARI_ASCII = new TextStyle(Atari_Classic_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_ATARI_ASCII = new TextStyle(Atari_Classic_FONT, DEFAULT_COMMENT_COLOR,
+			BLACK);
 	public final static TextStyle TEXTSTYLE_STRING = new TextStyle(EDITOR_FONT, DEFAULT_STRING_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_COMMENT = new TextStyle(EDITOR_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_DECIMAL = new TextStyle(EDITOR_FONT, DEFAULT_DECIMAL_COLOR, BLACK);
@@ -111,9 +116,12 @@ public class Constants
 	public final static TextStyle TEXTSTYLE_LABEL = new TextStyle(EDITOR_FONT, DEFAULT_LABEL_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_DIRECTIVE = new TextStyle(EDITOR_FONT, DEFAULT_DIRCETIVE_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_OPCODE_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_ILLEGAL_OPCODE_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_UNSTABLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_CURLY_BRACES = new TextStyle(EDITOR_FONT, DEFAULT_CURLY_BRACES_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_ILLEGAL_OPCODE_COLOR,
+			BLACK);
+	public final static TextStyle TEXTSTYLE_UNSTABLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT,
+			DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_CURLY_BRACES = new TextStyle(EDITOR_FONT, DEFAULT_CURLY_BRACES_COLOR,
+			BLACK);
 
 	public final static String T_C64_BASIC_STRING = "C64BASIC_STRING";
 	public final static String T_Atari_BASIC_STRING = "Atari_BASIC_STRING";
