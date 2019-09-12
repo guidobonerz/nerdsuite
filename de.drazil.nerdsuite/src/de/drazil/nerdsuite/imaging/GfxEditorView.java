@@ -13,7 +13,6 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
@@ -137,6 +136,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
 			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
+
 		// setToolbarVisible(app, window, modelService, true);
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
