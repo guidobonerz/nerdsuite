@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.Tile;
 
 public class RotationService extends AbstractImagingService {
 	public final static int CW = 1;
@@ -40,28 +41,27 @@ public class RotationService extends AbstractImagingService {
 	}
 
 	@Override
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane, byte[] workArray, int width, int height) {
-		byte targetWorkArray[] = createWorkArray();
-		for (int y = 0; y < imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows; y++) {
-			for (int x = 0; x < imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns; x++) {
-				byte b = workArray[x + (y * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns)];
+	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
+		int[] content = tile.getActiveLayer().getContent();
+		int[] targetContent = new int[content.length];
+		for (int y = 0; y < configuration.height * configuration.tileRows; y++) {
+			for (int x = 0; x < configuration.width * configuration.tileColumns; x++) {
+				int b = content[x + (y * configuration.width * configuration.tileColumns)];
 				int o = 0;
 				if (action == CCW) {
-					o = (imagingWidgetConfiguration.width * imagingWidgetConfiguration.height
-							* imagingWidgetConfiguration.tileRows * imagingWidgetConfiguration.tileColumns)
-							- (imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns)
-							- (imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns * x) + y;
+					o = (configuration.width * configuration.height * configuration.tileRows
+							* configuration.tileColumns) - (configuration.width * configuration.tileColumns)
+							- (configuration.width * configuration.tileColumns * x) + y;
 				} else if (action == CW) {
-					o = (imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns) - y - 1
-							+ (x * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns);
+					o = (configuration.width * configuration.tileColumns) - y - 1
+							+ (x * configuration.width * configuration.tileColumns);
 				}
-				if (o >= 0 && o < (width * height)) {
-					targetWorkArray[o] = b;
+				if (o >= 0 && o < (configuration.width * configuration.height)) {
+					targetContent[o] = b;
 				}
 			}
 		}
-		return targetWorkArray;
+		tile.getActiveLayer().setContent(targetContent);
 	}
 
 }
