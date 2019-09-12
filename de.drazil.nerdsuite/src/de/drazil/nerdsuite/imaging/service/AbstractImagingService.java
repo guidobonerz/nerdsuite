@@ -8,6 +8,7 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.Setter;
 
 public abstract class AbstractImagingService extends AbstractService implements IImagingService {
+
 	@Setter
 	protected ImagingWidgetConfiguration imagingWidgetConfiguration = null;
 	@Setter

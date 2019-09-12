@@ -12,6 +12,8 @@ public class GraphicFormat {
 	private String name;
 	private int width;
 	private int height;
+	private int pixelSize;
+	private boolean supportsLayers;
 	private int storageEntity;
 	private String storageType;
 	private String colorRendererClass;

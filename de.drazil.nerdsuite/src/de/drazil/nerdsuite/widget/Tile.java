@@ -29,7 +29,7 @@ public class Tile {
 	private boolean showInactiveLayerTranslucent = false;
 
 	public Tile(int size) {
-		this("<rename me>", size);
+		this("rename_me", size);
 	}
 
 	public Tile(String name, int size) {
@@ -50,7 +50,7 @@ public class Tile {
 	}
 
 	public void addLayer() {
-		addLayer("<rename me>");
+		addLayer("rename_me");
 	}
 
 	public Layer addLayer(String name) {
@@ -62,6 +62,10 @@ public class Tile {
 		layer.setSelectedColorIndex(0);
 		fireLayerAdded();
 		return layer;
+	}
+
+	public void removeActiveLayer() {
+
 	}
 
 	public void removeLastLayer() {

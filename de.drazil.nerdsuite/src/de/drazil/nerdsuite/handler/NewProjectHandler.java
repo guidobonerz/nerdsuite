@@ -12,9 +12,13 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
+import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -50,15 +54,14 @@ public class NewProjectHandler {
 
 			String perspectiveId = projectTypeId.equals("CODING_PROJECT") ? "de.drazil.nerdsuite.perspective.coding"
 					: "de.drazil.nerdsuite.perspective.gfx";
-
-			List<MPerspective> perspectives = modelService.findElements(app, perspectiveId, MPerspective.class, null);
-			for (MPerspective perspective : perspectives) {
-				if (!perspective.equals(activePerspective)) {
-					partService.switchPerspective(perspective);
-				}
-			}
-
+			/*
+			 * List<MPerspective> perspectives = modelService.findElements(app,
+			 * perspectiveId, MPerspective.class, null); for (MPerspective perspective :
+			 * perspectives) { if (!perspective.equals(activePerspective)) {
+			 * partService.switchPerspective(perspective); } }
+			 */
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
+
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
 
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
@@ -67,7 +70,20 @@ public class NewProjectHandler {
 				projectSetup.put("gfxFormatVariant", 0);
 				projectSetup.put("setSelectedTile", 0);
 
-				eventBroker.post("projectSetup", projectSetup);
+				// MPart part = MBasicFactory.INSTANCE.createPart();
+				MPart part = partService.createPart("de.drazil.nerdsuite.partdescriptor.GfxEditorView");
+				part.setLabel(project.getProjectType() + "(" + project.getName() + ")");
+				// part.setCloseable(true);
+				part.setObject(projectSetup);
+				part.setElementId(project.getProjectType() + project.getName());
+				part.setContributionURI("bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView");
+
+				List<MPartStack> stacks = modelService.findElements(app, "de.drazil.nerdsuite.partstack.editorStack",
+						MPartStack.class, null);
+				stacks.get(0).getChildren().add(part);
+				partService.showPart(part, PartState.ACTIVATE);
+
+				// eventBroker.post("projectSetup", projectSetup);
 			}
 
 			/*

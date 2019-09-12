@@ -4,10 +4,13 @@
 		"name": "Char",
 		"width": 8,
 		"height": 8,
+		"pixelSize":20,
+		"supportsLayers":true,
 		"storageEntity": 8,
 		"storageType": "linear",
 		"properties": {
 			"supportsMultiColor": true
+			
 		},
 		"variants": [
 			{
@@ -41,10 +44,13 @@
 		"name": "Sprite",
 		"width": 24,
 		"height": 21,
+		"pixelSize":10,
+		"supportsLayers":true,
 		"storageEntity": 8,
 		"storageType": "linear",
 		"properties": {
 			"supportsMultiColor": true
+			
 		},
 		"variants": [
 			{
@@ -78,6 +84,8 @@
 		"name": "Screen",
 		"width": 40,
 		"height": 25,
+		"pixelSize":16,
+		"supportsLayers":true,
 		"storageEntity": 1,
 		"storageType": "linear",
 		"properties": {
@@ -97,6 +105,8 @@
 		"name": "Bitmap",
 		"width": 320,
 		"height": 200,
+		"pixelSize":2,
+		"supportsLayers":false,
 		"storageEntity": 8,
 		"storageType": "tiled",
 		"tileSize": {
@@ -105,6 +115,7 @@
 		},
 		"properties": {
 			"supportsMultiColor": true
+			
 		},
 		"variants": [
 			{

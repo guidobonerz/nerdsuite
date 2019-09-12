@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
-import de.drazil.nerdsuite.constants.GridStyle;
+import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.constants.PixelConfig;
@@ -50,7 +50,7 @@ public class ImagingWidgetConfiguration {
 	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
-	public GridStyle gridStyle = GridStyle.Line;
+	public GridType gridStyle = GridType.Line;
 	public GraphicFormat gfxFormat;
 	public GraphicFormatVariant gfxFormatVariant;
 
@@ -60,10 +60,14 @@ public class ImagingWidgetConfiguration {
 	public void setGraphicFormat(GraphicFormat gfxFormat, int variantIndex) {
 		this.gfxFormat = gfxFormat;
 		this.gfxFormatVariant = gfxFormat.getVariants().get(variantIndex);
+		setPixelSize(gfxFormat.getPixelSize());
 		setWidth(gfxFormat.getWidth());
 		setHeight(gfxFormat.getHeight());
 		setTileRows(gfxFormatVariant.getTileRows());
 		setTileColumns(gfxFormatVariant.getTileColumns());
+		if (gfxFormat.getId().contains("BITMAP")) {
+			setPixelGridEnabled(false);
+		}
 	}
 
 	public void setServiceOwner(String serviceOwnerId) {
@@ -158,7 +162,7 @@ public class ImagingWidgetConfiguration {
 		this.pixelGridEnabled = pixelGridEnabled;
 	}
 
-	public void setGridStyle(GridStyle gridStyle) {
+	public void setGridStyle(GridType gridStyle) {
 		this.gridStyle = gridStyle;
 	}
 
