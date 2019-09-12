@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.Tile;
 
 public class PurgeService extends AbstractImagingService {
 
@@ -35,12 +36,10 @@ public class PurgeService extends AbstractImagingService {
 	}
 
 	@Override
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane, byte workArray[], int width, int height) {
-		for (int n = 0; n < imagingWidgetConfiguration.getTileSize(); n++) {
-			bitplane[offset + n] = 0;
+	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
+		int[] content = tile.getActiveLayer().getContent();
+		for (int i = 0; i < content.length; i++) {
+			content[i] = 0;
 		}
-		return null;
 	}
-
 }

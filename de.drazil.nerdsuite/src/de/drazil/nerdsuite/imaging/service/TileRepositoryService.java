@@ -103,4 +103,5 @@ public class TileRepositoryService extends AbstractImagingService {
 	public void fireTileSelected(Tile tile) {
 		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
 	}
+
 }

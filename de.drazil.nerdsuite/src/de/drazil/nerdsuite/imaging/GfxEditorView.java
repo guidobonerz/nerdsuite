@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
@@ -102,15 +103,16 @@ public class GfxEditorView // implements IConfigurationListener {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
 			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
-		part.getProperties().put("OWNER", getOwner());
-		// setToolbarVisible(app, window, modelService, true);
+
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
-
+		part.getTransientData().put(Constants.OWNER, getOwner());
+		part.getTransientData().put("CONFIG", getPainterWidget().getConf());
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 
 		boolean result = menuService.registerContextMenu(getPainterWidget(),
 				"de.drazil.nerdsuite.popupmenu.GfxToolbox");
+		result = menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		parent.setLayout(new MigLayout());
 		getPainterWidget().setLayoutData("span 6 6");
 
@@ -211,6 +213,8 @@ public class GfxEditorView // implements IConfigurationListener {
 			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
 		});
 		showInactiveLayersTranslucent.setLayoutData("span 4, wrap");
+
+		getRepositoryWidget().setLayoutData("wrap");
 
 		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
 

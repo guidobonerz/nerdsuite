@@ -4,12 +4,13 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.Tile;
 
 public class MirrorService extends AbstractImagingService {
 	public final static int UPPER_HALF = 1;
 	public final static int LOWER_HALF = 2;
-	public final static int LEFT_HALF = 4;
-	public final static int RIGHT_HALF = 8;
+	public final static int LEFT_HALF = 3;
+	public final static int RIGHT_HALF = 4;
 
 	@Override
 	public boolean needsConfirmation() {
@@ -65,6 +66,40 @@ public class MirrorService extends AbstractImagingService {
 			}
 		}
 		return workArray;
+	}
+
+	@Override
+	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
+		int[] content = tile.getActiveLayer().getContent();
+		if (action == UPPER_HALF) {
+			for (int y = 0; y < configuration.height / 2; y++) {
+				for (int x = 0; x < configuration.width; x++) {
+					content[x + ((configuration.height - y - 1) * configuration.width)] = content[x
+							+ (y * configuration.width)];
+				}
+			}
+		} else if (action == LOWER_HALF) {
+			for (int y = 0; y < configuration.height / 2; y++) {
+				for (int x = 0; x < configuration.width; x++) {
+					content[x + (y * configuration.width)] = content[x
+							+ ((configuration.height - y - 1) * configuration.width)];
+				}
+			}
+		} else if (action == LEFT_HALF) {
+			for (int y = 0; y < configuration.height; y++) {
+				for (int x = 0; x < configuration.width / 2; x++) {
+					content[configuration.width - 1 - x + (y * configuration.width)] = content[x
+							+ (y * configuration.width)];
+				}
+			}
+		} else if (action == RIGHT_HALF) {
+			for (int y = 0; y < configuration.height; y++) {
+				for (int x = 0; x < configuration.width / 2; x++) {
+					content[x + (y * configuration.width)] = content[configuration.width - 1 - x
+							+ (y * configuration.width)];
+				}
+			}
+		}
 	}
 
 }

@@ -4,12 +4,13 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.Tile;
 
 public class ShiftService extends AbstractImagingService {
 	public final static int UP = 1;
 	public final static int DOWN = 2;
-	public final static int LEFT = 4;
-	public final static int RIGHT = 8;
+	public final static int LEFT = 3;
+	public final static int RIGHT = 4;
 
 	@Override
 	public boolean needsConfirmation() {
@@ -35,42 +36,42 @@ public class ShiftService extends AbstractImagingService {
 	}
 
 	@Override
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane, byte workArray[], int width, int height) {
+	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
+
+		int[] content = tile.getActiveLayer().getContent();
+
 		if (action == UP) {
-			for (int x = 0; x < width; x++) {
-				byte b = workArray[x];
-				for (int y = 0; y < height - 1; y++) {
-					workArray[x + y * width] = workArray[x + (y + 1) * width];
+			for (int x = 0; x < configuration.width; x++) {
+				int b = content[x];
+				for (int y = 0; y < configuration.height - 1; y++) {
+					content[x + y * configuration.width] = content[x + (y + 1) * configuration.width];
 				}
-				workArray[x + (width * (height - 1))] = b;
+				content[x + (configuration.width * (configuration.height - 1))] = b;
 			}
 		} else if (action == DOWN) {
-			for (int x = 0; x < width; x++) {
-				byte b = workArray[x + (width * (height - 1))];
-				for (int y = height - 1; y > 0; y--) {
-					workArray[x + y * width] = workArray[x + (y - 1) * width];
+			for (int x = 0; x < configuration.width; x++) {
+				int b = content[x + (configuration.width * (configuration.height - 1))];
+				for (int y = configuration.height - 1; y > 0; y--) {
+					content[x + y * configuration.width] = content[x + (y - 1) * configuration.width];
 				}
-				workArray[x] = b;
+				content[x] = b;
 			}
 		} else if (action == LEFT) {
-			for (int y = 0; y < height; y++) {
-				byte b = workArray[y * width];
-				for (int x = 0; x < width - 1; x++) {
-					workArray[x + y * width] = workArray[(x + 1) + y * width];
+			for (int y = 0; y < configuration.height; y++) {
+				int b = content[y * configuration.width];
+				for (int x = 0; x < configuration.width - 1; x++) {
+					content[x + y * configuration.width] = content[(x + 1) + y * configuration.width];
 				}
-				workArray[(width + y * width) - 1] = b;
+				content[(configuration.width + y * configuration.width) - 1] = b;
 			}
 		} else if (action == RIGHT) {
-			for (int y = 0; y < height; y++) {
-				byte b = workArray[(width + y * width) - 1];
-				for (int x = width - 1; x > 0; x--) {
-					workArray[x + y * width] = workArray[(x - 1) + y * width];
+			for (int y = 0; y < configuration.height; y++) {
+				int b = content[(configuration.width + y * configuration.width) - 1];
+				for (int x = configuration.width - 1; x > 0; x--) {
+					content[x + y * configuration.width] = content[(x - 1) + y * configuration.width];
 				}
-				workArray[y * width] = b;
+				content[y * configuration.width] = b;
 			}
 		}
-		return workArray;
 	}
-
 }

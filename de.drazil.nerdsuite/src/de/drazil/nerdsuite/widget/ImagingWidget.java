@@ -505,7 +505,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void layerContentChanged(int layer) {
-		// TODO Auto-generated method stub
+		doDrawTile();
 
 	}
 
