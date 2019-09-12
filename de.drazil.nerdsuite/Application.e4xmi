@@ -6,7 +6,19 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_UAShQL4HEemtD_mJnNBwMg" elementId="de.drazil.nerdsuite.partsashcontainer.6">
             <children xsi:type="basic:PartStack" xmi:id="_J9KyYNNDEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.partstack.0">
-              <children xsi:type="basic:Part" xmi:id="_5hZjgNNCEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.part.explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer"/>
+              <children xsi:type="basic:Part" xmi:id="_5hZjgNNCEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.part.explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer">
+                <menus xsi:type="menu:PopupMenu" xmi:id="_DSGRsNUpEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.Explorer">
+                  <children xsi:type="menu:Menu" xmi:id="_rpkFkMziEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menu.openwith" label="Open with...">
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_SKmw4OxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.binaryViewer" label="Binary Inspector"/>
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_V2RKUOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.imageViewer" label="Graphic Editor"/>
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="Code Editor"/>
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_Zx9K4M6PEem6S-8Nx2mqeA" elementId="de.drazil.nerdsuite.handledmenuitem.emulator" label="Emulator"/>
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_bzdeoM9KEemWzpmgM2RcRA" elementId="de.drazil.nerdsuite.handledmenuitem.disassembler" label="Disassembler" mnemonics=""/>
+                  </children>
+                  <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A"/>
+                </menus>
+              </children>
             </children>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_EyKI8AUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partsashcontainer.5" selectedElement="_nmA8gATwEemsC5geQwPptA">
@@ -137,19 +149,8 @@
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
-  <menuContributions xmi:id="_mJ-CoMzdEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menucontribution.openWith" positionInParent="1" parentId="de.drazil.nerdsuite.popupmenu.explorer">
-    <children xsi:type="menu:Menu" xmi:id="_rpkFkMziEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menu.openwith" label="Open with...">
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_SKmw4OxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.binaryViewer" label="Binary Inspector"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_V2RKUOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.imageViewer" label="Graphic Editor"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="Code Editor"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_Zx9K4M6PEem6S-8Nx2mqeA" elementId="de.drazil.nerdsuite.handledmenuitem.emulator" label="Emulator"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_bzdeoM9KEemWzpmgM2RcRA" elementId="de.drazil.nerdsuite.handledmenuitem.disassembler" label="Disassembler" mnemonics=""/>
-    </children>
-    <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
-    <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A"/>
-  </menuContributions>
-  <menuContributions xmi:id="_dPO0oNTSEemJk9DeTX2hkA" elementId="de.drazil.nerdsuite.menucontribution.GfxToolbox">
-    <children xsi:type="menu:Menu" xmi:id="_r5j7ENTSEemJk9DeTX2hkA" elementId="de.drazil.nerdsuite.menu.0">
+  <descriptors xmi:id="_8oaA4NUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.partdescriptor.GfxEditorView" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView">
+    <menus xsi:type="menu:PopupMenu" xmi:id="__XCxYNUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.GfxToolbox">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action\tCtrl+L"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_e9huUBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png"/>
@@ -178,10 +179,9 @@
       <children xsi:type="menu:MenuSeparator" xmi:id="_UOBz0BnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_xSKt4BnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.swaptshifttab" label="Swap\tShift+Tab" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_switch.png"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_xpQ_QBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.inverttshifti" label="Invert\tShift+I" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/contrast.png"/>
-    </children>
-  </menuContributions>
+    </menus>
+  </descriptors>
   <toolBarContributions xmi:id="_ZpxgENNBEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.toolbarcontribution.0"/>
-  <trimContributions xmi:id="_gU8ssNNDEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.trimcontribution.GfxToolbar" parentId=""/>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.newProject" commandName="New Project">
     <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.projectType" name="projectType" optional="false"/>
   </commands>

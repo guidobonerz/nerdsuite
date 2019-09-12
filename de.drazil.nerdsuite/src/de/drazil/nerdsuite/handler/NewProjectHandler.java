@@ -54,14 +54,12 @@ public class NewProjectHandler {
 
 			String perspectiveId = projectTypeId.equals("CODING_PROJECT") ? "de.drazil.nerdsuite.perspective.coding"
 					: "de.drazil.nerdsuite.perspective.gfx";
-/*
-			List<MPerspective> perspectives = modelService.findElements(app, perspectiveId, MPerspective.class, null);
-			for (MPerspective perspective : perspectives) {
-				if (!perspective.equals(activePerspective)) {
-					partService.switchPerspective(perspective);
-				}
-			}
-*/
+			/*
+			 * List<MPerspective> perspectives = modelService.findElements(app,
+			 * perspectiveId, MPerspective.class, null); for (MPerspective perspective :
+			 * perspectives) { if (!perspective.equals(activePerspective)) {
+			 * partService.switchPerspective(perspective); } }
+			 */
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
@@ -72,14 +70,14 @@ public class NewProjectHandler {
 				projectSetup.put("gfxFormatVariant", 0);
 				projectSetup.put("setSelectedTile", 0);
 
-				MPart part = MBasicFactory.INSTANCE.createPart();
+				// MPart part = MBasicFactory.INSTANCE.createPart();
+				MPart part = partService.createPart("de.drazil.nerdsuite.partdescriptor.GfxEditorView");
 				part.setLabel(project.getProjectType() + "(" + project.getName() + ")");
-				part.setCloseable(true);
+				// part.setCloseable(true);
 				part.setObject(projectSetup);
-
-				// part.setElementId(Long.toString(System.currentTimeMillis()));
-
+				part.setElementId(project.getProjectType() + project.getName());
 				part.setContributionURI("bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView");
+
 				List<MPartStack> stacks = modelService.findElements(app, "de.drazil.nerdsuite.partstack.editorStack",
 						MPartStack.class, null);
 				stacks.get(0).getChildren().add(part);

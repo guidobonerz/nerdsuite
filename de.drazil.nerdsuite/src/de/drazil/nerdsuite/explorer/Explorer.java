@@ -76,7 +76,7 @@ public class Explorer {
 
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
-		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.projectexplorer");
+		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.Explorer");
 		
 		listFiles();
 	}
