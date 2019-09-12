@@ -148,10 +148,10 @@
         <parameters xmi:id="_F7xLkNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.1" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="1"/>
       </children>
       <children xsi:type="menu:HandledToolItem" xmi:id="_O3PggBcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handledtoolitem.HorizontalMirrorPaintMode" label="HorizontalMirrorPixel Mode" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/horizontal_mirror_pixel_paint.png" tooltip="Horizontal Mirror" type="Radio" command="_B2H-IBcXEemaxdgLPSY0VQ">
-        <parameters xmi:id="_G9_dkNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.2" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="3"/>
+        <parameters xmi:id="_G9_dkNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.2" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="2"/>
       </children>
       <children xsi:type="menu:HandledToolItem" xmi:id="_0M_2ABcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handledtoolitem.KaleidoscopePaintMode" label="KaleidoscopePixel Mode" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/kaleidoscope_pixel_paint.png" tooltip="Kaleidoscope" type="Radio" command="_B2H-IBcXEemaxdgLPSY0VQ">
-        <parameters xmi:id="_Hsb38NMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.3" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="4"/>
+        <parameters xmi:id="_Hsb38NMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.parameter.3" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="3"/>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_OCjUMBcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.toolbarseparator.0"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_zPlAEASBEemY64Lb858Vjg" elementId="de.drazil.nerdsuite.handledtoolitem.RemoveLayer" label="Remove Layer" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/layer--minus.png" tooltip="Remove Layer" command="_CYRyMAT-EemsC5geQwPptA">
