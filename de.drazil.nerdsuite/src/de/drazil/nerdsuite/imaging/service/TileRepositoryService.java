@@ -23,6 +23,7 @@ public class TileRepositoryService extends AbstractImagingService {
 	}
 
 	public void addTile(String name, int size) {
+		System.out.println("Add Tile");
 		Tile tile = new Tile(name, size);
 		tileList.add(tile);
 		tileIndexOrderList.add(tileList.indexOf(tile));
@@ -37,11 +38,12 @@ public class TileRepositoryService extends AbstractImagingService {
 	}
 
 	public void removeSelected() {
-
+		removeTile(selectedTileIndex);
 	}
 
 	public void removeTile(int index) {
 		if (tileIndexOrderList.size() > 0) {
+			System.out.println("Remove Tile");
 			int tileIndex = tileIndexOrderList.get(index);
 			tileList.remove(tileIndex);
 			tileIndexOrderList.remove(index);
