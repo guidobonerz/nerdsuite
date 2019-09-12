@@ -107,13 +107,16 @@
     <handlers xmi:id="_HmZhYNWKEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.ShiftHandler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ShiftTileHandler" command="_og63INWJEemb1pFqqqXNXQ"/>
     <handlers xmi:id="_47rugNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.RotateTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RotateTileHandler" command="_VDgxUNWLEemb1pFqqqXNXQ"/>
     <handlers xmi:id="_nDghINWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.FlipTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.FlipTileHandler" command="_YAM6ANWNEemb1pFqqqXNXQ"/>
+    <handlers xmi:id="_sQg8ENWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.PurgeTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.PurgeTileHandler" command="_jAOccNWOEemb1pFqqqXNXQ"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="__XCxYNUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.GfxToolbox">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action\tCtrl+L"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_e9huUBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_m70akBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.paste" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_wUsOcBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.selectall" label="Select All"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_80f-EBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.purge" label="Purge"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_80f-EBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.purge" label="Purge" command="_jAOccNWOEemb1pFqqqXNXQ">
+        <parameters xmi:id="_1RAsMNWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.24" name="de.drazil.nerdsuite.commandparameter.Mode" value="purge_tile"/>
+      </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_Awy0gBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="__CNy0BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.undo" label="Undo" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_undo.png" enabled="false"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_EkvnQBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.redo" label="Redo" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_redo.png" enabled="false"/>
@@ -235,6 +238,9 @@
   </commands>
   <commands xmi:id="_YAM6ANWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.FlipTile" commandName="FlipTile">
     <parameters xmi:id="_gc-5ENWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Orientation" name="Orientation"/>
+  </commands>
+  <commands xmi:id="_jAOccNWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.PurgeTile" commandName="PurgeTile">
+    <parameters xmi:id="_l9Vt0NWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Mode" name="Mode"/>
   </commands>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
