@@ -118,11 +118,9 @@ public class GfxEditorView // implements IConfigurationListener {
 	@Inject
 	@Optional
 	void controlGridState(@UIEventTopic("GridState") GridState state, EModelService service, MPart part) {
-
 		getPainterWidget().getConf().setGridStyle(state.getGridStyle());
 		getPainterWidget().getConf().setPixelGridEnabled(state.isEnabled());
 		getPainterWidget().recalc();
-
 	}
 
 	// @Optional
@@ -197,17 +195,16 @@ public class GfxEditorView // implements IConfigurationListener {
 		getPainterWidget().recalc();
 	}
 
-	private void setToolbarVisible(MApplication app, MTrimmedWindow window, EModelService modelService,
-			boolean visible) {
-		MToolBar toolbar = (MToolBar) modelService.find("de.drazil.nerdsuite.toolbar.GfxToolbar", app);
-
-		toolbar.setVisible(visible);
-		toolbar.setToBeRendered(visible);
-	}
-
+	/*
+	 * private void setToolbarVisible(MApplication app, MTrimmedWindow window,
+	 * EModelService modelService, boolean visible) { MToolBar toolbar = (MToolBar)
+	 * modelService.find("de.drazil.nerdsuite.toolbar.GfxToolbar", app);
+	 * 
+	 * toolbar.setVisible(visible); toolbar.setToBeRendered(visible); }
+	 */
 	@PreDestroy
 	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService) {
-		setToolbarVisible(app, window, modelService, false);
+		// setToolbarVisible(app, window, modelService, false);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -215,13 +212,14 @@ public class GfxEditorView // implements IConfigurationListener {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
 			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
-		setToolbarVisible(app, window, modelService, true);
+		// setToolbarVisible(app, window, modelService, true);
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
 
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 
-		boolean result = menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+		boolean result = menuService.registerContextMenu(getPainterWidget(),
+				"de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		parent.setLayout(new MigLayout());
 		getPainterWidget().setLayoutData("span 6 6");
 
