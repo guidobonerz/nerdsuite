@@ -8,8 +8,8 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 public class ShiftService extends AbstractImagingService {
 	public final static int UP = 1;
 	public final static int DOWN = 2;
-	public final static int LEFT = 4;
-	public final static int RIGHT = 8;
+	public final static int LEFT = 3;
+	public final static int RIGHT = 4;
 
 	@Override
 	public boolean needsConfirmation() {

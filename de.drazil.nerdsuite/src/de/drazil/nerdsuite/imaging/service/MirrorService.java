@@ -8,8 +8,8 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 public class MirrorService extends AbstractImagingService {
 	public final static int UPPER_HALF = 1;
 	public final static int LOWER_HALF = 2;
-	public final static int LEFT_HALF = 4;
-	public final static int RIGHT_HALF = 8;
+	public final static int LEFT_HALF = 3;
+	public final static int RIGHT_HALF = 4;
 
 	@Override
 	public boolean needsConfirmation() {

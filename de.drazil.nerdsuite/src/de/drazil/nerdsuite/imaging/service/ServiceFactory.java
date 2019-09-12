@@ -31,6 +31,7 @@ public class ServiceFactory {
 		if (null == service) {
 			try {
 				service = (S) serviceClass.newInstance();
+				service.setOwner(serviceOwner);
 				serviceCacheMap.put(name, service);
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
