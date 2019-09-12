@@ -108,6 +108,7 @@
     <handlers xmi:id="_47rugNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.RotateTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RotateTileHandler" command="_VDgxUNWLEemb1pFqqqXNXQ"/>
     <handlers xmi:id="_nDghINWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.FlipTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.FlipTileHandler" command="_YAM6ANWNEemb1pFqqqXNXQ"/>
     <handlers xmi:id="_sQg8ENWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.PurgeTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.PurgeTileHandler" command="_jAOccNWOEemb1pFqqqXNXQ"/>
+    <handlers xmi:id="_XLP9ENWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.MirrorTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MirrorTileHandler" command="_MTRt8NWPEemb1pFqqqXNXQ"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="__XCxYNUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.GfxToolbox">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action\tCtrl+L"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
@@ -128,10 +129,18 @@
         <parameters xmi:id="_E7Q0ANWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.23" name="de.drazil.nerdsuite.commandparameter.Orientation" value="vertical"/>
       </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_H9XTcBnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_MAu3sBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorupperhalf" label="Mirror Upper Half"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_MUjLkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorlowerhalf" label="Mirror Lower Half"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_MohQcBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorlefthalf" label="Mirror Left Half"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_M8MaYBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorrighthalf" label="Mirror Right Half"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_MAu3sBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorupperhalf" label="Mirror Upper Half" command="_MTRt8NWPEemb1pFqqqXNXQ">
+        <parameters xmi:id="_ha5A4NWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.25" name="de.drazil.nerdsuite.commandparameter.Mode" value="upper_half"/>
+      </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_MUjLkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorlowerhalf" label="Mirror Lower Half" command="_MTRt8NWPEemb1pFqqqXNXQ">
+        <parameters xmi:id="_imDMcNWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.26" name="de.drazil.nerdsuite.commandparameter.Mode" value="lower_half"/>
+      </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_MohQcBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorlefthalf" label="Mirror Left Half" command="_MTRt8NWPEemb1pFqqqXNXQ">
+        <parameters xmi:id="_kAUyENWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.27" name="de.drazil.nerdsuite.commandparameter.Mode" value="left_half"/>
+      </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_M8MaYBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorrighthalf" label="Mirror Right Half" command="_MTRt8NWPEemb1pFqqqXNXQ">
+        <parameters xmi:id="_lHzXgNWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.28" name="de.drazil.nerdsuite.commandparameter.Mode" value="right_half"/>
+      </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_OLtFABnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_NQmkIBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.rotatecwtshiftright" label="Rotate CW\tShift+Right" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_clockwise.png" command="_VDgxUNWLEemb1pFqqqXNXQ">
         <parameters xmi:id="_uJdiENWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.20" name="de.drazil.nerdsuite.commandparameter.Direction" value="cw"/>
@@ -241,6 +250,9 @@
   </commands>
   <commands xmi:id="_jAOccNWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.PurgeTile" commandName="PurgeTile">
     <parameters xmi:id="_l9Vt0NWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Mode" name="Mode"/>
+  </commands>
+  <commands xmi:id="_MTRt8NWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.MirrorTile" commandName="MirrorTile">
+    <parameters xmi:id="_Qn4WsNWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Mode" name="Mode"/>
   </commands>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
