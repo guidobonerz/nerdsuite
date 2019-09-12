@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.Tile;
 
 public class FlipService extends AbstractImagingService {
 
@@ -35,28 +36,27 @@ public class FlipService extends AbstractImagingService {
 	}
 
 	@Override
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane, byte[] workArray, int width, int height) {
+	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
+		int[] content = tile.getActiveLayer().getContent();
 		if (action == HORIZONTAL) {
-			for (int y = 0; y < height; y++) {
-				for (int x = 0; x < width / 2; x++) {
-					byte a = workArray[x + (y * width)];
-					byte b = workArray[width - 1 - x + (y * width)];
-					workArray[x + (y * width)] = b;
-					workArray[width - 1 - x + (y * width)] = a;
+			for (int y = 0; y < configuration.height; y++) {
+				for (int x = 0; x < configuration.width / 2; x++) {
+					int a = content[x + (y * configuration.width)];
+					int b = content[configuration.width - 1 - x + (y * configuration.width)];
+					content[x + (y * configuration.width)] = b;
+					content[configuration.width - 1 - x + (y * configuration.width)] = a;
 				}
 			}
 		} else if (action == VERTICAL) {
-			for (int y = 0; y < height / 2; y++) {
-				for (int x = 0; x < width; x++) {
-					byte a = workArray[x + (y * width)];
-					byte b = workArray[x + ((height - y - 1) * width)];
-					workArray[x + (y * width)] = b;
-					workArray[x + ((height - y - 1) * width)] = a;
+			for (int y = 0; y < configuration.height / 2; y++) {
+				for (int x = 0; x < configuration.width; x++) {
+					int a = content[x + (y * configuration.width)];
+					int b = content[x + ((configuration.height - y - 1) * configuration.width)];
+					content[x + (y * configuration.width)] = b;
+					content[x + ((configuration.height - y - 1) * configuration.width)] = a;
 				}
 			}
 		}
-		return workArray;
 	}
 
 }
