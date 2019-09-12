@@ -103,10 +103,11 @@ public class GfxEditorView // implements IConfigurationListener {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
 			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
-		part.getProperties().put(Constants.OWNER, getOwner());
+
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
-
+		part.getTransientData().put(Constants.OWNER, getOwner());
+		part.getTransientData().put("CONFIG", getPainterWidget().getConf());
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 
 		boolean result = menuService.registerContextMenu(getPainterWidget(),

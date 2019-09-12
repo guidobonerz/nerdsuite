@@ -180,4 +180,8 @@ public class Tile {
 	private void fireActiveLayerChanged(int layer) {
 		tileListenerList.forEach(listener -> listener.activeLayerChanged(layer));
 	}
+
+	public void sendModificationNotification() {
+		fireLayerContentChanged(0);
+	}
 }

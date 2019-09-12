@@ -5,6 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.IImagingCallback;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.widget.Tile;
 import lombok.Setter;
 
 public abstract class AbstractImagingService extends AbstractService implements IImagingService {
@@ -56,58 +57,54 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	}
 
 	public void execute(int action) {
-/*
-		int width = imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
-		int height = imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows;
-		callback.beforeRunService();
-		for (int i = 0; i < tileSelectionList.size(); i++) {
-			int x = tileSelectionList.get(i).x;
-			int y = tileSelectionList.get(i).y;
-			byte workArray[] = null;
-			if (needsConversion()) {
-				workArray = createWorkArray();
-				convert(workArray, bitplane, x, y, ConversionMode.toWorkArray);
-			}
-			int ofs = imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
-			workArray = each(action, tileSelectionList.get(i), imagingWidgetConfiguration, ofs, bitplane, workArray,
-					width, height);
-			if (needsConversion()) {
-				convert(workArray, bitplane, x, y, ConversionMode.toBitplane);
-			}
-		}
-		callback.afterRunService();
-		*/
+
+		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
+		Tile tile = service.getTile(0);
+		each(action, tile, imagingWidgetConfiguration);
+		tile.sendModificationNotification();
+
+		/*
+		 * int width = imagingWidgetConfiguration.width *
+		 * imagingWidgetConfiguration.tileColumns; int height =
+		 * imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows;
+		 * callback.beforeRunService(); for (int i = 0; i < tileSelectionList.size();
+		 * i++) { int x = tileSelectionList.get(i).x; int y =
+		 * tileSelectionList.get(i).y; byte workArray[] = null; if (needsConversion()) {
+		 * workArray = createWorkArray(); convert(workArray, bitplane, x, y,
+		 * ConversionMode.toWorkArray); } int ofs =
+		 * imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
+		 * workArray = each(action, tileSelectionList.get(i),
+		 * imagingWidgetConfiguration, ofs, bitplane, workArray, width, height); if
+		 * (needsConversion()) { convert(workArray, bitplane, x, y,
+		 * ConversionMode.toBitplane); } } callback.afterRunService();
+		 */
 	}
 
 	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {
 		/*
-		int iconSize = imagingWidgetConfiguration.getIconSize();
-		int tileSize = imagingWidgetConfiguration.getTileSize();
-		int tileOffset = imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset);
-		int bc = imagingWidgetConfiguration.pixelConfig.bitCount;
-		int mask = imagingWidgetConfiguration.pixelConfig.mask;
-		for (int si = 0, s = 0; si < tileSize; si += imagingWidgetConfiguration.bytesPerRow, s += imagingWidgetConfiguration.bytesPerRow) {
-			s = (si % (iconSize)) == 0 ? 0 : s;
-			int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1))
-					* imagingWidgetConfiguration.width;
-			int yo = (si / (iconSize * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height
-					* imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
-			int ro = ((s / imagingWidgetConfiguration.bytesPerRow) * imagingWidgetConfiguration.width)
-					* imagingWidgetConfiguration.tileColumns;
-			int wai = ro + xo + yo;
-
-			for (int i = 0; i < imagingWidgetConfiguration.bytesPerRow; i++) {
-				bitplane[tileOffset + si + i] = mode == ConversionMode.toBitplane ? 0 : bitplane[tileOffset + si + i];
-				for (int m = 7, ti = 0; m >= 0; m -= bc, ti++) {
-					if (mode == ConversionMode.toWorkArray) {
-						workArray[wai + (8 * i) + ti] = (byte) ((bitplane[tileOffset + si + i] >> m) & mask);
-					} else if (mode == ConversionMode.toBitplane) {
-						(bitplane[tileOffset + si + i]) |= (workArray[wai + (8 * i) + ti] << m);
-					}
-				}
-			}
-		}
-		*/
+		 * int iconSize = imagingWidgetConfiguration.getIconSize(); int tileSize =
+		 * imagingWidgetConfiguration.getTileSize(); int tileOffset =
+		 * imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset); int bc
+		 * = imagingWidgetConfiguration.pixelConfig.bitCount; int mask =
+		 * imagingWidgetConfiguration.pixelConfig.mask; for (int si = 0, s = 0; si <
+		 * tileSize; si += imagingWidgetConfiguration.bytesPerRow, s +=
+		 * imagingWidgetConfiguration.bytesPerRow) { s = (si % (iconSize)) == 0 ? 0 : s;
+		 * int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1))
+		 * imagingWidgetConfiguration.width; int yo = (si / (iconSize *
+		 * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height
+		 * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
+		 * int ro = ((s / imagingWidgetConfiguration.bytesPerRow) *
+		 * imagingWidgetConfiguration.width) imagingWidgetConfiguration.tileColumns; int
+		 * wai = ro + xo + yo;
+		 * 
+		 * for (int i = 0; i < imagingWidgetConfiguration.bytesPerRow; i++) {
+		 * bitplane[tileOffset + si + i] = mode == ConversionMode.toBitplane ? 0 :
+		 * bitplane[tileOffset + si + i]; for (int m = 7, ti = 0; m >= 0; m -= bc, ti++)
+		 * { if (mode == ConversionMode.toWorkArray) { workArray[wai + (8 * i) + ti] =
+		 * (byte) ((bitplane[tileOffset + si + i] >> m) & mask); } else if (mode ==
+		 * ConversionMode.toBitplane) { (bitplane[tileOffset + si + i]) |=
+		 * (workArray[wai + (8 * i) + ti] << m); } } } }
+		 */
 	}
 
 	protected byte[] createWorkArray() {
@@ -117,6 +114,10 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
 			byte[] bitplane, byte workArray[], int width, int height) {
 		return null;
+	}
+
+	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
+
 	}
 
 	public boolean needsConversion() {

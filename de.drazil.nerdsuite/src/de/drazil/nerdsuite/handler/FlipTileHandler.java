@@ -15,7 +15,7 @@ public class FlipTileHandler {
 	@Execute
 	public void execute(MMenuItem item, MPart part,
 			@Named("de.drazil.nerdsuite.commandparameter.Orientation") String orientation) {
-		FlipService service = ServiceFactory.getService(part.getProperties().get(Constants.OWNER), FlipService.class);
+		FlipService service = ServiceFactory.getService((String) part.getTransientData().get(Constants.OWNER), FlipService.class);
 		service.execute(Integer.valueOf(orientation));
 		System.out.println("flip orientation:" + orientation);
 	}

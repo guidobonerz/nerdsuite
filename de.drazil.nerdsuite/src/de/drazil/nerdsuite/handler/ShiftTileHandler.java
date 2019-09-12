@@ -10,12 +10,15 @@ import org.eclipse.e4.ui.model.application.ui.menu.MMenuItem;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class ShiftTileHandler {
 	@Execute
 	public void execute(MMenuItem item, MPart part,
 			@Named("de.drazil.nerdsuite.commandparameter.Direction") String direction) {
-		ShiftService service = ServiceFactory.getService(part.getProperties().get(Constants.OWNER), ShiftService.class);
+		ShiftService service = ServiceFactory.getService((String) part.getTransientData().get(Constants.OWNER),
+				ShiftService.class);
+		service.setImagingWidgetConfiguration((ImagingWidgetConfiguration) part.getTransientData().get("CONFIG"));
 		service.execute(Integer.valueOf(direction));
 		System.out.println("shift direction:" + direction);
 	}

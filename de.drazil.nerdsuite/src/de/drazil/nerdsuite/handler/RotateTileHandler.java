@@ -15,7 +15,7 @@ public class RotateTileHandler {
 	@Execute
 	public void execute(MMenuItem item, MPart part,
 			@Named("de.drazil.nerdsuite.commandparameter.Direction") String direction) {
-		RotationService service = ServiceFactory.getService(part.getProperties().get(Constants.OWNER),
+		RotationService service = ServiceFactory.getService((String) part.getTransientData().get(Constants.OWNER),
 				RotationService.class);
 		service.execute(Integer.valueOf(direction));
 		System.out.println("rotate direction:" + direction);
