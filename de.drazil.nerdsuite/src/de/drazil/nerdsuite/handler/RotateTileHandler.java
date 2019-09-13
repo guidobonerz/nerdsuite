@@ -15,12 +15,12 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 public class RotateTileHandler {
 	@Execute
 	public void execute(MMenuItem item, MPart part,
-			@Named("de.drazil.nerdsuite.commandparameter.Direction") String direction) {
+			@Named("de.drazil.nerdsuite.commandparameter.Turn") String turn) {
 		RotationService service = ServiceFactory.getService((String) part.getTransientData().get(Constants.OWNER),
 				RotationService.class);
 		service.setImagingWidgetConfiguration((ImagingWidgetConfiguration) part.getTransientData().get("CONFIG"));
-		service.execute(Integer.valueOf(direction));
-		System.out.println("rotate direction:" + direction);
+		service.execute(Integer.valueOf(turn));
+		System.out.println("rotate direction:" + turn);
 	}
 
 }

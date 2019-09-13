@@ -94,6 +94,11 @@
   <handlers xmi:id="_ElMI0MySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.runToolchain" command="_3H-80MyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
   <handlers xmi:id="_9CBz8MznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handler.export" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ExportHandler" command="_2QmjcMznEemJh_xLPhHI6A"/>
+  <bindingTables xmi:id="_CLcIYNXpEemWjJTPC_-fLw" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_POaA2aF9EeOMYoHAic2wfQ">
+    <bindings xmi:id="_FLh1QNXpEemWjJTPC_-fLw" elementId="de.drazil.nerdsuite.keybinding.Shift" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
+      <parameters xmi:id="_ozAOkNXqEemWjJTPC_-fLw" elementId="de.drazil.nerdsuite.parameter.29" name="de.drazil.nerdsuite.commandparameter.Direction" value="1"/>
+    </bindings>
+  </bindingTables>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
@@ -143,13 +148,13 @@
       </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_OLtFABnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_NQmkIBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.rotatecwtshiftright" label="Rotate CW\tShift+Right" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_clockwise.png" command="_VDgxUNWLEemb1pFqqqXNXQ">
-        <parameters xmi:id="_uJdiENWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.20" name="de.drazil.nerdsuite.commandparameter.Direction" value="1"/>
+        <parameters xmi:id="_uJdiENWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.20" name="de.drazil.nerdsuite.commandparameter.Turn" value="1"/>
       </children>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_NhJhkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.rotateccwtshiftleft" label="Rotate CCW\tShift+Left" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_anticlockwise.png" command="_VDgxUNWLEemb1pFqqqXNXQ">
-        <parameters xmi:id="_0k3fQNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.21" name="de.drazil.nerdsuite.commandparameter.Direction" value="2"/>
+        <parameters xmi:id="_0k3fQNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.21" name="de.drazil.nerdsuite.commandparameter.Turn" value="2"/>
       </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_RYg_QBnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_N0OOkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftuptctrlup" label="Shift Up\tCtrl+Up" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_up.png" command="_og63INWJEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_N0OOkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftuptctrlup" label="Shift Up" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_up.png" command="_og63INWJEemb1pFqqqXNXQ">
         <parameters xmi:id="_wJQFANWKEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.14" name="de.drazil.nerdsuite.commandparameter.Direction" value="1"/>
       </children>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_OOJxgBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftdowntcrtrldown" label="Shift Down\tCrtrl+Down" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_down.png" command="_og63INWJEemb1pFqqqXNXQ">
@@ -243,7 +248,7 @@
     <parameters xmi:id="_2q5CgNWJEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Direction" name="Direction"/>
   </commands>
   <commands xmi:id="_VDgxUNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.RotateTile" commandName="RotateTile">
-    <parameters xmi:id="_YwZSwNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Direction" name="Direction"/>
+    <parameters xmi:id="_YwZSwNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Turn" name="Turn"/>
   </commands>
   <commands xmi:id="_YAM6ANWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.FlipTile" commandName="FlipTile">
     <parameters xmi:id="_gc-5ENWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Orientation" name="Orientation"/>
