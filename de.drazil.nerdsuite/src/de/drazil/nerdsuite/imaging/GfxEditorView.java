@@ -1,13 +1,10 @@
 package de.drazil.nerdsuite.imaging;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -17,13 +14,11 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
@@ -40,7 +35,7 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	private Composite parent;
 
-	private byte binaryData[] = null;
+	// private byte binaryData[] = null;
 
 	private TileRepositoryService tileRepositoryService;
 
@@ -264,7 +259,6 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	public ImagingWidget getPainterWidget() {
 		if (painter == null) {
-
 			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setPixelGridEnabled(true);
@@ -276,17 +270,12 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.recalc();
 			// painter.addDrawListener(getRepositoryWidget());
 			// painter.addDrawListener(getPreviewerWidget());
-
-			// menuService.registerContextMenu(painter,
-			// "de.drazil.nerdsuite.popupmenu.popupmenu");
-
 		}
 		return painter;
 	}
 
 	public ImagingWidget getPreviewerWidget() {
 		if (previewer == null) {
-
 			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
 			previewer.getConf().setWidgetName("Preview :");
 			previewer.getConf().setPixelSize(1);
@@ -304,7 +293,6 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	private ImagingWidget getRepositoryWidget() {
 		if (repository == null) {
-
 			repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL,
 					getOwner());
 			repository.getConf().setWidgetName("Selector:");
@@ -319,12 +307,8 @@ public class GfxEditorView // implements IConfigurationListener {
 			repository.recalc();
 			// repository.addDrawListener(getPainterWidget());
 			// repository.addDrawListener(getPreviewerWidget());
-
 		}
-		// menuService.registerContextMenu(repository,
-		// "de.drazil.nerdsuite.popupmenu.popupmenu");
 		return repository;
-
 	}
 
 	/*
@@ -363,26 +347,18 @@ public class GfxEditorView // implements IConfigurationListener {
 	 * 
 	 * }
 	 */
-
-	private byte[] getBinaryData() {
-		if (binaryData == null) {
-
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-			URL url = bundle.getEntry("fonts/c64_lower.64c");
-
-			try {
-				binaryData = BinaryFileHandler.readFile(url.openConnection().getInputStream(), 2);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return binaryData;
-	}
-
+	/*
+	 * private byte[] getBinaryData() { if (binaryData == null) {
+	 * 
+	 * Bundle bundle = Platform.getBundle("de.drazil.nerdsuite"); URL url =
+	 * bundle.getEntry("fonts/c64_lower.64c");
+	 * 
+	 * try { binaryData =
+	 * BinaryFileHandler.readFile(url.openConnection().getInputStream(), 2); } catch
+	 * (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+	 * catch (Exception e) { // TODO Auto-generated catch block e.printStackTrace();
+	 * } } return binaryData; }
+	 */
 	private String getOwner() {
 		return this.getClass().getSimpleName() + ":" + this.hashCode();
 	}
