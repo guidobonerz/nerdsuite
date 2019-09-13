@@ -15,7 +15,7 @@ public class TileHandler {
 	@Execute
 	public void execute(final MToolItem item, MPart part,
 			@Named("de.drazil.nerdsuite.commandparameter.Tile") String tileAction) {
-		TileRepositoryService service = ServiceFactory.getService(part.getProperties().get(Constants.OWNER),
+		TileRepositoryService service = ServiceFactory.getService((String) part.getTransientData().get(Constants.OWNER),
 				TileRepositoryService.class);
 		if (tileAction.equalsIgnoreCase("add")) {
 			service.addTile("rename_me", service.getSelectedTile().getActiveLayer().size());

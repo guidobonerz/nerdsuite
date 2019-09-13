@@ -15,7 +15,7 @@ public class LayerHandler {
 	@Execute
 	public void execute(final MToolItem item, MPart part,
 			@Named("de.drazil.nerdsuite.commandparameter.Layer") String layerAction) {
-		TileRepositoryService service = ServiceFactory.getService(part.getProperties().get(Constants.OWNER),
+		TileRepositoryService service = ServiceFactory.getService((String) part.getTransientData().get(Constants.OWNER),
 				TileRepositoryService.class);
 		if (layerAction.equalsIgnoreCase("add")) {
 			service.getSelectedTile().addLayer();

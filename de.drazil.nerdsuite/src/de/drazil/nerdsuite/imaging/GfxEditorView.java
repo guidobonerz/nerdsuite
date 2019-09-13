@@ -12,6 +12,9 @@ import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -25,7 +28,6 @@ import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.Layer;
-import net.miginfocom.swt.MigLayout;
 
 public class GfxEditorView {
 	private ImagingWidget painter;
@@ -77,19 +79,24 @@ public class GfxEditorView {
 			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
 
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 5;
+		parent.setLayout(layout);
+
+		GridData gridData = null;
+
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
-		getRepositoryWidget().getConf()
-				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+		gridData.verticalSpan = 5;
+		getPainterWidget().setLayoutData(gridData);
+
 		part.getTransientData().put(Constants.OWNER, getOwner());
 		part.getTransientData().put("CONFIG", getPainterWidget().getConf());
+
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 
-		boolean result = menuService.registerContextMenu(getPainterWidget(),
-				"de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		result = menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		parent.setLayout(new MigLayout());
-		getPainterWidget().setLayoutData("span 5 5");
+		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 
 		tile1 = new Button(parent, SWT.NONE);
 		tile1.setText("tile1");
@@ -108,7 +115,6 @@ public class GfxEditorView {
 					.setShowInactiveLayerTranslucent(showInactiveLayersTranslucent.getSelection());
 			tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(showOnlyActiveLayer.getSelection());
 		});
-		tile2.setLayoutData("wrap");
 
 		layer1 = new Button(parent, SWT.NONE);
 		layer1.setText("layer1");
@@ -120,6 +126,7 @@ public class GfxEditorView {
 			color3.setBackground(l.getColor(2));
 			color4.setBackground(l.getColor(3));
 		});
+
 		layer2 = new Button(parent, SWT.NONE);
 		layer2.setText("layer2");
 		layer2.addListener(SWT.Selection, e -> {
@@ -150,7 +157,6 @@ public class GfxEditorView {
 			color3.setBackground(l.getColor(2));
 			color4.setBackground(l.getColor(3));
 		});
-		layer4.setLayoutData("wrap");
 
 		color1 = new Button(parent, SWT.NONE);
 		color1.setText("color1");
@@ -172,7 +178,6 @@ public class GfxEditorView {
 		color4.addListener(SWT.Selection, e -> {
 			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(3);
 		});
-		color4.setLayoutData("wrap");
 
 		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
 		showOnlyActiveLayer.setText("Show active layer only");
@@ -180,16 +185,61 @@ public class GfxEditorView {
 			tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(((Button) e.widget).getSelection());
 		});
 
-		showOnlyActiveLayer.setLayoutData("span 4, wrap");
-
 		showInactiveLayersTranslucent = new Button(parent, SWT.CHECK);
 		showInactiveLayersTranslucent.setText("Show inactive layers translucent");
 		showInactiveLayersTranslucent.addListener(SWT.Selection, e -> {
 			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
 		});
-		showInactiveLayersTranslucent.setLayoutData("span 4, wrap");
 
-		getRepositoryWidget().setLayoutData("wrap");
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+		gridData.horizontalSpan = 2;
+		tile1.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+		gridData.horizontalSpan = 2;
+		tile2.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		layer1.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		layer2.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		layer3.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		layer4.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		color1.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		color2.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		color3.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		color4.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData.horizontalSpan = 4;
+		showOnlyActiveLayer.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData.horizontalSpan = 4;
+		showInactiveLayersTranslucent.setLayoutData(gridData);
+
+		getRepositoryWidget().getConf()
+				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
+		menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalSpan = 5;
+		//Rectangle trim = getRepositoryWidget().computeTrim(0, 0, 0, 300);
+		//gridData.heightHint = trim.height;
+		getRepositoryWidget().setLayoutData(gridData);
 
 		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
 
