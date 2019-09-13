@@ -172,7 +172,7 @@
       <children xsi:type="menu:HandledMenuItem" xmi:id="_xpQ_QBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.inverttshifti" label="Invert\tShift+I" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/contrast.png" command="_Wv60UNWBEemb1pFqqqXNXQ"/>
     </menus>
     <toolbar xmi:id="_PbDRcNUyEem7aKaccBqojA" elementId="de.drazil.nerdsuite.toolbar.1">
-      <children xsi:type="menu:HandledToolItem" xmi:id="_WHFd0NXxEem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.handledtoolitem.Paint" label="Paint" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/pencil.png" tooltip="Paint" type="Radio" command="_b3Vd0NX0Eem5saYSrZ2q0w">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_WHFd0NXxEem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.handledtoolitem.Paint" label="Paint" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/pencil.png" tooltip="Paint" selected="true" type="Radio" command="_b3Vd0NX0Eem5saYSrZ2q0w">
         <parameters xmi:id="_2ezPMNX1Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.parameter.30" name="de.drazil.nerdsuite.commandparameter.PaintMode" value="1"/>
       </children>
       <children xsi:type="menu:HandledToolItem" xmi:id="_Uui9kNXxEem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.handledtoolitem.Erase" label="Erase" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/eraser.png" tooltip="Erase" type="Radio" command="_b3Vd0NX0Eem5saYSrZ2q0w">

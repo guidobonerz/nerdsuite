@@ -16,10 +16,7 @@ import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.Constants;
@@ -27,40 +24,24 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
-import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
-import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.Layer;
 import net.miginfocom.swt.MigLayout;
 
 public class GfxEditorView // implements IConfigurationListener {
 {
-
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
-	private Project project;
 
-	private Scale animationTimerDelayScale;
 	private Composite parent;
-	private Button multicolor;
-	private Button startAnimation;
-	private Text notification;
-	private Composite controls;
-	private Combo pixelConfigSelector;
-	private Combo formatSelector;
-	private Combo paintModeSelector;
+
 	private byte binaryData[] = null;
-	private byte blankData[] = null;
-	boolean multiColorMode = false;
-	private ConfigurationDialog configurationDialog = null;
-	private boolean isAnimationRunning = false;
-	private ImagePainterFactory imagePainterFactory = null;
+
 	private TileRepositoryService tileRepositoryService;
 
 	Button tile1;
