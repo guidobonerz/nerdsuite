@@ -27,15 +27,12 @@ import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.Layer;
 import net.miginfocom.swt.MigLayout;
 
-public class GfxEditorView // implements IConfigurationListener {
-{
+public class GfxEditorView {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
 
 	private Composite parent;
-
-	// private byte binaryData[] = null;
 
 	private TileRepositoryService tileRepositoryService;
 
@@ -82,6 +79,8 @@ public class GfxEditorView // implements IConfigurationListener {
 
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
+		getRepositoryWidget().getConf()
+				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
 		part.getTransientData().put(Constants.OWNER, getOwner());
 		part.getTransientData().put("CONFIG", getPainterWidget().getConf());
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
@@ -90,7 +89,7 @@ public class GfxEditorView // implements IConfigurationListener {
 				"de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		result = menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		parent.setLayout(new MigLayout());
-		getPainterWidget().setLayoutData("span 6 6");
+		getPainterWidget().setLayoutData("span 5 5");
 
 		tile1 = new Button(parent, SWT.NONE);
 		tile1.setText("tile1");
@@ -347,18 +346,7 @@ public class GfxEditorView // implements IConfigurationListener {
 	 * 
 	 * }
 	 */
-	/*
-	 * private byte[] getBinaryData() { if (binaryData == null) {
-	 * 
-	 * Bundle bundle = Platform.getBundle("de.drazil.nerdsuite"); URL url =
-	 * bundle.getEntry("fonts/c64_lower.64c");
-	 * 
-	 * try { binaryData =
-	 * BinaryFileHandler.readFile(url.openConnection().getInputStream(), 2); } catch
-	 * (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); }
-	 * catch (Exception e) { // TODO Auto-generated catch block e.printStackTrace();
-	 * } } return binaryData; }
-	 */
+
 	private String getOwner() {
 		return this.getClass().getSimpleName() + ":" + this.hashCode();
 	}
