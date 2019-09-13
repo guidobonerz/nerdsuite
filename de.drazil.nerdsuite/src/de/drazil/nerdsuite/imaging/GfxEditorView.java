@@ -25,7 +25,12 @@ import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.imaging.service.FlipService;
+import de.drazil.nerdsuite.imaging.service.MirrorService;
+import de.drazil.nerdsuite.imaging.service.PurgeService;
+import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
@@ -76,6 +81,56 @@ public class GfxEditorView {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			PaintMode paintMode = (PaintMode) brokerObject.getTransferObject();
 			getPainterWidget().getConf().setPaintMode(paintMode);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageShift(@UIEventTopic("Shift") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			ShiftService service = ServiceFactory.getService(getOwner(), ShiftService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageRotake(@UIEventTopic("Rotate") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			RotationService service = ServiceFactory.getService(getOwner(), RotationService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageFlip(@UIEventTopic("Flip") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			FlipService service = ServiceFactory.getService(getOwner(), FlipService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageMirror(@UIEventTopic("Mirror") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			MirrorService service = ServiceFactory.getService(getOwner(), MirrorService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+		}
+	}
+
+	@Inject
+	@Optional
+	public void managePurge(@UIEventTopic("Purge") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			PurgeService service = ServiceFactory.getService(getOwner(), PurgeService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute();
 		}
 	}
 
