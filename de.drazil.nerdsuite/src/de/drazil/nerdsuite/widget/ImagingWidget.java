@@ -82,7 +82,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		TileRepositoryService tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(),
 				TileRepositoryService.class);
 		paintTileService.setTileRepistoryService(tileRepositoryService);
-		paintTileService.setImagePainteFactory(tileRepositoryService.getImagePainterFactory());
+		paintTileService.setImagePainterFactory(tileRepositoryService.getImagePainterFactory());
 		addPaintListener(this);
 		parent.getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
@@ -92,14 +92,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		});
 	}
 
-	@Override
-	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
-		if (supportsPainting()) {
-			conf.pencilMode = conf.pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
-			// Console.println("PencilMode:" + conf.pencilMode);
-		}
-	}
-
+	/*
+	 * @Override public void rightMouseButtonClicked(int modifierMask, int x, int y)
+	 * { if (supportsPainting()) { conf.pencilMode = conf.pencilMode ==
+	 * PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw; //
+	 * Console.println("PencilMode:" + conf.pencilMode); } }
+	 * 
+	 */
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);

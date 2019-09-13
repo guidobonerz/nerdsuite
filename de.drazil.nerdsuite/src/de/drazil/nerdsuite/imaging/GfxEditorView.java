@@ -4,7 +4,9 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -21,6 +23,8 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
+import de.drazil.nerdsuite.constants.PencilMode;
+import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
@@ -57,14 +61,49 @@ public class GfxEditorView {
 
 	}
 
-	public void controlPaintMode(@UIEventTopic("PaintMode") PaintMode paintMode) {
-		getPainterWidget().getConf().setPaintMode(paintMode);
+	@Inject
+	@Optional
+	public void managePencilMode(@UIEventTopic("PencilMode") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			PencilMode pencilMode = (PencilMode) brokerObject.getTransferObject();
+			getPainterWidget().getConf().setPencilMode(pencilMode);
+		}
 	}
 
-	public void controlGridState(@UIEventTopic("GridState") GridState state) {
-		getPainterWidget().getConf().setGridStyle(state.getGridStyle());
-		getPainterWidget().getConf().setPixelGridEnabled(state.isEnabled());
-		getPainterWidget().recalc();
+	@Inject
+	@Optional
+	public void managePaintMode(@UIEventTopic("PaintMode") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			PaintMode paintMode = (PaintMode) brokerObject.getTransferObject();
+			getPainterWidget().getConf().setPaintMode(paintMode);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageGridState(@UIEventTopic("GridType") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			GridState gridState = (GridState) brokerObject.getTransferObject();
+			getPainterWidget().getConf().setGridStyle(gridState.getGridStyle());
+			getPainterWidget().getConf().setPixelGridEnabled(gridState.isEnabled());
+			getPainterWidget().recalc();
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
+				tileRepositoryService.addTile("rename_me",
+						tileRepositoryService.getSelectedTile().getLayer(0).getContent().length);
+			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
+				tileRepositoryService.removeSelected();
+			} else {
+
+			}
+			getRepositoryWidget().recalc();
+		}
 	}
 
 	@PreDestroy
@@ -190,36 +229,36 @@ public class GfxEditorView {
 			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
 		});
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		tile1.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		tile2.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		layer1.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		layer2.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		layer3.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		layer4.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		color1.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		color2.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		color3.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		color4.setLayoutData(gridData);
 
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
