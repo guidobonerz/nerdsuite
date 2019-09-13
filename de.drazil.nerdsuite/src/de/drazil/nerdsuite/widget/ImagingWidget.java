@@ -221,7 +221,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			// paintTelevisionRaster(gc);
 		}
 		if (redrawMode == RedrawMode.DrawAllTiles) {
-			paintTileService.paintAllTiles(gc, conf);
+			paintTileService.paintAllTiles(this, gc, supportsPainting(), conf);
 		}
 
 		if (paintPixelGrid) {

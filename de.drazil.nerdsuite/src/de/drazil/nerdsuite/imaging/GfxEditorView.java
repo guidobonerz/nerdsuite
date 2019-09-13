@@ -12,7 +12,6 @@ import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -237,9 +236,10 @@ public class GfxEditorView {
 
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 5;
-		//Rectangle trim = getRepositoryWidget().computeTrim(0, 0, 0, 300);
-		//gridData.heightHint = trim.height;
+
 		getRepositoryWidget().setLayoutData(gridData);
+		getRepositoryWidget().getConf().setPixelSize(4);
+		getRepositoryWidget().recalc();
 
 		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
 

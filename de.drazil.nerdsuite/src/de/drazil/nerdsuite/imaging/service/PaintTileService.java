@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.imaging.service;
 
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
@@ -69,20 +70,36 @@ public class PaintTileService extends AbstractImagingService {
 		gc.drawImage(imagePainteFactory.getImage(tile, 0, 0, false, conf), 0, 0);
 	}
 
-	public void paintAllTiles(GC gc, ImagingWidgetConfiguration conf) {
+	public void paintAllTiles(Composite parent, GC gc, boolean singleTilePainter, ImagingWidgetConfiguration conf) {
 		System.out.println("paint all tiles");
 		int x = 0;
 		int y = 0;
-		for (int i = 0; i < tileRepistoryService.getSize(); i++) {
-			Tile tile = tileRepistoryService.getTile(i);
-			Image image = imagePainteFactory.getImage(tile, 0, 0, false, conf);
+		int parentWidth = parent.getBounds().width;
+		System.out.println(parentWidth);
+		if (singleTilePainter) {
+			paintTile(gc, tileRepistoryService.getSelectedTile(), conf);
+		} else {
+			for (int i = 0; i < tileRepistoryService.getSize(); i++) {
+				Tile tile = tileRepistoryService.getTile(i);
+				Image image = imagePainteFactory.getImage(tile, 0, 0, false, conf);
+				int imageWidth = image.getBounds().width;
+				int imageHeight = image.getBounds().height;
+				// image = new
+				// Image(Display.getDefault(),image.getImageData().scaledTo(conf.getFullWidthPixel()
+				// / 2, conf.getFullHeightPixel() / 2));
+				gc.drawImage(image, x, y);
+				x += imageWidth;
+				System.out.println("parentwidth:" + parentWidth);
+				System.out.println("imageWidth:" + imageWidth);
+				int imagePerRow = (int) (parentWidth / imageWidth);
 
-			// image = new
-			// Image(Display.getDefault(),image.getImageData().scaledTo(conf.getFullWidthPixel()
-			// / 2, conf.getFullHeightPixel() / 2));
-			gc.drawImage(image, x, y);
-			x += image.getBounds().width;
+				System.out.println("image per row:" + imagePerRow);
+				if ((i + 1) % imagePerRow == 0) {
+					System.out.println("wrap");
+					y += imageHeight;
+					x = 0;
+				}
+			}
 		}
 	}
-
 }
