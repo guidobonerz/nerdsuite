@@ -4,6 +4,7 @@ import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.constants.PixelConfig;
+import de.drazil.nerdsuite.constants.ScaleMode;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import lombok.Getter;
@@ -31,6 +32,10 @@ public class ImagingWidgetConfiguration {
 	public int tileHeightPixel = 0;
 	public int tileWidth = 0;
 	public int tileHeight = 0;
+	public int scaledTileWidth = 0;
+	public int scaledTileHeight = 0;
+
+	public ScaleMode scaleMode;
 
 	public boolean pixelGridEnabled = true;
 	public boolean tileGridEnabled = true;
@@ -60,7 +65,7 @@ public class ImagingWidgetConfiguration {
 	public void setGraphicFormat(GraphicFormat gfxFormat, int variantIndex) {
 		this.gfxFormat = gfxFormat;
 		this.gfxFormatVariant = gfxFormat.getVariants().get(variantIndex);
-		// setPixelSize(gfxFormat.getPixelSize());
+		setPixelSize(gfxFormat.getPixelSize());
 		setWidth(gfxFormat.getWidth());
 		setHeight(gfxFormat.getHeight());
 		setTileRows(gfxFormatVariant.getTileRows());
@@ -72,6 +77,10 @@ public class ImagingWidgetConfiguration {
 
 	public void setServiceOwner(String serviceOwnerId) {
 		this.serviceOwnerId = serviceOwnerId;
+	}
+
+	public void setScaleMode(ScaleMode scaleMode) {
+		this.scaleMode = scaleMode;
 	}
 
 	public void setPixelSize(int pixelSize) {
@@ -123,6 +132,14 @@ public class ImagingWidgetConfiguration {
 	public void setWidth(int width) {
 		this.width = width;
 		computeSizes();
+	}
+
+	public void setScaledTileWidth(int width) {
+		this.scaledTileWidth = width;
+	}
+
+	public void setScaledTileHeight(int height) {
+		this.scaledTileHeight = height;
 	}
 
 	public void setRows(int rows) {
@@ -225,5 +242,7 @@ public class ImagingWidgetConfiguration {
 		tileHeightPixel = tileHeight * pixelSize;
 		fullWidthPixel = tileWidthPixel * columns;
 		fullHeightPixel = tileHeightPixel * rows;
+		scaledTileWidth = fullWidthPixel;
+		scaledTileHeight = fullHeightPixel;
 	}
 }

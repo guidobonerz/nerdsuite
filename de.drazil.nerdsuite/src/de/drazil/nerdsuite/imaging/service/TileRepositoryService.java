@@ -28,6 +28,7 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileList.add(tile);
 		tileIndexOrderList.add(tileList.indexOf(tile));
 		fireTileAdded();
+		setSelectedTile(tileIndexOrderList.get(getSize() - 1));
 	}
 
 	public void removeLast() {

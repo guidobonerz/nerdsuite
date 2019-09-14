@@ -5,7 +5,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.constants.PencilMode;
-import de.drazil.nerdsuite.constants.ScaleMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -56,7 +55,6 @@ public class PaintTileService extends AbstractImagingService {
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
-			System.out.println(x + ":" + y);
 			layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
 					? layer.getSelectedColorIndex()
 					: 0;
@@ -67,34 +65,24 @@ public class PaintTileService extends AbstractImagingService {
 		gc.drawImage(imagePainterFactory.getImage(tile, x, y, true, conf), 0, 0);
 	}
 
-	public void paintTile(GC gc, Tile tile, ScaleMode scaleMode, ImagingWidgetConfiguration conf) {
+	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
 		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf), 0, 0);
 	}
 
-	public void paintAllTiles(Composite parent, GC gc, ScaleMode scaleMode, ImagingWidgetConfiguration conf) {
-		System.out.println("paint all tiles");
+	public void paintAllTiles(Composite parent, GC gc, ImagingWidgetConfiguration conf) {
 		int x = 0;
 		int y = 0;
 		int parentWidth = parent.getBounds().width;
-		System.out.println(parentWidth);
-
 		for (int i = 0; i < tileRepistoryService.getSize(); i++) {
 			Tile tile = tileRepistoryService.getTile(i);
 			Image image = imagePainterFactory.getImage(tile, 0, 0, false, conf);
 			int imageWidth = image.getBounds().width;
 			int imageHeight = image.getBounds().height;
-			// image = new
-			// Image(Display.getDefault(),image.getImageData().scaledTo(conf.getFullWidthPixel()
-			// / 2, conf.getFullHeightPixel() / 2));
 			gc.drawImage(image, x, y);
 			x += imageWidth;
-			System.out.println("parentwidth:" + parentWidth);
-			System.out.println("imageWidth:" + imageWidth);
-			int imagePerRow = (int) (parentWidth / imageWidth);
-
-			System.out.println("image per row:" + imagePerRow + "   x=" + x + "   i=" + i);
-			if ((i + 1) % imagePerRow == 0) {
-				System.out.println("wrap");
+			int columns = (int) (parentWidth / imageWidth);
+			conf.setColumns(columns);
+			if ((i + 1) % columns == 0) {
 				y += imageHeight;
 				x = 0;
 			}

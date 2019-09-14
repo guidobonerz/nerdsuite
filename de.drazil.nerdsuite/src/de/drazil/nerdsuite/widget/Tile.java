@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.swt.graphics.Color;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.assembler.InstructionSet;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,12 +50,19 @@ public class Tile {
 		return layerList.get(index);
 	}
 
-	public void addLayer() {
-		addLayer("rename_me");
+	public Layer addLayer() {
+		return addLayer("rename_me");
 	}
 
 	public Layer addLayer(String name) {
 		Layer layer = new Layer(name, size);
+
+		// default palette
+		layer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
+		layer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
+		layer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
+		layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+
 		layerList.add(layer);
 		layerIndexOrderList.add(layerList.indexOf(layer));
 		layerList.forEach(l -> l.setActive(false));
