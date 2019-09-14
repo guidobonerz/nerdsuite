@@ -8,7 +8,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 
+import de.drazil.nerdsuite.constants.ScaleMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -33,6 +35,15 @@ public class ImagePainterFactory {
 			System.out.println("create new " + name);
 		} else {
 			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name);
+		}
+
+		ScaleMode scaleMode = conf.getScaleMode();
+		if (conf.getScaleMode() != ScaleMode.None) {
+			int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
+					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
+			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
+					: conf.fullHeightPixel >> scaleMode.getScaleFactor();
+			image = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
 		}
 		return image;
 	}

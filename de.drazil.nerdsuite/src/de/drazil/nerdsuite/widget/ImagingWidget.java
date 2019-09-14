@@ -208,16 +208,16 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			paintTileService.paintPixel(gc, tile, cursorX, cursorY, conf);
 		}
 
-		ScaleMode scaleMode = supportsPainting() ? ScaleMode.D4 : ScaleMode.None;
+		ScaleMode scaleMode = supportsPainting() ? ScaleMode.None : ScaleMode.D2;
 
 		if (redrawMode == RedrawMode.DrawTile) {
-			paintTileService.paintTile(gc, tile, scaleMode, conf);
+			paintTileService.paintTile(gc, tile, conf);
 		}
 		if (redrawMode == RedrawMode.DrawAllTiles) {
 			if (supportsPainting()) {
-				paintTileService.paintTile(gc, tile, scaleMode, conf);
+				paintTileService.paintTile(gc, tile, conf);
 			} else {
-				paintTileService.paintAllTiles(this, gc, scaleMode, conf);
+				paintTileService.paintAllTiles(this, gc, conf);
 			}
 		}
 

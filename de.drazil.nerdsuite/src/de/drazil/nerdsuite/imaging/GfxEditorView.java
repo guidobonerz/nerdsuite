@@ -24,6 +24,7 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
 import de.drazil.nerdsuite.constants.PencilMode;
+import de.drazil.nerdsuite.constants.ScaleMode;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
@@ -404,6 +405,7 @@ public class GfxEditorView {
 			painter.getConf().setTileCursorEnabled(false);
 			painter.getConf().supportsPainting = true;
 			painter.getConf().supportsDrawCursor = true;
+			painter.getConf().setScaleMode(ScaleMode.None);
 			painter.recalc();
 			// painter.addDrawListener(getRepositoryWidget());
 			// painter.addDrawListener(getPreviewerWidget());
@@ -420,6 +422,8 @@ public class GfxEditorView {
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
 			previewer.getConf().setSeparatorEnabled(false);
+			previewer.getConf().setScaleMode(ScaleMode.D4);
+
 			previewer.recalc();
 		}
 		return previewer;
@@ -435,6 +439,7 @@ public class GfxEditorView {
 			repository.getConf().setTileSubGridEnabled(false);
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
+			repository.getConf().setScaleMode(ScaleMode.D4);
 			repository.recalc();
 			// repository.addDrawListener(getPainterWidget());
 			// repository.addDrawListener(getPreviewerWidget());
