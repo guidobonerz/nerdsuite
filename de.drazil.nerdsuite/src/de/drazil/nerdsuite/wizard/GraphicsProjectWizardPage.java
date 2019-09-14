@@ -165,6 +165,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 				getModel().setProjectType(graphicFormat.getId());
 				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantByPrefix(graphicFormat.getId());
 				gfxFormatVariantCombo.setInput(l);
+				gfxFormatVariantCombo.setSelection(new StructuredSelection(l.get(0)));
 
 			}
 		});
