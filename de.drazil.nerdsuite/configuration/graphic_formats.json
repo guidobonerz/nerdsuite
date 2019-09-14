@@ -4,36 +4,35 @@
 		"name": "Char",
 		"width": 8,
 		"height": 8,
-		"pixelSize":32,
-		"supportsLayers":true,
+		"pixelSize": 32,
+		"supportsLayers": true,
 		"storageEntity": 8,
 		"storageType": "linear",
 		"properties": {
 			"supportsMultiColor": true
-			
 		},
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "Default Size",
+				"name": "Default Size (8x8)",
 				"tileRows": 1,
 				"tileColumns": 1
 			},
 			{
 				"id": "2X",
-				"name": "Double Width",
+				"name": "Double Width (16x8)",
 				"tileRows": 1,
 				"tileColumns": 2
 			},
 			{
 				"id": "2Y",
-				"name": "Double Height",
+				"name": "Double Height (8x16)",
 				"tileRows": 2,
 				"tileColumns": 1
 			},
 			{
 				"id": "2XY",
-				"name": "Double Size",
+				"name": "Double Size (16x16)",
 				"tileRows": 2,
 				"tileColumns": 2
 			}
@@ -44,36 +43,35 @@
 		"name": "Sprite",
 		"width": 24,
 		"height": 21,
-		"pixelSize":16,
-		"supportsLayers":true,
+		"pixelSize": 16,
+		"supportsLayers": true,
 		"storageEntity": 8,
 		"storageType": "linear",
 		"properties": {
 			"supportsMultiColor": true
-			
 		},
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "Default Size",
+				"name": "Default Size (24x21)",
 				"tileRows": 1,
 				"tileColumns": 1
 			},
 			{
 				"id": "2X",
-				"name": "Double Width",
+				"name": "Double Width (48x21)",
 				"tileRows": 1,
 				"tileColumns": 2
 			},
 			{
 				"id": "2Y",
-				"name": "Double Height",
+				"name": "Double Height (24x42)",
 				"tileRows": 2,
 				"tileColumns": 1
 			},
 			{
 				"id": "2XY",
-				"name": "Double Size",
+				"name": "Double Size (48x42)",
 				"tileRows": 2,
 				"tileColumns": 2
 			}
@@ -84,8 +82,8 @@
 		"name": "Screen",
 		"width": 40,
 		"height": 25,
-		"pixelSize":16,
-		"supportsLayers":true,
+		"pixelSize": 16,
+		"supportsLayers": true,
 		"storageEntity": 1,
 		"storageType": "linear",
 		"properties": {
@@ -94,7 +92,7 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "Default Size",
+				"name": "Default Size (40x25)",
 				"tileRows": 1,
 				"tileColumns": 1
 			}
@@ -105,8 +103,8 @@
 		"name": "Bitmap",
 		"width": 320,
 		"height": 200,
-		"pixelSize":2,
-		"supportsLayers":false,
+		"pixelSize": 2,
+		"supportsLayers": false,
 		"storageEntity": 8,
 		"storageType": "tiled",
 		"tileSize": {
@@ -115,7 +113,6 @@
 		},
 		"properties": {
 			"supportsMultiColor": true
-			
 		},
 		"variants": [
 			{

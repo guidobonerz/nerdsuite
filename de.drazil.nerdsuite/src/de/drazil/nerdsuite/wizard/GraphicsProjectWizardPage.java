@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
@@ -47,6 +48,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	private Label projectNameLabel;
 	private Label targetPlatformLabel;
 	private Label gfxFormatLabel;
+	private Label gfxFormatVariantLabel;
 	private Label separatorLabel;
 	private Label basePathLabel;
 	private Label sourcePathLabel;
@@ -61,9 +63,11 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	private Text symbolPathText;
 	private ComboViewer targetPlatformCombo;
 	private ComboViewer gfxFormatCombo;
+	private ComboViewer gfxFormatVariantCombo;
 	private SimpleEntity projectType;
 	private List<TargetPlatform> targetPlatformList;
 	private List<GraphicFormat> graphicFormatList;
+	private List<GraphicFormat> graphicFormatVariantList;
 
 	/**
 	 * Create the wizard.
@@ -92,12 +96,17 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		targetPlatformLabel = new Label(container, SWT.NONE);
 		targetPlatformLabel.setText("Target Platform");
 		gfxFormatLabel = new Label(container, SWT.NONE);
-		gfxFormatLabel.setText("Graphic Format");
+		gfxFormatLabel.setText("Format");
+		gfxFormatVariantLabel = new Label(container, SWT.NONE);
+		gfxFormatVariantLabel.setText("Format Variant");
 
 		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
 		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
-		List<GraphicFormat> graphicFormatList = getGraphicFormatList(targetPlatformList.get(0));
+		List<GraphicFormat> graphicFormatList = GraphicFormatFactory
+				.getFormatByPrefix(targetPlatformList.get(0).getId());
 		getModel().setProjectType(graphicFormatList.get(0).getId());
+		List<GraphicFormatVariant> graphicFormatVariantList = graphicFormatList.get(0).getVariants();
+		getModel().setProjectSubType(graphicFormatVariantList.get(0).getId());
 
 		projectNameText = new Text(container, SWT.BORDER);
 		targetPlatformCombo = new ComboViewer(container, SWT.NONE);
@@ -120,7 +129,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				TargetPlatform targetPlatform = (TargetPlatform) selection.getFirstElement();
-				List<GraphicFormat> l = getGraphicFormatList(targetPlatform);
+				List<GraphicFormat> l = GraphicFormatFactory.getFormatByPrefix(targetPlatform.getId());
 				gfxFormatCombo.setInput(l);
 
 				if (l.size() > 0) {
@@ -154,6 +163,24 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				GraphicFormat graphicFormat = (GraphicFormat) selection.getFirstElement();
 				getModel().setProjectType(graphicFormat.getId());
+				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantByPrefix(graphicFormat.getId());
+				gfxFormatVariantCombo.setInput(l);
+
+			}
+		});
+
+		gfxFormatVariantCombo = new ComboViewer(container, SWT.NONE);
+		gfxFormatVariantCombo.setContentProvider(ArrayContentProvider.getInstance());
+		gfxFormatVariantCombo.setInput(graphicFormatVariantList);
+		gfxFormatVariantCombo.setSelection(new StructuredSelection(graphicFormatVariantList.get(0)));
+		gfxFormatVariantCombo.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof GraphicFormatVariant) {
+					GraphicFormatVariant current = (GraphicFormatVariant) element;
+					return current.getName();
+				}
+				return super.getText(element);
 			}
 		});
 
@@ -193,6 +220,11 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		gfxFormatLabel.setLayoutData(formData);
 
 		formData = new FormData();
+		formData.top = new FormAttachment(gfxFormatLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(gfxFormatLabel, 0, SWT.LEFT);
+		gfxFormatVariantLabel.setLayoutData(formData);
+
+		formData = new FormData();
 		formData.top = new FormAttachment(projectNameLabel, 0, SWT.TOP);
 		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
@@ -211,7 +243,13 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		gfxFormatCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(gfxFormatLabel, 15, SWT.BOTTOM);
+		formData.top = new FormAttachment(gfxFormatVariantLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		gfxFormatVariantCombo.getControl().setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(gfxFormatVariantLabel, 15, SWT.BOTTOM);
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, 0);
 		separatorLabel.setLayoutData(formData);
@@ -364,10 +402,14 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		return targetPlatformList;
 	}
 
-	private List<GraphicFormat> getGraphicFormatList(TargetPlatform targetPlatform) {
-		return GraphicFormatFactory.getFormatByPrefix(targetPlatform.getId());
-	}
-
+	/*
+	 * private List<GraphicFormat> getGraphicFormatList(TargetPlatform
+	 * targetPlatform) { return
+	 * GraphicFormatFactory.getFormatByPrefix(targetPlatform.getId()); }
+	 * 
+	 * private List<GraphicFormatVariant> getGraphicFormatVariantList(String name) {
+	 * return GraphicFormatFactory.getFormatVariantByPrefix(name); }
+	 */
 	@Override
 	public boolean isPageComplete() {
 		getModel().setId(projectNameText.getText().toUpperCase());
