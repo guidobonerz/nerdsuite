@@ -138,8 +138,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		setFocus();
 		mouseIn = true;
 		if (supportsPainting()) {
-			doDrawPixel();
-			// doDrawTile();
+			doDrawTile();
 		} else {
 			doDrawAllTiles();
 		}
@@ -167,7 +166,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		if (supportsMultiSelection() || supportsSingleSelection()) {
-			System.out.printf("tile x:%2d tile y:%2d\n", tileX, tileY);
+			// System.out.printf("tile x:%2d tile y:%2d\n", tileX, tileY);
 		}
 		if (supportsSingleSelection()) {
 			resetSelectionList();
