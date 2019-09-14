@@ -5,7 +5,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.constants.PencilMode;
-import de.drazil.nerdsuite.constants.ScaleMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -56,7 +55,6 @@ public class PaintTileService extends AbstractImagingService {
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
-			System.out.println(x + ":" + y);
 			layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
 					? layer.getSelectedColorIndex()
 					: 0;
@@ -82,8 +80,9 @@ public class PaintTileService extends AbstractImagingService {
 			int imageHeight = image.getBounds().height;
 			gc.drawImage(image, x, y);
 			x += imageWidth;
-			int imagePerRow = (int) (parentWidth / imageWidth);
-			if ((i + 1) % imagePerRow == 0) {
+			int columns = (int) (parentWidth / imageWidth);
+			conf.setColumns(columns);
+			if ((i + 1) % columns == 0) {
 				y += imageHeight;
 				x = 0;
 			}

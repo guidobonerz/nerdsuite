@@ -61,6 +61,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private List<TileLocation> selectionRangeBuffer = null;
 
 	private PaintTileService paintTileService;
+	private TileRepositoryService tileRepositoryService;
 
 	private Tile tile = null;
 
@@ -79,9 +80,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		hBar = getHorizontalBar();
 		vBar = getVerticalBar();
 
+		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
 		paintTileService = ServiceFactory.getService(conf.getServiceOwnerId(), PaintTileService.class);
-		TileRepositoryService tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(),
-				TileRepositoryService.class);
 		paintTileService.setTileRepistoryService(tileRepositoryService);
 		paintTileService.setImagePainterFactory(tileRepositoryService.getImagePainterFactory());
 		addPaintListener(this);
@@ -100,6 +100,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
 			selectedTileIndex = (tileY * conf.columns) + tileX;
+			tileRepositoryService.setSelectedTile(selectedTileIndex);
 			// fireSetSelectedTile(ImagingWidget.this, tile);
 			// computeSelection(false, false);
 			doDrawAllTiles();
@@ -164,6 +165,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
+		computeCursorPosition(x, y);
+		if (supportsMultiSelection() || supportsSingleSelection()) {
+			System.out.printf("tile x:%2d tile y:%2d\n", tileX, tileY);
+		}
 		if (supportsSingleSelection()) {
 			resetSelectionList();
 		}
@@ -180,8 +185,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	protected void computeCursorPosition(int x, int y) {
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
-		tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);
-		tileY = y / (conf.height * conf.currentPixelHeight * conf.tileRows);
+		// tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);
+		// tileY = y / (conf.height * conf.currentPixelHeight * conf.tileRows);
+		tileX = x / conf.getScaledTileWidth();
+		tileY = y / conf.getScaledTileHeight();
 		tileCursorX = (cursorX - (tileX * conf.width));
 		tileCursorY = (cursorY - (tileY * conf.height));
 	}

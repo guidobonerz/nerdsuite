@@ -45,6 +45,8 @@ public class ImagePainterFactory {
 					: conf.fullHeightPixel >> scaleMode.getScaleFactor();
 			image = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
 		}
+		conf.setScaledTileWidth(image.getBounds().width);
+		conf.setScaledTileHeight(image.getBounds().height);
 		return image;
 	}
 
@@ -68,7 +70,6 @@ public class ImagePainterFactory {
 			gc = new GC(img);
 			gcCache.put(imageName, gc);
 		}
-		// ImageData id = image.getImageData().scaledTo(10, 10);
 
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
@@ -80,7 +81,7 @@ public class ImagePainterFactory {
 			Color c = tile.getBackgroundColor();
 			int offset = py * width + px;
 			if (offset < size) {
-				System.out.println("pixel only:" + px + " y:" + py + " offset:" + offset);
+				// System.out.println("pixel only:" + px + " y:" + py + " offset:" + offset);
 				draw(gc, c, offset, layerList, tile, conf, px, py);
 			}
 		} else {

@@ -59,7 +59,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	public void execute(int action) {
 
 		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
-		Tile tile = service.getTile(0);
+		Tile tile = service.getSelectedTile();
 		each(action, tile, imagingWidgetConfiguration);
 		tile.sendModificationNotification();
 
