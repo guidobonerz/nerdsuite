@@ -17,6 +17,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.constants.RedrawMode;
+import de.drazil.nerdsuite.constants.ScaleMode;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
@@ -92,13 +93,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		});
 	}
 
-	/*
-	 * @Override public void rightMouseButtonClicked(int modifierMask, int x, int y)
-	 * { if (supportsPainting()) { conf.pencilMode = conf.pencilMode ==
-	 * PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw; //
-	 * Console.println("PencilMode:" + conf.pencilMode); } }
-	 * 
-	 */
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
@@ -212,15 +206,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 		if (redrawMode == RedrawMode.DrawPixel) {
 			paintTileService.paintPixel(gc, tile, cursorX, cursorY, conf);
-			// paintTelevisionRaster(gc);
 		}
 
+		ScaleMode scaleMode = supportsPainting() ? ScaleMode.D4 : ScaleMode.None;
+
 		if (redrawMode == RedrawMode.DrawTile) {
-			paintTileService.paintTile(gc, tile, conf);
-			// paintTelevisionRaster(gc);
+			paintTileService.paintTile(gc, tile, scaleMode, conf);
 		}
 		if (redrawMode == RedrawMode.DrawAllTiles) {
-			paintTileService.paintAllTiles(this, gc, supportsPainting(), conf);
+			if (supportsPainting()) {
+				paintTileService.paintTile(gc, tile, scaleMode, conf);
+			} else {
+				paintTileService.paintAllTiles(this, gc, scaleMode, conf);
+			}
 		}
 
 		if (paintPixelGrid) {

@@ -8,8 +8,6 @@ import org.eclipse.e4.ui.model.application.ui.menu.MMenuItem;
 public class InvertTileHandler {
 	@Execute
 	public void execute(MMenuItem item, MPart part) {
-		Object o = item.getParent();
 		System.out.println("InvertTile");
 	}
-
 }

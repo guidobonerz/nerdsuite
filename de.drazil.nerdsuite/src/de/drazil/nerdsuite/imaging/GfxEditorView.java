@@ -171,6 +171,9 @@ public class GfxEditorView {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
 			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
+		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
+		part.getTransientData().put(Constants.OWNER, getOwner());
+		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 5;
@@ -183,13 +186,6 @@ public class GfxEditorView {
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
 		getPainterWidget().setLayoutData(gridData);
-
-		part.getTransientData().put(Constants.OWNER, getOwner());
-		part.getTransientData().put("CONFIG", getPainterWidget().getConf());
-
-		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
-
-		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 
 		tile1 = new Button(parent, SWT.NONE);
 		tile1.setText("tile1");
@@ -332,8 +328,6 @@ public class GfxEditorView {
 		gridData.horizontalSpan = 5;
 
 		getRepositoryWidget().setLayoutData(gridData);
-		getRepositoryWidget().getConf().setPixelSize(4);
-		getRepositoryWidget().recalc();
 
 		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
 
@@ -421,9 +415,6 @@ public class GfxEditorView {
 		if (previewer == null) {
 			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
 			previewer.getConf().setWidgetName("Preview :");
-			previewer.getConf().setPixelSize(1);
-			previewer.getConf().setRows(1);
-			previewer.getConf().setColumns(1);
 			previewer.getConf().setPixelGridEnabled(false);
 			previewer.getConf().setGridStyle(GridType.Dot);
 			previewer.getConf().setTileGridEnabled(false);
@@ -439,9 +430,6 @@ public class GfxEditorView {
 			repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL,
 					getOwner());
 			repository.getConf().setWidgetName("Selector:");
-			repository.getConf().setColumns(4);
-			repository.getConf().setRows(4);
-			repository.getConf().setPixelSize(3);
 			repository.getConf().setPixelGridEnabled(false);
 			repository.getConf().setTileGridEnabled(true);
 			repository.getConf().setTileSubGridEnabled(false);

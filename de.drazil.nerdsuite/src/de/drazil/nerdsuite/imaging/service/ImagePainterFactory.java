@@ -50,7 +50,7 @@ public class ImagePainterFactory {
 
 		Image img = image;
 		if (img == null) {
-			img = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
+			img = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
 		}
 		gc = gcCache.get(imageName);
 		if (gc == null) {
