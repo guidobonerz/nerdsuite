@@ -10,40 +10,13 @@ Currently I work mostly on the graphics part.
 | Linux (2.5 GHz i5 / 6GB) | Linux Mint 18.2 Cinnamon | yes | ok | 1.8.0_191
 | Mac (2 GHz Core2Duo / 8GB) | MacOS 10.11.6 El Capitan | yes | very slow | 1.8.0_25
 
-## CharEditor View
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/char_view.png)
-## CharEditor 2X View
-![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15_20_54_24-Nerdsuite.png)
-## CharEditor 2Y View
-![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15_20_58_32-Nerdsuite.png)
-## CharEditor 2XY View
-![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-15_21_00_36-Nerdsuite.png)
-## SpriteEditor View
-![screenshot5](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-16_02_33_40-Nerdsuite.png)
-## SpriteEditor 2X View
-![screenshot6](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/sprite_2x_view.png)
-## SpriteEditor 2Y View
-![screenshot7](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/sprite_2y_view.png)
-## SpriteEditor 2XY View
-![screenshot8](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-16_02_37_51-Nerdsuite.png)
-## CustomEditor  View
-![screenshot9](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/custom_view.png)
-## Paint Styles
-![screenshot10](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/paint_styles.png)
-## Popupmenu
-![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/multiselect_actions.png)
+## New Graphic Project Dialog
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
+## Sprite Editor
+![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen2.png)
+## Popup menu
+![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
 ## Simple BitmapViewer
 Image by Almighty God
-![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2018-12-19_14_01_08-Nerdsuite.png)
-## ScreenShot
-![screenshot12](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/2019-08-07_20_40_12-Nerdsuite.png)
-## Project Explorer
-Project Explorer is able to show d64 / d71 / d81 / CPC DSK as well as atr images
-![screenshot12](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/project_explorer.png)
+![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/koala.png)
 
-## Layer1 Test
-![screenshot13](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/layer1_test.png)
-## Layer2 Test
-![screenshot14](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/layer2_test.png)
-## Combined Layers Test
-![screenshot15](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/layers_test.png)
