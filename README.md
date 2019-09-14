@@ -10,6 +10,8 @@ Currently I work mostly on the graphics part.
 | Linux (2.5 GHz i5 / 6GB) | Linux Mint 18.2 Cinnamon | yes | ok | 1.8.0_191
 | Mac (2 GHz Core2Duo / 8GB) | MacOS 10.11.6 El Capitan | yes | very slow | 1.8.0_25
 
+Current state: Still buggy and incomplete :-)
+
 ## New Graphic Project Dialog
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
 ## Sprite Editor

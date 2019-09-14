@@ -14,7 +14,7 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "Default Size (8x8)",
+				"name": "Standard Size (8x8)",
 				"tileRows": 1,
 				"tileColumns": 1
 			},
@@ -53,7 +53,7 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "Default Size (24x21)",
+				"name": "Standard Size (24x21)",
 				"tileRows": 1,
 				"tileColumns": 1
 			},
@@ -92,7 +92,7 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "Default Size (40x25)",
+				"name": "Standard Size (40x25)",
 				"tileRows": 1,
 				"tileColumns": 1
 			}
@@ -117,7 +117,7 @@
 		"variants": [
 			{
 				"id": "STANDARD",
-				"name": "Default Size",
+				"name": "Standard Size",
 				"tileRows": 1,
 				"tileColumns": 1
 			},
