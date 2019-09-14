@@ -17,6 +17,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PencilMode;
 import de.drazil.nerdsuite.constants.RedrawMode;
+import de.drazil.nerdsuite.constants.ScaleMode;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
@@ -82,7 +83,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		TileRepositoryService tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(),
 				TileRepositoryService.class);
 		paintTileService.setTileRepistoryService(tileRepositoryService);
-		paintTileService.setImagePainteFactory(tileRepositoryService.getImagePainterFactory());
+		paintTileService.setImagePainterFactory(tileRepositoryService.getImagePainterFactory());
 		addPaintListener(this);
 		parent.getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
@@ -90,14 +91,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				doDrawAllTiles();
 			}
 		});
-	}
-
-	@Override
-	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
-		if (supportsPainting()) {
-			conf.pencilMode = conf.pencilMode == PencilMode.Draw ? PencilMode.Erase : PencilMode.Draw;
-			// Console.println("PencilMode:" + conf.pencilMode);
-		}
 	}
 
 	@Override
@@ -213,15 +206,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 		if (redrawMode == RedrawMode.DrawPixel) {
 			paintTileService.paintPixel(gc, tile, cursorX, cursorY, conf);
-			// paintTelevisionRaster(gc);
 		}
 
+		ScaleMode scaleMode = supportsPainting() ? ScaleMode.D4 : ScaleMode.None;
+
 		if (redrawMode == RedrawMode.DrawTile) {
-			paintTileService.paintTile(gc, tile, conf);
-			// paintTelevisionRaster(gc);
+			paintTileService.paintTile(gc, tile, scaleMode, conf);
 		}
 		if (redrawMode == RedrawMode.DrawAllTiles) {
-			paintTileService.paintAllTiles(gc, conf);
+			if (supportsPainting()) {
+				paintTileService.paintTile(gc, tile, scaleMode, conf);
+			} else {
+				paintTileService.paintAllTiles(this, gc, scaleMode, conf);
+			}
 		}
 
 		if (paintPixelGrid) {

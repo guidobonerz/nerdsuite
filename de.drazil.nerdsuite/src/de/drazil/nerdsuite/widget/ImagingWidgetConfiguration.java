@@ -60,7 +60,7 @@ public class ImagingWidgetConfiguration {
 	public void setGraphicFormat(GraphicFormat gfxFormat, int variantIndex) {
 		this.gfxFormat = gfxFormat;
 		this.gfxFormatVariant = gfxFormat.getVariants().get(variantIndex);
-		setPixelSize(gfxFormat.getPixelSize());
+		// setPixelSize(gfxFormat.getPixelSize());
 		setWidth(gfxFormat.getWidth());
 		setHeight(gfxFormat.getHeight());
 		setTileRows(gfxFormatVariant.getTileRows());
@@ -109,6 +109,10 @@ public class ImagingWidgetConfiguration {
 
 	public void setTileCursorEnabled(boolean tileCursorEnabled) {
 		this.tileCursorEnabled = tileCursorEnabled;
+	}
+
+	public void setPencilMode(PencilMode pencilMode) {
+		this.pencilMode = pencilMode;
 	}
 
 	public void setHeight(int height) {

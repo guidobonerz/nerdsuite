@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.Platform;

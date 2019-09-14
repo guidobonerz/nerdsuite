@@ -5,14 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
-import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.IWorkbench;
@@ -33,9 +30,6 @@ import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
 public class NewProjectHandler {
-
-	@Inject
-	private IEventBroker eventBroker;
 
 	@Execute
 	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
@@ -83,7 +77,6 @@ public class NewProjectHandler {
 				stacks.get(0).getChildren().add(part);
 				partService.showPart(part, PartState.ACTIVATE);
 
-				// eventBroker.post("projectSetup", projectSetup);
 			}
 
 			/*

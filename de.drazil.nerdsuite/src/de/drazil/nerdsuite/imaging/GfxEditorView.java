@@ -1,13 +1,12 @@
 package de.drazil.nerdsuite.imaging;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -15,52 +14,36 @@ import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Text;
-import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.constants.GridType;
 import de.drazil.nerdsuite.constants.PaintMode;
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
-import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
+import de.drazil.nerdsuite.constants.PencilMode;
+import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.imaging.service.FlipService;
+import de.drazil.nerdsuite.imaging.service.MirrorService;
+import de.drazil.nerdsuite.imaging.service.PurgeService;
+import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
-import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.widget.ConfigurationDialog;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.Layer;
-import net.miginfocom.swt.MigLayout;
 
-public class GfxEditorView // implements IConfigurationListener {
-{
-
+public class GfxEditorView {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
-	private Project project;
 
-	private Scale animationTimerDelayScale;
 	private Composite parent;
-	private Button multicolor;
-	private Button startAnimation;
-	private Text notification;
-	private Composite controls;
-	private Combo pixelConfigSelector;
-	private Combo formatSelector;
-	private Combo paintModeSelector;
-	private byte binaryData[] = null;
-	private byte blankData[] = null;
-	boolean multiColorMode = false;
-	private ConfigurationDialog configurationDialog = null;
-	private boolean isAnimationRunning = false;
-	private ImagePainterFactory imagePainterFactory = null;
+
 	private TileRepositoryService tileRepositoryService;
 
 	Button tile1;
@@ -83,14 +66,99 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	}
 
-	public void controlPaintMode(@UIEventTopic("PaintMode") PaintMode paintMode) {
-		getPainterWidget().getConf().setPaintMode(paintMode);
+	@Inject
+	@Optional
+	public void managePencilMode(@UIEventTopic("PencilMode") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			PencilMode pencilMode = (PencilMode) brokerObject.getTransferObject();
+			getPainterWidget().getConf().setPencilMode(pencilMode);
+		}
 	}
 
-	public void controlGridState(@UIEventTopic("GridState") GridState state) {
-		getPainterWidget().getConf().setGridStyle(state.getGridStyle());
-		getPainterWidget().getConf().setPixelGridEnabled(state.isEnabled());
-		getPainterWidget().recalc();
+	@Inject
+	@Optional
+	public void managePaintMode(@UIEventTopic("PaintMode") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			PaintMode paintMode = (PaintMode) brokerObject.getTransferObject();
+			getPainterWidget().getConf().setPaintMode(paintMode);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageShift(@UIEventTopic("Shift") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			ShiftService service = ServiceFactory.getService(getOwner(), ShiftService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageRotake(@UIEventTopic("Rotate") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			RotationService service = ServiceFactory.getService(getOwner(), RotationService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageFlip(@UIEventTopic("Flip") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			FlipService service = ServiceFactory.getService(getOwner(), FlipService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageMirror(@UIEventTopic("Mirror") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			MirrorService service = ServiceFactory.getService(getOwner(), MirrorService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+		}
+	}
+
+	@Inject
+	@Optional
+	public void managePurge(@UIEventTopic("Purge") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			PurgeService service = ServiceFactory.getService(getOwner(), PurgeService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute();
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageGridState(@UIEventTopic("GridType") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			GridState gridState = (GridState) brokerObject.getTransferObject();
+			getPainterWidget().getConf().setGridStyle(gridState.getGridStyle());
+			getPainterWidget().getConf().setPixelGridEnabled(gridState.isEnabled());
+			getPainterWidget().recalc();
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
+				tileRepositoryService.addTile("rename_me",
+						tileRepositoryService.getSelectedTile().getLayer(0).getContent().length);
+			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
+				tileRepositoryService.removeSelected();
+			} else {
+
+			}
+			getRepositoryWidget().recalc();
+		}
 	}
 
 	@PreDestroy
@@ -103,18 +171,21 @@ public class GfxEditorView // implements IConfigurationListener {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
 			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
+		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
+		part.getTransientData().put(Constants.OWNER, getOwner());
+		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 5;
+		parent.setLayout(layout);
+
+		GridData gridData = null;
 
 		getPainterWidget().getConf()
 				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
-		part.getTransientData().put(Constants.OWNER, getOwner());
-		part.getTransientData().put("CONFIG", getPainterWidget().getConf());
-		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
-
-		boolean result = menuService.registerContextMenu(getPainterWidget(),
-				"de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		result = menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		parent.setLayout(new MigLayout());
-		getPainterWidget().setLayoutData("span 6 6");
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+		gridData.verticalSpan = 5;
+		getPainterWidget().setLayoutData(gridData);
 
 		tile1 = new Button(parent, SWT.NONE);
 		tile1.setText("tile1");
@@ -133,7 +204,6 @@ public class GfxEditorView // implements IConfigurationListener {
 					.setShowInactiveLayerTranslucent(showInactiveLayersTranslucent.getSelection());
 			tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(showOnlyActiveLayer.getSelection());
 		});
-		tile2.setLayoutData("wrap");
 
 		layer1 = new Button(parent, SWT.NONE);
 		layer1.setText("layer1");
@@ -145,6 +215,7 @@ public class GfxEditorView // implements IConfigurationListener {
 			color3.setBackground(l.getColor(2));
 			color4.setBackground(l.getColor(3));
 		});
+
 		layer2 = new Button(parent, SWT.NONE);
 		layer2.setText("layer2");
 		layer2.addListener(SWT.Selection, e -> {
@@ -175,7 +246,6 @@ public class GfxEditorView // implements IConfigurationListener {
 			color3.setBackground(l.getColor(2));
 			color4.setBackground(l.getColor(3));
 		});
-		layer4.setLayoutData("wrap");
 
 		color1 = new Button(parent, SWT.NONE);
 		color1.setText("color1");
@@ -197,7 +267,6 @@ public class GfxEditorView // implements IConfigurationListener {
 		color4.addListener(SWT.Selection, e -> {
 			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(3);
 		});
-		color4.setLayoutData("wrap");
 
 		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
 		showOnlyActiveLayer.setText("Show active layer only");
@@ -205,16 +274,60 @@ public class GfxEditorView // implements IConfigurationListener {
 			tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(((Button) e.widget).getSelection());
 		});
 
-		showOnlyActiveLayer.setLayoutData("span 4, wrap");
-
 		showInactiveLayersTranslucent = new Button(parent, SWT.CHECK);
 		showInactiveLayersTranslucent.setText("Show inactive layers translucent");
 		showInactiveLayersTranslucent.addListener(SWT.Selection, e -> {
 			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
 		});
-		showInactiveLayersTranslucent.setLayoutData("span 4, wrap");
 
-		getRepositoryWidget().setLayoutData("wrap");
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tile1.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tile2.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		layer1.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		layer2.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		layer3.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		layer4.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		color1.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		color2.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		color3.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		color4.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData.horizontalSpan = 4;
+		showOnlyActiveLayer.setLayoutData(gridData);
+
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData.horizontalSpan = 4;
+		showInactiveLayersTranslucent.setLayoutData(gridData);
+
+		getRepositoryWidget().getConf()
+				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
+		menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalSpan = 5;
+
+		getRepositoryWidget().setLayoutData(gridData);
 
 		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
 
@@ -283,7 +396,6 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	public ImagingWidget getPainterWidget() {
 		if (painter == null) {
-
 			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setPixelGridEnabled(true);
@@ -295,22 +407,14 @@ public class GfxEditorView // implements IConfigurationListener {
 			painter.recalc();
 			// painter.addDrawListener(getRepositoryWidget());
 			// painter.addDrawListener(getPreviewerWidget());
-
-			// menuService.registerContextMenu(painter,
-			// "de.drazil.nerdsuite.popupmenu.popupmenu");
-
 		}
 		return painter;
 	}
 
 	public ImagingWidget getPreviewerWidget() {
 		if (previewer == null) {
-
 			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
 			previewer.getConf().setWidgetName("Preview :");
-			previewer.getConf().setPixelSize(1);
-			previewer.getConf().setRows(1);
-			previewer.getConf().setColumns(1);
 			previewer.getConf().setPixelGridEnabled(false);
 			previewer.getConf().setGridStyle(GridType.Dot);
 			previewer.getConf().setTileGridEnabled(false);
@@ -323,13 +427,9 @@ public class GfxEditorView // implements IConfigurationListener {
 
 	private ImagingWidget getRepositoryWidget() {
 		if (repository == null) {
-
 			repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL,
 					getOwner());
 			repository.getConf().setWidgetName("Selector:");
-			repository.getConf().setColumns(4);
-			repository.getConf().setRows(4);
-			repository.getConf().setPixelSize(3);
 			repository.getConf().setPixelGridEnabled(false);
 			repository.getConf().setTileGridEnabled(true);
 			repository.getConf().setTileSubGridEnabled(false);
@@ -338,12 +438,8 @@ public class GfxEditorView // implements IConfigurationListener {
 			repository.recalc();
 			// repository.addDrawListener(getPainterWidget());
 			// repository.addDrawListener(getPreviewerWidget());
-
 		}
-		// menuService.registerContextMenu(repository,
-		// "de.drazil.nerdsuite.popupmenu.popupmenu");
 		return repository;
-
 	}
 
 	/*
@@ -382,25 +478,6 @@ public class GfxEditorView // implements IConfigurationListener {
 	 * 
 	 * }
 	 */
-
-	private byte[] getBinaryData() {
-		if (binaryData == null) {
-
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-			URL url = bundle.getEntry("fonts/c64_lower.64c");
-
-			try {
-				binaryData = BinaryFileHandler.readFile(url.openConnection().getInputStream(), 2);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return binaryData;
-	}
 
 	private String getOwner() {
 		return this.getClass().getSimpleName() + ":" + this.hashCode();
