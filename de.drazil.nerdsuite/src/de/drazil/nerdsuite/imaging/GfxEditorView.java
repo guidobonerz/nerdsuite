@@ -171,9 +171,8 @@ public class GfxEditorView {
 		parent.setLayout(layout);
 
 		GridData gridData = null;
-
-		getPainterWidget().getConf()
-				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
+		GraphicFormat graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
+		getPainterWidget().getConf().setGraphicFormat(graphicFormat, 0);
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
 		getPainterWidget().setLayoutData(gridData);
@@ -245,6 +244,17 @@ public class GfxEditorView {
 		tileRepositoryService.addTileSelectionListener(getPainterWidget());
 		tileRepositoryService.setSelectedTile(0);
 
+		if (graphicFormat.getId().endsWith("CHAR")) {
+			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D8);
+		} else if (graphicFormat.getId().endsWith("SPRITE")) {
+			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D8);
+		} else if (graphicFormat.getId().endsWith("SCREEN")) {
+			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D4);
+
+		} else {
+
+		}
+
 		getPainterWidget().recalc();
 
 	}
@@ -276,8 +286,6 @@ public class GfxEditorView {
 			previewer.getConf().setTileGridEnabled(false);
 			previewer.getConf().setTileCursorEnabled(false);
 			previewer.getConf().setSeparatorEnabled(false);
-			previewer.getConf().setScaleMode(ScaleMode.D4);
-
 			previewer.recalc();
 		}
 		return previewer;
@@ -293,7 +301,6 @@ public class GfxEditorView {
 			repository.getConf().setTileSubGridEnabled(false);
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
-			repository.getConf().setScaleMode(ScaleMode.D4);
 			repository.getConf().supportsMultiSelection = true;
 			repository.getConf().supportsSingleSelection = true;
 			repository.recalc();

@@ -44,7 +44,7 @@
 		"name": "Sprite",
 		"width": 24,
 		"height": 21,
-		"pixelSize":8,
+		"pixelSize":16,
 		"supportsLayers":true,
 		"storageEntity": 8,
 		"storageType": "linear",
