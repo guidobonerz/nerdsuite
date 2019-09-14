@@ -16,6 +16,7 @@
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_bzdeoM9KEemWzpmgM2RcRA" elementId="de.drazil.nerdsuite.handledmenuitem.disassembler" label="Disassembler" mnemonics=""/>
                   </children>
                   <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_0_NPwNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.handledmenuitem.delete" label="Delete" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png"/>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A"/>
                 </menus>
               </children>
@@ -45,15 +46,18 @@
             <parameters xmi:id="_HFfmMLrPEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.parameter.17" name="de.drazil.nerdsuite.commandparameter.projectType" value="GRAPHIC_PROJECT"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_YRilsKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handledmenuitem.6" label="Source File" command="_ka2AIOwWEeSYVemvddr_Tw"/>
+          <children xsi:type="menu:MenuSeparator" xmi:id="_hc_NUNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.menuseparator.7"/>
         </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_0_JRwKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.7" label="Save" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk.png"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_7jZo8KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.9" label="Save All" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk_multiple.png"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_7P6sQKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.8" label="Save As..."/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_URqbgNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.menuseparator.6"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_UgTn4KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.0" label="Close Project"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_VUSCgKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.1" label="Close File"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_VuAKEKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.2" label="Close All Files"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_TmA2cNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.menuseparator.2"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_WHQ-oKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.3" label="Rename Project"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Wf79UKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.4" label="Rename File"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_0_JRwKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.7" label="Save" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk.png"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_7P6sQKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.8" label="Save As..."/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_7jZo8KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.9" label="Save All" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk_multiple.png"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_-oKP4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.edit" label="Edit">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
@@ -94,16 +98,85 @@
   <handlers xmi:id="_ElMI0MySEeOnSbGKqjX4ww" elementId="de.drazil.nerdsuite.handler.runToolchain" command="_3H-80MyREeOnSbGKqjX4ww"/>
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
   <handlers xmi:id="_9CBz8MznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handler.export" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ExportHandler" command="_2QmjcMznEemJh_xLPhHI6A"/>
-  <bindingTables xmi:id="_CLcIYNXpEemWjJTPC_-fLw" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_POaA2aF9EeOMYoHAic2wfQ">
-    <bindings xmi:id="_FLh1QNXpEemWjJTPC_-fLw" elementId="de.drazil.nerdsuite.keybinding.Shift" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
-      <parameters xmi:id="_ozAOkNXqEemWjJTPC_-fLw" elementId="de.drazil.nerdsuite.parameter.29" name="de.drazil.nerdsuite.commandparameter.Direction" value="1"/>
+  <bindingTables xmi:id="_SoW6YNc0Eem8ZM0LwkCd1Q" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_bnniINc5EemIEoLjroS7Zw">
+    <bindings xmi:id="_Xko04Nc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.0" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_hgpLANc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.29" name="de.drazil.nerdsuite.commandparameter.Direction" value="1"/>
+    </bindings>
+    <bindings xmi:id="_bQ3HoNc8EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.1" keySequence="M1+ARROW_DOWN" command="_og63INWJEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_pm280Nc8EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.32" name="de.drazil.nerdsuite.commandparameter.Direction" value="2"/>
+    </bindings>
+    <bindings xmi:id="_bqZB8Nc8EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.2" keySequence="M1+ARROW_LEFT" command="_og63INWJEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_scV8MNc8EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.33" name="de.drazil.nerdsuite.commandparameter.Direction" value="3"/>
+    </bindings>
+    <bindings xmi:id="_b9pVINc8EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.3" keySequence="M1+ARROW_RIGHT" command="_og63INWJEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_szcNkNc8EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.34" name="de.drazil.nerdsuite.commandparameter.Direction" value="4"/>
+    </bindings>
+    <bindings xmi:id="_rYoVENc_EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.5" keySequence="M1+M2+ARROW_RIGHT" command="_VDgxUNWLEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_u02kUNc_EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.36" name="de.drazil.nerdsuite.commandparameter.Turn" value="1"/>
+    </bindings>
+    <bindings xmi:id="_ghd-QNc_EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.4" keySequence="M1+M2+ARROW_LEFT" command="_VDgxUNWLEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_pJmRsNc_EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.35" name="de.drazil.nerdsuite.commandparameter.Turn" value="2"/>
+    </bindings>
+    <bindings xmi:id="_kl95ANdAEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.6" keySequence="M2+H" command="_YAM6ANWNEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_lXcZQNdAEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.37" name="de.drazil.nerdsuite.commandparameter.Orientation" value="1"/>
+    </bindings>
+    <bindings xmi:id="_k6TxUNdAEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.7" keySequence="M2+V" command="_YAM6ANWNEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_lqcNwNdAEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.38" name="de.drazil.nerdsuite.commandparameter.Orientation" value="2"/>
+    </bindings>
+    <bindings xmi:id="_JvdUINdBEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.8" keySequence="M2+M3+ARROW_UP" command="_MTRt8NWPEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_NsFhwNdBEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.39" name="de.drazil.nerdsuite.commandparameter.Mode" value="2"/>
+    </bindings>
+    <bindings xmi:id="_KCC48NdBEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.9" keySequence="M2+M3+ARROW_DOWN" command="_MTRt8NWPEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_OCXTwNdBEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.40" name="de.drazil.nerdsuite.commandparameter.Mode" value="1"/>
+    </bindings>
+    <bindings xmi:id="_KSyDoNdBEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.10" keySequence="M2+M3+ARROW_LEFT" command="_MTRt8NWPEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_Oh7koNdBEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.41" name="de.drazil.nerdsuite.commandparameter.Mode" value="4"/>
+    </bindings>
+    <bindings xmi:id="_Kp14wNdBEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.11" keySequence="M2+M3+ARROW_RIGHT" command="_MTRt8NWPEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+      <parameters xmi:id="_O6AGYNdBEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.42" name="de.drazil.nerdsuite.commandparameter.Mode" value="3"/>
+    </bindings>
+    <bindings xmi:id="_2VHwcNdCEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.12" keySequence="M1+R" command="_Xm69wNdCEemIEoLjroS7Zw">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_Bn-S0NdFEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.13" keySequence="M1+P" command="_jAOccNWOEemb1pFqqqXNXQ">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_yxfxUNdFEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.14" keySequence="M2+M3++" command="_C9g6EBbBEemiVvU0vymBxA">
+      <tags>type:user</tags>
+      <parameters xmi:id="_9fuOkNdFEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.24" name="de.drazil.nerdsuite.commandparameter.Tile" value="add"/>
+    </bindings>
+    <bindings xmi:id="_zFdPINdFEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.15" keySequence="M2+M3+-" command="_C9g6EBbBEemiVvU0vymBxA">
+      <tags>type:user</tags>
+      <parameters xmi:id="_92JxkNdFEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.parameter.43" name="de.drazil.nerdsuite.commandparameter.Tile" value="remove"/>
+    </bindings>
+    <bindings xmi:id="_FhvHwNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.16" keySequence="M1+A" command="_Ll63wNdHEemIEoLjroS7Zw">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_fnUJgNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.17" keySequence="M1+SPACE" command="_krEXQNdHEemIEoLjroS7Zw">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_y7iMMNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.18" keySequence="M2+SPACE" command="_1NSzcNdHEemIEoLjroS7Zw">
+      <tags>type:user</tags>
     </bindings>
   </bindingTables>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
+    <children xmi:id="_bnniINc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.bindingcontext.GfxEditor" name="GfxEditor"/>
   </rootContext>
-  <descriptors xmi:id="_8oaA4NUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.partdescriptor.GfxEditorView" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView">
+  <descriptors xmi:id="_8oaA4NUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.partdescriptor.GfxEditorView" bindingContexts="_bnniINc5EemIEoLjroS7Zw" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView">
     <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.Layer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.LayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
     <handlers xmi:id="_IGtBcBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.Tile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.TileHandler" command="_C9g6EBbBEemiVvU0vymBxA"/>
     <handlers xmi:id="_CFlWEBbNEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.GridType" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.GridTypeHandler" command="_9D16gBbMEemiVvU0vymBxA"/>
@@ -115,27 +188,28 @@
     <handlers xmi:id="_sQg8ENWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.PurgeTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.PurgeTileHandler" command="_jAOccNWOEemb1pFqqqXNXQ"/>
     <handlers xmi:id="_XLP9ENWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.handler.MirrorTile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MirrorTileHandler" command="_MTRt8NWPEemb1pFqqqXNXQ"/>
     <handlers xmi:id="_mKuZMNX0Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.handler.PaintMode" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.PaintModeHandler" command="_b3Vd0NX0Eem5saYSrZ2q0w"/>
+    <handlers xmi:id="_hmxSENdCEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handler.RepeatAction" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RepeatAction" command="_Xm69wNdCEemIEoLjroS7Zw"/>
+    <handlers xmi:id="_JzTqoNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handler.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SelectAllHandler" command="_Ll63wNdHEemIEoLjroS7Zw"/>
+    <handlers xmi:id="_-blvANdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handler.TogglePaint" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.TogglePaintHandler" command="_1NSzcNdHEemIEoLjroS7Zw"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="__XCxYNUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.GfxToolbox">
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action\tCtrl+L"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action" command="_Xm69wNdCEemIEoLjroS7Zw"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_e9huUBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_m70akBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.paste" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_wUsOcBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.selectall" label="Select All" command="_jAOccNWOEemb1pFqqqXNXQ"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_80f-EBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.purge" label="Purge" command="_jAOccNWOEemb1pFqqqXNXQ">
-        <parameters xmi:id="_1RAsMNWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.24" name="de.drazil.nerdsuite.commandparameter.Mode" value="purge_tile"/>
-      </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_NbHmMNdEEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handledmenuitem.SelectAll" label="Select All" command="_Ll63wNdHEemIEoLjroS7Zw"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_80f-EBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.Purge" label="Purge" command="_jAOccNWOEemb1pFqqqXNXQ"/>
       <children xsi:type="menu:MenuSeparator" xmi:id="_Awy0gBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="__CNy0BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.undo" label="Undo" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_undo.png" enabled="false"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_EkvnQBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.redo" label="Redo" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_redo.png" enabled="false"/>
       <children xsi:type="menu:MenuSeparator" xmi:id="_GreDMBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_J7gQkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.fliphorizontaltshiftup" label="Flip Horizontal\tShift+Up" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_flip_horizontal.png" command="_YAM6ANWNEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_J7gQkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.fliphorizontaltshiftup" label="Flip Horizontal" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_flip_horizontal.png" command="_YAM6ANWNEemb1pFqqqXNXQ">
         <parameters xmi:id="_B6dVcNWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.22" name="de.drazil.nerdsuite.commandparameter.Orientation" value="1"/>
       </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_K1xgcBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.flipverticaltshiftright" label="Flip Vertical\tShift+Right" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_flip_vertical.png" command="_YAM6ANWNEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_K1xgcBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.flipverticaltshiftright" label="Flip Vertical" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_flip_vertical.png" command="_YAM6ANWNEemb1pFqqqXNXQ">
         <parameters xmi:id="_E7Q0ANWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.23" name="de.drazil.nerdsuite.commandparameter.Orientation" value="2"/>
       </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_H9XTcBnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_MAu3sBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorupperhalf" label="Mirror Upper Half" command="_MTRt8NWPEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_MAu3sBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorupperhalf" label="Mirror Upper Half" mnemonics="SHIFT" command="_MTRt8NWPEemb1pFqqqXNXQ">
         <parameters xmi:id="_ha5A4NWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.25" name="de.drazil.nerdsuite.commandparameter.Mode" value="1"/>
       </children>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_MUjLkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.mirrorlowerhalf" label="Mirror Lower Half" command="_MTRt8NWPEemb1pFqqqXNXQ">
@@ -148,28 +222,28 @@
         <parameters xmi:id="_lHzXgNWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.28" name="de.drazil.nerdsuite.commandparameter.Mode" value="4"/>
       </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_OLtFABnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_NQmkIBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.rotatecwtshiftright" label="Rotate CW\tShift+Right" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_clockwise.png" command="_VDgxUNWLEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_NQmkIBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.rotatecwtshiftright" label="Rotate CW" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_clockwise.png" command="_VDgxUNWLEemb1pFqqqXNXQ">
         <parameters xmi:id="_uJdiENWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.20" name="de.drazil.nerdsuite.commandparameter.Turn" value="1"/>
       </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_NhJhkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.rotateccwtshiftleft" label="Rotate CCW\tShift+Left" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_anticlockwise.png" command="_VDgxUNWLEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_NhJhkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.rotateccwtshiftleft" label="Rotate CCW" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/shape_rotate_anticlockwise.png" command="_VDgxUNWLEemb1pFqqqXNXQ">
         <parameters xmi:id="_0k3fQNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.21" name="de.drazil.nerdsuite.commandparameter.Turn" value="2"/>
       </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_RYg_QBnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_N0OOkBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftuptctrlup" label="Shift Up" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_up.png" command="_og63INWJEemb1pFqqqXNXQ">
         <parameters xmi:id="_wJQFANWKEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.14" name="de.drazil.nerdsuite.commandparameter.Direction" value="1"/>
       </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_OOJxgBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftdowntcrtrldown" label="Shift Down\tCrtrl+Down" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_down.png" command="_og63INWJEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_OOJxgBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftdowntcrtrldown" label="Shift Down" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_down.png" command="_og63INWJEemb1pFqqqXNXQ">
         <parameters xmi:id="_4CIs0NWKEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.15" name="de.drazil.nerdsuite.commandparameter.Direction" value="2"/>
       </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_wqrQEBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftlefttctrlleft" label="Shift Left\tCtrl+Left" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_left.png" command="_og63INWJEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_wqrQEBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftlefttctrlleft" label="Shift Left" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_left.png" command="_og63INWJEemb1pFqqqXNXQ">
         <parameters xmi:id="_5ffboNWKEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.18" name="de.drazil.nerdsuite.commandparameter.Direction" value="3"/>
       </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_w8kRUBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftrighttctrlright" label="Shift Right\tCtrl+Right" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_right.png" command="_og63INWJEemb1pFqqqXNXQ">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_w8kRUBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.shiftrighttctrlright" label="Shift Right" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_right.png" command="_og63INWJEemb1pFqqqXNXQ">
         <parameters xmi:id="_6oaykNWKEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.parameter.19" name="de.drazil.nerdsuite.commandparameter.Direction" value="4"/>
       </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_UOBz0BnbEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_xSKt4BnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.swaptshifttab" label="Swap\tShift+Tab" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_switch.png"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_xpQ_QBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.inverttshifti" label="Invert\tShift+I" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/contrast.png" command="_Wv60UNWBEemb1pFqqqXNXQ"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_xSKt4BnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.swaptshifttab" label="Swap" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_switch.png"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_xpQ_QBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.inverttshifti" label="Invert" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/contrast.png" command="_Wv60UNWBEemb1pFqqqXNXQ"/>
     </menus>
     <toolbar xmi:id="_PbDRcNUyEem7aKaccBqojA" elementId="de.drazil.nerdsuite.toolbar.1">
       <children xsi:type="menu:HandledToolItem" xmi:id="_WHFd0NXxEem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.handledtoolitem.Pencil" label="Draw" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/pencil.png" tooltip="Paint" selected="true" type="Radio" command="_sDrxMNZjEemxqKr-PQf6eQ">
@@ -226,7 +300,6 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="_TZ9DkNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.7" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double.png" tooltip="Animate Fast Forward"/>
     </toolbar>
   </descriptors>
-  <toolBarContributions xmi:id="_ZpxgENNBEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.toolbarcontribution.0"/>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.newProject" commandName="New Project">
     <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.projectType" name="projectType" optional="false"/>
   </commands>
@@ -238,38 +311,40 @@
     <parameters xmi:id="_DHEjoAY3EemsuvAHLeqieQ" elementId="de.drazil.nerdsuite.commandparameter.gfxFormat" name="gfxFormat"/>
   </commands>
   <commands xmi:id="_CYRyMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.command.Layer" commandName="Layer">
-    <parameters xmi:id="_07ahkNMbEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.Layer" name="Layer"/>
+    <parameters xmi:id="_07ahkNMbEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.Layer" name="Layer" optional="false"/>
   </commands>
   <commands xmi:id="_C9g6EBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.command.Tile" commandName="Tile">
-    <parameters xmi:id="_Ve8JENMaEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.Tile" name="Tile"/>
+    <parameters xmi:id="_Ve8JENMaEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.Tile" name="Tile" optional="false"/>
   </commands>
   <commands xmi:id="_9D16gBbMEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.command.GridType" commandName="GridType">
-    <parameters xmi:id="_sg6FUNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.GridType" name="GridType"/>
-    <parameters xmi:id="_oN7voNOaEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.commandparameter.GridVisible" name="GridVisible"/>
+    <parameters xmi:id="_sg6FUNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.GridType" name="GridType" optional="false"/>
+    <parameters xmi:id="_oN7voNOaEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.commandparameter.GridVisible" name="GridVisible" optional="false"/>
   </commands>
   <commands xmi:id="_2QmjcMznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.command.export" commandName="Export"/>
   <commands xmi:id="_Wv60UNWBEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.InvertTile" commandName="InvertTile"/>
   <commands xmi:id="_og63INWJEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.ShiftTile" commandName="ShiftTile">
-    <parameters xmi:id="_2q5CgNWJEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Direction" name="Direction"/>
+    <parameters xmi:id="_2q5CgNWJEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Direction" name="Direction" optional="false"/>
   </commands>
   <commands xmi:id="_VDgxUNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.RotateTile" commandName="RotateTile">
-    <parameters xmi:id="_YwZSwNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Turn" name="Turn"/>
+    <parameters xmi:id="_YwZSwNWLEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Turn" name="Turn" optional="false"/>
   </commands>
   <commands xmi:id="_YAM6ANWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.FlipTile" commandName="FlipTile">
-    <parameters xmi:id="_gc-5ENWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Orientation" name="Orientation"/>
+    <parameters xmi:id="_gc-5ENWNEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Orientation" name="Orientation" optional="false"/>
   </commands>
-  <commands xmi:id="_jAOccNWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.PurgeTile" commandName="PurgeTile">
-    <parameters xmi:id="_l9Vt0NWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Mode" name="Mode"/>
-  </commands>
+  <commands xmi:id="_jAOccNWOEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.PurgeTile" commandName="PurgeTile"/>
   <commands xmi:id="_MTRt8NWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.MirrorTile" commandName="MirrorTile">
-    <parameters xmi:id="_Qn4WsNWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Mode" name="Mode"/>
+    <parameters xmi:id="_Qn4WsNWPEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Mode" name="Mode" optional="false"/>
   </commands>
   <commands xmi:id="_b3Vd0NX0Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.command.PaintMode" commandName="PaintMode">
-    <parameters xmi:id="_eo_tINX0Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.commandparameter.PaintMode" name="PaintMode"/>
+    <parameters xmi:id="_eo_tINX0Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.commandparameter.PaintMode" name="PaintMode" optional="false"/>
   </commands>
   <commands xmi:id="_sDrxMNZjEemxqKr-PQf6eQ" elementId="de.drazil.nerdsuite.command.PencilMode" commandName="PencilMode">
-    <parameters xmi:id="_unZrINZjEemxqKr-PQf6eQ" elementId="de.drazil.nerdsuite.commandparameter.PencilMode" name="PencilMode"/>
+    <parameters xmi:id="_unZrINZjEemxqKr-PQf6eQ" elementId="de.drazil.nerdsuite.commandparameter.PencilMode" name="PencilMode" optional="false"/>
   </commands>
+  <commands xmi:id="_Xm69wNdCEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.command.RepeatAction" commandName="RepeatAction"/>
+  <commands xmi:id="_Ll63wNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.command.SelectAll" commandName="SelectAll"/>
+  <commands xmi:id="_krEXQNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.command.SelectSingle" commandName="SelectSingle"/>
+  <commands xmi:id="_1NSzcNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.command.TogglePaint" commandName="TogglePaint"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
