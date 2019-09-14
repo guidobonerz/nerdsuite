@@ -172,7 +172,8 @@ public class GfxEditorView {
 
 		GridData gridData = null;
 		GraphicFormat graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
-		getPainterWidget().getConf().setGraphicFormat(graphicFormat, 0);
+		int graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
+		getPainterWidget().getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
 		getPainterWidget().setLayoutData(gridData);
@@ -256,6 +257,7 @@ public class GfxEditorView {
 		}
 
 		getPainterWidget().recalc();
+		getPainterWidget().addDrawListener(getRepositoryWidget());
 
 	}
 
@@ -271,7 +273,7 @@ public class GfxEditorView {
 			painter.getConf().supportsDrawCursor = true;
 			painter.getConf().setScaleMode(ScaleMode.None);
 			painter.recalc();
-			// painter.addDrawListener(getRepositoryWidget());
+
 			// painter.addDrawListener(getPreviewerWidget());
 		}
 		return painter;

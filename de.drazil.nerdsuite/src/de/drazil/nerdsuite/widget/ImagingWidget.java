@@ -107,7 +107,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		} else if (supportsPainting()) {
 			paintTileService.setPixel(tile, cursorX, cursorY, conf);
 			doDrawPixel();
-			// fireDoDrawTile(ImagingWidget.this);
+			fireDoDrawAllTiles(ImagingWidget.this);
 		}
 	}
 
@@ -153,8 +153,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				oldCursorY = cursorY;
 				paintTileService.setPixel(tile, cursorX, cursorY, conf);
 				doDrawPixel();
-				// doDrawTile();
-				// fireDoDrawTile(ImagingWidget.this);
+				fireDoDrawAllTiles(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
 			// computeSelection(false, false);
@@ -211,17 +210,17 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
-			paintTileService.paintPixel(gc, tile, cursorX, cursorY, conf);
+			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf);
 		}
 
 		ScaleMode scaleMode = supportsPainting() ? ScaleMode.None : ScaleMode.D2;
 
 		if (redrawMode == RedrawMode.DrawTile) {
-			paintTileService.paintTile(gc, tile, conf);
+			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf);
 		}
 		if (redrawMode == RedrawMode.DrawAllTiles) {
 			if (supportsPainting()) {
-				paintTileService.paintTile(gc, tile, conf);
+				paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf);
 			} else {
 				paintTileService.paintAllTiles(this, gc, conf);
 			}

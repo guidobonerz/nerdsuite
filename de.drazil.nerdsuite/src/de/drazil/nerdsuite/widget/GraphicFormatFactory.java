@@ -11,6 +11,7 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
 
 public class GraphicFormatFactory {
 	private static List<GraphicFormat> graphicFormatList;
@@ -45,5 +46,9 @@ public class GraphicFormatFactory {
 			}
 		}
 		return graphicFormatList.stream().filter(gf -> gf.getId().startsWith(name)).collect(Collectors.toList());
+	}
+
+	public static List<GraphicFormatVariant> getFormatVariantByPrefix(String name) {
+		return getFormatByName(name).getVariants();
 	}
 }

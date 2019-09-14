@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ public class Project {
 	private boolean open;
 	private String targetPlatform;
 	private String projectType;
-	@JsonIgnore
+	// @JsonIgnore
 	private String projectSubType;
 
 	@JsonProperty("folders")

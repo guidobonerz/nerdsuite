@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.constants.SizeVariant;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
@@ -61,7 +62,8 @@ public class NewProjectHandler {
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
 				projectSetup.put("gfxFormat", gf);
-				projectSetup.put("gfxFormatVariant", 0);
+				projectSetup.put("gfxFormatVariant",
+						SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId());
 				projectSetup.put("setSelectedTile", 0);
 
 				// MPart part = MBasicFactory.INSTANCE.createPart();
