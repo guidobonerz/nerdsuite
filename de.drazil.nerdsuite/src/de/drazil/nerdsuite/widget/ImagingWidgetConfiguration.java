@@ -1,10 +1,10 @@
 package de.drazil.nerdsuite.widget;
 
-import de.drazil.nerdsuite.constants.GridType;
-import de.drazil.nerdsuite.constants.PaintMode;
-import de.drazil.nerdsuite.constants.PencilMode;
-import de.drazil.nerdsuite.constants.PixelConfig;
-import de.drazil.nerdsuite.constants.ScaleMode;
+import de.drazil.nerdsuite.enums.GridType;
+import de.drazil.nerdsuite.enums.PaintMode;
+import de.drazil.nerdsuite.enums.PencilMode;
+import de.drazil.nerdsuite.enums.PixelConfig;
+import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import lombok.Getter;

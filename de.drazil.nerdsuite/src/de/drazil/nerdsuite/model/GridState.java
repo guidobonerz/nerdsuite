@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.model;
 
-import de.drazil.nerdsuite.constants.GridType;
+import de.drazil.nerdsuite.enums.GridType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

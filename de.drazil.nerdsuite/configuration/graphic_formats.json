@@ -9,7 +9,8 @@
 		"storageEntity": 8,
 		"storageType": "linear",
 		"properties": {
-			"supportsMultiColor": true
+			"supportsMultiColor": true,
+			"supportsExtendedColorMode": true
 		},
 		"variants": [
 			{
@@ -19,19 +20,19 @@
 				"tileColumns": 1
 			},
 			{
-				"id": "2X",
+				"id": "DX",
 				"name": "Double Width (16x8)",
 				"tileRows": 1,
 				"tileColumns": 2
 			},
 			{
-				"id": "2Y",
+				"id": "DY",
 				"name": "Double Height (8x16)",
 				"tileRows": 2,
 				"tileColumns": 1
 			},
 			{
-				"id": "2XY",
+				"id": "DXY",
 				"name": "Double Size (16x16)",
 				"tileRows": 2,
 				"tileColumns": 2
@@ -58,19 +59,19 @@
 				"tileColumns": 1
 			},
 			{
-				"id": "2X",
+				"id": "DX",
 				"name": "Double Width (48x21)",
 				"tileRows": 1,
 				"tileColumns": 2
 			},
 			{
-				"id": "2Y",
+				"id": "DY",
 				"name": "Double Height (24x42)",
 				"tileRows": 2,
 				"tileColumns": 1
 			},
 			{
-				"id": "2XY",
+				"id": "DXY",
 				"name": "Double Size (48x42)",
 				"tileRows": 2,
 				"tileColumns": 2
@@ -87,7 +88,9 @@
 		"storageEntity": 1,
 		"storageType": "linear",
 		"properties": {
-			"supportsMultiColor": true
+			"supportsMultiColor": true,
+			"supportsResizing": true,
+			"supportsExtendedColorMode": true
 		},
 		"variants": [
 			{

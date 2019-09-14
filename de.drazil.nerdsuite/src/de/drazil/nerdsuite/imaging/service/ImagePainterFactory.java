@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 
-import de.drazil.nerdsuite.constants.ScaleMode;
+import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;

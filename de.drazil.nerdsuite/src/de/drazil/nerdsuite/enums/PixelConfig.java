@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.constants;
+package de.drazil.nerdsuite.enums;
 
 public enum PixelConfig {
 	BC8("MultiColor256", 8, 0, 256, 1, 1), BC2("MultiColor4", 2, 3, 3, 4, 2), BC1("MonoColor", 1, 3, 1, 8, 1);

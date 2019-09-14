@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.constants.GridType;
-import de.drazil.nerdsuite.constants.PaintMode;
-import de.drazil.nerdsuite.constants.PencilMode;
-import de.drazil.nerdsuite.constants.ScaleMode;
+import de.drazil.nerdsuite.enums.GridType;
+import de.drazil.nerdsuite.enums.PaintMode;
+import de.drazil.nerdsuite.enums.PencilMode;
+import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;

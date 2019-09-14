@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.constants;
+package de.drazil.nerdsuite.enums;
 
 public enum ScaleMode {
 	None(0, true), D2(1, false), D4(2, false), D8(3, false), D16(4, false), U2(1, true), U4(2, true), U8(3, true),

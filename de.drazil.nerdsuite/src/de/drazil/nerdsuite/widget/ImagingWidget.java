@@ -14,10 +14,10 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.constants.GridType;
-import de.drazil.nerdsuite.constants.PencilMode;
-import de.drazil.nerdsuite.constants.RedrawMode;
-import de.drazil.nerdsuite.constants.ScaleMode;
+import de.drazil.nerdsuite.enums.GridType;
+import de.drazil.nerdsuite.enums.PencilMode;
+import de.drazil.nerdsuite.enums.RedrawMode;
+import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;

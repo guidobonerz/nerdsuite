@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.imaging;
 import org.eclipse.swt.graphics.Color;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
-import de.drazil.nerdsuite.constants.PixelConfig;
+import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.widget.IColorProvider;
 
 public class KoalaColorProvider implements IColorProvider {

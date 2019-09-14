@@ -14,8 +14,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.Bundle;
 
-import de.drazil.nerdsuite.constants.PixelConfig;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
+import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class BitmapEditor {
