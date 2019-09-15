@@ -58,6 +58,9 @@
         <children xsi:type="menu:MenuSeparator" xmi:id="_TmA2cNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.menuseparator.2"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_WHQ-oKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.3" label="Rename Project"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Wf79UKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.4" label="Rename File"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_-98PENgAEemJ66HOfcS9Xw" elementId="de.drazil.nerdsuite.menuseparator.5"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wIx4NgAEemJ66HOfcS9Xw" elementId="de.drazil.nerdsuite.handledmenuitem.Import" label="Import..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/import.png"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_8dedcNgAEemJ66HOfcS9Xw" elementId="de.drazil.nerdsuite.handledmenuitem.Export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/export.png"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_-oKP4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.edit" label="Edit">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>

@@ -26,12 +26,13 @@ public class ImagePainterFactory {
 	}
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf) {
+		
 		String name = tile.getName();
 		Image image = imagePool.get(name);
 		if (null == image) {
 			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name);
 			imagePool.put(name, image);
-			System.out.println("create new " + name);
+			System.out.println("create new image" + name);
 		} else {
 			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name);
 		}
