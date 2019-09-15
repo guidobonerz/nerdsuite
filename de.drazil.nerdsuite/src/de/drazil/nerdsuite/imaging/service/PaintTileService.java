@@ -13,7 +13,7 @@ import lombok.Setter;
 public class PaintTileService extends AbstractImagingService {
 
 	@Setter
-	private TileRepositoryService tileRepistoryService;
+	private TileRepositoryService tileRepositoryService;
 	@Setter
 	private ImagePainterFactory imagePainterFactory;
 
@@ -66,15 +66,22 @@ public class PaintTileService extends AbstractImagingService {
 	}
 
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
-		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf), 0, 0);
+		int y = 0;
+		int x = 0;
+		if (!conf.supportsPainting) {
+			y = conf.scaledTileHeight * (tileRepositoryService.getSelectedTileIndex() / conf.getColumns());
+			x = conf.scaledTileWidth * (tileRepositoryService.getSelectedTileIndex() % conf.getColumns());
+		}
+		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf), x, y);
+
 	}
 
 	public void paintAllTiles(Composite parent, GC gc, ImagingWidgetConfiguration conf) {
 		int x = 0;
 		int y = 0;
 		int parentWidth = parent.getBounds().width;
-		for (int i = 0; i < tileRepistoryService.getSize(); i++) {
-			Tile tile = tileRepistoryService.getTile(i);
+		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
+			Tile tile = tileRepositoryService.getTile(i);
 			Image image = imagePainterFactory.getImage(tile, 0, 0, false, conf);
 			int imageWidth = image.getBounds().width;
 			int imageHeight = image.getBounds().height;

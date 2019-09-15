@@ -17,7 +17,6 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
-import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
@@ -82,7 +81,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
 		paintTileService = ServiceFactory.getService(conf.getServiceOwnerId(), PaintTileService.class);
-		paintTileService.setTileRepistoryService(tileRepositoryService);
+		paintTileService.setTileRepositoryService(tileRepositoryService);
 		paintTileService.setImagePainterFactory(tileRepositoryService.getImagePainterFactory());
 		addPaintListener(this);
 		parent.getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
@@ -96,18 +95,22 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		if (supportsSingleSelection() || supportsMultiSelection()) {
+		if (supportsPainting()) {
+			paintTileService.setPixel(tile, cursorX, cursorY, conf);
+			doDrawPixel();
+			fireDoDrawTile(ImagingWidget.this);
+		} else if (supportsSingleSelection() || supportsMultiSelection()) {
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
 			selectedTileIndex = (tileY * conf.columns) + tileX;
-			tileRepositoryService.setSelectedTile(selectedTileIndex);
+			if (selectedTileIndex < tileRepositoryService.getSize()) {
+				tileRepositoryService.setSelectedTile(selectedTileIndex);
+			} else {
+				System.out.println("tile selection outside range...");
+			}
 			// fireSetSelectedTile(ImagingWidget.this, tile);
 			// computeSelection(false, false);
 			doDrawAllTiles();
-		} else if (supportsPainting()) {
-			paintTileService.setPixel(tile, cursorX, cursorY, conf);
-			doDrawPixel();
-			fireDoDrawAllTiles(ImagingWidget.this);
 		}
 	}
 
@@ -155,7 +158,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				oldCursorY = cursorY;
 				paintTileService.setPixel(tile, cursorX, cursorY, conf);
 				doDrawPixel();
-				fireDoDrawAllTiles(ImagingWidget.this);
+				fireDoDrawTile(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
 			// computeSelection(false, false);
@@ -210,27 +213,14 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
-
 		if (redrawMode == RedrawMode.DrawPixel) {
-			// System.out.println(conf.getWidgetName() + "draw pixel " +
-			// tileRepositoryService.getSelectedTileIndex());
-			paintTileService.paintPixel(gc, tile, cursorX, cursorY, conf);
-		}
-
-		ScaleMode scaleMode = supportsPainting() ? ScaleMode.None : ScaleMode.D2;
-
-		if (redrawMode == RedrawMode.DrawTile) {
-			// System.out.println(conf.getWidgetName() + "draw tile " +
-			// tileRepositoryService.getSelectedTileIndex());
-			paintTileService.paintTile(gc, tile, conf);
-		}
-		if (redrawMode == RedrawMode.DrawAllTiles) {
+			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf);
+		} else if (redrawMode == RedrawMode.DrawTile) {
+			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf);
+		} else if (redrawMode == RedrawMode.DrawAllTiles) {
 			if (supportsPainting()) {
-				// System.out.println(conf.getWidgetName() + "draw tile " +
-				// tileRepositoryService.getSelectedTileIndex());
-				paintTileService.paintTile(gc, tile, conf);
+				paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf);
 			} else {
-				// System.out.println(conf.getWidgetName() + "draw all tiles");
 				paintTileService.paintAllTiles(this, gc, conf);
 			}
 		}
@@ -380,9 +370,15 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	@Override
 	public void doDrawTile() {
 		redrawMode = RedrawMode.DrawTile;
-		redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
-				selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows,
-				conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows, true);
+		if (conf.supportsPainting) {
+			redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
+					selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows,
+					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows, true);
+		} else {
+			redraw(selectedTileIndexX * conf.scaledTileWidth, selectedTileIndexY * conf.scaledTileHeight,
+					conf.scaledTileWidth, conf.scaledTileHeight, true);
+
+		}
 	}
 
 	@Override
@@ -463,9 +459,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void tileAdded() {
-		// TODO Auto-generated method stub
-
+	public void tileAdded(Tile tile) {
+		tileSelected(tile);
 	}
 
 	@Override
@@ -486,9 +481,15 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			this.tile.removeTileListener(this);
 		}
 		this.tile = tile;
+		if (!conf.supportsPainting) {
+			selectedTileIndex = tileRepositoryService.getSelectedTileIndex();
+			selectedTileIndexX = (selectedTileIndex % conf.getColumns());
+			selectedTileIndexY = (selectedTileIndex / conf.getColumns());
+			tileX = selectedTileIndexX;
+			tileY = selectedTileIndexY;
+		}
 		tile.addTileListener(this);
-		redraw();
-
+		doDrawTile();
 	}
 
 	@Override

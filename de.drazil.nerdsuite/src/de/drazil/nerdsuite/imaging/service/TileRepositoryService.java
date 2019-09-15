@@ -22,13 +22,18 @@ public class TileRepositoryService extends AbstractImagingService {
 		imagePainterFactory = new ImagePainterFactory();
 	}
 
+	public void addTile(int size) {
+		addTile("tile_" + (tileList.size() + 1), size);
+	}
+
 	public void addTile(String name, int size) {
 		System.out.println("Add Tile");
 		Tile tile = new Tile(name, size);
 		tileList.add(tile);
 		tileIndexOrderList.add(tileList.indexOf(tile));
-		fireTileAdded();
 		setSelectedTile(tileIndexOrderList.get(getSize() - 1));
+		fireTileAdded();
+
 	}
 
 	public void removeLast() {
@@ -77,12 +82,24 @@ public class TileRepositoryService extends AbstractImagingService {
 		return imagePainterFactory;
 	}
 
+	public void addTileManagementListener(ITileManagementListener... listeners) {
+		for (ITileManagementListener listener : listeners) {
+			addTileManagementListener(listener);
+		}
+	}
+
 	public void addTileManagementListener(ITileManagementListener listener) {
 		tileServiceManagementListener.add(listener);
 	}
 
 	public void removeTileManagementListener(ITileManagementListener listener) {
 		tileServiceManagementListener.remove(listener);
+	}
+
+	public void addTileSelectionListener(ITileSelectionListener... listeners) {
+		for (ITileSelectionListener listener : listeners) {
+			addTileSelectionListener(listener);
+		}
 	}
 
 	public void addTileSelectionListener(ITileSelectionListener listener) {
@@ -94,7 +111,7 @@ public class TileRepositoryService extends AbstractImagingService {
 	}
 
 	private void fireTileAdded() {
-		tileServiceManagementListener.forEach(listener -> listener.tileAdded());
+		tileServiceManagementListener.forEach(listener -> listener.tileAdded(getSelectedTile()));
 	}
 
 	private void fireTileRemoved() {

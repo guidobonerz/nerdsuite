@@ -141,8 +141,7 @@ public class GfxEditorView {
 	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
-				tileRepositoryService.addTile("rename_me",
-						tileRepositoryService.getSelectedTile().getLayer(0).getContent().length);
+				tileRepositoryService.addTile(tileRepositoryService.getSelectedTile().getLayer(0).getContent().length);
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
 				tileRepositoryService.removeSelected();
 			} else {
@@ -241,9 +240,9 @@ public class GfxEditorView {
 		getRepositoryWidget().setLayoutData(gridData);
 
 		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
-		tileRepositoryService.addTile("rename_me", contentSize);
-		tileRepositoryService.addTileSelectionListener(getPainterWidget());
-		tileRepositoryService.setSelectedTile(0);
+		tileRepositoryService.addTileSelectionListener(getPainterWidget(), getRepositoryWidget());
+		tileRepositoryService.addTileManagementListener(getPainterWidget(), getRepositoryWidget());
+		tileRepositoryService.addTile(contentSize);
 
 		if (graphicFormat.getId().endsWith("CHAR")) {
 			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D8);
