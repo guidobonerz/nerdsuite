@@ -9,7 +9,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolItem;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.constants.GridType;
+import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.model.GridState;
 
 public class GridTypeHandler {

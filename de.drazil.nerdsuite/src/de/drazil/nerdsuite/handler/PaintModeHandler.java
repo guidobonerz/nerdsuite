@@ -9,7 +9,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolItem;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.constants.PaintMode;
+import de.drazil.nerdsuite.enums.PaintMode;
 
 public class PaintModeHandler {
 	@Execute

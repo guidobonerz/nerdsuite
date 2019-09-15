@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import org.eclipse.swt.graphics.GC;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.constants.PencilMode;
+import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
 

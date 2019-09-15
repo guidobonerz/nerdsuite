@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.constants;
+package de.drazil.nerdsuite.enums;
 
 public enum RotateDirection {
 	CW, CCW
