@@ -233,11 +233,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		 * paintTileGrid(gc); }
 		 * 
 		 * if (paintTileSubGrid) { paintTileSubGrid(gc); }
-		 * 
-		 * paintSelection(gc);
-		 * 
-		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
-		 * 
+		 */
+		paintSelection(gc);
+
+		if (paintTileCursor) {
+			paintTileCursor(gc, mouseIn, updateCursorLocation);
+		}
+		/*
 		 * if (paintTelevisionMode) { paintTelevisionRaster(gc); }
 		 */
 		/*
@@ -271,17 +273,15 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		if (mouseIn) {
 			gc.setAlpha(40);
 			gc.setBackground(Constants.RED);
-			gc.fillRectangle(tileX * conf.width * conf.pixelSize * conf.tileColumns,
-					tileY * conf.height * conf.pixelSize * conf.tileRows,
-					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows);
+			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
+					conf.scaledTileHeight);
 		}
 		if (updateCursorLocation) {
 			gc.setAlpha(255);
 			gc.setLineWidth(3);
 			gc.setForeground(Constants.LIGHT_GREEN2);
-			gc.drawRectangle(tileX * conf.width * conf.pixelSize * conf.tileColumns,
-					tileY * conf.height * conf.pixelSize * conf.tileRows,
-					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows);
+			gc.drawRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
+					conf.scaledTileHeight);
 		}
 	}
 
