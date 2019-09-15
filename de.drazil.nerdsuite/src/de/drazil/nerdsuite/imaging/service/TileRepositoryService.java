@@ -61,6 +61,10 @@ public class TileRepositoryService extends AbstractImagingService {
 		return getTile(selectedTileIndex);
 	}
 
+	public int getSelectedTileIndex() {
+		return tileList.indexOf(getSelectedTile());
+	}
+
 	public Tile getTile(int index) {
 		return tileList.get(tileIndexOrderList.get(index));
 	}

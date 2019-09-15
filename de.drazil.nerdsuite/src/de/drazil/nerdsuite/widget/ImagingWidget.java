@@ -210,18 +210,22 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
-			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf);
+			System.out.println(conf.getWidgetName() + "draw pixel " + tileRepositoryService.getSelectedTileIndex());
+			paintTileService.paintPixel(gc, tile, cursorX, cursorY, conf);
 		}
 
 		ScaleMode scaleMode = supportsPainting() ? ScaleMode.None : ScaleMode.D2;
 
 		if (redrawMode == RedrawMode.DrawTile) {
-			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf);
+			System.out.println(conf.getWidgetName() + "draw tile " + tileRepositoryService.getSelectedTileIndex());
+			paintTileService.paintTile(gc, tile, conf);
 		}
 		if (redrawMode == RedrawMode.DrawAllTiles) {
 			if (supportsPainting()) {
-				paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf);
+				System.out.println(conf.getWidgetName() + "draw tile " + tileRepositoryService.getSelectedTileIndex());
+				paintTileService.paintTile(gc, tile, conf);
 			} else {
+				System.out.println(conf.getWidgetName() + "draw all tiles");
 				paintTileService.paintAllTiles(this, gc, conf);
 			}
 		}
@@ -365,13 +369,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public void doDrawPixel() {
 		redrawMode = RedrawMode.DrawPixel;
-		redraw();
-		/*
-		 * redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
-		 * selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows, conf.width
-		 * * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize *
-		 * conf.tileRows, true);
-		 */
+		// redraw();
+
+		redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
+				selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows,
+				conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows, true);
+
 	}
 
 	@Override
