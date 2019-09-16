@@ -35,7 +35,6 @@ import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ImagingWidget;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class GfxEditorView {
 	private ImagingWidget painter;
@@ -53,6 +52,9 @@ public class GfxEditorView {
 
 	private Button showOnlyActiveLayer;
 	private Button showInactiveLayersTranslucent;
+
+	private GraphicFormat graphicFormat = null;
+	private int graphicFormatVariant = 0;
 
 	public GfxEditorView() {
 
@@ -162,18 +164,17 @@ public class GfxEditorView {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
 			EMenuService menuService, EModelService modelService) {
 		this.parent = parent;
-		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 		part.getTransientData().put(Constants.OWNER, getOwner());
-		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
+		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
+
+		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 5;
 		parent.setLayout(layout);
 
 		GridData gridData = null;
-		GraphicFormat graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
-		int graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
-		getPainterWidget().getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
 		getPainterWidget().setLayoutData(gridData);
@@ -231,13 +232,8 @@ public class GfxEditorView {
 		gridData.horizontalSpan = 4;
 		showInactiveLayersTranslucent.setLayoutData(gridData);
 
-		getRepositoryWidget().getConf()
-				.setGraphicFormat((GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat"), 0);
-		menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
-
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 5;
-
 		getRepositoryWidget().setLayoutData(gridData);
 
 		tileRepositoryService.addTileSelectionListener(getPainterWidget(), getRepositoryWidget());
@@ -258,11 +254,15 @@ public class GfxEditorView {
 		getPainterWidget().recalc();
 		getPainterWidget().addDrawListener(getRepositoryWidget());
 
+		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+		menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+
 	}
 
 	public ImagingWidget getPainterWidget() {
 		if (painter == null) {
 			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
+			painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 			painter.getConf().setWidgetName("Painter :");
 			painter.getConf().setPixelGridEnabled(true);
 			painter.getConf().setGridStyle(GridType.Dot);
@@ -296,6 +296,7 @@ public class GfxEditorView {
 		if (repository == null) {
 			repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL,
 					getOwner());
+			repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 			repository.getConf().setWidgetName("Selector:");
 			repository.getConf().setPixelGridEnabled(false);
 			repository.getConf().setTileGridEnabled(true);
