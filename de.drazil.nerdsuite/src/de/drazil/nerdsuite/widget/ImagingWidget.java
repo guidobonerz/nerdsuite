@@ -230,25 +230,17 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 		/*
 		 * if (paintSeparator) { paintSeparator(gc); }
+		 * 
+		 * if (paintTileGrid) { paintTileGrid(gc); }
+		 * 
+		 * if (paintTileSubGrid) { paintTileSubGrid(gc); }
 		 */
-		if (paintTileGrid) {
-			paintTileGrid(gc);
-		}
-
-		if (paintTileSubGrid) {
-			paintTileSubGrid(gc);
-		}
-
 		paintSelection(gc);
-
-		if (paintTileCursor) {
-			paintTileCursor(gc, mouseIn, updateCursorLocation);
-		}
-
-		if (paintTelevisionMode && supportsPainting()) {
-			paintTelevisionRaster(gc);
-		}
-
+		/*
+		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
+		 * 
+		 * if (paintTelevisionMode && supportsPainting()) { paintTelevisionRaster(gc); }
+		 */
 		/*
 		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
 		 */
