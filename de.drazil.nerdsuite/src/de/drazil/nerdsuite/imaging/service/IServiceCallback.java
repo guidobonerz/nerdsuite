@@ -1,6 +1,6 @@
-package de.drazil.nerdsuite.widget;
+package de.drazil.nerdsuite.imaging.service;
 
-public interface IImagingCallback {
+public interface IServiceCallback {
 	public void beforeRunService();
 
 	public void onRunService(int offset, int x, int y, boolean updateCursorLocation);

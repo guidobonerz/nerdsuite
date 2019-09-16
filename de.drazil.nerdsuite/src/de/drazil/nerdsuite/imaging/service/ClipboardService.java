@@ -56,7 +56,7 @@ public class ClipboardService extends AbstractImagingService implements IImaging
 				}
 			}
 			currentAction = OFF;
-			callback.afterRunService();
+			serviceCallback.afterRunService();
 		}
 	}
 

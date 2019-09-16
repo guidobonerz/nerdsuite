@@ -17,6 +17,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
+import de.drazil.nerdsuite.imaging.service.IServiceCallback;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
@@ -24,7 +25,7 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.TileLocation;
 
-public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IImagingCallback,
+public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IServiceCallback,
 		ITileSelectionListener, ITileManagementListener, ITileListener {
 
 	private boolean keyPressed = false;
