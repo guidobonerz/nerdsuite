@@ -62,8 +62,8 @@ public class NewProjectHandler {
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
 				projectSetup.put("gfxFormat", gf);
-				projectSetup.put("gfxFormatVariant",
-						SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId());
+				int v = SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId();
+				projectSetup.put("gfxFormatVariant", v);
 				projectSetup.put("setSelectedTile", 0);
 
 				// MPart part = MBasicFactory.INSTANCE.createPart();

@@ -35,6 +35,7 @@ import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ImagingWidget;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class GfxEditorView {
 	private ImagingWidget painter;
@@ -239,10 +240,9 @@ public class GfxEditorView {
 
 		getRepositoryWidget().setLayoutData(gridData);
 
-		int contentSize = getPainterWidget().getConf().getWidth() * getPainterWidget().getConf().getHeight();
 		tileRepositoryService.addTileSelectionListener(getPainterWidget(), getRepositoryWidget());
 		tileRepositoryService.addTileManagementListener(getPainterWidget(), getRepositoryWidget());
-		tileRepositoryService.addTile(contentSize);
+		tileRepositoryService.addTile(getPainterWidget().getConf().getTileSize());
 
 		if (graphicFormat.getId().endsWith("CHAR")) {
 			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D8);

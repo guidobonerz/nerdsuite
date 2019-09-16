@@ -7,6 +7,7 @@ public enum SizeVariant {
 	private String name;
 
 	private SizeVariant(int id, String name) {
+		this.id = id;
 		this.name = name;
 	}
 
