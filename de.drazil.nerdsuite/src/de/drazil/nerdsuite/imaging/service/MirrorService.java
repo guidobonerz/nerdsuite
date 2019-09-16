@@ -72,31 +72,31 @@ public class MirrorService extends AbstractImagingService {
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
 		int[] content = tile.getActiveLayer().getContent();
 		if (action == UPPER_HALF) {
-			for (int y = 0; y < configuration.height / 2; y++) {
-				for (int x = 0; x < configuration.width; x++) {
-					content[x + ((configuration.height - y - 1) * configuration.width)] = content[x
-							+ (y * configuration.width)];
+			for (int y = 0; y < configuration.tileHeight / 2; y++) {
+				for (int x = 0; x < configuration.tileWidth; x++) {
+					content[x + ((configuration.tileHeight - y - 1) * configuration.tileWidth)] = content[x
+							+ (y * configuration.tileWidth)];
 				}
 			}
 		} else if (action == LOWER_HALF) {
-			for (int y = 0; y < configuration.height / 2; y++) {
-				for (int x = 0; x < configuration.width; x++) {
-					content[x + (y * configuration.width)] = content[x
-							+ ((configuration.height - y - 1) * configuration.width)];
+			for (int y = 0; y < configuration.tileHeight / 2; y++) {
+				for (int x = 0; x < configuration.tileWidth; x++) {
+					content[x + (y * configuration.tileWidth)] = content[x
+							+ ((configuration.tileHeight - y - 1) * configuration.tileWidth)];
 				}
 			}
 		} else if (action == LEFT_HALF) {
-			for (int y = 0; y < configuration.height; y++) {
-				for (int x = 0; x < configuration.width / 2; x++) {
-					content[configuration.width - 1 - x + (y * configuration.width)] = content[x
-							+ (y * configuration.width)];
+			for (int y = 0; y < configuration.tileHeight; y++) {
+				for (int x = 0; x < configuration.tileWidth / 2; x++) {
+					content[configuration.tileWidth - 1 - x + (y * configuration.tileWidth)] = content[x
+							+ (y * configuration.tileWidth)];
 				}
 			}
 		} else if (action == RIGHT_HALF) {
-			for (int y = 0; y < configuration.height; y++) {
-				for (int x = 0; x < configuration.width / 2; x++) {
-					content[x + (y * configuration.width)] = content[configuration.width - 1 - x
-							+ (y * configuration.width)];
+			for (int y = 0; y < configuration.tileHeight; y++) {
+				for (int x = 0; x < configuration.tileWidth / 2; x++) {
+					content[x + (y * configuration.tileWidth)] = content[configuration.tileWidth - 1 - x
+							+ (y * configuration.tileWidth)];
 				}
 			}
 		}

@@ -41,36 +41,36 @@ public class ShiftService extends AbstractImagingService {
 		int[] content = tile.getActiveLayer().getContent();
 
 		if (action == UP) {
-			for (int x = 0; x < configuration.width; x++) {
+			for (int x = 0; x < configuration.tileWidth; x++) {
 				int b = content[x];
-				for (int y = 0; y < configuration.height - 1; y++) {
-					content[x + y * configuration.width] = content[x + (y + 1) * configuration.width];
+				for (int y = 0; y < configuration.tileHeight - 1; y++) {
+					content[x + y * configuration.tileWidth] = content[x + (y + 1) * configuration.tileWidth];
 				}
-				content[x + (configuration.width * (configuration.height - 1))] = b;
+				content[x + (configuration.tileWidth * (configuration.tileHeight - 1))] = b;
 			}
 		} else if (action == DOWN) {
-			for (int x = 0; x < configuration.width; x++) {
-				int b = content[x + (configuration.width * (configuration.height - 1))];
-				for (int y = configuration.height - 1; y > 0; y--) {
-					content[x + y * configuration.width] = content[x + (y - 1) * configuration.width];
+			for (int x = 0; x < configuration.tileWidth; x++) {
+				int b = content[x + (configuration.tileWidth * (configuration.tileHeight - 1))];
+				for (int y = configuration.tileHeight - 1; y > 0; y--) {
+					content[x + y * configuration.tileWidth] = content[x + (y - 1) * configuration.tileWidth];
 				}
 				content[x] = b;
 			}
 		} else if (action == LEFT) {
-			for (int y = 0; y < configuration.height; y++) {
-				int b = content[y * configuration.width];
-				for (int x = 0; x < configuration.width - 1; x++) {
-					content[x + y * configuration.width] = content[(x + 1) + y * configuration.width];
+			for (int y = 0; y < configuration.tileHeight; y++) {
+				int b = content[y * configuration.tileWidth];
+				for (int x = 0; x < configuration.tileWidth - 1; x++) {
+					content[x + y * configuration.tileWidth] = content[(x + 1) + y * configuration.tileWidth];
 				}
-				content[(configuration.width + y * configuration.width) - 1] = b;
+				content[(configuration.tileWidth + y * configuration.tileWidth) - 1] = b;
 			}
 		} else if (action == RIGHT) {
-			for (int y = 0; y < configuration.height; y++) {
-				int b = content[(configuration.width + y * configuration.width) - 1];
-				for (int x = configuration.width - 1; x > 0; x--) {
-					content[x + y * configuration.width] = content[(x - 1) + y * configuration.width];
+			for (int y = 0; y < configuration.tileHeight; y++) {
+				int b = content[(configuration.tileWidth + y * configuration.tileWidth) - 1];
+				for (int x = configuration.tileWidth - 1; x > 0; x--) {
+					content[x + y * configuration.tileWidth] = content[(x - 1) + y * configuration.tileWidth];
 				}
-				content[y * configuration.width] = b;
+				content[y * configuration.tileWidth] = b;
 			}
 		}
 	}

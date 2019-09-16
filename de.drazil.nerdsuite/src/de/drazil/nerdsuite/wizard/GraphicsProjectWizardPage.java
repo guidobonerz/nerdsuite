@@ -184,6 +184,14 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 				return super.getText(element);
 			}
 		});
+		gfxFormatVariantCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				StructuredSelection selection = (StructuredSelection) event.getSelection();
+				GraphicFormatVariant graphicFormatVariant = (GraphicFormatVariant) selection.getFirstElement();
+				getModel().setProjectSubType(graphicFormatVariant.getId());
+			}
+		});
 
 		separatorLabel = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
 

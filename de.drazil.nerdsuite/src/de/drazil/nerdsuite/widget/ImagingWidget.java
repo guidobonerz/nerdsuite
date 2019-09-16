@@ -207,7 +207,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	public void paintControl(PaintEvent e) {
 		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(),
-				conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), false);
+				conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
 	}
 
 	private void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
@@ -229,18 +229,17 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			paintPixelGrid(gc);
 		}
 		/*
-		 * if (paintSeparator) { paintSeparator(gc); } if (paintTileGrid) {
-		 * paintTileGrid(gc); }
+		 * if (paintSeparator) { paintSeparator(gc); }
+		 * 
+		 * if (paintTileGrid) { paintTileGrid(gc); }
 		 * 
 		 * if (paintTileSubGrid) { paintTileSubGrid(gc); }
 		 */
 		paintSelection(gc);
-
-		if (paintTileCursor) {
-			paintTileCursor(gc, mouseIn, updateCursorLocation);
-		}
 		/*
-		 * if (paintTelevisionMode) { paintTelevisionRaster(gc); }
+		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
+		 * 
+		 * if (paintTelevisionMode && supportsPainting()) { paintTelevisionRaster(gc); }
 		 */
 		/*
 		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
@@ -337,9 +336,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		gc.setForeground(Constants.TILE_GRID_COLOR);
 		for (int x = 0; x < conf.columns; x++) {
 			for (int y = 0; y < conf.rows; y++) {
-				gc.drawRectangle(x * conf.width * conf.pixelSize * conf.tileColumns,
-						y * conf.height * conf.pixelSize * conf.tileRows,
-						conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows);
+				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
+						conf.scaledTileHeight);
 			}
 		}
 	}
