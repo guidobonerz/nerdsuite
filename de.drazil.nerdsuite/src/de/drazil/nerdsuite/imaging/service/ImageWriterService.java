@@ -43,15 +43,9 @@ public class ImageWriterService extends AbstractImagingService {
 	}
 
 	@Override
-	public void execute() {
+	public void execute(int action, IConfirmable confirmable) {
 		// TODO Auto-generated method stub
-		super.execute();
-	}
 
-	@Override
-	public void execute(int action) {
-		// TODO Auto-generated method stub
-		super.execute(action);
 	}
 
 }

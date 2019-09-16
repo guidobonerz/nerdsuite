@@ -18,7 +18,7 @@ public class UndoRedoService extends AbstractImagingService {
 	}
 
 	@Override
-	public void execute(int action) {
+	public void execute(int action, IConfirmable confirmable) {
 		switch (action) {
 		case UNDO: {
 			break;

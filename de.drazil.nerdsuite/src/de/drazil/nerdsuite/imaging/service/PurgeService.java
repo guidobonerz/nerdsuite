@@ -27,7 +27,7 @@ public class PurgeService extends AbstractImagingService {
 
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		return false;
+		return confirmable.isConfirmed("Do you really want to purge this tile?");
 	}
 
 	@Override

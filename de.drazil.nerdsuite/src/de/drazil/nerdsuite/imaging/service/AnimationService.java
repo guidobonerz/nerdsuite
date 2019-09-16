@@ -28,7 +28,8 @@ public class AnimationService extends AbstractImagingService {
 			}
 			TileLocation tl = tileSelectionList.get(pos);
 			pos++;
-			//callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x, tl.y, navigationOffset), tl.x,tl.y, true);
+			// callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x,
+			// tl.y, navigationOffset), tl.x,tl.y, true);
 			((Composite) source).getDisplay().timerExec(delay, this);
 		}
 	}
@@ -86,7 +87,7 @@ public class AnimationService extends AbstractImagingService {
 	 * getDisplay().timerExec(delay, animator); } }
 	 */
 	@Override
-	public void execute(int action) {
+	public void execute(int action, IConfirmable confirmable) {
 
 		callback.beforeRunService();
 		if (action == START) {
