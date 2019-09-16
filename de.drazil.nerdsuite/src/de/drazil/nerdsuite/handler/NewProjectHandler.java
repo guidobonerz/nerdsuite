@@ -64,7 +64,6 @@ public class NewProjectHandler {
 				projectSetup.put("gfxFormat", gf);
 				int v = SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId();
 				projectSetup.put("gfxFormatVariant", v);
-				projectSetup.put("setSelectedTile", 0);
 
 				// MPart part = MBasicFactory.INSTANCE.createPart();
 				MPart part = partService.createPart("de.drazil.nerdsuite.partdescriptor.GfxEditorView");
