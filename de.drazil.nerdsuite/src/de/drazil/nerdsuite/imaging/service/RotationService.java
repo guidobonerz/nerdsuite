@@ -44,19 +44,18 @@ public class RotationService extends AbstractImagingService {
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
 		int[] content = tile.getActiveLayer().getContent();
 		int[] targetContent = new int[content.length];
-		for (int y = 0; y < configuration.height * configuration.tileRows; y++) {
-			for (int x = 0; x < configuration.width * configuration.tileColumns; x++) {
-				int b = content[x + (y * configuration.width * configuration.tileColumns)];
+		for (int y = 0; y < configuration.tileHeight; y++) {
+			for (int x = 0; x < configuration.tileWidth; x++) {
+				int b = content[x + (y * configuration.tileWidth)];
 				int o = 0;
 				if (action == CCW) {
-					o = (configuration.width * configuration.height * configuration.tileRows
-							* configuration.tileColumns) - (configuration.width * configuration.tileColumns)
-							- (configuration.width * configuration.tileColumns * x) + y;
+					o = (configuration.tileSize) - (configuration.tileWidth)
+							- (configuration.tileWidth * x) + y;
 				} else if (action == CW) {
-					o = (configuration.width * configuration.tileColumns) - y - 1
-							+ (x * configuration.width * configuration.tileColumns);
+					o = (configuration.tileWidth) - y - 1
+							+ (x * configuration.tileWidth);
 				}
-				if (o >= 0 && o < (configuration.width * configuration.height)) {
+				if (o >= 0 && o < (configuration.tileSize)) {
 					targetContent[o] = b;
 				}
 			}
