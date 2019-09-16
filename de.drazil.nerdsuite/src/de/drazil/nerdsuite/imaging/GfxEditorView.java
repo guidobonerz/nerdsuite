@@ -13,6 +13,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -26,6 +27,7 @@ import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.FlipService;
+import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
@@ -36,7 +38,7 @@ import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 
-public class GfxEditorView {
+public class GfxEditorView implements IConfirmable {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -84,7 +86,7 @@ public class GfxEditorView {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			ShiftService service = ServiceFactory.getService(getOwner(), ShiftService.class);
 			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
-			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
 		}
 	}
 
@@ -94,7 +96,7 @@ public class GfxEditorView {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			RotationService service = ServiceFactory.getService(getOwner(), RotationService.class);
 			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
-			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
 		}
 	}
 
@@ -104,7 +106,7 @@ public class GfxEditorView {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			FlipService service = ServiceFactory.getService(getOwner(), FlipService.class);
 			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
-			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
 		}
 	}
 
@@ -114,7 +116,7 @@ public class GfxEditorView {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			MirrorService service = ServiceFactory.getService(getOwner(), MirrorService.class);
 			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
-			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()));
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
 		}
 	}
 
@@ -124,7 +126,7 @@ public class GfxEditorView {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			PurgeService service = ServiceFactory.getService(getOwner(), PurgeService.class);
 			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
-			service.execute();
+			service.execute(this);
 		}
 	}
 
@@ -157,6 +159,11 @@ public class GfxEditorView {
 	@PreDestroy
 	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService) {
 
+	}
+
+	@Override
+	public boolean isConfirmed(String confirmationMessage) {
+		return MessageDialog.openQuestion(parent.getShell(), "Image Process Confirmation", confirmationMessage);
 	}
 
 	@SuppressWarnings("unchecked")

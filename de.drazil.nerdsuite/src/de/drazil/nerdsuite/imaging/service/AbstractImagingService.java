@@ -22,6 +22,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	byte bitplane[];
 	@Setter
 	protected List<TileLocation> tileSelectionList = null;
+	protected IConfirmable confirmable;
 
 	public enum ConversionMode {
 		toWorkArray, toBitplane
@@ -41,7 +42,6 @@ public abstract class AbstractImagingService extends AbstractService implements 
 
 	@Override
 	public boolean needsConfirmation() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -51,17 +51,19 @@ public abstract class AbstractImagingService extends AbstractService implements 
 
 	}
 
-	@Override
-	public void execute() {
-		execute(-1);
+	public void execute(IConfirmable confirmable) {
+		execute(-1, confirmable);
 	}
 
-	public void execute(int action) {
-
-		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
-		Tile tile = service.getSelectedTile();
-		each(action, tile, imagingWidgetConfiguration);
-		tile.sendModificationNotification();
+	@Override
+	public void execute(int action, IConfirmable confirmable) {
+		this.confirmable = confirmable;
+		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
+			TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
+			Tile tile = service.getSelectedTile();
+			each(0, tile, imagingWidgetConfiguration);
+			tile.sendModificationNotification();
+		}
 
 		/*
 		 * int width = imagingWidgetConfiguration.width *
@@ -78,6 +80,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 		 * (needsConversion()) { convert(workArray, bitplane, x, y,
 		 * ConversionMode.toBitplane); } } callback.afterRunService();
 		 */
+
 	}
 
 	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {

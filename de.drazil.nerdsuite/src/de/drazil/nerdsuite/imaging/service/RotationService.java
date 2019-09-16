@@ -12,8 +12,7 @@ public class RotationService extends AbstractImagingService {
 
 	@Override
 	public boolean needsConfirmation() {
-		// TODO Auto-generated method stub
-		return false;
+		return checkIfSquareBase();
 	}
 
 	@Override
@@ -30,14 +29,11 @@ public class RotationService extends AbstractImagingService {
 
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		// TODO Auto-generated method stub
-		return false;
+		return confirmable.isConfirmed("Tile does not have a square base\nDo you really want to rotate this tile?\n\nTo prevent data loss click No");
 	}
 
 	private boolean checkIfSquareBase() {
-		int w = imagingWidgetConfiguration.currentWidth * imagingWidgetConfiguration.tileColumns;
-		int h = imagingWidgetConfiguration.height * imagingWidgetConfiguration.tileRows;
-		return w == h;
+		return imagingWidgetConfiguration.tileWidth != imagingWidgetConfiguration.tileHeight;
 	}
 
 	@Override
@@ -49,11 +45,9 @@ public class RotationService extends AbstractImagingService {
 				int b = content[x + (y * configuration.tileWidth)];
 				int o = 0;
 				if (action == CCW) {
-					o = (configuration.tileSize) - (configuration.tileWidth)
-							- (configuration.tileWidth * x) + y;
+					o = (configuration.tileSize) - (configuration.tileWidth) - (configuration.tileWidth * x) + y;
 				} else if (action == CW) {
-					o = (configuration.tileWidth) - y - 1
-							+ (x * configuration.tileWidth);
+					o = (configuration.tileWidth) - y - 1 + (x * configuration.tileWidth);
 				}
 				if (o >= 0 && o < (configuration.tileSize)) {
 					targetContent[o] = b;
