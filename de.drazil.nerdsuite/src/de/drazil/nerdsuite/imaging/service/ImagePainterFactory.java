@@ -44,8 +44,6 @@ public class ImagePainterFactory {
 					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
 			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
 					: conf.fullHeightPixel >> scaleMode.getScaleFactor();
-			System.out.printf("%s fw:%2d fh:%2d sw:%2d sh:%2d\n", conf.widgetName, conf.fullWidthPixel,
-					conf.fullHeightPixel, scaledWidth, scaledHeight);
 			image = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
 		}
 		conf.setScaledTileWidth(image.getBounds().width);
