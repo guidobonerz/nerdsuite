@@ -258,7 +258,7 @@
         <tags>DrawButton</tags>
         <parameters xmi:id="_3oZUgNX1Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.parameter.31" name="de.drazil.nerdsuite.commandparameter.PencilMode" value="1"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_1CCEENkHEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.handledtoolitem.8" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/color_swatch.png" type="Check" command="_9kXRgNkHEemZC_fHbEbEjw">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_1CCEENkHEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.handledtoolitem.Multicolor" label="Multicolor" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/color_swatch.png" type="Check" command="_9kXRgNkHEemZC_fHbEbEjw">
         <tags>MultiColorButton</tags>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_GKBK4NX2Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.toolbarseparator.4"/>
