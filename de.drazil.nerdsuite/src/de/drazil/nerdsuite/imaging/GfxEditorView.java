@@ -29,6 +29,7 @@ import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
+import de.drazil.nerdsuite.imaging.service.MulticolorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
@@ -127,6 +128,16 @@ public class GfxEditorView implements IConfirmable {
 			PurgeService service = ServiceFactory.getService(getOwner(), PurgeService.class);
 			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
 			service.execute(this);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageMulticolor(@UIEventTopic("Multicolor") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			MulticolorService service = ServiceFactory.getService(getOwner(), MulticolorService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(((Boolean) brokerObject.getTransferObject()) ? 1 : 0, this);
 		}
 	}
 
