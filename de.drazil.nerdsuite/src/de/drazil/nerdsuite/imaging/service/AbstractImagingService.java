@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.util.List;
 
+import de.drazil.nerdsuite.enums.LayerAction;
 import de.drazil.nerdsuite.enums.TileAction;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
@@ -22,6 +23,8 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	@Setter
 	protected List<TileLocation> tileSelectionList = null;
 	protected IConfirmable confirmable;
+	@Setter
+	protected LayerAction layerAction = LayerAction.Active;
 
 	public enum ConversionMode {
 		toWorkArray, toBitplane

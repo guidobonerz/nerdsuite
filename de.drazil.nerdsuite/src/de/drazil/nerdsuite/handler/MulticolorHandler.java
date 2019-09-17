@@ -18,8 +18,7 @@ public class MulticolorHandler {
 	public void execute(MPart part, EModelService modelService, IEventBroker broker) {
 		List<String> tags = new LinkedList<>();
 		tags.add("MultiColorButton");
-		List<MHandledItem> element = modelService.findElements(part.getToolbar(), null, MHandledItem.class, tags);
-		MHandledItem item = element.get(0);
+		MHandledItem item = HandlerUtils.getMenuITem(part, modelService, tags);
 		broker.send("Multicolor",
 				new BrokerObject((String) part.getTransientData().get(Constants.OWNER), item.isSelected()));
 	}
