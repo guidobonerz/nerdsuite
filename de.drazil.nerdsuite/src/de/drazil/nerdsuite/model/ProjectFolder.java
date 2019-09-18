@@ -13,14 +13,16 @@ import lombok.NoArgsConstructor;
 
 public class ProjectFolder {
 	private String id;
+	private String parentId;
 	private String name;
 	@JsonInclude(Include.NON_NULL)
 	private String mountLocation;
 	@JsonInclude(Include.NON_NULL)
 	private List<ProjectFile> openFiles;
 
-	public ProjectFolder(String id, String name) {
+	public ProjectFolder(String id, String parentId, String name) {
 		setId(id);
+		setParentId(parentId);
 		setName(name);
 	}
 }

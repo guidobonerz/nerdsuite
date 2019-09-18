@@ -196,6 +196,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 		part.getTransientData().put(Constants.OWNER, getOwner());
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
 		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
+		boolean isNewProject = (Boolean) ((Map<String, Object>) part.getObject()).get("isNewProject");
 
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
 		tileRepositoryService.addTileSelectionListener(this);
@@ -268,7 +269,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 		tileRepositoryService.addTileSelectionListener(getPainterWidget(), getRepositoryWidget());
 		tileRepositoryService.addTileManagementListener(getPainterWidget(), getRepositoryWidget());
-		tileRepositoryService.addTile(getPainterWidget().getConf().getTileSize());
+		if (isNewProject) {
+			tileRepositoryService.addTile(getPainterWidget().getConf().getTileSize());
+		}
 
 		if (graphicFormat.getId().endsWith("CHAR")) {
 			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D8);

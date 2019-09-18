@@ -6,7 +6,7 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_UAShQL4HEemtD_mJnNBwMg" elementId="de.drazil.nerdsuite.partsashcontainer.6" containerData="2000">
             <children xsi:type="basic:PartStack" xmi:id="_J9KyYNNDEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.partstack.0">
-              <children xsi:type="basic:Part" xmi:id="_5hZjgNNCEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.part.explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer">
+              <children xsi:type="basic:Part" xmi:id="_5hZjgNNCEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.part.Explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer">
                 <menus xsi:type="menu:PopupMenu" xmi:id="_DSGRsNUpEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.Explorer">
                   <children xsi:type="menu:Menu" xmi:id="_rpkFkMziEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menu.openwith" label="Open with...">
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_SKmw4OxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.binaryViewer" label="Binary Inspector"/>
