@@ -6,7 +6,7 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_UAShQL4HEemtD_mJnNBwMg" elementId="de.drazil.nerdsuite.partsashcontainer.6" containerData="2000">
             <children xsi:type="basic:PartStack" xmi:id="_J9KyYNNDEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.partstack.0">
-              <children xsi:type="basic:Part" xmi:id="_5hZjgNNCEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.part.explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer">
+              <children xsi:type="basic:Part" xmi:id="_5hZjgNNCEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.part.Explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer">
                 <menus xsi:type="menu:PopupMenu" xmi:id="_DSGRsNUpEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.Explorer">
                   <children xsi:type="menu:Menu" xmi:id="_rpkFkMziEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menu.openwith" label="Open with...">
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_SKmw4OxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.binaryViewer" label="Binary Inspector"/>
@@ -194,6 +194,7 @@
     <handlers xmi:id="_hmxSENdCEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handler.RepeatAction" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RepeatAction" command="_Xm69wNdCEemIEoLjroS7Zw"/>
     <handlers xmi:id="_JzTqoNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handler.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SelectAllHandler" command="_Ll63wNdHEemIEoLjroS7Zw"/>
     <handlers xmi:id="_-blvANdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handler.TogglePencilMode" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.TogglePencilModeHandler" command="_1NSzcNdHEemIEoLjroS7Zw"/>
+    <handlers xmi:id="_Dx6Y4NkIEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.handler.Multicolor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MulticolorHandler" command="_9kXRgNkHEemZC_fHbEbEjw"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="__XCxYNUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.GfxToolbox">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action" command="_Xm69wNdCEemIEoLjroS7Zw"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
@@ -256,6 +257,9 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="_Uui9kNXxEem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.handledtoolitem.Erase" label="Erase" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/eraser.png" tooltip="Erase" type="Radio" command="_sDrxMNZjEemxqKr-PQf6eQ">
         <tags>DrawButton</tags>
         <parameters xmi:id="_3oZUgNX1Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.parameter.31" name="de.drazil.nerdsuite.commandparameter.PencilMode" value="1"/>
+      </children>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_1CCEENkHEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.handledtoolitem.Multicolor" label="Multicolor" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/color_swatch.png" type="Check" command="_9kXRgNkHEemZC_fHbEbEjw">
+        <tags>MultiColorButton</tags>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_GKBK4NX2Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.toolbarseparator.4"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_QizDYBcWEemaxdgLPSY0VQ" elementId="de.drazil.nerdsuite.handledtoolitem.SinglePaintMode" label="Single Pixel Mode" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/single_pixel_paint.png" tooltip="Single Pixel" selected="true" type="Radio" command="_b3Vd0NX0Eem5saYSrZ2q0w">
@@ -350,6 +354,7 @@
   <commands xmi:id="_Ll63wNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.command.SelectAll" commandName="SelectAll"/>
   <commands xmi:id="_krEXQNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.command.SelectSingle" commandName="SelectSingle"/>
   <commands xmi:id="_1NSzcNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.command.TogglePencilMode" commandName="TogglePencilMode"/>
+  <commands xmi:id="_9kXRgNkHEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.command.Multicolor" commandName="Multicolor"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

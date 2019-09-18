@@ -2,8 +2,9 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.util.List;
 
+import de.drazil.nerdsuite.enums.LayerAction;
+import de.drazil.nerdsuite.enums.TileAction;
 import de.drazil.nerdsuite.model.TileLocation;
-import de.drazil.nerdsuite.widget.IImagingCallback;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Setter;
@@ -12,8 +13,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 
 	@Setter
 	protected ImagingWidgetConfiguration imagingWidgetConfiguration = null;
-	@Setter
-	protected IImagingCallback callback = null;
+	protected IServiceCallback serviceCallback = null;
 	@Setter
 	protected int navigationOffset = 0;
 	@Setter
@@ -23,6 +23,8 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	@Setter
 	protected List<TileLocation> tileSelectionList = null;
 	protected IConfirmable confirmable;
+	@Setter
+	protected LayerAction layerAction = LayerAction.Active;
 
 	public enum ConversionMode {
 		toWorkArray, toBitplane
@@ -51,17 +53,33 @@ public abstract class AbstractImagingService extends AbstractService implements 
 
 	}
 
+	@Override
+	public void execute() {
+		execute(null);
+	}
+
 	public void execute(IConfirmable confirmable) {
 		execute(-1, confirmable);
 	}
 
 	@Override
+	public void execute(int action) {
+		execute(action, null);
+	}
+
+	@Override
 	public void execute(int action, IConfirmable confirmable) {
+		execute(action, confirmable, null);
+	}
+
+	@Override
+	public void execute(int action, IConfirmable confirmable, IServiceCallback serviceCallback) {
 		this.confirmable = confirmable;
+		this.serviceCallback = serviceCallback;
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
 			TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
 			Tile tile = service.getSelectedTile();
-			each(0, tile, imagingWidgetConfiguration);
+			each(action, tile, imagingWidgetConfiguration, null);
 			tile.sendModificationNotification();
 		}
 
@@ -119,7 +137,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 		return null;
 	}
 
-	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
+	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 
 	}
 

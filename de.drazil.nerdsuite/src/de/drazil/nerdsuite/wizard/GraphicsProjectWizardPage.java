@@ -322,10 +322,14 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	}
 
 	protected void initDataBindings() {
-		getModel().getFolderList().add(new ProjectFolder(Constants.SOURCE_FOLDER, Constants.DEFAULT_SOURCE_PATH));
-		getModel().getFolderList().add(new ProjectFolder(Constants.BINARY_FOLDER, Constants.DEFAULT_BINARY_PATH));
-		getModel().getFolderList().add(new ProjectFolder(Constants.INCLUDE_FOLDER, Constants.DEFAULT_INCLUDE_PATH));
-		getModel().getFolderList().add(new ProjectFolder(Constants.SYMBOL_FOLDER, Constants.DEFAULT_SYMBOL_PATH));
+		// getModel().getFolderList().add(new ProjectFolder(Constants.SOURCE_FOLDER,
+		// Constants.DEFAULT_SOURCE_PATH));
+		// getModel().getFolderList().add(new ProjectFolder(Constants.BINARY_FOLDER,
+		// Constants.DEFAULT_BINARY_PATH));
+		// getModel().getFolderList().add(new ProjectFolder(Constants.INCLUDE_FOLDER,
+		// Constants.DEFAULT_INCLUDE_PATH));
+		// getModel().getFolderList().add(new ProjectFolder(Constants.SYMBOL_FOLDER,
+		// Constants.DEFAULT_SYMBOL_PATH));
 
 		ISWTObservableValue projectNameObservable = WidgetProperties.text(SWT.Modify).observe(projectNameText);
 

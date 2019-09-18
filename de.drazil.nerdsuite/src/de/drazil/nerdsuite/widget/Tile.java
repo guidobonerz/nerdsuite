@@ -28,6 +28,9 @@ public class Tile {
 	private boolean showOnlyActiveLayer = false;
 	@Getter
 	private boolean showInactiveLayerTranslucent = false;
+	@Setter
+	@Getter
+	private boolean multicolor = false;
 
 	public Tile(int size) {
 		this("rename_me", size);

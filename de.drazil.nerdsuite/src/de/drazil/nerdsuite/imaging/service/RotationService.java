@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.util.List;
 
+import de.drazil.nerdsuite.enums.TileAction;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
@@ -37,7 +38,7 @@ public class RotationService extends AbstractImagingService {
 	}
 
 	@Override
-	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration) {
+	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 		int[] content = tile.getActiveLayer().getContent();
 		int[] targetContent = new int[content.length];
 		for (int y = 0; y < configuration.tileHeight; y++) {
@@ -56,5 +57,4 @@ public class RotationService extends AbstractImagingService {
 		}
 		tile.getActiveLayer().setContent(targetContent);
 	}
-
 }

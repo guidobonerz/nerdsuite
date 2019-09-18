@@ -89,14 +89,14 @@ public class AnimationService extends AbstractImagingService {
 	@Override
 	public void execute(int action, IConfirmable confirmable) {
 
-		callback.beforeRunService();
+		serviceCallback.beforeRunService();
 		if (action == START) {
 			pos = 0;
 			((Composite) source).getDisplay().timerExec(0, animator);
 		} else if (action == STOP) {
 			((Composite) source).getDisplay().timerExec(-1, animator);
 		}
-		callback.afterRunService();
+		serviceCallback.afterRunService();
 	}
 
 }

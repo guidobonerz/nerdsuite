@@ -44,6 +44,7 @@ public class ImagingWidgetConfiguration {
 	public boolean separatorEnabled = true;
 	public boolean layerViewEnabled = false;
 	public boolean televisionModeEnabled = false;
+	public boolean multiColorEnabled = false;
 	public boolean supportsPainting = false;
 	public boolean supportsMultiTileView = false;
 	public boolean supportsSingleTileView = false;
@@ -85,6 +86,8 @@ public class ImagingWidgetConfiguration {
 
 	public void setPixelSize(int pixelSize) {
 		this.pixelSize = pixelSize;
+		currentPixelWidth = pixelSize;
+		currentPixelHeight = pixelSize;
 		computeSizes();
 	}
 
@@ -175,6 +178,16 @@ public class ImagingWidgetConfiguration {
 		computeSizes();
 	}
 
+	public void setMultiColorEnabled(boolean multiColorEnabled) {
+		this.multiColorEnabled = multiColorEnabled;
+		if (multiColorEnabled) {
+			
+		} else {
+			
+		}
+		computeSizes();
+	}
+
 	public void setWidgetName(String widgetName) {
 		this.widgetName = widgetName;
 	}
@@ -232,14 +245,13 @@ public class ImagingWidgetConfiguration {
 	}
 
 	public void computeSizes() {
-		currentPixelWidth = pixelSize;
-		currentPixelHeight = pixelSize;
+
 		iconSize = width * height;
 		tileSize = iconSize * tileColumns * tileRows;
 		tileWidth = width * tileColumns;
 		tileHeight = height * tileRows;
-		tileWidthPixel = tileWidth * pixelSize;
-		tileHeightPixel = tileHeight * pixelSize;
+		tileWidthPixel = tileWidth * currentPixelWidth;
+		tileHeightPixel = tileHeight * currentPixelHeight;
 		fullWidthPixel = tileWidthPixel * columns;
 		fullHeightPixel = tileHeightPixel * rows;
 		scaledTileWidth = fullWidthPixel;

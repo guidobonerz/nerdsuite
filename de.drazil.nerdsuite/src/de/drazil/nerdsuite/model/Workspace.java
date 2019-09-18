@@ -21,4 +21,8 @@ public class Workspace {
 	public void remove(Project project) {
 		projects.remove(project);
 	}
+
+	public Project getProjectByName(String name) {
+		return projects.stream().filter(e -> e.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+	}
 }

@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.handler;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.enums.SizeVariant;
+import de.drazil.nerdsuite.explorer.Explorer;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
@@ -42,10 +44,6 @@ public class NewProjectHandler {
 		if (wizardDialog.open() == WizardDialog.OK) {
 
 			Project project = projectWizard.getProject();
-			Workspace workspace = Initializer.getConfiguration().getWorkspace();
-			workspace.add(project);
-			Initializer.getConfiguration().writeWorkspace(workspace);
-			// createProjectStructure(project);
 
 			String perspectiveId = projectTypeId.equals("CODING_PROJECT") ? "de.drazil.nerdsuite.perspective.coding"
 					: "de.drazil.nerdsuite.perspective.gfx";
@@ -59,17 +57,33 @@ public class NewProjectHandler {
 
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
 
+				project.setSingleFileProject(true);
+				project.setOpen(true);
+
+				if (project.getProjectType().endsWith("CHAR")) {
+					project.setIconName("icons/chr.png");
+				} else if (project.getProjectType().endsWith("SPRITE")) {
+					project.setIconName("icons/spr.png");
+				} else if (project.getProjectType().endsWith("SCREEN")) {
+					project.setIconName("icons/scr.png");
+				} else {
+
+				}
+
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
 				projectSetup.put("gfxFormat", gf);
 				int v = SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId();
 				projectSetup.put("gfxFormatVariant", v);
-				projectSetup.put("setSelectedTile", 0);
+				projectSetup.put("isNewProject", true);
 
-				// MPart part = MBasicFactory.INSTANCE.createPart();
+				createProjectStructure(project);
+				Workspace workspace = Initializer.getConfiguration().getWorkspace();
+				workspace.add(project);
+				Initializer.getConfiguration().writeWorkspace(workspace);
+
 				MPart part = partService.createPart("de.drazil.nerdsuite.partdescriptor.GfxEditorView");
 				part.setLabel(project.getProjectType() + "(" + project.getName() + ")");
-				// part.setCloseable(true);
 				part.setObject(projectSetup);
 				part.setElementId(project.getProjectType() + project.getName());
 				part.setContributionURI("bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView");
@@ -81,23 +95,43 @@ public class NewProjectHandler {
 
 			}
 
-			/*
-			 * Project project = projectWizard.getProject(); MPart part =
-			 * partService.findPart("de.drazil.nerdsuite.part.projectbrowser"); Explorer
-			 * explorer = (Explorer) part.getObject(); Explorer.refreshExplorer(explorer,
-			 * project);
-			 */
+			MPart part = partService.findPart("de.drazil.nerdsuite.part.Explorer");
+			Explorer explorer = (Explorer) part.getObject();
+			explorer.refresh();
+
 		}
 	}
 
 	private void createProjectStructure(Project project) {
-		File projectFolder = new File(
-				Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase());
-		projectFolder.mkdir();
-		for (ProjectFolder folder : project.getFolderList()) {
-			File subfolder = new File(
-					projectFolder.getAbsolutePath() + Constants.FILE_SEPARATOR + folder.getName().toLowerCase());
-			subfolder.mkdir();
+		if (project.isSingleFileProject()) {
+			String suffix = "";
+			if (project.getProjectType().endsWith("CHAR")) {
+				suffix = ".ns_chrset";
+			} else if (project.getProjectType().endsWith("SPRITE")) {
+				suffix = ".ns_sprset";
+			} else if (project.getProjectType().endsWith("SCREEN")) {
+				suffix = ".ns_scrset";
+			}
+
+			File projectFileName = new File(
+					Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase() + suffix);
+			try {
+				projectFileName.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		} else {
+			File projectFolder = new File(
+					Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase());
+			projectFolder.mkdir();
+
+			for (ProjectFolder folder : project.getFolderList()) {
+				File subfolder = new File(
+						projectFolder.getAbsolutePath() + Constants.FILE_SEPARATOR + folder.getName().toLowerCase());
+				subfolder.mkdir();
+			}
 		}
 	}
 }

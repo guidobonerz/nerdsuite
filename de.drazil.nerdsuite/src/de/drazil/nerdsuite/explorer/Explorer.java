@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.explorer;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -11,7 +12,9 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -30,6 +33,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
 import de.drazil.nerdsuite.configuration.Configuration;
+import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.storagemedia.IMediaReader;
@@ -37,7 +41,7 @@ import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.ImageFactory;
 
-public class Explorer {
+public class Explorer implements ISelectionChangedListener {
 	private TreeViewer treeViewer;
 
 	@Inject
@@ -55,7 +59,7 @@ public class Explorer {
 		treeViewer.addDragSupport(DND.DROP_COPY, transferTypes, new DragSourceAdapter() {
 			@Override
 			public void dragSetData(DragSourceEvent event) {
-			
+
 				super.dragSetData(event);
 			}
 		});
@@ -76,8 +80,9 @@ public class Explorer {
 
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
+		treeViewer.addSelectionChangedListener(this);
 		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.Explorer");
-		
+
 		listFiles();
 	}
 
@@ -105,13 +110,16 @@ public class Explorer {
 	}
 
 	private void listFiles() {
+
+		List<Project> projectList = Initializer.getConfiguration().getWorkspace().getProjects();
+
 		File[] files = Configuration.WORKSPACE_PATH.listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
 				return !pathname.getName().startsWith(".");
 			}
 		});
-		treeViewer.setInput(files);
+		treeViewer.setInput(projectList);
 	}
 
 	private class ProjectStructureLabelProvider extends StyledCellLabelProvider {
@@ -120,8 +128,15 @@ public class Explorer {
 			Object o = cell.getElement();
 
 			if (o instanceof Project) {
-				cell.setText(((Project) o).getName());
-				cell.setImage(ImageFactory.createImage("icons/bricks.png"));
+				Project project = (Project) o;
+				cell.setText(project.getName());
+
+				String iconName = "icons/bricks.png";
+				if (project.isSingleFileProject()) {
+					iconName = project.getIconName();
+				}
+
+				cell.setImage(ImageFactory.createImage(iconName));
 
 			} else if (o instanceof ProjectFolder) {
 				cell.setText(((ProjectFolder) o).getName());
@@ -160,7 +175,7 @@ public class Explorer {
 	private class ProjectStructureProvider implements ITreeContentProvider {
 		@Override
 		public void dispose() {
-			int a = 0;
+
 		}
 
 		@Override
@@ -169,14 +184,27 @@ public class Explorer {
 
 		@Override
 		public Object[] getElements(Object inputElement) {
-			return (Object[]) inputElement;
+
+			Object[] array = null;
+			if (inputElement instanceof List) {
+				List<Object> list = (List<Object>) inputElement;
+				array = list.toArray(new Object[list.size()]);
+			} else {
+				array = (Object[]) inputElement;
+			}
+
+			return array;
 		}
 
 		@Override
 		public Object[] getChildren(Object parentElement) {
 			Object[] entries = null;
+			if (parentElement instanceof Project) {
+				Project project = (Project) parentElement;
 
-			if (parentElement instanceof File) {
+			} else if (parentElement instanceof ProjectFolder) {
+
+			} else if (parentElement instanceof File) {
 				File parentFile = (File) parentElement;
 
 				if (MediaFactory.isMountable(parentFile)) {
@@ -185,10 +213,11 @@ public class Explorer {
 				} else {
 					entries = parentFile.listFiles();
 				}
-			} else {
+			} else if (parentElement instanceof MediaEntry) {
 				MediaEntry me = (MediaEntry) parentElement;
 				IMediaReader mediaManager = MediaFactory.mount((File) me.getUserObject());
 				entries = mediaManager.getEntries(parentElement);
+			} else {
 			}
 			return entries;
 		}
@@ -196,16 +225,21 @@ public class Explorer {
 		@Override
 		public Object getParent(Object element) {
 			Object parent = null;
-			if (element instanceof File) {
+			if (element instanceof Project) {
+				return null;
+			} else if (element instanceof ProjectFolder) {
+				return null;
+			} else if (element instanceof File) {
 				File file = (File) element;
 				parent = file.getParentFile();
-			} else {
+			} else if (element instanceof MediaEntry) {
 				MediaEntry me = (MediaEntry) element;
 				if (me.isRoot()) {
 					parent = me.getUserObject();
 				} else {
 					parent = me.getParent();
 				}
+			} else {
 			}
 			return parent;
 		}
@@ -214,7 +248,12 @@ public class Explorer {
 		public boolean hasChildren(Object element) {
 			boolean hasChildren = false;
 
-			if (element instanceof File) {
+			if (element instanceof Project) {
+				hasChildren = !((Project) element).isSingleFileProject();
+			}
+			if (element instanceof ProjectFolder) {
+				hasChildren = true;
+			} else if (element instanceof File) {
 				File file = (File) element;
 				if (file.isDirectory()) {
 					hasChildren = true;
@@ -223,18 +262,30 @@ public class Explorer {
 				} else {
 					hasChildren = false;
 				}
-			} else {
+			} else if (element instanceof MediaEntry) {
 				MediaEntry me = (MediaEntry) element;
 				hasChildren = me.isDirectory();
 
+			} else {
 			}
 			return hasChildren;
 		}
 
 	}
 
-	public static void refreshExplorer(Explorer explorer, Project project) {
-		explorer.listFiles();
+	public void refresh() {
+		listFiles();
+	}
+
+	@Override
+	public void selectionChanged(SelectionChangedEvent event) {
+		TreeSelection selection = (TreeSelection) event.getSelection();
+		Object element = selection.getFirstElement();
+		if (element instanceof Project) {
+			Project project = (Project) element;
+			System.out.println(project.getName());
+		}
+
 	}
 
 }

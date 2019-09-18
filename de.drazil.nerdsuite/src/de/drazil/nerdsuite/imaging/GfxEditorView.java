@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.imaging;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -26,9 +28,12 @@ import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.handler.HandlerUtils;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
+import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
+import de.drazil.nerdsuite.imaging.service.MulticolorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
@@ -37,8 +42,9 @@ import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.widget.ImagingWidget;
+import de.drazil.nerdsuite.widget.Tile;
 
-public class GfxEditorView implements IConfirmable {
+public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -57,6 +63,11 @@ public class GfxEditorView implements IConfirmable {
 
 	private GraphicFormat graphicFormat = null;
 	private int graphicFormatVariant = 0;
+	@Inject
+	MPart part;
+
+	@Inject
+	EModelService modelService;
 
 	public GfxEditorView() {
 
@@ -132,6 +143,18 @@ public class GfxEditorView implements IConfirmable {
 
 	@Inject
 	@Optional
+	public void manageMulticolor(@UIEventTopic("Multicolor") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			boolean multicolor = (Boolean) brokerObject.getTransferObject();
+			MulticolorService service = ServiceFactory.getService(getOwner(), MulticolorService.class);
+			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.execute(multicolor ? 1 : 0, this);
+			tileRepositoryService.getSelectedTile().setMulticolor(multicolor);
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageGridState(@UIEventTopic("GridType") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			GridState gridState = (GridState) brokerObject.getTransferObject();
@@ -168,14 +191,15 @@ public class GfxEditorView implements IConfirmable {
 
 	@SuppressWarnings("unchecked")
 	@PostConstruct
-	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, MPart part,
-			EMenuService menuService, EModelService modelService) {
+	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
 		part.getTransientData().put(Constants.OWNER, getOwner());
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
 		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
+		boolean isNewProject = (Boolean) ((Map<String, Object>) part.getObject()).get("isNewProject");
 
 		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
+		tileRepositoryService.addTileSelectionListener(this);
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 5;
@@ -245,7 +269,9 @@ public class GfxEditorView implements IConfirmable {
 
 		tileRepositoryService.addTileSelectionListener(getPainterWidget(), getRepositoryWidget());
 		tileRepositoryService.addTileManagementListener(getPainterWidget(), getRepositoryWidget());
-		tileRepositoryService.addTile(getPainterWidget().getConf().getTileSize());
+		if (isNewProject) {
+			tileRepositoryService.addTile(getPainterWidget().getConf().getTileSize());
+		}
 
 		if (graphicFormat.getId().endsWith("CHAR")) {
 			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D8);
@@ -360,4 +386,10 @@ public class GfxEditorView implements IConfirmable {
 		return this.getClass().getSimpleName() + ":" + this.hashCode();
 	}
 
+	@Override
+	public void tileSelected(Tile tile) {
+		List<String> tags = new LinkedList<>();
+		tags.add("MultiColorButton");
+		HandlerUtils.getMenuITem(part, modelService, tags).setSelected(tile.isMulticolor());
+	}
 }

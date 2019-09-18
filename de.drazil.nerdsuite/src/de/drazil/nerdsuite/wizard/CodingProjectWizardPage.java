@@ -326,10 +326,15 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 	}
 
 	protected void initDataBindings() {
-		getModel().getFolderList().add(new ProjectFolder(Constants.SOURCE_FOLDER, Constants.DEFAULT_SOURCE_PATH));
-		getModel().getFolderList().add(new ProjectFolder(Constants.BINARY_FOLDER, Constants.DEFAULT_BINARY_PATH));
-		getModel().getFolderList().add(new ProjectFolder(Constants.INCLUDE_FOLDER, Constants.DEFAULT_INCLUDE_PATH));
-		getModel().getFolderList().add(new ProjectFolder(Constants.SYMBOL_FOLDER, Constants.DEFAULT_SYMBOL_PATH));
+		String parentId = projectNameText.getText().toLowerCase();
+		getModel().getFolderList()
+				.add(new ProjectFolder(Constants.SOURCE_FOLDER, parentId, Constants.DEFAULT_SOURCE_PATH));
+		getModel().getFolderList()
+				.add(new ProjectFolder(Constants.BINARY_FOLDER, parentId, Constants.DEFAULT_BINARY_PATH));
+		getModel().getFolderList()
+				.add(new ProjectFolder(Constants.INCLUDE_FOLDER, parentId, Constants.DEFAULT_INCLUDE_PATH));
+		getModel().getFolderList()
+				.add(new ProjectFolder(Constants.SYMBOL_FOLDER, parentId, Constants.DEFAULT_SYMBOL_PATH));
 
 		List<ProjectFolder> folderList = getModel().getFolderList();
 
