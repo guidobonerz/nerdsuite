@@ -9,12 +9,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import de.drazil.nerdsuite.json.IntArrayToStringConveter;
+import de.drazil.nerdsuite.json.StringToIntArrayConverter;
 import lombok.Data;
 
 @Data
 public class Layer {
 	@JsonSerialize(converter = IntArrayToStringConveter.class)
-	@JsonDeserialize(converter = StringToIntArrayConveter.class)
+	@JsonDeserialize(converter = StringToIntArrayConverter.class)
 	private int[] content = null;
 	private boolean isActive = false;
 	private boolean isLocked = false;
