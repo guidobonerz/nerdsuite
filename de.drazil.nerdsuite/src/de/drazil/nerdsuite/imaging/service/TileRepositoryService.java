@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.imaging.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,4 +127,11 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
 	}
 
+	public void load(File projectName) {
+
+	}
+	
+	public void save(File projectName) {
+
+	}
 }

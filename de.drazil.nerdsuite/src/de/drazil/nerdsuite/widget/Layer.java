@@ -5,10 +5,16 @@ import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import de.drazil.nerdsuite.json.IntArrayToStringConveter;
 import lombok.Data;
 
 @Data
 public class Layer {
+	@JsonSerialize(converter = IntArrayToStringConveter.class)
+	@JsonDeserialize(converter = StringToIntArrayConveter.class)
 	private int[] content = null;
 	private boolean isActive = false;
 	private boolean isLocked = false;
@@ -17,7 +23,6 @@ public class Layer {
 	private String name = "<rename me>";
 	private Map<String, Color> colorPalette;
 	private int selectedColorIndex = 0;
-	
 
 	public Layer(String name, int size) {
 		this.name = null == name ? this.name : name;
