@@ -12,6 +12,8 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -41,7 +43,7 @@ import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.ImageFactory;
 
-public class Explorer implements ISelectionChangedListener {
+public class Explorer implements IDoubleClickListener {
 	private TreeViewer treeViewer;
 
 	@Inject
@@ -80,7 +82,7 @@ public class Explorer implements ISelectionChangedListener {
 
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
-		treeViewer.addSelectionChangedListener(this);
+		treeViewer.addDoubleClickListener(this);
 		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.Explorer");
 
 		listFiles();
@@ -278,14 +280,12 @@ public class Explorer implements ISelectionChangedListener {
 	}
 
 	@Override
-	public void selectionChanged(SelectionChangedEvent event) {
+	public void doubleClick(DoubleClickEvent event) {
 		TreeSelection selection = (TreeSelection) event.getSelection();
 		Object element = selection.getFirstElement();
 		if (element instanceof Project) {
 			Project project = (Project) element;
 			System.out.println(project.getName());
 		}
-
 	}
-
 }
