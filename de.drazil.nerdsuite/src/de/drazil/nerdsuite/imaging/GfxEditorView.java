@@ -90,6 +90,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			PencilMode pencilMode = (PencilMode) brokerObject.getTransferObject();
 			painter.getConf().setPencilMode(pencilMode);
+
 		}
 	}
 
@@ -109,6 +110,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 			ShiftService service = ServiceFactory.getService(getOwner(), ShiftService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			part.setDirty(true);
 		}
 	}
 
@@ -119,6 +121,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 			RotationService service = ServiceFactory.getService(getOwner(), RotationService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			part.setDirty(true);
 		}
 	}
 
@@ -129,6 +132,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 			FlipService service = ServiceFactory.getService(getOwner(), FlipService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			part.setDirty(true);
 		}
 	}
 
@@ -139,6 +143,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 			MirrorService service = ServiceFactory.getService(getOwner(), MirrorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			part.setDirty(true);
 		}
 	}
 
@@ -149,6 +154,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 			PurgeService service = ServiceFactory.getService(getOwner(), PurgeService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(this);
+			part.setDirty(true);
 		}
 	}
 
@@ -177,6 +183,14 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 	@Inject
 	@Optional
+	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			save();
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
@@ -187,12 +201,15 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 			}
 			repository.recalc();
+			part.setDirty(true);
 		}
 	}
 
 	@PreDestroy
-	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService) {
+	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService, MPart part) {
+		if (part.isDirty()) {
 
+		}
 	}
 
 	@Override
@@ -229,7 +246,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 				tileRepositoryService.addTileSelectionListener(painter, repository, this);
 				tileRepositoryService.addTileManagementListener(painter, repository);
 				tileRepositoryService.addTile(painter.getConf().getTileSize());
-				save(file, tileRepositoryService);
+				save();
 
 				if (graphicFormat.getId().endsWith("CHAR")) {
 					repository.getConf().setScaleMode(ScaleMode.D8);
@@ -419,7 +436,13 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 		E4Utils.getMenuITemByTag(part, modelService, tags).setSelected(tile.isMulticolor());
 	}
 
-	private void save(File file, TileRepositoryService service) {
-		TileRepositoryService.save(file, service);
+	private void save() {
+		System.out.println("save tiles");
+		TileRepositoryService.save(file, tileRepositoryService);
+		part.setDirty(false);
+	}
+
+	private void close() {
+		save();
 	}
 }

@@ -90,6 +90,7 @@ public class TileRepositoryService extends AbstractImagingService {
 		return tileList.get(tileIndexOrderList.get(index));
 	}
 
+	@JsonIgnore
 	public int getSize() {
 		return tileList.size();
 	}
