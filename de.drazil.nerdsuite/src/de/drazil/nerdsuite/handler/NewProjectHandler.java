@@ -2,7 +2,9 @@ package de.drazil.nerdsuite.handler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Named;
@@ -17,6 +19,11 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
@@ -29,6 +36,7 @@ import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.Workspace;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
+import de.drazil.nerdsuite.widget.Tile;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
 public class NewProjectHandler {
@@ -70,7 +78,7 @@ public class NewProjectHandler {
 				projectSetup.put("gfxFormatVariant", v);
 				projectSetup.put("isNewProject", true);
 
-				createProjectStructure(project, projectType.getSuffix());
+				File file = createProjectStructure(project, projectType.getSuffix());
 				Workspace workspace = Initializer.getConfiguration().getWorkspace();
 				workspace.add(project);
 				Initializer.getConfiguration().writeWorkspace(workspace);
@@ -81,6 +89,25 @@ public class NewProjectHandler {
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
 						part, true);
+
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.enable(SerializationFeature.INDENT_OUTPUT);
+				List<Tile> list = new ArrayList<Tile>();
+				Tile tile = new Tile(100);
+				tile.setName("TEST");
+				list.add(tile);
+				try {
+					mapper.writeValue(file, list);
+				} catch (JsonGenerationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			Explorer explorer = E4Utils.findPartObject(partService, "de.drazil.nerdsuite.part.Explorer",
@@ -90,13 +117,14 @@ public class NewProjectHandler {
 		}
 	}
 
-	private void createProjectStructure(Project project, String suffix) {
+	private File createProjectStructure(Project project, String suffix) {
+		File file = null;
 		if (project.isSingleFileProject()) {
 
-			File projectFileName = new File(
+			file = new File(
 					Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase() + suffix);
 			try {
-				projectFileName.createNewFile();
+				file.createNewFile();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -113,5 +141,6 @@ public class NewProjectHandler {
 				subfolder.mkdir();
 			}
 		}
+		return file;
 	}
 }
