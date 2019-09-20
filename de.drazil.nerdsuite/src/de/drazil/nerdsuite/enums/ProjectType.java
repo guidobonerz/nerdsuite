@@ -3,8 +3,8 @@ package de.drazil.nerdsuite.enums;
 import lombok.Getter;
 
 public enum ProjectType {
-	CharSet("CHAR", ".nsChr", "icons/chr.png"), SpriteSet("SPRITE", ".nsSpr", "icons/spr.png"),
-	ScreenSet("SCREEN", ".nsScr", "icons/scr.png"), Assembler("ASM", ".asm", null), Basic("bas", ".bas", null);
+	CharSet("CHAR", ".ns_chr", "icons/chr.png"), SpriteSet("SPRITE", ".ns_spr", "icons/spr.png"),
+	ScreenSet("SCREEN", ".ns_sr", "icons/scr.png"), Assembler("ASM", ".asm", null), Basic("bas", ".bas", null);
 
 	@Getter
 	private String id;

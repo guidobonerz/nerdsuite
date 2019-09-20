@@ -2,9 +2,7 @@ package de.drazil.nerdsuite.handler;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Named;
@@ -19,11 +17,6 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
@@ -36,7 +29,6 @@ import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.Workspace;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
-import de.drazil.nerdsuite.widget.Tile;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
 public class NewProjectHandler {
@@ -74,15 +66,13 @@ public class NewProjectHandler {
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
 				projectSetup.put("gfxFormat", gf);
-				int v = SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId();
-				projectSetup.put("gfxFormatVariant", v);
+				projectSetup.put("gfxFormatVariant",
+						SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId());
 				projectSetup.put("isNewProject", true);
-				projectSetup.put("owner", project.getProjectSubType() + "_" + project.getName());
+				projectSetup.put("owner",
+						project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
 
-				File file = createProjectStructure(project, projectType.getSuffix());
-				Workspace workspace = Initializer.getConfiguration().getWorkspace();
-				workspace.add(project);
-				Initializer.getConfiguration().writeWorkspace(workspace);
+				// File file = createProjectStructure(project, projectType.getSuffix());
 
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
 						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", project,
@@ -101,29 +91,17 @@ public class NewProjectHandler {
 	}
 
 	private File createProjectStructure(Project project, String suffix) {
-		File file = null;
-		if (project.isSingleFileProject()) {
 
-			file = new File(
-					Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase() + suffix);
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		File projectFolder = new File(
+				Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase());
+		projectFolder.mkdir();
 
-		} else {
-			File projectFolder = new File(
-					Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase());
-			projectFolder.mkdir();
-
-			for (ProjectFolder folder : project.getFolderList()) {
-				File subfolder = new File(
-						projectFolder.getAbsolutePath() + Constants.FILE_SEPARATOR + folder.getName().toLowerCase());
-				subfolder.mkdir();
-			}
+		for (ProjectFolder folder : project.getFolderList()) {
+			File subfolder = new File(
+					projectFolder.getAbsolutePath() + Constants.FILE_SEPARATOR + folder.getName().toLowerCase());
+			subfolder.mkdir();
 		}
-		return file;
+
+		return null;
 	}
 }
