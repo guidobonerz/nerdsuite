@@ -1,8 +1,14 @@
 package de.drazil.nerdsuite.imaging.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -127,11 +133,25 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
 	}
 
-	public void load(File projectName) {
+	public void load(File projectName, String owner) {
 
 	}
-	
-	public void save(File projectName) {
 
+	public void save(File fileName, String owner) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationFeature.INDENT_OUTPUT);
+		TileRepositoryService service = ServiceFactory.getService(owner, this.getClass());
+		try {
+			mapper.writeValue(fileName, service);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

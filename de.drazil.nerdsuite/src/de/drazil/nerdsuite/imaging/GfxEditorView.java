@@ -63,6 +63,8 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 	private GraphicFormat graphicFormat = null;
 	private int graphicFormatVariant = 0;
+
+	private String owner;
 	@Inject
 	MPart part;
 

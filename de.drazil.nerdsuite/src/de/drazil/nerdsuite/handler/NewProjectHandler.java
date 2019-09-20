@@ -77,6 +77,7 @@ public class NewProjectHandler {
 				int v = SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId();
 				projectSetup.put("gfxFormatVariant", v);
 				projectSetup.put("isNewProject", true);
+				projectSetup.put("owner", project.getProjectSubType() + "_" + project.getName());
 
 				File file = createProjectStructure(project, projectType.getSuffix());
 				Workspace workspace = Initializer.getConfiguration().getWorkspace();
@@ -90,24 +91,6 @@ public class NewProjectHandler {
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
 						part, true);
 
-				ObjectMapper mapper = new ObjectMapper();
-				mapper.enable(SerializationFeature.INDENT_OUTPUT);
-				List<Tile> list = new ArrayList<Tile>();
-				Tile tile = new Tile(100);
-				tile.setName("TEST");
-				list.add(tile);
-				try {
-					mapper.writeValue(file, list);
-				} catch (JsonGenerationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JsonMappingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 
 			Explorer explorer = E4Utils.findPartObject(partService, "de.drazil.nerdsuite.part.Explorer",
