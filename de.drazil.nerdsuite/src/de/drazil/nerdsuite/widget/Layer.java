@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -19,10 +20,13 @@ public class Layer {
 	private int[] content = null;
 	private boolean isActive = false;
 	private boolean isLocked = false;
+	@JsonIgnore
 	private int opacity = 0;
 	private boolean visible = true;
-	private String name = "<rename me>";
+	private String name = "rename me";
+	@JsonIgnore
 	private Map<String, Color> colorPalette;
+	@JsonIgnore
 	private int selectedColorIndex = 0;
 
 	public Layer(String name, int size) {
@@ -30,14 +34,15 @@ public class Layer {
 		content = new int[size];
 	}
 
+	@JsonIgnore
 	public Color getSelectedColor() {
 		return getColor(selectedColorIndex);
 	}
-
+	@JsonIgnore
 	public Color getColor(int index) {
 		return colorPalette.get(Integer.toString(index));
 	}
-
+	@JsonIgnore
 	public void setColor(int index, Color color) {
 		if (colorPalette == null) {
 			colorPalette = new HashMap<>();

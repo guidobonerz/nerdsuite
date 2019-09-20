@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.handler;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Named;
@@ -12,23 +11,23 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.SizeVariant;
 import de.drazil.nerdsuite.explorer.Explorer;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.Workspace;
+import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
@@ -55,83 +54,54 @@ public class NewProjectHandler {
 			 */
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 
-				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
+				String pt = project.getProjectType();
+				GraphicFormat gf = GraphicFormatFactory.getFormatByName(pt);
 
 				project.setSingleFileProject(true);
 				project.setOpen(true);
 
-				if (project.getProjectType().endsWith("CHAR")) {
-					project.setIconName("icons/chr.png");
-				} else if (project.getProjectType().endsWith("SPRITE")) {
-					project.setIconName("icons/spr.png");
-				} else if (project.getProjectType().endsWith("SCREEN")) {
-					project.setIconName("icons/scr.png");
-				} else {
-
-				}
+				ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
+				project.setIconName(projectType.getIconName());
 
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
 				projectSetup.put("gfxFormat", gf);
-				int v = SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId();
-				projectSetup.put("gfxFormatVariant", v);
+				projectSetup.put("gfxFormatVariant",
+						SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId());
 				projectSetup.put("isNewProject", true);
+				projectSetup.put("owner",
+						project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
 
-				createProjectStructure(project);
-				Workspace workspace = Initializer.getConfiguration().getWorkspace();
-				workspace.add(project);
-				Initializer.getConfiguration().writeWorkspace(workspace);
+				// File file = createProjectStructure(project, projectType.getSuffix());
 
-				MPart part = partService.createPart("de.drazil.nerdsuite.partdescriptor.GfxEditorView");
-				part.setLabel(project.getProjectType() + "(" + project.getName() + ")");
-				part.setObject(projectSetup);
-				part.setElementId(project.getProjectType() + project.getName());
-				part.setContributionURI("bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView");
+				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", project,
+						projectSetup);
 
-				List<MPartStack> stacks = modelService.findElements(app, "de.drazil.nerdsuite.partstack.editorStack",
-						MPartStack.class, null);
-				stacks.get(0).getChildren().add(part);
-				partService.showPart(part, PartState.ACTIVATE);
+				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
+						part, true);
 
 			}
 
-			MPart part = partService.findPart("de.drazil.nerdsuite.part.Explorer");
-			Explorer explorer = (Explorer) part.getObject();
+			Explorer explorer = E4Utils.findPartObject(partService, "de.drazil.nerdsuite.part.Explorer",
+					Explorer.class);
 			explorer.refresh();
 
 		}
 	}
 
-	private void createProjectStructure(Project project) {
-		if (project.isSingleFileProject()) {
-			String suffix = "";
-			if (project.getProjectType().endsWith("CHAR")) {
-				suffix = ".ns_chrset";
-			} else if (project.getProjectType().endsWith("SPRITE")) {
-				suffix = ".ns_sprset";
-			} else if (project.getProjectType().endsWith("SCREEN")) {
-				suffix = ".ns_scrset";
-			}
+	private File createProjectStructure(Project project, String suffix) {
 
-			File projectFileName = new File(
-					Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase() + suffix);
-			try {
-				projectFileName.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		File projectFolder = new File(
+				Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase());
+		projectFolder.mkdir();
 
-		} else {
-			File projectFolder = new File(
-					Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase());
-			projectFolder.mkdir();
-
-			for (ProjectFolder folder : project.getFolderList()) {
-				File subfolder = new File(
-						projectFolder.getAbsolutePath() + Constants.FILE_SEPARATOR + folder.getName().toLowerCase());
-				subfolder.mkdir();
-			}
+		for (ProjectFolder folder : project.getFolderList()) {
+			File subfolder = new File(
+					projectFolder.getAbsolutePath() + Constants.FILE_SEPARATOR + folder.getName().toLowerCase());
+			subfolder.mkdir();
 		}
+
+		return null;
 	}
 }

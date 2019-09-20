@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import lombok.Getter;
@@ -12,17 +15,15 @@ import lombok.Setter;
 
 public class Tile {
 
+	@JsonIgnore
 	private List<ITileListener> tileListenerList = null;
-	@Getter
-	private List<Layer> layerList = null;
-	private List<Integer> layerIndexOrderList = null;
-
 	@Setter
 	@Getter
 	private String name = null;
 	private int size = 0;
 	@Setter
 	@Getter
+	@JsonIgnore
 	private Color backgroundColor = Constants.BLACK;
 	@Getter
 	private boolean showOnlyActiveLayer = false;
@@ -31,6 +32,11 @@ public class Tile {
 	@Setter
 	@Getter
 	private boolean multicolor = false;
+	@Getter
+	@JsonProperty(value = "layers")
+	private List<Layer> layerList = null;
+	@JsonProperty(value = "layerIndexOrder")
+	private List<Integer> layerIndexOrderList = null;
 
 	public Tile(int size) {
 		this("rename_me", size);
@@ -54,7 +60,7 @@ public class Tile {
 	}
 
 	public Layer addLayer() {
-		return addLayer("rename_me");
+		return addLayer("layer_" + (layerList.size() + 1));
 	}
 
 	public Layer addLayer(String name) {
@@ -151,6 +157,7 @@ public class Tile {
 		fireActiveLayerChanged(index);
 	}
 
+	@JsonIgnore
 	public Layer getActiveLayer() {
 		return layerList.stream().filter(x -> x.isActive()).findFirst().orElse(null);
 	}

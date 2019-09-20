@@ -1,17 +1,32 @@
 package de.drazil.nerdsuite.imaging.service;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class TileRepositoryService extends AbstractImagingService {
 
+	@JsonProperty(value = "tiles")
 	private List<Tile> tileList = null;
+	@JsonProperty(value = "tileIndexOrder")
 	private List<Integer> tileIndexOrderList = null;
+	@JsonIgnore
 	private List<ITileManagementListener> tileServiceManagementListener = null;
+	@JsonIgnore
 	private List<ITileSelectionListener> tileServiceSelectionListener = null;
+	@JsonIgnore
 	private ImagePainterFactory imagePainterFactory;
 	private int selectedTileIndex = 0;
 
@@ -63,10 +78,12 @@ public class TileRepositoryService extends AbstractImagingService {
 		fireTileSelected(getTile(index));
 	}
 
+	@JsonIgnore
 	public Tile getSelectedTile() {
 		return getTile(selectedTileIndex);
 	}
 
+	@JsonIgnore
 	public int getSelectedTileIndex() {
 		return tileList.indexOf(getSelectedTile());
 	}
@@ -75,6 +92,7 @@ public class TileRepositoryService extends AbstractImagingService {
 		return tileList.get(tileIndexOrderList.get(index));
 	}
 
+	@JsonIgnore
 	public int getSize() {
 		return tileList.size();
 	}
@@ -127,11 +145,35 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
 	}
 
-	public void load(File projectName) {
+	public static void load(File projectName, String owner) {
 
 	}
-	
-	public void save(File projectName) {
+
+	public static void save(File fileName, TileRepositoryService service, Project project) {
+
+		try {
+
+			FileWriter fw = new FileWriter(fileName);
+			fw.write("// Nerdsuite Project by drazil 2019\n");
+			fw.write("// Projectname : " + project.getName() + "\n");
+			fw.write("// Targetplatform : " + project.getTargetPlatform() + "\n");
+			fw.write("// Type : " + project.getProjectType() + "\n");
+			fw.write("// Variant : " + project.getProjectSubType() + "\n");
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+			mapper.writeValue(fw, service);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 }

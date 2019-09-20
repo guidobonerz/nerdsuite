@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.imaging;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,12 +25,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.configuration.Configuration;
+import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
+import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.handler.BrokerObject;
-import de.drazil.nerdsuite.handler.HandlerUtils;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
@@ -41,6 +45,9 @@ import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
+import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.model.Workspace;
+import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -63,6 +70,10 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 	private GraphicFormat graphicFormat = null;
 	private int graphicFormatVariant = 0;
+
+	private File file;
+	private Project project;
+	private String owner;
 	@Inject
 	MPart part;
 
@@ -78,7 +89,8 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void managePencilMode(@UIEventTopic("PencilMode") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			PencilMode pencilMode = (PencilMode) brokerObject.getTransferObject();
-			getPainterWidget().getConf().setPencilMode(pencilMode);
+			painter.getConf().setPencilMode(pencilMode);
+
 		}
 	}
 
@@ -87,7 +99,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void managePaintMode(@UIEventTopic("PaintMode") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			PaintMode paintMode = (PaintMode) brokerObject.getTransferObject();
-			getPainterWidget().getConf().setPaintMode(paintMode);
+			painter.getConf().setPaintMode(paintMode);
 		}
 	}
 
@@ -96,8 +108,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void manageShift(@UIEventTopic("Shift") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			ShiftService service = ServiceFactory.getService(getOwner(), ShiftService.class);
-			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			part.setDirty(true);
 		}
 	}
 
@@ -106,8 +119,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void manageRotake(@UIEventTopic("Rotate") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			RotationService service = ServiceFactory.getService(getOwner(), RotationService.class);
-			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			part.setDirty(true);
 		}
 	}
 
@@ -116,8 +130,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void manageFlip(@UIEventTopic("Flip") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			FlipService service = ServiceFactory.getService(getOwner(), FlipService.class);
-			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			part.setDirty(true);
 		}
 	}
 
@@ -126,8 +141,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void manageMirror(@UIEventTopic("Mirror") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			MirrorService service = ServiceFactory.getService(getOwner(), MirrorService.class);
-			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			part.setDirty(true);
 		}
 	}
 
@@ -136,8 +152,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void managePurge(@UIEventTopic("Purge") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			PurgeService service = ServiceFactory.getService(getOwner(), PurgeService.class);
-			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(this);
+			part.setDirty(true);
 		}
 	}
 
@@ -147,7 +164,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			boolean multicolor = (Boolean) brokerObject.getTransferObject();
 			MulticolorService service = ServiceFactory.getService(getOwner(), MulticolorService.class);
-			service.setImagingWidgetConfiguration(getPainterWidget().getConf());
+			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(multicolor ? 1 : 0, this);
 			tileRepositoryService.getSelectedTile().setMulticolor(multicolor);
 		}
@@ -158,9 +175,17 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void manageGridState(@UIEventTopic("GridType") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
 			GridState gridState = (GridState) brokerObject.getTransferObject();
-			getPainterWidget().getConf().setGridStyle(gridState.getGridStyle());
-			getPainterWidget().getConf().setPixelGridEnabled(gridState.isEnabled());
-			getPainterWidget().recalc();
+			painter.getConf().setGridStyle(gridState.getGridStyle());
+			painter.getConf().setPixelGridEnabled(gridState.isEnabled());
+			painter.recalc();
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			save();
 		}
 	}
 
@@ -175,13 +200,32 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 			} else {
 
 			}
-			getRepositoryWidget().recalc();
+			repository.recalc();
+			part.setDirty(true);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void manageLayer(@UIEventTopic("Layer") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
+				tileRepositoryService.getSelectedTile().addLayer();
+			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
+				tileRepositoryService.getSelectedTile().removeActiveLayer();
+			} else {
+
+			}
+			repository.recalc();
+			part.setDirty(true);
 		}
 	}
 
 	@PreDestroy
-	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService) {
+	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService, MPart part) {
+		if (part.isDirty()) {
 
+		}
 	}
 
 	@Override
@@ -193,13 +237,48 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@PostConstruct
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
-		part.getTransientData().put(Constants.OWNER, getOwner());
+
+		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
 		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
+		owner = (String) ((Map<String, Object>) part.getObject()).get("owner");
+		part.getTransientData().put(Constants.OWNER, owner);
 		boolean isNewProject = (Boolean) ((Map<String, Object>) part.getObject()).get("isNewProject");
+		String pt = project.getProjectType();
+		ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
 
-		tileRepositoryService = ServiceFactory.getService(getOwner(), TileRepositoryService.class);
-		tileRepositoryService.addTileSelectionListener(this);
+		painter = createPainterWidget();
+		repository = createRepositoryWidget();
+
+		if (isNewProject) {
+			Workspace workspace = Initializer.getConfiguration().getWorkspace();
+			workspace.add(project);
+			Initializer.getConfiguration().writeWorkspace(workspace);
+			file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
+					+ projectType.getSuffix());
+			try {
+				file.createNewFile();
+				tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
+				tileRepositoryService.addTileSelectionListener(painter, repository, this);
+				tileRepositoryService.addTileManagementListener(painter, repository);
+				tileRepositoryService.addTile(painter.getConf().getTileSize());
+				save();
+
+				if (graphicFormat.getId().endsWith("CHAR")) {
+					repository.getConf().setScaleMode(ScaleMode.D8);
+				} else if (graphicFormat.getId().endsWith("SPRITE")) {
+					repository.getConf().setScaleMode(ScaleMode.D8);
+				} else if (graphicFormat.getId().endsWith("SCREEN")) {
+					repository.getConf().setScaleMode(ScaleMode.D4);
+
+				} else {
+
+				}
+
+			} catch (IOException e1) {
+
+			}
+		}
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 5;
@@ -208,7 +287,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 		GridData gridData = null;
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
-		getPainterWidget().setLayoutData(gridData);
+		painter.setLayoutData(gridData);
 
 		color1 = new Button(parent, SWT.NONE);
 		color1.setText("color1");
@@ -265,83 +344,63 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 5;
-		getRepositoryWidget().setLayoutData(gridData);
+		repository.setLayoutData(gridData);
 
-		tileRepositoryService.addTileSelectionListener(getPainterWidget(), getRepositoryWidget());
-		tileRepositoryService.addTileManagementListener(getPainterWidget(), getRepositoryWidget());
-		if (isNewProject) {
-			tileRepositoryService.addTile(getPainterWidget().getConf().getTileSize());
-		}
+		painter.recalc();
+		painter.addDrawListener(repository);
 
-		if (graphicFormat.getId().endsWith("CHAR")) {
-			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D8);
-		} else if (graphicFormat.getId().endsWith("SPRITE")) {
-			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D8);
-		} else if (graphicFormat.getId().endsWith("SCREEN")) {
-			getRepositoryWidget().getConf().setScaleMode(ScaleMode.D4);
+		parent.requestLayout();
 
-		} else {
-
-		}
-
-		getPainterWidget().recalc();
-		getPainterWidget().addDrawListener(getRepositoryWidget());
-
-		menuService.registerContextMenu(getPainterWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		menuService.registerContextMenu(getRepositoryWidget(), "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 
 	}
 
-	public ImagingWidget getPainterWidget() {
-		if (painter == null) {
-			painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
-			painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
-			painter.getConf().setWidgetName("Painter :");
-			painter.getConf().setPixelGridEnabled(true);
-			painter.getConf().setGridStyle(GridType.Dot);
-			painter.getConf().setTileGridEnabled(true);
-			painter.getConf().setTileCursorEnabled(false);
-			painter.getConf().supportsPainting = true;
-			painter.getConf().supportsDrawCursor = true;
-			painter.getConf().setScaleMode(ScaleMode.None);
-			painter.recalc();
+	public ImagingWidget createPainterWidget() {
 
-			// painter.addDrawListener(getPreviewerWidget());
-		}
+		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
+		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
+		painter.getConf().setWidgetName("Painter :");
+		painter.getConf().setPixelGridEnabled(true);
+		painter.getConf().setGridStyle(GridType.Dot);
+		painter.getConf().setTileGridEnabled(true);
+		painter.getConf().setTileCursorEnabled(false);
+		painter.getConf().supportsPainting = true;
+		painter.getConf().supportsDrawCursor = true;
+		painter.getConf().setScaleMode(ScaleMode.None);
+		painter.recalc();
+		// painter.addDrawListener(getPreviewerWidget());
 		return painter;
 	}
 
-	public ImagingWidget getPreviewerWidget() {
-		if (previewer == null) {
-			previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
-			previewer.getConf().setWidgetName("Preview :");
-			previewer.getConf().setPixelGridEnabled(false);
-			previewer.getConf().setGridStyle(GridType.Dot);
-			previewer.getConf().setTileGridEnabled(false);
-			previewer.getConf().setTileCursorEnabled(false);
-			previewer.getConf().setSeparatorEnabled(false);
-			previewer.recalc();
-		}
+	public ImagingWidget createPreviewerWidget() {
+
+		previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
+		previewer.getConf().setWidgetName("Preview :");
+		previewer.getConf().setPixelGridEnabled(false);
+		previewer.getConf().setGridStyle(GridType.Dot);
+		previewer.getConf().setTileGridEnabled(false);
+		previewer.getConf().setTileCursorEnabled(false);
+		previewer.getConf().setSeparatorEnabled(false);
+		previewer.recalc();
 		return previewer;
 	}
 
-	private ImagingWidget getRepositoryWidget() {
-		if (repository == null) {
-			repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL,
-					getOwner());
-			repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
-			repository.getConf().setWidgetName("Selector:");
-			repository.getConf().setPixelGridEnabled(false);
-			repository.getConf().setTileGridEnabled(true);
-			repository.getConf().setTileSubGridEnabled(false);
-			repository.getConf().setTileCursorEnabled(true);
-			repository.getConf().setSeparatorEnabled(false);
-			repository.getConf().supportsMultiSelection = true;
-			repository.getConf().supportsSingleSelection = true;
-			repository.recalc();
-			// repository.addDrawListener(getPainterWidget());
-			// repository.addDrawListener(getPreviewerWidget());
-		}
+	private ImagingWidget createRepositoryWidget() {
+		repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL, getOwner());
+		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
+		repository.getConf().setWidgetName("Selector:");
+		repository.getConf().setPixelGridEnabled(false);
+		repository.getConf().setTileGridEnabled(true);
+		repository.getConf().setTileSubGridEnabled(false);
+		repository.getConf().setTileCursorEnabled(true);
+		repository.getConf().setSeparatorEnabled(false);
+		repository.getConf().supportsMultiSelection = true;
+		repository.getConf().supportsSingleSelection = true;
+		repository.recalc();
+		// repository.addDrawListener(getPainterWidget());
+		// repository.addDrawListener(getPreviewerWidget());
+
 		return repository;
 	}
 
@@ -383,13 +442,23 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	 */
 
 	private String getOwner() {
-		return this.getClass().getSimpleName() + ":" + this.hashCode();
+		return owner;
 	}
 
 	@Override
 	public void tileSelected(Tile tile) {
 		List<String> tags = new LinkedList<>();
 		tags.add("MultiColorButton");
-		HandlerUtils.getMenuITem(part, modelService, tags).setSelected(tile.isMulticolor());
+		E4Utils.getMenuITemByTag(part, modelService, tags).setSelected(tile.isMulticolor());
+	}
+
+	private void save() {
+		System.out.println("save tiles");
+		TileRepositoryService.save(file, tileRepositoryService, project);
+		part.setDirty(false);
+	}
+
+	private void close() {
+		save();
 	}
 }
