@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.imaging.service;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class TileRepositoryService extends AbstractImagingService {
@@ -147,12 +149,21 @@ public class TileRepositoryService extends AbstractImagingService {
 
 	}
 
-	public static void save(File fileName, TileRepositoryService service) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.enable(SerializationFeature.INDENT_OUTPUT);
+	public static void save(File fileName, TileRepositoryService service, Project project) {
 
 		try {
-			mapper.writeValue(fileName, service);
+
+			FileWriter fw = new FileWriter(fileName);
+			fw.write("// Nerdsuite Project by drazil 2019\n");
+			fw.write("// Projectname : " + project.getName() + "\n");
+			fw.write("// Targetplatform : " + project.getTargetPlatform() + "\n");
+			fw.write("// Type : " + project.getProjectType() + "\n");
+			fw.write("// Variant : " + project.getProjectSubType() + "\n");
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+			mapper.writeValue(fw, service);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

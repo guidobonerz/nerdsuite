@@ -35,6 +35,7 @@ public class Tile {
 	@Getter
 	@JsonProperty(value = "layers")
 	private List<Layer> layerList = null;
+	@JsonProperty(value = "layerIndexOrder")
 	private List<Integer> layerIndexOrderList = null;
 
 	public Tile(int size) {
@@ -59,7 +60,7 @@ public class Tile {
 	}
 
 	public Layer addLayer() {
-		return addLayer("rename_me");
+		return addLayer("layer_" + (layerList.size() + 1));
 	}
 
 	public Layer addLayer(String name) {

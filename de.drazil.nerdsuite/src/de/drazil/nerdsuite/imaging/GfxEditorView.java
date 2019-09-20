@@ -72,7 +72,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	private int graphicFormatVariant = 0;
 
 	private File file;
-
+	private Project project;
 	private String owner;
 	@Inject
 	MPart part;
@@ -205,6 +205,22 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 		}
 	}
 
+	@Inject
+	@Optional
+	public void manageLayer(@UIEventTopic("Layer") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
+				tileRepositoryService.getSelectedTile().addLayer();
+			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
+				tileRepositoryService.getSelectedTile().removeActiveLayer();
+			} else {
+
+			}
+			repository.recalc();
+			part.setDirty(true);
+		}
+	}
+
 	@PreDestroy
 	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService, MPart part) {
 		if (part.isDirty()) {
@@ -222,7 +238,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
 
-		Project project = (Project) ((Map<String, Object>) part.getObject()).get("project");
+		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
 		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
 		owner = (String) ((Map<String, Object>) part.getObject()).get("owner");
@@ -333,7 +349,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 		painter.recalc();
 		painter.addDrawListener(repository);
 
-		parent.layout(true, true);
+		parent.requestLayout();
 
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
@@ -438,7 +454,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 	private void save() {
 		System.out.println("save tiles");
-		TileRepositoryService.save(file, tileRepositoryService);
+		TileRepositoryService.save(file, tileRepositoryService, project);
 		part.setDirty(false);
 	}
 

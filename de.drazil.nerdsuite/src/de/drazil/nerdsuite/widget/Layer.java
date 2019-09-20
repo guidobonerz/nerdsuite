@@ -20,6 +20,7 @@ public class Layer {
 	private int[] content = null;
 	private boolean isActive = false;
 	private boolean isLocked = false;
+	@JsonIgnore
 	private int opacity = 0;
 	private boolean visible = true;
 	private String name = "rename me";
