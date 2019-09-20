@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.SizeVariant;
 import de.drazil.nerdsuite.explorer.Explorer;
 import de.drazil.nerdsuite.model.GraphicFormat;
@@ -53,20 +54,14 @@ public class NewProjectHandler {
 			 */
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 
-				GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
+				String pt = project.getProjectType();
+				GraphicFormat gf = GraphicFormatFactory.getFormatByName(pt);
 
 				project.setSingleFileProject(true);
 				project.setOpen(true);
 
-				if (project.getProjectType().endsWith("CHAR")) {
-					project.setIconName("icons/chr.png");
-				} else if (project.getProjectType().endsWith("SPRITE")) {
-					project.setIconName("icons/spr.png");
-				} else if (project.getProjectType().endsWith("SCREEN")) {
-					project.setIconName("icons/scr.png");
-				} else {
-
-				}
+				ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
+				project.setIconName(projectType.getIconName());
 
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
@@ -75,7 +70,7 @@ public class NewProjectHandler {
 				projectSetup.put("gfxFormatVariant", v);
 				projectSetup.put("isNewProject", true);
 
-				createProjectStructure(project);
+				createProjectStructure(project, projectType.getSuffix());
 				Workspace workspace = Initializer.getConfiguration().getWorkspace();
 				workspace.add(project);
 				Initializer.getConfiguration().writeWorkspace(workspace);
@@ -95,16 +90,8 @@ public class NewProjectHandler {
 		}
 	}
 
-	private void createProjectStructure(Project project) {
+	private void createProjectStructure(Project project, String suffix) {
 		if (project.isSingleFileProject()) {
-			String suffix = "";
-			if (project.getProjectType().endsWith("CHAR")) {
-				suffix = ".ns_chrset";
-			} else if (project.getProjectType().endsWith("SPRITE")) {
-				suffix = ".ns_sprset";
-			} else if (project.getProjectType().endsWith("SCREEN")) {
-				suffix = ".ns_scrset";
-			}
 
 			File projectFileName = new File(
 					Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase() + suffix);
