@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.handler;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Named;
@@ -12,11 +11,9 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -29,6 +26,7 @@ import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.Workspace;
+import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
@@ -82,21 +80,16 @@ public class NewProjectHandler {
 				workspace.add(project);
 				Initializer.getConfiguration().writeWorkspace(workspace);
 
-				MPart part = partService.createPart("de.drazil.nerdsuite.partdescriptor.GfxEditorView");
-				part.setLabel(project.getProjectType() + "(" + project.getName() + ")");
-				part.setObject(projectSetup);
-				part.setElementId(project.getProjectType() + project.getName());
-				part.setContributionURI("bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView");
+				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", project,
+						projectSetup);
 
-				List<MPartStack> stacks = modelService.findElements(app, "de.drazil.nerdsuite.partstack.editorStack",
-						MPartStack.class, null);
-				stacks.get(0).getChildren().add(part);
-				partService.showPart(part, PartState.ACTIVATE);
-
+				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
+						part, true);
 			}
 
-			MPart part = partService.findPart("de.drazil.nerdsuite.part.Explorer");
-			Explorer explorer = (Explorer) part.getObject();
+			Explorer explorer = E4Utils.findPartObject(partService, "de.drazil.nerdsuite.part.Explorer",
+					Explorer.class);
 			explorer.refresh();
 
 		}

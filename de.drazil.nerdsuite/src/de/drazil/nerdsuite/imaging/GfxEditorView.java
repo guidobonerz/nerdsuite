@@ -28,7 +28,6 @@ import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.handler.BrokerObject;
-import de.drazil.nerdsuite.handler.HandlerUtils;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
@@ -41,6 +40,7 @@ import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
+import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -390,6 +390,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	public void tileSelected(Tile tile) {
 		List<String> tags = new LinkedList<>();
 		tags.add("MultiColorButton");
-		HandlerUtils.getMenuITem(part, modelService, tags).setSelected(tile.isMulticolor());
+		E4Utils.getMenuITemByTag(part, modelService, tags).setSelected(tile.isMulticolor());
 	}
 }

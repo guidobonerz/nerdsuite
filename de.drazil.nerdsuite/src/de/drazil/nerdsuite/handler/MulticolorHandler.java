@@ -11,6 +11,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.MHandledItem;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.util.E4Utils;
 
 public class MulticolorHandler {
 
@@ -18,7 +19,7 @@ public class MulticolorHandler {
 	public void execute(MPart part, EModelService modelService, IEventBroker broker) {
 		List<String> tags = new LinkedList<>();
 		tags.add("MultiColorButton");
-		MHandledItem item = HandlerUtils.getMenuITem(part, modelService, tags);
+		MHandledItem item = E4Utils.getMenuITemByTag(part, modelService, tags);
 		broker.send("Multicolor",
 				new BrokerObject((String) part.getTransientData().get(Constants.OWNER), item.isSelected()));
 	}
