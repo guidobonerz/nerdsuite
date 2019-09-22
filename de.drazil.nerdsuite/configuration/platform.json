@@ -2,7 +2,7 @@
 	{
 		"id": "C64",
 		"name": "C64",
-		"source": "configuration/platform/64_platform.json",
+		"source": "configuration/platform/c64_platform.json",
 		"enabled": true
 	},
 	{

@@ -19,19 +19,14 @@ public class ServiceFactory {
 	@SuppressWarnings("unchecked")
 	public static <S extends IService> S getService(String owner, Class<? super S> serviceClass) {
 
-		String serviceOwner = owner.toString();
-		Map<String, IService> serviceCacheMap = serviceOwnerMap.get(serviceOwner);
-		if (serviceCacheMap == null) {
-			serviceCacheMap = new HashMap<String, IService>();
-			serviceOwnerMap.put(serviceOwner, serviceCacheMap);
-		}
+		Map<String, IService> serviceCacheMap = getServiceCacheMap(owner);
 
 		String name = serviceClass.getName();
 		S service = (S) serviceCacheMap.get(name);
 		if (null == service) {
 			try {
 				service = (S) serviceClass.newInstance();
-				service.setOwner(serviceOwner);
+				service.setOwner(owner);
 				serviceCacheMap.put(name, service);
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
@@ -42,5 +37,23 @@ public class ServiceFactory {
 			}
 		}
 		return service;
+	}
+
+	public static void addService(String owner, IService service, boolean override) {
+		Map<String, IService> serviceCacheMap = getServiceCacheMap(owner);
+		String name = service.getClass().getName();
+		IService s = serviceCacheMap.get(name);
+		if (s != null && override || s == null) {
+			serviceCacheMap.put(name, service);
+		}
+	}
+
+	public static Map<String, IService> getServiceCacheMap(String owner) {
+		Map<String, IService> serviceCacheMap = serviceOwnerMap.get(owner);
+		if (serviceCacheMap == null) {
+			serviceCacheMap = new HashMap<String, IService>();
+			serviceOwnerMap.put(owner, serviceCacheMap);
+		}
+		return serviceCacheMap;
 	}
 }

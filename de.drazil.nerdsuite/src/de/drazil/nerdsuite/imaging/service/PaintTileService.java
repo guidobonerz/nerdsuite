@@ -5,6 +5,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.enums.PencilMode;
+import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -61,28 +62,30 @@ public class PaintTileService extends AbstractImagingService {
 		}
 	}
 
-	public void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
-		gc.drawImage(imagePainterFactory.getImage(tile, x, y, true, conf), 0, 0);
+	public void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
+		gc.drawImage(imagePainterFactory.getImage(tile, x, y, true, conf, colorPaletteProvider), 0, 0);
 	}
 
-	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf) {
+	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
 		int y = 0;
 		int x = 0;
 		if (!conf.supportsPainting) {
 			y = conf.scaledTileHeight * (tileRepositoryService.getSelectedTileIndex() / conf.getColumns());
 			x = conf.scaledTileWidth * (tileRepositoryService.getSelectedTileIndex() % conf.getColumns());
 		}
-		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf), x, y);
-
+		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider), x, y);
 	}
 
-	public void paintAllTiles(Composite parent, GC gc, ImagingWidgetConfiguration conf) {
+	public void paintAllTiles(Composite parent, GC gc, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
 		int x = 0;
 		int y = 0;
 		int parentWidth = parent.getBounds().width;
 		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
 			Tile tile = tileRepositoryService.getTile(i);
-			Image image = imagePainterFactory.getImage(tile, 0, 0, false, conf);
+			Image image = imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider);
 			int imageWidth = image.getBounds().width;
 			int imageHeight = image.getBounds().height;
 			gc.drawImage(image, x, y);

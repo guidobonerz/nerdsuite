@@ -19,6 +19,7 @@ import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,10 +49,12 @@ import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.Workspace;
 import de.drazil.nerdsuite.util.E4Utils;
+import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidget;
+import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
-public class GfxEditorView implements IConfirmable, ITileSelectionListener {
+public class GfxEditorView implements IConfirmable, ITileSelectionListener, IColorPaletteProvider {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -87,7 +90,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void managePencilMode(@UIEventTopic("PencilMode") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			PencilMode pencilMode = (PencilMode) brokerObject.getTransferObject();
 			painter.getConf().setPencilMode(pencilMode);
 
@@ -97,7 +100,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void managePaintMode(@UIEventTopic("PaintMode") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			PaintMode paintMode = (PaintMode) brokerObject.getTransferObject();
 			painter.getConf().setPaintMode(paintMode);
 		}
@@ -106,8 +109,8 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageShift(@UIEventTopic("Shift") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
-			ShiftService service = ServiceFactory.getService(getOwner(), ShiftService.class);
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			ShiftService service = ServiceFactory.getService(owner, ShiftService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
 			part.setDirty(true);
@@ -117,8 +120,8 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageRotake(@UIEventTopic("Rotate") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
-			RotationService service = ServiceFactory.getService(getOwner(), RotationService.class);
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			RotationService service = ServiceFactory.getService(owner, RotationService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
 			part.setDirty(true);
@@ -128,8 +131,8 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageFlip(@UIEventTopic("Flip") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
-			FlipService service = ServiceFactory.getService(getOwner(), FlipService.class);
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			FlipService service = ServiceFactory.getService(owner, FlipService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
 			part.setDirty(true);
@@ -139,8 +142,8 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageMirror(@UIEventTopic("Mirror") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
-			MirrorService service = ServiceFactory.getService(getOwner(), MirrorService.class);
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			MirrorService service = ServiceFactory.getService(owner, MirrorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
 			part.setDirty(true);
@@ -150,8 +153,8 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void managePurge(@UIEventTopic("Purge") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
-			PurgeService service = ServiceFactory.getService(getOwner(), PurgeService.class);
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			PurgeService service = ServiceFactory.getService(owner, PurgeService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(this);
 			part.setDirty(true);
@@ -161,9 +164,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageMulticolor(@UIEventTopic("Multicolor") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			boolean multicolor = (Boolean) brokerObject.getTransferObject();
-			MulticolorService service = ServiceFactory.getService(getOwner(), MulticolorService.class);
+			MulticolorService service = ServiceFactory.getService(owner, MulticolorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(multicolor ? 1 : 0, this);
 			tileRepositoryService.getSelectedTile().setMulticolor(multicolor);
@@ -173,7 +176,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageGridState(@UIEventTopic("GridType") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			GridState gridState = (GridState) brokerObject.getTransferObject();
 			painter.getConf().setGridStyle(gridState.getGridStyle());
 			painter.getConf().setPixelGridEnabled(gridState.isEnabled());
@@ -184,7 +187,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			save();
 		}
 	}
@@ -192,7 +195,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
 				tileRepositoryService.addTile(tileRepositoryService.getSelectedTile().getLayer(0).getContent().length);
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
@@ -208,7 +211,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	@Inject
 	@Optional
 	public void manageLayer(@UIEventTopic("Layer") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(getOwner())) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
 				tileRepositoryService.getSelectedTile().addLayer();
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
@@ -358,7 +361,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 	public ImagingWidget createPainterWidget() {
 
-		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
+		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, this);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
@@ -375,7 +378,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 	public ImagingWidget createPreviewerWidget() {
 
-		previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, getOwner());
+		previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, this);
 		previewer.getConf().setWidgetName("Preview :");
 		previewer.getConf().setPixelGridEnabled(false);
 		previewer.getConf().setGridStyle(GridType.Dot);
@@ -387,7 +390,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	}
 
 	private ImagingWidget createRepositoryWidget() {
-		repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL, getOwner());
+		repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL, owner, this);
 		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 		repository.getConf().setWidgetName("Selector:");
 		repository.getConf().setPixelGridEnabled(false);
@@ -441,10 +444,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 	 * }
 	 */
 
-	private String getOwner() {
-		return owner;
-	}
-
 	@Override
 	public void tileSelected(Tile tile) {
 		List<String> tags = new LinkedList<>();
@@ -460,5 +459,20 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener {
 
 	private void close() {
 		save();
+	}
+
+	@Override
+	public Color getBackgroundColorIndex(Tile tile) {
+		return getColorByIndex(tile.getBackgroundColorIndex());
+	}
+
+	@Override
+	public Color getColor(Tile tile, int x, int y) {
+		return null;
+	}
+
+	@Override
+	public Color getColorByIndex(int index) {
+		return PlatformFactory.getPlatformColors(project.getTargetPlatform()).get(index).getColor();
 	}
 }

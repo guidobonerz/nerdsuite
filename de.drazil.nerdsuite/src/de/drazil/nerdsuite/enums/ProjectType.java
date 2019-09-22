@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public enum ProjectType {
 	CharSet("CHAR", ".ns_chr", "icons/chr.png"), SpriteSet("SPRITE", ".ns_spr", "icons/spr.png"),
-	ScreenSet("SCREEN", ".ns_sr", "icons/scr.png"), Assembler("ASM", ".asm", null), Basic("bas", ".bas", null);
+	ScreenSet("SCREEN", ".ns_scr", "icons/scr.png"), Assembler("ASM", ".asm", null), Basic("bas", ".bas", null);
 
 	@Getter
 	private String id;
