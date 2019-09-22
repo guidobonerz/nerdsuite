@@ -65,14 +65,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	private Tile tile = null;
 
-	public ImagingWidget(Composite parent, int style, String owner) {
-		this(parent, style, owner, null);
+	private IColorPaletteProvider colorPaletteProvider;
+
+	public ImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider) {
+		this(parent, style, owner, null, colorPaletteProvider);
 	}
 
-	public ImagingWidget(Composite parent, int style, String owner, ImagingWidgetConfiguration configuration) {
+	public ImagingWidget(Composite parent, int style, String owner, ImagingWidgetConfiguration configuration,
+			IColorPaletteProvider colorPaletteProvider) {
 		super(parent, style, configuration);
 		conf.setServiceOwner(owner);
 
+		this.colorPaletteProvider = colorPaletteProvider;
 		selectionRangeBuffer = new ArrayList<>();
 		tileSelectionList = new ArrayList<>();
 		drawListenerList = new ArrayList<IDrawListener>();
@@ -215,14 +219,15 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
 		if (redrawMode == RedrawMode.DrawPixel) {
-			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf);
+			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf,
+					colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawTile) {
-			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf);
+			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawAllTiles) {
 			if (supportsPainting()) {
-				paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf);
+				paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
 			} else {
-				paintTileService.paintAllTiles(this, gc, conf);
+				paintTileService.paintAllTiles(this, gc, conf, colorPaletteProvider);
 			}
 		}
 

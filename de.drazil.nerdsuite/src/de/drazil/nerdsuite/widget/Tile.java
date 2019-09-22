@@ -24,7 +24,7 @@ public class Tile {
 	@Setter
 	@Getter
 	@JsonIgnore
-	private Color backgroundColor = Constants.BLACK;
+	private int backgroundColorIndex = 0;
 	@Getter
 	private boolean showOnlyActiveLayer = false;
 	@Getter
@@ -67,10 +67,10 @@ public class Tile {
 		Layer layer = new Layer(name, size);
 
 		// default palette
-		layer.setColor(0, InstructionSet.getPlatformData().getColorPalette().get(0).getColor());
-		layer.setColor(1, InstructionSet.getPlatformData().getColorPalette().get(1).getColor());
-		layer.setColor(2, InstructionSet.getPlatformData().getColorPalette().get(2).getColor());
-		layer.setColor(3, InstructionSet.getPlatformData().getColorPalette().get(3).getColor());
+		layer.setColorIndex(0, 0);
+		layer.setColorIndex(1, 1);
+		layer.setColorIndex(2, 2);
+		layer.setColorIndex(3, 3);
 
 		layerList.add(layer);
 		layerIndexOrderList.add(layerList.indexOf(layer));

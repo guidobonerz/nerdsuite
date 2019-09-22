@@ -1,16 +1,13 @@
 package de.drazil.nerdsuite.wizard;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservableCollection;
 import org.eclipse.core.databinding.observable.sideeffect.ISideEffect;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -26,9 +23,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.osgi.framework.Bundle;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
@@ -38,6 +32,7 @@ import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
 import de.drazil.nerdsuite.validator.IValidatable;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
+import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.ProjectTypeFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -64,9 +59,6 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	private ComboViewer gfxFormatCombo;
 	private ComboViewer gfxFormatVariantCombo;
 	private SimpleEntity projectType;
-	private List<TargetPlatform> targetPlatformList;
-	private List<GraphicFormat> graphicFormatList;
-	private List<GraphicFormat> graphicFormatVariantList;
 
 	/**
 	 * Create the wizard.
@@ -99,7 +91,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		gfxFormatVariantLabel = new Label(container, SWT.NONE);
 		gfxFormatVariantLabel.setText("Format Variant");
 
-		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
+		List<TargetPlatform> targetPlatformList = PlatformFactory.getTargetPlatFormList();
 		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
 		List<GraphicFormat> graphicFormatList = GraphicFormatFactory
 				.getFormatByPrefix(targetPlatformList.get(0).getId());
@@ -399,19 +391,6 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 			as.getValue();
 			validatable.setValidated(AggregateValidationStatus.getStatusMerged(getOc()).isOK());
 		}
-	}
-
-	private List<TargetPlatform> getTargetPlatFormList() {
-		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			targetPlatformList = Arrays
-					.asList(mapper.readValue(bundle.getEntry("configuration/platform.json"), TargetPlatform[].class))
-					.stream().filter(c -> c.isEnabled()).collect(Collectors.toList());
-		} catch (Exception e) {
-			targetPlatformList = null;
-		}
-		return targetPlatformList;
 	}
 
 	/*

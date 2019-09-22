@@ -73,7 +73,7 @@ public class C64ImageService extends AbstractImageService {
 			switch (conf.pixelConfig) {
 			case BC1: {
 				for (int j = 128; j > 0; j >>= 1) {
-					gc.setBackground((b & j) == j ? activeLayer.getSelectedColor() : Constants.BITMAP_BACKGROUND_COLOR);
+					//gc.setBackground((b & j) == j ? activeLayer.getSelectedColor() : Constants.BITMAP_BACKGROUND_COLOR);
 					gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
 							conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
 					x++;

@@ -3,8 +3,6 @@ package de.drazil.nerdsuite.widget;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.swt.graphics.Color;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -15,17 +13,18 @@ import lombok.Data;
 
 @Data
 public class Layer {
+
+	private String name = "rename me";
 	@JsonSerialize(converter = IntArrayToStringConveter.class)
 	@JsonDeserialize(converter = StringToIntArrayConverter.class)
 	private int[] content = null;
 	private boolean isActive = false;
 	private boolean isLocked = false;
+	private boolean visible = true;
 	@JsonIgnore
 	private int opacity = 0;
-	private boolean visible = true;
-	private String name = "rename me";
 	@JsonIgnore
-	private Map<String, Color> colorPalette;
+	private Map<String, Integer> colorPalette;
 	@JsonIgnore
 	private int selectedColorIndex = 0;
 
@@ -35,19 +34,21 @@ public class Layer {
 	}
 
 	@JsonIgnore
-	public Color getSelectedColor() {
-		return getColor(selectedColorIndex);
+	public int getSelectedColorIndex() {
+		return getColorIndex(selectedColorIndex);
 	}
+
 	@JsonIgnore
-	public Color getColor(int index) {
+	public int getColorIndex(int index) {
 		return colorPalette.get(Integer.toString(index));
 	}
+
 	@JsonIgnore
-	public void setColor(int index, Color color) {
+	public void setColorIndex(int index, int colorIndex) {
 		if (colorPalette == null) {
 			colorPalette = new HashMap<>();
 		}
-		colorPalette.put(String.valueOf(index), color);
+		colorPalette.put(String.valueOf(index), colorIndex);
 	}
 
 	public int size() {

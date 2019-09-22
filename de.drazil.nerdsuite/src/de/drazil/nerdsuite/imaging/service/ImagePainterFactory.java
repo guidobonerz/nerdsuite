@@ -10,6 +10,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.enums.ScaleMode;
+import de.drazil.nerdsuite.widget.IColorPaletteProvider;
+import de.drazil.nerdsuite.widget.IColorProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -25,16 +27,17 @@ public class ImagePainterFactory {
 		gcCache = new HashMap<>();
 	}
 
-	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf) {
+	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
 
 		String name = tile.getName();
 		Image image = imagePool.get(name);
 		if (null == image) {
-			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name);
+			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name, colorPaletteProvider);
 			imagePool.put(name, image);
 			System.out.println("create new image" + name);
 		} else {
-			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name);
+			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name, colorPaletteProvider);
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
@@ -60,7 +63,7 @@ public class ImagePainterFactory {
 	}
 
 	private Image createOrUpdateImage(Tile tile, int px, int py, boolean pixelOnly, ImagingWidgetConfiguration conf,
-			Image image, String imageName) {
+			Image image, String imageName, IColorPaletteProvider colorPaletteProvider) {
 
 		Image img = image;
 		if (img == null) {
@@ -79,11 +82,11 @@ public class ImagePainterFactory {
 		int y = 0;
 		List<Layer> layerList = tile.getLayerList();
 		if (pixelOnly) {
-			Color c = tile.getBackgroundColor();
+			Color c = colorPaletteProvider.getBackgroundColorIndex(tile);
 			int offset = py * width + px;
 			if (offset < size) {
 				// System.out.println("pixel only:" + px + " y:" + py + " offset:" + offset);
-				draw(gc, c, offset, layerList, tile, conf, px, py);
+				draw(gc, c, offset, layerList, tile, conf, px, py, colorPaletteProvider);
 			}
 		} else {
 			for (int i = 0; i < size; i++) {
@@ -91,8 +94,8 @@ public class ImagePainterFactory {
 					x = 0;
 					y++;
 				}
-				Color c = tile.getBackgroundColor();
-				draw(gc, c, i, layerList, tile, conf, x, y);
+				Color c = colorPaletteProvider.getBackgroundColorIndex(tile);
+				draw(gc, c, i, layerList, tile, conf, x, y, colorPaletteProvider);
 				x++;
 			}
 		}
@@ -101,12 +104,12 @@ public class ImagePainterFactory {
 	}
 
 	private void draw(GC gc, Color color, int offset, List<Layer> layerList, Tile tile, ImagingWidgetConfiguration conf,
-			int x, int y) {
+			int x, int y, IColorPaletteProvider colorPaletteProvider) {
 		for (Layer l : layerList) {
 			int[] content = l.getContent();
 			if (content[offset] != 0 && (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() && l.isActive())
 					|| tile.isShowInactiveLayerTranslucent())) {
-				color = l.getColor(content[offset]);
+				color = colorPaletteProvider.getColorByIndex(content[offset]);
 				gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
 			}
 			gc.setBackground(color);
