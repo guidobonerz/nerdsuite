@@ -67,13 +67,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	private IColorPaletteProvider colorPaletteProvider;
 
-	public ImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider) {
-		this(parent, style, owner, null, colorPaletteProvider);
+	public ImagingWidget(Composite parent, int style) {
+		super(parent, style);
 	}
 
-	public ImagingWidget(Composite parent, int style, String owner, ImagingWidgetConfiguration configuration,
-			IColorPaletteProvider colorPaletteProvider) {
-		super(parent, style, configuration);
+	public void init(String owner, IColorPaletteProvider colorPaletteProvider) {
 		conf.setServiceOwner(owner);
 
 		this.colorPaletteProvider = colorPaletteProvider;
@@ -89,7 +87,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		paintTileService.setTileRepositoryService(tileRepositoryService);
 		paintTileService.setImagePainterFactory(tileRepositoryService.getImagePainterFactory());
 		addPaintListener(this);
-		parent.getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
+		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
 				doDrawAllTiles();

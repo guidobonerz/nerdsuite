@@ -188,7 +188,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	@Optional
 	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
-			save();
+			save(file);
 		}
 	}
 
@@ -250,43 +250,14 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		String pt = project.getProjectType();
 		ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
 
-		painter = createPainterWidget();
-		repository = createRepositoryWidget();
-
-		if (isNewProject) {
-			Workspace workspace = Initializer.getConfiguration().getWorkspace();
-			workspace.add(project);
-			Initializer.getConfiguration().writeWorkspace(workspace);
-			file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
-					+ projectType.getSuffix());
-			try {
-				file.createNewFile();
-				tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
-				tileRepositoryService.addTileSelectionListener(painter, repository, this);
-				tileRepositoryService.addTileManagementListener(painter, repository);
-				tileRepositoryService.addTile(painter.getConf().getTileSize());
-				save();
-
-				if (graphicFormat.getId().endsWith("CHAR")) {
-					repository.getConf().setScaleMode(ScaleMode.D8);
-				} else if (graphicFormat.getId().endsWith("SPRITE")) {
-					repository.getConf().setScaleMode(ScaleMode.D8);
-				} else if (graphicFormat.getId().endsWith("SCREEN")) {
-					repository.getConf().setScaleMode(ScaleMode.D4);
-
-				} else {
-
-				}
-
-			} catch (IOException e1) {
-
-			}
-		}
+		file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
+				+ projectType.getSuffix());
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 5;
 		parent.setLayout(layout);
 
+		painter = createPainterWidget();
 		GridData gridData = null;
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
@@ -345,23 +316,57 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		gridData.horizontalSpan = 4;
 		showInactiveLayersTranslucent.setLayoutData(gridData);
 
+		repository = createRepositoryWidget();
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 5;
 		repository.setLayoutData(gridData);
 
+		try {
+			if (isNewProject) {
+				Workspace workspace = Initializer.getConfiguration().getWorkspace();
+				workspace.add(project);
+				Initializer.getConfiguration().writeWorkspace(workspace);
+				file.createNewFile();
+			} else {
+				tileRepositoryService = load(file);
+			}
+		} catch (IOException e1) {
+
+		}
+
+		painter.init(owner, this);
+		repository.init(owner, this);
+
+		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
+		tileRepositoryService.addTileSelectionListener(painter, repository, this);
+		tileRepositoryService.addTileManagementListener(painter, repository);
+
+		if (graphicFormat.getId().endsWith("CHAR")) {
+			repository.getConf().setScaleMode(ScaleMode.D8);
+		} else if (graphicFormat.getId().endsWith("SPRITE")) {
+			repository.getConf().setScaleMode(ScaleMode.D8);
+		} else if (graphicFormat.getId().endsWith("SCREEN")) {
+			repository.getConf().setScaleMode(ScaleMode.D4);
+
+		} else {
+
+		}
+
 		painter.recalc();
 		painter.addDrawListener(repository);
 
-		parent.requestLayout();
-
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+
+		if (isNewProject) {
+			tileRepositoryService.addTile(painter.getConf().getTileSize());
+		}
 
 	}
 
 	public ImagingWidget createPainterWidget() {
 
-		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, this);
+		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
@@ -378,7 +383,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 
 	public ImagingWidget createPreviewerWidget() {
 
-		previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, this);
+		previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		previewer.getConf().setWidgetName("Preview :");
 		previewer.getConf().setPixelGridEnabled(false);
 		previewer.getConf().setGridStyle(GridType.Dot);
@@ -390,7 +395,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	}
 
 	private ImagingWidget createRepositoryWidget() {
-		repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL, owner, this);
+		repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
 		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 		repository.getConf().setWidgetName("Selector:");
 		repository.getConf().setPixelGridEnabled(false);
@@ -451,14 +456,21 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		E4Utils.getMenuITemByTag(part, modelService, tags).setSelected(tile.isMulticolor());
 	}
 
-	private void save() {
+	private void save(File file) {
 		System.out.println("save tiles");
-		TileRepositoryService.save(file, tileRepositoryService, project);
+		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
+		TileRepositoryService.save(file, service, project);
 		part.setDirty(false);
 	}
 
+	private TileRepositoryService load(File file) {
+		System.out.println("load tiles");
+		part.setDirty(false);
+		return TileRepositoryService.load(file, owner, project);
+	}
+
 	private void close() {
-		save();
+		save(file);
 	}
 
 	@Override

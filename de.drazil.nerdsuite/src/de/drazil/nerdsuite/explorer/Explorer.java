@@ -2,14 +2,20 @@ package de.drazil.nerdsuite.explorer;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -34,18 +40,27 @@ import org.eclipse.swt.widgets.FileDialog;
 
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.enums.SizeVariant;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.storagemedia.IMediaReader;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
+import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.util.ImageFactory;
+import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 
 public class Explorer implements IDoubleClickListener {
 	private TreeViewer treeViewer;
 
 	@Inject
+	MApplication app;
+	@Inject
 	EMenuService menuService;
+	@Inject
+	EPartService partService;
+	@Inject
+	EModelService modelService;
 
 	public Explorer() {
 	}
@@ -284,6 +299,21 @@ public class Explorer implements IDoubleClickListener {
 		if (element instanceof Project) {
 			Project project = (Project) element;
 			System.out.println(project.getName());
+
+			Map<String, Object> projectSetup = new HashMap<String, Object>();
+			projectSetup.put("project", project);
+			projectSetup.put("gfxFormat", GraphicFormatFactory.getFormatByName(project.getProjectType()));
+			projectSetup.put("gfxFormatVariant", SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId());
+			projectSetup.put("isNewProject", false);
+			projectSetup.put("owner",
+					project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
+
+			MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
+					"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", project,
+					projectSetup);
+
+			E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part,
+					true);
 		}
 	}
 }

@@ -27,6 +27,10 @@ public class Layer {
 	@JsonIgnore
 	private int opacity = 0;
 
+	public Layer() {
+
+	}
+
 	public Layer(String name, int size) {
 		this.name = null == name ? this.name : name;
 		content = new int[size];

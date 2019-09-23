@@ -12,6 +12,10 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes:
+Load/Save your work (json format)
+
+
 ## New Graphic Project Dialog
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
 ## Sprite Editor

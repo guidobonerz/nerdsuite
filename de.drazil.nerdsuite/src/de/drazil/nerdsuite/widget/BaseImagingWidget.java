@@ -9,12 +9,8 @@ public abstract class BaseImagingWidget extends BaseWidget {
 	@Getter
 	protected ImagingWidgetConfiguration conf = null;
 
-	private final static class DefaultImageingWidgetConfiguration extends ImagingWidgetConfiguration {
-
-	}
-
-	public BaseImagingWidget(Composite parent, int style, ImagingWidgetConfiguration configuration) {
+	public BaseImagingWidget(Composite parent, int style) {
 		super(parent, style);
-		conf = configuration == null ? new DefaultImageingWidgetConfiguration() : configuration;
+		conf = new ImagingWidgetConfiguration();
 	}
 }
