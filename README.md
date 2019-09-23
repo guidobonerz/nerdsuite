@@ -1,6 +1,6 @@
 # nerdsuite
 Nerdsuite is an IDE (based on eclipse 4.10/2018-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
-Once finished, it will contain a SourceCode Editor, Visual Disassembler, IconEditor (for CharSets, Sprites, Screens and Bitmaps)  
+Once finished, it will contain a SourceCode Editor (Assmbler/Basic), Visual Disassembler, TileEditor (for CharSets, Sprites, Screens and Bitmaps)  
 Currently I work mostly on the graphics part.  
 
 | System | OS | Works | Performance | Java Version
@@ -14,6 +14,12 @@ Current state: Still buggy and incomplete :-)
 
 Last Changes:
 Load/Save your work (json format)
+
+Gfx Modul Todo:
+- Range Selector for bulk modifications
+- Range Selector for Animatior
+- Layer Preview/Seletor
+- Charscreen reference charset selector
 
 
 ## New Graphic Project Dialog
