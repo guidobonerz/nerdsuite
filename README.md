@@ -20,7 +20,7 @@ Gfx Modul Todo:
 - Range selection for animations
 - Layer Preview/Seletor
 - Charscreen reference charset selector
-- Performace tuning
+- Performance tuning
 
 
 ## New Graphic Project Dialog
