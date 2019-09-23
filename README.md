@@ -16,8 +16,8 @@ Last Changes:
 Load/Save your work (json format)
 
 Gfx Modul Todo:
-- Range Selector for bulk modifications
-- Range Selector for Animatior
+- Range selection for bulk modifications
+- Range selection for animations
 - Layer Preview/Seletor
 - Charscreen reference charset selector
 
