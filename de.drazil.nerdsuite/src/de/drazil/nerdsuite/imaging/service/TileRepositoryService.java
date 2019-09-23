@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -141,16 +142,19 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
 	}
 
-	public static void load(File fileName, String owner, Project project) {
+	public static TileRepositoryService load(File fileName, String owner, Project project) {
+		TileRepositoryService service = null;
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
-			TileRepositoryService service = mapper.readValue(fileName, TileRepositoryService.class);
+			service = mapper.readValue(fileName, TileRepositoryService.class);
 			ServiceFactory.addService(owner, service, false);
 			service.fireTileSelected(service.getSelectedTile());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return service;
 	}
 
 	public static void save(File fileName, TileRepositoryService service, Project project) {

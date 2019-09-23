@@ -9,7 +9,7 @@ public class StringToIntArrayConverter extends StdConverter<String, int[]> {
 	@Override
 	public int[] convert(String s) {
 
-		byte[] ba = Base64.getEncoder().encode(s.getBytes());
+		byte[] ba = Base64.getDecoder().decode(s.getBytes());
 		int[] ia = new int[ba.length];
 		for (int i = 0; i < ba.length; i++) {
 			ia[i] = ba[i] & 0xff;

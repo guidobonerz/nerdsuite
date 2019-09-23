@@ -21,19 +21,21 @@ public class Layer {
 	private boolean isActive = false;
 	private boolean isLocked = false;
 	private boolean visible = true;
+	private int selectedColorIndex = 1;
+	private Map<String, Integer> colorPalette;
+
 	@JsonIgnore
 	private int opacity = 0;
-	@JsonIgnore
-	private Map<String, Integer> colorPalette;
-	@JsonIgnore
-	private int selectedColorIndex = 0;
+
+	public Layer() {
+
+	}
 
 	public Layer(String name, int size) {
 		this.name = null == name ? this.name : name;
 		content = new int[size];
 	}
 
-	@JsonIgnore
 	public int getSelectedColorIndex() {
 		return getColorIndex(selectedColorIndex);
 	}

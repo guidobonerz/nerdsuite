@@ -10,7 +10,7 @@ public class IntArrayToStringConveter extends StdConverter<int[], String> {
 	@Override
 	public String convert(int[] ia) {
 		ByteBuffer buf = ByteBuffer.allocate(ia.length);
-		IntStream.of(ia).forEach(i -> buf.put((byte) i));
+		IntStream.of(ia).forEach(i -> buf.put((byte) (i & 0xff)));
 		return Base64.getEncoder().encodeToString(buf.array());
 	}
 }
