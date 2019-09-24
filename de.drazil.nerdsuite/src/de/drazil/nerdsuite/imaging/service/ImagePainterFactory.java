@@ -28,9 +28,7 @@ public class ImagePainterFactory {
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
-
 		String name = tile.getName();
-		boolean updateImage = false;
 		Image image = imagePool.get(name);
 		if (null == image) {
 			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name, colorPaletteProvider);
@@ -38,7 +36,6 @@ public class ImagePainterFactory {
 			System.out.println("create new image" + name);
 		} else {
 			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name, colorPaletteProvider);
-			updateImage = true;
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
