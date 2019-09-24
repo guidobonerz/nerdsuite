@@ -374,6 +374,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		painter.getConf().setGridStyle(GridType.Dot);
 		painter.getConf().setTileGridEnabled(true);
 		painter.getConf().setTileCursorEnabled(false);
+		painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREEN") ? false : true);
 		painter.getConf().supportsPainting = true;
 		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setScaleMode(ScaleMode.None);
