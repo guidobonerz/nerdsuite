@@ -19,6 +19,20 @@ public class E4Utils {
 		return modelService.findElements(part.getToolbar(), null, MHandledItem.class, tags).get(0);
 	}
 
+	public static void setToolItemEnabled(MPart part, EModelService modelService, List<String> tags, boolean enabled) {
+		List<MHandledItem> items = modelService.findElements(part.getToolbar(), null, MHandledItem.class, tags);
+		for (MHandledItem item : items) {
+			item.setEnabled(enabled);
+		}
+	}
+
+	public static void setToolItemVisible(MPart part, EModelService modelService, List<String> tags, boolean visible) {
+		List<MHandledItem> items = modelService.findElements(part.getToolbar(), null, MHandledItem.class, tags);
+		for (MHandledItem item : items) {
+			item.setVisible(visible);
+		}
+	}
+
 	public static void addPart2PartStack(MApplication app, EModelService modelService, EPartService partService,
 			String id, MPart part, boolean setPartActive) {
 		modelService.findElements(app, id, MPartStack.class, null).get(0).getChildren().add(part);

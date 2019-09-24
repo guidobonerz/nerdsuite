@@ -303,11 +303,21 @@
         <parameters xmi:id="_YURS0NObEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.parameter.12" name="de.drazil.nerdsuite.commandparameter.GridVisible" value="true"/>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_0FmsUNQKEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.toolbarseparator.3"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_0sXKUNQKEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.3" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double-180.png" tooltip="Animate Fast Backward"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_Q3JvoNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.4" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-180.png" tooltip="Animate Backward"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_RShdANQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.5" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" tooltip="Stop Animation"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_RvOnINQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.6" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" tooltip="Animate Forward"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_TZ9DkNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.7" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double.png" tooltip="Animate Fast Forward"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_0sXKUNQKEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.3" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double-180.png" tooltip="Animate Fast Backward">
+        <tags>Animator</tags>
+      </children>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_Q3JvoNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.4" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-180.png" tooltip="Animate Backward">
+        <tags>Animator</tags>
+      </children>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_RShdANQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.5" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" tooltip="Stop Animation">
+        <tags>Animator</tags>
+      </children>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_RvOnINQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.6" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" tooltip="Animate Forward">
+        <tags>Animator</tags>
+      </children>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_TZ9DkNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.7" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double.png" tooltip="Animate Fast Forward">
+        <tags>Animator</tags>
+      </children>
     </toolbar>
   </descriptors>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.newProject" commandName="New Project">

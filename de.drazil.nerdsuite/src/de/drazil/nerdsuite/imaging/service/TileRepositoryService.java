@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class TileRepositoryService extends AbstractImagingService {
@@ -72,6 +73,10 @@ public class TileRepositoryService extends AbstractImagingService {
 	public void setSelectedTile(int index) {
 		selectedTileIndex = index;
 		fireTileSelected(getTile(index));
+	}
+
+	public void setSelectedTiles(List<TileLocation> tileLocationList) {
+		fireTilesSelected(tileLocationList);
 	}
 
 	@JsonIgnore
@@ -139,6 +144,10 @@ public class TileRepositoryService extends AbstractImagingService {
 
 	private void fireTileSelected(Tile tile) {
 		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
+	}
+
+	private void fireTilesSelected(List<TileLocation> tileLocationList) {
+		tileServiceSelectionListener.forEach(listener -> listener.tilesSelected(tileLocationList));
 	}
 
 	public void notifySelection() {

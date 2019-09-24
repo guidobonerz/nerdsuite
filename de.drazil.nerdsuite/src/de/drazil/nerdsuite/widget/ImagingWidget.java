@@ -103,16 +103,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			doDrawPixel();
 			fireDoDrawTile(ImagingWidget.this);
 		} else if (supportsSingleSelection() || supportsMultiSelection()) {
+
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
-			selectedTileIndex = (tileY * conf.columns) + tileX;
+			selectedTileIndex = computeTileIndex(tileX, tileY);
+			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			if (selectedTileIndex < tileRepositoryService.getSize()) {
 				tileRepositoryService.setSelectedTile(selectedTileIndex);
 			} else {
 				System.out.println("tile selection outside range...");
 			}
 			// fireSetSelectedTile(ImagingWidget.this, tile);
-			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
+
 			doDrawAllTiles();
 		}
 	}
@@ -166,6 +168,14 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		} else if (supportsMultiSelection()) {
 			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			doDrawAllTiles();
+		}
+	}
+
+	@Override
+	public void leftMouseButtonReleased(int modifierMask, int x, int y) {
+		computeCursorPosition(x, y);
+		if (supportsMultiSelection() && tileSelectionList.size() > 1) {
+			tileRepositoryService.setSelectedTiles(tileSelectionList);
 		}
 	}
 
@@ -539,6 +549,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void tileReordered() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tilesSelected(List<TileLocation> tileLocationList) {
 		// TODO Auto-generated method stub
 
 	}
