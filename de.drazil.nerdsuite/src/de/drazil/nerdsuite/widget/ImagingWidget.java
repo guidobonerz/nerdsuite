@@ -237,20 +237,27 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		if (paintPixelGrid) {
 			paintPixelGrid(gc);
 		}
-		/*
-		 * if (paintSeparator) { paintSeparator(gc); }
-		 * 
-		 * if (paintTileGrid) { paintTileGrid(gc); }
-		 * 
-		 * if (paintTileSubGrid) { paintTileSubGrid(gc); }
-		 */
+
+		if (paintSeparator) {
+			paintSeparator(gc);
+		}
+
+		if (paintTileGrid) {
+			paintTileGrid(gc);
+		}
+
+		if (paintTileSubGrid) {
+			paintTileSubGrid(gc);
+		}
+
 		paintSelection(gc);
 
 		if (paintTileCursor) {
 			paintTileCursor(gc, mouseIn, updateCursorLocation);
 		}
 		/*
-		 * if (paintTelevisionMode && supportsPainting()) { paintTelevisionRaster(gc); }
+		 * if (paintTelevisionMode && supportsSingleSelection()) {
+		 * paintTelevisionRaster(gc); }
 		 */
 		/*
 		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
@@ -322,21 +329,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		gc.setForeground(Constants.BYTE_SEPARATOR_COLOR);
 		int bc = conf.pixelConfig.bitCount;
 		int step = (8 * bc);
-		for (int x = step; x < (conf.width * conf.tileColumns) / bc; x += step) {
-			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
-					conf.height * conf.tileRows * conf.pixelSize);
+		for (int x = step; x < (conf.scaledTileWidth) / bc; x += step) {
+			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
 		}
 	}
 
 	private void paintTileSubGrid(GC gc) {
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int y = conf.height; y < conf.height * conf.tileRows; y += conf.height) {
-			gc.drawLine(0, y * conf.pixelSize, conf.width * conf.tileColumns * conf.pixelSize, y * conf.pixelSize);
+			gc.drawLine(0, y * conf.pixelSize, conf.scaledTileWidth, y * conf.pixelSize);
 		}
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int x = conf.currentWidth; x < conf.currentWidth * conf.tileColumns; x += conf.currentWidth) {
-			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
-					conf.height * conf.tileRows * conf.pixelSize);
+			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
 		}
 	}
 
@@ -497,7 +502,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			tileY = selectedTileIndexY;
 		}
 		tile.addTileListener(this);
-		doDrawTile();
+		doDrawAllTiles();
 	}
 
 	@Override
