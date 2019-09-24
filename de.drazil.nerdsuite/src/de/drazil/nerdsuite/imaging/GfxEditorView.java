@@ -248,6 +248,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
 		owner = (String) ((Map<String, Object>) part.getObject()).get("owner");
 		part.getTransientData().put(Constants.OWNER, owner);
+		part.setTooltip(
+				graphicFormat.getName() + " " + graphicFormat.getVariants().get(graphicFormatVariant).getName());
+		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
 		boolean isNewProject = (Boolean) ((Map<String, Object>) part.getObject()).get("isNewProject");
 		String pt = project.getProjectType();
 		ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));

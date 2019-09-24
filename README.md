@@ -29,6 +29,7 @@ Gfx Module Todo:
 - Export to BIN/BAS/ASM/PNG/GIF
 - Code cleanup
 
+
 Handle DiskImages:
 Export files partly works
 Create/Update disk images
@@ -38,6 +39,8 @@ Create/Update disk images
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
 ## Sprite Editor
 ![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen2.png)
+## CharSet Double Height
+![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen4.png)
 ## Popup menu
 ![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
 ## Simple BitmapViewer

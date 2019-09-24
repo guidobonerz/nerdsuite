@@ -30,7 +30,7 @@ public class E4Utils {
 	public static MPart createPart(EPartService partService, String id, String contributionUrl, Project project,
 			Map<String, Object> parameterMap) {
 		MPart part = partService.createPart(id);
-		part.setLabel(project.getProjectType() + "(" + project.getName() + ")");
+		part.setLabel(project.getName());
 		part.setObject(parameterMap);
 		part.setElementId(project.getProjectType() + project.getName());
 		part.setContributionURI(contributionUrl);
