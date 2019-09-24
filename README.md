@@ -15,12 +15,17 @@ Current state: Still buggy and incomplete :-)
 Last Changes:
 Load/Save your work (json format)
 
-Gfx Modul Todo:
-- Range selection for bulk modifications
-- Range selection for animations
-- Layer Preview/Seletor
-- Charscreen reference charset selector
+Gfx Module Todo:
 - Performance tuning
+- Range selection for bulk modifications & animation
+- Layer Preview/Selector
+- Charscreen reference charset selector
+- Layer content compression
+- Tile drag movement
+- Layer drag movement
+- Binary Import
+- Export to BIN/BAS/ASM/PNG/GIF
+- Code cleanup
 
 
 ## New Graphic Project Dialog
