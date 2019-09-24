@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
-import de.drazil.nerdsuite.widget.IColorProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -29,7 +28,6 @@ public class ImagePainterFactory {
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
-
 		String name = tile.getName();
 		Image image = imagePool.get(name);
 		if (null == image) {
@@ -43,11 +41,19 @@ public class ImagePainterFactory {
 		ScaleMode scaleMode = conf.getScaleMode();
 		if (conf.getScaleMode() != ScaleMode.None) {
 
+			String sm = conf.getScaleMode().name() + "_" + name;
+			Image img = imagePool.get(sm);
+			if (img != null) {
+				img.dispose();
+			}
 			int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
 					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
 			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
 					: conf.fullHeightPixel >> scaleMode.getScaleFactor();
-			image = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
+
+			img = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
+			imagePool.put(sm, img);
+			image = img;
 		}
 		conf.setScaledTileWidth(image.getBounds().width);
 		conf.setScaledTileHeight(image.getBounds().height);
@@ -68,7 +74,9 @@ public class ImagePainterFactory {
 		Image img = image;
 		if (img == null) {
 			img = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
+			System.out.println("new Image");
 		}
+
 		gc = gcCache.get(imageName);
 		if (gc == null) {
 			gc = new GC(img);

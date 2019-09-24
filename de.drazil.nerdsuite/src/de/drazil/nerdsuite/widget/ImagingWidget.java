@@ -103,16 +103,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			doDrawPixel();
 			fireDoDrawTile(ImagingWidget.this);
 		} else if (supportsSingleSelection() || supportsMultiSelection()) {
+
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
-			selectedTileIndex = (tileY * conf.columns) + tileX;
+			selectedTileIndex = computeTileIndex(tileX, tileY);
+			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			if (selectedTileIndex < tileRepositoryService.getSize()) {
 				tileRepositoryService.setSelectedTile(selectedTileIndex);
 			} else {
 				System.out.println("tile selection outside range...");
 			}
 			// fireSetSelectedTile(ImagingWidget.this, tile);
-			computeSelection(false, false);
+
 			doDrawAllTiles();
 		}
 	}
@@ -164,8 +166,16 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				fireDoDrawTile(ImagingWidget.this);
 			}
 		} else if (supportsMultiSelection()) {
-			// computeSelection(false, false);
+			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			doDrawAllTiles();
+		}
+	}
+
+	@Override
+	public void leftMouseButtonReleased(int modifierMask, int x, int y) {
+		computeCursorPosition(x, y);
+		if (supportsMultiSelection() && tileSelectionList.size() > 1) {
+			tileRepositoryService.setSelectedTiles(tileSelectionList);
 		}
 	}
 
@@ -188,9 +198,63 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	private void computeSelection(boolean x, boolean y) {
-		tileSelectionList.clear();
-		tileSelectionList.add(new TileLocation(selectedTileIndexX, selectedTileIndexY));
+	private boolean hasTile(int x, int y) {
+		for (TileLocation tl : tileSelectionList) {
+			if (tl.x == x && tl.y == y) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private int computeTileIndex(int x, int y) {
+		return (x + (y * conf.columns));
+	}
+
+	private void computeSelection(boolean selectAll, boolean addNewSelectionRange) {
+		if (addNewSelectionRange) {
+			System.out.println("add new selection range");
+		}
+		if (selectionRangeBuffer.isEmpty()) {
+			if (selectAll) {
+				// selectionRangeBuffer.add(new TileLocation(0, 0));
+				// selectionRangeBuffer.add(new TileLocation(columns - 1, rows - 1));
+			} else {
+				selectionRangeBuffer.add(new TileLocation(tileX, tileY));
+				selectionRangeBuffer.add(new TileLocation(tileX, tileY));
+			}
+		}
+		if (!selectAll) {
+			selectionRangeBuffer.get(1).x = tileX;
+			selectionRangeBuffer.get(1).y = tileY;
+		}
+		int i1 = computeTileIndex(selectionRangeBuffer.get(0).x, selectionRangeBuffer.get(0).y);
+		int i2 = computeTileIndex(selectionRangeBuffer.get(1).x, selectionRangeBuffer.get(1).y);
+		int a = 0;
+		int b = 1;
+
+		if (i1 > i2) {
+			a = 1;
+			b = 0;
+		}
+
+		int xs = selectionRangeBuffer.get(a).x;
+		int ys = selectionRangeBuffer.get(a).y;
+		tileSelectionList = new ArrayList<>();
+		for (;;) {
+			if (xs < conf.columns) {
+				if (!hasTile(xs, ys)) {
+					tileSelectionList.add(new TileLocation(xs, ys));
+				}
+				if (xs == selectionRangeBuffer.get(b).x && ys == selectionRangeBuffer.get(b).y) {
+					break;
+				}
+				xs++;
+			} else {
+				xs = 0;
+				ys++;
+			}
+		}
 	}
 
 	protected void computeCursorPosition(int x, int y) {
@@ -263,6 +327,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
 		 */
 		redrawMode = RedrawMode.DrawNothing;
+
 	}
 
 	private void paintTelevisionRaster(GC gc) {
@@ -484,6 +549,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void tileReordered() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tilesSelected(List<TileLocation> tileLocationList) {
 		// TODO Auto-generated method stub
 
 	}

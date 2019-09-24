@@ -51,6 +51,7 @@ import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidget;
@@ -453,9 +454,22 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 
 	@Override
 	public void tileSelected(Tile tile) {
+		List<String> tags1 = new LinkedList<>();
+		tags1.add("MultiColorButton");
+		E4Utils.setToolItemEnabled(part, modelService, tags1, tile.isMulticolor());
+		List<String> tags2 = new LinkedList<>();
+		tags2.add("Animator");
+		E4Utils.setToolItemEnabled(part, modelService, tags2, false);
+
+	}
+
+	@Override
+	public void tilesSelected(List<TileLocation> tileLocationList) {
+		System.out.println("selected tiles:" + tileLocationList.size());
 		List<String> tags = new LinkedList<>();
-		tags.add("MultiColorButton");
-		E4Utils.getMenuITemByTag(part, modelService, tags).setSelected(tile.isMulticolor());
+		tags.add("Animator");
+		E4Utils.setToolItemEnabled(part, modelService, tags, tileLocationList.size() > 1);
+
 	}
 
 	private void save(File file) {
@@ -508,4 +522,5 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 				+ graphicFormat.getVariants().get(graphicFormatVariant).getName() + "\n";
 		return s;
 	}
+
 }
