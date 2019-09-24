@@ -33,6 +33,9 @@ public class Tile {
 	private List<Layer> layerList = null;
 	@JsonProperty(value = "layerIndexOrder")
 	private List<Integer> layerIndexOrderList = null;
+	@Setter
+	@Getter
+	private boolean isEmpty = true;
 
 	public Tile() {
 		createTileListenerList();
