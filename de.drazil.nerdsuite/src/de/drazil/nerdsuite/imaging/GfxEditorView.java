@@ -96,7 +96,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			PencilMode pencilMode = (PencilMode) brokerObject.getTransferObject();
 			painter.getConf().setPencilMode(pencilMode);
-
 		}
 	}
 
@@ -366,7 +365,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	}
 
 	public ImagingWidget createPainterWidget() {
-
 		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 		painter.getConf().setWidgetName("Painter :");
@@ -384,7 +382,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	}
 
 	public ImagingWidget createPreviewerWidget() {
-
 		previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		previewer.getConf().setWidgetName("Preview :");
 		previewer.getConf().setPixelGridEnabled(false);
