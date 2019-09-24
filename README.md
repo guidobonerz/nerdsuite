@@ -20,6 +20,7 @@ Gfx Module Todo:
 - Performance tuning
 - Range selection for bulk modifications & animation
 - Layer Preview/Selector
+- Color selection widget
 - Charscreen reference charset selector
 - Layer content compression
 - Tile drag movement
