@@ -27,6 +27,10 @@ Gfx Module Todo:
 - Export to BIN/BAS/ASM/PNG/GIF
 - Code cleanup
 
+Handle DiskImages:
+Export files partly works
+Create/Update disk images
+
 
 ## New Graphic Project Dialog
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
