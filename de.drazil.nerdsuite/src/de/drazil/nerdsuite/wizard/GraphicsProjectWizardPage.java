@@ -154,7 +154,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				GraphicFormat graphicFormat = (GraphicFormat) selection.getFirstElement();
 				getModel().setProjectType(graphicFormat.getId());
-				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantByPrefix(graphicFormat.getId());
+				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantListByPrefix(graphicFormat.getId());
 				gfxFormatVariantCombo.setInput(l);
 				gfxFormatVariantCombo.setSelection(new StructuredSelection(l.get(0)));
 

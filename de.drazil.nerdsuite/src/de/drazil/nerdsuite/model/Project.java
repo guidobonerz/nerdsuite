@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,6 +24,9 @@ public class Project {
 	private boolean singleFileProject;
 	private boolean isMountpoint;
 	private String iconName;
+	private Date createdOn;
+	private Date changedOn;
+
 	@JsonInclude(Include.NON_NULL)
 	private String mountLocation;
 

@@ -1,6 +1,9 @@
 package de.drazil.nerdsuite.handler;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +59,10 @@ public class NewProjectHandler {
 
 				project.setSingleFileProject(true);
 				project.setOpen(true);
+				LocalDateTime ldt = LocalDateTime.now();
+				Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+				project.setCreatedOn(d);
+				project.setChangedOn(d);
 
 				ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
 				project.setIconName(projectType.getIconName());

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.Workspace;
 
 public class Configuration {
@@ -86,7 +87,7 @@ public class Configuration {
 				System.out.println("create new workspace folder...");
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
-				writeWorkspace(workspace);
+				updateWorkspace(null, false);
 			}
 
 			if (workspace == null) {
@@ -110,7 +111,10 @@ public class Configuration {
 		return workspace;
 	}
 
-	public final void writeWorkspace(Workspace workspace) {
+	public final void updateWorkspace(Project project, boolean addProject) {
+		if (addProject) {
+			workspace.add(project);
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
