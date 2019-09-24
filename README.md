@@ -5,6 +5,7 @@ Currently I work mostly on the graphics part.
 
 | System | OS | Works | Performance | Java Version
 | -- | -- | -- | -- | -- |
+| Windows (4 GHz i7 / 32GB) | Windows 10 | yes | excellent| 1.8.0_191
 | Windows (4 GHz i7 / 32GB) | Windows 8.1 | yes | excellent| 1.8.0_191
 | Windows (2.4 GHz i5 / 16GB) | Windows 7 | yes | good| 1.8.0_191
 | Linux (2.5 GHz i5 / 6GB) | Linux Mint 18.2 Cinnamon | yes | ok | 1.8.0_191
