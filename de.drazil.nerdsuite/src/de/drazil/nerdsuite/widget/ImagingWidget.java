@@ -263,6 +263,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
 		 */
 		redrawMode = RedrawMode.DrawNothing;
+
 	}
 
 	private void paintTelevisionRaster(GC gc) {

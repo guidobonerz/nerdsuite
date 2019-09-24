@@ -455,7 +455,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	public void tileSelected(Tile tile) {
 		List<String> tags = new LinkedList<>();
 		tags.add("MultiColorButton");
-		E4Utils.getMenuITemByTag(part, modelService, tags).setSelected(tile.isMulticolor());
+		//E4Utils.getMenuITemByTag(part, modelService, tags).setSelected(tile.isMulticolor());
 	}
 
 	private void save(File file) {
