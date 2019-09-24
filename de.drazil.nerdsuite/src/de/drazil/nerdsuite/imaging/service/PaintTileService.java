@@ -69,6 +69,7 @@ public class PaintTileService extends AbstractImagingService {
 
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
+
 		int y = 0;
 		int x = 0;
 		if (!conf.supportsPainting) {
@@ -76,6 +77,7 @@ public class PaintTileService extends AbstractImagingService {
 			x = conf.scaledTileWidth * (tileRepositoryService.getSelectedTileIndex() % conf.getColumns());
 		}
 		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider), x, y);
+
 	}
 
 	public void paintAllTiles(Composite parent, GC gc, ImagingWidgetConfiguration conf,
@@ -85,6 +87,7 @@ public class PaintTileService extends AbstractImagingService {
 		int parentWidth = parent.getBounds().width;
 		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
 			Tile tile = tileRepositoryService.getTile(i);
+
 			Image image = imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider);
 			int imageWidth = image.getBounds().width;
 			int imageHeight = image.getBounds().height;

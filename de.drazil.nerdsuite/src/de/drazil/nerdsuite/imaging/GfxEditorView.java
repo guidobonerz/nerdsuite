@@ -2,6 +2,10 @@ package de.drazil.nerdsuite.imaging;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +51,6 @@ import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.model.Workspace;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidget;
@@ -93,7 +96,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			PencilMode pencilMode = (PencilMode) brokerObject.getTransferObject();
 			painter.getConf().setPencilMode(pencilMode);
-
 		}
 	}
 
@@ -246,6 +248,9 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
 		owner = (String) ((Map<String, Object>) part.getObject()).get("owner");
 		part.getTransientData().put(Constants.OWNER, owner);
+		part.setTooltip(
+				graphicFormat.getName() + " " + graphicFormat.getVariants().get(graphicFormatVariant).getName());
+		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
 		boolean isNewProject = (Boolean) ((Map<String, Object>) part.getObject()).get("isNewProject");
 		String pt = project.getProjectType();
 		ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
@@ -323,9 +328,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 
 		try {
 			if (isNewProject) {
-				Workspace workspace = Initializer.getConfiguration().getWorkspace();
-				workspace.add(project);
-				Initializer.getConfiguration().writeWorkspace(workspace);
+				updateWorkspace(true);
 				file.createNewFile();
 			} else {
 				tileRepositoryService = load(file);
@@ -361,11 +364,10 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		if (isNewProject) {
 			tileRepositoryService.addTile(painter.getConf().getTileSize());
 		}
-
+		tileRepositoryService.notifySelection();
 	}
 
 	public ImagingWidget createPainterWidget() {
-
 		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
 		painter.getConf().setWidgetName("Painter :");
@@ -373,6 +375,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		painter.getConf().setGridStyle(GridType.Dot);
 		painter.getConf().setTileGridEnabled(true);
 		painter.getConf().setTileCursorEnabled(false);
+		painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREEN") ? false : true);
 		painter.getConf().supportsPainting = true;
 		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setScaleMode(ScaleMode.None);
@@ -382,7 +385,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	}
 
 	public ImagingWidget createPreviewerWidget() {
-
 		previewer = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		previewer.getConf().setWidgetName("Preview :");
 		previewer.getConf().setPixelGridEnabled(false);
@@ -458,19 +460,27 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 
 	private void save(File file) {
 		System.out.println("save tiles");
+		updateWorkspace(false);
+		LocalDateTime ldt = LocalDateTime.now();
+		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+		project.setChangedOn(d);
 		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
-		TileRepositoryService.save(file, service, project);
+		TileRepositoryService.save(file, service, getHeaderText());
 		part.setDirty(false);
 	}
 
 	private TileRepositoryService load(File file) {
 		System.out.println("load tiles");
 		part.setDirty(false);
-		return TileRepositoryService.load(file, owner, project);
+		return TileRepositoryService.load(file, owner);
 	}
 
 	private void close() {
 		save(file);
+	}
+
+	private void updateWorkspace(boolean addProject) {
+		Initializer.getConfiguration().updateWorkspace(project, addProject);
 	}
 
 	@Override
@@ -486,5 +496,16 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	@Override
 	public Color getColorByIndex(int index) {
 		return PlatformFactory.getPlatformColors(project.getTargetPlatform()).get(index).getColor();
+	}
+
+	private String getHeaderText() {
+		String s = "// Nerdsuite Project by drazil 2017-2019\n" + "// Projectname_____: " + project.getName() + "\n"
+				+ "// Created on______: " + DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn())
+				+ "\n" + "// Changed on______: "
+				+ DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()) + "\n"
+				+ "// Targetplatform__: " + project.getTargetPlatform() + "\n" + "// Type___________ : "
+				+ graphicFormat.getName() + "\n" + "// Variant_________: "
+				+ graphicFormat.getVariants().get(graphicFormatVariant).getName() + "\n";
+		return s;
 	}
 }

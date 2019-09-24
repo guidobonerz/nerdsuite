@@ -112,7 +112,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				System.out.println("tile selection outside range...");
 			}
 			// fireSetSelectedTile(ImagingWidget.this, tile);
-			// computeSelection(false, false);
+			computeSelection(false, false);
 			doDrawAllTiles();
 		}
 	}
@@ -188,6 +188,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
+	private void computeSelection(boolean x, boolean y) {
+		tileSelectionList.clear();
+		tileSelectionList.add(new TileLocation(selectedTileIndexX, selectedTileIndexY));
+	}
+
 	protected void computeCursorPosition(int x, int y) {
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
@@ -232,18 +237,27 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		if (paintPixelGrid) {
 			paintPixelGrid(gc);
 		}
-		/*
-		 * if (paintSeparator) { paintSeparator(gc); }
-		 * 
-		 * if (paintTileGrid) { paintTileGrid(gc); }
-		 * 
-		 * if (paintTileSubGrid) { paintTileSubGrid(gc); }
-		 */
+
+		if (paintSeparator) {
+			paintSeparator(gc);
+		}
+
+		if (paintTileGrid) {
+			paintTileGrid(gc);
+		}
+
+		if (paintTileSubGrid) {
+			paintTileSubGrid(gc);
+		}
+
 		paintSelection(gc);
+
+		if (paintTileCursor) {
+			paintTileCursor(gc, mouseIn, updateCursorLocation);
+		}
 		/*
-		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
-		 * 
-		 * if (paintTelevisionMode && supportsPainting()) { paintTelevisionRaster(gc); }
+		 * if (paintTelevisionMode && supportsSingleSelection()) {
+		 * paintTelevisionRaster(gc); }
 		 */
 		/*
 		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
@@ -265,9 +279,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
 		for (TileLocation tilelocation : tileSelectionList) {
-			gc.fillRectangle(tilelocation.x * conf.width * conf.pixelSize * conf.tileColumns,
-					tilelocation.y * conf.height * conf.pixelSize * conf.tileRows,
-					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows);
+			gc.fillRectangle(tilelocation.x * conf.scaledTileWidth, tilelocation.y * conf.scaledTileHeight,
+					conf.scaledTileWidth, conf.scaledTileHeight);
 		}
 	}
 
@@ -316,21 +329,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		gc.setForeground(Constants.BYTE_SEPARATOR_COLOR);
 		int bc = conf.pixelConfig.bitCount;
 		int step = (8 * bc);
-		for (int x = step; x < (conf.width * conf.tileColumns) / bc; x += step) {
-			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
-					conf.height * conf.tileRows * conf.pixelSize);
+		for (int x = step; x < (conf.scaledTileWidth) / bc; x += step) {
+			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
 		}
 	}
 
 	private void paintTileSubGrid(GC gc) {
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int y = conf.height; y < conf.height * conf.tileRows; y += conf.height) {
-			gc.drawLine(0, y * conf.pixelSize, conf.width * conf.tileColumns * conf.pixelSize, y * conf.pixelSize);
+			gc.drawLine(0, y * conf.pixelSize, conf.scaledTileWidth, y * conf.pixelSize);
 		}
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int x = conf.currentWidth; x < conf.currentWidth * conf.tileColumns; x += conf.currentWidth) {
-			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
-					conf.height * conf.tileRows * conf.pixelSize);
+			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
 		}
 	}
 
@@ -491,7 +502,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			tileY = selectedTileIndexY;
 		}
 		tile.addTileListener(this);
-		doDrawTile();
+		doDrawAllTiles();
 	}
 
 	@Override

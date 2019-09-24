@@ -11,7 +11,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class TileRepositoryService extends AbstractImagingService {
@@ -138,18 +137,21 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	public void fireTileSelected(Tile tile) {
+	private void fireTileSelected(Tile tile) {
 		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
 	}
 
-	public static TileRepositoryService load(File fileName, String owner, Project project) {
+	public void notifySelection() {
+		fireTileSelected(getSelectedTile());
+	}
+
+	public static TileRepositoryService load(File fileName, String owner) {
 		TileRepositoryService service = null;
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
 			service = mapper.readValue(fileName, TileRepositoryService.class);
 			ServiceFactory.addService(owner, service, false);
-			service.fireTileSelected(service.getSelectedTile());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -157,15 +159,10 @@ public class TileRepositoryService extends AbstractImagingService {
 		return service;
 	}
 
-	public static void save(File fileName, TileRepositoryService service, Project project) {
+	public static void save(File fileName, TileRepositoryService service, String headerText) {
 		try {
 			FileWriter fw = new FileWriter(fileName);
-			fw.write("// Nerdsuite Project by drazil 2017-2019\n");
-			fw.write("// Projectname : " + project.getName() + "\n");
-			fw.write("// Targetplatform : " + project.getTargetPlatform() + "\n");
-			fw.write("// Type : " + project.getProjectType() + "\n");
-			fw.write("// Variant : " + project.getProjectSubType() + "\n");
-
+			fw.write(headerText);
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 			mapper.writeValue(fw, service);

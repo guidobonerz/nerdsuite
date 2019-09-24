@@ -5,6 +5,7 @@ Currently I work mostly on the graphics part.
 
 | System | OS | Works | Performance | Java Version
 | -- | -- | -- | -- | -- |
+| Windows (4 GHz i7 / 32GB) | Windows 10 | yes | excellent| 1.8.0_191
 | Windows (4 GHz i7 / 32GB) | Windows 8.1 | yes | excellent| 1.8.0_191
 | Windows (2.4 GHz i5 / 16GB) | Windows 7 | yes | good| 1.8.0_191
 | Linux (2.5 GHz i5 / 6GB) | Linux Mint 18.2 Cinnamon | yes | ok | 1.8.0_191
@@ -15,18 +16,31 @@ Current state: Still buggy and incomplete :-)
 Last Changes:
 Load/Save your work (json format)
 
-Gfx Modul Todo:
-- Range selection for bulk modifications
-- Range selection for animations
-- Layer Preview/Seletor
+Gfx Module Todo:
+- Performance tuning
+- Range selection for bulk modifications & animation
+- Layer Preview/Selector
+- Color selection widget
 - Charscreen reference charset selector
-- Performace tuning
+- Layer content compression
+- Tile drag movement
+- Layer drag movement
+- Binary Import
+- Export to BIN/BAS/ASM/PNG/GIF
+- Code cleanup
+
+
+Handle DiskImages:
+Export files partly works
+Create/Update disk images
 
 
 ## New Graphic Project Dialog
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
 ## Sprite Editor
 ![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen2.png)
+## CharSet Double Height
+![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen4.png)
 ## Popup menu
 ![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
 ## Simple BitmapViewer

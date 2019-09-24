@@ -48,7 +48,8 @@ public class GraphicFormatFactory {
 		return graphicFormatList.stream().filter(gf -> gf.getId().startsWith(name)).collect(Collectors.toList());
 	}
 
-	public static List<GraphicFormatVariant> getFormatVariantByPrefix(String name) {
+	public static List<GraphicFormatVariant> getFormatVariantListByPrefix(String name) {
 		return getFormatByName(name).getVariants();
 	}
+
 }
