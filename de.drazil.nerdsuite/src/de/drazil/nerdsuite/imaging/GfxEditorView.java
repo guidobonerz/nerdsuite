@@ -15,6 +15,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -489,6 +490,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		return TileRepositoryService.load(file, owner);
 	}
 
+	@Persist
 	private void close() {
 		save(file);
 	}
