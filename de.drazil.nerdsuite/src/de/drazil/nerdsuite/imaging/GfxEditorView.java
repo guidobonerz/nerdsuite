@@ -23,12 +23,15 @@ import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.PopupDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
@@ -55,6 +58,7 @@ import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
+import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
@@ -316,6 +320,36 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		color4.setLayoutData(gridData);
 
+		PopupDialog pd = new PopupDialog(parent.getShell(), PopupDialog.INFOPOPUP_SHELLSTYLE, true, false, false, false,
+				false, null, null) {
+			@Override
+			protected Control createDialogArea(Composite parent) {
+				ColorChooser cc1 = new ColorChooser(parent, SWT.NONE, 0);
+				cc1.setPlatformColors(PlatformFactory.getPlatformColors(project.getTargetPlatform()));
+				return cc1;
+			}
+
+			protected void adjustBounds() {
+				super.adjustBounds();
+				Display d = Display.getCurrent();
+				if (d == null) {
+					d = Display.getDefault();
+				}
+				Point point = d.getCursorLocation();
+				getShell().setLocation(point.x + 9, point.y + 14);
+			}
+
+			@Override
+			protected Point getDefaultSize() {
+
+				return new Point(100, 100);
+			}
+		};
+
+		// gridData = new GridData(GridData.FILL);
+		// gridData.horizontalSpan = 5;
+		// cc1.setLayoutData(gridData);
+
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		gridData.horizontalSpan = 4;
 		showOnlyActiveLayer.setLayoutData(gridData);
@@ -372,6 +406,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 			@Override
 			public void run() {
 				tileRepositoryService.notifySelection();
+				pd.open();
 			}
 		});
 

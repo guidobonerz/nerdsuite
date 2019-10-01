@@ -1,6 +1,5 @@
 package de.drazil.nerdsuite.widget;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -10,8 +9,6 @@ import java.util.stream.Collectors;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.PlatformColor;
@@ -53,6 +50,7 @@ public class PlatformFactory {
 
 	public static List<PlatformColor> getPlatformColors(String id) {
 
+		
 		List<PlatformColor> platformColors = platformColorCache.get(id);
 		if (platformColors == null) {
 			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
