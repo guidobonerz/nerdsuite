@@ -571,6 +571,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			selectedTileIndexY = (selectedTileIndex / conf.getColumns());
 			tileX = selectedTileIndexX;
 			tileY = selectedTileIndexY;
+			computeSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 		}
 		tile.addTileListener(this);
 		doDrawAllTiles();

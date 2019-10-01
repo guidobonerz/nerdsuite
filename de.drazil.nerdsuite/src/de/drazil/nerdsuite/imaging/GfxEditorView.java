@@ -29,6 +29,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
@@ -366,7 +367,14 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		if (isNewProject) {
 			tileRepositoryService.addTile(painter.getConf().getTileSize());
 		}
-		tileRepositoryService.notifySelection();
+		//
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				tileRepositoryService.notifySelection();
+			}
+		});
+
 	}
 
 	public ImagingWidget createPainterWidget() {
