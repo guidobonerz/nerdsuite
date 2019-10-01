@@ -324,7 +324,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 				false, null, null) {
 			@Override
 			protected Control createDialogArea(Composite parent) {
-				ColorChooser cc1 = new ColorChooser(parent, SWT.NONE, 0);
+				ColorChooser cc1 = new ColorChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, 0);
 				cc1.setPlatformColors(PlatformFactory.getPlatformColors(project.getTargetPlatform()));
 				return cc1;
 			}

@@ -3,12 +3,11 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.PlatformColor;
 
 public class ColorChooser extends BaseWidget implements PaintListener {
@@ -18,6 +17,8 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 	private int rows;
 	private int width;
 	private int height;
+	private int cx;
+	private int cy;
 	private List<PlatformColor> platformColorList;
 	private List<IColorSelectionListener> colorSelectionListener;
 
@@ -28,26 +29,31 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		this.id = id;
 		colorSelectionListener = new ArrayList<IColorSelectionListener>();
 		addPaintListener(this);
-		
+
 	}
 
 	public void setPlatformColors(List<PlatformColor> platformColorList) {
 		this.platformColorList = platformColorList;
 		columns = platformColorList.size() / 4;
-		rows = (platformColorList.size() / columns) ;
+		rows = (platformColorList.size() / columns);
 		width = columns * COLOR_TILE_SIZE;
 		height = rows * COLOR_TILE_SIZE;
 		setSize(width, height);
- 	}
+	}
 
 	@Override
 	public void paintControl(PaintEvent e) {
 		e.gc.setLineWidth(2);
 
-		for (int c = 0; c < columns; c++) {
-			for (int r = 0; r < rows; r++) {
-				e.gc.setBackground(platformColorList.get(c * columns + r).getColor());
+		for (int r = 0; r < columns; r++) {
+			for (int c = 0; c < rows; c++) {
+				e.gc.setBackground(platformColorList.get(r * columns + c).getColor());
 				e.gc.fillRectangle(c * COLOR_TILE_SIZE, r * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
+				if (c == cx && r == cy) {
+					e.gc.setForeground(Constants.WHITE);
+					e.gc.drawRectangle(1 + cx * COLOR_TILE_SIZE, 1 + cy * COLOR_TILE_SIZE, COLOR_TILE_SIZE - 2,
+							COLOR_TILE_SIZE - 2);
+				}
 			}
 		}
 	}
@@ -59,7 +65,18 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
+		cx = x / COLOR_TILE_SIZE;
+		cy = y / COLOR_TILE_SIZE;
+		int colorIndex = (cx + (cy * columns));
+		System.out.println(colorIndex);
+		redraw();
+	}
 
+	@Override
+	public void mouseMove(int modifierMask, int x, int y) {
+		cx = x / COLOR_TILE_SIZE;
+		cy = y / COLOR_TILE_SIZE;
+		redraw();
 	}
 
 	public void addColorSelectionListener(IColorSelectionListener listener) {
@@ -74,5 +91,4 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		colorSelectionListener.forEach(l -> l.colorSelected(id, colorIndex));
 	}
 
-	
 }
