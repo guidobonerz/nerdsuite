@@ -49,15 +49,18 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 
 		for (int r = 0; r < columns; r++) {
 			for (int c = 0; c < rows; c++) {
+				e.gc.setAlpha(255);
 				e.gc.setBackground(platformColorList.get(r * columns + c).getColor());
 				e.gc.fillRectangle(c * COLOR_TILE_SIZE, r * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
 				if (c == cx && r == cy) {
 					e.gc.setForeground(Constants.WHITE);
+					e.gc.setAlpha(160);
 					e.gc.drawRectangle(1 + cx * COLOR_TILE_SIZE, 1 + cy * COLOR_TILE_SIZE, COLOR_TILE_SIZE - 2,
 							COLOR_TILE_SIZE - 2);
 				}
 			}
 		}
+		e.gc.setAlpha(255);
 		e.gc.setBackground(Constants.BLACK);
 		e.gc.fillRectangle(0, height, width, 20);
 		e.gc.setForeground(Constants.WHITE);
