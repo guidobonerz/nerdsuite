@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -15,25 +16,29 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 
 	private static final int COLOR_TILE_SIZE = 30;
 	private int maxColors;
+	private int maxColorsTemp;
 	private boolean isMonochrom;
 	private int colorIndex;
+	private int colorNo;
 	private boolean allowMouseMove = false;
 	private List<PlatformColor> platformColorList;
 	private int[] platformColorIndexList;
 	private ColorChooser colorChooser;
 	private CustomPopupDialog popupDialog;
+	private List<IColorSelectionListener> colorSelectionListener;
 
 	public MultiColorChooser(Composite parent, int style, int maxColors, List<PlatformColor> platformColorList) {
 		super(parent, style);
 
 		this.maxColors = maxColors;
+		this.maxColorsTemp = maxColors;
 		this.platformColorList = platformColorList;
+		this.colorSelectionListener = new ArrayList<IColorSelectionListener>();
 		this.platformColorIndexList = new int[maxColors];
 		for (int i = 0; i < maxColors; i++) {
 			platformColorIndexList[i] = i;
 		}
 		addPaintListener(this);
-
 	}
 
 	@Override
@@ -41,23 +46,43 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 		e.gc.setLineWidth(2);
 		for (int y = 0; y < maxColors; y++) {
 			e.gc.setBackground(platformColorList.get(platformColorIndexList[y]).getColor());
+			e.gc.setAlpha(y >= maxColorsTemp ? 100 : 255);
 			e.gc.fillRectangle(0, y * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
+			if (y >= maxColorsTemp) {
+				e.gc.drawLine(0, y * COLOR_TILE_SIZE, COLOR_TILE_SIZE, (y + 1) * COLOR_TILE_SIZE);
+				e.gc.drawLine(0, (y + 1) * COLOR_TILE_SIZE, COLOR_TILE_SIZE, y * COLOR_TILE_SIZE);
+			}
 		}
+		e.gc.setAlpha(255);
 		e.gc.setForeground(Constants.DARK_GREY);
 		e.gc.drawRectangle(1, 2, COLOR_TILE_SIZE - 2, COLOR_TILE_SIZE * maxColors - 3);
 
 		e.gc.setForeground(Constants.BRIGHT_ORANGE);
-		e.gc.drawRectangle(1, 1 + colorIndex * COLOR_TILE_SIZE, COLOR_TILE_SIZE - 2, COLOR_TILE_SIZE - 2);
+		e.gc.drawRectangle(1, 1 + colorNo * COLOR_TILE_SIZE, COLOR_TILE_SIZE - 2, COLOR_TILE_SIZE - 2);
 
 	}
 
 	public void setMonochrom(boolean monochrom) {
 		isMonochrom = monochrom;
+		maxColorsTemp = isMonochrom ? 2 : maxColors;
+		redraw();
+	}
+
+	public void addColorSelectionListener(IColorSelectionListener listener) {
+		colorSelectionListener.add(listener);
+	}
+
+	public void removeColorSelectionListener(IColorSelectionListener listener) {
+		colorSelectionListener.remove(listener);
+	}
+
+	private void fireColorSelected(int colorIndex) {
+		colorSelectionListener.forEach(l -> l.colorSelected(colorNo, colorIndex));
 	}
 
 	@Override
-	public void colorSelected(int colorIndex) {
-		platformColorIndexList[this.colorIndex] = colorIndex;
+	public void colorSelected(int colorNo, int colorIndex) {
+		platformColorIndexList[this.colorNo] = colorIndex;
 		allowMouseMove = true;
 		redraw();
 	}
@@ -65,7 +90,10 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		redraw();
+		if (colorNo < maxColorsTemp) {
+			fireColorSelected(platformColorIndexList[colorNo]);
+			redraw();
+		}
 	}
 
 	@Override
@@ -85,7 +113,10 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 	}
 
 	private void computeCursorPosition(int x, int y) {
-		colorIndex = y / COLOR_TILE_SIZE;
+		colorNo = y / COLOR_TILE_SIZE;
+		if (colorNo > maxColorsTemp) {
+			colorNo = maxColorsTemp;
+		}
 	}
 
 	/*

@@ -55,15 +55,15 @@ import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
-import de.drazil.nerdsuite.widget.ColorChooser;
-import de.drazil.nerdsuite.widget.CustomPopupDialog;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
+import de.drazil.nerdsuite.widget.IColorSelectionListener;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.MultiColorChooser;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
-public class GfxEditorView implements IConfirmable, ITileSelectionListener, IColorPaletteProvider {
+public class GfxEditorView
+		implements IConfirmable, ITileSelectionListener, IColorPaletteProvider, IColorSelectionListener {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -71,11 +71,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	private Composite parent;
 
 	private TileRepositoryService tileRepositoryService;
-
-	private Button color1;
-	private Button color2;
-	private Button color3;
-	private Button color4;
 
 	private MultiColorChooser multiColorChooser;
 
@@ -180,6 +175,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(multicolor ? 1 : 0, this);
 			tileRepositoryService.getSelectedTile().setMulticolor(multicolor);
+			multiColorChooser.setMonochrom(!multicolor);
 		}
 	}
 
@@ -275,24 +271,10 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
 		painter.setLayoutData(gridData);
-		/*
-		 * color1 = new Button(parent, SWT.NONE); color1.setText("color1");
-		 * color1.addListener(SWT.Selection, e -> {
-		 * tileRepositoryService.getSelectedTile().getActiveLayer().
-		 * setSelectedColorIndex(0); }); color2 = new Button(parent, SWT.NONE);
-		 * color2.setText("color2"); color2.addListener(SWT.Selection, e -> {
-		 * tileRepositoryService.getSelectedTile().getActiveLayer().
-		 * setSelectedColorIndex(1); }); color3 = new Button(parent, SWT.NONE);
-		 * color3.setText("color3"); color3.addListener(SWT.Selection, e -> {
-		 * tileRepositoryService.getSelectedTile().getActiveLayer().
-		 * setSelectedColorIndex(2); }); color4 = new Button(parent, SWT.NONE);
-		 * color4.setText("color4"); color4.addListener(SWT.Selection, e -> {
-		 * tileRepositoryService.getSelectedTile().getActiveLayer().
-		 * setSelectedColorIndex(3); });
-		 */
 
 		multiColorChooser = new MultiColorChooser(parent, SWT.NONE, 4,
 				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
+		multiColorChooser.addColorSelectionListener(this);
 
 		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
 		showOnlyActiveLayer.setText("Show active layer only");
@@ -309,20 +291,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		gridData.horizontalSpan = 4;
 		multiColorChooser.setLayoutData(gridData);
-		
 
-		/*
-		 * color1.setLayoutData(gridData);
-		 * 
-		 * gridData = new GridData(GridData.FILL_HORIZONTAL);
-		 * color2.setLayoutData(gridData);
-		 * 
-		 * gridData = new GridData(GridData.FILL_HORIZONTAL);
-		 * color3.setLayoutData(gridData);
-		 * 
-		 * gridData = new GridData(GridData.FILL_HORIZONTAL);
-		 * color4.setLayoutData(gridData);
-		 */
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		gridData.horizontalSpan = 4;
 		showOnlyActiveLayer.setLayoutData(gridData);
@@ -379,7 +348,6 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 			@Override
 			public void run() {
 				tileRepositoryService.notifySelection();
-				//pd.open();
 			}
 		});
 
@@ -528,6 +496,11 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	@Override
 	public Color getColorByIndex(int index) {
 		return PlatformFactory.getPlatformColors(project.getTargetPlatform()).get(index).getColor();
+	}
+
+	@Override
+	public void colorSelected(int colorNo, int colorIndex) {
+		tileRepositoryService.getSelectedTile().getActiveLayer().setColorIndex(colorNo, colorIndex,true);
 	}
 
 	private String getHeaderText() {

@@ -14,7 +14,6 @@ import de.drazil.nerdsuite.model.PlatformColor;
 
 public class ColorChooser extends BaseWidget implements PaintListener {
 
-	private int id;
 	private int columns;
 	private int rows;
 	private int width;
@@ -46,10 +45,8 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		e.gc.setLineWidth(2);
-
 		for (int r = 0; r < columns; r++) {
 			for (int c = 0; c < rows; c++) {
-				e.gc.setAlpha(255);
 				e.gc.setBackground(platformColorList.get(r * columns + c).getColor());
 				e.gc.fillRectangle(c * COLOR_TILE_SIZE, r * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
 				if (c == cx && r == cy) {
@@ -59,12 +56,12 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 				}
 			}
 		}
-		e.gc.setAlpha(255);
 		e.gc.setBackground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, height, width, 20);
 		e.gc.setForeground(Constants.WHITE);
 		if (cx <= columns && cy < rows) {
-			e.gc.drawString(platformColorList.get(colorIndex).getName(), 5, height + 3);
+			e.gc.drawString(String.format("%02X : %s", colorIndex, platformColorList.get(colorIndex).getName()), 5,
+					height + 3);
 		}
 	}
 
@@ -94,7 +91,7 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 	}
 
 	private void fireColorSelected(int colorIndex) {
-		colorSelectionListener.forEach(l -> l.colorSelected(colorIndex));
+		colorSelectionListener.forEach(l -> l.colorSelected(-1, colorIndex));
 	}
 
 	private void computeCursorPosition(int x, int y) {

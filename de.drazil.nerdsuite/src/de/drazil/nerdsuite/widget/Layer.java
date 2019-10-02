@@ -47,10 +47,17 @@ public class Layer {
 
 	@JsonIgnore
 	public void setColorIndex(int index, int colorIndex) {
+		setColorIndex(index, colorIndex, false);
+	}
+
+	public void setColorIndex(int index, int colorIndex, boolean select) {
 		if (colorPalette == null) {
 			colorPalette = new HashMap<>();
 		}
 		colorPalette.put(String.valueOf(index), colorIndex);
+		if (select) {
+			selectedColorIndex = index;
+		}
 	}
 
 	public int size() {
