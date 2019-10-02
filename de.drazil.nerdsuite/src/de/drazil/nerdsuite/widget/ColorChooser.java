@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.PlatformColor;
@@ -19,6 +20,7 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 	private int height;
 	private int cx;
 	private int cy;
+	private int colorIndex;
 	private List<PlatformColor> platformColorList;
 	private List<IColorSelectionListener> colorSelectionListener;
 
@@ -38,7 +40,7 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		rows = (platformColorList.size() / columns);
 		width = columns * COLOR_TILE_SIZE;
 		height = rows * COLOR_TILE_SIZE;
-		setSize(width, height);
+		setSize(width, height + 24);
 	}
 
 	@Override
@@ -56,26 +58,30 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void mouseExit(int modifierMask, int x, int y) {
-		setVisible(false);
+		e.gc.setBackground(Constants.BLACK);
+		e.gc.fillRectangle(0, height, width, 20);
+		e.gc.setForeground(Constants.WHITE);
+		e.gc.drawString(platformColorList.get(colorIndex).getName(), 5, height + 3);
 	}
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		cx = x / COLOR_TILE_SIZE;
 		cy = y / COLOR_TILE_SIZE;
-		int colorIndex = (cx + (cy * columns));
+		colorIndex = (cx + (cy * columns));
 		System.out.println(colorIndex);
-		redraw();
+
+		Object o = getParent().getParent();
+		if (o instanceof Shell) {
+			((Shell) o).close();
+		}
 	}
 
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
 		cx = x / COLOR_TILE_SIZE;
 		cy = y / COLOR_TILE_SIZE;
+		colorIndex = (cx + (cy * columns));
 		redraw();
 	}
 

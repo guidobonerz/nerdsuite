@@ -59,6 +59,7 @@ import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
+import de.drazil.nerdsuite.widget.CustomPopupDialog;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
@@ -320,31 +321,16 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		color4.setLayoutData(gridData);
 
-		PopupDialog pd = new PopupDialog(parent.getShell(), PopupDialog.INFOPOPUP_SHELLSTYLE, true, false, false, false,
-				false, null, null) {
+		CustomPopupDialog pd = new CustomPopupDialog(parent.getShell()) {
 			@Override
 			protected Control createDialogArea(Composite parent) {
 				ColorChooser cc1 = new ColorChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, 0);
 				cc1.setPlatformColors(PlatformFactory.getPlatformColors(project.getTargetPlatform()));
 				return cc1;
 			}
-
-			protected void adjustBounds() {
-				super.adjustBounds();
-				Display d = Display.getCurrent();
-				if (d == null) {
-					d = Display.getDefault();
-				}
-				Point point = d.getCursorLocation();
-				getShell().setLocation(point.x + 9, point.y + 14);
-			}
-
-			@Override
-			protected Point getDefaultSize() {
-
-				return new Point(100, 100);
-			}
+			
 		};
+		
 
 		// gridData = new GridData(GridData.FILL);
 		// gridData.horizontalSpan = 5;
