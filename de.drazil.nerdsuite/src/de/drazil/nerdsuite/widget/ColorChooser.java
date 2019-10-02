@@ -61,27 +61,24 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		e.gc.setBackground(Constants.BLACK);
 		e.gc.fillRectangle(0, height, width, 20);
 		e.gc.setForeground(Constants.WHITE);
-		e.gc.drawString(platformColorList.get(colorIndex).getName(), 5, height + 3);
-	}
-
-	@Override
-	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		cx = x / COLOR_TILE_SIZE;
-		cy = y / COLOR_TILE_SIZE;
-		colorIndex = (cx + (cy * columns));
-		System.out.println(colorIndex);
-
-		Object o = getParent().getParent();
-		if (o instanceof Shell) {
-			((Shell) o).close();
+		if (cx <= columns && cy < rows) {
+			e.gc.drawString(platformColorList.get(colorIndex).getName(), 5, height + 3);
 		}
 	}
 
 	@Override
+	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
+		computeCursorPositions(x, y);
+		Object o = getParent().getParent();
+		if (o instanceof Shell) {
+			((Shell) o).close();
+		}
+		fireColorSelected(colorIndex);
+	}
+
+	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
-		cx = x / COLOR_TILE_SIZE;
-		cy = y / COLOR_TILE_SIZE;
-		colorIndex = (cx + (cy * columns));
+		computeCursorPositions(x, y);
 		redraw();
 	}
 
@@ -97,4 +94,13 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		colorSelectionListener.forEach(l -> l.colorSelected(id, colorIndex));
 	}
 
+	private void computeCursorPositions(int x, int y) {
+		cx = x / COLOR_TILE_SIZE;
+		cy = y / COLOR_TILE_SIZE;
+		colorIndex = (cx + (cy * columns));
+		int maxColors = platformColorList.size() - 1;
+		if (colorIndex > maxColors) {
+			colorIndex = maxColors;
+		}
+	}
 }
