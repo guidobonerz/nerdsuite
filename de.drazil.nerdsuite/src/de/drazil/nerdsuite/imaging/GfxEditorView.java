@@ -23,15 +23,12 @@ import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.PopupDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
@@ -62,6 +59,7 @@ import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.CustomPopupDialog;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidget;
+import de.drazil.nerdsuite.widget.MultiColorChooser;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -78,6 +76,8 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 	private Button color2;
 	private Button color3;
 	private Button color4;
+
+	private MultiColorChooser multiColorChooser;
 
 	private Button showOnlyActiveLayer;
 	private Button showInactiveLayersTranslucent;
@@ -275,27 +275,24 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
 		painter.setLayoutData(gridData);
+		/*
+		 * color1 = new Button(parent, SWT.NONE); color1.setText("color1");
+		 * color1.addListener(SWT.Selection, e -> {
+		 * tileRepositoryService.getSelectedTile().getActiveLayer().
+		 * setSelectedColorIndex(0); }); color2 = new Button(parent, SWT.NONE);
+		 * color2.setText("color2"); color2.addListener(SWT.Selection, e -> {
+		 * tileRepositoryService.getSelectedTile().getActiveLayer().
+		 * setSelectedColorIndex(1); }); color3 = new Button(parent, SWT.NONE);
+		 * color3.setText("color3"); color3.addListener(SWT.Selection, e -> {
+		 * tileRepositoryService.getSelectedTile().getActiveLayer().
+		 * setSelectedColorIndex(2); }); color4 = new Button(parent, SWT.NONE);
+		 * color4.setText("color4"); color4.addListener(SWT.Selection, e -> {
+		 * tileRepositoryService.getSelectedTile().getActiveLayer().
+		 * setSelectedColorIndex(3); });
+		 */
 
-		color1 = new Button(parent, SWT.NONE);
-		color1.setText("color1");
-		color1.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(0);
-		});
-		color2 = new Button(parent, SWT.NONE);
-		color2.setText("color2");
-		color2.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(1);
-		});
-		color3 = new Button(parent, SWT.NONE);
-		color3.setText("color3");
-		color3.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(2);
-		});
-		color4 = new Button(parent, SWT.NONE);
-		color4.setText("color4");
-		color4.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getSelectedTile().getActiveLayer().setSelectedColorIndex(3);
-		});
+		multiColorChooser = new MultiColorChooser(parent, SWT.NONE, 4,
+				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
 
 		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
 		showOnlyActiveLayer.setText("Show active layer only");
@@ -309,33 +306,23 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
 		});
 
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		color1.setLayoutData(gridData);
-
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		color2.setLayoutData(gridData);
-
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		color3.setLayoutData(gridData);
-
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		color4.setLayoutData(gridData);
-
-		CustomPopupDialog pd = new CustomPopupDialog(parent.getShell()) {
-			@Override
-			protected Control createDialogArea(Composite parent) {
-				ColorChooser cc1 = new ColorChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, 0);
-				cc1.setPlatformColors(PlatformFactory.getPlatformColors(project.getTargetPlatform()));
-				return cc1;
-			}
-			
-		};
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData.horizontalSpan = 4;
+		multiColorChooser.setLayoutData(gridData);
 		
 
-		// gridData = new GridData(GridData.FILL);
-		// gridData.horizontalSpan = 5;
-		// cc1.setLayoutData(gridData);
-
+		/*
+		 * color1.setLayoutData(gridData);
+		 * 
+		 * gridData = new GridData(GridData.FILL_HORIZONTAL);
+		 * color2.setLayoutData(gridData);
+		 * 
+		 * gridData = new GridData(GridData.FILL_HORIZONTAL);
+		 * color3.setLayoutData(gridData);
+		 * 
+		 * gridData = new GridData(GridData.FILL_HORIZONTAL);
+		 * color4.setLayoutData(gridData);
+		 */
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		gridData.horizontalSpan = 4;
 		showOnlyActiveLayer.setLayoutData(gridData);
@@ -392,7 +379,7 @@ public class GfxEditorView implements IConfirmable, ITileSelectionListener, ICol
 			@Override
 			public void run() {
 				tileRepositoryService.notifySelection();
-				pd.open();
+				//pd.open();
 			}
 		});
 

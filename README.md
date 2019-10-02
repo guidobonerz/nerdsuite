@@ -43,6 +43,9 @@ Create/Update disk images
 ![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen4.png)
 ## Popup menu
 ![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
+## Colorchooser
+![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ColorChooser.png)
+
 ## Simple BitmapViewer
 Image by Almighty God
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/koala.png)

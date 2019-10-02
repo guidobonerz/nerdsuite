@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -24,14 +25,13 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 	private List<PlatformColor> platformColorList;
 	private List<IColorSelectionListener> colorSelectionListener;
 
-	private static final int COLOR_TILE_SIZE = 25;
+	private static final int COLOR_TILE_SIZE = 30;
 
-	public ColorChooser(Composite parent, int style, int id) {
+	public ColorChooser(Composite parent, int style, List<PlatformColor> platformColorList) {
 		super(parent, style);
-		this.id = id;
+		setPlatformColors(platformColorList);
 		colorSelectionListener = new ArrayList<IColorSelectionListener>();
 		addPaintListener(this);
-
 	}
 
 	public void setPlatformColors(List<PlatformColor> platformColorList) {
@@ -40,7 +40,7 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		rows = (platformColorList.size() / columns);
 		width = columns * COLOR_TILE_SIZE;
 		height = rows * COLOR_TILE_SIZE;
-		setSize(width, height + 24);
+		setSize(width, height + 20);
 	}
 
 	@Override
@@ -53,15 +53,14 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 				e.gc.setBackground(platformColorList.get(r * columns + c).getColor());
 				e.gc.fillRectangle(c * COLOR_TILE_SIZE, r * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
 				if (c == cx && r == cy) {
-					e.gc.setForeground(Constants.WHITE);
-					e.gc.setAlpha(160);
+					e.gc.setForeground(Constants.BRIGHT_ORANGE);
 					e.gc.drawRectangle(1 + cx * COLOR_TILE_SIZE, 1 + cy * COLOR_TILE_SIZE, COLOR_TILE_SIZE - 2,
 							COLOR_TILE_SIZE - 2);
 				}
 			}
 		}
 		e.gc.setAlpha(255);
-		e.gc.setBackground(Constants.BLACK);
+		e.gc.setBackground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, height, width, 20);
 		e.gc.setForeground(Constants.WHITE);
 		if (cx <= columns && cy < rows) {
@@ -71,17 +70,18 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		computeCursorPositions(x, y);
+		computeCursorPosition(x, y);
 		Object o = getParent().getParent();
 		if (o instanceof Shell) {
 			((Shell) o).close();
 		}
 		fireColorSelected(colorIndex);
+		colorSelectionListener.clear();
 	}
 
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
-		computeCursorPositions(x, y);
+		computeCursorPosition(x, y);
 		redraw();
 	}
 
@@ -94,10 +94,10 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 	}
 
 	private void fireColorSelected(int colorIndex) {
-		colorSelectionListener.forEach(l -> l.colorSelected(id, colorIndex));
+		colorSelectionListener.forEach(l -> l.colorSelected(colorIndex));
 	}
 
-	private void computeCursorPositions(int x, int y) {
+	private void computeCursorPosition(int x, int y) {
 		cx = x / COLOR_TILE_SIZE;
 		cy = y / COLOR_TILE_SIZE;
 		colorIndex = (cx + (cy * columns));
@@ -105,5 +105,10 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		if (colorIndex > maxColors) {
 			colorIndex = maxColors;
 		}
+	}
+
+	@Override
+	public Point computeSize(int wHint, int hHint, boolean changed) {
+		return getSize();
 	}
 }
