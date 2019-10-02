@@ -18,9 +18,7 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 	private int maxColors;
 	private int maxColorsTemp;
 	private boolean isMonochrom;
-	private int colorIndex;
 	private int colorNo;
-	private boolean allowMouseMove = false;
 	private List<PlatformColor> platformColorList;
 	private int[] platformColorIndexList;
 	private ColorChooser colorChooser;
@@ -29,7 +27,6 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 
 	public MultiColorChooser(Composite parent, int style, int maxColors, List<PlatformColor> platformColorList) {
 		super(parent, style);
-
 		this.maxColors = maxColors;
 		this.maxColorsTemp = maxColors;
 		this.platformColorList = platformColorList;
@@ -56,10 +53,8 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 		e.gc.setAlpha(255);
 		e.gc.setForeground(Constants.DARK_GREY);
 		e.gc.drawRectangle(1, 2, COLOR_TILE_SIZE - 2, COLOR_TILE_SIZE * maxColors - 3);
-
 		e.gc.setForeground(Constants.BRIGHT_ORANGE);
 		e.gc.drawRectangle(1, 1 + colorNo * COLOR_TILE_SIZE, COLOR_TILE_SIZE - 2, COLOR_TILE_SIZE - 2);
-
 	}
 
 	public void setMonochrom(boolean monochrom) {
@@ -83,7 +78,6 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
 		platformColorIndexList[this.colorNo] = colorIndex;
-		allowMouseMove = true;
 		redraw();
 	}
 
@@ -98,7 +92,6 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
-		allowMouseMove = false;
 		computeCursorPosition(x, y);
 		colorChooser = new ColorChooser(getParent(), SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, platformColorList);
 		colorChooser.addColorSelectionListener(this);
@@ -118,17 +111,4 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 			colorNo = maxColorsTemp;
 		}
 	}
-
-	/*
-	 * 
-	 * 
-	 * CustomPopupDialog pd = new CustomPopupDialog(parent.getShell()) {
-	 * 
-	 * @Override protected Composite getContent(Composite parent) { ColorChooser cc1
-	 * = new ColorChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, 0,
-	 * PlatformFactory.getPlatformColors(project.getTargetPlatform())); return cc1;
-	 * }
-	 * 
-	 * };
-	 */
 }
