@@ -1,7 +1,7 @@
 package de.drazil.nerdsuite.enums;
 
 public enum SizeVariant {
-	Standard(0, "STANDARD"), DX(1, "DX"), DY(2, "DY"), DXY(3, "DXY");
+	Standard(0, "STANDARD"), DX(1, "DX"), DY(2, "DY"), DXY(3, "DXY"), CUSTOM(4, "CUSTOM");
 
 	private int id;
 	private String name;

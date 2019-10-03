@@ -40,6 +40,13 @@
 				"tileRows": 2,
 				"tileColumns": 2,
 				"scaledPixelSize": 4
+			},
+			{
+				"id": "CUSTOM",
+				"name": "Custom Size",
+				"tileRows": 1,
+				"tileColumns": 1,
+				"scaledPixelSize": 4
 			}
 		]
 	},
@@ -83,6 +90,13 @@
 				"tileRows": 2,
 				"tileColumns": 2,
 				"scaledPixelSize": 3
+			},
+			{
+				"id": "CUSTOM",
+				"name": "Custom Size",
+				"tileRows": 1,
+				"tileColumns": 1,
+				"scaledPixelSize": 3
 			}
 		]
 	},
@@ -104,6 +118,13 @@
 			{
 				"id": "STANDARD",
 				"name": "Standard Size (40x25)",
+				"tileRows": 1,
+				"tileColumns": 1,
+				"scaledPixelSize": 4
+			},
+			{
+				"id": "CUSTOM",
+				"name": "Custom Size",
 				"tileRows": 1,
 				"tileColumns": 1,
 				"scaledPixelSize": 4
