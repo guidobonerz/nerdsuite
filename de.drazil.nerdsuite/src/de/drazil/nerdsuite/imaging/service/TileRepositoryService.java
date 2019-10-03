@@ -57,6 +57,10 @@ public class TileRepositoryService extends AbstractImagingService {
 		this.customSize = customSize;
 	}
 
+	public CustomSize getCustomSize() {
+		return customSize;
+	}
+
 	public void removeLast() {
 		if (tileIndexOrderList.size() > 0) {
 			removeTile(tileIndexOrderList.size() - 1);

@@ -57,6 +57,7 @@ import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
+import de.drazil.nerdsuite.widget.CustomFormatDialog;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.IColorSelectionListener;
 import de.drazil.nerdsuite.widget.ImagingWidget;
@@ -253,7 +254,6 @@ public class GfxEditorView
 		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
 		graphicFormatVariant = (GraphicFormatVariant) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
-		customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
 		owner = (String) ((Map<String, Object>) part.getObject()).get("owner");
 		part.getTransientData().put(Constants.OWNER, owner);
 		part.setTooltip(graphicFormat.getName() + " " + graphicFormatVariant.getName());
@@ -264,6 +264,21 @@ public class GfxEditorView
 
 		file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
 				+ projectType.getSuffix());
+
+		try {
+			if (isNewProject) {
+				customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
+				updateWorkspace(true);
+				file.createNewFile();
+			} else {
+				tileRepositoryService = load(file);
+				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
+					customSize = tileRepositoryService.getCustomSize();
+				}
+			}
+		} catch (IOException e1) {
+
+		}
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 5;
@@ -307,17 +322,6 @@ public class GfxEditorView
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 5;
 		repository.setLayoutData(gridData);
-
-		try {
-			if (isNewProject) {
-				updateWorkspace(true);
-				file.createNewFile();
-			} else {
-				tileRepositoryService = load(file);
-			}
-		} catch (IOException e1) {
-
-		}
 
 		painter.init(owner, this);
 		repository.init(owner, this);
