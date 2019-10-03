@@ -12,7 +12,7 @@ public class CustomPopupDialog extends PopupDialog {
 	private Composite child;
 
 	public CustomPopupDialog(Shell parent, Composite child) {
-		super(parent, PopupDialog.INFOPOPUP_SHELLSTYLE, true, false, false, false, false, null, null);
+		super(parent, PopupDialog.INFOPOPUP_SHELLSTYLE, false, false, false, false, false, null, null);
 		this.child = child;
 	}
 

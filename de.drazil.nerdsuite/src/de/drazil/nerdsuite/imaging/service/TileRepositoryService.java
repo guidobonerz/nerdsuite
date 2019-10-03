@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -28,6 +29,8 @@ public class TileRepositoryService extends AbstractImagingService {
 	private ImagePainterFactory imagePainterFactory;
 	@JsonProperty(value = "selectedTile")
 	private int selectedTileIndex = 0;
+	@JsonProperty(value = "customFormat")
+	private GraphicFormatVariant customFormat;
 
 	public TileRepositoryService() {
 		tileList = new ArrayList<>();

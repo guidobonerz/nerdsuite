@@ -28,6 +28,7 @@ import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.util.E4Utils;
+import de.drazil.nerdsuite.widget.CustomFormatDialog;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
@@ -67,11 +68,17 @@ public class NewProjectHandler {
 				ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
 				project.setIconName(projectType.getIconName());
 
+				int formatVariant = SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId();
+
+				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
+					CustomFormatDialog cfd = new CustomFormatDialog(shell);
+					cfd.open(gf.getVariants().get(formatVariant));
+				}
+
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
 				projectSetup.put("gfxFormat", gf);
-				projectSetup.put("gfxFormatVariant",
-						SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId());
+				projectSetup.put("gfxFormatVariant", formatVariant);
 				projectSetup.put("isNewProject", true);
 				projectSetup.put("owner",
 						project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
