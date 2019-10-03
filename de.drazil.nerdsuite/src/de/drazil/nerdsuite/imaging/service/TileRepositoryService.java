@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import de.drazil.nerdsuite.model.GraphicFormatVariant;
+import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -30,7 +30,7 @@ public class TileRepositoryService extends AbstractImagingService {
 	@JsonProperty(value = "selectedTile")
 	private int selectedTileIndex = 0;
 	@JsonProperty(value = "customFormat")
-	private GraphicFormatVariant customFormat;
+	private CustomSize customSize;
 
 	public TileRepositoryService() {
 		tileList = new ArrayList<>();
@@ -51,6 +51,10 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileIndexOrderList.add(tileList.indexOf(tile));
 		setSelectedTile(tileIndexOrderList.get(getSize() - 1));
 		fireTileAdded();
+	}
+
+	public void setCustomSize(CustomSize customSize) {
+		this.customSize = customSize;
 	}
 
 	public void removeLast() {

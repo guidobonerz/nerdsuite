@@ -52,4 +52,9 @@ public class GraphicFormatFactory {
 		return getFormatByName(name).getVariants();
 	}
 
+	public static GraphicFormatVariant getGraphicFormatVariantByName(String name, String variant) {
+		return getFormatByName(name).getVariants().stream().filter(v -> v.getId().equalsIgnoreCase(variant)).findFirst()
+				.orElse(null);
+	}
+
 }

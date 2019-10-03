@@ -50,7 +50,9 @@ import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
+import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.TileLocation;
@@ -77,8 +79,9 @@ public class GfxEditorView
 	private Button showOnlyActiveLayer;
 	private Button showInactiveLayersTranslucent;
 
+	private CustomSize customSize = null;
 	private GraphicFormat graphicFormat = null;
-	private int graphicFormatVariant = 0;
+	private GraphicFormatVariant graphicFormatVariant = null;
 
 	private File file;
 	private Project project;
@@ -249,11 +252,11 @@ public class GfxEditorView
 
 		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
-		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
+		graphicFormatVariant = (GraphicFormatVariant) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
+		customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
 		owner = (String) ((Map<String, Object>) part.getObject()).get("owner");
 		part.getTransientData().put(Constants.OWNER, owner);
-		part.setTooltip(
-				graphicFormat.getName() + " " + graphicFormat.getVariants().get(graphicFormatVariant).getName());
+		part.setTooltip(graphicFormat.getName() + " " + graphicFormatVariant.getName());
 		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
 		boolean isNewProject = (Boolean) ((Map<String, Object>) part.getObject()).get("isNewProject");
 		String pt = project.getProjectType();
@@ -322,6 +325,7 @@ public class GfxEditorView
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		tileRepositoryService.addTileSelectionListener(painter, repository, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
+		tileRepositoryService.setCustomSize(customSize);
 
 		if (graphicFormat.getId().endsWith("CHAR")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
@@ -355,7 +359,7 @@ public class GfxEditorView
 
 	public ImagingWidget createPainterWidget() {
 		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
+		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
 		painter.getConf().setGridStyle(GridType.Dot);
@@ -384,7 +388,7 @@ public class GfxEditorView
 
 	private ImagingWidget createRepositoryWidget() {
 		repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
-		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
+		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		repository.getConf().setWidgetName("Selector:");
 		repository.getConf().setPixelGridEnabled(false);
 		repository.getConf().setTileGridEnabled(true);
@@ -509,8 +513,7 @@ public class GfxEditorView
 				+ "\n" + "// Changed on______: "
 				+ DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()) + "\n"
 				+ "// Targetplatform__: " + project.getTargetPlatform() + "\n" + "// Type___________ : "
-				+ graphicFormat.getName() + "\n" + "// Variant_________: "
-				+ graphicFormat.getVariants().get(graphicFormatVariant).getName() + "\n";
+				+ graphicFormat.getName() + "\n" + "// Variant_________: " + graphicFormatVariant.getName() + "\n";
 		return s;
 	}
 

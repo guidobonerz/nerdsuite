@@ -5,6 +5,7 @@ import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.enums.ScaleMode;
+import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import lombok.Getter;
@@ -57,20 +58,17 @@ public class ImagingWidgetConfiguration {
 	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
 	public GridType gridStyle = GridType.Line;
-	public GraphicFormat gfxFormat;
-	public GraphicFormatVariant gfxFormatVariant;
 
 	public String widgetName = "<unknown>";
 	public String serviceOwnerId;
 
-	public void setGraphicFormat(GraphicFormat gfxFormat, int variantIndex) {
-		this.gfxFormat = gfxFormat;
-		this.gfxFormatVariant = gfxFormat.getVariants().get(variantIndex);
+	public void setGraphicFormat(GraphicFormat gfxFormat, GraphicFormatVariant gfxFormatVariant,
+			CustomSize customSize) {
 		setPixelSize(gfxFormat.getPixelSize());
-		setWidth(gfxFormat.getWidth());
-		setHeight(gfxFormat.getHeight());
-		setTileRows(gfxFormatVariant.getTileRows());
-		setTileColumns(gfxFormatVariant.getTileColumns());
+		setWidth(customSize == null ? gfxFormat.getWidth() : customSize.getWidth());
+		setHeight(customSize == null ? gfxFormat.getHeight() : customSize.getHeight());
+		setTileRows(customSize == null ? gfxFormatVariant.getTileRows() : customSize.getTileRows());
+		setTileColumns(customSize == null ? gfxFormatVariant.getTileColumns() : customSize.getTileColumns());
 		if (gfxFormat.getId().contains("BITMAP")) {
 			setPixelGridEnabled(false);
 		}
@@ -181,9 +179,9 @@ public class ImagingWidgetConfiguration {
 	public void setMultiColorEnabled(boolean multiColorEnabled) {
 		this.multiColorEnabled = multiColorEnabled;
 		if (multiColorEnabled) {
-			
+
 		} else {
-			
+
 		}
 		computeSizes();
 	}

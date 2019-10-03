@@ -22,9 +22,10 @@ import org.eclipse.swt.widgets.Shell;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.enums.ProjectType;
-import de.drazil.nerdsuite.enums.SizeVariant;
 import de.drazil.nerdsuite.explorer.Explorer;
+import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.util.E4Utils;
@@ -57,6 +58,8 @@ public class NewProjectHandler {
 
 				String pt = project.getProjectType();
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(pt);
+				GraphicFormatVariant gfv = GraphicFormatFactory.getGraphicFormatVariantByName(pt,
+						project.getProjectSubType());
 
 				project.setSingleFileProject(true);
 				project.setOpen(true);
@@ -68,20 +71,21 @@ public class NewProjectHandler {
 				ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
 				project.setIconName(projectType.getIconName());
 
-				int formatVariant = SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId();
-
-				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
-					CustomFormatDialog cfd = new CustomFormatDialog(shell);
-					cfd.open(gf.getVariants().get(formatVariant));
-				}
-
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
 				projectSetup.put("gfxFormat", gf);
-				projectSetup.put("gfxFormatVariant", formatVariant);
+				projectSetup.put("gfxFormatVariant", gfv);
 				projectSetup.put("isNewProject", true);
 				projectSetup.put("owner",
 						project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
+				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
+
+					CustomSize customSize = new CustomSize(gf.getWidth(), gf.getHeight(), gfv.getTileColumns(),
+							gfv.getTileRows(), gf.getStorageEntity());
+					CustomFormatDialog cfd = new CustomFormatDialog(shell);
+					cfd.open(customSize, gfv.isSupportCustomBaseSize());
+					projectSetup.put("gfxCustomSize", customSize);
+				}
 
 				// File file = createProjectStructure(project, projectType.getSuffix());
 

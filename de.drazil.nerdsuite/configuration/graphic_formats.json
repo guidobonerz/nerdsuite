@@ -46,7 +46,8 @@
 				"name": "Custom Size",
 				"tileRows": 1,
 				"tileColumns": 1,
-				"scaledPixelSize": 4
+				"scaledPixelSize": 4,
+				"supportCustomBaseSize": false
 			}
 		]
 	},
@@ -96,7 +97,8 @@
 				"name": "Custom Size",
 				"tileRows": 1,
 				"tileColumns": 1,
-				"scaledPixelSize": 3
+				"scaledPixelSize": 3,
+				"supportCustomBaseSize": false
 			}
 		]
 	},
@@ -127,7 +129,8 @@
 				"name": "Custom Size",
 				"tileRows": 1,
 				"tileColumns": 1,
-				"scaledPixelSize": 4
+				"scaledPixelSize": 4,
+				"supportCustomBaseSize": true
 			}
 		]
 	},
