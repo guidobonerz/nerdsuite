@@ -21,6 +21,7 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 	private int cx;
 	private int cy;
 	private int colorIndex;
+	private int maxColors;
 	private List<PlatformColor> platformColorList;
 	private List<IColorSelectionListener> colorSelectionListener;
 
@@ -40,6 +41,14 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		width = columns * COLOR_TILE_SIZE;
 		height = rows * COLOR_TILE_SIZE;
 		setSize(width, height + 20);
+		maxColors = platformColorList.size() - 1;
+	}
+
+	public void setSelectedColor(int index) {
+		cx = index % columns;
+		cy = index / columns;
+		colorIndex = index;
+		redraw();
 	}
 
 	@Override
@@ -59,10 +68,8 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 		e.gc.setBackground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, height, width, 20);
 		e.gc.setForeground(Constants.WHITE);
-		if (cx <= columns && cy < rows) {
-			e.gc.drawString(String.format("%02X : %s", colorIndex, platformColorList.get(colorIndex).getName()), 5,
-					height + 3);
-		}
+		e.gc.drawString(String.format("%02X : %s", colorIndex, platformColorList.get(colorIndex).getName()), 5,
+				height + 3);
 	}
 
 	@Override
@@ -95,12 +102,13 @@ public class ColorChooser extends BaseWidget implements PaintListener {
 	}
 
 	private void computeCursorPosition(int x, int y) {
-		cx = x / COLOR_TILE_SIZE;
-		cy = y / COLOR_TILE_SIZE;
-		colorIndex = (cx + (cy * columns));
-		int maxColors = platformColorList.size() - 1;
-		if (colorIndex > maxColors) {
-			colorIndex = maxColors;
+		int icx = x / COLOR_TILE_SIZE;
+		int icy = y / COLOR_TILE_SIZE;
+		int idx = (icx + (icy * columns));
+		if (idx <= maxColors) {
+			colorIndex = idx;
+			cx = icx;
+			cy = icy;
 		}
 	}
 

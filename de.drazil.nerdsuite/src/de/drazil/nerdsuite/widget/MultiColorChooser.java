@@ -84,6 +84,7 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
+		closePupup();
 		if (colorNo < maxColorsTemp) {
 			fireColorSelected(platformColorIndexList[colorNo]);
 			redraw();
@@ -93,11 +94,21 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 	@Override
 	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		colorChooser = new ColorChooser(getParent(), SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, platformColorList);
-		colorChooser.addColorSelectionListener(this);
-		popupDialog = new CustomPopupDialog(getParent().getShell(), colorChooser);
-		popupDialog.open();
+		closePupup();
+		if (colorNo < maxColorsTemp) {
+			colorChooser = new ColorChooser(getParent(), SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, platformColorList);
+			colorChooser.setSelectedColor(platformColorIndexList[colorNo]);
+			colorChooser.addColorSelectionListener(this);
+			popupDialog = new CustomPopupDialog(getParent().getShell(), colorChooser);
+			popupDialog.open();
+		}
+	}
 
+	private void closePupup() {
+		if (colorChooser != null) {
+			colorChooser.removeColorSelectionListener(this);
+			popupDialog.close();
+		}
 	}
 
 	@Override

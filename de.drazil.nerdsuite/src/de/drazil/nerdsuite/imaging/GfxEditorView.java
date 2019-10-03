@@ -343,7 +343,7 @@ public class GfxEditorView
 		if (isNewProject) {
 			tileRepositoryService.addTile(painter.getConf().getTileSize());
 		}
-		//
+
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -500,7 +500,7 @@ public class GfxEditorView
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.getSelectedTile().getActiveLayer().setColorIndex(colorNo, colorIndex,true);
+		tileRepositoryService.getSelectedTile().getActiveLayer().setColorIndex(colorNo, colorIndex, true);
 	}
 
 	private String getHeaderText() {
