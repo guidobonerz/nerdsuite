@@ -22,6 +22,7 @@ public class ImagingWidgetConfiguration {
 	public int visibleColumns = 0;
 	public int visibleRows = 0;
 	public int pixelSize = 15;
+	public int scaledPixelSize = 0;
 	public int currentPixelWidth;
 	public int currentPixelHeight;
 	public int tileSize;
@@ -69,6 +70,7 @@ public class ImagingWidgetConfiguration {
 		setHeight(customSize == null ? gfxFormat.getHeight() : customSize.getHeight());
 		setTileRows(customSize == null ? gfxFormatVariant.getTileRows() : customSize.getTileRows());
 		setTileColumns(customSize == null ? gfxFormatVariant.getTileColumns() : customSize.getTileColumns());
+		scaledPixelSize = gfxFormatVariant.getScaledPixelSize();
 		if (gfxFormat.getId().contains("BITMAP")) {
 			setPixelGridEnabled(false);
 		}

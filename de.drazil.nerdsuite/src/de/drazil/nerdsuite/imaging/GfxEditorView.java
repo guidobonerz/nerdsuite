@@ -24,12 +24,20 @@ import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
@@ -57,7 +65,6 @@ import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
-import de.drazil.nerdsuite.widget.CustomFormatDialog;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.IColorSelectionListener;
 import de.drazil.nerdsuite.widget.ImagingWidget;
@@ -70,6 +77,8 @@ public class GfxEditorView
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
+
+	private ScrolledComposite scrollPainter;
 
 	private Composite parent;
 
@@ -288,7 +297,7 @@ public class GfxEditorView
 		GridData gridData = null;
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
-		painter.setLayoutData(gridData);
+		scrollPainter.setLayoutData(gridData);
 
 		multiColorChooser = new MultiColorChooser(parent, SWT.NONE, 4,
 				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
@@ -336,7 +345,7 @@ public class GfxEditorView
 		} else if (graphicFormat.getId().endsWith("SPRITE")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
 		} else if (graphicFormat.getId().endsWith("SCREEN")) {
-			repository.getConf().setScaleMode(ScaleMode.D4);
+			repository.getConf().setScaleMode(ScaleMode.D8);
 
 		} else {
 
@@ -362,7 +371,15 @@ public class GfxEditorView
 	}
 
 	public ImagingWidget createPainterWidget() {
-		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+		scrollPainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
+			@Override
+			public Point computeSize(int wHint, int hHint, boolean changed) {
+				return new Point(graphicFormat.getWidth() * graphicFormat.getPixelSize(),
+						graphicFormat.getHeight() * graphicFormat.getPixelSize());
+			}
+		};
+
+		painter = new ImagingWidget(scrollPainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
@@ -374,6 +391,27 @@ public class GfxEditorView
 		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setScaleMode(ScaleMode.None);
 		painter.recalc();
+
+		ScrollBar vb = scrollPainter.getVerticalBar();
+		vb.setThumb(10);
+		
+		vb.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				System.out.println(graphicFormat.getHeight() * graphicFormat.getPixelSize()+"    "+vb.getSelection());
+			}
+		});
+
+		scrollPainter.setContent(painter);
+		scrollPainter.setExpandVertical(true);
+		scrollPainter.setExpandHorizontal(true);
+		scrollPainter.addControlListener(new ControlAdapter() {
+			public void controlResized(ControlEvent e) {
+				Rectangle r = scrollPainter.getClientArea();
+				scrollPainter.setMinSize(parent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			}
+		});
 		// painter.addDrawListener(getPreviewerWidget());
 		return painter;
 	}
@@ -402,6 +440,7 @@ public class GfxEditorView
 		repository.getConf().supportsMultiSelection = true;
 		repository.getConf().supportsSingleSelection = true;
 		repository.recalc();
+
 		// repository.addDrawListener(getPainterWidget());
 		// repository.addDrawListener(getPreviewerWidget());
 

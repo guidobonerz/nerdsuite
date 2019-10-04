@@ -79,7 +79,6 @@ public class NewProjectHandler {
 				projectSetup.put("owner",
 						project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
 				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
-
 					CustomSize customSize = new CustomSize(gf.getWidth(), gf.getHeight(), gfv.getTileColumns(),
 							gfv.getTileRows(), gf.getStorageEntity());
 					CustomFormatDialog cfd = new CustomFormatDialog(shell);

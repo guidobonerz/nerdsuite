@@ -122,14 +122,14 @@
 				"name": "Standard Size (40x25)",
 				"tileRows": 1,
 				"tileColumns": 1,
-				"scaledPixelSize": 4
+				"scaledPixelSize": 2
 			},
 			{
 				"id": "CUSTOM",
 				"name": "Custom Size",
 				"tileRows": 1,
 				"tileColumns": 1,
-				"scaledPixelSize": 4,
+				"scaledPixelSize": 2,
 				"supportCustomBaseSize": true
 			}
 		]
