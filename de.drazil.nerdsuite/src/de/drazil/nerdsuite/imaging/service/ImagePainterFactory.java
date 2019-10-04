@@ -46,6 +46,7 @@ public class ImagePainterFactory {
 			if (img != null) {
 				img.dispose();
 			}
+			System.out.println("scale down");
 			int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
 					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
 			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()

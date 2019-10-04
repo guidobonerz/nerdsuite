@@ -394,12 +394,13 @@ public class GfxEditorView
 
 		ScrollBar vb = scrollPainter.getVerticalBar();
 		vb.setThumb(10);
-		
+
 		vb.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				System.out.println(graphicFormat.getHeight() * graphicFormat.getPixelSize()+"    "+vb.getSelection());
+				System.out
+						.println(graphicFormat.getHeight() * graphicFormat.getPixelSize() + "    " + vb.getSelection());
 			}
 		});
 
@@ -551,12 +552,10 @@ public class GfxEditorView
 	}
 
 	private String getHeaderText() {
-		String s = "// Nerdsuite Project by drazil 2017-2019\n" + "// Projectname_____: " + project.getName() + "\n"
-				+ "// Created on______: " + DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn())
-				+ "\n" + "// Changed on______: "
-				+ DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()) + "\n"
-				+ "// Targetplatform__: " + project.getTargetPlatform() + "\n" + "// Type___________ : "
-				+ graphicFormat.getName() + "\n" + "// Variant_________: " + graphicFormatVariant.getName() + "\n";
+		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()),
+				project.getTargetPlatform(), graphicFormat.getName(), graphicFormatVariant.getName());
 		return s;
 	}
 
