@@ -78,6 +78,7 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
 		platformColorIndexList[this.colorNo] = colorIndex;
+		fireColorSelected(platformColorIndexList[this.colorNo]);
 		redraw();
 	}
 
@@ -101,6 +102,7 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 			colorChooser.addColorSelectionListener(this);
 			popupDialog = new CustomPopupDialog(getParent().getShell(), colorChooser);
 			popupDialog.open();
+			
 		}
 	}
 
