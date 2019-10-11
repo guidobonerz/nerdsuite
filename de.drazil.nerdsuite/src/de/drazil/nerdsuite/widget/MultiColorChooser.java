@@ -78,7 +78,7 @@ public class MultiColorChooser extends BaseWidget implements PaintListener, ICol
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
 		platformColorIndexList[this.colorNo] = colorIndex;
-		fireColorSelected(platformColorIndexList[this.colorNo]);
+		fireColorSelected(colorIndex);
 		redraw();
 	}
 
