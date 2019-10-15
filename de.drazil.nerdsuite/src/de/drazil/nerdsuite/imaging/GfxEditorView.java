@@ -490,6 +490,7 @@ public class GfxEditorView
 		List<String> tags1 = new LinkedList<>();
 		tags1.add("MultiColorButton");
 		E4Utils.setToolItemEnabled(part, modelService, tags1, tile.isMulticolor());
+		multiColorChooser.setMonochrom(!tile.isMulticolor());
 		List<String> tags2 = new LinkedList<>();
 		tags2.add("Animator");
 		E4Utils.setToolItemEnabled(part, modelService, tags2, false);
