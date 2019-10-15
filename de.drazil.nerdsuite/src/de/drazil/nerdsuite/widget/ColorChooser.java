@@ -14,7 +14,7 @@ import de.drazil.nerdsuite.model.PlatformColor;
 
 public class ColorChooser extends BaseWidget implements PaintListener, IColorSelectionListener {
 
-	private static final int WIDGET_WIDTH = 150;
+	private static final int WIDGET_WIDTH = 180;
 	private static final int COLOR_TILE_SIZE = 30;
 	private static final int COLOR_OFFSET = WIDGET_WIDTH - COLOR_TILE_SIZE;
 	private int maxColors;
@@ -45,23 +45,27 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	public void paintControl(PaintEvent e) {
 		e.gc.setLineWidth(3);
 		for (int y = 0; y < maxColors; y++) {
+
+			e.gc.setAlpha(y >= maxColorsTemp ? 100 : 255);
 			e.gc.setBackground(Constants.DARK_GREY);
 			e.gc.fillRectangle(0, y * COLOR_TILE_SIZE, COLOR_OFFSET, COLOR_TILE_SIZE);
-			e.gc.setForeground(Constants.WHITE);
-			String s = String.format("%2s : %s", colorNames[y], platformColorList.get(y).getName());
-			e.gc.drawString(s, 5, y * COLOR_TILE_SIZE + 10);
-			// e.gc.setAlpha(y > maxColorsTemp ? 100 : 255);
+			if (y < maxColorsTemp) {
+				e.gc.setForeground(Constants.WHITE);
+				e.gc.drawString(colorNames[y], 5, y * COLOR_TILE_SIZE + 10);
+				e.gc.drawString(":" + platformColorList.get(platformColorIndexList[y]).getName(), 80,
+						y * COLOR_TILE_SIZE + 10);
+			}
 			e.gc.setBackground(platformColorList.get(platformColorIndexList[y]).getColor());
 			e.gc.fillRectangle(COLOR_OFFSET, y * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
-			if (y >= maxColorsTemp) {
-				e.gc.setForeground(Constants.RED);
-				e.gc.drawLine(COLOR_OFFSET, y * COLOR_TILE_SIZE, COLOR_OFFSET + COLOR_TILE_SIZE,
-						(y + 1) * COLOR_TILE_SIZE);
-				e.gc.drawLine(COLOR_OFFSET, (y + 1) * COLOR_TILE_SIZE, COLOR_OFFSET + COLOR_TILE_SIZE,
-						y * COLOR_TILE_SIZE);
-			}
+			/*
+			 * if (y >= maxColorsTemp) { e.gc.setForeground(Constants.RED);
+			 * e.gc.drawLine(COLOR_OFFSET + 4, y * COLOR_TILE_SIZE + 4, COLOR_OFFSET +
+			 * COLOR_TILE_SIZE - 4, (y + 1) * COLOR_TILE_SIZE - 4);
+			 * e.gc.drawLine(COLOR_OFFSET + 4, (y + 1) * COLOR_TILE_SIZE - 4, COLOR_OFFSET +
+			 * COLOR_TILE_SIZE - 4, y * COLOR_TILE_SIZE + 4); }
+			 */
 		}
-		// e.gc.setAlpha(255);
+		e.gc.setAlpha(255);
 		// e.gc.setForeground(Constants.BLACK);
 		// e.gc.drawRectangle(1, 2, WIDGET_WIDTH - 2, COLOR_TILE_SIZE * maxColors - 3);
 		e.gc.setForeground(Constants.BRIGHT_ORANGE);
