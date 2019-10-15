@@ -68,7 +68,7 @@ import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.IColorSelectionListener;
 import de.drazil.nerdsuite.widget.ImagingWidget;
-import de.drazil.nerdsuite.widget.MultiColorChooser;
+import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -84,7 +84,7 @@ public class GfxEditorView
 
 	private TileRepositoryService tileRepositoryService;
 
-	private MultiColorChooser multiColorChooser;
+	private ColorChooser multiColorChooser;
 
 	private Button showOnlyActiveLayer;
 	private Button showInactiveLayersTranslucent;
@@ -299,7 +299,7 @@ public class GfxEditorView
 		gridData.verticalSpan = 5;
 		scrollPainter.setLayoutData(gridData);
 
-		multiColorChooser = new MultiColorChooser(parent, SWT.NONE, 4,
+		multiColorChooser = new ColorChooser(parent, SWT.NONE, 4,
 				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
 		multiColorChooser.addColorSelectionListener(this);
 
@@ -532,23 +532,19 @@ public class GfxEditorView
 	}
 
 	@Override
-	public Color getBackgroundColorIndex(Tile tile) {
-		return getColorByIndex(tile.getBackgroundColorIndex());
-	}
-
-	@Override
 	public Color getColor(Tile tile, int x, int y) {
 		return null;
 	}
 
 	@Override
 	public Color getColorByIndex(int index) {
-		return PlatformFactory.getPlatformColors(project.getTargetPlatform()).get(index).getColor();
+		return PlatformFactory.getPlatformColors(project.getTargetPlatform())
+				.get(tileRepositoryService.getSelectedTile().getActiveLayer().getColorIndex(index)).getColor();
 	}
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.getSelectedTile().getActiveLayer().setColorIndex(colorNo, colorIndex, true);
+		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	private String getHeaderText() {

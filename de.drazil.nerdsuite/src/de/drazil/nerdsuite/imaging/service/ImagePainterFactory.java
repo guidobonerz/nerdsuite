@@ -91,11 +91,10 @@ public class ImagePainterFactory {
 		int y = 0;
 		List<Layer> layerList = tile.getLayerList();
 		if (pixelOnly) {
-			Color c = colorPaletteProvider.getBackgroundColorIndex(tile);
 			int offset = py * width + px;
 			if (offset < size) {
 				// System.out.println("pixel only:" + px + " y:" + py + " offset:" + offset);
-				draw(gc, c, offset, layerList, tile, conf, px, py, colorPaletteProvider);
+				draw(gc, offset, layerList, tile, conf, px, py, colorPaletteProvider);
 			}
 		} else {
 			for (int i = 0; i < size; i++) {
@@ -103,8 +102,7 @@ public class ImagePainterFactory {
 					x = 0;
 					y++;
 				}
-				Color c = colorPaletteProvider.getBackgroundColorIndex(tile);
-				draw(gc, c, i, layerList, tile, conf, x, y, colorPaletteProvider);
+				draw(gc, i, layerList, tile, conf, x, y, colorPaletteProvider);
 				x++;
 			}
 		}
@@ -112,8 +110,9 @@ public class ImagePainterFactory {
 		return img;
 	}
 
-	private void draw(GC gc, Color color, int offset, List<Layer> layerList, Tile tile, ImagingWidgetConfiguration conf,
-			int x, int y, IColorPaletteProvider colorPaletteProvider) {
+	private void draw(GC gc, int offset, List<Layer> layerList, Tile tile, ImagingWidgetConfiguration conf, int x,
+			int y, IColorPaletteProvider colorPaletteProvider) {
+		Color color;
 		for (Layer l : layerList) {
 			int[] content = l.getContent();
 			if (content[offset] != 0 && (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() && l.isActive())
@@ -121,7 +120,7 @@ public class ImagePainterFactory {
 				color = colorPaletteProvider.getColorByIndex(content[offset]);
 				gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
 			}
-			gc.setBackground(color);
+			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
 			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
 		}
 	}

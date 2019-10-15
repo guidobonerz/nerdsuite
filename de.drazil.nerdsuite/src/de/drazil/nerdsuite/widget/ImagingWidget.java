@@ -593,7 +593,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		redraw();
+		doDrawAllTiles();
 	}
 
 	@Override
