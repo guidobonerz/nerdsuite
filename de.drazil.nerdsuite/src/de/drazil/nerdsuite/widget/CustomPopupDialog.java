@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.widget;
 
 import org.eclipse.jface.dialogs.PopupDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -12,7 +13,7 @@ public class CustomPopupDialog extends PopupDialog {
 	private Composite child;
 
 	public CustomPopupDialog(Shell parent, Composite child) {
-		super(parent, PopupDialog.INFOPOPUP_SHELLSTYLE, false, false, false, false, false, null, null);
+		super(parent, PopupDialog.INFOPOPUP_SHELLSTYLE | SWT.MODELESS, false, false, false, false, false, null, null);
 		this.child = child;
 	}
 

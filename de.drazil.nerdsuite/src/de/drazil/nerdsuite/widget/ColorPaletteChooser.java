@@ -3,6 +3,8 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Point;
@@ -22,6 +24,7 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 	private int cy;
 	private int colorIndex;
 	private int maxColors;
+	private boolean mouseIn = false;
 	private List<PlatformColor> platformColorList;
 	private List<IColorSelectionListener> colorSelectionListener;
 
@@ -32,6 +35,7 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 		setPlatformColors(platformColorList);
 		colorSelectionListener = new ArrayList<IColorSelectionListener>();
 		addPaintListener(this);
+		
 	}
 
 	public void setPlatformColors(List<PlatformColor> platformColorList) {
@@ -75,18 +79,41 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		Object o = getParent().getParent();
-		if (o instanceof Shell) {
-			((Shell) o).close();
-		}
+		close();
 		fireColorSelected(colorIndex);
 		colorSelectionListener.clear();
+	}
+
+	@Override
+	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
+		if (!mouseIn) {
+			close();
+		}
+	}
+
+	@Override
+	public void mouseEnter(int modifierMask, int x, int y) {
+		mouseIn = true;
+	}
+
+	@Override
+	public void mouseExit(int modifierMask, int x, int y) {
+		mouseIn = false;
 	}
 
 	@Override
 	public void mouseMove(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		redraw();
+	}
+
+	
+
+	private void close() {
+		Object o = getParent().getParent();
+		if (o instanceof Shell) {
+			((Shell) o).close();
+		}
 	}
 
 	public void addColorSelectionListener(IColorSelectionListener listener) {

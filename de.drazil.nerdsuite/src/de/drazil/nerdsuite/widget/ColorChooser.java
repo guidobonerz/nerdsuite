@@ -45,18 +45,26 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	public void paintControl(PaintEvent e) {
 		e.gc.setLineWidth(3);
 		for (int y = 0; y < maxColors; y++) {
-
-			e.gc.setAlpha(y >= maxColorsTemp ? 100 : 255);
+			e.gc.setAlpha(255);
 			e.gc.setBackground(Constants.DARK_GREY);
 			e.gc.fillRectangle(0, y * COLOR_TILE_SIZE, COLOR_OFFSET, COLOR_TILE_SIZE);
-			if (y < maxColorsTemp) {
-				e.gc.setForeground(Constants.WHITE);
-				e.gc.drawString(colorNames[y], 5, y * COLOR_TILE_SIZE + 10);
-				e.gc.drawString(":" + platformColorList.get(platformColorIndexList[y]).getName(), 80,
-						y * COLOR_TILE_SIZE + 10);
-			}
+			e.gc.setForeground(Constants.WHITE);
+			e.gc.drawString(colorNames[y], 5, y * COLOR_TILE_SIZE + 10);
+			e.gc.drawString(":" + platformColorList.get(platformColorIndexList[y]).getName(), 80,
+					y * COLOR_TILE_SIZE + 10);
 			e.gc.setBackground(platformColorList.get(platformColorIndexList[y]).getColor());
 			e.gc.fillRectangle(COLOR_OFFSET, y * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
+			if (y < maxColors - 1) {
+				e.gc.setForeground(Constants.BLACK);
+				e.gc.drawLine(0, y * COLOR_TILE_SIZE + COLOR_TILE_SIZE, WIDGET_WIDTH,
+						y * COLOR_TILE_SIZE + COLOR_TILE_SIZE);
+			}
+
+			if (y >= maxColorsTemp) {
+				e.gc.setAlpha(170);
+				e.gc.setBackground(Constants.WHITE);
+				e.gc.fillRectangle(0, y * COLOR_TILE_SIZE, WIDGET_WIDTH, COLOR_TILE_SIZE);
+			}
 			/*
 			 * if (y >= maxColorsTemp) { e.gc.setForeground(Constants.RED);
 			 * e.gc.drawLine(COLOR_OFFSET + 4, y * COLOR_TILE_SIZE + 4, COLOR_OFFSET +
@@ -118,7 +126,6 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 			colorChooser.addColorSelectionListener(this);
 			popupDialog = new CustomPopupDialog(getParent().getShell(), colorChooser);
 			popupDialog.open();
-
 		}
 	}
 
