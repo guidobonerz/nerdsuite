@@ -53,15 +53,15 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 
 	@Override
 	public void paintControl(PaintEvent e) {
-		e.gc.setLineWidth(2);
+		e.gc.setLineWidth(3);
 		for (int r = 0; r < columns; r++) {
 			for (int c = 0; c < rows; c++) {
 				e.gc.setBackground(platformColorList.get(r * columns + c).getColor());
 				e.gc.fillRectangle(c * COLOR_TILE_SIZE, r * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
 				if (c == cx && r == cy) {
 					e.gc.setForeground(Constants.BRIGHT_ORANGE);
-					e.gc.drawRectangle(1 + cx * COLOR_TILE_SIZE, 1 + cy * COLOR_TILE_SIZE, COLOR_TILE_SIZE - 2,
-							COLOR_TILE_SIZE - 2);
+					e.gc.drawRectangle(1 + cx * COLOR_TILE_SIZE, 1 + cy * COLOR_TILE_SIZE, COLOR_TILE_SIZE - 3,
+							COLOR_TILE_SIZE - 3);
 				}
 			}
 		}

@@ -299,7 +299,7 @@ public class GfxEditorView
 		gridData.verticalSpan = 5;
 		scrollPainter.setLayoutData(gridData);
 
-		multiColorChooser = new ColorChooser(parent, SWT.NONE, 4,
+		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
 				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
 		multiColorChooser.addColorSelectionListener(this);
 
