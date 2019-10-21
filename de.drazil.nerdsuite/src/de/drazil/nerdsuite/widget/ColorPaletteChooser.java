@@ -3,8 +3,6 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Point;
@@ -35,7 +33,7 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 		setPlatformColors(platformColorList);
 		colorSelectionListener = new ArrayList<IColorSelectionListener>();
 		addPaintListener(this);
-		
+
 	}
 
 	public void setPlatformColors(List<PlatformColor> platformColorList) {
@@ -72,8 +70,7 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 		e.gc.setBackground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, height, width, 20);
 		e.gc.setForeground(Constants.WHITE);
-		e.gc.drawString(String.format("%02X : %s", colorIndex, platformColorList.get(colorIndex).getName()), 5,
-				height + 3);
+		e.gc.drawString(String.format("%02X : %s", colorIndex, platformColorList.get(colorIndex).getName()), 5, height);
 	}
 
 	@Override
@@ -106,8 +103,6 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 		computeCursorPosition(x, y);
 		redraw();
 	}
-
-	
 
 	private void close() {
 		Object o = getParent().getParent();
