@@ -77,6 +77,7 @@ public class PaintTileService extends AbstractImagingService {
 			x = conf.scaledTileWidth * (tileRepositoryService.getSelectedTileIndex() % conf.getColumns());
 		}
 		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider), x, y);
+		System.out.println("paint tile");
 
 	}
 

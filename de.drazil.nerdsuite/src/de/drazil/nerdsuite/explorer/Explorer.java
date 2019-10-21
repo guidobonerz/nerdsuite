@@ -41,6 +41,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.enums.SizeVariant;
+import de.drazil.nerdsuite.model.CustomSize;
+import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.storagemedia.IMediaReader;
@@ -48,6 +51,7 @@ import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.util.ImageFactory;
+import de.drazil.nerdsuite.widget.CustomFormatDialog;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 
 public class Explorer implements IDoubleClickListener {
@@ -300,10 +304,13 @@ public class Explorer implements IDoubleClickListener {
 			Project project = (Project) element;
 			System.out.println(project.getName());
 
+			GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
+			GraphicFormatVariant gfv = GraphicFormatFactory.getGraphicFormatVariantByName(project.getProjectType(),
+					project.getProjectSubType());
 			Map<String, Object> projectSetup = new HashMap<String, Object>();
 			projectSetup.put("project", project);
-			projectSetup.put("gfxFormat", GraphicFormatFactory.getFormatByName(project.getProjectType()));
-			projectSetup.put("gfxFormatVariant", SizeVariant.getSizeVariantByName(project.getProjectSubType()).getId());
+			projectSetup.put("gfxFormat", gf);
+			projectSetup.put("gfxFormatVariant", gfv);
 			projectSetup.put("isNewProject", false);
 			projectSetup.put("owner",
 					project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());

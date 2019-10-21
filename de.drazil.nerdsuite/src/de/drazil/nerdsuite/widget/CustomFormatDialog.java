@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.drazil.nerdsuite.model.GraphicFormatVariant;
+import de.drazil.nerdsuite.model.CustomSize;
 
 public class CustomFormatDialog extends TitleAreaDialog implements SelectionListener {
 
@@ -23,17 +23,9 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 	private Spinner tileHeightSpinner;
 	private Spinner tileColumnsSpinner;
 	private Spinner tileRowsSpinner;
-	private Spinner painterPixelSizeSpinner;
-	private Spinner selectorPixelSizeSpinner;
 
-	private int tileWidth;
-	private int tileHeight;
-	private int tileColumns;
-	private int tileRows;
-	private int painterPixelSize;
-	private int selectorPixelSize;
-
-	private GraphicFormatVariant formatVariant;
+	private CustomSize customSize;
+	private boolean supportCustomSize;
 
 	private List<IConfigurationListener> configurationListenerList = null;
 
@@ -42,8 +34,9 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		configurationListenerList = new ArrayList<>();
 	}
 
-	public int open(GraphicFormatVariant formatVariant) {
-		this.formatVariant = formatVariant;
+	public int open(CustomSize customSize, boolean supportCustomSize) {
+		this.customSize = customSize;
+		this.supportCustomSize = supportCustomSize;
 		return super.open();
 	}
 
@@ -52,16 +45,10 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		super.create();
 		setTitle("Custom Format Setup");
 
-		// setMessage("");
-		formatVariant.setTileColumns(tileColumns);
-		formatVariant.setTileRows(tileRows);
-
-		// tileWidthSpinner.setSelection(tileWidth);
-		// tileHeightSpinner.setSelection(tileHeight);
-		tileColumnsSpinner.setSelection(tileColumns);
-		tileRowsSpinner.setSelection(tileRows);
-		// painterPixelSizeSpinner.setSelection(painterPixelSize);
-		// selectorPixelSizeSpinner.setSelection(selectorPixelSize);
+		tileWidthSpinner.setSelection(customSize.getWidth());
+		tileHeightSpinner.setSelection(customSize.getHeight());
+		tileColumnsSpinner.setSelection(customSize.getTileColumns());
+		tileRowsSpinner.setSelection(customSize.getTileRows());
 	}
 
 	public void addConfigurationListener(IConfigurationListener l) {
@@ -73,16 +60,10 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 	}
 
 	private void fireConfigurationChanged() {
-		
-		formatVariant.setTileColumns(tileColumnsSpinner.getSelection());
-		formatVariant.setTileRows(tileRowsSpinner.getSelection());
-		/*
-		 * for (IConfigurationListener cl : configurationListenerList) {
-		 * cl.configurationChanged(tileWidthSpinner.getSelection(),
-		 * tileHeightSpinner.getSelection(), tileColumnsSpinner.getSelection(),
-		 * tileRowsSpinner.getSelection(), painterPixelSizeSpinner.getSelection(),
-		 * selectorPixelSizeSpinner.getSelection(), 0, 0, 0); }
-		 */
+		customSize.setTileColumns(tileColumnsSpinner.getSelection());
+		customSize.setTileRows(tileRowsSpinner.getSelection());
+		customSize.setWidth(tileWidthSpinner.getSelection());
+		customSize.setHeight(tileHeightSpinner.getSelection());
 	}
 
 	@Override
@@ -94,14 +75,11 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		GridLayout layout = new GridLayout(2, false);
 		container.setLayout(layout);
 
-		// createTileWidth(container);
-		// createTileHeight(container);
+		createTileWidth(container);
+		createTileHeight(container);
 		createTileColumns(container);
 		createTileRows(container);
-		// createPainterPixelSize(container);
-		// createSelectorPixelSize(container);
 		return area;
-
 	}
 
 	private void createTileWidth(Composite container) {
@@ -113,13 +91,14 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		dataWidth.horizontalAlignment = GridData.FILL;
 
 		tileWidthSpinner = new Spinner(container, SWT.BORDER);
-		tileWidthSpinner.setMinimum(8);
+		tileWidthSpinner.setMinimum(customSize.getStorageEntity());
 		tileWidthSpinner.setMaximum(1000);
-		tileWidthSpinner.setSelection(8);
-		tileWidthSpinner.setIncrement(8);
-		tileWidthSpinner.setPageIncrement(8);
+		tileWidthSpinner.setSelection(customSize.getWidth());
+		tileWidthSpinner.setIncrement(customSize.getStorageEntity());
+		tileWidthSpinner.setPageIncrement(customSize.getStorageEntity());
 		tileWidthSpinner.setLayoutData(dataWidth);
 		tileWidthSpinner.addSelectionListener(this);
+		tileWidthSpinner.setEnabled(supportCustomSize);
 	}
 
 	private void createTileHeight(Composite container) {
@@ -131,13 +110,14 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		dataHeight.horizontalAlignment = GridData.FILL;
 
 		tileHeightSpinner = new Spinner(container, SWT.BORDER);
-		tileHeightSpinner.setMinimum(8);
+		tileHeightSpinner.setMinimum(customSize.getHeight());
 		tileHeightSpinner.setMaximum(1000);
-		tileHeightSpinner.setSelection(8);
+		tileHeightSpinner.setSelection(customSize.getHeight());
 		tileHeightSpinner.setIncrement(1);
 		tileHeightSpinner.setPageIncrement(1);
 		tileHeightSpinner.setLayoutData(dataHeight);
 		tileHeightSpinner.addSelectionListener(this);
+		tileHeightSpinner.setEnabled(supportCustomSize);
 	}
 
 	private void createTileColumns(Composite container) {
@@ -176,49 +156,11 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		tileRowsSpinner.addSelectionListener(this);
 	}
 
-	private void createPainterPixelSize(Composite container) {
-		Label painterPixelSizeLabel = new Label(container, SWT.NONE);
-		painterPixelSizeLabel.setText("Painter Pixel Size");
-
-		GridData dataPainterPixelSize = new GridData();
-		dataPainterPixelSize.grabExcessHorizontalSpace = true;
-		dataPainterPixelSize.horizontalAlignment = GridData.FILL;
-
-		painterPixelSizeSpinner = new Spinner(container, SWT.BORDER);
-		painterPixelSizeSpinner.setMinimum(8);
-		painterPixelSizeSpinner.setMaximum(40);
-		painterPixelSizeSpinner.setSelection(1);
-		painterPixelSizeSpinner.setIncrement(1);
-		painterPixelSizeSpinner.setPageIncrement(1);
-		painterPixelSizeSpinner.setLayoutData(dataPainterPixelSize);
-		painterPixelSizeSpinner.addSelectionListener(this);
-	}
-
-	private void createSelectorPixelSize(Composite container) {
-		Label selectorPixelSizeLabel = new Label(container, SWT.NONE);
-		selectorPixelSizeLabel.setText("Selector Pixel Size");
-
-		GridData dataSelectorPixelSize = new GridData();
-		dataSelectorPixelSize.grabExcessHorizontalSpace = true;
-		dataSelectorPixelSize.horizontalAlignment = GridData.FILL;
-
-		selectorPixelSizeSpinner = new Spinner(container, SWT.BORDER);
-		selectorPixelSizeSpinner.setMinimum(2);
-		selectorPixelSizeSpinner.setMaximum(16);
-		selectorPixelSizeSpinner.setSelection(1);
-		selectorPixelSizeSpinner.setIncrement(1);
-		selectorPixelSizeSpinner.setPageIncrement(1);
-		selectorPixelSizeSpinner.setLayoutData(dataSelectorPixelSize);
-		selectorPixelSizeSpinner.addSelectionListener(this);
-	}
-
 	@Override
 	protected boolean isResizable() {
 		return true;
 	}
 
-	// save content of the Text fields because they get disposed
-	// as soon as the Dialog closes
 	private void saveInput() {
 
 	}
@@ -239,15 +181,4 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		// TODO Auto-generated method stub
 
 	}
-
-	public void setConfiguration(int tileWidth, int tileHeight, int tileColumns, int tileRows, int painterPixelSize,
-			int selectorPixelSize) {
-		this.tileWidth = tileWidth;
-		this.tileHeight = tileHeight;
-		this.tileColumns = tileColumns;
-		this.tileRows = tileRows;
-		this.painterPixelSize = painterPixelSize;
-		this.selectorPixelSize = selectorPixelSize;
-	}
-
 }

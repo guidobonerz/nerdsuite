@@ -471,11 +471,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		Point hsb = hBar != null ? hBar.getSize() : new Point(0, 0);
 		Point vsb = vBar != null ? vBar.getSize() : new Point(0, 0);
-		return new Point(
-				(conf.currentWidth * conf.currentPixelWidth * conf.tileColumns * conf.columns)
-						+ (conf.cursorLineWidth * (conf.columns + 1)) + vsb.x - conf.columns,
-				(conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows)
-						+ (conf.cursorLineWidth * (conf.rows + 1)) + hsb.x - conf.rows);
+		int width = (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns * conf.columns)
+				+ (conf.cursorLineWidth * (conf.columns + 1)) + vsb.x - conf.columns;
+
+		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows)
+				+ (conf.cursorLineWidth * (conf.rows + 1)) + hsb.x - conf.rows;
+
+		return new Point(width, height);
 	}
 
 	protected boolean supportsPainting() {
@@ -591,7 +593,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		redraw();
+		doDrawAllTiles();
 	}
 
 	@Override

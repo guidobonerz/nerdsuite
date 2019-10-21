@@ -166,6 +166,12 @@ public class Tile {
 		return layerList.stream().filter(x -> x.isActive()).findFirst().orElse(null);
 	}
 
+	@JsonIgnore
+	public void setActiveLayerColorIndex(int index, int colorIndex, boolean select) {
+		getActiveLayer().setColorIndex(index, colorIndex, select);
+		fireActiveLayerChanged(-1);
+	}
+
 	public void setLayerContent(int index, int content[]) {
 		layerList.get(layerIndexOrderList.get(index)).setContent(content);
 		fireLayerContentChanged(index);

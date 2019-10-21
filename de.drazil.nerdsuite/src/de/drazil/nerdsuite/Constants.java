@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite;
 
+import java.text.DateFormat;
+
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -141,5 +143,9 @@ public class Constants {
 	public final static String T_OPCODE = "OPCODE";
 	public final static String T_ILLEGAL_OPCODE = "ILLEGAL_OPCODE";
 	public final static String T_UNSTABLE_ILLEGAL_OPCODE = "UNSTABLE_ILLEGAL_OPCODE";
+
+	public final static String PROJECT_FILE_INFO_HEADER = "// Nerdsuite Project by drazil 2017-2019\n"
+			+ "// Projectname_____: %s\n" + "// Created on______: %s\n" + "// Changed on______: %s\n"
+			+ "// Targetplatform__: %s\n" + "// Type___________ : %s\n" + "// Variant_________: %s\n";
 
 }

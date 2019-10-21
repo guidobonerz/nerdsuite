@@ -7,5 +7,4 @@ public interface IColorPaletteProvider {
 
 	public Color getColorByIndex(int index);
 
-	public Color getBackgroundColorIndex(Tile tile);
 }

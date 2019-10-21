@@ -4,7 +4,7 @@
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_xWeSMKMFEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.perspectivestack.0">
       <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.gfx" label="Nerdsuite">
         <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
-          <children xsi:type="basic:PartSashContainer" xmi:id="_UAShQL4HEemtD_mJnNBwMg" elementId="de.drazil.nerdsuite.partsashcontainer.6" containerData="2000">
+          <children xsi:type="basic:PartSashContainer" xmi:id="_UAShQL4HEemtD_mJnNBwMg" elementId="de.drazil.nerdsuite.partsashcontainer.6" containerData="1000">
             <children xsi:type="basic:PartStack" xmi:id="_J9KyYNNDEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.partstack.0">
               <children xsi:type="basic:Part" xmi:id="_5hZjgNNCEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.part.Explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer">
                 <menus xsi:type="menu:PopupMenu" xmi:id="_DSGRsNUpEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.Explorer">
@@ -22,7 +22,7 @@
               </children>
             </children>
           </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_EyKI8AUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partsashcontainer.5" containerData="6000" selectedElement="_nmA8gATwEemsC5geQwPptA">
+          <children xsi:type="basic:PartSashContainer" xmi:id="_EyKI8AUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partsashcontainer.5" containerData="20000 " selectedElement="_nmA8gATwEemsC5geQwPptA">
             <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.editorStack">
               <tags>NoAutoCollapse</tags>
             </children>

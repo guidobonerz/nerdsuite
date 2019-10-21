@@ -13,5 +13,6 @@ public class GraphicFormatVariant {
 	private Map<String, Object> properties;
 	private int tileRows;
 	private int tileColumns;
+	private boolean supportCustomBaseSize;
 	private int scaledPixelSize;
 }

@@ -24,12 +24,20 @@ import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
@@ -50,7 +58,9 @@ import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
+import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.TileLocation;
@@ -58,7 +68,7 @@ import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.IColorSelectionListener;
 import de.drazil.nerdsuite.widget.ImagingWidget;
-import de.drazil.nerdsuite.widget.MultiColorChooser;
+import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -68,17 +78,20 @@ public class GfxEditorView
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
 
+	private ScrolledComposite scrollPainter;
+
 	private Composite parent;
 
 	private TileRepositoryService tileRepositoryService;
 
-	private MultiColorChooser multiColorChooser;
+	private ColorChooser multiColorChooser;
 
 	private Button showOnlyActiveLayer;
 	private Button showInactiveLayersTranslucent;
 
+	private CustomSize customSize = null;
 	private GraphicFormat graphicFormat = null;
-	private int graphicFormatVariant = 0;
+	private GraphicFormatVariant graphicFormatVariant = null;
 
 	private File file;
 	private Project project;
@@ -249,11 +262,10 @@ public class GfxEditorView
 
 		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
-		graphicFormatVariant = (Integer) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
+		graphicFormatVariant = (GraphicFormatVariant) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
 		owner = (String) ((Map<String, Object>) part.getObject()).get("owner");
 		part.getTransientData().put(Constants.OWNER, owner);
-		part.setTooltip(
-				graphicFormat.getName() + " " + graphicFormat.getVariants().get(graphicFormatVariant).getName());
+		part.setTooltip(graphicFormat.getName() + " " + graphicFormatVariant.getName());
 		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
 		boolean isNewProject = (Boolean) ((Map<String, Object>) part.getObject()).get("isNewProject");
 		String pt = project.getProjectType();
@@ -261,6 +273,21 @@ public class GfxEditorView
 
 		file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
 				+ projectType.getSuffix());
+
+		try {
+			if (isNewProject) {
+				customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
+				updateWorkspace(true);
+				file.createNewFile();
+			} else {
+				tileRepositoryService = load(file);
+				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
+					customSize = tileRepositoryService.getCustomSize();
+				}
+			}
+		} catch (IOException e1) {
+
+		}
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 5;
@@ -270,9 +297,9 @@ public class GfxEditorView
 		GridData gridData = null;
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.verticalSpan = 5;
-		painter.setLayoutData(gridData);
+		scrollPainter.setLayoutData(gridData);
 
-		multiColorChooser = new MultiColorChooser(parent, SWT.NONE, 4,
+		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
 				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
 		multiColorChooser.addColorSelectionListener(this);
 
@@ -305,30 +332,20 @@ public class GfxEditorView
 		gridData.horizontalSpan = 5;
 		repository.setLayoutData(gridData);
 
-		try {
-			if (isNewProject) {
-				updateWorkspace(true);
-				file.createNewFile();
-			} else {
-				tileRepositoryService = load(file);
-			}
-		} catch (IOException e1) {
-
-		}
-
 		painter.init(owner, this);
 		repository.init(owner, this);
 
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		tileRepositoryService.addTileSelectionListener(painter, repository, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
+		tileRepositoryService.setCustomSize(customSize);
 
 		if (graphicFormat.getId().endsWith("CHAR")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
 		} else if (graphicFormat.getId().endsWith("SPRITE")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
 		} else if (graphicFormat.getId().endsWith("SCREEN")) {
-			repository.getConf().setScaleMode(ScaleMode.D4);
+			repository.getConf().setScaleMode(ScaleMode.D8);
 
 		} else {
 
@@ -354,8 +371,16 @@ public class GfxEditorView
 	}
 
 	public ImagingWidget createPainterWidget() {
-		painter = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
+		scrollPainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
+			@Override
+			public Point computeSize(int wHint, int hHint, boolean changed) {
+				return new Point(graphicFormat.getWidth() * graphicFormat.getPixelSize(),
+						graphicFormat.getHeight() * graphicFormat.getPixelSize());
+			}
+		};
+
+		painter = new ImagingWidget(scrollPainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
 		painter.getConf().setGridStyle(GridType.Dot);
@@ -366,6 +391,28 @@ public class GfxEditorView
 		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setScaleMode(ScaleMode.None);
 		painter.recalc();
+
+		ScrollBar vb = scrollPainter.getVerticalBar();
+		vb.setThumb(10);
+
+		vb.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				System.out
+						.println(graphicFormat.getHeight() * graphicFormat.getPixelSize() + "    " + vb.getSelection());
+			}
+		});
+
+		scrollPainter.setContent(painter);
+		scrollPainter.setExpandVertical(true);
+		scrollPainter.setExpandHorizontal(true);
+		scrollPainter.addControlListener(new ControlAdapter() {
+			public void controlResized(ControlEvent e) {
+				Rectangle r = scrollPainter.getClientArea();
+				scrollPainter.setMinSize(parent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			}
+		});
 		// painter.addDrawListener(getPreviewerWidget());
 		return painter;
 	}
@@ -384,7 +431,7 @@ public class GfxEditorView
 
 	private ImagingWidget createRepositoryWidget() {
 		repository = new ImagingWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
-		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant);
+		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		repository.getConf().setWidgetName("Selector:");
 		repository.getConf().setPixelGridEnabled(false);
 		repository.getConf().setTileGridEnabled(true);
@@ -394,6 +441,7 @@ public class GfxEditorView
 		repository.getConf().supportsMultiSelection = true;
 		repository.getConf().supportsSingleSelection = true;
 		repository.recalc();
+
 		// repository.addDrawListener(getPainterWidget());
 		// repository.addDrawListener(getPreviewerWidget());
 
@@ -442,6 +490,7 @@ public class GfxEditorView
 		List<String> tags1 = new LinkedList<>();
 		tags1.add("MultiColorButton");
 		E4Utils.setToolItemEnabled(part, modelService, tags1, tile.isMulticolor());
+		multiColorChooser.setMonochrom(!tile.isMulticolor());
 		List<String> tags2 = new LinkedList<>();
 		tags2.add("Animator");
 		E4Utils.setToolItemEnabled(part, modelService, tags2, false);
@@ -484,33 +533,26 @@ public class GfxEditorView
 	}
 
 	@Override
-	public Color getBackgroundColorIndex(Tile tile) {
-		return getColorByIndex(tile.getBackgroundColorIndex());
-	}
-
-	@Override
 	public Color getColor(Tile tile, int x, int y) {
 		return null;
 	}
 
 	@Override
 	public Color getColorByIndex(int index) {
-		return PlatformFactory.getPlatformColors(project.getTargetPlatform()).get(index).getColor();
+		return PlatformFactory.getPlatformColors(project.getTargetPlatform())
+				.get(tileRepositoryService.getSelectedTile().getActiveLayer().getColorIndex(index)).getColor();
 	}
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.getSelectedTile().getActiveLayer().setColorIndex(colorNo, colorIndex, true);
+		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	private String getHeaderText() {
-		String s = "// Nerdsuite Project by drazil 2017-2019\n" + "// Projectname_____: " + project.getName() + "\n"
-				+ "// Created on______: " + DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn())
-				+ "\n" + "// Changed on______: "
-				+ DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()) + "\n"
-				+ "// Targetplatform__: " + project.getTargetPlatform() + "\n" + "// Type___________ : "
-				+ graphicFormat.getName() + "\n" + "// Variant_________: "
-				+ graphicFormat.getVariants().get(graphicFormatVariant).getName() + "\n";
+		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()),
+				project.getTargetPlatform(), graphicFormat.getName(), graphicFormatVariant.getName());
 		return s;
 	}
 
