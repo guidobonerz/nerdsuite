@@ -65,10 +65,11 @@ import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
+import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.IColorSelectionListener;
 import de.drazil.nerdsuite.widget.ImagingWidget;
-import de.drazil.nerdsuite.widget.ColorChooser;
+import de.drazil.nerdsuite.widget.LayerChooser;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -78,13 +79,15 @@ public class GfxEditorView
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
 
-	private ScrolledComposite scrollPainter;
+	private ScrolledComposite scrollablePainter;
+	private ScrolledComposite scrollableLayerChooser;
 
 	private Composite parent;
 
 	private TileRepositoryService tileRepositoryService;
 
 	private ColorChooser multiColorChooser;
+	private LayerChooser layerChooser;
 
 	private Button showOnlyActiveLayer;
 	private Button showInactiveLayersTranslucent;
@@ -290,53 +293,56 @@ public class GfxEditorView
 		}
 
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 5;
+		layout.numColumns = 2;
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
 		GridData gridData = null;
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-		gridData.verticalSpan = 5;
-		scrollPainter.setLayoutData(gridData);
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.verticalSpan = 2;
+		scrollablePainter.setLayoutData(gridData);
 
 		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
 				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
 		multiColorChooser.addColorSelectionListener(this);
 
-		showOnlyActiveLayer = new Button(parent, SWT.CHECK);
-		showOnlyActiveLayer.setText("Show active layer only");
-		showOnlyActiveLayer.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(((Button) e.widget).getSelection());
-		});
-
-		showInactiveLayersTranslucent = new Button(parent, SWT.CHECK);
-		showInactiveLayersTranslucent.setText("Show inactive layers translucent");
-		showInactiveLayersTranslucent.addListener(SWT.Selection, e -> {
-			tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(((Button) e.widget).getSelection());
-		});
-
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		gridData.horizontalSpan = 4;
+		layerChooser = createLayerChooser();
+		/*
+		 * showOnlyActiveLayer = new Button(parent, SWT.CHECK);
+		 * showOnlyActiveLayer.setText("Show active layer only");
+		 * showOnlyActiveLayer.addListener(SWT.Selection, e -> {
+		 * tileRepositoryService.getSelectedTile().setShowOnlyActiveLayer(((Button)
+		 * e.widget).getSelection()); });
+		 * 
+		 * showInactiveLayersTranslucent = new Button(parent, SWT.CHECK);
+		 * showInactiveLayersTranslucent.setText("Show inactive layers translucent");
+		 * showInactiveLayersTranslucent.addListener(SWT.Selection, e -> {
+		 * tileRepositoryService.getSelectedTile().setShowInactiveLayerTranslucent(((
+		 * Button) e.widget).getSelection()); });
+		 */
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		multiColorChooser.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		gridData.horizontalSpan = 4;
-		showOnlyActiveLayer.setLayoutData(gridData);
-
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		gridData.horizontalSpan = 4;
-		showInactiveLayersTranslucent.setLayoutData(gridData);
-
+		gridData = new GridData(GridData.FILL_BOTH);
+		scrollableLayerChooser.setLayoutData(gridData);
+		/*
+		 * gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		 * gridData.horizontalSpan = 4; showOnlyActiveLayer.setLayoutData(gridData);
+		 * 
+		 * gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		 * gridData.horizontalSpan = 4;
+		 * showInactiveLayersTranslucent.setLayoutData(gridData);
+		 */
 		repository = createRepositoryWidget();
 		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalSpan = 5;
+		gridData.horizontalSpan = 3;
 		repository.setLayoutData(gridData);
 
 		painter.init(owner, this);
 		repository.init(owner, this);
 
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
-		tileRepositoryService.addTileSelectionListener(painter, repository, this);
+		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
 		tileRepositoryService.setCustomSize(customSize);
 
@@ -370,8 +376,20 @@ public class GfxEditorView
 
 	}
 
+	public LayerChooser createLayerChooser() {
+		scrollableLayerChooser = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
+			@Override
+			public Point computeSize(int wHint, int hHint, boolean changed) {
+				return new Point(180, 500);
+			}
+		};
+
+		layerChooser = new LayerChooser(scrollableLayerChooser, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner);
+		return layerChooser;
+	}
+
 	public ImagingWidget createPainterWidget() {
-		scrollPainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
+		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
 			@Override
 			public Point computeSize(int wHint, int hHint, boolean changed) {
 				return new Point(graphicFormat.getWidth() * graphicFormat.getPixelSize(),
@@ -379,7 +397,7 @@ public class GfxEditorView
 			}
 		};
 
-		painter = new ImagingWidget(scrollPainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+		painter = new ImagingWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
@@ -392,7 +410,7 @@ public class GfxEditorView
 		painter.getConf().setScaleMode(ScaleMode.None);
 		painter.recalc();
 
-		ScrollBar vb = scrollPainter.getVerticalBar();
+		ScrollBar vb = scrollablePainter.getVerticalBar();
 		vb.setThumb(10);
 
 		vb.addSelectionListener(new SelectionAdapter() {
@@ -404,13 +422,13 @@ public class GfxEditorView
 			}
 		});
 
-		scrollPainter.setContent(painter);
-		scrollPainter.setExpandVertical(true);
-		scrollPainter.setExpandHorizontal(true);
-		scrollPainter.addControlListener(new ControlAdapter() {
+		scrollablePainter.setContent(painter);
+		scrollablePainter.setExpandVertical(true);
+		scrollablePainter.setExpandHorizontal(true);
+		scrollablePainter.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
-				Rectangle r = scrollPainter.getClientArea();
-				scrollPainter.setMinSize(parent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+				Rectangle r = scrollablePainter.getClientArea();
+				scrollablePainter.setMinSize(parent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			}
 		});
 		// painter.addDrawListener(getPreviewerWidget());
