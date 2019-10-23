@@ -190,7 +190,7 @@ public class GfxEditorView
 			MulticolorService service = ServiceFactory.getService(owner, MulticolorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(multicolor ? 1 : 0, this);
-			tileRepositoryService.getSelectedTile().setMulticolor(multicolor);
+			tileRepositoryService.getSelectedTile().setMulticolorEnabled(multicolor);
 			multiColorChooser.setMonochrom(!multicolor);
 		}
 	}
@@ -298,7 +298,7 @@ public class GfxEditorView
 
 		painter = createPainterWidget();
 		GridData gridData = null;
-		gridData = new GridData(GridData.FILL_BOTH);
+		gridData = new GridData(GridData.CENTER);
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -409,7 +409,7 @@ public class GfxEditorView
 		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setScaleMode(ScaleMode.None);
 		painter.recalc();
-
+		
 		ScrollBar vb = scrollablePainter.getVerticalBar();
 		vb.setThumb(10);
 
