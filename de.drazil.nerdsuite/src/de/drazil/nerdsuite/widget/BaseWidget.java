@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;

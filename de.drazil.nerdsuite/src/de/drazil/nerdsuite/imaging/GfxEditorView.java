@@ -292,13 +292,13 @@ public class GfxEditorView
 
 		}
 
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		GridLayout layout = new GridLayout(2, false);
+
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
 		GridData gridData = null;
-		gridData = new GridData(GridData.FILL_BOTH);
+		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -428,7 +428,7 @@ public class GfxEditorView
 		scrollablePainter.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
 				Rectangle r = scrollablePainter.getClientArea();
-				scrollablePainter.setMinSize(parent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+				scrollablePainter.setMinSize(painter.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			}
 		});
 		// painter.addDrawListener(getPreviewerWidget());

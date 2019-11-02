@@ -11,7 +11,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.GridType;
@@ -54,8 +53,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	private boolean mouseIn = false;
 
-	private ScrollBar hBar = null;
-	private ScrollBar vBar = null;
 	private List<IDrawListener> drawListenerList = null;
 	private List<TileLocation> tileSelectionList = null;
 	private List<TileLocation> selectionRangeBuffer = null;
@@ -78,9 +75,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		selectionRangeBuffer = new ArrayList<>();
 		tileSelectionList = new ArrayList<>();
 		drawListenerList = new ArrayList<IDrawListener>();
-
-		hBar = getHorizontalBar();
-		vBar = getVerticalBar();
 
 		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
 		paintTileService = ServiceFactory.getService(conf.getServiceOwnerId(), PaintTileService.class);
@@ -428,8 +422,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		conf.currentWidth = conf.width / pixmul;
 		// fireSetSelectedTile(ImagingWidget.this, tile);
 		doDrawAllTiles();
-		Composite composite = getParent();
-		composite.layout();
+
 	}
 
 	@Override
@@ -469,13 +462,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		Point hsb = hBar != null ? hBar.getSize() : new Point(0, 0);
-		Point vsb = vBar != null ? vBar.getSize() : new Point(0, 0);
-		int width = (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns * conf.columns)
-				+ (conf.cursorLineWidth * (conf.columns + 1)) + vsb.x - conf.columns;
 
-		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows)
-				+ (conf.cursorLineWidth * (conf.rows + 1)) + hsb.x - conf.rows;
+		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns);
+
+		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows);
 
 		return new Point(width, height);
 	}
