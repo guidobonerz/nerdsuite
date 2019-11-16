@@ -65,7 +65,7 @@ public class ImagingWidgetConfiguration {
 
 	public void setGraphicFormat(GraphicFormat gfxFormat, GraphicFormatVariant gfxFormatVariant,
 			CustomSize customSize) {
-		setPixelSize(gfxFormat.getPixelSize());
+		setPixelSize(gfxFormatVariant.getPixelSize() > 0 ? gfxFormatVariant.getPixelSize() : gfxFormat.getPixelSize());
 		setWidth(customSize == null ? gfxFormat.getWidth() : customSize.getWidth());
 		setHeight(customSize == null ? gfxFormat.getHeight() : customSize.getHeight());
 		setTileRows(customSize == null ? gfxFormatVariant.getTileRows() : customSize.getTileRows());

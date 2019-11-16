@@ -27,8 +27,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -37,7 +35,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
@@ -95,6 +92,8 @@ public class GfxEditorView
 	private CustomSize customSize = null;
 	private GraphicFormat graphicFormat = null;
 	private GraphicFormatVariant graphicFormatVariant = null;
+	private Point defaultSize;
+	private Point actualSize;
 
 	private File file;
 	private Project project;
@@ -292,6 +291,16 @@ public class GfxEditorView
 
 		}
 
+		defaultSize = new Point(graphicFormat.getWidth() * graphicFormatVariant.getPixelSize(),
+				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize());
+		actualSize = new Point(
+				graphicFormat.getWidth() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileColumns(),
+				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileRows());
+		if (customSize != null) {
+			actualSize = new Point(customSize.getWidth() * graphicFormatVariant.getPixelSize() * customSize.getTileColumns(),
+					customSize.getHeight() * graphicFormatVariant.getPixelSize() * customSize.getTileRows());
+		}
+
 		GridLayout layout = new GridLayout(2, false);
 
 		parent.setLayout(layout);
@@ -299,6 +308,9 @@ public class GfxEditorView
 		painter = createPainterWidget();
 		GridData gridData = null;
 		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
+
+		gridData.widthHint = actualSize.x > 700 ? 700 : actualSize.x;
+		gridData.heightHint = actualSize.y > 600 ? 600 : actualSize.y;
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -389,14 +401,7 @@ public class GfxEditorView
 	}
 
 	public ImagingWidget createPainterWidget() {
-		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
-			@Override
-			public Point computeSize(int wHint, int hHint, boolean changed) {
-				return new Point(graphicFormat.getWidth() * graphicFormat.getPixelSize(),
-						graphicFormat.getHeight() * graphicFormat.getPixelSize());
-			}
-		};
-
+		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
 		painter = new ImagingWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
@@ -410,29 +415,19 @@ public class GfxEditorView
 		painter.getConf().setScaleMode(ScaleMode.None);
 		painter.recalc();
 
-		ScrollBar vb = scrollablePainter.getVerticalBar();
-		vb.setThumb(10);
-
-		vb.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				System.out
-						.println(graphicFormat.getHeight() * graphicFormat.getPixelSize() + "    " + vb.getSelection());
-			}
-		});
-
 		scrollablePainter.setContent(painter);
 		scrollablePainter.setExpandVertical(true);
 		scrollablePainter.setExpandHorizontal(true);
+		scrollablePainter.setMinSize(actualSize);
+
 		scrollablePainter.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
-				Rectangle r = scrollablePainter.getClientArea();
-				scrollablePainter.setMinSize(painter.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+				//scrollablePainter.setMinSize(actualSize);
 			}
 		});
 		// painter.addDrawListener(getPreviewerWidget());
 		return painter;
+
 	}
 
 	public ImagingWidget createPreviewerWidget() {
