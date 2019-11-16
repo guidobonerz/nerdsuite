@@ -13,4 +13,6 @@ public interface ITileListener {
 
 	public void layerContentChanged(int layer);
 
+	public void tileChanged();
+
 }

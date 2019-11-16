@@ -25,7 +25,6 @@ public class Tile {
 	private boolean showOnlyActiveLayer = false;
 	@Getter
 	private boolean showInactiveLayerTranslucent = false;
-	@Setter
 	@Getter
 	private boolean multicolor = false;
 	@Getter
@@ -140,6 +139,11 @@ public class Tile {
 		fireLayerReordered();
 	}
 
+	public void setMulticolorEnabled(boolean multicolorEnabled) {
+		multicolor = multicolorEnabled;
+		fireTileChanged();
+	}
+
 	public void setShowOnlyActiveLayer(boolean showOnlyActiveLayer) {
 		this.showOnlyActiveLayer = showOnlyActiveLayer;
 		fireLayerVisibilityChanged(-1);
@@ -215,6 +219,11 @@ public class Tile {
 	private void fireActiveLayerChanged(int layer) {
 		createTileListenerList();
 		tileListenerList.forEach(listener -> listener.activeLayerChanged(layer));
+	}
+
+	private void fireTileChanged() {
+		createTileListenerList();
+		tileListenerList.forEach(listener -> listener.tileChanged());
 	}
 
 	public void sendModificationNotification() {

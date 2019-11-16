@@ -26,6 +26,13 @@ public class E4Utils {
 			item.setEnabled(enabled);
 		}
 	}
+	
+	public static void setToolItemSelected(MPart part, EModelService modelService, List<String> tags, boolean enabled) {
+		List<MHandledItem> items = modelService.findElements(part.getToolbar(), null, MHandledItem.class, tags);
+		for (MHandledItem item : items) {
+			item.setSelected(enabled);
+		}
+	}
 
 	public static void setToolItemVisible(MPart part, EModelService modelService, List<String> tags, boolean visible) {
 		List<MHandledItem> items = modelService.findElements(part.getToolbar(), null, MHandledItem.class, tags);
