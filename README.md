@@ -15,6 +15,7 @@ Current state: Still buggy and incomplete :-)
 
 Last Changes:
 Load/Save your work (json format)
+Added : Shift on range selection
 
 Gfx Module Todo:
 - Performance tuning
@@ -45,7 +46,8 @@ Create/Update disk images
 ![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
 ## Colorchooser
 ![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ColorChooser.png)
-
+## Image modification on selected range
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/range_selection.png)
 ## Simple BitmapViewer
 Image by Almighty God
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/koala.png)
