@@ -18,28 +18,32 @@
 				"name": "Standard Size (8x8)",
 				"tileRows": 1,
 				"tileColumns": 1,
-				"scaledPixelSize": 4
+				"scaledPixelSize": 4,
+				"pixelSize": 32
 			},
 			{
 				"id": "DX",
 				"name": "Double Width (16x8)",
 				"tileRows": 1,
 				"tileColumns": 2,
-				"scaledPixelSize": 4
+				"scaledPixelSize": 4,
+				"pixelSize": 32
 			},
 			{
 				"id": "DY",
 				"name": "Double Height (8x16)",
 				"tileRows": 2,
 				"tileColumns": 1,
-				"scaledPixelSize": 4
+				"scaledPixelSize": 4,
+				"pixelSize": 32
 			},
 			{
 				"id": "DXY",
 				"name": "Double Size (16x16)",
 				"tileRows": 2,
 				"tileColumns": 2,
-				"scaledPixelSize": 4
+				"scaledPixelSize": 4,
+				"pixelSize": 32
 			},
 			{
 				"id": "CUSTOM",
@@ -47,6 +51,7 @@
 				"tileRows": 1,
 				"tileColumns": 1,
 				"scaledPixelSize": 4,
+				"pixelSize": 32,
 				"supportCustomBaseSize": false
 			}
 		]
@@ -69,6 +74,7 @@
 				"name": "Standard Size (24x21)",
 				"tileRows": 1,
 				"tileColumns": 1,
+				"pixelSize": 16,
 				"scaledPixelSize": 3
 			},
 			{
@@ -76,6 +82,7 @@
 				"name": "Double Width (48x21)",
 				"tileRows": 1,
 				"tileColumns": 2,
+				"pixelSize": 8,
 				"scaledPixelSize": 3
 			},
 			{
@@ -83,6 +90,7 @@
 				"name": "Double Height (24x42)",
 				"tileRows": 2,
 				"tileColumns": 1,
+				"pixelSize": 8,
 				"scaledPixelSize": 3
 			},
 			{
@@ -90,6 +98,7 @@
 				"name": "Double Size (48x42)",
 				"tileRows": 2,
 				"tileColumns": 2,
+				"pixelSize": 8,
 				"scaledPixelSize": 3
 			},
 			{
@@ -122,6 +131,7 @@
 				"name": "Standard Size (40x25)",
 				"tileRows": 1,
 				"tileColumns": 1,
+				"pixelSize": 16,
 				"scaledPixelSize": 2
 			},
 			{
@@ -130,6 +140,7 @@
 				"tileRows": 1,
 				"tileColumns": 1,
 				"scaledPixelSize": 2,
+				"pixelSize": 16,
 				"supportCustomBaseSize": true
 			}
 		]

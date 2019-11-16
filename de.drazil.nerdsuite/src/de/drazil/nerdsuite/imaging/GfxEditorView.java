@@ -31,7 +31,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -42,11 +41,13 @@ import org.eclipse.swt.widgets.ScrollBar;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.ScaleMode;
+import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
@@ -95,6 +96,8 @@ public class GfxEditorView
 	private CustomSize customSize = null;
 	private GraphicFormat graphicFormat = null;
 	private GraphicFormatVariant graphicFormatVariant = null;
+	private Point defaultSize;
+	private Point actualSize;
 
 	private File file;
 	private Project project;
@@ -208,6 +211,15 @@ public class GfxEditorView
 
 	@Inject
 	@Optional
+	public void manageSelectionMode(@UIEventTopic("CursorMode") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			CursorMode cursorMode = (CursorMode) brokerObject.getTransferObject();
+			painter.getConf().setCursorMode(cursorMode);
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			save(file);
@@ -292,13 +304,31 @@ public class GfxEditorView
 
 		}
 
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		defaultSize = new Point(graphicFormat.getWidth() * graphicFormatVariant.getPixelSize(),
+				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize());
+		actualSize = new Point(
+				graphicFormat.getWidth() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileColumns(),
+				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileRows());
+		if (customSize != null) {
+			actualSize = new Point(
+					customSize.getWidth() * graphicFormatVariant.getPixelSize() * customSize.getTileColumns(),
+					customSize.getHeight() * graphicFormatVariant.getPixelSize() * customSize.getTileRows());
+		}
+
+		GridLayout layout = new GridLayout(2, false);
+
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
 		GridData gridData = null;
+
+		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
+
+		gridData.widthHint = actualSize.x > 700 ? 700 : actualSize.x;
+		gridData.heightHint = actualSize.y > 600 ? 600 : actualSize.y;
+
 		gridData = new GridData(GridData.CENTER);
+
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -389,14 +419,7 @@ public class GfxEditorView
 	}
 
 	public ImagingWidget createPainterWidget() {
-		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
-			@Override
-			public Point computeSize(int wHint, int hHint, boolean changed) {
-				return new Point(graphicFormat.getWidth() * graphicFormat.getPixelSize(),
-						graphicFormat.getHeight() * graphicFormat.getPixelSize());
-			}
-		};
-
+		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
 		painter = new ImagingWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
@@ -407,9 +430,10 @@ public class GfxEditorView
 		painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREEN") ? false : true);
 		painter.getConf().supportsPainting = true;
 		painter.getConf().supportsDrawCursor = true;
+		painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
 		painter.getConf().setScaleMode(ScaleMode.None);
 		painter.recalc();
-		
+
 		ScrollBar vb = scrollablePainter.getVerticalBar();
 		vb.setThumb(10);
 
@@ -425,14 +449,16 @@ public class GfxEditorView
 		scrollablePainter.setContent(painter);
 		scrollablePainter.setExpandVertical(true);
 		scrollablePainter.setExpandHorizontal(true);
+		scrollablePainter.setMinSize(actualSize);
+
 		scrollablePainter.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
-				Rectangle r = scrollablePainter.getClientArea();
-				scrollablePainter.setMinSize(parent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+				// scrollablePainter.setMinSize(actualSize);
 			}
 		});
 		// painter.addDrawListener(getPreviewerWidget());
 		return painter;
+
 	}
 
 	public ImagingWidget createPreviewerWidget() {
@@ -456,8 +482,9 @@ public class GfxEditorView
 		repository.getConf().setTileSubGridEnabled(false);
 		repository.getConf().setTileCursorEnabled(true);
 		repository.getConf().setSeparatorEnabled(false);
-		repository.getConf().supportsMultiSelection = true;
-		repository.getConf().supportsSingleSelection = true;
+		repository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE | TileSelectionModes.MULTI);
+		// repository.getConf().supportsMultiSelection = true;
+		// repository.getConf().supportsSingleSelection = true;
 		repository.recalc();
 
 		// repository.addDrawListener(getPainterWidget());

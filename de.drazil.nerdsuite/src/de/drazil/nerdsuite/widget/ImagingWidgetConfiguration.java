@@ -1,17 +1,19 @@
 package de.drazil.nerdsuite.widget;
 
+import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.enums.ScaleMode;
+import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import lombok.Getter;
 
 @Getter
-public class ImagingWidgetConfiguration {
+public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public int width = 8;
 	public int currentWidth = 0;
 	public int height = 8;
@@ -50,8 +52,10 @@ public class ImagingWidgetConfiguration {
 	public boolean supportsPainting = false;
 	public boolean supportsMultiTileView = false;
 	public boolean supportsSingleTileView = false;
-	public boolean supportsSingleSelection = false;
-	public boolean supportsMultiSelection = false;
+	// public boolean supportsSingleSelection = false;
+	// public boolean supportsMultiSelection = false;
+	public int tileSelectionModes = NONE;
+
 	public boolean supportsReferenceIndexSelection = false;
 	public boolean supportsDrawCursor = false;
 
@@ -59,13 +63,14 @@ public class ImagingWidgetConfiguration {
 	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
 	public GridType gridStyle = GridType.Line;
+	public CursorMode cursorMode = CursorMode.Point;
 
 	public String widgetName = "<unknown>";
 	public String serviceOwnerId;
 
 	public void setGraphicFormat(GraphicFormat gfxFormat, GraphicFormatVariant gfxFormatVariant,
 			CustomSize customSize) {
-		setPixelSize(gfxFormat.getPixelSize());
+		setPixelSize(gfxFormatVariant.getPixelSize() > 0 ? gfxFormatVariant.getPixelSize() : gfxFormat.getPixelSize());
 		setWidth(customSize == null ? gfxFormat.getWidth() : customSize.getWidth());
 		setHeight(customSize == null ? gfxFormat.getHeight() : customSize.getHeight());
 		setTileRows(customSize == null ? gfxFormatVariant.getTileRows() : customSize.getTileRows());
@@ -74,6 +79,10 @@ public class ImagingWidgetConfiguration {
 		if (gfxFormat.getId().contains("BITMAP")) {
 			setPixelGridEnabled(false);
 		}
+	}
+
+	public void setCursorMode(CursorMode cursorMode) {
+		this.cursorMode = cursorMode;
 	}
 
 	public void setServiceOwner(String serviceOwnerId) {
@@ -173,6 +182,10 @@ public class ImagingWidgetConfiguration {
 		computeSizes();
 	}
 
+	public void setTileSelectionModes(int tileSelectionModes) {
+		this.tileSelectionModes = tileSelectionModes;
+	}
+
 	public void setPixelConfig(PixelConfig pixelConfig) {
 		this.pixelConfig = pixelConfig;
 		computeSizes();
@@ -230,14 +243,12 @@ public class ImagingWidgetConfiguration {
 		return supportsMultiTileView;
 	}
 
-	protected boolean supportsSingleSelection() {
-		return supportsSingleSelection;
-	}
-
-	protected boolean supportsMultiSelection() {
-		return supportsMultiSelection;
-	}
-
+	/*
+	 * protected boolean supportsSingleSelection() { return supportsSingleSelection;
+	 * }
+	 * 
+	 * protected boolean supportsMultiSelection() { return supportsMultiSelection; }
+	 */
 	protected boolean supportsReferenceIndexSelection() {
 		return supportsReferenceIndexSelection;
 	}

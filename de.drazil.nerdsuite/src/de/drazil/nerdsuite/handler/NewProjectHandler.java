@@ -78,13 +78,13 @@ public class NewProjectHandler {
 				projectSetup.put("isNewProject", true);
 				projectSetup.put("owner",
 						project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
+				CustomSize customSize = new CustomSize(gf.getWidth(), gf.getHeight(), gfv.getTileColumns(),
+						gfv.getTileRows(), gf.getStorageEntity());
 				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
-					CustomSize customSize = new CustomSize(gf.getWidth(), gf.getHeight(), gfv.getTileColumns(),
-							gfv.getTileRows(), gf.getStorageEntity());
 					CustomFormatDialog cfd = new CustomFormatDialog(shell);
 					cfd.open(customSize, gfv.isSupportCustomBaseSize());
-					projectSetup.put("gfxCustomSize", customSize);
 				}
+				projectSetup.put("gfxCustomSize", customSize);
 
 				// File file = createProjectStructure(project, projectType.getSuffix());
 

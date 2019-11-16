@@ -1,5 +1,5 @@
 package de.drazil.nerdsuite.enums;
 
-public enum SelectionMode {
+public enum CursorMode {
 	Point, SelectRectangle
 }

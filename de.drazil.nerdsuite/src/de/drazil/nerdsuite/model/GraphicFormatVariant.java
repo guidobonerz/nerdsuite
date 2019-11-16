@@ -11,6 +11,7 @@ public class GraphicFormatVariant {
 	private String referenceVariant;
 	private String colorRendererClass;
 	private Map<String, Object> properties;
+	private int pixelSize;
 	private int tileRows;
 	private int tileColumns;
 	private boolean supportCustomBaseSize;
