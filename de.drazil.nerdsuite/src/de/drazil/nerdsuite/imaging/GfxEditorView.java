@@ -29,7 +29,6 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -44,6 +43,8 @@ import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.ScaleMode;
+import de.drazil.nerdsuite.enums.CursorMode;
+import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
@@ -207,6 +208,15 @@ public class GfxEditorView
 
 	@Inject
 	@Optional
+	public void manageSelectionMode(@UIEventTopic("CursorMode") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			CursorMode cursorMode = (CursorMode) brokerObject.getTransferObject();
+			painter.getConf().setCursorMode(cursorMode);
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			save(file);
@@ -297,7 +307,8 @@ public class GfxEditorView
 				graphicFormat.getWidth() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileColumns(),
 				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileRows());
 		if (customSize != null) {
-			actualSize = new Point(customSize.getWidth() * graphicFormatVariant.getPixelSize() * customSize.getTileColumns(),
+			actualSize = new Point(
+					customSize.getWidth() * graphicFormatVariant.getPixelSize() * customSize.getTileColumns(),
 					customSize.getHeight() * graphicFormatVariant.getPixelSize() * customSize.getTileRows());
 		}
 
@@ -412,6 +423,7 @@ public class GfxEditorView
 		painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREEN") ? false : true);
 		painter.getConf().supportsPainting = true;
 		painter.getConf().supportsDrawCursor = true;
+		painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
 		painter.getConf().setScaleMode(ScaleMode.None);
 		painter.recalc();
 
@@ -422,7 +434,7 @@ public class GfxEditorView
 
 		scrollablePainter.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
-				//scrollablePainter.setMinSize(actualSize);
+				// scrollablePainter.setMinSize(actualSize);
 			}
 		});
 		// painter.addDrawListener(getPreviewerWidget());
@@ -451,8 +463,9 @@ public class GfxEditorView
 		repository.getConf().setTileSubGridEnabled(false);
 		repository.getConf().setTileCursorEnabled(true);
 		repository.getConf().setSeparatorEnabled(false);
-		repository.getConf().supportsMultiSelection = true;
-		repository.getConf().supportsSingleSelection = true;
+		repository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE | TileSelectionModes.MULTI);
+		// repository.getConf().supportsMultiSelection = true;
+		// repository.getConf().supportsSingleSelection = true;
 		repository.recalc();
 
 		// repository.addDrawListener(getPainterWidget());
