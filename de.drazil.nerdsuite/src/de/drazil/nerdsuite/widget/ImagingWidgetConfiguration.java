@@ -194,11 +194,13 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public void setMultiColorEnabled(boolean multiColorEnabled) {
 		this.multiColorEnabled = multiColorEnabled;
 		if (multiColorEnabled) {
-
+			//currentPixelWidth = pixelSize * 2;
+			//currentWidth = width / 2;
 		} else {
-
+			//currentPixelWidth = pixelSize;
+			//currentWidth = width;
 		}
-		computeSizes();
+		//computeSizes();
 	}
 
 	public void setWidgetName(String widgetName) {

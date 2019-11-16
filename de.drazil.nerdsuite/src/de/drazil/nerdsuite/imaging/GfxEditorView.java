@@ -27,6 +27,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -34,16 +36,17 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.ScaleMode;
-import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.FlipService;
@@ -190,7 +193,7 @@ public class GfxEditorView
 			MulticolorService service = ServiceFactory.getService(owner, MulticolorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(multicolor ? 1 : 0, this);
-			tileRepositoryService.getSelectedTile().setMulticolor(multicolor);
+			tileRepositoryService.getSelectedTile().setMulticolorEnabled(multicolor);
 			multiColorChooser.setMonochrom(!multicolor);
 		}
 	}
@@ -318,10 +321,14 @@ public class GfxEditorView
 
 		painter = createPainterWidget();
 		GridData gridData = null;
+
 		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
 
 		gridData.widthHint = actualSize.x > 700 ? 700 : actualSize.x;
 		gridData.heightHint = actualSize.y > 600 ? 600 : actualSize.y;
+
+		gridData = new GridData(GridData.CENTER);
+
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -426,6 +433,18 @@ public class GfxEditorView
 		painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
 		painter.getConf().setScaleMode(ScaleMode.None);
 		painter.recalc();
+
+		ScrollBar vb = scrollablePainter.getVerticalBar();
+		vb.setThumb(10);
+
+		vb.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				System.out
+						.println(graphicFormat.getHeight() * graphicFormat.getPixelSize() + "    " + vb.getSelection());
+			}
+		});
 
 		scrollablePainter.setContent(painter);
 		scrollablePainter.setExpandVertical(true);

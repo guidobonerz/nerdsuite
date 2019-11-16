@@ -642,6 +642,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
+	public void tileChanged() {
+		conf.setMultiColorEnabled(tile.isMulticolor());
+		doDrawTile();
+	}
+
+	@Override
 	public void layerRemoved() {
 		// TODO Auto-generated method stub
 
