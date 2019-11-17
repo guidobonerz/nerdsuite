@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.Rectangle;
+
 import de.drazil.nerdsuite.enums.TileAction;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
@@ -39,8 +41,11 @@ public class PurgeService extends AbstractImagingService {
 	@Override
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 		int[] content = tile.getActiveLayer().getContent();
-		for (int i = 0; i < content.length; i++) {
-			content[i] = 0;
+		Rectangle r = tile.getSelection();
+		for (int x = r.x; x < r.x + r.width; x++) {
+			for (int y = r.y; y < r.y + r.height; y++) {
+				content[x + y * configuration.tileWidth] = 0;
+			}
 		}
 	}
 }

@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.Rectangle;
+
 import de.drazil.nerdsuite.enums.TileAction;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
@@ -39,6 +41,7 @@ public class FlipService extends AbstractImagingService {
 	@Override
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 		int[] content = tile.getActiveLayer().getContent();
+		Rectangle r = tile.getSelection();
 		if (action == HORIZONTAL) {
 			for (int y = 0; y < configuration.tileHeight; y++) {
 				for (int x = 0; x < configuration.tileWidth / 2; x++) {
