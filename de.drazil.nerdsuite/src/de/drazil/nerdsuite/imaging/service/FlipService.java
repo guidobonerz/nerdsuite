@@ -43,21 +43,21 @@ public class FlipService extends AbstractImagingService {
 		int[] content = tile.getActiveLayer().getContent();
 		Rectangle r = tile.getSelection();
 		if (action == HORIZONTAL) {
-			for (int y = 0; y < configuration.tileHeight; y++) {
-				for (int x = 0; x < configuration.tileWidth / 2; x++) {
+			for (int y = r.y; y < r.y + r.height; y++) {
+				for (int x = r.x, c = 0; x < r.x + r.width / 2; x++, c++) {
 					int a = content[x + (y * configuration.tileWidth)];
-					int b = content[configuration.tileWidth - 1 - x + (y * configuration.tileWidth)];
+					int b = content[r.x + r.width - 1 - c + (y * configuration.tileWidth)];
 					content[x + (y * configuration.tileWidth)] = b;
-					content[configuration.tileWidth - 1 - x + (y * configuration.tileWidth)] = a;
+					content[r.x + r.width - 1 - c + (y * configuration.tileWidth)] = a;
 				}
 			}
 		} else if (action == VERTICAL) {
-			for (int y = 0; y < configuration.tileHeight / 2; y++) {
-				for (int x = 0; x < configuration.tileWidth; x++) {
+			for (int y = r.y, c = 0; y < r.y + r.height / 2; y++, c++) {
+				for (int x = r.x; x < r.x + r.width; x++) {
 					int a = content[x + (y * configuration.tileWidth)];
-					int b = content[x + ((configuration.tileHeight - y - 1) * configuration.tileWidth)];
+					int b = content[x + ((r.y + r.height - c - 1) * configuration.tileWidth)];
 					content[x + (y * configuration.tileWidth)] = b;
-					content[x + ((configuration.tileHeight - y - 1) * configuration.tileWidth)] = a;
+					content[x + ((r.y + r.height - c - 1) * configuration.tileWidth)] = a;
 				}
 			}
 		}
