@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.Rectangle;
+
 import de.drazil.nerdsuite.enums.TileAction;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
@@ -38,65 +40,34 @@ public class MirrorService extends AbstractImagingService {
 	}
 
 	@Override
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane, byte[] workArray, int width, int height) {
-
-		if (action == UPPER_HALF) {
-			for (int y = 0; y < height / 2; y++) {
-				for (int x = 0; x < width; x++) {
-					workArray[x + ((height - y - 1) * width)] = workArray[x + (y * width)];
-				}
-			}
-		} else if (action == LOWER_HALF) {
-			for (int y = 0; y < height / 2; y++) {
-				for (int x = 0; x < width; x++) {
-					workArray[x + (y * width)] = workArray[x + ((height - y - 1) * width)];
-				}
-			}
-		} else if (action == LEFT_HALF) {
-			for (int y = 0; y < height; y++) {
-				for (int x = 0; x < width / 2; x++) {
-					workArray[width - 1 - x + (y * width)] = workArray[x + (y * width)];
-				}
-			}
-		} else if (action == RIGHT_HALF) {
-			for (int y = 0; y < height; y++) {
-				for (int x = 0; x < width / 2; x++) {
-					workArray[x + (y * width)] = workArray[width - 1 - x + (y * width)];
-				}
-			}
-		}
-		return workArray;
-	}
-
-	@Override
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 		int[] content = tile.getActiveLayer().getContent();
+		Rectangle r = tile.getSelection();
 		if (action == UPPER_HALF) {
-			for (int y = 0; y < configuration.tileHeight / 2; y++) {
-				for (int x = 0; x < configuration.tileWidth; x++) {
-					content[x + ((configuration.tileHeight - y - 1) * configuration.tileWidth)] = content[x
+			for (int y = r.y, c = 0; y < r.y + r.height / 2; y++, c++) {
+				for (int x = r.x; x < r.x + r.width; x++) {
+					content[x + ((r.y + r.height - c - 1) * configuration.tileWidth)] = content[x
 							+ (y * configuration.tileWidth)];
 				}
 			}
 		} else if (action == LOWER_HALF) {
-			for (int y = 0; y < configuration.tileHeight / 2; y++) {
-				for (int x = 0; x < configuration.tileWidth; x++) {
+			for (int y = r.y, c = 0; y < r.y + r.height / 2; y++, c++) {
+				for (int x = r.x; x < r.x + r.width; x++) {
 					content[x + (y * configuration.tileWidth)] = content[x
-							+ ((configuration.tileHeight - y - 1) * configuration.tileWidth)];
+							+ ((r.y + r.height - c - 1) * configuration.tileWidth)];
 				}
 			}
 		} else if (action == LEFT_HALF) {
-			for (int y = 0; y < configuration.tileHeight; y++) {
-				for (int x = 0; x < configuration.tileWidth / 2; x++) {
-					content[configuration.tileWidth - 1 - x + (y * configuration.tileWidth)] = content[x
+			for (int y = r.y; y < r.y + r.height; y++) {
+				for (int x = r.x, c = 0; x < r.x + r.width / 2; x++, c++) {
+					content[r.x + r.width - 1 - c + (y * configuration.tileWidth)] = content[x
 							+ (y * configuration.tileWidth)];
 				}
 			}
 		} else if (action == RIGHT_HALF) {
-			for (int y = 0; y < configuration.tileHeight; y++) {
-				for (int x = 0; x < configuration.tileWidth / 2; x++) {
-					content[x + (y * configuration.tileWidth)] = content[configuration.tileWidth - 1 - x
+			for (int y = r.y; y < r.y + r.height; y++) {
+				for (int x = r.x, c = 0; x < r.x + r.width / 2; x++, c++) {
+					content[x + (y * configuration.tileWidth)] = content[r.x + r.width - 1 - c
 							+ (y * configuration.tileWidth)];
 				}
 			}

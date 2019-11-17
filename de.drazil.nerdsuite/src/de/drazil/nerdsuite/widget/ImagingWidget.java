@@ -119,7 +119,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 			doDrawAllTiles();
 		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
-			computeRangeSelection(tileCursorX, tileCursorY, true);
+			computeRangeSelection(tileCursorX, tileCursorY, 0);
 			rangeSelectedStarted = false;
 			doDrawTile();
 		}
@@ -133,11 +133,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				oldTileX = tileX;
 				oldTileY = tileY;
 				doDrawAllTiles();
-			}
-		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
-			if (!rangeSelectedStarted) {
-				computeRangeSelection(tileCursorX, tileCursorY, true);
-				rangeSelectedStarted = false;
 			}
 		}
 		// System.out.printf("%10s x:%2d y:%2d\n", conf.widgetName, tileCursorX,
@@ -180,7 +175,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			computeTileSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			doDrawAllTiles();
 		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
-			computeRangeSelection(tileCursorX, tileCursorY, false);
+			computeRangeSelection(tileCursorX, tileCursorY, 1);
 			doDrawTile();
 		}
 	}
@@ -190,8 +185,13 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		computeCursorPosition(x, y);
 		if (supportsMultiSelection() && tileSelectionList.size() > 1) {
 			tileRepositoryService.setSelectedTiles(tileSelectionList);
+		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
+
+			if (rangeSelectedStarted) {
+				computeRangeSelection(tileCursorX, tileCursorY, 2);
+				rangeSelectedStarted = false;
+			}
 		}
-		rangeSelectedStarted = false;
 	}
 
 	@Override
@@ -272,36 +272,40 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	private void computeRangeSelection(int tileCursorX, int tileCursorY, boolean reset) {
-		if (reset) {
+	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode) {
+		int x = tileCursorX < 0 ? 0 : tileCursorX;
+		int y = tileCursorY < 0 ? 0 : tileCursorY;
+
+		if (mode == 0) {
 			selectedPixelRangeX = tileCursorX;
 			selectedPixelRangeY = tileCursorY;
 			selectedPixelRangeX2 = tileCursorX;
 			selectedPixelRangeY2 = tileCursorY;
-		} else {
+		} else if (mode == 1) {
 			if (!rangeSelectedStarted) {
-				selectedPixelRangeX = tileCursorX < 0 ? 0 : tileCursorX;
-				selectedPixelRangeY = tileCursorY < 0 ? 0 : tileCursorY;
+				selectedPixelRangeX = x;
+				selectedPixelRangeY = y;
 				rangeSelectedStarted = true;
 			} else {
-				selectedPixelRangeX2 = tileCursorX < 0 ? 0 : tileCursorX;
-				selectedPixelRangeY2 = tileCursorY < 0 ? 0 : tileCursorY;
+				selectedPixelRangeX2 = x;
+				selectedPixelRangeY2 = y;
 			}
+		} else if (mode == 2) {
 			if (selectedPixelRangeX > selectedPixelRangeX2) {
-				int d = selectedPixelRangeX;
+				int v = selectedPixelRangeX;
 				selectedPixelRangeX = selectedPixelRangeX2;
-				selectedPixelRangeX2 = d;
-			}
-			if (selectedPixelRangeY > selectedPixelRangeY2) {
-				int d = selectedPixelRangeY;
-				selectedPixelRangeY = selectedPixelRangeY2;
-				selectedPixelRangeY2 = d;
+				selectedPixelRangeX2 = v;
 			}
 
+			if (selectedPixelRangeY > selectedPixelRangeY2) {
+				int v = selectedPixelRangeY;
+				selectedPixelRangeY = selectedPixelRangeY2;
+				selectedPixelRangeY2 = v;
+			}
 			tile.setSelection(new Rectangle(selectedPixelRangeX, selectedPixelRangeY,
 					selectedPixelRangeX2 - selectedPixelRangeX + 1, selectedPixelRangeY2 - selectedPixelRangeY + 1));
 
-			System.out.println(selectedPixelRangeX + "   " + selectedPixelRangeY + " " + selectedPixelRangeX2 + "   "
+			System.out.println(selectedPixelRangeX + " " + selectedPixelRangeY + " " + selectedPixelRangeX2 + " "
 					+ selectedPixelRangeY2);
 		}
 	}
