@@ -1,6 +1,5 @@
 package de.drazil.nerdsuite.widget;
 
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
@@ -44,6 +43,8 @@ public abstract class BaseWidget extends Composite implements IAdvancedMouseList
 		this.modifierMask = modifierMask;
 	}
 
+	
+	
 	@Override
 	public void leftMouseButtonDoubleClicked(int modifierMask, int x, int y) {
 		this.modifierMask = modifierMask;
