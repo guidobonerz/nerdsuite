@@ -214,7 +214,7 @@ public class GfxEditorView
 	public void manageSelectionMode(@UIEventTopic("CursorMode") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			CursorMode cursorMode = (CursorMode) brokerObject.getTransferObject();
-			painter.getConf().setCursorMode(cursorMode);
+			painter.setCursorMode(cursorMode);
 		}
 	}
 

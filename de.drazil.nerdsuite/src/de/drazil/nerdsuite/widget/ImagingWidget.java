@@ -171,7 +171,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			computeTileSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			doDrawAllTiles();
 		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
-			computeRangeSelection(tileCursorX, tileCursorY, 1);
+			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doDrawTile();
 		}
 	}
@@ -184,8 +184,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
 
 			if (rangeSelectedStarted) {
-				computeRangeSelection(tileCursorX, tileCursorY, 2);
 				rangeSelectedStarted = false;
+				computeRangeSelection(tileCursorX, tileCursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
+
 			}
 		}
 	}
@@ -200,7 +201,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			resetSelectionList();
 		}
 		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
-			computeRangeSelection(tileCursorX, tileCursorY, 0);
+			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			rangeSelectedStarted = false;
 			doDrawTile();
 		}
@@ -273,15 +274,17 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 	}
 
-	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode) {
+	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
+		System.out.println(tileCursorX + " " + tileCursorY);
 		int x = tileCursorX < 0 ? 0 : tileCursorX;
 		int y = tileCursorY < 0 ? 0 : tileCursorY;
 
 		if (mode == 0) {
-			selectedPixelRangeX = tileCursorX;
-			selectedPixelRangeY = tileCursorY;
-			selectedPixelRangeX2 = tileCursorX;
-			selectedPixelRangeY2 = tileCursorY;
+			selectedPixelRangeX = 0;
+			selectedPixelRangeY = 0;
+			selectedPixelRangeX2 = 0;
+			selectedPixelRangeY2 = 0;
+			System.out.println("reset");
 		} else if (mode == 1) {
 			if (!rangeSelectedStarted) {
 				selectedPixelRangeX = x;
@@ -289,8 +292,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				rangeSelectedStarted = true;
 			} else {
 				selectedPixelRangeX2 = x;
-				selectedPixelRangeY2 = y;
+				selectedPixelRangeY2 = enabledSquareSelection ? x : y;
 			}
+			System.out.println(selectedPixelRangeX + " " + selectedPixelRangeY + " " + selectedPixelRangeX2 + " "
+					+ selectedPixelRangeY2);
 		} else if (mode == 2) {
 			if (selectedPixelRangeX > selectedPixelRangeX2) {
 				int v = selectedPixelRangeX;
@@ -306,8 +311,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			tile.setSelection(new Rectangle(selectedPixelRangeX, selectedPixelRangeY,
 					selectedPixelRangeX2 - selectedPixelRangeX + 1, selectedPixelRangeY2 - selectedPixelRangeY + 1));
 
-			System.out.println(selectedPixelRangeX + " " + selectedPixelRangeY + " " + selectedPixelRangeX2 + " "
-					+ selectedPixelRangeY2);
 		}
 	}
 
@@ -541,6 +544,15 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns);
 		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows);
 		return new Point(width, height);
+	}
+
+	public void setCursorMode(CursorMode cursorMode) {
+		conf.setCursorMode(cursorMode);
+		if (cursorMode == CursorMode.Point) {
+			tile.setSelection(new Rectangle(0, 0, conf.getWidth(), conf.getHeight()));
+		}
+		fireDoDrawAllTiles(this);
+		doDrawAllTiles();
 	}
 
 	protected boolean supportsPainting() {
