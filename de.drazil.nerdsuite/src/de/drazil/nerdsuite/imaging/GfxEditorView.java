@@ -228,6 +228,16 @@ public class GfxEditorView
 
 	@Inject
 	@Optional
+	public void exportFile(@UIEventTopic("ExportFile") BrokerObject brokerObject) {
+		if (brokerObject.getTransferObject().equals("gfxEditor")) {
+			if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+				System.out.println("export GFX");
+			}
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {

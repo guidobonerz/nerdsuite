@@ -40,8 +40,7 @@ import org.eclipse.swt.widgets.FileDialog;
 
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
-import de.drazil.nerdsuite.enums.SizeVariant;
-import de.drazil.nerdsuite.model.CustomSize;
+import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.Project;
@@ -51,7 +50,6 @@ import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.util.ImageFactory;
-import de.drazil.nerdsuite.widget.CustomFormatDialog;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 
 public class Explorer implements IDoubleClickListener {
@@ -107,24 +105,27 @@ public class Explorer implements IDoubleClickListener {
 
 	@Inject
 	@Optional
-	void doExportFile(@UIEventTopic("doExportFile") boolean process) {
-		TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
-		Object o = treeNode.getFirstElement();
-		if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
-			MediaEntry entry = (MediaEntry) o;
-			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
-			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
-			saveDialog.setFileName(entry.getName() + "." + entry.getType());
-			String fileName = saveDialog.open();
-			try {
-				mediaManager.exportEntry(entry, new File(fileName));
-				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
-						"\"" + fileName + "\" was successfully exported.");
-			} catch (Exception e) {
-				e.printStackTrace();
+	void exportFile(@UIEventTopic("ExportFile") BrokerObject brokerObject) {
+		if (brokerObject.getTransferObject().equals("explorer")) {
+			TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
+			Object o = treeNode.getFirstElement();
+			if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
+				MediaEntry entry = (MediaEntry) o;
+				IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
+				FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
+				saveDialog.setFileName(entry.getName() + "." + entry.getType());
+				String fileName = saveDialog.open();
+				try {
+					mediaManager.exportEntry(entry, new File(fileName));
+					MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
+							"\"" + fileName + "\" was successfully exported.");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning",
+						"Folders can not be exported.");
 			}
-		} else {
-			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be exported.");
 		}
 	}
 
