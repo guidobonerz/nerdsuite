@@ -40,9 +40,11 @@ public class ClipboardService extends AbstractImagingService implements IImaging
 	}
 
 	@Override
-	public void execute(int action,IConfirmable confirmable) {
-		//int offset = imagingWidgetConfiguration.computeTileOffset(tileSelectionList.get(0).x,	tileSelectionList.get(0).y, navigationOffset);
-		int offset=0;
+	public void execute(int action, IConfirmable confirmable) {
+		// int offset =
+		// imagingWidgetConfiguration.computeTileOffset(tileSelectionList.get(0).x,
+		// tileSelectionList.get(0).y, navigationOffset);
+		int offset = 0;
 		if (action == CUT || action == COPY) {
 			currentAction = action;
 			cutCopyOffset = offset;

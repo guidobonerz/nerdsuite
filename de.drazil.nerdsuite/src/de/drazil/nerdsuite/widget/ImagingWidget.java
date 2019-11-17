@@ -118,10 +118,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			// fireSetSelectedTile(ImagingWidget.this, tile);
 
 			doDrawAllTiles();
-		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
-			computeRangeSelection(tileCursorX, tileCursorY, 0);
-			rangeSelectedStarted = false;
-			doDrawTile();
 		}
 	}
 
@@ -202,6 +198,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		}
 		if (supportsSingleSelection()) {
 			resetSelectionList();
+		}
+		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
+			computeRangeSelection(tileCursorX, tileCursorY, 0);
+			rangeSelectedStarted = false;
+			doDrawTile();
 		}
 	}
 
@@ -376,7 +377,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			paintTileCursor(gc, mouseIn, updateCursorLocation);
 		}
 
-		if (supportsRangeSelection() && conf.tileSelectionModes == TileSelectionModes.RANGE) {
+		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
 			paintRangeSelection(gc);
 		}
 		/*
