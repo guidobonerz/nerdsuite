@@ -32,32 +32,47 @@ public class RotationService extends AbstractImagingService {
 
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		return confirmable.isConfirmed("Tile does not have a square base\nDo you really want to rotate this tile?\n\nTo prevent data loss click No");
+		return confirmable.isConfirmed(
+				"Tile does not have a square base\nDo you really want to rotate this tile?\n\nTo prevent data loss click No");
 	}
 
 	private boolean checkIfSquareBase() {
-		return imagingWidgetConfiguration.tileWidth != imagingWidgetConfiguration.tileHeight;
+		Rectangle r = selectedTile.getSelection();
+		return r.width != r.height;
 	}
 
 	@Override
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
-		int[] content = tile.getActiveLayer().getContent();
-		int[] targetContent = new int[content.length];
 		Rectangle r = tile.getSelection();
-		for (int y = 0; y < configuration.tileHeight; y++) {
-			for (int x = 0; x < configuration.tileWidth; x++) {
-				int b = content[x + (y * configuration.tileWidth)];
+		int[] content = tile.getActiveLayer().getContent();
+		int[] contentSelection = new int[r.width * r.height];
+		int[] targetContentSelection = new int[r.width * r.height];
+
+		for (int x = r.x, cx = 0; x < r.x + r.width; x++, cx++) {
+			for (int y = r.y, cy = 0; y < r.y + r.height; y++, cy++) {
+				contentSelection[cx + cy * r.width] = content[x + y * configuration.tileWidth];
+			}
+		}
+
+		for (int y = 0; y < r.height; y++) {
+			for (int x = 0; x < r.width; x++) {
+				int b = contentSelection[x + (y * r.width)];
 				int o = 0;
 				if (action == CCW) {
-					o = (configuration.tileSize) - (configuration.tileWidth) - (configuration.tileWidth * x) + y;
+					o = (targetContentSelection.length) - (r.width) - (r.width * x) + y;
 				} else if (action == CW) {
-					o = (configuration.tileWidth) - y - 1 + (x * configuration.tileWidth);
+					o = (r.width) - y - 1 + (x * r.width);
 				}
-				if (o >= 0 && o < (configuration.tileSize)) {
-					targetContent[o] = b;
+				if (o >= 0 && o < (targetContentSelection.length)) {
+					targetContentSelection[o] = b;
 				}
 			}
 		}
-		tile.getActiveLayer().setContent(targetContent);
+
+		for (int x = r.x, cx = 0; x < r.x + r.width; x++, cx++) {
+			for (int y = r.y, cy = 0; y < r.y + r.height; y++, cy++) {
+				content[x + y * configuration.tileWidth] = targetContentSelection[cx + cy * r.width];
+			}
+		}
 	}
 }

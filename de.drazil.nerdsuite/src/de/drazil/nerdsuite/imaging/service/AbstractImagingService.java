@@ -25,6 +25,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	protected IConfirmable confirmable;
 	@Setter
 	protected LayerAction layerAction = LayerAction.Active;
+	protected Tile selectedTile;
 
 	public enum ConversionMode {
 		toWorkArray, toBitplane
@@ -76,11 +77,11 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	public void execute(int action, IConfirmable confirmable, IServiceCallback serviceCallback) {
 		this.confirmable = confirmable;
 		this.serviceCallback = serviceCallback;
+		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
+		selectedTile = service.getSelectedTile();
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
-			TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
-			Tile tile = service.getSelectedTile();
-			each(action, tile, imagingWidgetConfiguration, null);
-			tile.sendModificationNotification();
+			each(action, selectedTile, imagingWidgetConfiguration, null);
+			selectedTile.sendModificationNotification();
 		}
 
 		/*
