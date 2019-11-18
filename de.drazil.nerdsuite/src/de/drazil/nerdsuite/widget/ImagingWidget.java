@@ -410,21 +410,23 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		int y1 = selectedPixelRangeY;
 		int y2 = selectedPixelRangeY2;
 
-		if (x1 > x2) {
-			int v = x1;
-			x1 = x2;
-			x2 = v;
-		}
+		if (!(x1 == 0 && x2 == 0 && y1 == 0 && y2 == 0)) {
+			if (x1 > x2) {
+				int v = x1;
+				x1 = x2;
+				x2 = v;
+			}
 
-		if (y1 > y2) {
-			int v = y1;
-			y1 = y2;
-			y2 = v;
-		}
+			if (y1 > y2) {
+				int v = y1;
+				y1 = y2;
+				y2 = v;
+			}
 
-		gc.drawRectangle(x1 * conf.getPixelSize(), y1 * conf.getPixelSize(),
-				(x2 - x1) * conf.getPixelSize() + conf.getPixelSize(),
-				(y2 - y1) * conf.getPixelSize() + conf.getPixelSize());
+			gc.drawRectangle(x1 * conf.getPixelSize(), y1 * conf.getPixelSize(),
+					(x2 - x1) * conf.getPixelSize() + conf.getPixelSize(),
+					(y2 - y1) * conf.getPixelSize() + conf.getPixelSize());
+		}
 	}
 
 	private void paintTelevisionRaster(GC gc) {
