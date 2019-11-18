@@ -18,9 +18,8 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 	protected int navigationOffset = 0;
 	@Setter
 	protected Object source = null;
-	
-	@Setter
-	protected List<TileLocation> tileSelectionList = null;
+
+	protected List<Integer> selectedTileIndexList = null;
 	protected IConfirmable confirmable;
 	@Setter
 	protected LayerAction layerAction = LayerAction.Active;
@@ -77,9 +76,12 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		this.confirmable = confirmable;
 		this.serviceCallback = serviceCallback;
 		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
-		selectedTile = service.getSelectedTile();
+		selectedTileIndexList = service.getSelectedTileIndexList();
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
-			each(action, selectedTile, imagingWidgetConfiguration, null);
+			selectedTileIndexList.forEach(t -> {
+				each(action, service.getTile(t), imagingWidgetConfiguration, null);
+			});
+
 			selectedTile.sendModificationNotification();
 		}
 

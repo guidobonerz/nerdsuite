@@ -7,8 +7,6 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public interface IImagingService extends IExecutableService {
 
-	public void setTileSelectionList(List<TileLocation> tileSelectionList);
-
 	public void setImagingWidgetConfiguration(ImagingWidgetConfiguration configuration);
 
 	public void sendResponse(String message, Object data);
