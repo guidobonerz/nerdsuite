@@ -1,10 +1,5 @@
 package de.drazil.nerdsuite.imaging.service;
 
-import java.util.List;
-
-import de.drazil.nerdsuite.model.TileLocation;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
-
 public class ClipboardService extends AbstractImagingService implements IImagingService {
 
 	public final static int OFF = 0;
@@ -14,30 +9,6 @@ public class ClipboardService extends AbstractImagingService implements IImaging
 	private int currentAction = OFF;
 	private int cutCopyOffset = 0;
 	private int pasteOffset = 0;
-
-	@Override
-	public boolean needsConfirmation() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void sendResponse(String message, Object data) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public void execute(int action, IConfirmable confirmable) {
@@ -52,9 +23,9 @@ public class ClipboardService extends AbstractImagingService implements IImaging
 		if (action == PASTE) {// && currentAction != OFF) {
 			pasteOffset = offset;
 			for (int i = 0; i < imagingWidgetConfiguration.getTileSize(); i++) {
-				bitplane[pasteOffset + i] = bitplane[cutCopyOffset + i];
+				// bitplane[pasteOffset + i] = bitplane[cutCopyOffset + i];
 				if (currentAction == CUT) {
-					bitplane[cutCopyOffset + i] = 0;
+					// bitplane[cutCopyOffset + i] = 0;
 				}
 			}
 			currentAction = OFF;

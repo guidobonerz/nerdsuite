@@ -9,7 +9,7 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Setter;
 
-public abstract class AbstractImagingService extends AbstractService implements IImagingService {
+public abstract class AbstractImagingService extends AbstractExecutableService implements IImagingService {
 
 	@Setter
 	protected ImagingWidgetConfiguration imagingWidgetConfiguration = null;
@@ -18,8 +18,7 @@ public abstract class AbstractImagingService extends AbstractService implements 
 	protected int navigationOffset = 0;
 	@Setter
 	protected Object source = null;
-	@Setter
-	byte bitplane[];
+	
 	@Setter
 	protected List<TileLocation> tileSelectionList = null;
 	protected IConfirmable confirmable;

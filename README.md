@@ -14,20 +14,18 @@ Currently I work mostly on the graphics part.
 Current state: Still buggy and incomplete :-)
 
 Last Changes:
-Load/Save your work (json format)
-Added : Shift on range selection
+- Range selection modification for Shift, Flip, Mirror, Rotate and Purge
 
 Gfx Module Todo:
 - Performance tuning
 - Range selection for bulk modifications & animation
 - Layer Preview/Selector
-- Color selection widget
 - Charscreen reference charset selector
 - Layer content compression
 - Tile drag movement
 - Layer drag movement
 - Binary Import
-- Export to BIN/BAS/ASM/PNG/GIF
+- Export to BIN/BAS/ASM/PNG/GIF/SVG/TTF
 - Code cleanup
 
 

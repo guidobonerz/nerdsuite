@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public interface IImagingService extends IService {
+public interface IImagingService extends IExecutableService {
 
 	public void setTileSelectionList(List<TileLocation> tileSelectionList);
 

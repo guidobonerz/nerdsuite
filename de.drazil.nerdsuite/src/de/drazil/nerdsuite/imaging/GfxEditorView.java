@@ -214,7 +214,7 @@ public class GfxEditorView
 	public void manageSelectionMode(@UIEventTopic("CursorMode") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			CursorMode cursorMode = (CursorMode) brokerObject.getTransferObject();
-			painter.getConf().setCursorMode(cursorMode);
+			painter.setCursorMode(cursorMode);
 		}
 	}
 
@@ -223,6 +223,16 @@ public class GfxEditorView
 	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			save(file);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void exportFile(@UIEventTopic("ExportFile") BrokerObject brokerObject) {
+		if (brokerObject.getTransferObject().equals("gfxEditor")) {
+			if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+				StringBuilder sb = new StringBuilder();
+			}
 		}
 	}
 

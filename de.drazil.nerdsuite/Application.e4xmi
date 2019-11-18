@@ -17,7 +17,9 @@
                   </children>
                   <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_0_NPwNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.handledmenuitem.delete" label="Delete" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png"/>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A">
+                    <parameters xmi:id="_EZgWEAloEeqGDptjZacYgw" elementId="de.drazil.nerdsuite.parameter.49" name="de.drazil.nerdsuite.commandparameter.ExportInitiator" value="explorer"/>
+                  </children>
                 </menus>
               </children>
             </children>
@@ -60,7 +62,9 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Wf79UKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.4" label="Rename File"/>
         <children xsi:type="menu:MenuSeparator" xmi:id="_-98PENgAEemJ66HOfcS9Xw" elementId="de.drazil.nerdsuite.menuseparator.5"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wIx4NgAEemJ66HOfcS9Xw" elementId="de.drazil.nerdsuite.handledmenuitem.Import" label="Import..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/import.png"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_8dedcNgAEemJ66HOfcS9Xw" elementId="de.drazil.nerdsuite.handledmenuitem.Export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/export.png"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_8dedcNgAEemJ66HOfcS9Xw" elementId="de.drazil.nerdsuite.handledmenuitem.Export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/export.png" command="_2QmjcMznEemJh_xLPhHI6A">
+          <parameters xmi:id="_LiaScAloEeqGDptjZacYgw" elementId="de.drazil.nerdsuite.parameter.50" name="de.drazil.nerdsuite.commandparameter.ExportInitiator" value="gfxEditor"/>
+        </children>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_-oKP4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.edit" label="Edit">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
@@ -359,7 +363,9 @@
     <parameters xmi:id="_sg6FUNMZEemQrJ0VzevWNQ" elementId="de.drazil.nerdsuite.commandparameter.GridType" name="GridType" optional="false"/>
     <parameters xmi:id="_oN7voNOaEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.commandparameter.GridVisible" name="GridVisible" optional="false"/>
   </commands>
-  <commands xmi:id="_2QmjcMznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.command.export" commandName="Export"/>
+  <commands xmi:id="_2QmjcMznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.command.Export" commandName="Export">
+    <parameters xmi:id="_3zq28AlnEeqGDptjZacYgw" elementId="de.drazil.nerdsuite.commandparameter.ExportInitiator" name="ExportInitiator"/>
+  </commands>
   <commands xmi:id="_Wv60UNWBEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.InvertTile" commandName="InvertTile"/>
   <commands xmi:id="_og63INWJEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.command.ShiftTile" commandName="ShiftTile">
     <parameters xmi:id="_2q5CgNWJEemb1pFqqqXNXQ" elementId="de.drazil.nerdsuite.commandparameter.Direction" name="Direction" optional="false"/>
