@@ -292,11 +292,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				rangeSelectedStarted = true;
 			} else {
 
-				selectedPixelRangeX2 = enabledSquareSelection && x - selectedPixelRangeX > y - selectedPixelRangeY
+				selectedPixelRangeX2 = enabledSquareSelection && y - selectedPixelRangeY > x - selectedPixelRangeX
 						? selectedPixelRangeX + (selectedPixelRangeY2 - selectedPixelRangeY)
 						: x;
 
-				selectedPixelRangeY2 = enabledSquareSelection && y - selectedPixelRangeY > y - selectedPixelRangeX
+				selectedPixelRangeY2 = enabledSquareSelection && x - selectedPixelRangeX > y - selectedPixelRangeY
 						? selectedPixelRangeY + (selectedPixelRangeX2 - selectedPixelRangeX)
 						: y;
 			}
