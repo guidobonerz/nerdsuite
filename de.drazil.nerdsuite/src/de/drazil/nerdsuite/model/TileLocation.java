@@ -8,4 +8,5 @@ import lombok.Data;
 public class TileLocation {
 	public int x;
 	public int y;
+	public int index;
 }

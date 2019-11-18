@@ -11,7 +11,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.model.TileLocation;
+import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 
 public class LayerChooser extends BaseWidget implements PaintListener, ITileSelectionListener {
 
@@ -36,14 +36,12 @@ public class LayerChooser extends BaseWidget implements PaintListener, ITileSele
 	}
 
 	@Override
-	public void tileSelected(Tile tile) {
-		this.tile = tile;
-		redraw();
-	}
-
-	@Override
-	public void tilesSelected(List<TileLocation> tileLocationList) {
-
+	public void tileIndexesSelected(List<Integer> selectedTileIndexList) {
+		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
+			TileRepositoryService repository = ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class);
+			this.tile = repository.getTile(selectedTileIndexList.get(0));
+			redraw();
+		}
 	}
 
 	@Override

@@ -541,23 +541,22 @@ public class GfxEditorView
 	 */
 
 	@Override
-	public void tileSelected(Tile tile) {
-		List<String> tags1 = new LinkedList<>();
-		tags1.add("MultiColorButton");
-		E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolor());
-		multiColorChooser.setMonochrom(!tile.isMulticolor());
-		List<String> tags2 = new LinkedList<>();
-		tags2.add("Animator");
-		E4Utils.setToolItemEnabled(part, modelService, tags2, false);
-
-	}
-
-	@Override
-	public void tilesSelected(List<TileLocation> tileLocationList) {
-		System.out.println("selected tiles:" + tileLocationList.size());
-		List<String> tags = new LinkedList<>();
-		tags.add("Animator");
-		E4Utils.setToolItemEnabled(part, modelService, tags, tileLocationList.size() > 1);
+	public void tileIndexesSelected(List<Integer> selectedTileIndexList) {
+		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
+			List<String> tags1 = new LinkedList<>();
+			tags1.add("MultiColorButton");
+			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
+			E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolor());
+			multiColorChooser.setMonochrom(!tile.isMulticolor());
+			List<String> tags2 = new LinkedList<>();
+			tags2.add("Animator");
+			E4Utils.setToolItemEnabled(part, modelService, tags2, false);
+		} else if (selectedTileIndexList != null && selectedTileIndexList.size() > 1) {
+			System.out.println("selected tiles:" + selectedTileIndexList.size());
+			List<String> tags = new LinkedList<>();
+			tags.add("Animator");
+			E4Utils.setToolItemEnabled(part, modelService, tags, selectedTileIndexList.size() > 1);
+		}
 
 	}
 

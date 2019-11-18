@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.model.CustomSize;
-import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class TileRepositoryService extends AbstractImagingService {
@@ -25,6 +24,8 @@ public class TileRepositoryService extends AbstractImagingService {
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	@JsonIgnore
 	private List<ITileSelectionListener> tileServiceSelectionListener = null;
+	@JsonIgnore
+	private List<Integer> selectedTileIndexList = null;
 	@JsonIgnore
 	private ImagePainterFactory imagePainterFactory;
 	@JsonProperty(value = "selectedTile")
@@ -49,7 +50,7 @@ public class TileRepositoryService extends AbstractImagingService {
 		Tile tile = new Tile(name, size);
 		tileList.add(tile);
 		tileIndexOrderList.add(tileList.indexOf(tile));
-		setSelectedTile(tileIndexOrderList.get(getSize() - 1));
+		setSelectedTileIndex(tileIndexOrderList.get(getSize() - 1));
 		fireTileAdded();
 	}
 
@@ -81,13 +82,20 @@ public class TileRepositoryService extends AbstractImagingService {
 		}
 	}
 
-	public void setSelectedTile(int index) {
+	public void setSelectedTileIndex(int index) {
 		selectedTileIndex = index;
-		fireTileSelected(getTile(index));
+		selectedTileIndexList = new ArrayList<Integer>();
+		selectedTileIndexList.add(index);
+		setSelectedTileIndexList(selectedTileIndexList);
 	}
 
-	public void setSelectedTiles(List<TileLocation> tileLocationList) {
-		fireTilesSelected(tileLocationList);
+	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
+		this.selectedTileIndexList = tileIndexList;
+		fireSelectedTileIndexes(tileIndexList);
+	}
+
+	public List<Integer> getSelectedTileIndexList() {
+		return selectedTileIndexList;
 	}
 
 	@JsonIgnore
@@ -153,16 +161,12 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireTileSelected(Tile tile) {
-		tileServiceSelectionListener.forEach(listener -> listener.tileSelected(tile));
-	}
-
-	private void fireTilesSelected(List<TileLocation> tileLocationList) {
-		tileServiceSelectionListener.forEach(listener -> listener.tilesSelected(tileLocationList));
+	private void fireSelectedTileIndexes(List<Integer> selectedTileIndexList) {
+		tileServiceSelectionListener.forEach(listener -> listener.tileIndexesSelected(selectedTileIndexList));
 	}
 
 	public void notifySelection() {
-		fireTileSelected(getSelectedTile());
+		fireSelectedTileIndexes(selectedTileIndexList);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {

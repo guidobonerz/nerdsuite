@@ -1,11 +1,7 @@
 package de.drazil.nerdsuite.imaging.service;
 
-import java.util.List;
-
 import org.eclipse.swt.widgets.Composite;
 
-import de.drazil.nerdsuite.model.TileLocation;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.Setter;
 
 public class AnimationService extends AbstractImagingService {
@@ -23,39 +19,14 @@ public class AnimationService extends AbstractImagingService {
 
 	public class Animator implements Runnable {
 		public synchronized void run() {
-			if (pos >= tileSelectionList.size()) {
-				pos = 0;
-			}
-			TileLocation tl = tileSelectionList.get(pos);
-			pos++;
-			// callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x,
-			// tl.y, navigationOffset), tl.x,tl.y, true);
-			((Composite) source).getDisplay().timerExec(delay, this);
+			/*
+			 * if (pos >= tileSelectionList.size()) { pos = 0; } TileLocation tl =
+			 * tileSelectionList.get(pos); pos++; //
+			 * callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x, //
+			 * tl.y, navigationOffset), tl.x,tl.y, true); ((Composite)
+			 * source).getDisplay().timerExec(delay, this);
+			 */
 		}
-	}
-
-	@Override
-	public boolean needsConfirmation() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void sendResponse(String message, Object data) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	/*
