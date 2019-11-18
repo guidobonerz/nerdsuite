@@ -184,6 +184,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void leftMouseButtonReleased(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		if (supportsMultiSelection() && selectedTileIndexList.size() > 1) {
+			tileSelectionStarted = false;
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
 		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
