@@ -292,7 +292,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				rangeSelectedStarted = true;
 			} else {
 				selectedPixelRangeX2 = x;
-				selectedPixelRangeY2 = enabledSquareSelection ? x : y;
+				selectedPixelRangeY2 = enabledSquareSelection
+						? selectedPixelRangeY + (selectedPixelRangeX2 - selectedPixelRangeX)
+						: y;
 			}
 			System.out.println(selectedPixelRangeX + " " + selectedPixelRangeY + " " + selectedPixelRangeX2 + " "
 					+ selectedPixelRangeY2);
