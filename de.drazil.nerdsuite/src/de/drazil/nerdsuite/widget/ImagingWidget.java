@@ -302,7 +302,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			}
 			System.out.println(selectedPixelRangeX + " " + selectedPixelRangeY + " " + selectedPixelRangeX2 + " "
 					+ selectedPixelRangeY2);
+
 		} else if (mode == 2) {
+
 			if (selectedPixelRangeX > selectedPixelRangeX2) {
 				int v = selectedPixelRangeX;
 				selectedPixelRangeX = selectedPixelRangeX2;
