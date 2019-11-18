@@ -275,7 +275,6 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
-		System.out.println(tileCursorX + " " + tileCursorY);
 		int x = tileCursorX < 0 ? 0 : tileCursorX;
 		int y = tileCursorY < 0 ? 0 : tileCursorY;
 
@@ -300,25 +299,24 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 						? selectedPixelRangeY + (selectedPixelRangeX2 - selectedPixelRangeX)
 						: y;
 			}
-			System.out.println(selectedPixelRangeX + " " + selectedPixelRangeY + " " + selectedPixelRangeX2 + " "
-					+ selectedPixelRangeY2);
 
 		} else if (mode == 2) {
-
-			if (selectedPixelRangeX > selectedPixelRangeX2) {
-				int v = selectedPixelRangeX;
-				selectedPixelRangeX = selectedPixelRangeX2;
-				selectedPixelRangeX2 = v;
+			int x1 = selectedPixelRangeX;
+			int x2 = selectedPixelRangeX2;
+			int y1 = selectedPixelRangeY;
+			int y2 = selectedPixelRangeY2;
+			if (x1 > x2) {
+				int v = x1;
+				x1 = x2;
+				x2 = v;
 			}
 
-			if (selectedPixelRangeY > selectedPixelRangeY2) {
-				int v = selectedPixelRangeY;
-				selectedPixelRangeY = selectedPixelRangeY2;
-				selectedPixelRangeY2 = v;
+			if (y1 > y2) {
+				int v = y1;
+				y1 = y2;
+				y2 = v;
 			}
-			tile.setSelection(new Rectangle(selectedPixelRangeX, selectedPixelRangeY,
-					selectedPixelRangeX2 - selectedPixelRangeX + 1, selectedPixelRangeY2 - selectedPixelRangeY + 1));
-
+			tile.setSelection(new Rectangle(x1, y1, x2 - x1 + 1, y2 - y1 + 1));
 		}
 	}
 
@@ -406,9 +404,27 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		gc.setForeground(Constants.BRIGHT_ORANGE);
 		gc.setLineWidth(2);
 		gc.setLineStyle(SWT.LINE_DASH);
-		gc.drawRectangle(selectedPixelRangeX * conf.getPixelSize(), selectedPixelRangeY * conf.getPixelSize(),
-				(selectedPixelRangeX2 - selectedPixelRangeX) * conf.getPixelSize() + conf.getPixelSize(),
-				(selectedPixelRangeY2 - selectedPixelRangeY) * conf.getPixelSize() + conf.getPixelSize());
+
+		int x1 = selectedPixelRangeX;
+		int x2 = selectedPixelRangeX2;
+		int y1 = selectedPixelRangeY;
+		int y2 = selectedPixelRangeY2;
+
+		if (x1 > x2) {
+			int v = x1;
+			x1 = x2;
+			x2 = v;
+		}
+
+		if (y1 > y2) {
+			int v = y1;
+			y1 = y2;
+			y2 = v;
+		}
+
+		gc.drawRectangle(x1 * conf.getPixelSize(), y1 * conf.getPixelSize(),
+				(x2 - x1) * conf.getPixelSize() + conf.getPixelSize(),
+				(y2 - y1) * conf.getPixelSize() + conf.getPixelSize());
 	}
 
 	private void paintTelevisionRaster(GC gc) {
