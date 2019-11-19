@@ -198,6 +198,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		if (supportsMultiSelection() || supportsSingleSelection()) {
+			computeTileSelection(x, y, 0);
 			// System.out.printf("tile x:%2d tile y:%2d\n", tileX, tileY);
 		}
 		if (supportsSingleSelection()) {
@@ -223,7 +224,10 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	private void computeTileSelection(int tileX, int tileY, int mode) {
-		if (mode == 1) {
+		if (mode == 0) {
+			tileSelectionRange.setFrom(0);
+			tileSelectionRange.setTo(0);
+		} else if (mode == 1) {
 			int index = computeTileIndex(tileX, tileY);
 			if (!tileSelectionStarted) {
 				tileSelectionRange.setFrom(index);
