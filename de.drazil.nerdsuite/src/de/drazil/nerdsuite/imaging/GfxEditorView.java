@@ -307,6 +307,13 @@ public class GfxEditorView
 				tileRepositoryService = load(file);
 				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
 					customSize = tileRepositoryService.getCustomSize();
+					Display.getDefault().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							tileRepositoryService.updateTileViewer(false);
+							painter.setCursorMode(CursorMode.Point);
+						}
+					});
 				}
 			}
 		} catch (IOException e1) {
@@ -406,14 +413,6 @@ public class GfxEditorView
 		if (isNewProject) {
 			tileRepositoryService.addTile(painter.getConf().getTileSize());
 		}
-
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				tileRepositoryService.notifySelection();
-				painter.setCursorMode(CursorMode.Point);
-			}
-		});
 
 	}
 

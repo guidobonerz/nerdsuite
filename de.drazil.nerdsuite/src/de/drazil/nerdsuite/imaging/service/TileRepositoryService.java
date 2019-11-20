@@ -198,7 +198,7 @@ public class TileRepositoryService extends AbstractImagingService {
 		fireTileBulkModification();
 	}
 
-	public void notifySelection() {
+	public void updateTileViewer(boolean selectedOnly) {
 		fireSelectedTileIndexes(selectedTileIndexList);
 	}
 
