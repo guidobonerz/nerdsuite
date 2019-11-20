@@ -20,7 +20,6 @@ Last Changes:
 
 Gfx Module Todo:
 - Performance tuning
-- Range selection for bulk modifications & animation
 - Layer Preview/Selector
 - Charscreen reference charset selector
 - Layer content compression
@@ -48,6 +47,8 @@ Create/Update disk images
 ![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ColorChooser.png)
 ## Image modification on selected range
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/range_selection.png)
+## Sprite Animation Example
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/drops_animation.gif)
 ## Simple BitmapViewer
 Image by Almighty God
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/koala.png)
