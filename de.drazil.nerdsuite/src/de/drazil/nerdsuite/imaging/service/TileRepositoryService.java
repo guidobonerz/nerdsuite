@@ -5,14 +5,19 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Rectangle;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener.UpdateMode;
 import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.widget.Tile;
+import lombok.Getter;
+import lombok.Setter;
 
 public class TileRepositoryService extends AbstractImagingService {
 
@@ -23,7 +28,7 @@ public class TileRepositoryService extends AbstractImagingService {
 	@JsonIgnore
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	@JsonIgnore
-	private List<ITileSelectionListener> tileServiceSelectionListener = null;
+	private List<ITileUpdateListener> tileUpdateListener = null;
 	@JsonIgnore
 	private List<Integer> selectedTileIndexList = null;
 	@JsonIgnore
@@ -32,12 +37,16 @@ public class TileRepositoryService extends AbstractImagingService {
 	private int selectedTileIndex = 0;
 	@JsonProperty(value = "customFormat")
 	private CustomSize customSize;
+	@Getter
+	@Setter
+	@JsonIgnore
+	private Rectangle selection;
 
 	public TileRepositoryService() {
 		tileList = new ArrayList<>();
 		tileIndexOrderList = new ArrayList<>();
 		tileServiceManagementListener = new ArrayList<>();
-		tileServiceSelectionListener = new ArrayList<>();
+		tileUpdateListener = new ArrayList<>();
 		imagePainterFactory = new ImagePainterFactory();
 	}
 
@@ -82,16 +91,21 @@ public class TileRepositoryService extends AbstractImagingService {
 		}
 	}
 
+	@JsonIgnore
 	public void setSelectedTileIndex(int index) {
 		selectedTileIndex = index;
 		selectedTileIndexList = new ArrayList<Integer>();
 		selectedTileIndexList.add(index);
-		setSelectedTileIndexList(selectedTileIndexList);
+		setSelectedTileIndexList(selectedTileIndexList, UpdateMode.Single);
 	}
 
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
+		setSelectedTileIndexList(tileIndexList, UpdateMode.Selection);
+	}
+
+	private void setSelectedTileIndexList(List<Integer> tileIndexList, UpdateMode updateMode) {
 		this.selectedTileIndexList = tileIndexList;
-		fireSelectedTileIndexes(tileIndexList);
+		fireTileUpdates(tileIndexList, updateMode);
 	}
 
 	public List<Integer> getSelectedTileIndexList() {
@@ -135,18 +149,18 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceManagementListener.remove(listener);
 	}
 
-	public void addTileSelectionListener(ITileSelectionListener... listeners) {
-		for (ITileSelectionListener listener : listeners) {
-			addTileSelectionListener(listener);
+	public void addTileSelectionListener(ITileUpdateListener... listeners) {
+		for (ITileUpdateListener listener : listeners) {
+			addTileUpdateListener(listener);
 		}
 	}
 
-	public void addTileSelectionListener(ITileSelectionListener listener) {
-		tileServiceSelectionListener.add(listener);
+	public void addTileUpdateListener(ITileUpdateListener listener) {
+		tileUpdateListener.add(listener);
 	}
 
-	public void removeTileSelectionListener(ITileSelectionListener listener) {
-		tileServiceSelectionListener.remove(listener);
+	public void removeTileUpdateListener(ITileUpdateListener listener) {
+		tileUpdateListener.remove(listener);
 	}
 
 	private void fireTileAdded() {
@@ -161,12 +175,16 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireSelectedTileIndexes(List<Integer> selectedTileIndexList) {
-		tileServiceSelectionListener.forEach(listener -> listener.tileIndexesSelected(selectedTileIndexList));
+	private void fireTileUpdates(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+		tileUpdateListener.forEach(listener -> listener.updateTiles(selectedTileIndexList, updateMode));
 	}
 
-	public void notifySelection() {
-		fireSelectedTileIndexes(selectedTileIndexList);
+	public void updateTileViewer(UpdateMode updateMode) {
+		updateTileViewer(selectedTileIndexList, updateMode);
+	}
+
+	public void updateTileViewer(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+		fireTileUpdates(selectedTileIndexList, updateMode);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {

@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.enums.AnimationMode;
 import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
@@ -49,9 +50,10 @@ import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
-import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.MulticolorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
@@ -64,7 +66,6 @@ import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
@@ -75,7 +76,7 @@ import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class GfxEditorView
-		implements IConfirmable, ITileSelectionListener, IColorPaletteProvider, IColorSelectionListener {
+		implements IConfirmable, ITileUpdateListener, IColorPaletteProvider, IColorSelectionListener {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -215,6 +216,16 @@ public class GfxEditorView
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			CursorMode cursorMode = (CursorMode) brokerObject.getTransferObject();
 			painter.setCursorMode(cursorMode);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void animate(@UIEventTopic("AnimationMode") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			AnimationService service = ServiceFactory.getService(brokerObject.getOwner(), AnimationService.class);
+			service.setComposite(parent);
+			service.execute(((AnimationMode) brokerObject.getTransferObject()));
 		}
 	}
 
@@ -406,14 +417,13 @@ public class GfxEditorView
 		if (isNewProject) {
 			tileRepositoryService.addTile(painter.getConf().getTileSize());
 		}
-
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				tileRepositoryService.notifySelection();
+				tileRepositoryService.updateTileViewer(UpdateMode.All);
+				painter.setCursorMode(CursorMode.Point);
 			}
 		});
-
 	}
 
 	public LayerChooser createLayerChooser() {
@@ -541,7 +551,7 @@ public class GfxEditorView
 	 */
 
 	@Override
-	public void tileIndexesSelected(List<Integer> selectedTileIndexList) {
+	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
 		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
 			List<String> tags1 = new LinkedList<>();
 			tags1.add("MultiColorButton");

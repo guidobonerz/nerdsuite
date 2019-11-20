@@ -20,15 +20,16 @@ import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.imaging.service.IServiceCallback;
+import de.drazil.nerdsuite.imaging.service.ITileBulkModificationListener;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
-import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.SelectionRange;
 
 public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IServiceCallback,
-		ITileSelectionListener, ITileManagementListener, ITileListener {
+		ITileUpdateListener, ITileManagementListener, ITileListener, ITileBulkModificationListener {
 
 	private boolean keyPressed = false;
 	private int currentKeyCodePressed = 0;
@@ -56,6 +57,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int tileY = 0;
 	private int tileCursorX = 0;
 	private int tileCursorY = 0;
+	private int animationIndex;
 
 	private SelectionRange tileSelectionRange = null;
 
@@ -184,6 +186,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void leftMouseButtonReleased(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		if (supportsMultiSelection() && selectedTileIndexList.size() > 1) {
+			tileSelectionStarted = false;
+			tileSelectionRange.reset();
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
 		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
@@ -197,6 +201,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		if (supportsMultiSelection() || supportsSingleSelection()) {
+			computeTileSelection(tileX, tileY, 0);
 			// System.out.printf("tile x:%2d tile y:%2d\n", tileX, tileY);
 		}
 		if (supportsSingleSelection()) {
@@ -222,7 +227,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	private void computeTileSelection(int tileX, int tileY, int mode) {
-		if (mode == 1) {
+		if (mode == 0) {
+			tileSelectionStarted = false;
+			tileSelectionRange.setFrom(tileX);
+			tileSelectionRange.setTo(tileY);
+		} else if (mode == 1) {
 			int index = computeTileIndex(tileX, tileY);
 			if (!tileSelectionStarted) {
 				tileSelectionRange.setFrom(index);
@@ -230,11 +239,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			}
 			tileSelectionRange.setTo(index);
 			selectedTileIndexList.clear();
-			for (int i = tileSelectionRange.getFrom(); i < tileSelectionRange.getTo(); i++) {
+
+			int from = tileSelectionRange.getFrom();
+			int to = tileSelectionRange.getTo();
+			if (from > to) {
+				int d = from;
+				from = to;
+				to = d;
+			}
+
+			for (int i = from; i <= to; i++) {
 				selectedTileIndexList.add(i);
 			}
 		}
-		System.out.println(tileSelectionRange.getFrom() + " " + tileSelectionRange.getTo());
 	}
 
 	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
@@ -279,7 +296,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				y1 = y2;
 				y2 = v;
 			}
-			tile.setSelection(new Rectangle(x1, y1, x2 - x1 + 1, y2 - y1 + 1));
+			tileRepositoryService.setSelection(new Rectangle(x1, y1, x2 - x1 + 1, y2 - y1 + 1));
 		}
 	}
 
@@ -314,14 +331,17 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		if (redrawMode == RedrawMode.DrawPixel) {
 			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf,
 					colorPaletteProvider);
-		} else if (redrawMode == RedrawMode.DrawTile) {
+		} else if (redrawMode == RedrawMode.DrawTile) {// || (redrawMode == RedrawMode.DrawAllTiles &&
+														// supportsPainting())) {
 			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawAllTiles) {
-			if (supportsPainting()) {
-				paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
-			} else {
-				paintTileService.paintAllTiles(this, gc, conf, colorPaletteProvider);
-			}
+			// paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf,
+			// colorPaletteProvider);
+			paintTileService.paintAllTiles(this, gc, conf, colorPaletteProvider);
+		} else if (redrawMode == RedrawMode.DrawSelectedTiles) {
+			paintTileService.paintSelectedTiles(this, gc, conf, colorPaletteProvider);
+		} else if (redrawMode == RedrawMode.DrawIndexed) {
+			paintTileService.paintTile(this, gc, animationIndex, conf, colorPaletteProvider);
 		}
 
 		if (paintPixelGrid) {
@@ -530,6 +550,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
+	public void doDrawSelectedTiles() {
+		redrawMode = RedrawMode.DrawSelectedTiles;
+		redraw();
+	}
+
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns);
 		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows);
@@ -539,7 +565,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void setCursorMode(CursorMode cursorMode) {
 		conf.setCursorMode(cursorMode);
 		if (cursorMode == CursorMode.Point) {
-			tile.setSelection(new Rectangle(0, 0, conf.getWidth(), conf.getHeight()));
+			tileRepositoryService
+					.setSelection(new Rectangle(0, 0, conf.getWidth() * conf.getTileColumns() * conf.getColumns(),
+							conf.getHeight() * conf.getRows() * conf.getTileRows()));
 		}
 		fireDoDrawAllTiles(this);
 		doDrawAllTiles();
@@ -626,8 +654,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void tileIndexesSelected(List<Integer> selectedTileIndexList) {
-		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
+	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+		if (updateMode == UpdateMode.Single && supportsPainting()) {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			if (this.tile != null) {
 				this.tile.removeTileListener(this);
@@ -643,7 +671,16 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				computeTileSelection(tileX, tileY, 1);
 			}
 			tile.addTileListener(this);
+			doDrawTile();
+		} else if (updateMode == UpdateMode.Selection && (supportsSingleSelection() || supportsMultiSelection())) {
+			doDrawSelectedTiles();
+		} else if (updateMode == UpdateMode.All) {
 			doDrawAllTiles();
+		} else if (updateMode == UpdateMode.Animation) {
+			animationIndex = selectedTileIndexList.get(0);
+			tileRepositoryService.setSelectedTileIndex(animationIndex);
+			redrawMode = RedrawMode.DrawIndexed;
+			redraw();
 		}
 	}
 
@@ -651,6 +688,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void tileChanged() {
 		conf.setMultiColorEnabled(tile.isMulticolor());
 		doDrawTile();
+	}
+
+	@Override
+	public void tilesChanged(List<Integer> selectedTileIndexList) {
+		doDrawSelectedTiles();
 	}
 
 	@Override

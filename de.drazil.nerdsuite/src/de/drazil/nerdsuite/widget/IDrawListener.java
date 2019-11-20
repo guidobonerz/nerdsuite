@@ -9,5 +9,7 @@ public interface IDrawListener {
 	public void doDrawTile();
 
 	public void doDrawAllTiles();
+	
+	public void doDrawSelectedTiles();
 
 }

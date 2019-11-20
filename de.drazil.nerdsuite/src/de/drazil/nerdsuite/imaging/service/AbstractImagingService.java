@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.drazil.nerdsuite.enums.LayerAction;
 import de.drazil.nerdsuite.enums.TileAction;
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener.UpdateMode;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
@@ -16,14 +17,13 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 	protected IServiceCallback serviceCallback = null;
 	@Setter
 	protected int navigationOffset = 0;
-	@Setter
-	protected Object source = null;
 
 	protected List<Integer> selectedTileIndexList = null;
 	protected IConfirmable confirmable;
 	@Setter
 	protected LayerAction layerAction = LayerAction.Active;
-	protected Tile selectedTile;
+
+	protected TileRepositoryService service = null;
 
 	public enum ConversionMode {
 		toWorkArray, toBitplane
@@ -75,14 +75,18 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 	public void execute(int action, IConfirmable confirmable, IServiceCallback serviceCallback) {
 		this.confirmable = confirmable;
 		this.serviceCallback = serviceCallback;
-		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
+		service = ServiceFactory.getService(owner, TileRepositoryService.class);
 		selectedTileIndexList = service.getSelectedTileIndexList();
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
-			selectedTileIndexList.forEach(t -> {
-				each(action, service.getTile(t), imagingWidgetConfiguration, null);
+			selectedTileIndexList.forEach(i -> {
+				each(action, service.getTile(i), imagingWidgetConfiguration, null);
+				if (selectedTileIndexList.size() == 1) {
+					service.getTile(i).sendModificationNotification();
+				}
 			});
-
-			selectedTile.sendModificationNotification();
+			if (selectedTileIndexList.size() > 1) {
+				service.updateTileViewer(UpdateMode.Selection);
+			}
 		}
 
 		/*
