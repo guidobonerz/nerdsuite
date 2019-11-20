@@ -198,7 +198,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		if (supportsMultiSelection() || supportsSingleSelection()) {
-			computeTileSelection(x, y, 0);
+			computeTileSelection(tileX, tileY, 0);
 			// System.out.printf("tile x:%2d tile y:%2d\n", tileX, tileY);
 		}
 		if (supportsSingleSelection()) {
@@ -225,8 +225,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 
 	private void computeTileSelection(int tileX, int tileY, int mode) {
 		if (mode == 0) {
-			tileSelectionRange.setFrom(0);
-			tileSelectionRange.setTo(0);
+			tileSelectionStarted = false;
+			tileSelectionRange.setFrom(tileX);
+			tileSelectionRange.setTo(tileY);
 		} else if (mode == 1) {
 			int index = computeTileIndex(tileX, tileY);
 			if (!tileSelectionStarted) {
@@ -235,11 +236,19 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			}
 			tileSelectionRange.setTo(index);
 			selectedTileIndexList.clear();
-			for (int i = tileSelectionRange.getFrom(); i < tileSelectionRange.getTo(); i++) {
+
+			int from = tileSelectionRange.getFrom();
+			int to = tileSelectionRange.getTo();
+			if (from > to) {
+				int d = from;
+				from = to;
+				to = d;
+			}
+
+			for (int i = from; i <= to; i++) {
 				selectedTileIndexList.add(i);
 			}
 		}
-		System.out.println(tileSelectionRange.getFrom() + " " + tileSelectionRange.getTo());
 	}
 
 	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
