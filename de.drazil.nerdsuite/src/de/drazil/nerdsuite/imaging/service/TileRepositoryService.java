@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Rectangle;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
@@ -13,6 +15,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.widget.Tile;
+import lombok.Getter;
+import lombok.Setter;
 
 public class TileRepositoryService extends AbstractImagingService {
 
@@ -32,6 +36,10 @@ public class TileRepositoryService extends AbstractImagingService {
 	private int selectedTileIndex = 0;
 	@JsonProperty(value = "customFormat")
 	private CustomSize customSize;
+	@Getter
+	@Setter
+	@JsonIgnore
+	private Rectangle selection;
 
 	public TileRepositoryService() {
 		tileList = new ArrayList<>();

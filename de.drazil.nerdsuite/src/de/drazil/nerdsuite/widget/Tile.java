@@ -38,11 +38,6 @@ public class Tile {
 	@Getter
 	private boolean isEmpty = true;
 
-	@Getter
-	@Setter
-	@JsonIgnore
-	private Rectangle selection;
-
 	public Tile() {
 		createTileListenerList();
 		createLayerList();

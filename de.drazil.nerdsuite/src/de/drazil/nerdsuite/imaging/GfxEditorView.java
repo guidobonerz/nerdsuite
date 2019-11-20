@@ -411,6 +411,7 @@ public class GfxEditorView
 			@Override
 			public void run() {
 				tileRepositoryService.notifySelection();
+				painter.setCursorMode(CursorMode.Point);
 			}
 		});
 

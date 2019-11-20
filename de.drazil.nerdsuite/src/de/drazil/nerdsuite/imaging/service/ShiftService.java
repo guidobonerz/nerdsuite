@@ -17,7 +17,7 @@ public class ShiftService extends AbstractImagingService {
 
 		int[] content = tile.getActiveLayer().getContent();
 
-		Rectangle r = tile.getSelection();
+		Rectangle r = service.getSelection();
 
 		if (action == UP) {
 			for (int x = r.x; x < r.x + r.width; x++) {

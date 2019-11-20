@@ -22,13 +22,13 @@ public class RotationService extends AbstractImagingService {
 	}
 
 	private boolean checkIfSquareBase() {
-		Rectangle r = selectedTile.getSelection();
-		return r.width != r.height;
+		Rectangle r = null;//selectedTile.getSelection();
+		return false;//r.width != r.height;
 	}
 
 	@Override
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
-		Rectangle r = tile.getSelection();
+		Rectangle r = service.getSelection();
 		int[] content = tile.getActiveLayer().getContent();
 		int[] contentSelection = new int[r.width * r.height];
 		int[] targetContentSelection = new int[r.width * r.height];

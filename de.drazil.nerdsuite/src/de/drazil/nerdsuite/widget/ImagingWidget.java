@@ -293,7 +293,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				y1 = y2;
 				y2 = v;
 			}
-			tile.setSelection(new Rectangle(x1, y1, x2 - x1 + 1, y2 - y1 + 1));
+			tileRepositoryService.setSelection(new Rectangle(x1, y1, x2 - x1 + 1, y2 - y1 + 1));
 		}
 	}
 
@@ -553,7 +553,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void setCursorMode(CursorMode cursorMode) {
 		conf.setCursorMode(cursorMode);
 		if (cursorMode == CursorMode.Point) {
-			tile.setSelection(new Rectangle(0, 0, conf.getWidth(), conf.getHeight()));
+			tileRepositoryService
+					.setSelection(new Rectangle(0, 0, conf.getWidth() * conf.getTileColumns() * conf.getColumns(),
+							conf.getHeight() * conf.getRows() * conf.getTileRows()));
 		}
 		fireDoDrawAllTiles(this);
 		doDrawAllTiles();
