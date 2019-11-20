@@ -86,7 +86,7 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 				}
 			});
 			if (selectedTileIndexList.size() > 1) {
-				service.notifySelection();
+				service.notifyBulkModification();
 			}
 		}
 

@@ -64,7 +64,6 @@ import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
@@ -384,6 +383,7 @@ public class GfxEditorView
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
+		tileRepositoryService.addTileBulkModificationListener(repository);
 		tileRepositoryService.setCustomSize(customSize);
 
 		if (graphicFormat.getId().endsWith("CHAR")) {

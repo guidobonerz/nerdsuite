@@ -29,6 +29,8 @@ public class TileRepositoryService extends AbstractImagingService {
 	@JsonIgnore
 	private List<ITileSelectionListener> tileServiceSelectionListener = null;
 	@JsonIgnore
+	private List<ITileBulkModificationListener> tileBulkModificationListener = null;
+	@JsonIgnore
 	private List<Integer> selectedTileIndexList = null;
 	@JsonIgnore
 	private ImagePainterFactory imagePainterFactory;
@@ -46,6 +48,7 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileIndexOrderList = new ArrayList<>();
 		tileServiceManagementListener = new ArrayList<>();
 		tileServiceSelectionListener = new ArrayList<>();
+		tileBulkModificationListener = new ArrayList<>();
 		imagePainterFactory = new ImagePainterFactory();
 	}
 
@@ -129,6 +132,16 @@ public class TileRepositoryService extends AbstractImagingService {
 		return imagePainterFactory;
 	}
 
+	public void addTileBulkModificationListener(ITileBulkModificationListener... listeners) {
+		for (ITileBulkModificationListener listener : listeners) {
+			addTileBulkModificationListener(listener);
+		}
+	}
+
+	public void addTileBulkModificationListener(ITileBulkModificationListener listener) {
+		tileBulkModificationListener.add(listener);
+	}
+
 	public void addTileManagementListener(ITileManagementListener... listeners) {
 		for (ITileManagementListener listener : listeners) {
 			addTileManagementListener(listener);
@@ -157,6 +170,14 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceSelectionListener.remove(listener);
 	}
 
+	public void removeTileBulkModificationListener(ITileBulkModificationListener listener) {
+		tileBulkModificationListener.remove(listener);
+	}
+
+	private void fireTileBulkModification() {
+		tileBulkModificationListener.forEach(listener -> listener.tilesChanged(selectedTileIndexList));
+	}
+
 	private void fireTileAdded() {
 		tileServiceManagementListener.forEach(listener -> listener.tileAdded(getSelectedTile()));
 	}
@@ -171,6 +192,10 @@ public class TileRepositoryService extends AbstractImagingService {
 
 	private void fireSelectedTileIndexes(List<Integer> selectedTileIndexList) {
 		tileServiceSelectionListener.forEach(listener -> listener.tileIndexesSelected(selectedTileIndexList));
+	}
+
+	public void notifyBulkModification() {
+		fireTileBulkModification();
 	}
 
 	public void notifySelection() {

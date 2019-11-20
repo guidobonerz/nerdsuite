@@ -81,25 +81,35 @@ public class PaintTileService extends AbstractImagingService {
 
 	}
 
+	public void paintSelectedTiles(Composite parent, GC gc, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
+		for (int i = 0; i < tileRepositoryService.getSelectedTileIndex(); i++) {
+			paintTiles(parent, gc, tileRepositoryService.getTile(i), i, conf, colorPaletteProvider);
+		}
+	}
+
 	public void paintAllTiles(Composite parent, GC gc, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
+		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
+			paintTiles(parent, gc, tileRepositoryService.getTile(i), i, conf, colorPaletteProvider);
+		}
+	}
+
+	public void paintTiles(Composite parent, GC gc, Tile tile, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
 		int x = 0;
 		int y = 0;
 		int parentWidth = parent.getBounds().width;
-		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
-			Tile tile = tileRepositoryService.getTile(i);
-
-			Image image = imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider);
-			int imageWidth = image.getBounds().width;
-			int imageHeight = image.getBounds().height;
-			gc.drawImage(image, x, y);
-			x += imageWidth;
-			int columns = (int) (parentWidth / imageWidth);
-			conf.setColumns(columns);
-			if ((i + 1) % columns == 0) {
-				y += imageHeight;
-				x = 0;
-			}
+		Image image = imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider);
+		int imageWidth = image.getBounds().width;
+		int imageHeight = image.getBounds().height;
+		gc.drawImage(image, x, y);
+		x += imageWidth;
+		int columns = (int) (parentWidth / imageWidth);
+		conf.setColumns(columns);
+		if ((index + 1) % columns == 0) {
+			y += imageHeight;
+			x = 0;
 		}
 	}
 }

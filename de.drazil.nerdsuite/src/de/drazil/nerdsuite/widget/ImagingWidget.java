@@ -20,6 +20,7 @@ import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.imaging.service.IServiceCallback;
+import de.drazil.nerdsuite.imaging.service.ITileBulkModificationListener;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
@@ -28,7 +29,7 @@ import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.SelectionRange;
 
 public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IServiceCallback,
-		ITileSelectionListener, ITileManagementListener, ITileListener {
+		ITileSelectionListener, ITileManagementListener, ITileListener, ITileBulkModificationListener {
 
 	private boolean keyPressed = false;
 	private int currentKeyCodePressed = 0;
@@ -334,12 +335,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			// paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf,
 			// colorPaletteProvider);
 			paintTileService.paintAllTiles(this, gc, conf, colorPaletteProvider);
-		} else {
+		} else if (redrawMode == RedrawMode.DrawSelectedTiles) {
+			paintTileService.paintSelectedTiles(this, gc, conf, colorPaletteProvider);
 		}
 
-		if (paintPixelGrid)
-
-		{
+		if (paintPixelGrid) {
 			paintPixelGrid(gc);
 		}
 
@@ -545,6 +545,12 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
+	public void doDrawSelectedTiles() {
+		redrawMode = RedrawMode.DrawSelectedTiles;
+		redraw();
+	}
+
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns);
 		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows);
@@ -670,6 +676,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	public void tileChanged() {
 		conf.setMultiColorEnabled(tile.isMulticolor());
 		doDrawTile();
+	}
+
+	@Override
+	public void tilesChanged(List<Integer> selectedTileIndexList) {
+		doDrawSelectedTiles();
 	}
 
 	@Override
