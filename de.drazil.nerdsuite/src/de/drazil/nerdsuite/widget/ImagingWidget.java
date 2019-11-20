@@ -328,17 +328,18 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		if (redrawMode == RedrawMode.DrawPixel) {
 			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf,
 					colorPaletteProvider);
-		} else if (redrawMode == RedrawMode.DrawTile) {
+		} else if (redrawMode == RedrawMode.DrawTile || (redrawMode == RedrawMode.DrawAllTiles && supportsPainting())) {
 			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawAllTiles) {
-			if (supportsPainting()) {
-				paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
-			} else {
-				paintTileService.paintAllTiles(this, gc, conf, colorPaletteProvider);
-			}
+			// paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf,
+			// colorPaletteProvider);
+			paintTileService.paintAllTiles(this, gc, conf, colorPaletteProvider);
+		} else {
 		}
 
-		if (paintPixelGrid) {
+		if (paintPixelGrid)
+
+		{
 			paintPixelGrid(gc);
 		}
 
@@ -659,6 +660,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 				computeTileSelection(tileX, tileY, 1);
 			}
 			tile.addTileListener(this);
+			doDrawTile();
+		} else {
 			doDrawAllTiles();
 		}
 	}

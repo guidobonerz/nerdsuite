@@ -81,9 +81,13 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
 			selectedTileIndexList.forEach(i -> {
 				each(action, service.getTile(i), imagingWidgetConfiguration, null);
-				service.getTile(i).sendModificationNotification();
+				if (selectedTileIndexList.size() == 1) {
+					service.getTile(i).sendModificationNotification();
+				}
 			});
-
+			if (selectedTileIndexList.size() > 1) {
+				service.notifySelection();
+			}
 		}
 
 		/*
