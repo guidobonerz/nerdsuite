@@ -8,12 +8,12 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 
-public class LayerChooser extends BaseWidget implements PaintListener, ITileSelectionListener {
+public class LayerChooser extends BaseWidget implements PaintListener, ITileUpdateListener {
 
 	private static final int WIDTH = 180;
 	private static final int HEIGHT = 300;
@@ -36,7 +36,7 @@ public class LayerChooser extends BaseWidget implements PaintListener, ITileSele
 	}
 
 	@Override
-	public void tileIndexesSelected(List<Integer> selectedTileIndexList) {
+	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
 		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
 			TileRepositoryService repository = ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class);
 			this.tile = repository.getTile(selectedTileIndexList.get(0));

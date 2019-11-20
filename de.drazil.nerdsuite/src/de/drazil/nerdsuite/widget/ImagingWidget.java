@@ -22,14 +22,14 @@ import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.imaging.service.IServiceCallback;
 import de.drazil.nerdsuite.imaging.service.ITileBulkModificationListener;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
-import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.SelectionRange;
 
 public class ImagingWidget extends BaseImagingWidget implements IDrawListener, PaintListener, IServiceCallback,
-		ITileSelectionListener, ITileManagementListener, ITileListener, ITileBulkModificationListener {
+		ITileUpdateListener, ITileManagementListener, ITileListener, ITileBulkModificationListener {
 
 	private boolean keyPressed = false;
 	private int currentKeyCodePressed = 0;
@@ -186,6 +186,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		computeCursorPosition(x, y);
 		if (supportsMultiSelection() && selectedTileIndexList.size() > 1) {
 			tileSelectionStarted = false;
+			tileSelectionRange.reset();
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
 		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
@@ -329,7 +330,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		if (redrawMode == RedrawMode.DrawPixel) {
 			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf,
 					colorPaletteProvider);
-		} else if (redrawMode == RedrawMode.DrawTile || (redrawMode == RedrawMode.DrawAllTiles && supportsPainting())) {
+		} else if (redrawMode == RedrawMode.DrawTile ){//|| (redrawMode == RedrawMode.DrawAllTiles && supportsPainting())) {
 			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawAllTiles) {
 			// paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf,
@@ -649,8 +650,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	}
 
 	@Override
-	public void tileIndexesSelected(List<Integer> selectedTileIndexList) {
-		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
+	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+		if (updateMode == UpdateMode.Single && supportsPainting()) {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			if (this.tile != null) {
 				this.tile.removeTileListener(this);
@@ -667,7 +668,9 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			}
 			tile.addTileListener(this);
 			doDrawTile();
-		} else {
+		} else if (updateMode == UpdateMode.Selection && (supportsSingleSelection() || supportsMultiSelection())) {
+			doDrawSelectedTiles();
+		} else if (updateMode == UpdateMode.All) {
 			doDrawAllTiles();
 		}
 	}

@@ -51,7 +51,7 @@ import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
-import de.drazil.nerdsuite.imaging.service.ITileSelectionListener;
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.MulticolorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
@@ -74,7 +74,7 @@ import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class GfxEditorView
-		implements IConfirmable, ITileSelectionListener, IColorPaletteProvider, IColorSelectionListener {
+		implements IConfirmable, ITileUpdateListener, IColorPaletteProvider, IColorSelectionListener {
 	private ImagingWidget painter;
 	private ImagingWidget previewer;
 	private ImagingWidget repository;
@@ -307,13 +307,6 @@ public class GfxEditorView
 				tileRepositoryService = load(file);
 				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
 					customSize = tileRepositoryService.getCustomSize();
-					Display.getDefault().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							tileRepositoryService.updateTileViewer(false);
-							painter.setCursorMode(CursorMode.Point);
-						}
-					});
 				}
 			}
 		} catch (IOException e1) {
@@ -390,7 +383,6 @@ public class GfxEditorView
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
-		tileRepositoryService.addTileBulkModificationListener(repository);
 		tileRepositoryService.setCustomSize(customSize);
 
 		if (graphicFormat.getId().endsWith("CHAR")) {
@@ -413,7 +405,13 @@ public class GfxEditorView
 		if (isNewProject) {
 			tileRepositoryService.addTile(painter.getConf().getTileSize());
 		}
-
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				tileRepositoryService.updateTileViewer(UpdateMode.All);
+				painter.setCursorMode(CursorMode.Point);
+			}
+		});
 	}
 
 	public LayerChooser createLayerChooser() {
@@ -541,7 +539,7 @@ public class GfxEditorView
 	 */
 
 	@Override
-	public void tileIndexesSelected(List<Integer> selectedTileIndexList) {
+	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
 		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
 			List<String> tags1 = new LinkedList<>();
 			tags1.add("MultiColorButton");

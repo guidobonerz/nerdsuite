@@ -97,19 +97,15 @@ public class PaintTileService extends AbstractImagingService {
 
 	public void paintTiles(Composite parent, GC gc, Tile tile, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
-		int x = 0;
-		int y = 0;
+
 		int parentWidth = parent.getBounds().width;
 		Image image = imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider);
 		int imageWidth = image.getBounds().width;
 		int imageHeight = image.getBounds().height;
-		gc.drawImage(image, x, y);
-		x += imageWidth;
 		int columns = (int) (parentWidth / imageWidth);
 		conf.setColumns(columns);
-		if ((index + 1) % columns == 0) {
-			y += imageHeight;
-			x = 0;
-		}
+		int y = (index / columns) * imageHeight;
+		int x = (index % columns) * imageWidth;
+		gc.drawImage(image, x, y);
 	}
 }

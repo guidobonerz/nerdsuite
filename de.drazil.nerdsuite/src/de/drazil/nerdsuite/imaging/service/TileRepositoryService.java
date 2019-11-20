@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener.UpdateMode;
 import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
@@ -27,9 +28,7 @@ public class TileRepositoryService extends AbstractImagingService {
 	@JsonIgnore
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	@JsonIgnore
-	private List<ITileSelectionListener> tileServiceSelectionListener = null;
-	@JsonIgnore
-	private List<ITileBulkModificationListener> tileBulkModificationListener = null;
+	private List<ITileUpdateListener> tileUpdateListener = null;
 	@JsonIgnore
 	private List<Integer> selectedTileIndexList = null;
 	@JsonIgnore
@@ -47,15 +46,16 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileList = new ArrayList<>();
 		tileIndexOrderList = new ArrayList<>();
 		tileServiceManagementListener = new ArrayList<>();
-		tileServiceSelectionListener = new ArrayList<>();
-		tileBulkModificationListener = new ArrayList<>();
+		tileUpdateListener = new ArrayList<>();
 		imagePainterFactory = new ImagePainterFactory();
 	}
 
+	
 	public void addTile(int size) {
 		addTile("tile_" + (tileList.size() + 1), size);
 	}
 
+	
 	public void addTile(String name, int size) {
 		System.out.println("Add Tile");
 		Tile tile = new Tile(name, size);
@@ -93,16 +93,21 @@ public class TileRepositoryService extends AbstractImagingService {
 		}
 	}
 
+	@JsonIgnore
 	public void setSelectedTileIndex(int index) {
-		selectedTileIndex = index;
+ 		selectedTileIndex = index;
 		selectedTileIndexList = new ArrayList<Integer>();
 		selectedTileIndexList.add(index);
-		setSelectedTileIndexList(selectedTileIndexList);
+		setSelectedTileIndexList(selectedTileIndexList, UpdateMode.Single);
 	}
 
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
+		setSelectedTileIndexList(tileIndexList, UpdateMode.Selection);
+	}
+
+	private void setSelectedTileIndexList(List<Integer> tileIndexList, UpdateMode updateMode) {
 		this.selectedTileIndexList = tileIndexList;
-		fireSelectedTileIndexes(tileIndexList);
+		fireTileUpdates(tileIndexList, updateMode);
 	}
 
 	public List<Integer> getSelectedTileIndexList() {
@@ -132,16 +137,6 @@ public class TileRepositoryService extends AbstractImagingService {
 		return imagePainterFactory;
 	}
 
-	public void addTileBulkModificationListener(ITileBulkModificationListener... listeners) {
-		for (ITileBulkModificationListener listener : listeners) {
-			addTileBulkModificationListener(listener);
-		}
-	}
-
-	public void addTileBulkModificationListener(ITileBulkModificationListener listener) {
-		tileBulkModificationListener.add(listener);
-	}
-
 	public void addTileManagementListener(ITileManagementListener... listeners) {
 		for (ITileManagementListener listener : listeners) {
 			addTileManagementListener(listener);
@@ -156,26 +151,18 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceManagementListener.remove(listener);
 	}
 
-	public void addTileSelectionListener(ITileSelectionListener... listeners) {
-		for (ITileSelectionListener listener : listeners) {
-			addTileSelectionListener(listener);
+	public void addTileSelectionListener(ITileUpdateListener... listeners) {
+		for (ITileUpdateListener listener : listeners) {
+			addTileUpdateListener(listener);
 		}
 	}
 
-	public void addTileSelectionListener(ITileSelectionListener listener) {
-		tileServiceSelectionListener.add(listener);
+	public void addTileUpdateListener(ITileUpdateListener listener) {
+		tileUpdateListener.add(listener);
 	}
 
-	public void removeTileSelectionListener(ITileSelectionListener listener) {
-		tileServiceSelectionListener.remove(listener);
-	}
-
-	public void removeTileBulkModificationListener(ITileBulkModificationListener listener) {
-		tileBulkModificationListener.remove(listener);
-	}
-
-	private void fireTileBulkModification() {
-		tileBulkModificationListener.forEach(listener -> listener.tilesChanged(selectedTileIndexList));
+	public void removeTileUpdateListener(ITileUpdateListener listener) {
+		tileUpdateListener.remove(listener);
 	}
 
 	private void fireTileAdded() {
@@ -190,16 +177,12 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireSelectedTileIndexes(List<Integer> selectedTileIndexList) {
-		tileServiceSelectionListener.forEach(listener -> listener.tileIndexesSelected(selectedTileIndexList));
+	private void fireTileUpdates(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+		tileUpdateListener.forEach(listener -> listener.updateTiles(selectedTileIndexList, updateMode));
 	}
 
-	public void notifyBulkModification() {
-		fireTileBulkModification();
-	}
-
-	public void updateTileViewer(boolean selectedOnly) {
-		fireSelectedTileIndexes(selectedTileIndexList);
+	public void updateTileViewer(UpdateMode updateMode) {
+		fireTileUpdates(selectedTileIndexList, updateMode);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {

@@ -10,4 +10,9 @@ import lombok.NoArgsConstructor;
 public class SelectionRange {
 	private int from = 0;
 	private int to = 0;
+
+	public void reset() {
+		from = 0;
+		to = 0;
+	}
 }

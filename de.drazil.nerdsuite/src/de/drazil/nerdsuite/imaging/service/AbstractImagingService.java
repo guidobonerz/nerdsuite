@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.drazil.nerdsuite.enums.LayerAction;
 import de.drazil.nerdsuite.enums.TileAction;
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener.UpdateMode;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
@@ -86,7 +87,7 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 				}
 			});
 			if (selectedTileIndexList.size() > 1) {
-				service.notifyBulkModification();
+				service.updateTileViewer(UpdateMode.Selection);
 			}
 		}
 
