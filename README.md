@@ -15,6 +15,7 @@ Current state: Still buggy and incomplete :-)
 
 Last Changes:
 - Range selection modification for Shift, Flip, Mirror, Rotate and Purge
+- Bulk tile modifications
 
 Gfx Module Todo:
 - Performance tuning

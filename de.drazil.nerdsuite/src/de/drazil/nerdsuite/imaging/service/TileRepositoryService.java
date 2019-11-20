@@ -50,12 +50,10 @@ public class TileRepositoryService extends AbstractImagingService {
 		imagePainterFactory = new ImagePainterFactory();
 	}
 
-	
 	public void addTile(int size) {
 		addTile("tile_" + (tileList.size() + 1), size);
 	}
 
-	
 	public void addTile(String name, int size) {
 		System.out.println("Add Tile");
 		Tile tile = new Tile(name, size);
@@ -95,7 +93,7 @@ public class TileRepositoryService extends AbstractImagingService {
 
 	@JsonIgnore
 	public void setSelectedTileIndex(int index) {
- 		selectedTileIndex = index;
+		selectedTileIndex = index;
 		selectedTileIndexList = new ArrayList<Integer>();
 		selectedTileIndexList.add(index);
 		setSelectedTileIndexList(selectedTileIndexList, UpdateMode.Single);
@@ -182,6 +180,10 @@ public class TileRepositoryService extends AbstractImagingService {
 	}
 
 	public void updateTileViewer(UpdateMode updateMode) {
+		updateTileViewer(selectedTileIndexList, updateMode);
+	}
+
+	public void updateTileViewer(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
 		fireTileUpdates(selectedTileIndexList, updateMode);
 	}
 

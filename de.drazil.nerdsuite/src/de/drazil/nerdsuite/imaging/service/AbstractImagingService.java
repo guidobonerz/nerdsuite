@@ -17,8 +17,6 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 	protected IServiceCallback serviceCallback = null;
 	@Setter
 	protected int navigationOffset = 0;
-	@Setter
-	protected Object source = null;
 
 	protected List<Integer> selectedTileIndexList = null;
 	protected IConfirmable confirmable;

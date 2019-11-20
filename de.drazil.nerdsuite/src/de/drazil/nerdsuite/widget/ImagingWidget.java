@@ -57,6 +57,7 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 	private int tileY = 0;
 	private int tileCursorX = 0;
 	private int tileCursorY = 0;
+	private int animationIndex;
 
 	private SelectionRange tileSelectionRange = null;
 
@@ -330,7 +331,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 		if (redrawMode == RedrawMode.DrawPixel) {
 			paintTileService.paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf,
 					colorPaletteProvider);
-		} else if (redrawMode == RedrawMode.DrawTile ){//|| (redrawMode == RedrawMode.DrawAllTiles && supportsPainting())) {
+		} else if (redrawMode == RedrawMode.DrawTile) {// || (redrawMode == RedrawMode.DrawAllTiles &&
+														// supportsPainting())) {
 			paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawAllTiles) {
 			// paintTileService.paintTile(gc, tileRepositoryService.getSelectedTile(), conf,
@@ -338,6 +340,8 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			paintTileService.paintAllTiles(this, gc, conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawSelectedTiles) {
 			paintTileService.paintSelectedTiles(this, gc, conf, colorPaletteProvider);
+		} else if (redrawMode == RedrawMode.DrawIndexed) {
+			paintTileService.paintTile(this, gc, animationIndex, conf, colorPaletteProvider);
 		}
 
 		if (paintPixelGrid) {
@@ -672,6 +676,11 @@ public class ImagingWidget extends BaseImagingWidget implements IDrawListener, P
 			doDrawSelectedTiles();
 		} else if (updateMode == UpdateMode.All) {
 			doDrawAllTiles();
+		} else if (updateMode == UpdateMode.Animation) {
+			animationIndex = selectedTileIndexList.get(0);
+			tileRepositoryService.setSelectedTileIndex(animationIndex);
+			redrawMode = RedrawMode.DrawIndexed;
+			redraw();
 		}
 	}
 

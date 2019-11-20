@@ -200,6 +200,7 @@
     <handlers xmi:id="_JzTqoNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handler.1" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SelectAllHandler" command="_Ll63wNdHEemIEoLjroS7Zw"/>
     <handlers xmi:id="_Dx6Y4NkIEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.handler.Multicolor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MulticolorHandler" command="_9kXRgNkHEemZC_fHbEbEjw"/>
     <handlers xmi:id="_orpe4OPLEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.handler.SelectionMode" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CursorModeHandler" command="_MEx9MOOsEemaAe-ToSRFZQ"/>
+    <handlers xmi:id="_JfXf0AvdEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.handler.Animation" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.AnimationHandler" command="_jkqDIAvcEeq4CuIpZ1rK3Q"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="__XCxYNUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.GfxToolbox">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action" command="_Xm69wNdCEemIEoLjroS7Zw"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
@@ -326,20 +327,25 @@
         <parameters xmi:id="_YURS0NObEemgs6gzXLSMXw" elementId="de.drazil.nerdsuite.parameter.12" name="de.drazil.nerdsuite.commandparameter.GridVisible" value="true"/>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_0FmsUNQKEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.toolbarseparator.3"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_0sXKUNQKEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.3" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double-180.png" tooltip="Animate Fast Backward">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_0sXKUNQKEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.3" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double-180.png" tooltip="Animate Fast Backward" command="_jkqDIAvcEeq4CuIpZ1rK3Q">
         <tags>Animator</tags>
+        <parameters xmi:id="_ynUKAAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.parameter.51" name="de.drazil.nerdsuite.commandparameter.AnimationMode" value="backwardFast"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_Q3JvoNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.4" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-180.png" tooltip="Animate Backward">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_Q3JvoNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.4" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-180.png" tooltip="Animate Backward" command="_jkqDIAvcEeq4CuIpZ1rK3Q">
         <tags>Animator</tags>
+        <parameters xmi:id="_0Hm4EAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.parameter.52" name="de.drazil.nerdsuite.commandparameter.AnimationMode" value="backward"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_RShdANQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.5" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" tooltip="Stop Animation">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_RShdANQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.5" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" tooltip="Stop Animation" command="_jkqDIAvcEeq4CuIpZ1rK3Q">
         <tags>Animator</tags>
+        <parameters xmi:id="_1KeqUAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.parameter.53" name="de.drazil.nerdsuite.commandparameter.AnimationMode" value="stop"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_RvOnINQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.6" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" tooltip="Animate Forward">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_RvOnINQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.6" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" tooltip="Animate Forward" command="_jkqDIAvcEeq4CuIpZ1rK3Q">
         <tags>Animator</tags>
+        <parameters xmi:id="_2tYAcAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.parameter.54" name="de.drazil.nerdsuite.commandparameter.AnimationMode" value="forward"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_TZ9DkNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.7" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double.png" tooltip="Animate Fast Forward">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_TZ9DkNQMEemaMMSUm6gLMA" elementId="de.drazil.nerdsuite.handledtoolitem.7" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-double.png" tooltip="Animate Fast Forward" command="_jkqDIAvcEeq4CuIpZ1rK3Q">
         <tags>Animator</tags>
+        <parameters xmi:id="_3vtAIAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.parameter.55" name="de.drazil.nerdsuite.commandparameter.AnimationMode" value="forwardFast"/>
       </children>
     </toolbar>
   </descriptors>
@@ -393,6 +399,9 @@
   <commands xmi:id="_Zw8xsNvqEemXK8sgYhnEoQ" elementId="de.drazil.nerdsuite.command.Save" commandName="Save"/>
   <commands xmi:id="_MEx9MOOsEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.commandparameter.CursorMode" commandName="CursorMode">
     <parameters xmi:id="_O4fa8OOsEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.commandparameter.CursorMode" name="CursorMode"/>
+  </commands>
+  <commands xmi:id="_jkqDIAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.command.Animation" commandName="Animation">
+    <parameters xmi:id="_nDWXkAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.commandparameter.AnimationMode" name="AnimationMode"/>
   </commands>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>

@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.enums.AnimationMode;
 import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
@@ -49,6 +50,7 @@ import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
@@ -214,6 +216,16 @@ public class GfxEditorView
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			CursorMode cursorMode = (CursorMode) brokerObject.getTransferObject();
 			painter.setCursorMode(cursorMode);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void animate(@UIEventTopic("AnimationMode") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			AnimationService service = ServiceFactory.getService(brokerObject.getOwner(), AnimationService.class);
+			service.setComposite(parent);
+			service.execute(((AnimationMode) brokerObject.getTransferObject()));
 		}
 	}
 
