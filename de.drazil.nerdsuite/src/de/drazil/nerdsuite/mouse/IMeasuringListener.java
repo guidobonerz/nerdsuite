@@ -1,5 +1,5 @@
 package de.drazil.nerdsuite.mouse;
 
 public interface IMeasuringListener {
-	public void onTimeReached(long triggerTime);
+	public void onTriggerTimeReached(long triggerTime);
 }

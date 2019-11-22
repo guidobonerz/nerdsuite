@@ -53,7 +53,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected int tileY = 0;
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
-	protected int animationIndex;
+	protected int temporaryIndex;
 
 	protected boolean updateCursorLocation = false;
 
@@ -99,7 +99,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	@Override
-	public void onTimeReached(long triggerTime) {
+	public void onTriggerTimeReached(long triggerTime) {
 
 	}
 
@@ -254,20 +254,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		}
 	}
 
-	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider) {
-		int parentWidth = parent.getBounds().width;
-		Image image = imagePainterFactory.getImage(tileRepositoryService.getTile(index), 0, 0, false, conf,
-				colorPaletteProvider);
-		int imageWidth = image.getBounds().width;
-		int imageHeight = image.getBounds().height;
-		int columns = (int) (parentWidth / imageWidth);
-		conf.setColumns(columns);
-		int y = (index / columns) * imageHeight;
-		int x = (index % columns) * imageWidth;
-		gc.drawImage(image, x, y);
-	}
-
 	public void recalc() {
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
@@ -395,6 +381,9 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	@Override
 	public abstract void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode);
+
+	@Override
+	public abstract void updateTile(int selectedTileIndex, UpdateMode updateMode);
 
 	@Override
 	public void tileChanged() {

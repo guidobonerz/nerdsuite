@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
@@ -20,10 +21,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	public RepositoryWidget(Composite parent, int style) {
 		super(parent, style);
-
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
-
 	}
 
 	@Override
@@ -51,6 +50,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			// computeTileSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
 			computeTileSelection(tileX, tileY, 1);
 			doDrawAllTiles();
+			// doDrawSelectedTiles();
 		}
 	}
 
@@ -89,12 +89,12 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseEnter(int modifierMask, int x, int y) {
-		doDrawAllTiles();
+		// doDrawAllTiles();
 	}
 
 	@Override
 	protected void mouseExit(int modifierMask, int x, int y) {
-		doDrawAllTiles();
+		// doDrawAllTiles();
 	}
 
 	private int computeTileIndex(int x, int y) {
@@ -124,7 +124,9 @@ public class RepositoryWidget extends BaseImagingWidget {
 			}
 
 			for (int i = from; i <= to; i++) {
-				selectedTileIndexList.add(i);
+				if (i < tileRepositoryService.getSize()) {
+					selectedTileIndexList.add(i);
+				}
 			}
 		}
 	}
@@ -149,7 +151,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
-
+		System.out.println("paintControl");
 		if (redrawMode == RedrawMode.DrawAllTiles) {
 			for (int i = 0; i < tileRepositoryService.getSize(); i++) {
 				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
@@ -160,7 +162,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
 			}
 		} else if (redrawMode == RedrawMode.DrawIndexed) {
-			paintTile(this, gc, animationIndex, conf, colorPaletteProvider);
+			paintTile(this, gc, temporaryIndex, conf, colorPaletteProvider);
 		}
 
 		if (paintPixelGrid) {
@@ -206,6 +208,12 @@ public class RepositoryWidget extends BaseImagingWidget {
 			int x = i % conf.getColumns();
 			gc.fillRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
 					conf.scaledTileHeight);
+			if (i == temporaryIndex) {
+				gc.setLineWidth(3);
+				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
+				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
+						conf.scaledTileHeight);
+			}
 		});
 	}
 
@@ -223,21 +231,34 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
-		if (updateMode == UpdateMode.Selection && (supportsSingleSelection() || supportsMultiSelection())) {
-			doDrawSelectedTiles();
+		if (updateMode == UpdateMode.Selection) {
+			// doDrawSelectedTiles();
+			doDrawAllTiles();
 		} else if (updateMode == UpdateMode.All) {
 			doDrawAllTiles();
-		} else if (updateMode == UpdateMode.Animation) {
-			animationIndex = selectedTileIndexList.get(0);
-			tileRepositoryService.setSelectedTileIndex(animationIndex);
-			redrawMode = RedrawMode.DrawIndexed;
-			redraw();
 		}
 	}
 
 	@Override
 	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
-		// TODO Auto-generated method stub
+		if (updateMode == UpdateMode.Animation) {
+			temporaryIndex = selectedTileIndex;
+			redrawMode = RedrawMode.DrawAllTiles;
+			redraw();
+		}
+	}
 
+	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
+		int parentWidth = parent.getBounds().width;
+		Image image = imagePainterFactory.getImage(tileRepositoryService.getTile(index), 0, 0, false, conf,
+				colorPaletteProvider);
+		int imageWidth = image.getBounds().width;
+		int imageHeight = image.getBounds().height;
+		int columns = (int) (parentWidth / imageWidth);
+		conf.setColumns(columns);
+		int y = (index / columns) * imageHeight;
+		int x = (index % columns) * imageWidth;
+		gc.drawImage(image, x, y);
 	}
 }

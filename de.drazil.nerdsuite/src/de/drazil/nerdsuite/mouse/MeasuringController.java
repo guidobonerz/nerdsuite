@@ -42,7 +42,7 @@ public class MeasuringController {
 	}
 
 	private void fireTimeReached(long triggerMillis) {
-		list.forEach(l -> l.onTimeReached(triggerMillis));
+		list.forEach(l -> l.onTriggerTimeReached(triggerMillis));
 	}
 
 	private class Measure implements Runnable {

@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
-import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 
@@ -19,13 +18,12 @@ public class LayerChooser extends BaseWidget implements PaintListener, ITileUpda
 	private static final int HEIGHT = 300;
 	private String serviceOwnerId;
 	private Tile tile;
-	private PaintTileService paintTileService;
 
 	public LayerChooser(Composite parent, int style, String serviceOwnerId) {
 		super(parent, style);
 		this.serviceOwnerId = serviceOwnerId;
 		parent.addPaintListener(this);
-		paintTileService = ServiceFactory.getService(serviceOwnerId, PaintTileService.class);
+
 	}
 
 	@Override
