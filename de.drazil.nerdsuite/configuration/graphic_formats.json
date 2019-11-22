@@ -1,7 +1,7 @@
 [
 	{
 		"id": "C64_CHAR",
-		"name": "Char",
+		"name": "Char Set",
 		"width": 8,
 		"height": 8,
 		"pixelSize": 32,
@@ -58,7 +58,7 @@
 	},
 	{
 		"id": "C64_SPRITE",
-		"name": "Sprite",
+		"name": "Sprite Set",
 		"width": 24,
 		"height": 21,
 		"pixelSize": 16,
@@ -113,7 +113,7 @@
 	},
 	{
 		"id": "C64_SCREEN",
-		"name": "Screen",
+		"name": "Screen Set",
 		"width": 40,
 		"height": 25,
 		"pixelSize": 16,
@@ -129,6 +129,74 @@
 			{
 				"id": "STANDARD",
 				"name": "Standard Size (40x25)",
+				"tileRows": 1,
+				"tileColumns": 1,
+				"pixelSize": 16,
+				"scaledPixelSize": 2
+			},
+			{
+				"id": "CUSTOM",
+				"name": "Custom Size",
+				"tileRows": 1,
+				"tileColumns": 1,
+				"scaledPixelSize": 2,
+				"pixelSize": 16,
+				"supportCustomBaseSize": true
+			}
+		]
+	},
+	{
+		"id": "C64_TILESET",
+		"name": "Tile Set",
+		"width": 2,
+		"height": 2,
+		"pixelSize": 16,
+		"supportsLayers": true,
+		"storageEntity": 1,
+		"storageType": "linear",
+		"properties": {
+			"supportsMultiColor": true,
+			"supportsResizing": true,
+			"supportsExtendedColorMode": true
+		},
+		"variants": [
+			{
+				"id": "STANDARD",
+				"name": "Standard Size (2x2)",
+				"tileRows": 1,
+				"tileColumns": 1,
+				"pixelSize": 16,
+				"scaledPixelSize": 2
+			},
+			{
+				"id": "CUSTOM",
+				"name": "Custom Size",
+				"tileRows": 1,
+				"tileColumns": 1,
+				"scaledPixelSize": 2,
+				"pixelSize": 16,
+				"supportCustomBaseSize": true
+			}
+		]
+	},
+	{
+		"id": "C64_TILEMAP",
+		"name": "Tile Map",
+		"width": 20,
+		"height": 12,
+		"pixelSize": 16,
+		"supportsLayers": true,
+		"storageEntity": 1,
+		"storageType": "linear",
+		"properties": {
+			"supportsMultiColor": true,
+			"supportsResizing": true,
+			"supportsExtendedColorMode": true
+		},
+		"variants": [
+			{
+				"id": "STANDARD",
+				"name": "Standard Size (20x12)",
 				"tileRows": 1,
 				"tileColumns": 1,
 				"pixelSize": 16,

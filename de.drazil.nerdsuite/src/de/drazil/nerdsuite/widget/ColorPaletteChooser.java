@@ -74,7 +74,7 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 	}
 
 	@Override
-	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
+	protected void leftMouseButtonClickedInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		close();
 		fireColorSelected(colorIndex);
@@ -82,24 +82,24 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 	}
 
 	@Override
-	public void leftMouseButtonPressed(int modifierMask, int x, int y) {
+	protected void leftMouseButtonPressedInternal(int modifierMask, int x, int y) {
 		if (!mouseIn) {
 			close();
 		}
 	}
 
 	@Override
-	public void mouseEnter(int modifierMask, int x, int y) {
+	protected void mouseEnterInternal(int modifierMask, int x, int y) {
 		mouseIn = true;
 	}
 
 	@Override
-	public void mouseExit(int modifierMask, int x, int y) {
+	protected void mouseExitInternal(int modifierMask, int x, int y) {
 		mouseIn = false;
 	}
 
 	@Override
-	public void mouseMove(int modifierMask, int x, int y) {
+	protected void mouseMoveInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		redraw();
 	}
