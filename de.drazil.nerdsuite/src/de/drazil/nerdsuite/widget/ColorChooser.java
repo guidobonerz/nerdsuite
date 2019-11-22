@@ -106,7 +106,7 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	}
 
 	@Override
-	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
+	protected void leftMouseButtonClickedInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		closePupup();
 		if (colorNo < maxColorsTemp) {
@@ -116,7 +116,7 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	}
 
 	@Override
-	public void rightMouseButtonClicked(int modifierMask, int x, int y) {
+	protected void rightMouseButtonClickedInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		closePupup();
 		if (colorNo < maxColorsTemp) {

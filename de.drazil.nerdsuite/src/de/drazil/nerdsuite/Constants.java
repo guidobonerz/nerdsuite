@@ -51,6 +51,7 @@ public class Constants {
 
 	public final static Color SWAP_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#0000C0"));
 	public final static Color SELECTION_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C00000"));
+	public final static Color TEMPORARY_SELECTION_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#F4D03F"));
 
 	public final static Color SOURCE_EDITOR_FOREGROUND_COLOR = new Color(Display.getCurrent(),
 			SwtUtil.toRGB("#C0C0C0"));

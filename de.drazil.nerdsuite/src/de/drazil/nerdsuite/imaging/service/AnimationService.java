@@ -18,6 +18,7 @@ public class AnimationService extends AbstractImagingService {
 	private boolean animationIsRunning = false;
 	private Composite composite;
 	private List<Integer> animationIndex;
+	private boolean forward = true;
 
 	public AnimationService() {
 		animator = new Animator();
@@ -29,11 +30,17 @@ public class AnimationService extends AbstractImagingService {
 	public class Animator implements Runnable {
 		public synchronized void run() {
 
-			if (pos >= selectedTileIndexList.size()) {
-				pos = 0;
+			if (forward) {
+				if (pos >= selectedTileIndexList.size()) {
+					pos = 0;
+				}
+			} else {
+				if (pos < 0) {
+					pos = selectedTileIndexList.size() - 1;
+				}
 			}
 			int index = selectedTileIndexList.get(pos);
-			pos++;
+			pos += (forward ? 1 : -1);
 			animationIndex.set(0, index);
 			service.updateTileViewer(animationIndex, UpdateMode.Animation);
 			System.out.println("animate");
@@ -94,16 +101,30 @@ public class AnimationService extends AbstractImagingService {
 	public void execute(AnimationMode animationMode) {
 		service = ServiceFactory.getService(owner, TileRepositoryService.class);
 		selectedTileIndexList = service.getSelectedTileIndexList();
-		// serviceCallback.beforeRunService();
 		if (animationMode == AnimationMode.Forward) {
-			pos = 0;
-			startAnimation();
-			// ((Composite) source).getDisplay().timerExec(0, animator);
-		} else if (animationMode == AnimationMode.Stop) {
+			delay = 100;
+			forward = true;
 			stopAnimation();
-			// ((Composite) source).getDisplay().timerExec(-1, animator);
+			startAnimation();
+		} else if (animationMode == AnimationMode.ForwardFast) {
+			delay = 50;
+			forward = true;
+			stopAnimation();
+			startAnimation();
+		} else if (animationMode == AnimationMode.Stop) {
+			pos = 0;
+			stopAnimation();
+		} else if (animationMode == AnimationMode.Backward) {
+			delay = 100;
+			forward = false;
+			stopAnimation();
+			startAnimation();
+		} else if (animationMode == AnimationMode.BackwardFast) {
+			delay = 50;
+			forward = false;
+			stopAnimation();
+			startAnimation();
 		}
-		// serviceCallback.afterRunService();
 	}
 
 	public void setComposite(Composite composite) {

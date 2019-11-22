@@ -8,4 +8,6 @@ public interface ITileUpdateListener {
 	}
 
 	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode);
+
+	public void updateTile(int selectedTileIndex, UpdateMode updateMode);
 }

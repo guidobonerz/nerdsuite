@@ -91,6 +91,10 @@ public class TileRepositoryService extends AbstractImagingService {
 		}
 	}
 
+	public int getTileIndex(int index) {
+		return tileIndexOrderList.get(index);
+	}
+
 	@JsonIgnore
 	public void setSelectedTileIndex(int index) {
 		selectedTileIndex = index;
@@ -176,7 +180,13 @@ public class TileRepositoryService extends AbstractImagingService {
 	}
 
 	private void fireTileUpdates(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
-		tileUpdateListener.forEach(listener -> listener.updateTiles(selectedTileIndexList, updateMode));
+		if (selectedTileIndexList != null) {
+			if (selectedTileIndexList.size() == 1) {
+				tileUpdateListener.forEach(listener -> listener.updateTile(selectedTileIndexList.get(0), updateMode));
+			} else {
+				tileUpdateListener.forEach(listener -> listener.updateTiles(selectedTileIndexList, updateMode));
+			}
+		}
 	}
 
 	public void updateTileViewer(UpdateMode updateMode) {
