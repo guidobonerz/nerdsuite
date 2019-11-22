@@ -32,7 +32,6 @@ public class LayerChooser extends BaseWidget implements PaintListener, ITileUpda
 	public void paintControl(PaintEvent e) {
 		e.gc.setBackground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, 0, WIDTH, HEIGHT);
-
 	}
 
 	@Override
@@ -42,6 +41,12 @@ public class LayerChooser extends BaseWidget implements PaintListener, ITileUpda
 			this.tile = repository.getTile(selectedTileIndexList.get(0));
 			redraw();
 		}
+	}
+
+	@Override
+	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

@@ -3,24 +3,24 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
+import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.model.SelectionRange;
-import de.drazil.nerdsuite.mouse.AbstractMeasuringController;
-import de.drazil.nerdsuite.mouse.IMeasuringListener;
 
-public class RepositoryWidget extends BaseImagingWidget implements IMeasuringListener {
+public class RepositoryWidget extends BaseImagingWidget {
 
-	private AbstractMeasuringController mc;
 	private boolean tileSelectionStarted = false;
 	private SelectionRange tileSelectionRange = null;
 	private List<Integer> selectedTileIndexList = null;
 
 	public RepositoryWidget(Composite parent, int style) {
 		super(parent, style);
-		mc = new AbstractMeasuringController();
-		mc.setTriggerMillis(1500);
-		mc.addMeasuringListener(this);
+
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
 
@@ -88,9 +88,13 @@ public class RepositoryWidget extends BaseImagingWidget implements IMeasuringLis
 	}
 
 	@Override
-	public void onTimeReached(long triggerTime) {
-		// TODO Auto-generated method stub
+	protected void mouseEnter(int modifierMask, int x, int y) {
+		doDrawAllTiles();
+	}
 
+	@Override
+	protected void mouseExit(int modifierMask, int x, int y) {
+		doDrawAllTiles();
 	}
 
 	private int computeTileIndex(int x, int y) {
@@ -135,5 +139,105 @@ public class RepositoryWidget extends BaseImagingWidget implements IMeasuringLis
 			// computeSelection(true, false);
 			doDrawAllTiles();
 		}
+	}
+
+	public void paintControl(PaintEvent e) {
+		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(),
+				conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
+	}
+
+	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
+			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
+			boolean paintTelevisionMode) {
+
+		if (redrawMode == RedrawMode.DrawAllTiles) {
+			for (int i = 0; i < tileRepositoryService.getSize(); i++) {
+				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
+			}
+		} else if (redrawMode == RedrawMode.DrawSelectedTiles) {
+			List<Integer> list = tileRepositoryService.getSelectedTileIndexList();
+			for (int i = 0; i < list.size(); i++) {
+				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
+			}
+		} else if (redrawMode == RedrawMode.DrawIndexed) {
+			paintTile(this, gc, animationIndex, conf, colorPaletteProvider);
+		}
+
+		if (paintPixelGrid) {
+			paintPixelGrid(gc);
+		}
+		/*
+		 * if (paintSeparator) { paintSeparator(gc); }
+		 */
+		if (paintTileGrid) {
+			paintTileGrid(gc);
+		}
+
+		if (paintTileSubGrid) {
+			paintTileSubGrid(gc);
+		}
+
+		if (!supportsPainting()) {
+			paintSelection(gc);
+		}
+		/*
+		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
+		 */
+		/*
+		 * if (supportsRangeSelection() && conf.cursorMode ==
+		 * CursorMode.SelectRectangle) { paintRangeSelection(gc); }
+		 */
+		/*
+		 * if (paintTelevisionMode && supportsSingleSelection()) {
+		 * paintTelevisionRaster(gc); }
+		 */
+		/*
+		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
+		 */
+		redrawMode = RedrawMode.DrawNothing;
+
+	}
+
+	private void paintSelection(GC gc) {
+		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
+		gc.setAlpha(150);
+		selectedTileIndexList.forEach(i -> {
+			int y = i / conf.getColumns();
+			int x = i % conf.getColumns();
+			gc.fillRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
+					conf.scaledTileHeight);
+		});
+	}
+
+	private void paintTileGrid(GC gc) {
+		gc.setLineWidth(1);
+		gc.setLineStyle(SWT.LINE_SOLID);
+		gc.setForeground(Constants.TILE_GRID_COLOR);
+		for (int x = 0; x < conf.columns; x++) {
+			for (int y = 0; y < conf.rows; y++) {
+				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
+						conf.scaledTileHeight);
+			}
+		}
+	}
+
+	@Override
+	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+		if (updateMode == UpdateMode.Selection && (supportsSingleSelection() || supportsMultiSelection())) {
+			doDrawSelectedTiles();
+		} else if (updateMode == UpdateMode.All) {
+			doDrawAllTiles();
+		} else if (updateMode == UpdateMode.Animation) {
+			animationIndex = selectedTileIndexList.get(0);
+			tileRepositoryService.setSelectedTileIndex(animationIndex);
+			redrawMode = RedrawMode.DrawIndexed;
+			redraw();
+		}
+	}
+
+	@Override
+	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -491,6 +491,12 @@ public class GfxEditorView
 
 	}
 
+	@Override
+	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
+		// TODO Auto-generated method stub
+
+	}
+
 	private void save(File file) {
 		System.out.println("save tiles");
 		updateWorkspace(false);

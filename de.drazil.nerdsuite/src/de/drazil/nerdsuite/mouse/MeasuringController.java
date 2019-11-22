@@ -3,36 +3,32 @@ package de.drazil.nerdsuite.mouse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractMeasuringController implements IMeasuringController {
+public class MeasuringController {
 
 	private List<IMeasuringListener> list;
-	private long[] triggerMillis = new long[] { 2000 };
+	private long[] triggerMillis;
 	private volatile Thread thread;
-	private int mc = 0;
 	private Measure measure;
 	private volatile boolean running = false;
 
-	public AbstractMeasuringController() {
+	public MeasuringController() {
 		list = new ArrayList<>();
 	}
 
-	@Override
 	public void setTriggerMillis(long... triggerMillis) {
 		this.triggerMillis = triggerMillis;
 	}
 
-	@Override
 	public void start() {
-		System.out.println("start");
-		running = true;
-		measure = new Measure(System.currentTimeMillis(), triggerMillis);
-		thread = new Thread(measure);
-		thread.start();
+		if (triggerMillis != null) {
+			running = true;
+			measure = new Measure(System.currentTimeMillis(), triggerMillis);
+			thread = new Thread(measure);
+			thread.start();
+		}
 	}
 
-	@Override
 	public void stop() {
-		System.out.println("stop");
 		running = false;
 		thread = null;
 	}
