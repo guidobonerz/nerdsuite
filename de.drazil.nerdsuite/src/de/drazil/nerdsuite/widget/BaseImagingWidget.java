@@ -26,7 +26,6 @@ import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.PaintTileService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
-import de.drazil.nerdsuite.model.SelectionRange;
 import lombok.Getter;
 
 public abstract class BaseImagingWidget extends BaseWidget implements IDrawListener, PaintListener, IServiceCallback,
@@ -39,30 +38,27 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	private char currentCharacterPressed = 0;
 	private boolean altS = false;
 
-	private int selectedTileIndexX = 0;
-	private int selectedTileIndexY = 0;
-	private int selectedTileIndex = 0;
+	protected int selectedTileIndexX = 0;
+	protected int selectedTileIndexY = 0;
+	protected int selectedTileIndex = 0;
 
 	private int selectedPixelRangeX = 0;
 	private int selectedPixelRangeY = 0;
 	private int selectedPixelRangeX2 = 0;
 	private int selectedPixelRangeY2 = 0;
 	private boolean rangeSelectionStarted = false;
-	private boolean tileSelectionStarted = false;
 
 	protected int oldCursorX = 0;
 	protected int oldCursorY = 0;
 	protected int cursorX = 0;
 	protected int cursorY = 0;
-	private int oldTileX = 0;
-	private int oldTileY = 0;
+	protected int oldTileX = 0;
+	protected int oldTileY = 0;
 	protected int tileX = 0;
 	protected int tileY = 0;
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
 	private int animationIndex;
-
-	private SelectionRange tileSelectionRange = null;
 
 	private boolean updateCursorLocation = false;
 
@@ -71,9 +67,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	private boolean mouseIn = false;
 
 	private List<IDrawListener> drawListenerList = null;
-	private List<Integer> selectedTileIndexList = null;
 	protected PaintTileService paintTileService;
-	private TileRepositoryService tileRepositoryService;
+	protected TileRepositoryService tileRepositoryService;
 
 	protected Tile tile = null;
 
@@ -89,10 +84,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 		this.colorPaletteProvider = colorPaletteProvider;
 
-		selectedTileIndexList = new ArrayList<>();
 		drawListenerList = new ArrayList<>();
-		tileSelectionRange = new SelectionRange();
-
 		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
 		paintTileService = ServiceFactory.getService(conf.getServiceOwnerId(), PaintTileService.class);
 		paintTileService.setTileRepositoryService(tileRepositoryService);
@@ -113,22 +105,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected void leftMouseButtonClickedInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		leftMouseButtonClicked(modifierMask, x, y);
-
-		if (supportsSingleSelection() || supportsMultiSelection()) {
-			selectedTileIndexX = tileX;
-			selectedTileIndexY = tileY;
-			selectedTileIndex = computeTileIndex(tileX, tileY);
-			// computeTileSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
-			computeTileSelection(tileX, tileY, 1);
-			if (selectedTileIndex < tileRepositoryService.getSize()) {
-				tileRepositoryService.setSelectedTileIndex(selectedTileIndex);
-			} else {
-				System.out.println("tile selection outside range...");
-			}
-			// fireSetSelectedTile(ImagingWidget.this, tile);
-
-			doDrawAllTiles();
-		}
 	}
 
 	protected void mouseMove(int modifierMask, int x, int y) {
@@ -138,15 +114,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected void mouseMoveInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		mouseMove(modifierMask, x, y);
-		if (supportsSingleSelection() || supportsMultiSelection()) {
-			if (oldTileX != tileX || oldTileY != tileY) {
-				oldTileX = tileX;
-				oldTileY = tileY;
-				doDrawAllTiles();
-			}
-		}
-		// System.out.printf("%10s x:%2d y:%2d\n", conf.widgetName, tileCursorX,
-		// tileCursorY);
 	}
 
 	protected void mouseExit(int modifierMask, int x, int y) {
@@ -187,11 +154,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected void mouseDraggedInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		mouseDragged(modifierMask, x, y);
-		if (supportsMultiSelection()) {
-			// computeTileSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
-			computeTileSelection(tileX, tileY, 1);
-			doDrawAllTiles();
-		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
+		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doDrawTile();
 		}
@@ -204,11 +167,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected void leftMouseButtonReleasedInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
 		leftMouseButtonReleased(modifierMask, x, y);
-		if (supportsMultiSelection() && selectedTileIndexList.size() > 1) {
-			tileSelectionStarted = false;
-			tileSelectionRange.reset();
-			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
-		} else if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
+		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
 				rangeSelectionStarted = false;
 				computeRangeSelection(tileCursorX, tileCursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
@@ -216,64 +175,18 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		}
 	}
 
-	protected void leftMousePressed(int modifierMask, int x, int y) {
+	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
 	}
 
 	@Override
 	protected void leftMouseButtonPressedInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		leftMousePressed(modifierMask, x, y);
-		if (supportsMultiSelection() || supportsSingleSelection()) {
-			computeTileSelection(tileX, tileY, 0);
-			// System.out.printf("tile x:%2d tile y:%2d\n", tileX, tileY);
-		}
-		if (supportsSingleSelection()) {
-			resetSelectionList();
-		}
+		leftMouseButtonPressed(modifierMask, x, y);
+
 		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			rangeSelectionStarted = false;
 			doDrawTile();
-		}
-	}
-
-	public void selectAll() {
-		if (supportsMultiSelection()) {
-			resetSelectionList();
-			// computeSelection(true, false);
-			doDrawAllTiles();
-		}
-	}
-
-	private int computeTileIndex(int x, int y) {
-		return (x + (y * conf.columns));
-	}
-
-	private void computeTileSelection(int tileX, int tileY, int mode) {
-		if (mode == 0) {
-			tileSelectionStarted = false;
-			tileSelectionRange.setFrom(tileX);
-			tileSelectionRange.setTo(tileY);
-		} else if (mode == 1) {
-			int index = computeTileIndex(tileX, tileY);
-			if (!tileSelectionStarted) {
-				tileSelectionRange.setFrom(index);
-				tileSelectionStarted = true;
-			}
-			tileSelectionRange.setTo(index);
-			selectedTileIndexList.clear();
-
-			int from = tileSelectionRange.getFrom();
-			int to = tileSelectionRange.getTo();
-			if (from > to) {
-				int d = from;
-				from = to;
-				to = d;
-			}
-
-			for (int i = from; i <= to; i++) {
-				selectedTileIndexList.add(i);
-			}
 		}
 	}
 
@@ -332,10 +245,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		tileY = y / conf.getScaledTileHeight();
 		tileCursorX = (cursorX - (tileX * conf.width));
 		tileCursorY = (cursorY - (tileY * conf.height));
-	}
-
-	private void resetSelectionList() {
-		selectedTileIndexList = new ArrayList<>();
 	}
 
 	private boolean checkKeyPressed(int modifierKey, char charCode) {
@@ -600,10 +509,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		return conf.supportsPainting;
 	}
 
-	protected boolean supportsMultiTileView() {
-		return conf.supportsMultiTileView;
-	}
-
 	protected boolean supportsSingleSelection() {
 		return (conf.tileSelectionModes & TileSelectionModes.SINGLE) == TileSelectionModes.SINGLE;
 	}
@@ -614,14 +519,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	protected boolean supportsRangeSelection() {
 		return (conf.tileSelectionModes & TileSelectionModes.RANGE) == TileSelectionModes.RANGE;
-	}
-
-	protected boolean supportsReferenceIndexSelection() {
-		return conf.supportsReferenceIndexSelection;
-	}
-
-	protected boolean supportsDrawCursor() {
-		return conf.supportsDrawCursor;
 	}
 
 	public void addDrawListener(IDrawListener redrawListener) {

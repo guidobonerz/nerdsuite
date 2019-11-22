@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Composite;
 import de.drazil.nerdsuite.enums.CursorMode;
 
 public class PainterWidget extends BaseImagingWidget {
+
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
 	}
