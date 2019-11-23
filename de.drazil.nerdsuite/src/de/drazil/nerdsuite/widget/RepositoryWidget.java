@@ -8,13 +8,16 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.model.SelectionRange;
+import static java.lang.Math.abs;
 
 public class RepositoryWidget extends BaseImagingWidget {
 
+	private boolean tileDragActive = false;
 	private boolean tileSelectionStarted = false;
 	private SelectionRange tileSelectionRange = null;
 	private List<Integer> selectedTileIndexList = null;
@@ -23,11 +26,13 @@ public class RepositoryWidget extends BaseImagingWidget {
 		super(parent, style);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
+		setTriggerMillis(1000);
 	}
 
 	@Override
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		if (supportsSingleSelection() || supportsMultiSelection()) {
+		mc.stop();
+		if (!tileDragActive) {
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
 			selectedTileIndex = computeTileIndex(tileX, tileY);
@@ -39,24 +44,28 @@ public class RepositoryWidget extends BaseImagingWidget {
 				System.out.println("tile selection outside range...");
 			}
 			// fireSetSelectedTile(ImagingWidget.this, tile);
-
 			doDrawAllTiles();
+		} else {
+			selectedTileIndexX = tileX;
+			selectedTileIndexY = tileY;
+			selectedTileIndex = computeTileIndex(tileX, tileY);
 		}
 	}
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-		if (supportsMultiSelection()) {
-			// computeTileSelection(false, (modifierMask & SWT.CTRL) == SWT.CTRL);
-			computeTileSelection(tileX, tileY, 1);
-			doDrawAllTiles();
-			// doDrawSelectedTiles();
-		}
+		computeTileSelection(tileX, tileY, 1);
+		doDrawAllTiles();
 	}
 
 	@Override
 	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
-		if (supportsMultiSelection() && selectedTileIndexList.size() > 1) {
+		mc.stop();
+		if (tileDragActive) {
+			tileDragActive = false;
+			tileRepositoryService.moveTile(tileSelectionRange.getFrom(), tileSelectionRange.getTo());
+		}
+		if (selectedTileIndexList.size() > 1) {
 			tileSelectionStarted = false;
 			tileSelectionRange.reset();
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
@@ -65,6 +74,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
+		mc.start();
 		if (supportsSingleSelection()) {
 			resetSelectionList();
 		}
@@ -102,18 +112,17 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	private void computeTileSelection(int tileX, int tileY, int mode) {
+		int index = computeTileIndex(tileX, tileY);
 		if (mode == 0) {
 			tileSelectionStarted = false;
-			tileSelectionRange.setFrom(tileX);
-			tileSelectionRange.setTo(tileY);
+			tileSelectionRange.setFrom(index);
+			tileSelectionRange.setTo(index);
 		} else if (mode == 1) {
-			int index = computeTileIndex(tileX, tileY);
 			if (!tileSelectionStarted) {
 				tileSelectionRange.setFrom(index);
 				tileSelectionStarted = true;
 			}
 			tileSelectionRange.setTo(index);
-			selectedTileIndexList.clear();
 
 			int from = tileSelectionRange.getFrom();
 			int to = tileSelectionRange.getTo();
@@ -122,10 +131,12 @@ public class RepositoryWidget extends BaseImagingWidget {
 				from = to;
 				to = d;
 			}
-
-			for (int i = from; i <= to; i++) {
-				if (i < tileRepositoryService.getSize()) {
-					selectedTileIndexList.add(i);
+			if (!tileDragActive) {
+				selectedTileIndexList.clear();
+				for (int i = from; i <= to; i++) {
+					if (i < tileRepositoryService.getSize()) {
+						selectedTileIndexList.add(i);
+					}
 				}
 			}
 		}
@@ -179,25 +190,42 @@ public class RepositoryWidget extends BaseImagingWidget {
 			paintTileSubGrid(gc);
 		}
 
-		if (!supportsPainting()) {
+		if (tileDragActive) {
+			paintDragMarker(gc);
+		} else {
 			paintSelection(gc);
 		}
 		/*
 		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
 		 */
-		/*
-		 * if (supportsRangeSelection() && conf.cursorMode ==
-		 * CursorMode.SelectRectangle) { paintRangeSelection(gc); }
-		 */
+
 		/*
 		 * if (paintTelevisionMode && supportsSingleSelection()) {
 		 * paintTelevisionRaster(gc); }
 		 */
-		/*
-		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
-		 */
+
 		redrawMode = RedrawMode.DrawNothing;
 
+	}
+
+	private void paintDragMarker(GC gc) {
+		int from = tileSelectionRange.getFrom();
+		int to = tileSelectionRange.getTo();
+		int xfrom = from % conf.getColumns();
+		int yfrom = from / conf.getColumns();
+		int xto = to % conf.getColumns();
+		int yto = to / conf.getColumns();
+		gc.setLineWidth(1);
+		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
+		gc.setAlpha(150);
+		gc.fillRectangle(xfrom * conf.scaledTileWidth, yfrom * conf.scaledTileHeight, conf.scaledTileWidth,
+				conf.scaledTileHeight);
+		gc.setAlpha(255);
+		gc.setForeground(Constants.BRIGHT_ORANGE);
+		gc.setLineWidth(4);
+		if (abs(to - from) > 0)
+			gc.drawLine(xto * conf.scaledTileWidth, yto * conf.scaledTileHeight, xto * conf.scaledTileWidth,
+					yto * conf.scaledTileHeight + conf.scaledTileHeight);
 	}
 
 	private void paintSelection(GC gc) {
@@ -250,15 +278,42 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
-		int parentWidth = parent.getBounds().width;
+		// int parentWidth = parent.getBounds().width;
 		Image image = imagePainterFactory.getImage(tileRepositoryService.getTile(index), 0, 0, false, conf,
 				colorPaletteProvider);
 		int imageWidth = image.getBounds().width;
 		int imageHeight = image.getBounds().height;
-		int columns = (int) (parentWidth / imageWidth);
-		conf.setColumns(columns);
+		int columns = conf.getColumns();// (int) (parentWidth / imageWidth);
+		// conf.setColumns(columns);
 		int y = (index / columns) * imageHeight;
 		int x = (index % columns) * imageWidth;
 		gc.drawImage(image, x, y);
+	}
+
+	@Override
+	public void activeLayerChanged(int layer) {
+		doDrawAllTiles();
+	}
+
+	@Override
+	public void colorSelected(int colorNo, int colorIndex) {
+		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
+	}
+
+	@Override
+	public void onTriggerTimeReached(long triggerTime) {
+		tileDragActive = true;
+		computeTileSelection(tileX, tileY, 0);
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				doDrawAllTiles();
+			}
+		});
+	}
+
+	@Override
+	public void tileReordered() {
+		doDrawAllTiles();
 	}
 }

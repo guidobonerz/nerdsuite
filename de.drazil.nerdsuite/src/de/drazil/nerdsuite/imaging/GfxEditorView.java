@@ -75,8 +75,7 @@ import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.RepositoryWidget;
 import de.drazil.nerdsuite.widget.Tile;
 
-public class GfxEditorView
-		implements IConfirmable, ITileUpdateListener, IColorPaletteProvider, IColorSelectionListener {
+public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorPaletteProvider {
 	private PainterWidget painter;
 	private RepositoryWidget repository;
 
@@ -351,7 +350,6 @@ public class GfxEditorView
 
 		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
 				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
-		multiColorChooser.addColorSelectionListener(this);
 
 		layerChooser = createLayerChooser();
 
@@ -390,6 +388,9 @@ public class GfxEditorView
 
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
+
+		multiColorChooser.addColorSelectionListener(painter);
+		multiColorChooser.addColorSelectionListener(repository);
 
 		if (isNewProject) {
 			tileRepositoryService.addTile(painter.getConf().getTileSize());
@@ -532,11 +533,6 @@ public class GfxEditorView
 	public Color getColorByIndex(int index) {
 		return PlatformFactory.getPlatformColors(project.getTargetPlatform())
 				.get(tileRepositoryService.getSelectedTile().getActiveLayer().getColorIndex(index)).getColor();
-	}
-
-	@Override
-	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	private String getHeaderText() {

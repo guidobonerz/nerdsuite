@@ -16,7 +16,8 @@ Current state: Still buggy and incomplete :-)
 Last Changes:
 - Range selection modification for Shift, Flip, Mirror, Rotate and Purge
 - Bulk tile modifications
-- Tile Animation partly finished
+- Tile Animation finished
+- Tile Drag Movement/Reordering
 
 Gfx Module Todo:
 - Performance tuning
@@ -25,7 +26,6 @@ Gfx Module Todo:
 - TileMap reference tile selector
 - TileSet reference char selector
 - Layer content compression
-- Tile drag movement
 - Layer drag movement
 - Binary Import
 - Export to BIN/BAS/ASM/PNG/GIF/SVG/TTF
@@ -51,6 +51,8 @@ Create/Update disk images
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/range_selection.png)
 ## Sprite Animation Example
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/drops_animation.gif)
+## Reordering Tile Example
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_reordering.gif)
 ## Simple BitmapViewer
 Image by Almighty God
 ![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/koala.png)
