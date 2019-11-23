@@ -35,6 +35,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
+
 		if (conf.cursorMode == CursorMode.Point) {
 			if (oldCursorX != cursorX || oldCursorY != cursorY) {
 				oldCursorX = cursorX;
@@ -43,25 +44,24 @@ public class PainterWidget extends BaseImagingWidget {
 				doDrawPixel();
 				fireDoDrawTile(this);
 			}
-			if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
-				computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
-				doDrawTile();
-			}
+		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
+			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
+			doDrawTile();
 		}
 	}
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
+		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
-			rangeSelectionStarted = false;
+			// rangeSelectionStarted = true;
 			doDrawTile();
 		}
 	}
 
 	@Override
 	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
-		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
+		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
 				rangeSelectionStarted = false;
 				computeRangeSelection(tileCursorX, tileCursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
@@ -121,6 +121,7 @@ public class PainterWidget extends BaseImagingWidget {
 				y1 = y2;
 				y2 = v;
 			}
+
 			tileRepositoryService.setSelection(new Rectangle(x1, y1, x2 - x1 + 1, y2 - y1 + 1));
 		}
 	}
@@ -144,28 +145,15 @@ public class PainterWidget extends BaseImagingWidget {
 		if (paintSeparator) {
 			paintSeparator(gc);
 		}
-		/*
-		 * if (paintTileGrid) { paintTileGrid(gc); }
-		 */
+
 		if (paintTileSubGrid) {
 			paintTileSubGrid(gc);
 		}
-		/*
-		 * if (!supportsPainting()) { paintSelection(gc); }
-		 */
-		/*
-		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
-		 */
+
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			paintRangeSelection(gc);
 		}
-		/*
-		 * if (paintTelevisionMode && supportsSingleSelection()) {
-		 * paintTelevisionRaster(gc); }
-		 */
-		/*
-		 * if (supportsDrawCursor()) { paintPixelCursor(gc); }
-		 */
+
 		redrawMode = RedrawMode.DrawNothing;
 
 	}
@@ -216,7 +204,7 @@ public class PainterWidget extends BaseImagingWidget {
 							conf.getHeight() * conf.getRows() * conf.getTileRows()));
 		}
 		fireDoDrawAllTiles(this);
-		doDrawAllTiles();
+		doDrawTile();
 	}
 
 	@Override
