@@ -494,7 +494,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 	@Override
 	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

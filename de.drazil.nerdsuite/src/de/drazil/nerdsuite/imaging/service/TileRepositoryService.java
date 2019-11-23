@@ -193,11 +193,11 @@ public class TileRepositoryService extends AbstractImagingService {
 
 	private void fireTileUpdates(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
 		if (selectedTileIndexList != null) {
-			if (selectedTileIndexList.size() == 1) {
+			//if (selectedTileIndexList.size() == 1) {
 				tileUpdateListener.forEach(listener -> listener.updateTile(selectedTileIndexList.get(0), updateMode));
-			} else {
+			//} else {
 				tileUpdateListener.forEach(listener -> listener.updateTiles(selectedTileIndexList, updateMode));
-			}
+			//}
 		}
 	}
 
