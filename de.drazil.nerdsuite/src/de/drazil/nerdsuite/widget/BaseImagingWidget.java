@@ -7,7 +7,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -29,8 +28,9 @@ import de.drazil.nerdsuite.mouse.IMeasuringListener;
 import de.drazil.nerdsuite.mouse.MeasuringController;
 import lombok.Getter;
 
-public abstract class BaseImagingWidget extends BaseWidget implements IDrawListener, PaintListener, IServiceCallback,
-		ITileUpdateListener, ITileManagementListener, ITileListener, ITileBulkModificationListener, IMeasuringListener {
+public abstract class BaseImagingWidget extends BaseWidget
+		implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener,
+		ITileListener, ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener {
 
 	@Getter
 	protected ImagingWidgetConfiguration conf = null;
@@ -66,7 +66,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected ImagePainterFactory imagePainterFactory;
 
 	protected Tile tile = null;
-	private MeasuringController mc;
+	protected MeasuringController mc;
 
 	protected IColorPaletteProvider colorPaletteProvider;
 
@@ -89,6 +89,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
+				conf.setColumns((int) (getParent().getBounds().width / conf.getScaledTileWidth()));
+				//conf.setRows((int) (getParent().getBounds().width % conf.getScaledTileWidth()));
 				doDrawAllTiles();
 			}
 		});
@@ -108,7 +110,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	@Override
 	protected void leftMouseButtonClickedInternal(int modifierMask, int x, int y) {
-		mc.stop();
 		computeCursorPosition(x, y);
 		leftMouseButtonClicked(modifierMask, x, y);
 	}
@@ -199,23 +200,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 			gc.setAlpha(60);
 			gc.setForeground(Constants.BLACK);
 			gc.drawLine(0, y, length, y);
-		}
-	}
-
-	protected void paintTileCursor(GC gc, boolean mouseIn, boolean updateCursorLocation) {
-
-		if (mouseIn) {
-			gc.setAlpha(40);
-			gc.setBackground(Constants.RED);
-			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
-					conf.scaledTileHeight);
-		}
-		if (updateCursorLocation) {
-			gc.setAlpha(255);
-			gc.setLineWidth(3);
-			gc.setForeground(Constants.LIGHT_GREEN2);
-			gc.drawRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
-					conf.scaledTileHeight);
 		}
 	}
 
@@ -406,11 +390,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	public void layerAdded() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void activeLayerChanged(int layer) {
-		doDrawAllTiles();
 	}
 
 	@Override

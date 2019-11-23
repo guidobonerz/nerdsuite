@@ -91,6 +91,18 @@ public class TileRepositoryService extends AbstractImagingService {
 		}
 	}
 
+	public void moveTile(int from, int to) {
+		int v = tileIndexOrderList.get(from);
+		if (to < from) {
+			tileIndexOrderList.remove(from);
+			tileIndexOrderList.add(to, v);
+		} else {
+			tileIndexOrderList.add(to, v);
+			tileIndexOrderList.remove(from);
+		}
+		fireTileReordered();
+	}
+
 	public int getTileIndex(int index) {
 		return tileIndexOrderList.get(index);
 	}

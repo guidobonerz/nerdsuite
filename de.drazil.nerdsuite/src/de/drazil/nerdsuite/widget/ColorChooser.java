@@ -65,17 +65,8 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 				e.gc.setBackground(Constants.WHITE);
 				e.gc.fillRectangle(0, y * COLOR_TILE_SIZE, WIDGET_WIDTH, COLOR_TILE_SIZE);
 			}
-			/*
-			 * if (y >= maxColorsTemp) { e.gc.setForeground(Constants.RED);
-			 * e.gc.drawLine(COLOR_OFFSET + 4, y * COLOR_TILE_SIZE + 4, COLOR_OFFSET +
-			 * COLOR_TILE_SIZE - 4, (y + 1) * COLOR_TILE_SIZE - 4);
-			 * e.gc.drawLine(COLOR_OFFSET + 4, (y + 1) * COLOR_TILE_SIZE - 4, COLOR_OFFSET +
-			 * COLOR_TILE_SIZE - 4, y * COLOR_TILE_SIZE + 4); }
-			 */
 		}
 		e.gc.setAlpha(255);
-		// e.gc.setForeground(Constants.BLACK);
-		// e.gc.drawRectangle(1, 2, WIDGET_WIDTH - 2, COLOR_TILE_SIZE * maxColors - 3);
 		e.gc.setForeground(Constants.BRIGHT_ORANGE);
 		e.gc.drawRectangle(1, 1 + colorNo * COLOR_TILE_SIZE, WIDGET_WIDTH - 2, COLOR_TILE_SIZE - 2);
 	}
@@ -95,7 +86,9 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	}
 
 	private void fireColorSelected(int colorIndex) {
-		colorSelectionListener.forEach(l -> l.colorSelected(colorNo, colorIndex));
+		if (colorSelectionListener != null) {
+			colorSelectionListener.forEach(l -> l.colorSelected(colorNo, colorIndex));
+		}
 	}
 
 	@Override

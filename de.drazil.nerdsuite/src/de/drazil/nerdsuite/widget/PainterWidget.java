@@ -156,7 +156,7 @@ public class PainterWidget extends BaseImagingWidget {
 		/*
 		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
 		 */
-		if (supportsRangeSelection() && conf.cursorMode == CursorMode.SelectRectangle) {
+		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			paintRangeSelection(gc);
 		}
 		/*
@@ -294,5 +294,16 @@ public class PainterWidget extends BaseImagingWidget {
 			IColorPaletteProvider colorPaletteProvider) {
 		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider), 0, 0);
 		System.out.println("paint tile");
+	}
+
+	@Override
+	public void activeLayerChanged(int layer) {
+		doDrawTile();
+	}
+
+	@Override
+	public void colorSelected(int colorNo, int colorIndex) {
+		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
+
 	}
 }
