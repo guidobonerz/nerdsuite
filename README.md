@@ -53,9 +53,9 @@ Create/Update disk images
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/drops_animation.gif)
 ## Reordering Tile Example
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_reordering.gif)
-## Tile Bulk Mofication Example
+## Tile Bulk Modification Example
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_bulk_modification.gif)
-## Tile Range Mofication on 2x2 Char Example
+## Tile Range Modification on 2x2 Char Example
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_range_modification.gif)
 ## Simple BitmapViewer
 Image by Almighty God
