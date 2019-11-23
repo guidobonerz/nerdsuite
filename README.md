@@ -18,17 +18,21 @@ Last Changes:
 - Bulk tile modifications
 - Tile Animation finished
 - Tile Drag Movement/Reordering
+- Invert Tile
 
 Gfx Module Todo:
+- Proper Multicolor handling
+- Copy/Paste
+- Undo/Redo
 - Performance tuning
 - Layer Preview/Selector
 - Charscreen reference charset selector
 - TileMap reference tile selector
 - TileSet reference char selector
-- Layer content compression
 - Layer drag movement
 - Binary Import
 - Export to BIN/BAS/ASM/PNG/GIF/SVG/TTF
+- Layer content compression
 - Code cleanup
 
 

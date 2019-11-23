@@ -54,6 +54,9 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
+		if (tileSelectionStarted) {
+			mc.stop();
+		}
 		computeTileSelection(tileX, tileY, 1);
 		doDrawAllTiles();
 	}
@@ -67,7 +70,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		}
 		if (selectedTileIndexList.size() > 1) {
 			tileSelectionStarted = false;
-			tileSelectionRange.reset();
+			// tileSelectionRange.reset();
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
 		}
 	}

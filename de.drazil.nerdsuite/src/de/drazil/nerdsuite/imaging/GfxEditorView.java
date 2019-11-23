@@ -53,6 +53,7 @@ import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
+import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.MulticolorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
@@ -68,7 +69,6 @@ import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
-import de.drazil.nerdsuite.widget.IColorSelectionListener;
 import de.drazil.nerdsuite.widget.LayerChooser;
 import de.drazil.nerdsuite.widget.PainterWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
@@ -161,6 +161,17 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 	@Inject
 	@Optional
+	public void manageInvert(@UIEventTopic("Invert") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			InvertService service = ServiceFactory.getService(owner, InvertService.class);
+			service.setImagingWidgetConfiguration(painter.getConf());
+			service.execute(0, this);
+			part.setDirty(true);
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageMirror(@UIEventTopic("Mirror") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			MirrorService service = ServiceFactory.getService(owner, MirrorService.class);
@@ -191,6 +202,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 			service.execute(multicolor ? 1 : 0, this);
 			tileRepositoryService.getSelectedTile().setMulticolorEnabled(multicolor);
 			multiColorChooser.setMonochrom(!multicolor);
+			part.setDirty(true);
 		}
 	}
 
@@ -474,28 +486,19 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 	@Override
 	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
-		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
-			List<String> tags1 = new LinkedList<>();
-			tags1.add("MultiColorButton");
-			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
-			E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolor());
-			multiColorChooser.setMonochrom(!tile.isMulticolor());
-			List<String> tags2 = new LinkedList<>();
-			tags2.add("Animator");
-			E4Utils.setToolItemEnabled(part, modelService, tags2, false);
-		} else if (selectedTileIndexList != null && selectedTileIndexList.size() > 1) {
-			System.out.println("selected tiles:" + selectedTileIndexList.size());
-			List<String> tags = new LinkedList<>();
-			tags.add("Animator");
-			E4Utils.setToolItemEnabled(part, modelService, tags, selectedTileIndexList.size() > 1);
-		}
-
+		boolean enableAnimationControls = (updateMode == UpdateMode.Selection || updateMode == UpdateMode.Animation);
+		List<String> tags = new LinkedList<>();
+		tags.add("Animator");
+		E4Utils.setToolItemEnabled(part, modelService, tags, enableAnimationControls);
 	}
 
 	@Override
 	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
-		
-
+		List<String> tags1 = new LinkedList<>();
+		tags1.add("MultiColorButton");
+		Tile tile = tileRepositoryService.getTile(selectedTileIndex);
+		E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolor());
+		multiColorChooser.setMonochrom(!tile.isMulticolor());
 	}
 
 	private void save(File file) {
