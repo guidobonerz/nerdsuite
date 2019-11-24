@@ -36,8 +36,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.eclipse.ui.commands.ICommandService;
-import org.eclipse.ui.handlers.IHandlerService;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
@@ -55,6 +53,7 @@ import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
+import de.drazil.nerdsuite.imaging.service.ImportService;
 import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.MulticolorService;
@@ -78,13 +77,13 @@ import de.drazil.nerdsuite.widget.RepositoryWidget;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorPaletteProvider {
+
+	private Composite parent;
 	private PainterWidget painter;
 	private RepositoryWidget repository;
 
 	private ScrolledComposite scrollablePainter;
 	private ScrolledComposite scrollableLayerChooser;
-
-	private Composite parent;
 
 	private TileRepositoryService tileRepositoryService;
 
@@ -258,17 +257,6 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 	@Inject
 	@Optional
-	public void importFile(@UIEventTopic("ImportFile") BrokerObject brokerObject) {
-		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
-			// IHandlerService handlerService = (IHandlerService)
-			// getSite().getService(IHandlerService.class);
-			// ICommandService commandService = (ICommandService)
-			// getSite().getService(ICommandService.class);
-		}
-	}
-
-	@Inject
-	@Optional
 	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
@@ -323,26 +311,26 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 		part.getTransientData().put(Constants.OWNER, owner);
 		part.setTooltip(graphicFormat.getName() + " " + graphicFormatVariant.getName());
 		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
-		boolean isNewProject = (Boolean) ((Map<String, Object>) part.getObject()).get("isNewProject");
+		String projectAction = (String) ((Map<String, Object>) part.getObject()).get("projectAction");
 		String pt = project.getProjectType();
 		ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
 
 		file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
 				+ projectType.getSuffix());
 
-		try {
-			if (isNewProject) {
-				customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
-				updateWorkspace(true);
-				file.createNewFile();
-			} else {
-				tileRepositoryService = load(file);
-				if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
-					customSize = tileRepositoryService.getCustomSize();
-				}
+		if (projectAction.startsWith("new")) {
+			customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
+			updateWorkspace(true, file);
+			if (projectAction.startsWith("newImport")) {
+				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
+				tileRepositoryService = importService.doImportGraphic(owner, file, graphicFormat, graphicFormatVariant,
+						customSize);
 			}
-		} catch (IOException e1) {
-
+		} else {
+			tileRepositoryService = load(file);
+			if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
+				customSize = tileRepositoryService.getCustomSize();
+			}
 		}
 
 		defaultSize = new Point(graphicFormat.getWidth() * graphicFormatVariant.getPixelSize(),
@@ -417,7 +405,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 		multiColorChooser.addColorSelectionListener(painter);
 		multiColorChooser.addColorSelectionListener(repository);
 
-		if (isNewProject) {
+		if (projectAction.startsWith("new")) {
 			tileRepositoryService.addTile(painter.getConf().getTileSize());
 		}
 		Display.getDefault().asyncExec(new Runnable() {
@@ -516,12 +504,13 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 	private void save(File file) {
 		System.out.println("save tiles");
-		updateWorkspace(false);
+		updateWorkspace(false, null);
 		LocalDateTime ldt = LocalDateTime.now();
 		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 		project.setChangedOn(d);
-		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
-		TileRepositoryService.save(file, service, getHeaderText());
+		// TileRepositoryService service = ServiceFactory.getService(owner,
+		// TileRepositoryService.class);
+		TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 		part.setDirty(false);
 	}
 
@@ -536,8 +525,8 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 		save(file);
 	}
 
-	private void updateWorkspace(boolean addProject) {
-		Initializer.getConfiguration().updateWorkspace(project, addProject);
+	private void updateWorkspace(boolean addProject, File file) {
+		Initializer.getConfiguration().updateWorkspace(project, file, addProject);
 	}
 
 	@Override

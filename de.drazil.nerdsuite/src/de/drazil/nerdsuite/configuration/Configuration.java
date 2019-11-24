@@ -87,7 +87,7 @@ public class Configuration {
 				System.out.println("create new workspace folder...");
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
-				updateWorkspace(null, false);
+				updateWorkspace(null, null, false);
 			}
 
 			if (workspace == null) {
@@ -111,9 +111,15 @@ public class Configuration {
 		return workspace;
 	}
 
-	public final void updateWorkspace(Project project, boolean addProject) {
+	public final void updateWorkspace(Project project, File file, boolean addProject) {
 		if (addProject) {
 			workspace.add(project);
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		try {

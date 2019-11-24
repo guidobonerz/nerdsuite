@@ -19,8 +19,10 @@ import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
 import lombok.Setter;
 
-public class TileRepositoryService extends AbstractImagingService {
-
+public class TileRepositoryService implements IService {
+	@JsonIgnore
+	@Setter
+	private String owner = null;
 	@JsonProperty(value = "tiles")
 	private List<Tile> tileList = null;
 	@JsonProperty(value = "tileIndexOrder")

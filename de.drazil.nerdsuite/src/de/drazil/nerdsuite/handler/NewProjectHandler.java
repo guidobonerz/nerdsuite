@@ -84,7 +84,10 @@ public class NewProjectHandler {
 				projectSetup.put("project", project);
 				projectSetup.put("gfxFormat", gf);
 				projectSetup.put("gfxFormatVariant", gfv);
-				projectSetup.put("isNewProject", true);
+				projectSetup.put("gfxFormatVariant", gfv);
+				projectSetup.put("importFileName", (String) userData.get(ProjectWizard.FILE_NAME));
+				projectSetup.put("projectAction",
+						projectSetup.get("importFileName") == null ? "newProjectAction" : "newImportProjectAction");
 				projectSetup.put("owner",
 						project.getProjectType() + "_" + project.getProjectVariant() + "_" + project.getName());
 				CustomSize customSize = new CustomSize(gf.getWidth(), gf.getHeight(), gfv.getTileColumns(),

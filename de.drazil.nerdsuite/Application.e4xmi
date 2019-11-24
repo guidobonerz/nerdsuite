@@ -108,7 +108,7 @@
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
   <handlers xmi:id="_9CBz8MznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handler.export" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ExportHandler" command="_2QmjcMznEemJh_xLPhHI6A"/>
   <handlers xmi:id="_d0CMoNvqEemXK8sgYhnEoQ" elementId="de.drazil.nerdsuite.handler.Save" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SaveHandler" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>
-  <handlers xmi:id="_KaNl0A3-Eeqcp92GRSaANg" elementId="de.drazil.nerdsuite.handler.Import" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ImportHandler" command="_Jff4wA34Eeqcp92GRSaANg"/>
+  <handlers xmi:id="_PKHvoA6wEeqjuJ-oZnsVkQ" elementId="de.drazil.nerdsuite.handler.Import" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ImportHandler" command="_Jff4wA34Eeqcp92GRSaANg"/>
   <bindingTables xmi:id="_SoW6YNc0Eem8ZM0LwkCd1Q" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_bnniINc5EemIEoLjroS7Zw">
     <bindings xmi:id="_Xko04Nc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.0" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
       <tags>type:user</tags>
