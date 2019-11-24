@@ -19,8 +19,10 @@ import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
 import lombok.Setter;
 
-public class TileRepositoryService extends AbstractImagingService {
-
+public class TileRepositoryService implements IService {
+	@JsonIgnore
+	@Setter
+	private String owner = null;
 	@JsonProperty(value = "tiles")
 	private List<Tile> tileList = null;
 	@JsonProperty(value = "tileIndexOrder")
@@ -47,17 +49,18 @@ public class TileRepositoryService extends AbstractImagingService {
 		tileUpdateListener = new ArrayList<>();
 	}
 
-	public void addTile(int size) {
-		addTile("tile_" + (tileList.size() + 1), size);
+	public Tile addTile(int size) {
+		return addTile("tile_" + (tileList.size() + 1), size);
 	}
 
-	public void addTile(String name, int size) {
+	public Tile addTile(String name, int size) {
 		System.out.println("Add Tile");
 		Tile tile = new Tile(name, size);
 		tileList.add(tile);
 		tileIndexOrderList.add(tileList.indexOf(tile));
 		setSelectedTileIndex(tileIndexOrderList.get(getSize() - 1));
 		fireTileAdded();
+		return tile;
 	}
 
 	public void setCustomSize(CustomSize customSize) {

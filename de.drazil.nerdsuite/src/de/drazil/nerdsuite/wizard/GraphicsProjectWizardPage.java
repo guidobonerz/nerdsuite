@@ -2,14 +2,8 @@ package de.drazil.nerdsuite.wizard;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import org.eclipse.core.databinding.AggregateValidationStatus;
-import org.eclipse.core.databinding.observable.ChangeEvent;
-import org.eclipse.core.databinding.observable.IChangeListener;
-import org.eclipse.core.databinding.observable.IObservableCollection;
-import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -28,15 +22,11 @@ import org.eclipse.swt.widgets.Text;
 
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
-import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
-import de.drazil.nerdsuite.validator.IValidatable;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.ProjectTypeFactory;
-import lombok.Getter;
-import lombok.Setter;
 
 public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 
@@ -82,7 +72,6 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		container.setLayout(new FormLayout());
 
 		FormData formData;
-
 		projectNameLabel = new Label(container, SWT.NONE);
 		projectNameLabel.setText("Project Name");
 		targetPlatformLabel = new Label(container, SWT.NONE);
@@ -136,7 +125,6 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 				} else {
 					gfxFormatCombo.getCombo().setEnabled(false);
 				}
-
 			}
 		});
 
@@ -315,103 +303,21 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		symbolPathText.setLayoutData(formData);
-
-		initDataBindings();
 	}
-
-	protected void initDataBindings() {
-		// getModel().getFolderList().add(new ProjectFolder(Constants.SOURCE_FOLDER,
-		// Constants.DEFAULT_SOURCE_PATH));
-		// getModel().getFolderList().add(new ProjectFolder(Constants.BINARY_FOLDER,
-		// Constants.DEFAULT_BINARY_PATH));
-		// getModel().getFolderList().add(new ProjectFolder(Constants.INCLUDE_FOLDER,
-		// Constants.DEFAULT_INCLUDE_PATH));
-		// getModel().getFolderList().add(new ProjectFolder(Constants.SYMBOL_FOLDER,
-		// Constants.DEFAULT_SYMBOL_PATH));
-
-		ISWTObservableValue projectNameObservable = WidgetProperties.text(SWT.Modify).observe(projectNameText);
-		/*
-		 * ISideEffect.create(() -> { Object value = projectNameObservable.getValue();
-		 * getModel().setName((String) value); });
-		 * 
-		 * List<ProjectFolder> folderList = getModel().getFolderList();
-		 */
-		/*
-		 * final WidgetDataBinder widgetDataBinder = new WidgetDataBinder(this);
-		 * widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new
-		 * LengthValidator("Projectname", 1, CheckType.Min));
-		 * widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new
-		 * DuplicateNameValidator<Project>( "Projectname",
-		 * Initializer.getConfiguration().getWorkspace().getProjects()) {
-		 * 
-		 * @Override protected boolean exists(List<Project> list, Object value) {
-		 * boolean exists = false; if (value instanceof String && value != null) {
-		 * exists = list.stream().filter(c ->
-		 * c.getName().equals(Constants.NAME)).findFirst().isPresent(); } return exists;
-		 * } });
-		 * 
-		 * widgetDataBinder.bind(sourcePathText, getFolder(folderList,
-		 * Constants.SOURCE_FOLDER).get().getName(), Constants.NAME, new
-		 * LengthValidator("Sourcefolder Name", 1, CheckType.Min));
-		 * widgetDataBinder.bind(binaryPathText, getFolder(folderList,
-		 * Constants.BINARY_FOLDER).get().getName(), Constants.NAME, new
-		 * LengthValidator("Binaryfolder Name", 1, CheckType.Min));
-		 * widgetDataBinder.bind(includePathText, getFolder(folderList,
-		 * Constants.INCLUDE_FOLDER).get().getName(), Constants.NAME, new
-		 * LengthValidator("Includefolder Name", 1, CheckType.Min));
-		 * widgetDataBinder.bind(symbolPathText, getFolder(folderList,
-		 * Constants.SYMBOL_FOLDER).get().getName(), Constants.NAME, new
-		 * LengthValidator("Symbolfolder Name", 1, CheckType.Min));
-		 * IObservableCollection oc =
-		 * widgetDataBinder.getDataBindingContext().getBindings();
-		 * AggregateValidationStatus aggregateValidationStatus = new
-		 * AggregateValidationStatus(oc, AggregateValidationStatus.MAX_SEVERITY);
-		 * aggregateValidationStatus.addChangeListener(new
-		 * AggregatedValidationChangeListener(oc, this));
-		 */
-	}
-
-	private Optional<ProjectFolder> getFolder(List<ProjectFolder> folderList, String folderName) {
-		return folderList.stream().filter(c -> c.getId().equals(folderName)).findFirst();
-	}
-
-	private static class AggregatedValidationChangeListener implements IChangeListener {
-		@Setter
-		@Getter
-		private IObservableCollection oc;
-
-		@Setter
-		@Getter
-		IValidatable validatable;
-
-		public AggregatedValidationChangeListener(IObservableCollection oc, IValidatable validatable) {
-			setOc(oc);
-			setValidatable(validatable);
-		}
-
-		@Override
-		public void handleChange(ChangeEvent event) {
-			AggregateValidationStatus as = (AggregateValidationStatus) event.getSource();
-			// to assure that the changeevent is thrown every time
-			as.getValue();
-			validatable.setValidated(AggregateValidationStatus.getStatusMerged(getOc()).isOK());
-		}
-	}
-
-	/*
-	 * private List<GraphicFormat> getGraphicFormatList(TargetPlatform
-	 * targetPlatform) { return
-	 * GraphicFormatFactory.getFormatByPrefix(targetPlatform.getId()); }
-	 * 
-	 * private List<GraphicFormatVariant> getGraphicFormatVariantList(String name) {
-	 * return GraphicFormatFactory.getFormatVariantByPrefix(name); }
-	 */
 
 	private void setText(String fileName) {
-		projectNameText.setText(fileName);
 		userData.put(ProjectWizard.PROJECT_ID, projectNameText.getText().toUpperCase());
 		userData.put(ProjectWizard.PROJECT_NAME, projectNameText.getText());
 		setPageComplete(!projectNameText.getText().isEmpty());
 	}
 
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		String fileName = FilenameUtils.getBaseName((String) userData.get(ProjectWizard.FILE_NAME));
+		if (projectNameText.getText().isEmpty()) {
+			projectNameText.setText(fileName);
+			setText(fileName);
+		}
+	}
 }

@@ -312,7 +312,7 @@ public class Explorer implements IDoubleClickListener {
 			projectSetup.put("project", project);
 			projectSetup.put("gfxFormat", gf);
 			projectSetup.put("gfxFormatVariant", gfv);
-			projectSetup.put("isNewProject", false);
+			projectSetup.put("projectAction", "openProjectAction");
 			projectSetup.put("owner",
 					project.getProjectType() + "_" + project.getProjectVariant() + "_" + project.getName());
 

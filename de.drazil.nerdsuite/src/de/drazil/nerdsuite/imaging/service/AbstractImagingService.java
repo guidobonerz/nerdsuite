@@ -25,10 +25,6 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 
 	protected TileRepositoryService service = null;
 
-	public enum ConversionMode {
-		toWorkArray, toBitplane
-	}
-
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		// TODO Auto-generated method stub
@@ -107,48 +103,36 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 
 	}
 
-	private void convert(byte workArray[], byte bitplane[], int x, int y, ConversionMode mode) {
-		/*
-		 * int iconSize = imagingWidgetConfiguration.getIconSize(); int tileSize =
-		 * imagingWidgetConfiguration.getTileSize(); int tileOffset =
-		 * imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset); int bc
-		 * = imagingWidgetConfiguration.pixelConfig.bitCount; int mask =
-		 * imagingWidgetConfiguration.pixelConfig.mask; for (int si = 0, s = 0; si <
-		 * tileSize; si += imagingWidgetConfiguration.bytesPerRow, s +=
-		 * imagingWidgetConfiguration.bytesPerRow) { s = (si % (iconSize)) == 0 ? 0 : s;
-		 * int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1))
-		 * imagingWidgetConfiguration.width; int yo = (si / (iconSize *
-		 * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height
-		 * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
-		 * int ro = ((s / imagingWidgetConfiguration.bytesPerRow) *
-		 * imagingWidgetConfiguration.width) imagingWidgetConfiguration.tileColumns; int
-		 * wai = ro + xo + yo;
-		 * 
-		 * for (int i = 0; i < imagingWidgetConfiguration.bytesPerRow; i++) {
-		 * bitplane[tileOffset + si + i] = mode == ConversionMode.toBitplane ? 0 :
-		 * bitplane[tileOffset + si + i]; for (int m = 7, ti = 0; m >= 0; m -= bc, ti++)
-		 * { if (mode == ConversionMode.toWorkArray) { workArray[wai + (8 * i) + ti] =
-		 * (byte) ((bitplane[tileOffset + si + i] >> m) & mask); } else if (mode ==
-		 * ConversionMode.toBitplane) { (bitplane[tileOffset + si + i]) |=
-		 * (workArray[wai + (8 * i) + ti] << m); } } } }
-		 */
-	}
-
-	protected byte[] createWorkArray() {
-		return new byte[imagingWidgetConfiguration.getTileSize() * (imagingWidgetConfiguration.pixelConfig.mul)];
-	}
-
-	public byte[] each(int action, TileLocation tileLocation, ImagingWidgetConfiguration configuration, int offset,
-			byte[] bitplane, byte workArray[], int width, int height) {
-		return null;
-	}
+	// private void convert(byte workArray[], byte bitplane[], int x, int y,
+	// ConversionMode mode) {
+	/*
+	 * int iconSize = imagingWidgetConfiguration.getIconSize(); int tileSize =
+	 * imagingWidgetConfiguration.getTileSize(); int tileOffset =
+	 * imagingWidgetConfiguration.computeTileOffset(x, y, navigationOffset); int bc
+	 * = imagingWidgetConfiguration.pixelConfig.bitCount; int mask =
+	 * imagingWidgetConfiguration.pixelConfig.mask; for (int si = 0, s = 0; si <
+	 * tileSize; si += imagingWidgetConfiguration.bytesPerRow, s +=
+	 * imagingWidgetConfiguration.bytesPerRow) { s = (si % (iconSize)) == 0 ? 0 : s;
+	 * int xo = ((si / iconSize) & (imagingWidgetConfiguration.tileColumns - 1))
+	 * imagingWidgetConfiguration.width; int yo = (si / (iconSize *
+	 * imagingWidgetConfiguration.tileColumns)) * imagingWidgetConfiguration.height
+	 * imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns;
+	 * int ro = ((s / imagingWidgetConfiguration.bytesPerRow) *
+	 * imagingWidgetConfiguration.width) imagingWidgetConfiguration.tileColumns; int
+	 * wai = ro + xo + yo;
+	 * 
+	 * for (int i = 0; i < imagingWidgetConfiguration.bytesPerRow; i++) {
+	 * bitplane[tileOffset + si + i] = mode == ConversionMode.toBitplane ? 0 :
+	 * bitplane[tileOffset + si + i]; for (int m = 7, ti = 0; m >= 0; m -= bc, ti++)
+	 * { if (mode == ConversionMode.toWorkArray) { workArray[wai + (8 * i) + ti] =
+	 * (byte) ((bitplane[tileOffset + si + i] >> m) & mask); } else if (mode ==
+	 * ConversionMode.toBitplane) { (bitplane[tileOffset + si + i]) |=
+	 * (workArray[wai + (8 * i) + ti] << m); } } } }
+	 */
+	// }
 
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 
-	}
-
-	public boolean needsConversion() {
-		return true;
 	}
 
 	private void printResult(byte workArray[]) {
@@ -163,7 +147,4 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		System.out.println(sb);
 	}
 
-	public int computeTileOffset(int x, int y, int offset) {
-		return imagingWidgetConfiguration.tileSize * (x + (y * imagingWidgetConfiguration.columns)) + offset;
-	}
 }
