@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -303,7 +302,6 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 	@PostConstruct
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
-
 		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
 		graphicFormatVariant = (GraphicFormatVariant) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
@@ -322,11 +320,11 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 			customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
 			updateWorkspace(true, file);
 			if (projectAction.startsWith("newImport")) {
-
 				String importFileName = (String) ((Map<String, Object>) part.getObject()).get("importFileName");
 				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
-				tileRepositoryService = importService.doImportGraphic(owner, importFileName, graphicFormat, graphicFormatVariant,
-						customSize);
+				tileRepositoryService = importService.doImportGraphic(owner, importFileName, graphicFormat,
+						graphicFormatVariant, customSize);
+				TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 			}
 		} else {
 			tileRepositoryService = load(file);
