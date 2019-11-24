@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.enums.ProjectType;
+import de.drazil.nerdsuite.enums.WizardType;
 import de.drazil.nerdsuite.explorer.Explorer;
 import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
@@ -38,13 +39,21 @@ public class NewProjectHandler {
 	@Execute
 	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
 			EPartService partService, EModelService modelService,
-			@Named("de.drazil.nerdsuite.commandparameter.projectType") String projectTypeId) {
+			@Named("de.drazil.nerdsuite.commandparameter.ProjectTypeId") String projectTypeId) {
 
-		ProjectWizard projectWizard = new ProjectWizard(projectTypeId);
+		Map<String, Object> userData = new HashMap<>();
+		userData.put(ProjectWizard.PROJECT_TYPE_ID, projectTypeId);
+
+		ProjectWizard projectWizard = new ProjectWizard(WizardType.NewProject, "Create new project", userData);
 		WizardDialog wizardDialog = new WizardDialog(shell, projectWizard);
 		if (wizardDialog.open() == WizardDialog.OK) {
 
-			Project project = projectWizard.getProject();
+			Project project = new Project();
+			project.setTargetPlatform((String) userData.get(ProjectWizard.TARGET_PLATFORM));
+			project.setId((String) userData.get(ProjectWizard.PROJECT_ID));
+			project.setName((String) userData.get(ProjectWizard.PROJECT_NAME));
+			project.setProjectType((String) userData.get(ProjectWizard.PROJECT_TYPE));
+			project.setProjectVariant((String) userData.get(ProjectWizard.PROJECT_VARIANT));
 
 			String perspectiveId = projectTypeId.equals("CODING_PROJECT") ? "de.drazil.nerdsuite.perspective.coding"
 					: "de.drazil.nerdsuite.perspective.gfx";
@@ -59,7 +68,7 @@ public class NewProjectHandler {
 				String pt = project.getProjectType();
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(pt);
 				GraphicFormatVariant gfv = GraphicFormatFactory.getGraphicFormatVariantByName(pt,
-						project.getProjectSubType());
+						project.getProjectVariant());
 
 				project.setSingleFileProject(true);
 				project.setOpen(true);
@@ -77,10 +86,10 @@ public class NewProjectHandler {
 				projectSetup.put("gfxFormatVariant", gfv);
 				projectSetup.put("isNewProject", true);
 				projectSetup.put("owner",
-						project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
+						project.getProjectType() + "_" + project.getProjectVariant() + "_" + project.getName());
 				CustomSize customSize = new CustomSize(gf.getWidth(), gf.getHeight(), gfv.getTileColumns(),
 						gfv.getTileRows(), gf.getStorageEntity());
-				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
+				if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
 					CustomFormatDialog cfd = new CustomFormatDialog(shell);
 					cfd.open(customSize, gfv.isSupportCustomBaseSize());
 				}

@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.wizard;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.ProgrammingLanguage;
-import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
@@ -42,7 +42,7 @@ import de.drazil.nerdsuite.widget.ProjectTypeFactory;
 import lombok.Getter;
 import lombok.Setter;
 
-public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
+public class CodingProjectWizardPage extends AbstractBoundWizardPage {
 
 	private boolean enableAssembler = false;
 	private Label projectNameLabel;
@@ -72,9 +72,9 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 	/**
 	 * Create the wizard.
 	 */
-	public CodingProjectWizardPage(String projectTypeId) {
-		super("wizardPage", Project.class);
-		projectType = ProjectTypeFactory.getProjectTypeByName(projectTypeId);
+	public CodingProjectWizardPage(Map<String, Object> userData) {
+		super("wizardPage", userData);
+		projectType = ProjectTypeFactory.getProjectTypeByName((String) userData.get("PROJECT_TYPE_ID"));
 		setTitle("Create new " + projectType.getName());
 		setDescription("Please enter a Project Name");
 	}
@@ -92,9 +92,9 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 		FormData formData;
 
 		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
-		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
+		// getModel().setTargetPlatform(targetPlatformList.get(0).getId());
 		List<ProgrammingLanguage> programmingLanguageList = getProgrammingLanguageList(targetPlatformList.get(0));
-		getModel().setProjectType(programmingLanguageList.get(0).getId());
+		// getModel().setProjectType(programmingLanguageList.get(0).getId());
 
 		projectNameLabel = new Label(container, SWT.NONE);
 		projectNameLabel.setText("Project Name");
@@ -163,7 +163,7 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				ProgrammingLanguage subType = (ProgrammingLanguage) selection.getFirstElement();
 				createExampleButton.setEnabled(subType.isSupportsExampleFile());
-				getModel().setProjectType(subType.getId());
+				// getModel().setProjectType(subType.getId());
 			}
 		});
 
@@ -326,25 +326,25 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 	}
 
 	protected void initDataBindings() {
-		String parentId = projectNameText.getText().toLowerCase();
-		getModel().getFolderList()
-				.add(new ProjectFolder(Constants.SOURCE_FOLDER, parentId, Constants.DEFAULT_SOURCE_PATH));
-		getModel().getFolderList()
-				.add(new ProjectFolder(Constants.BINARY_FOLDER, parentId, Constants.DEFAULT_BINARY_PATH));
-		getModel().getFolderList()
-				.add(new ProjectFolder(Constants.INCLUDE_FOLDER, parentId, Constants.DEFAULT_INCLUDE_PATH));
-		getModel().getFolderList()
-				.add(new ProjectFolder(Constants.SYMBOL_FOLDER, parentId, Constants.DEFAULT_SYMBOL_PATH));
-
-		List<ProjectFolder> folderList = getModel().getFolderList();
-
-		ISWTObservableValue projectNameObservable = WidgetProperties.text(SWT.Modify).observe(projectNameText);
-
-		ISideEffect.create(() -> {
-			Object value = projectNameObservable.getValue();
-			getModel().setName((String) value);
-		});
-
+		/*
+		 * String parentId = projectNameText.getText().toLowerCase();
+		 * getModel().getFolderList() .add(new ProjectFolder(Constants.SOURCE_FOLDER,
+		 * parentId, Constants.DEFAULT_SOURCE_PATH)); getModel().getFolderList()
+		 * .add(new ProjectFolder(Constants.BINARY_FOLDER, parentId,
+		 * Constants.DEFAULT_BINARY_PATH)); getModel().getFolderList() .add(new
+		 * ProjectFolder(Constants.INCLUDE_FOLDER, parentId,
+		 * Constants.DEFAULT_INCLUDE_PATH)); getModel().getFolderList() .add(new
+		 * ProjectFolder(Constants.SYMBOL_FOLDER, parentId,
+		 * Constants.DEFAULT_SYMBOL_PATH));
+		 * 
+		 * List<ProjectFolder> folderList = getModel().getFolderList();
+		 * 
+		 * ISWTObservableValue projectNameObservable =
+		 * WidgetProperties.text(SWT.Modify).observe(projectNameText);
+		 * 
+		 * ISideEffect.create(() -> { Object value = projectNameObservable.getValue();
+		 * getModel().setName((String) value); });
+		 */
 		/*
 		 * final WidgetDataBinder widgetDataBinder = new WidgetDataBinder(this);
 		 * widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new
@@ -435,8 +435,8 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage<Project> {
 
 	@Override
 	public boolean isPageComplete() {
-		getModel().setId(projectNameText.getText().toUpperCase());
-		getModel().setName(projectNameText.getText());
+		userData.put("PROJECT_ID", projectNameText.getText().toUpperCase());
+		userData.put("PROJECT_NAME", projectNameText.getText());
 		return true;
 	}
 

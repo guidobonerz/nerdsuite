@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.wizard;
 
+import java.util.Map;
+
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
@@ -12,23 +14,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.model.ProjectFile;
-import de.drazil.nerdsuite.util.WidgetDataBinder;
-import de.drazil.nerdsuite.validator.DuplicateNameValidator;
 import de.drazil.nerdsuite.validator.IValidatable;
-import de.drazil.nerdsuite.validator.LengthValidator;
-import de.drazil.nerdsuite.validator.LengthValidator.CheckType;
 import lombok.Getter;
 import lombok.Setter;
 
-public class NewSourceFileWizardPage extends AbstractBoundWizardPage<ProjectFile> {
+public class NewSourceFileWizardPage extends AbstractBoundWizardPage {
 
 	private Label sourceFileNameLabel;
 	private Text sourceFileNameText;
 
-	public NewSourceFileWizardPage() {
-		super("wizardPage", ProjectFile.class);
+	public NewSourceFileWizardPage(Map<String, Object> userData) {
+		super("wizardPage", userData);
 		setTitle("Create new Source File");
 		setDescription("Please enter a filename");
 	}

@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class ImageWriterService extends AbstractImagingService {
+public class ImageExportService extends AbstractImagingService {
 
 	public final static int WRITE_PNG = 1;
 	public final static int WRITE_GIF = 2;
@@ -14,7 +14,7 @@ public class ImageWriterService extends AbstractImagingService {
 
 	private boolean isTelevisionModeEnabled = false;
 
-	public ImageWriterService() {
+	public ImageExportService() {
 		// TODO Auto-generated constructor stub
 	}
 

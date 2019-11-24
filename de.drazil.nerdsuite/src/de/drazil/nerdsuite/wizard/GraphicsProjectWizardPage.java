@@ -1,13 +1,13 @@
 package de.drazil.nerdsuite.wizard;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservableCollection;
-import org.eclipse.core.databinding.observable.sideeffect.ISideEffect;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -17,6 +17,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -26,7 +28,6 @@ import org.eclipse.swt.widgets.Text;
 
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
-import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
@@ -37,7 +38,7 @@ import de.drazil.nerdsuite.widget.ProjectTypeFactory;
 import lombok.Getter;
 import lombok.Setter;
 
-public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> {
+public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 
 	private Label projectNameLabel;
 	private Label targetPlatformLabel;
@@ -63,10 +64,10 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	/**
 	 * Create the wizard.
 	 */
-	public GraphicsProjectWizardPage(String projectTypeId) {
-		super("wizardPage", Project.class);
-		projectType = ProjectTypeFactory.getProjectTypeByName(projectTypeId);
-		setTitle("Create new " + projectType.getName());
+	public GraphicsProjectWizardPage(Map<String, Object> userData) {
+		super("wizardPage", userData);
+		projectType = ProjectTypeFactory.getProjectTypeByName((String) userData.get(ProjectWizard.PROJECT_TYPE_ID));
+		setTitle("New " + projectType.getName());
 		setDescription("Please enter a Project Name");
 	}
 
@@ -92,14 +93,20 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		gfxFormatVariantLabel.setText("Format Variant");
 
 		List<TargetPlatform> targetPlatformList = PlatformFactory.getTargetPlatFormList();
-		getModel().setTargetPlatform(targetPlatformList.get(0).getId());
+		userData.put(ProjectWizard.TARGET_PLATFORM, targetPlatformList.get(0).getId());
 		List<GraphicFormat> graphicFormatList = GraphicFormatFactory
 				.getFormatByPrefix(targetPlatformList.get(0).getId());
-		getModel().setProjectType(graphicFormatList.get(0).getId());
+		userData.put(ProjectWizard.PROJECT_TYPE, graphicFormatList.get(0).getId());
 		List<GraphicFormatVariant> graphicFormatVariantList = graphicFormatList.get(0).getVariants();
-		getModel().setProjectSubType(graphicFormatVariantList.get(0).getId());
+		userData.put(ProjectWizard.PROJECT_VARIANT, graphicFormatVariantList.get(0).getId());
 
 		projectNameText = new Text(container, SWT.BORDER);
+		projectNameText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				setText(projectNameText.getText());
+			}
+		});
 		targetPlatformCombo = new ComboViewer(container, SWT.NONE);
 		targetPlatformCombo.setContentProvider(ArrayContentProvider.getInstance());
 		targetPlatformCombo.setInput(targetPlatformList);
@@ -153,7 +160,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				GraphicFormat graphicFormat = (GraphicFormat) selection.getFirstElement();
-				getModel().setProjectType(graphicFormat.getId());
+				userData.put(ProjectWizard.PROJECT_TYPE, graphicFormat.getId());
 				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantListByPrefix(graphicFormat.getId());
 				gfxFormatVariantCombo.setInput(l);
 				gfxFormatVariantCombo.setSelection(new StructuredSelection(l.get(0)));
@@ -180,7 +187,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				GraphicFormatVariant graphicFormatVariant = (GraphicFormatVariant) selection.getFirstElement();
-				getModel().setProjectSubType(graphicFormatVariant.getId());
+				userData.put(ProjectWizard.PROJECT_VARIANT, graphicFormatVariant.getId());
 			}
 		});
 
@@ -323,14 +330,12 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 		// Constants.DEFAULT_SYMBOL_PATH));
 
 		ISWTObservableValue projectNameObservable = WidgetProperties.text(SWT.Modify).observe(projectNameText);
-
-		ISideEffect.create(() -> {
-			Object value = projectNameObservable.getValue();
-			getModel().setName((String) value);
-		});
-
-		List<ProjectFolder> folderList = getModel().getFolderList();
-
+		/*
+		 * ISideEffect.create(() -> { Object value = projectNameObservable.getValue();
+		 * getModel().setName((String) value); });
+		 * 
+		 * List<ProjectFolder> folderList = getModel().getFolderList();
+		 */
 		/*
 		 * final WidgetDataBinder widgetDataBinder = new WidgetDataBinder(this);
 		 * widgetDataBinder.bind(projectNameText, getModel(), Constants.NAME, new
@@ -401,11 +406,12 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage<Project> 
 	 * private List<GraphicFormatVariant> getGraphicFormatVariantList(String name) {
 	 * return GraphicFormatFactory.getFormatVariantByPrefix(name); }
 	 */
-	@Override
-	public boolean isPageComplete() {
-		getModel().setId(projectNameText.getText().toUpperCase());
-		getModel().setName(projectNameText.getText());
-		return true;
+
+	private void setText(String fileName) {
+		projectNameText.setText(fileName);
+		userData.put(ProjectWizard.PROJECT_ID, projectNameText.getText().toUpperCase());
+		userData.put(ProjectWizard.PROJECT_NAME, projectNameText.getText());
+		setPageComplete(!projectNameText.getText().isEmpty());
 	}
 
 }

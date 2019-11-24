@@ -307,14 +307,14 @@ public class Explorer implements IDoubleClickListener {
 
 			GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
 			GraphicFormatVariant gfv = GraphicFormatFactory.getGraphicFormatVariantByName(project.getProjectType(),
-					project.getProjectSubType());
+					project.getProjectVariant());
 			Map<String, Object> projectSetup = new HashMap<String, Object>();
 			projectSetup.put("project", project);
 			projectSetup.put("gfxFormat", gf);
 			projectSetup.put("gfxFormatVariant", gfv);
 			projectSetup.put("isNewProject", false);
 			projectSetup.put("owner",
-					project.getProjectType() + "_" + project.getProjectSubType() + "_" + project.getName());
+					project.getProjectType() + "_" + project.getProjectVariant() + "_" + project.getName());
 
 			MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
 					"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", project,
