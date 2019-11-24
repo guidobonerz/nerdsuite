@@ -14,25 +14,25 @@ Currently I work mostly on the graphics part.
 Current state: Still buggy and incomplete :-)
 
 Last Changes:
-- Range selection modification for Shift, Flip, Mirror, Rotate and Purge
+- Range selection modification for Shift, Flip, Mirror, Rotate, Invert and Purge
 - Bulk tile modifications
 - Tile Animation finished
 - Tile Drag Movement/Reordering
-- Invert Tile
 
 Gfx Module Todo:
 - Proper Multicolor handling
 - Copy/Paste
 - Undo/Redo
-- Performance tuning
+- Zoom option in all views
 - Layer Preview/Selector
+- Layer drag reordering
 - Charscreen reference charset selector
 - TileMap reference tile selector
 - TileSet reference char selector
-- Layer drag movement
 - Binary Import
 - Export to BIN/BAS/ASM/PNG/GIF/SVG/TTF
 - Layer content compression
+- Performance tuning
 - Code cleanup
 
 

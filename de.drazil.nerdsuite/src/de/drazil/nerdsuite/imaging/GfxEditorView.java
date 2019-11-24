@@ -36,6 +36,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.handlers.IHandlerService;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
@@ -256,6 +258,17 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 	@Inject
 	@Optional
+	public void importFile(@UIEventTopic("ImportFile") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			// IHandlerService handlerService = (IHandlerService)
+			// getSite().getService(IHandlerService.class);
+			// ICommandService commandService = (ICommandService)
+			// getSite().getService(ICommandService.class);
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
@@ -324,7 +337,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 				file.createNewFile();
 			} else {
 				tileRepositoryService = load(file);
-				if (project.getProjectSubType().equalsIgnoreCase("CUSTOM")) {
+				if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
 					customSize = tileRepositoryService.getCustomSize();
 				}
 			}

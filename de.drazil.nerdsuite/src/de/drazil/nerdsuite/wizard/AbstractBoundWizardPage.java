@@ -1,37 +1,23 @@
 package de.drazil.nerdsuite.wizard;
 
+import java.util.Map;
+
 import org.eclipse.jface.wizard.WizardPage;
 
 import de.drazil.nerdsuite.validator.IValidatable;
 
-public abstract class AbstractBoundWizardPage<MODEL> extends WizardPage
-		implements IValidatable, IProjectWizardPage<MODEL> {
-	private Class<? extends MODEL> modelClass;
-	private MODEL model = null;
+public abstract class AbstractBoundWizardPage extends WizardPage implements IValidatable {
+	protected Map<String, Object> userData;
 
-	public AbstractBoundWizardPage(String pageName, Class<? extends MODEL> modelClass) {
+	public AbstractBoundWizardPage(String pageName, Map<String, Object> userData) {
 		super(pageName);
-		this.modelClass = modelClass;
-		setPageComplete(true);
-
-	}
-
-	public MODEL getModel() {
-		if (model == null) {
-			try {
-				model = modelClass.newInstance();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-		return model;
+		this.userData = userData;
+		setPageComplete(false);
 	}
 
 	@Override
 	public void setValidated(boolean validated) {
-		System.out.println(validated);
+
 		setPageComplete(validated);
 		if (validated) {
 			canFlipToNextPage();

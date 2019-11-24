@@ -20,7 +20,7 @@ public class Project {
 	private boolean open;
 	private String targetPlatform;
 	private String projectType;
-	private String projectSubType;
+	private String projectVariant;
 	private boolean singleFileProject;
 	private boolean isMountpoint;
 	private String iconName;
