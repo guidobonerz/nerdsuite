@@ -322,8 +322,10 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 			customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
 			updateWorkspace(true, file);
 			if (projectAction.startsWith("newImport")) {
+
+				String importFileName = (String) ((Map<String, Object>) part.getObject()).get("importFileName");
 				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
-				tileRepositoryService = importService.doImportGraphic(owner, file, graphicFormat, graphicFormatVariant,
+				tileRepositoryService = importService.doImportGraphic(owner, importFileName, graphicFormat, graphicFormatVariant,
 						customSize);
 			}
 		} else {

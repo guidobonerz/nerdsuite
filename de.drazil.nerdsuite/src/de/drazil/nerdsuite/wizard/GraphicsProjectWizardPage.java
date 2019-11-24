@@ -314,9 +314,10 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
-		String fileName = (String) userData.get(ProjectWizard.FILE_NAME);
+		String fileName = FilenameUtils.getBaseName((String) userData.get(ProjectWizard.FILE_NAME));
 		if (projectNameText.getText().isEmpty()) {
-			projectNameText.setText(FilenameUtils.getBaseName(fileName));
+			projectNameText.setText(fileName);
+			setText(fileName);
 		}
 	}
 }
