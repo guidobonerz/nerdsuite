@@ -23,7 +23,7 @@ public class ImportService implements IService {
 
 		byte[] importableContent = new byte[] {};
 		try {
-			importableContent = BinaryFileHandler.readFile(new File(fileName), 2);
+			importableContent = BinaryFileHandler.readFile(new File(fileName), 0);
 			convert(gf, variant, customSize, importableContent, tileRepositoryService);
 			System.out.println("do import...");
 		} catch (Exception e) {
