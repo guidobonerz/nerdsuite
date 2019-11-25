@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.imaging.service;
 
 import java.io.File;
+import java.util.Map;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.model.CustomSize;
@@ -17,14 +18,20 @@ public class ImportService implements IService {
 		toWorkArray, toBitplane
 	}
 
-	public TileRepositoryService doImportGraphic(String owner, String fileName, GraphicFormat gf,
-			GraphicFormatVariant variant, CustomSize customSize) {
+	public TileRepositoryService doImportGraphic(Map<String, Object> config) {
 		TileRepositoryService tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
+
+		owner = (String) config.get("owner");
+		String importFileName = (String) config.get("importFileName");
+		GraphicFormat graphicFormat = (GraphicFormat) config.get("gfxFormat");
+		GraphicFormatVariant graphicFormatVariant = (GraphicFormatVariant) config.get("gfxFormatVariant");
+		CustomSize customSize = (CustomSize) config.get("gfxCustomSize");
+		int bytesToSkip = (Integer) config.get("bytesToSkip");
 
 		byte[] importableContent = new byte[] {};
 		try {
-			importableContent = BinaryFileHandler.readFile(new File(fileName), 0);
-			convert(gf, variant, customSize, importableContent, tileRepositoryService);
+			importableContent = BinaryFileHandler.readFile(new File(importFileName), bytesToSkip);
+			convert(graphicFormat, graphicFormatVariant, customSize, importableContent, tileRepositoryService);
 			System.out.println("do import...");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -42,7 +49,7 @@ public class ImportService implements IService {
 		int rows = customSize == null ? variant.getTileRows() : customSize.getTileRows();
 		int iconSize = (width / gf.getStorageEntity()) * height;
 		int tileSize = iconSize * columns * rows;
-		
+
 		int size = tileSize * 255;
 		int bytesPerRow = width / gf.getStorageEntity();
 		int bc = 1;

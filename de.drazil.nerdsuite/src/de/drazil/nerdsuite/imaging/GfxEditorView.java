@@ -34,6 +34,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
@@ -320,10 +321,8 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 			customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
 			updateWorkspace(true, file);
 			if (projectAction.startsWith("newImport")) {
-				String importFileName = (String) ((Map<String, Object>) part.getObject()).get("importFileName");
 				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
-				tileRepositoryService = importService.doImportGraphic(owner, importFileName, graphicFormat,
-						graphicFormatVariant, customSize);
+				tileRepositoryService = importService.doImportGraphic((Map<String, Object>) part.getObject());
 				TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 			}
 		} else {
@@ -415,6 +414,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 				painter.setCursorMode(CursorMode.Point);
 			}
 		});
+
 	}
 
 	public LayerChooser createLayerChooser() {
