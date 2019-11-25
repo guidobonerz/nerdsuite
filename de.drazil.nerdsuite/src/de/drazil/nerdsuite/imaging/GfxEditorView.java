@@ -410,10 +410,13 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				tileRepositoryService.updateTileViewer(UpdateMode.All);
+				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
+				//tileRepositoryService.updateTileViewer(UpdateMode.All);
 				painter.setCursorMode(CursorMode.Point);
+
 			}
 		});
+		
 
 	}
 
