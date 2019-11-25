@@ -19,9 +19,8 @@ public class ImportService implements IService {
 	}
 
 	public TileRepositoryService doImportGraphic(Map<String, Object> config) {
-		TileRepositoryService tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
-
 		owner = (String) config.get("owner");
+		TileRepositoryService tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		String importFileName = (String) config.get("importFileName");
 		GraphicFormat graphicFormat = (GraphicFormat) config.get("gfxFormat");
 		GraphicFormatVariant graphicFormatVariant = (GraphicFormatVariant) config.get("gfxFormatVariant");
@@ -31,7 +30,8 @@ public class ImportService implements IService {
 		byte[] importableContent = new byte[] {};
 		try {
 			importableContent = BinaryFileHandler.readFile(new File(importFileName), bytesToSkip);
-			convert(graphicFormat, graphicFormatVariant, customSize, importableContent, tileRepositoryService);
+			convert(graphicFormat, graphicFormatVariant, customSize, importableContent, bytesToSkip,
+					tileRepositoryService);
 			System.out.println("do import...");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -41,7 +41,7 @@ public class ImportService implements IService {
 	}
 
 	private void convert(GraphicFormat gf, GraphicFormatVariant variant, CustomSize customSize, byte[] bitplane,
-			TileRepositoryService service) {
+			int bytesToSkip, TileRepositoryService service) {
 		ConversionMode mode = ConversionMode.toWorkArray;
 		int width = customSize == null ? gf.getWidth() : customSize.getWidth();
 		int height = customSize == null ? gf.getHeight() : customSize.getHeight();
@@ -50,7 +50,7 @@ public class ImportService implements IService {
 		int iconSize = (width / gf.getStorageEntity()) * height;
 		int tileSize = iconSize * columns * rows;
 
-		int size = tileSize * 255;
+		int size = tileSize * (((bitplane.length - bytesToSkip) / tileSize) - 1);
 		int bytesPerRow = width / gf.getStorageEntity();
 		int bc = 1;
 		int mask = 1;
