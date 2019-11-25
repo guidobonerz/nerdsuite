@@ -39,13 +39,16 @@ public class NewProjectHandler {
 	@Execute
 	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
 			EPartService partService, EModelService modelService,
-			@Named("de.drazil.nerdsuite.commandparameter.ProjectTypeId") String projectTypeId) {
+			@Named("de.drazil.nerdsuite.commandparameter.ProjectTypeId") String projectTypeId,
+			@Named("de.drazil.nerdsuite.commandparameter.WizardType") String wizardType) {
 
 		Map<String, Object> userData = new HashMap<>();
 		userData.put(ProjectWizard.PROJECT_TYPE_ID, projectTypeId);
 
-		ProjectWizard projectWizard = new ProjectWizard(WizardType.NewProject, "Create new project", userData);
+		ProjectWizard projectWizard = new ProjectWizard(WizardType.getWizardTypeById(Integer.valueOf(wizardType)),
+				userData);
 		WizardDialog wizardDialog = new WizardDialog(shell, projectWizard);
+
 		if (wizardDialog.open() == WizardDialog.OK) {
 
 			Project project = new Project();
@@ -69,7 +72,6 @@ public class NewProjectHandler {
 				GraphicFormat gf = GraphicFormatFactory.getFormatByName(pt);
 				GraphicFormatVariant gfv = GraphicFormatFactory.getGraphicFormatVariantByName(pt,
 						project.getProjectVariant());
-
 				project.setSingleFileProject(true);
 				project.setOpen(true);
 				LocalDateTime ldt = LocalDateTime.now();
@@ -86,6 +88,8 @@ public class NewProjectHandler {
 				projectSetup.put("gfxFormatVariant", gfv);
 				projectSetup.put("gfxFormatVariant", gfv);
 				projectSetup.put("importFileName", (String) userData.get(ProjectWizard.FILE_NAME));
+				projectSetup.put("importFormat", (String) userData.get(ProjectWizard.IMPORT_FORMAT));
+				projectSetup.put("bytesToSkip", (Integer) userData.get(ProjectWizard.BYTES_TO_SKIP));
 				projectSetup.put("projectAction",
 						projectSetup.get("importFileName") == null ? "newProjectAction" : "newImportProjectAction");
 				projectSetup.put("owner",
@@ -106,13 +110,10 @@ public class NewProjectHandler {
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
 						part, true);
-
 			}
-
 			Explorer explorer = E4Utils.findPartObject(partService, "de.drazil.nerdsuite.part.Explorer",
 					Explorer.class);
 			explorer.refresh();
-
 		}
 	}
 

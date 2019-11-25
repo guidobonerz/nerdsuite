@@ -90,7 +90,8 @@ public abstract class BaseImagingWidget extends BaseWidget
 			@Override
 			public void handleEvent(Event event) {
 				conf.setColumns((int) (getParent().getBounds().width / conf.getScaledTileWidth()));
-				//conf.setRows((int) (getParent().getBounds().width % conf.getScaledTileWidth()));
+				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
+						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
 				doDrawAllTiles();
 			}
 		});

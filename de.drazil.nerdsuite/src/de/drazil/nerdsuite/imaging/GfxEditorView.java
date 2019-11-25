@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -35,6 +34,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
@@ -303,7 +303,6 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 	@PostConstruct
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
-
 		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
 		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
 		graphicFormatVariant = (GraphicFormatVariant) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
@@ -320,14 +319,12 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 		if (projectAction.startsWith("new")) {
 			customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
-			updateWorkspace(true, file);
 			if (projectAction.startsWith("newImport")) {
-
-				String importFileName = (String) ((Map<String, Object>) part.getObject()).get("importFileName");
 				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
-				tileRepositoryService = importService.doImportGraphic(owner, importFileName, graphicFormat, graphicFormatVariant,
-						customSize);
+				tileRepositoryService = importService.doImportGraphic((Map<String, Object>) part.getObject());
+				TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 			}
+			updateWorkspace(true, file);
 		} else {
 			tileRepositoryService = load(file);
 			if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
@@ -413,10 +410,13 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				tileRepositoryService.updateTileViewer(UpdateMode.All);
+				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
+				// tileRepositoryService.updateTileViewer(UpdateMode.All);
 				painter.setCursorMode(CursorMode.Point);
+
 			}
 		});
+
 	}
 
 	public LayerChooser createLayerChooser() {

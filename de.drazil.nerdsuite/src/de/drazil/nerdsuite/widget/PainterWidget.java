@@ -133,9 +133,9 @@ public class PainterWidget extends BaseImagingWidget {
 		if (redrawMode == RedrawMode.DrawPixel) {
 			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawTile) {
-			paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider);
+			paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider,false);
 		} else if (redrawMode == RedrawMode.DrawIndexed) {
-			paintTile(gc, tileRepositoryService.getTile(temporaryIndex), conf, colorPaletteProvider);
+			paintTile(gc, tileRepositoryService.getTile(temporaryIndex), conf, colorPaletteProvider,false);
 		}
 
 		if (paintPixelGrid) {
@@ -275,12 +275,12 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
-		gc.drawImage(imagePainterFactory.getImage(tile, x, y, true, conf, colorPaletteProvider), 0, 0);
+		gc.drawImage(imagePainterFactory.getImage(tile, x, y, true, conf, colorPaletteProvider,true), 0, 0);
 	}
 
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider) {
-		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider), 0, 0);
+			IColorPaletteProvider colorPaletteProvider,boolean needUpdate) {
+		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider,needUpdate), 0, 0);
 		System.out.println("paint tile");
 	}
 

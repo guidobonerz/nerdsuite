@@ -16,14 +16,16 @@ public class ProjectWizard extends Wizard {
 	public static final String PROJECT_TYPE = "PROJECT_TYPE";
 	public static final String PROJECT_VARIANT = "PROJECT_VARIANT";
 	public static final String FILE_NAME = "FILE_NAME";
-	
+	public static final String IMPORT_FORMAT = "IMPORT_FORMAT";
+	public static final String BYTES_TO_SKIP = "BYTES_TO_SKIP";
 
 	private WizardType wizardType;
 	private Map<String, Object> userData;
 
-	public ProjectWizard(WizardType wizardType, String title, Map<String, Object> userData) {
+	public ProjectWizard(WizardType wizardType, Map<String, Object> userData) {
 		super();
-		setWindowTitle(title);
+		setWindowTitle(
+				wizardType == WizardType.ImportAsNewProject ? "Import file as new Project" : "Create new project");
 		this.wizardType = wizardType;
 		this.userData = userData;
 	}
@@ -37,6 +39,7 @@ public class ProjectWizard extends Wizard {
 	public void addPages() {
 		if (wizardType == WizardType.ImportAsNewProject) {
 			addPage(new FileSelectionWizardPage(userData));
+			addPage(new ImportFormatWizardPage(userData));
 		}
 		if (userData.get(PROJECT_TYPE_ID).equals(V_CODING_PROJECT)) {
 			addPage(new CodingProjectWizardPage(userData));

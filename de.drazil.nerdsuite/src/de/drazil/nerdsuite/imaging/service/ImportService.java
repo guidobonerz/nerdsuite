@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.imaging.service;
 
 import java.io.File;
+import java.util.Map;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.model.CustomSize;
@@ -17,14 +18,20 @@ public class ImportService implements IService {
 		toWorkArray, toBitplane
 	}
 
-	public TileRepositoryService doImportGraphic(String owner, String fileName, GraphicFormat gf,
-			GraphicFormatVariant variant, CustomSize customSize) {
+	public TileRepositoryService doImportGraphic(Map<String, Object> config) {
+		owner = (String) config.get("owner");
 		TileRepositoryService tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
+		String importFileName = (String) config.get("importFileName");
+		GraphicFormat graphicFormat = (GraphicFormat) config.get("gfxFormat");
+		GraphicFormatVariant graphicFormatVariant = (GraphicFormatVariant) config.get("gfxFormatVariant");
+		CustomSize customSize = (CustomSize) config.get("gfxCustomSize");
+		int bytesToSkip = (Integer) config.get("bytesToSkip");
 
 		byte[] importableContent = new byte[] {};
 		try {
-			importableContent = BinaryFileHandler.readFile(new File(fileName), 2);
-			convert(gf, variant, customSize, importableContent, tileRepositoryService);
+			importableContent = BinaryFileHandler.readFile(new File(importFileName), bytesToSkip);
+			convert(graphicFormat, graphicFormatVariant, customSize, importableContent, bytesToSkip,
+					tileRepositoryService);
 			System.out.println("do import...");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -34,7 +41,7 @@ public class ImportService implements IService {
 	}
 
 	private void convert(GraphicFormat gf, GraphicFormatVariant variant, CustomSize customSize, byte[] bitplane,
-			TileRepositoryService service) {
+			int bytesToSkip, TileRepositoryService service) {
 		ConversionMode mode = ConversionMode.toWorkArray;
 		int width = customSize == null ? gf.getWidth() : customSize.getWidth();
 		int height = customSize == null ? gf.getHeight() : customSize.getHeight();
@@ -42,13 +49,13 @@ public class ImportService implements IService {
 		int rows = customSize == null ? variant.getTileRows() : customSize.getTileRows();
 		int iconSize = (width / gf.getStorageEntity()) * height;
 		int tileSize = iconSize * columns * rows;
-		
-		int size = tileSize * 255;
+		int size = tileSize * bitplane.length / tileSize;
 		int bytesPerRow = width / gf.getStorageEntity();
 		int bc = 1;
 		int mask = 1;
 		for (int o = 0; o < size; o += tileSize) {
 			Tile tile = service.addTile(tileSize * 8);
+			
 			int[] workArray = tile.getActiveLayer().getContent();
 			for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
 				s = (si % (iconSize)) == 0 ? 0 : s;
@@ -67,6 +74,8 @@ public class ImportService implements IService {
 					}
 				}
 			}
+			
+			
 		}
 	}
 }
