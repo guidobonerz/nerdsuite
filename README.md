@@ -55,6 +55,8 @@ Create/Update disk images
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/range_selection.png)
 ## Sprite Animation Example
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/drops_animation.gif)
+## Sprite Animation Example - GI-Joe Firefly Walking left / Imported Hires
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/gi-joe-firefly-walk-left.gif)
 ## Reordering Tile Example
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_reordering.gif)
 ## Tile Bulk Modification Example

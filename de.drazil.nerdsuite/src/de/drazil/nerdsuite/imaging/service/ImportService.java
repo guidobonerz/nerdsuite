@@ -49,13 +49,13 @@ public class ImportService implements IService {
 		int rows = customSize == null ? variant.getTileRows() : customSize.getTileRows();
 		int iconSize = (width / gf.getStorageEntity()) * height;
 		int tileSize = iconSize * columns * rows;
-
-		int size = tileSize * (((bitplane.length - bytesToSkip) / tileSize) - 1);
+		int size = tileSize * bitplane.length / tileSize;
 		int bytesPerRow = width / gf.getStorageEntity();
 		int bc = 1;
 		int mask = 1;
 		for (int o = 0; o < size; o += tileSize) {
 			Tile tile = service.addTile(tileSize * 8);
+			
 			int[] workArray = tile.getActiveLayer().getContent();
 			for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
 				s = (si % (iconSize)) == 0 ? 0 : s;
@@ -74,6 +74,8 @@ public class ImportService implements IService {
 					}
 				}
 			}
+			
+			
 		}
 	}
 }

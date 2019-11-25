@@ -319,12 +319,12 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 		if (projectAction.startsWith("new")) {
 			customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
-			updateWorkspace(true, file);
 			if (projectAction.startsWith("newImport")) {
 				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
 				tileRepositoryService = importService.doImportGraphic((Map<String, Object>) part.getObject());
 				TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 			}
+			updateWorkspace(true, file);
 		} else {
 			tileRepositoryService = load(file);
 			if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
@@ -411,12 +411,11 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 			@Override
 			public void run() {
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
-				//tileRepositoryService.updateTileViewer(UpdateMode.All);
+				// tileRepositoryService.updateTileViewer(UpdateMode.All);
 				painter.setCursorMode(CursorMode.Point);
 
 			}
 		});
-		
 
 	}
 
