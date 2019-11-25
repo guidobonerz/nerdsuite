@@ -27,7 +27,7 @@ public class ImagePainterFactory {
 	}
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider) {
+			IColorPaletteProvider colorPaletteProvider, boolean needUpdate) {
 		String name = tile.getName();
 		Image image = imagePool.get(name);
 		if (null == image) {
@@ -35,7 +35,10 @@ public class ImagePainterFactory {
 			imagePool.put(name, image);
 			System.out.println("create new image" + name);
 		} else {
-			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name, colorPaletteProvider);
+			if (needUpdate) {
+				image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name, colorPaletteProvider);
+			}
+
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
@@ -46,7 +49,7 @@ public class ImagePainterFactory {
 			if (img != null) {
 				img.dispose();
 			}
-			//System.out.println("scale down");
+			// System.out.println("scale down");
 			int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
 					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
 			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
@@ -120,6 +123,7 @@ public class ImagePainterFactory {
 				color = colorPaletteProvider.getColorByIndex(content[offset]);
 				gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
 			}
+			System.out.println("draw Rect");
 			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
 			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
 		}

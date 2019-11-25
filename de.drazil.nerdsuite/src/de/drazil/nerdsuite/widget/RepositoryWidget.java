@@ -283,7 +283,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			IColorPaletteProvider colorPaletteProvider) {
 		// int parentWidth = parent.getBounds().width;
 		Image image = imagePainterFactory.getImage(tileRepositoryService.getTile(index), 0, 0, false, conf,
-				colorPaletteProvider);
+				colorPaletteProvider,false);
 		int imageWidth = image.getBounds().width;
 		int imageHeight = image.getBounds().height;
 		int columns = conf.getColumns();// (int) (parentWidth / imageWidth);
