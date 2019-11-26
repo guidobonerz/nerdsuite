@@ -139,6 +139,10 @@ public class Tile {
 		fireLayerReordered();
 	}
 
+	public void move(int from, int to) {
+
+	}
+
 	public void setMulticolorEnabled(boolean multicolorEnabled) {
 		multicolor = multicolorEnabled;
 		fireTileChanged();

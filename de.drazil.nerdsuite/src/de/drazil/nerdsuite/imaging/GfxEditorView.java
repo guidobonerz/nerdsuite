@@ -322,11 +322,17 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 			if (projectAction.startsWith("newImport")) {
 				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
 				tileRepositoryService = importService.doImportGraphic((Map<String, Object>) part.getObject());
+				tileRepositoryService.setPlatform(project.getTargetPlatform());
+				tileRepositoryService.setType(project.getProjectType());
+				tileRepositoryService.setVariant(project.getProjectVariant());
 				TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 			}
 			updateWorkspace(true, file);
 		} else {
 			tileRepositoryService = load(file);
+			tileRepositoryService.setPlatform(project.getTargetPlatform());
+			tileRepositoryService.setType(project.getProjectType());
+			tileRepositoryService.setVariant(project.getProjectVariant());
 			if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
 				customSize = tileRepositoryService.getCustomSize();
 			}
