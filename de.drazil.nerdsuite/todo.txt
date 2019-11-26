@@ -8,4 +8,9 @@
 - reference selector / draw tile pattern
 - basic editor / parser
 
+pixel image for faster painting in every possiple color mono/multi color
+cached cursor image
+
+update if needed
+
 
