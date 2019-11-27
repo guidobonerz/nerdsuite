@@ -9,8 +9,7 @@
 			"token": "80",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -19,8 +18,7 @@
 			"token": "81",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -29,8 +27,7 @@
 			"token": "82",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 255
 		},
@@ -39,8 +36,7 @@
 			"token": "83",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 1,
 			"maxParameters": -1
 		},
@@ -49,8 +45,7 @@
 			"token": "84",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -59,8 +54,7 @@
 			"token": "85",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -69,8 +63,7 @@
 			"token": "86",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -79,8 +72,7 @@
 			"token": "87",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -89,8 +81,7 @@
 			"token": "88",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -99,8 +90,7 @@
 			"token": "89",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -109,8 +99,7 @@
 			"token": "8a",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -119,8 +108,7 @@
 			"token": "8b",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -129,8 +117,7 @@
 			"token": "8c",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -139,8 +126,7 @@
 			"token": "8d",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -149,8 +135,7 @@
 			"token": "8e",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -159,8 +144,7 @@
 			"token": "8f",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 255
 		},
@@ -169,8 +153,7 @@
 			"token": "90",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -179,8 +162,7 @@
 			"token": "91",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -189,8 +171,7 @@
 			"token": "92",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -199,8 +180,7 @@
 			"token": "93",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -209,8 +189,7 @@
 			"token": "94",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -219,8 +198,7 @@
 			"token": "95",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -229,8 +207,7 @@
 			"token": "96",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -239,8 +216,7 @@
 			"token": "97",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 2,
 			"maxParameters": 2
 		},
@@ -249,8 +225,7 @@
 			"token": "98",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 1,
 			"maxParameters": 0,
 			"inParameter": [
@@ -262,8 +237,7 @@
 			"token": "99",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -272,8 +246,7 @@
 			"token": "9a",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -282,8 +255,7 @@
 			"token": "9b",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -292,8 +264,7 @@
 			"token": "9c",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -302,8 +273,7 @@
 			"token": "9d",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -312,8 +282,7 @@
 			"token": "9e",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -322,8 +291,7 @@
 			"token": "9f",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -332,8 +300,7 @@
 			"token": "a0",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -342,8 +309,7 @@
 			"token": "a1",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -352,8 +318,7 @@
 			"token": "a2",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -362,8 +327,7 @@
 			"token": "a3",
 			"description": "",
 			"includesOpenBrace": true,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -376,8 +340,7 @@
 			"token": "a4",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -386,8 +349,7 @@
 			"token": "a5",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -396,8 +358,7 @@
 			"token": "a6",
 			"description": "",
 			"includesOpenBrace": true,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -410,8 +371,7 @@
 			"token": "a7",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -420,8 +380,7 @@
 			"token": "a8",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -430,8 +389,7 @@
 			"token": "a9",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -440,8 +398,7 @@
 			"token": "aa",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -450,8 +407,7 @@
 			"token": "ab",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -460,8 +416,7 @@
 			"token": "ac",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -470,8 +425,7 @@
 			"token": "ad",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -480,8 +434,7 @@
 			"token": "ae",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -490,8 +443,7 @@
 			"token": "af",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -500,8 +452,7 @@
 			"token": "b0",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -510,8 +461,7 @@
 			"token": "b1",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -520,8 +470,7 @@
 			"token": "b2",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -530,8 +479,7 @@
 			"token": "b3",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"O",
 			"minParameters": 0,
 			"maxParameters": 0
 		},
@@ -540,8 +488,7 @@
 			"token": "b4",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -554,8 +501,7 @@
 			"token": "b5",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -568,8 +514,7 @@
 			"token": "b6",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -582,8 +527,7 @@
 			"token": "b7",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -596,8 +540,7 @@
 			"token": "b8",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -610,8 +553,7 @@
 			"token": "b9",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -624,8 +566,7 @@
 			"token": "ba",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -638,8 +579,7 @@
 			"token": "bb",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -652,8 +592,7 @@
 			"token": "bc",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -666,8 +605,7 @@
 			"token": "bd",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -680,8 +618,7 @@
 			"token": "be",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -694,8 +631,7 @@
 			"token": "bf",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -708,8 +644,7 @@
 			"token": "c0",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -722,8 +657,7 @@
 			"token": "c1",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -736,8 +670,7 @@
 			"token": "c2",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -750,8 +683,7 @@
 			"token": "c3",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -764,8 +696,7 @@
 			"token": "c4",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -778,8 +709,7 @@
 			"token": "c5",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -792,8 +722,7 @@
 			"token": "c6",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -806,8 +735,7 @@
 			"token": "c7",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 1,
 			"maxParameters": 1,
 			"inParameter": [
@@ -820,8 +748,7 @@
 			"token": "c8",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 2,
 			"maxParameters": 2,
 			"inParameter": [
@@ -835,8 +762,7 @@
 			"token": "c9",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 2,
 			"maxParameters": 2,
 			"inParameter": [
@@ -850,8 +776,7 @@
 			"token": "ca",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": true,
-			"isCommand": false,
+			"purpose":"F"
 			"minParameters": 2,
 			"maxParameters": 3,
 			"inParameter": [
@@ -866,8 +791,7 @@
 			"token": "cb",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 20
@@ -877,8 +801,7 @@
 			"token": "cc",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -888,8 +811,7 @@
 			"token": "cd",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -899,8 +821,7 @@
 			"token": "ce",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35,
@@ -911,8 +832,7 @@
 			"token": "cf",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -922,8 +842,7 @@
 			"token": "d0",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -933,8 +852,7 @@
 			"token": "d1",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -944,8 +862,7 @@
 			"token": "d2",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -955,8 +872,7 @@
 			"token": "d3",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -966,8 +882,7 @@
 			"token": "d4",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -977,8 +892,7 @@
 			"token": "d5",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -988,8 +902,7 @@
 			"token": "d6",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -999,8 +912,7 @@
 			"token": "d7",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1010,8 +922,7 @@
 			"token": "d8",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1021,8 +932,7 @@
 			"token": "d9",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1032,8 +942,7 @@
 			"token": "da",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1043,8 +952,7 @@
 			"token": "db",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1054,8 +962,7 @@
 			"token": "dc",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1065,8 +972,7 @@
 			"token": "dd",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1076,8 +982,7 @@
 			"token": "de",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1087,8 +992,7 @@
 			"token": "df",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1098,8 +1002,7 @@
 			"token": "e0",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1109,8 +1012,7 @@
 			"token": "e1",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1120,8 +1022,7 @@
 			"token": "cd",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1131,8 +1032,7 @@
 			"token": "e3",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1142,8 +1042,7 @@
 			"token": "e4",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1153,8 +1052,7 @@
 			"token": "e5",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1164,8 +1062,7 @@
 			"token": "e6",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1175,8 +1072,7 @@
 			"token": "e7",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1186,8 +1082,7 @@
 			"token": "e8",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1197,8 +1092,7 @@
 			"token": "e9",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1208,8 +1102,8 @@
 			"token": "ea",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1219,8 +1113,7 @@
 			"token": "eb",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1230,8 +1123,7 @@
 			"token": "ec",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1241,8 +1133,7 @@
 			"token": "ed",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1252,8 +1143,7 @@
 			"token": "ee",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1263,8 +1153,7 @@
 			"token": "ef",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1274,8 +1163,7 @@
 			"token": "f0",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1285,8 +1173,7 @@
 			"token": "f1",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1296,8 +1183,7 @@
 			"token": "f2",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1307,8 +1193,7 @@
 			"token": "f3",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1318,8 +1203,7 @@
 			"token": "f4",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1329,8 +1213,7 @@
 			"token": "f5",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1340,8 +1223,7 @@
 			"token": "f6",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1351,8 +1233,7 @@
 			"token": "f7",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1362,8 +1243,7 @@
 			"token": "f8",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1373,8 +1253,7 @@
 			"token": "f9",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1384,8 +1263,7 @@
 			"token": "fa",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1395,8 +1273,7 @@
 			"token": "fb",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1406,8 +1283,7 @@
 			"token": "fc",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1417,8 +1293,7 @@
 			"token": "fd",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1428,8 +1303,7 @@
 			"token": "ff",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 35
@@ -1440,8 +1314,7 @@
 			"token": "02",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1452,8 +1325,7 @@
 			"token": "03",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1464,8 +1336,7 @@
 			"token": "04",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1476,8 +1347,7 @@
 			"token": "05",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1488,8 +1358,7 @@
 			"token": "06",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1500,8 +1369,7 @@
 			"token": "07",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1512,8 +1380,7 @@
 			"token": "08",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1524,8 +1391,7 @@
 			"token": "09",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1536,8 +1402,7 @@
 			"token": "0a",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1548,8 +1413,7 @@
 			"token": "02",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1560,8 +1424,7 @@
 			"token": "03",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1572,8 +1435,7 @@
 			"token": "04",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1584,8 +1446,7 @@
 			"token": "05",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1596,8 +1457,7 @@
 			"token": "06",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1608,8 +1468,7 @@
 			"token": "07",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1620,8 +1479,7 @@
 			"token": "08",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1632,8 +1490,7 @@
 			"token": "09",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1644,8 +1501,7 @@
 			"token": "0a",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1656,8 +1512,7 @@
 			"token": "0b",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1668,8 +1523,7 @@
 			"token": "0c",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1680,8 +1534,7 @@
 			"token": "0d",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1692,8 +1545,7 @@
 			"token": "0e",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1704,8 +1556,7 @@
 			"token": "0f",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1716,8 +1567,7 @@
 			"token": "10",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1728,8 +1578,7 @@
 			"token": "11",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1740,8 +1589,7 @@
 			"token": "12",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1752,8 +1600,7 @@
 			"token": "13",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1764,8 +1611,7 @@
 			"token": "14",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1776,8 +1622,7 @@
 			"token": "15",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1788,8 +1633,7 @@
 			"token": "16",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1800,8 +1644,7 @@
 			"token": "17",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1812,8 +1655,7 @@
 			"token": "18",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1824,8 +1666,7 @@
 			"token": "19",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1836,8 +1677,7 @@
 			"token": "1a",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1848,8 +1688,7 @@
 			"token": "1b",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1860,8 +1699,7 @@
 			"token": "1c",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1872,8 +1710,7 @@
 			"token": "1d",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1884,8 +1721,7 @@
 			"token": "1e",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1896,8 +1732,7 @@
 			"token": "1f",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1908,8 +1743,7 @@
 			"token": "21",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1920,8 +1754,7 @@
 			"token": "23",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1932,8 +1765,7 @@
 			"token": "24",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1944,8 +1776,7 @@
 			"token": "25",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
@@ -1956,8 +1787,7 @@
 			"token": "26",
 			"description": "",
 			"includesOpenBrace": false,
-			"isFunction": false,
-			"isCommand": true,
+			"purpose":"C"
 			"minParameters": 0,
 			"maxParameters": 0,
 			"minVersion": 70
