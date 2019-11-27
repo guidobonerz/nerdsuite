@@ -13,7 +13,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import de.drazil.nerdsuite.imaging.service.ITileUpdateListener.UpdateMode;
+import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
@@ -59,6 +59,7 @@ public class TileRepositoryService implements IService {
 		tileIndexOrderList = new ArrayList<>();
 		tileServiceManagementListener = new ArrayList<>();
 		tileUpdateListener = new ArrayList<>();
+		selectedTileIndexList = new ArrayList<Integer>();
 	}
 
 	public Tile addTile(int size) {
@@ -121,19 +122,14 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	public void setSelectedTileIndex(int index) {
-		selectedTileIndex = index;
-		selectedTileIndexList = new ArrayList<Integer>();
+		selectedTileIndexList.clear();
 		selectedTileIndexList.add(index);
-		setSelectedTileIndexList(selectedTileIndexList, UpdateMode.Single);
+		setSelectedTileIndexList(selectedTileIndexList);
 	}
 
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
-		setSelectedTileIndexList(tileIndexList, UpdateMode.Selection);
-	}
-
-	private void setSelectedTileIndexList(List<Integer> tileIndexList, UpdateMode updateMode) {
 		this.selectedTileIndexList = tileIndexList;
-		fireTileUpdates(tileIndexList, updateMode);
+		fireTileRedraw(tileIndexList, false, false);
 	}
 
 	public List<Integer> getSelectedTileIndexList() {
@@ -142,7 +138,7 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	public Tile getSelectedTile() {
-		return getTile(selectedTileIndex);
+		return getTile(selectedTileIndexList.get(0));
 	}
 
 	@JsonIgnore
@@ -199,22 +195,20 @@ public class TileRepositoryService implements IService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireTileUpdates(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+	private void fireTileRedraw(List<Integer> selectedTileIndexList, boolean forceUpdate, boolean temporary) {
 		if (selectedTileIndexList != null) {
-			// if (selectedTileIndexList.size() == 1) {
-			tileUpdateListener.forEach(listener -> listener.updateTile(selectedTileIndexList.get(0), updateMode));
-			// } else {
-			tileUpdateListener.forEach(listener -> listener.updateTiles(selectedTileIndexList, updateMode));
-			// }
+			if (selectedTileIndexList.size() == 1) {
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
+						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, forceUpdate));
+			} else {
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
+						RedrawMode.DrawSelectedTiles, forceUpdate));
+			}
 		}
 	}
 
-	public void updateTileViewer(UpdateMode updateMode) {
-		updateTileViewer(selectedTileIndexList, updateMode);
-	}
-
-	public void updateTileViewer(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
-		fireTileUpdates(selectedTileIndexList, updateMode);
+	public void redrawTileViewer(List<Integer> selectedTileIndexList, boolean forceUpdate, boolean temporary) {
+		fireTileRedraw(selectedTileIndexList, forceUpdate, temporary);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {

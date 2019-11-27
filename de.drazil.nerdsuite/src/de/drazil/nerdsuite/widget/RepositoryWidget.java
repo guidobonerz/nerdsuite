@@ -21,6 +21,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private boolean tileSelectionStarted = false;
 	private SelectionRange tileSelectionRange = null;
 	private List<Integer> selectedTileIndexList = null;
+	private boolean forceUpdate = false;
 
 	public RepositoryWidget(Composite parent, int style) {
 		super(parent, style);
@@ -175,7 +176,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			for (int i = 0; i < list.size(); i++) {
 				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
 			}
-		} else if (redrawMode == RedrawMode.DrawIndexed) {
+		} else if (redrawMode == RedrawMode.DrawSelectedTile) {
 			paintTile(this, gc, temporaryIndex, conf, colorPaletteProvider);
 		}
 
@@ -261,29 +262,20 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
-		if (updateMode == UpdateMode.Selection) {
-			// doDrawSelectedTiles();
-			doDrawAllTiles();
-		} else if (updateMode == UpdateMode.All) {
-			doDrawAllTiles();
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
+		this.forceUpdate = forceUpdate;
+		this.redrawMode = redrawMode;
+		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
+			temporaryIndex = selectedTileIndexList.get(0);
 		}
-	}
-
-	@Override
-	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
-		if (updateMode == UpdateMode.Animation) {
-			temporaryIndex = selectedTileIndex;
-			redrawMode = RedrawMode.DrawAllTiles;
-			redraw();
-		}
+		doDrawAllTiles();
 	}
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
 		// int parentWidth = parent.getBounds().width;
 		Image image = imagePainterFactory.getImage(tileRepositoryService.getTile(index), 0, 0, false, conf,
-				colorPaletteProvider,false);
+				colorPaletteProvider, false);
 		int imageWidth = image.getBounds().width;
 		int imageHeight = image.getBounds().height;
 		int columns = conf.getColumns();// (int) (parentWidth / imageWidth);

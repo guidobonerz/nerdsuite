@@ -263,11 +263,14 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void doDrawTile() {
-		redrawMode = RedrawMode.DrawTile;
+		redrawMode = RedrawMode.DrawSelectedTile;
 		if (conf.supportsPainting) {
+			/*
 			redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
 					selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows,
 					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows, true);
+					*/
+			redraw();
 		} else {
 			redraw(selectedTileIndexX * conf.scaledTileWidth, selectedTileIndexY * conf.scaledTileHeight,
 					conf.scaledTileWidth, conf.scaledTileHeight, true);
@@ -277,7 +280,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void doDrawAllTiles() {
-		redrawMode = RedrawMode.DrawAllTiles;
+		//redrawMode = RedrawMode.DrawAllTiles;
 		// setNotification(selectedTileOffset, conf.getTileSize());
 		redraw();
 
@@ -285,7 +288,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void doDrawSelectedTiles() {
-		redrawMode = RedrawMode.DrawSelectedTiles;
+		//redrawMode = RedrawMode.DrawSelectedTiles;
 		redraw();
 	}
 
@@ -365,10 +368,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	}
 
 	@Override
-	public abstract void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode);
-
-	@Override
-	public abstract void updateTile(int selectedTileIndex, UpdateMode updateMode);
+	public abstract void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate);
 
 	@Override
 	public void tileChanged() {
