@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Rectangle;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import de.drazil.nerdsuite.imaging.service.ITileUpdateListener.UpdateMode;
+import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
@@ -43,10 +44,8 @@ public class TileRepositoryService implements IService {
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	@JsonIgnore
 	private List<ITileUpdateListener> tileUpdateListener = null;
-	@JsonIgnore
+	@JsonProperty(value = "selectedTiles")
 	private List<Integer> selectedTileIndexList = null;
-	@JsonProperty(value = "selectedTile")
-	private int selectedTileIndex = 0;
 	@JsonProperty(value = "customFormat")
 	private CustomSize customSize;
 	@Getter
@@ -59,6 +58,7 @@ public class TileRepositoryService implements IService {
 		tileIndexOrderList = new ArrayList<>();
 		tileServiceManagementListener = new ArrayList<>();
 		tileUpdateListener = new ArrayList<>();
+		selectedTileIndexList = new ArrayList<Integer>();
 	}
 
 	public Tile addTile(int size) {
@@ -85,20 +85,24 @@ public class TileRepositoryService implements IService {
 
 	public void removeLast() {
 		if (tileIndexOrderList.size() > 0) {
-			removeTile(tileIndexOrderList.size() - 1);
+			List<Integer> l = new ArrayList<Integer>();
+			l.add(tileIndexOrderList.size() - 1);
+			removeTile(l);
 		}
 	}
 
 	public void removeSelected() {
-		removeTile(selectedTileIndex);
+		removeTile(selectedTileIndexList);
 	}
 
-	public void removeTile(int index) {
+	public void removeTile(List<Integer> tileIndexList) {
 		if (tileIndexOrderList.size() > 0) {
 			System.out.println("Remove Tile");
-			int tileIndex = tileIndexOrderList.get(index);
-			tileList.remove(tileIndex);
-			tileIndexOrderList.remove(index);
+			for (int i = 0; i < tileIndexList.size(); i++) {
+				int tileIndex = tileIndexOrderList.get(i);
+				tileList.remove(tileIndex);
+				tileIndexOrderList.remove(i);
+			}
 			fireTileRemoved();
 		}
 	}
@@ -121,19 +125,14 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	public void setSelectedTileIndex(int index) {
-		selectedTileIndex = index;
-		selectedTileIndexList = new ArrayList<Integer>();
+		selectedTileIndexList.clear();
 		selectedTileIndexList.add(index);
-		setSelectedTileIndexList(selectedTileIndexList, UpdateMode.Single);
+		setSelectedTileIndexList(selectedTileIndexList);
 	}
 
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
-		setSelectedTileIndexList(tileIndexList, UpdateMode.Selection);
-	}
-
-	private void setSelectedTileIndexList(List<Integer> tileIndexList, UpdateMode updateMode) {
 		this.selectedTileIndexList = tileIndexList;
-		fireTileUpdates(tileIndexList, updateMode);
+		fireTileRedraw(tileIndexList, false, false);
 	}
 
 	public List<Integer> getSelectedTileIndexList() {
@@ -142,7 +141,8 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	public Tile getSelectedTile() {
-		return getTile(selectedTileIndex);
+		int index = selectedTileIndexList.get(0);
+		return getTile(index);
 	}
 
 	@JsonIgnore
@@ -199,22 +199,20 @@ public class TileRepositoryService implements IService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireTileUpdates(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+	private void fireTileRedraw(List<Integer> selectedTileIndexList, boolean forceUpdate, boolean temporary) {
 		if (selectedTileIndexList != null) {
-			// if (selectedTileIndexList.size() == 1) {
-			tileUpdateListener.forEach(listener -> listener.updateTile(selectedTileIndexList.get(0), updateMode));
-			// } else {
-			tileUpdateListener.forEach(listener -> listener.updateTiles(selectedTileIndexList, updateMode));
-			// }
+			if (selectedTileIndexList.size() == 1) {
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
+						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, forceUpdate));
+			} else {
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
+						RedrawMode.DrawSelectedTiles, forceUpdate));
+			}
 		}
 	}
 
-	public void updateTileViewer(UpdateMode updateMode) {
-		updateTileViewer(selectedTileIndexList, updateMode);
-	}
-
-	public void updateTileViewer(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
-		fireTileUpdates(selectedTileIndexList, updateMode);
+	public void redrawTileViewer(List<Integer> selectedTileIndexList, boolean forceUpdate, boolean temporary) {
+		fireTileRedraw(selectedTileIndexList, forceUpdate, temporary);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {

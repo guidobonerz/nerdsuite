@@ -4,7 +4,6 @@ import java.util.List;
 
 import de.drazil.nerdsuite.enums.LayerAction;
 import de.drazil.nerdsuite.enums.TileAction;
-import de.drazil.nerdsuite.imaging.service.ITileUpdateListener.UpdateMode;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
@@ -76,13 +75,8 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
 			selectedTileIndexList.forEach(i -> {
 				each(action, service.getTile(i), imagingWidgetConfiguration, null);
-				if (selectedTileIndexList.size() == 1) {
-					service.getTile(i).sendModificationNotification();
-				}
 			});
-			if (selectedTileIndexList.size() > 1) {
-				service.updateTileViewer(UpdateMode.Selection);
-			}
+			service.redrawTileViewer(selectedTileIndexList, true, false);
 		}
 
 		/*

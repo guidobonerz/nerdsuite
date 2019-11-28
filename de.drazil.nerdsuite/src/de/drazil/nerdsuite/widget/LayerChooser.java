@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
@@ -33,18 +34,12 @@ public class LayerChooser extends BaseWidget implements PaintListener, ITileUpda
 	}
 
 	@Override
-	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
 		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
 			TileRepositoryService repository = ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class);
 			this.tile = repository.getTile(selectedTileIndexList.get(0));
 			redraw();
 		}
-	}
-
-	@Override
-	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

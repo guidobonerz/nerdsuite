@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.enums.AnimationMode;
-import de.drazil.nerdsuite.imaging.service.ITileUpdateListener.UpdateMode;
 import lombok.Setter;
 
 public class AnimationService extends AbstractImagingService {
@@ -42,7 +41,7 @@ public class AnimationService extends AbstractImagingService {
 			int index = selectedTileIndexList.get(pos);
 			pos += (forward ? 1 : -1);
 			animationIndex.set(0, index);
-			service.updateTileViewer(animationIndex, UpdateMode.Animation);
+			service.redrawTileViewer(animationIndex, false, true);
 			System.out.println("animate");
 			/*
 			 * callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x,

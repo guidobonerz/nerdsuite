@@ -46,6 +46,7 @@ import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.ProjectType;
+import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
@@ -401,6 +402,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 		}
 
+		repository.recalc();
 		painter.recalc();
 		painter.addDrawListener(repository);
 
@@ -416,8 +418,9 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
+				int index = tileRepositoryService.getSelectedTileIndex();
+				tileRepositoryService.setSelectedTileIndex(index);
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
-				// tileRepositoryService.updateTileViewer(UpdateMode.All);
 				painter.setCursorMode(CursorMode.Point);
 
 			}
@@ -494,20 +497,19 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 	}
 
 	@Override
-	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
-		boolean enableAnimationControls = (updateMode == UpdateMode.Selection || updateMode == UpdateMode.Animation);
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
+		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles
+				|| redrawMode == RedrawMode.DrawTemporarySelectedTile);
 		List<String> tags = new LinkedList<>();
 		tags.add("Animator");
 		E4Utils.setToolItemEnabled(part, modelService, tags, enableAnimationControls);
-	}
-
-	@Override
-	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
-		List<String> tags1 = new LinkedList<>();
-		tags1.add("MultiColorButton");
-		Tile tile = tileRepositoryService.getTile(selectedTileIndex);
-		E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolor());
-		multiColorChooser.setMonochrom(!tile.isMulticolor());
+		if (redrawMode == RedrawMode.DrawSelectedTile) {
+			List<String> tags1 = new LinkedList<>();
+			tags1.add("MultiColorButton");
+			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
+			E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolor());
+			multiColorChooser.setMonochrom(!tile.isMulticolor());
+		}
 	}
 
 	private void save(File file) {

@@ -21,6 +21,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private boolean tileSelectionStarted = false;
 	private SelectionRange tileSelectionRange = null;
 	private List<Integer> selectedTileIndexList = null;
+	private boolean forceUpdate = false;
+	private int tileMarkerIndex;
 
 	public RepositoryWidget(Composite parent, int style) {
 		super(parent, style);
@@ -91,6 +93,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	protected void mouseMove(int modifierMask, int x, int y) {
 		if (supportsSingleSelection() || supportsMultiSelection()) {
 			if (oldTileX != tileX || oldTileY != tileY) {
+				tileMarkerIndex = computeTileIndex(tileX, tileY);
 				oldTileX = tileX;
 				oldTileY = tileY;
 				doDrawAllTiles();
@@ -166,19 +169,20 @@ public class RepositoryWidget extends BaseImagingWidget {
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
 		System.out.println("paintControl");
-		if (redrawMode == RedrawMode.DrawAllTiles) {
-			for (int i = 0; i < tileRepositoryService.getSize(); i++) {
-				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
-			}
-		} else if (redrawMode == RedrawMode.DrawSelectedTiles) {
-			List<Integer> list = tileRepositoryService.getSelectedTileIndexList();
-			for (int i = 0; i < list.size(); i++) {
-				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
-			}
-		} else if (redrawMode == RedrawMode.DrawIndexed) {
-			paintTile(this, gc, temporaryIndex, conf, colorPaletteProvider);
+		// if (redrawMode == RedrawMode.DrawAllTiles) {
+		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
+			paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider, forceUpdate);
 		}
-
+		// }
+		/*
+		 * else if (redrawMode == RedrawMode.DrawSelectedTiles) { List<Integer> list =
+		 * tileRepositoryService.getSelectedTileIndexList(); for (int i = 0; i <
+		 * list.size(); i++) { paintTile(this, gc,
+		 * tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider,
+		 * forceUpdate); } } else if (redrawMode == RedrawMode.DrawSelectedTile) {
+		 * paintTile(this, gc, temporaryIndex, conf, colorPaletteProvider, forceUpdate);
+		 * }
+		 */
 		if (paintPixelGrid) {
 			paintPixelGrid(gc);
 		}
@@ -198,6 +202,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 		} else {
 			paintSelection(gc);
 		}
+
+		paintTileMarker(gc);
 		/*
 		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
 		 */
@@ -206,7 +212,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		 * if (paintTelevisionMode && supportsSingleSelection()) {
 		 * paintTelevisionRaster(gc); }
 		 */
-
+		forceUpdate = false;
 		redrawMode = RedrawMode.DrawNothing;
 
 	}
@@ -248,6 +254,15 @@ public class RepositoryWidget extends BaseImagingWidget {
 		});
 	}
 
+	private void paintTileMarker(GC gc) {
+		if (computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
+			gc.setLineWidth(3);
+			gc.setBackground(Constants.BRIGHT_ORANGE);
+			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
+					conf.scaledTileHeight);
+		}
+	}
+
 	private void paintTileGrid(GC gc) {
 		gc.setLineWidth(1);
 		gc.setLineStyle(SWT.LINE_SOLID);
@@ -261,29 +276,20 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void updateTiles(List<Integer> selectedTileIndexList, UpdateMode updateMode) {
-		if (updateMode == UpdateMode.Selection) {
-			// doDrawSelectedTiles();
-			doDrawAllTiles();
-		} else if (updateMode == UpdateMode.All) {
-			doDrawAllTiles();
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
+		this.forceUpdate = forceUpdate;
+		this.redrawMode = redrawMode;
+		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
+			temporaryIndex = selectedTileIndexList.get(0);
 		}
-	}
-
-	@Override
-	public void updateTile(int selectedTileIndex, UpdateMode updateMode) {
-		if (updateMode == UpdateMode.Animation) {
-			temporaryIndex = selectedTileIndex;
-			redrawMode = RedrawMode.DrawAllTiles;
-			redraw();
-		}
+		doDrawAllTiles();
 	}
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider) {
+			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
 		// int parentWidth = parent.getBounds().width;
 		Image image = imagePainterFactory.getImage(tileRepositoryService.getTile(index), 0, 0, false, conf,
-				colorPaletteProvider,false);
+				colorPaletteProvider, forceUpdate);
 		int imageWidth = image.getBounds().width;
 		int imageHeight = image.getBounds().height;
 		int columns = conf.getColumns();// (int) (parentWidth / imageWidth);
