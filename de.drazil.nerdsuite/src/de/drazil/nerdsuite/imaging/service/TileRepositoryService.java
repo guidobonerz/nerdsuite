@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Rectangle;
@@ -43,10 +44,8 @@ public class TileRepositoryService implements IService {
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	@JsonIgnore
 	private List<ITileUpdateListener> tileUpdateListener = null;
-	@JsonIgnore
+	@JsonProperty(value = "selectedTiles")
 	private List<Integer> selectedTileIndexList = null;
-	@JsonProperty(value = "selectedTile")
-	private int selectedTileIndex = 0;
 	@JsonProperty(value = "customFormat")
 	private CustomSize customSize;
 	@Getter
@@ -86,20 +85,24 @@ public class TileRepositoryService implements IService {
 
 	public void removeLast() {
 		if (tileIndexOrderList.size() > 0) {
-			removeTile(tileIndexOrderList.size() - 1);
+			List<Integer> l = new ArrayList<Integer>();
+			l.add(tileIndexOrderList.size() - 1);
+			removeTile(l);
 		}
 	}
 
 	public void removeSelected() {
-		removeTile(selectedTileIndex);
+		removeTile(selectedTileIndexList);
 	}
 
-	public void removeTile(int index) {
+	public void removeTile(List<Integer> tileIndexList) {
 		if (tileIndexOrderList.size() > 0) {
 			System.out.println("Remove Tile");
-			int tileIndex = tileIndexOrderList.get(index);
-			tileList.remove(tileIndex);
-			tileIndexOrderList.remove(index);
+			for (int i = 0; i < tileIndexList.size(); i++) {
+				int tileIndex = tileIndexOrderList.get(i);
+				tileList.remove(tileIndex);
+				tileIndexOrderList.remove(i);
+			}
 			fireTileRemoved();
 		}
 	}

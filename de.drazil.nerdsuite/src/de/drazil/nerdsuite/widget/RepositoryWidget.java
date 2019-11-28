@@ -22,6 +22,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private SelectionRange tileSelectionRange = null;
 	private List<Integer> selectedTileIndexList = null;
 	private boolean forceUpdate = false;
+	private int tileMarkerIndex;
 
 	public RepositoryWidget(Composite parent, int style) {
 		super(parent, style);
@@ -92,6 +93,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	protected void mouseMove(int modifierMask, int x, int y) {
 		if (supportsSingleSelection() || supportsMultiSelection()) {
 			if (oldTileX != tileX || oldTileY != tileY) {
+				tileMarkerIndex = computeTileIndex(tileX, tileY);
 				oldTileX = tileX;
 				oldTileY = tileY;
 				doDrawAllTiles();
@@ -167,19 +169,20 @@ public class RepositoryWidget extends BaseImagingWidget {
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
 		System.out.println("paintControl");
-		if (redrawMode == RedrawMode.DrawAllTiles) {
-			for (int i = 0; i < tileRepositoryService.getSize(); i++) {
-				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider, forceUpdate);
-			}
-		} else if (redrawMode == RedrawMode.DrawSelectedTiles) {
-			List<Integer> list = tileRepositoryService.getSelectedTileIndexList();
-			for (int i = 0; i < list.size(); i++) {
-				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider, forceUpdate);
-			}
-		} else if (redrawMode == RedrawMode.DrawSelectedTile) {
-			paintTile(this, gc, temporaryIndex, conf, colorPaletteProvider, forceUpdate);
+		// if (redrawMode == RedrawMode.DrawAllTiles) {
+		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
+			paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider, forceUpdate);
 		}
-
+		// }
+		/*
+		 * else if (redrawMode == RedrawMode.DrawSelectedTiles) { List<Integer> list =
+		 * tileRepositoryService.getSelectedTileIndexList(); for (int i = 0; i <
+		 * list.size(); i++) { paintTile(this, gc,
+		 * tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider,
+		 * forceUpdate); } } else if (redrawMode == RedrawMode.DrawSelectedTile) {
+		 * paintTile(this, gc, temporaryIndex, conf, colorPaletteProvider, forceUpdate);
+		 * }
+		 */
 		if (paintPixelGrid) {
 			paintPixelGrid(gc);
 		}
@@ -199,6 +202,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 		} else {
 			paintSelection(gc);
 		}
+
+		paintTileMarker(gc);
 		/*
 		 * if (paintTileCursor) { paintTileCursor(gc, mouseIn, updateCursorLocation); }
 		 */
@@ -247,6 +252,15 @@ public class RepositoryWidget extends BaseImagingWidget {
 						conf.scaledTileHeight);
 			}
 		});
+	}
+
+	private void paintTileMarker(GC gc) {
+		if (computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
+			gc.setLineWidth(3);
+			gc.setBackground(Constants.BRIGHT_ORANGE);
+			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
+					conf.scaledTileHeight);
+		}
 	}
 
 	private void paintTileGrid(GC gc) {
