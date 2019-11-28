@@ -255,7 +255,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	private void paintTileMarker(GC gc) {
-		if (computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
+		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
 			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
@@ -278,6 +278,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
 		this.forceUpdate = forceUpdate;
+		System.out.println("forceUpdate:" + forceUpdate);
 		this.redrawMode = redrawMode;
 		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);

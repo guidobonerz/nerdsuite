@@ -59,7 +59,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	protected RedrawMode redrawMode = RedrawMode.DrawNothing;
 
-	private boolean mouseIn = false;
+	protected boolean mouseIn = false;
 
 	private List<IDrawListener> drawListenerList = null;
 	protected TileRepositoryService tileRepositoryService;

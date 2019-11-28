@@ -31,6 +31,9 @@ public class ImagePainterFactory {
 		String name = tile.getName();
 		Image image = imagePool.get(name);
 		if (null == image || forceUpdate) {
+			if (image != null) {
+			//	image.dispose();
+			}
 			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name, colorPaletteProvider);
 			imagePool.put(name, image);
 			System.out.println("create image" + name);
@@ -38,20 +41,20 @@ public class ImagePainterFactory {
 
 		ScaleMode scaleMode = conf.getScaleMode();
 		if (conf.getScaleMode() != ScaleMode.None) {
-
-			String sm = conf.getScaleMode().name() + "_" + name;
+			String sm = name + "_" + conf.getScaleMode().name();
 			Image img = imagePool.get(sm);
-			if (img != null) {
-				img.dispose();
+			if (img == null || forceUpdate) {
+				if (img != null) {
+				//	img.dispose();
+				}
+				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
+						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
+				int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
+						: conf.fullHeightPixel >> scaleMode.getScaleFactor();
+				img = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
+				System.out.println(sm + ":" + scaledWidth + "/" + scaledHeight);
+				imagePool.put(sm, img);
 			}
-			// System.out.println("scale down");
-			int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
-					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
-			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
-					: conf.fullHeightPixel >> scaleMode.getScaleFactor();
-
-			img = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
-			imagePool.put(sm, img);
 			image = img;
 		}
 		conf.setScaledTileWidth(image.getBounds().width);
