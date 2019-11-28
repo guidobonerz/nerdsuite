@@ -169,15 +169,15 @@ public class RepositoryWidget extends BaseImagingWidget {
 		System.out.println("paintControl");
 		if (redrawMode == RedrawMode.DrawAllTiles) {
 			for (int i = 0; i < tileRepositoryService.getSize(); i++) {
-				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
+				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider, forceUpdate);
 			}
 		} else if (redrawMode == RedrawMode.DrawSelectedTiles) {
 			List<Integer> list = tileRepositoryService.getSelectedTileIndexList();
 			for (int i = 0; i < list.size(); i++) {
-				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider);
+				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider, forceUpdate);
 			}
 		} else if (redrawMode == RedrawMode.DrawSelectedTile) {
-			paintTile(this, gc, temporaryIndex, conf, colorPaletteProvider);
+			paintTile(this, gc, temporaryIndex, conf, colorPaletteProvider, forceUpdate);
 		}
 
 		if (paintPixelGrid) {
@@ -207,7 +207,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		 * if (paintTelevisionMode && supportsSingleSelection()) {
 		 * paintTelevisionRaster(gc); }
 		 */
-
+		forceUpdate = false;
 		redrawMode = RedrawMode.DrawNothing;
 
 	}
@@ -272,10 +272,10 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider) {
+			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
 		// int parentWidth = parent.getBounds().width;
 		Image image = imagePainterFactory.getImage(tileRepositoryService.getTile(index), 0, 0, false, conf,
-				colorPaletteProvider, false);
+				colorPaletteProvider, forceUpdate);
 		int imageWidth = image.getBounds().width;
 		int imageHeight = image.getBounds().height;
 		int columns = conf.getColumns();// (int) (parentWidth / imageWidth);

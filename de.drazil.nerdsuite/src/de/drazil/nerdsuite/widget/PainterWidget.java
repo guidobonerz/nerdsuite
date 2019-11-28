@@ -272,12 +272,12 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider) {
-		gc.drawImage(imagePainterFactory.getImage(tile, x, y, true, conf, colorPaletteProvider, true), 0, 0);
+		gc.drawImage(imagePainterFactory.getImage(tile, x, y, true, conf, colorPaletteProvider, forceUpdate), 0, 0);
 	}
 
 	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider,
-			boolean needUpdate) {
-		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider, needUpdate), 0, 0);
+			boolean forceUpdate) {
+		gc.drawImage(imagePainterFactory.getImage(tile, 0, 0, false, conf, colorPaletteProvider, forceUpdate), 0, 0);
 		System.out.println("paint tile");
 	}
 

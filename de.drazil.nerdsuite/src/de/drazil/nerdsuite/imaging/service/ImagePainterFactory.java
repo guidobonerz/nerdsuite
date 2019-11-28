@@ -27,18 +27,13 @@ public class ImagePainterFactory {
 	}
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, boolean needUpdate) {
+			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
 		String name = tile.getName();
 		Image image = imagePool.get(name);
-		if (null == image) {
+		if (null == image || forceUpdate) {
 			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name, colorPaletteProvider);
 			imagePool.put(name, image);
-			System.out.println("create new image" + name);
-		} else {
-			if (needUpdate) {
-				image = createOrUpdateImage(tile, x, y, pixelOnly, conf, image, name, colorPaletteProvider);
-			}
-
+			System.out.println("create image" + name);
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();

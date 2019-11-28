@@ -402,6 +402,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 		}
 
+		repository.recalc();
 		painter.recalc();
 		painter.addDrawListener(repository);
 
@@ -417,8 +418,9 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
+				int index = tileRepositoryService.getSelectedTileIndex();
+				tileRepositoryService.setSelectedTileIndex(index);
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
-				// tileRepositoryService.updateTileViewer(UpdateMode.All);
 				painter.setCursorMode(CursorMode.Point);
 
 			}

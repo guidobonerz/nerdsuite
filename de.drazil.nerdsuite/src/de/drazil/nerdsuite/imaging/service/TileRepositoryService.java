@@ -138,7 +138,8 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	public Tile getSelectedTile() {
-		return getTile(selectedTileIndexList.get(0));
+		int index = selectedTileIndexList.get(0);
+		return getTile(index);
 	}
 
 	@JsonIgnore
