@@ -29,6 +29,7 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
+			forceUpdate = true;
 			doDrawPixel();
 			fireDoDrawTile(this);
 		}
@@ -42,6 +43,7 @@ public class PainterWidget extends BaseImagingWidget {
 				oldCursorX = cursorX;
 				oldCursorY = cursorY;
 				setPixel(tile, cursorX, cursorY, conf);
+				forceUpdate = true;
 				doDrawPixel();
 				fireDoDrawTile(this);
 			}
@@ -78,6 +80,17 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	protected void mouseExit(int modifierMask, int x, int y) {
 		doDrawTile();
+	}
+
+	@Override
+	protected void mouseMove(int modifierMask, int x, int y) {
+		int i = computeCursorIndex(cursorX, cursorY);
+		System.out.println("index:" + i);
+		doDrawTile();
+	}
+
+	private int computeCursorIndex(int x, int y) {
+		return (x + (y * conf.width * conf.tileColumns));
 	}
 
 	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
@@ -151,12 +164,14 @@ public class PainterWidget extends BaseImagingWidget {
 			paintTileSubGrid(gc);
 		}
 
+		paintPixelCursor(gc);
+
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			paintRangeSelection(gc);
 		}
 
+		forceUpdate = false;
 		redrawMode = RedrawMode.DrawNothing;
-
 	}
 
 	private void paintSeparator(GC gc) {
@@ -165,6 +180,13 @@ public class PainterWidget extends BaseImagingWidget {
 		int step = (8 * bc);
 		for (int x = step; x < (conf.scaledTileWidth) / bc; x += step) {
 			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
+		}
+	}
+
+	protected void paintPixelCursor(GC gc) {
+		if (computeCursorIndex(cursorX, cursorY) < conf.width * conf.height * conf.tileColumns * conf.tileRows) {
+			gc.setBackground(Constants.BRIGHT_ORANGE);
+			gc.fillRectangle(cursorX * conf.pixelSize, cursorY * conf.pixelSize, conf.pixelSize, conf.pixelSize);
 		}
 	}
 

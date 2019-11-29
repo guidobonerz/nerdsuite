@@ -220,14 +220,6 @@ public abstract class BaseImagingWidget extends BaseWidget
 		}
 	}
 
-	protected void paintPixelCursor(GC gc) {
-		gc.setBackground(Constants.WHITE);
-		gc.setForeground(Constants.WHITE);
-		gc.fillRectangle((cursorX * conf.currentPixelWidth) + 1 + (conf.currentPixelWidth / 2) - conf.pixelSize / 8,
-				(cursorY * conf.pixelSize) + 1 + (conf.pixelSize / 2) - conf.pixelSize / 8, conf.pixelSize / 4,
-				conf.pixelSize / 4);
-	}
-
 	protected void paintTileSubGrid(GC gc) {
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int y = conf.height; y < conf.height * conf.tileRows; y += conf.height) {
@@ -266,10 +258,11 @@ public abstract class BaseImagingWidget extends BaseWidget
 		redrawMode = RedrawMode.DrawSelectedTile;
 		if (conf.supportsPainting) {
 			/*
-			redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
-					selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows,
-					conf.width * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize * conf.tileRows, true);
-					*/
+			 * redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
+			 * selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows, conf.width
+			 * * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize *
+			 * conf.tileRows, true);
+			 */
 			redraw();
 		} else {
 			redraw(selectedTileIndexX * conf.scaledTileWidth, selectedTileIndexY * conf.scaledTileHeight,
@@ -280,7 +273,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void doDrawAllTiles() {
-		//redrawMode = RedrawMode.DrawAllTiles;
+		// redrawMode = RedrawMode.DrawAllTiles;
 		// setNotification(selectedTileOffset, conf.getTileSize());
 		redraw();
 
@@ -288,7 +281,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void doDrawSelectedTiles() {
-		//redrawMode = RedrawMode.DrawSelectedTiles;
+		// redrawMode = RedrawMode.DrawSelectedTiles;
 		redraw();
 	}
 

@@ -18,12 +18,12 @@ import de.drazil.nerdsuite.widget.Tile;
 public class ImagePainterFactory {
 
 	private Map<String, Image> imagePool = null;
-	private Map<String, GC> gcCache = null;
+	// private Map<String, GC> gcCache = null;
 	private GC gc;
 
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
-		gcCache = new HashMap<>();
+		// gcCache = new HashMap<>();
 	}
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
@@ -79,11 +79,11 @@ public class ImagePainterFactory {
 			System.out.println("new Image");
 		}
 
-		//gc = gcCache.get(imageName);
-		//if (gc == null) {
-			gc = new GC(img);
-			//gcCache.put(imageName, gc);
-		//}
+		// gc = gcCache.get(imageName);
+		// if (gc == null) {
+		gc = new GC(img);
+		// gcCache.put(imageName, gc);
+		// }
 
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
