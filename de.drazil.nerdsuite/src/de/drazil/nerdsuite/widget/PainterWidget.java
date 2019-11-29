@@ -31,7 +31,7 @@ public class PainterWidget extends BaseImagingWidget {
 			setPixel(tile, cursorX, cursorY, conf);
 			forceUpdate = true;
 			doDrawPixel();
-			fireDoDrawTile(this);
+			//fireDoDrawTile(this);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class PainterWidget extends BaseImagingWidget {
 				setPixel(tile, cursorX, cursorY, conf);
 				forceUpdate = true;
 				doDrawPixel();
-				fireDoDrawTile(this);
+				//fireDoDrawTile(this);
 			}
 		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
@@ -145,6 +145,7 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
+			System.out.println("draw Pixel");
 			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawSelectedTile) {
 			paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider, false);

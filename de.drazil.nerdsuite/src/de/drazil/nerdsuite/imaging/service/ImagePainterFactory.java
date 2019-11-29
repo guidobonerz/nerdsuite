@@ -121,7 +121,7 @@ public class ImagePainterFactory {
 				color = colorPaletteProvider.getColorByIndex(content[offset]);
 				gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
 			}
-			System.out.println("draw Rect");
+			
 			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
 			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
 		}
