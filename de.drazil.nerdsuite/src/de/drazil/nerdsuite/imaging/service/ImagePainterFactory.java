@@ -18,48 +18,47 @@ import de.drazil.nerdsuite.widget.Tile;
 public class ImagePainterFactory {
 
 	private Map<String, Image> imagePool = null;
-	// private Map<String, GC> gcCache = null;
-	private GC gc;
 
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
-		// gcCache = new HashMap<>();
 	}
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
 		String name = tile.getName();
-		Image image = imagePool.get(name);
-		if (null == image || forceUpdate) {
-			if (image != null) {
-				// image.dispose();
+		Image scaledImage = null;
+		Image mainImage = imagePool.get(name);
+		if (null == mainImage || forceUpdate) {
+			if (forceUpdate && mainImage != null) {
+				mainImage.dispose();
 			}
-			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name, colorPaletteProvider);
-			imagePool.put(name, image);
-			System.out.println("create image" + name);
+			mainImage = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
+			mainImage = updateImage(tile, x, y, pixelOnly, conf, mainImage, name, colorPaletteProvider);
+			imagePool.put(name, mainImage);
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
 		if (conf.getScaleMode() != ScaleMode.None) {
 			String sm = name + "_" + conf.getScaleMode().name();
-			Image img = imagePool.get(sm);
-			if (img == null || forceUpdate) {
-				if (img != null) {
-					// img.dispose();
+			scaledImage = imagePool.get(sm);
+			if (null == scaledImage || forceUpdate) {
+				if (forceUpdate && scaledImage != null) {
+					scaledImage.dispose();
 				}
+				System.out.println("new scaled image");
 				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
 						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
 				int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
 						: conf.fullHeightPixel >> scaleMode.getScaleFactor();
-				img = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
-				System.out.println(sm + ":" + scaledWidth + "/" + scaledHeight);
-				imagePool.put(sm, img);
+				scaledImage = new Image(Display.getDefault(),
+						mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
+				imagePool.put(sm, scaledImage);
 			}
-			image = img;
+			mainImage = scaledImage;
 		}
-		conf.setScaledTileWidth(image.getBounds().width);
-		conf.setScaledTileHeight(image.getBounds().height);
-		return image;
+		conf.setScaledTileWidth(mainImage.getBounds().width);
+		conf.setScaledTileHeight(mainImage.getBounds().height);
+		return mainImage;
 	}
 
 	public boolean hasImages() {
@@ -70,21 +69,9 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image createOrUpdateImage(Tile tile, int px, int py, boolean pixelOnly, ImagingWidgetConfiguration conf,
+	private Image updateImage(Tile tile, int px, int py, boolean pixelOnly, ImagingWidgetConfiguration conf,
 			Image image, String imageName, IColorPaletteProvider colorPaletteProvider) {
-
-		Image img = image;
-		if (img == null) {
-			img = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
-			System.out.println("new Image");
-		}
-
-		// gc = gcCache.get(imageName);
-		// if (gc == null) {
-		gc = new GC(img);
-		// gcCache.put(imageName, gc);
-		// }
-
+		GC gc = new GC(image);
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
 		int size = tile.getLayer(0).size();
@@ -108,7 +95,7 @@ public class ImagePainterFactory {
 			}
 		}
 		gc.dispose();
-		return img;
+		return image;
 	}
 
 	private void draw(GC gc, int offset, List<Layer> layerList, Tile tile, ImagingWidgetConfiguration conf, int x,
@@ -121,7 +108,7 @@ public class ImagePainterFactory {
 				color = colorPaletteProvider.getColorByIndex(content[offset]);
 				gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
 			}
-			
+
 			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
 			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
 		}

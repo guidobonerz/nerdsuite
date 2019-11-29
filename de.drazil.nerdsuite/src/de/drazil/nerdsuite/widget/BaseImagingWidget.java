@@ -21,7 +21,6 @@ import de.drazil.nerdsuite.imaging.service.IServiceCallback;
 import de.drazil.nerdsuite.imaging.service.ITileBulkModificationListener;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
-import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.mouse.IMeasuringListener;
@@ -54,16 +53,16 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
 	protected int temporaryIndex;
+	protected boolean forceUpdate;
 
 	protected boolean updateCursorLocation = false;
 
-	protected RedrawMode redrawMode = RedrawMode.DrawNothing;
+	protected RedrawMode redrawMode = RedrawMode.DrawAllTiles;
 
 	protected boolean mouseIn = false;
 
 	private List<IDrawListener> drawListenerList = null;
 	protected TileRepositoryService tileRepositoryService;
-	protected ImagePainterFactory imagePainterFactory;
 
 	protected Tile tile = null;
 	protected MeasuringController mc;
@@ -75,7 +74,6 @@ public abstract class BaseImagingWidget extends BaseWidget
 		conf = new ImagingWidgetConfiguration();
 		mc = new MeasuringController();
 		mc.addMeasuringListener(this);
-		imagePainterFactory = new ImagePainterFactory();
 	}
 
 	public void init(String owner, IColorPaletteProvider colorPaletteProvider) {
@@ -92,7 +90,8 @@ public abstract class BaseImagingWidget extends BaseWidget
 				conf.setColumns((int) (getParent().getBounds().width / conf.getScaledTileWidth()));
 				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
 						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
-				doDrawAllTiles();
+				// doDrawAllTiles();
+				doRedraw(RedrawMode.DrawAllTiles, null, false);
 			}
 		});
 	}
@@ -236,55 +235,47 @@ public abstract class BaseImagingWidget extends BaseWidget
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
 		// fireSetSelectedTile(ImagingWidget.this, tile);
-		doDrawAllTiles();
+		// doDrawAllTiles();
+		doRedraw(RedrawMode.DrawAllTiles, null, false);
 
 	}
 
-	@Override
-	public void doDrawPixel(BaseImagingWidget source, int x, int y, PencilMode pencilMode) {
-		conf.pencilMode = pencilMode;
-		cursorX = x + (selectedTileIndexX * conf.width * conf.tileColumns);
-		cursorY = y + (selectedTileIndexY * conf.height * conf.tileRows);
-		doDrawPixel();
-	}
-
-	public void doDrawPixel() {
-		redrawMode = RedrawMode.DrawPixel;
-		redraw(tileCursorX * conf.pixelSize, tileCursorY * conf.pixelSize, conf.pixelSize, conf.pixelSize, true);
-	}
-
-	@Override
-	public void doDrawTile() {
-		redrawMode = RedrawMode.DrawSelectedTile;
-		if (conf.supportsPainting) {
-			/*
-			 * redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
-			 * selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows, conf.width
-			 * * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize *
-			 * conf.tileRows, true);
-			 */
-			redraw();
-		} else {
-			redraw(selectedTileIndexX * conf.scaledTileWidth, selectedTileIndexY * conf.scaledTileHeight,
-					conf.scaledTileWidth, conf.scaledTileHeight, true);
-
-		}
-	}
-
-	@Override
-	public void doDrawAllTiles() {
-		// redrawMode = RedrawMode.DrawAllTiles;
-		// setNotification(selectedTileOffset, conf.getTileSize());
-		redraw();
-
-	}
-
-	@Override
-	public void doDrawSelectedTiles() {
-		// redrawMode = RedrawMode.DrawSelectedTiles;
-		redraw();
-	}
-
+	/*
+	 * @Override public void doDrawPixel(BaseImagingWidget source, int x, int y,
+	 * PencilMode pencilMode) { conf.pencilMode = pencilMode; cursorX = x +
+	 * (selectedTileIndexX * conf.width * conf.tileColumns); cursorY = y +
+	 * (selectedTileIndexY * conf.height * conf.tileRows); doDrawPixel(); }
+	 * 
+	 * public void doDrawPixel() { redrawMode = RedrawMode.DrawPixel;
+	 * 
+	 * redraw(tileCursorX * conf.pixelSize, tileCursorY * conf.pixelSize,
+	 * conf.pixelSize, conf.pixelSize, true); }
+	 * 
+	 * @Override public void doDrawTile(boolean forceUpdate) { this.forceUpdate =
+	 * forceUpdate; redrawMode = RedrawMode.DrawSelectedTile; if
+	 * (conf.supportsPainting) {
+	 * 
+	 * redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
+	 * selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows, conf.width
+	 * * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize *
+	 * conf.tileRows, true);
+	 * 
+	 * redraw(); } else {
+	 * 
+	 * redraw(selectedTileIndexX * conf.scaledTileWidth, selectedTileIndexY *
+	 * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight, false);
+	 * 
+	 * } }
+	 * 
+	 * @Override public void doDrawAllTiles() { // redrawMode =
+	 * RedrawMode.DrawAllTiles; // setNotification(selectedTileOffset,
+	 * conf.getTileSize()); redraw();
+	 * 
+	 * }
+	 * 
+	 * @Override public void doDrawSelectedTiles() { // redrawMode =
+	 * RedrawMode.DrawSelectedTiles; redraw(); }
+	 */
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns);
@@ -316,48 +307,44 @@ public abstract class BaseImagingWidget extends BaseWidget
 		drawListenerList.remove(redrawListener);
 	}
 
-	protected void fireDoDrawTile(BaseImagingWidget source) {
-		drawListenerList.forEach(l -> l.doDrawTile());
+	protected void fireDoRedraw(RedrawMode redrawMode, PencilMode pencilMode, boolean forceUpdate) {
+		drawListenerList.forEach(l -> l.doRedraw(redrawMode, pencilMode, forceUpdate));
 	}
 
-	protected void fireDoDrawAllTiles(BaseImagingWidget source) {
-		drawListenerList.forEach(l -> l.doDrawAllTiles());
+	@Override
+	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, boolean forceUpdate) {
+		this.forceUpdate = forceUpdate;
+		this.redrawMode = redrawMode;
+		redraw();
 	}
 
 	@Override
 	public void beforeRunService() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onRunService(int offset, int x, int y, boolean updateCursorLocation) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void afterRunService() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void tileAdded(Tile tile) {
-		// tileSelected(tile);
-		// tileIndexesSelected(tileRepositoryService.get);
 	}
 
 	@Override
 	public void tileRemoved() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void tileReordered() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -366,41 +353,36 @@ public abstract class BaseImagingWidget extends BaseWidget
 	@Override
 	public void tileChanged() {
 		conf.setMultiColorEnabled(tile.isMulticolor());
-		doDrawTile();
+		doRedraw(RedrawMode.DrawSelectedTile, null, true);
 	}
 
 	@Override
 	public void tilesChanged(List<Integer> selectedTileIndexList) {
-		doDrawSelectedTiles();
+		doRedraw(RedrawMode.DrawSelectedTiles, null, true);
 	}
 
 	@Override
 	public void layerRemoved() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void layerAdded() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void layerContentChanged(int layer) {
-		doDrawTile();
-
+		doRedraw(RedrawMode.DrawSelectedTile, null, true);
 	}
 
 	@Override
 	public void layerReordered() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void layerVisibilityChanged(int layer) {
 		redraw();
 	}
-
 }
