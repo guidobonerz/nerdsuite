@@ -32,7 +32,7 @@ public class ImagePainterFactory {
 		Image image = imagePool.get(name);
 		if (null == image || forceUpdate) {
 			if (image != null) {
-			//	image.dispose();
+				// image.dispose();
 			}
 			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name, colorPaletteProvider);
 			imagePool.put(name, image);
@@ -45,7 +45,7 @@ public class ImagePainterFactory {
 			Image img = imagePool.get(sm);
 			if (img == null || forceUpdate) {
 				if (img != null) {
-				//	img.dispose();
+					// img.dispose();
 				}
 				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
 						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
@@ -79,11 +79,11 @@ public class ImagePainterFactory {
 			System.out.println("new Image");
 		}
 
-		gc = gcCache.get(imageName);
-		if (gc == null) {
+		//gc = gcCache.get(imageName);
+		//if (gc == null) {
 			gc = new GC(img);
-			gcCache.put(imageName, gc);
-		}
+			//gcCache.put(imageName, gc);
+		//}
 
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
@@ -107,7 +107,7 @@ public class ImagePainterFactory {
 				x++;
 			}
 		}
-		// gc.dispose();
+		gc.dispose();
 		return img;
 	}
 
