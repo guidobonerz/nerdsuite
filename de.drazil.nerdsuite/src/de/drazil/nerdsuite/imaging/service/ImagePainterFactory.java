@@ -37,14 +37,14 @@ public class ImagePainterFactory {
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
-		if (conf.getScaleMode() != ScaleMode.None) {
+		//if (conf.getScaleMode() != ScaleMode.None) {
 			String sm = name + "_" + conf.getScaleMode().name();
 			scaledImage = imagePool.get(sm);
 			if (null == scaledImage || forceUpdate) {
 				if (forceUpdate && scaledImage != null) {
 					scaledImage.dispose();
 				}
-				System.out.println("new scaled image");
+				// System.out.println("new scaled image");
 				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
 						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
 				int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
@@ -54,7 +54,7 @@ public class ImagePainterFactory {
 				imagePool.put(sm, scaledImage);
 			}
 			mainImage = scaledImage;
-		}
+		//}
 		conf.setScaledTileWidth(mainImage.getBounds().width);
 		conf.setScaledTileHeight(mainImage.getBounds().height);
 		return mainImage;

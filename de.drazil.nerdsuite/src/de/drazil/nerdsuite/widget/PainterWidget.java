@@ -37,23 +37,25 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-		if (cursorChanged) {
-			if (conf.cursorMode == CursorMode.Point) {
-				setPixel(tile, cursorX, cursorY, conf);
-				forceUpdate = true;
-				doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
-				fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
 
-			} else if (conf.cursorMode == CursorMode.SelectRectangle) {
-				computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
-				doRedraw(RedrawMode.DrawSelectedTile, null, false);
-			}
+		if (conf.cursorMode == CursorMode.Point) {
+			setPixel(tile, cursorX, cursorY, conf);
+			// if (cursorChanged) {
+			forceUpdate = true;
+			doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
+			fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
+			// }
+
+		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
+			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
+			doRedraw(RedrawMode.DrawSelectedTile, null, false);
 		}
+
 	}
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		if (conf.cursorMode == CursorMode.SelectRectangle && cursorChanged) {
+		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, null, false);
 		}
@@ -142,12 +144,17 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
-			System.out.println("draw Pixel");
-			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider);
-		} else if (redrawMode == RedrawMode.DrawSelectedTile) {
-			paintTile(gc, tileRepositoryService.getSelectedTile(), conf, colorPaletteProvider, false);
+			// paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY,
+			// conf, colorPaletteProvider);
+		} else if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
+			// paintTile(gc, tileRepositoryService.getSelectedTileIndexList().get(0), conf,
+			// colorPaletteProvider, false);
+			gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(
+					tileRepositoryService.getTile(tileRepositoryService.getSelectedTileIndexList().get(0)), 0, 0, false,
+					conf, colorPaletteProvider, forceUpdate), 0, 0);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
-			paintTile(gc, tileRepositoryService.getTile(temporaryIndex), conf, colorPaletteProvider, false);
+			// paintTile(gc, tileRepositoryService.getTileIndex(temporaryIndex), conf,
+			// colorPaletteProvider, false);
 		}
 
 		if (paintPixelGrid) {
@@ -255,7 +262,8 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
-		if (redrawMode == RedrawMode.DrawSelectedTile) {
+		System.out.println("repaint painter");
+		if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			if (this.tile != null) {
 				this.tile.removeTileListener(this);
@@ -266,6 +274,7 @@ public class PainterWidget extends BaseImagingWidget {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
 		doRedraw(redrawMode, null, forceUpdate);
+
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
@@ -318,10 +327,9 @@ public class PainterWidget extends BaseImagingWidget {
 				colorPaletteProvider, forceUpdate), 0, 0);
 	}
 
-	public void paintTile(GC gc, Tile tile, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider,
+	public void paintTile(GC gc, int index, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider,
 			boolean forceUpdate) {
-		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, 0, 0, false, conf,
-				colorPaletteProvider, forceUpdate), 0, 0);
+
 	}
 
 	@Override
@@ -337,5 +345,6 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	public void redrawCalculatedArea() {
 		redraw();
+
 	}
 }
