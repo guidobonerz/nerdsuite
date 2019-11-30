@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.CursorMode;
+import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 
@@ -29,8 +30,6 @@ public class PainterWidget extends BaseImagingWidget {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
 			forceUpdate = true;
-			// doDrawPixel();
-			// fireDoDrawTile(this, forceUpdate);
 			doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
 			fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
 		}
@@ -45,8 +44,6 @@ public class PainterWidget extends BaseImagingWidget {
 				oldCursorY = cursorY;
 				setPixel(tile, cursorX, cursorY, conf);
 				forceUpdate = true;
-				// doDrawPixel();
-				// fireDoDrawTile(this, forceUpdate);
 				doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
 				fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
 			}
@@ -176,14 +173,25 @@ public class PainterWidget extends BaseImagingWidget {
 			paintTileSubGrid(gc);
 		}
 
-		paintPixelCursor(gc);
-
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			paintRangeSelection(gc);
+		} else {
+			paintPixelCursor(gc);
 		}
 
 		forceUpdate = false;
 		redrawMode = RedrawMode.DrawNothing;
+	}
+
+	private void paintTileSubGrid(GC gc) {
+		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
+		for (int y = conf.height; y < conf.height * conf.tileRows; y += conf.height) {
+			gc.drawLine(0, y * conf.pixelSize, conf.scaledTileWidth, y * conf.pixelSize);
+		}
+		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
+		for (int x = conf.currentWidth; x < conf.currentWidth * conf.tileColumns; x += conf.currentWidth) {
+			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
+		}
 	}
 
 	private void paintSeparator(GC gc) {
@@ -195,10 +203,26 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 	}
 
-	protected void paintPixelCursor(GC gc) {
+	private void paintPixelCursor(GC gc) {
 		if (computeCursorIndex(cursorX, cursorY) < conf.width * conf.height * conf.tileColumns * conf.tileRows) {
 			gc.setForeground(Constants.BRIGHT_ORANGE);
 			gc.drawRectangle(cursorX * conf.pixelSize, cursorY * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+		}
+	}
+
+	private void paintPixelGrid(GC gc) {
+		for (int x = 0; x <= conf.currentWidth * conf.tileColumns; x++) {
+			for (int y = 0; y <= conf.height * conf.tileRows; y++) {
+				gc.setForeground(Constants.PIXEL_GRID_COLOR);
+				if (conf.gridStyle == GridType.Line) {
+					gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
+							conf.height * conf.currentPixelHeight * conf.tileRows);
+					gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns,
+							y * conf.pixelSize);
+				} else {
+					gc.drawPoint(x * conf.currentPixelWidth, y * conf.currentPixelHeight);
+				}
+			}
 		}
 	}
 
@@ -237,17 +261,12 @@ public class PainterWidget extends BaseImagingWidget {
 			tileRepositoryService.setSelection(new Rectangle(0, 0, conf.getWidth() * conf.getTileColumns(),
 					conf.getHeight() * conf.getTileRows()));
 		}
-
-		// doDrawTile(false);
-		// fireDoDrawAllTiles(this);
 		doRedraw(RedrawMode.DrawSelectedTile, null, false);
-		fireDoRedraw(RedrawMode.DrawSelectedTile, null, false);
+		// fireDoRedraw(RedrawMode.DrawSelectedTile, null, false);
 	}
 
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
-		this.forceUpdate = forceUpdate;
-		this.redrawMode = redrawMode;
 		if (redrawMode == RedrawMode.DrawSelectedTile) {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			if (this.tile != null) {
@@ -255,12 +274,10 @@ public class PainterWidget extends BaseImagingWidget {
 			}
 			this.tile = tile;
 			tile.addTileListener(this);
-			// doDrawTile(forceUpdate);
-			doRedraw(RedrawMode.DrawSelectedTile, null, forceUpdate);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
-			redraw();
 		}
+		doRedraw(redrawMode, null, forceUpdate);
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
@@ -322,7 +339,6 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		// doDrawTile(false);
 		doRedraw(RedrawMode.DrawSelectedTile, null, false);
 	}
 

@@ -170,29 +170,21 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 		if (redrawMode == RedrawMode.DrawSelectedTile) {
 			paintTile(this, gc, tileRepositoryService.getSelectedTileIndex(), conf, colorPaletteProvider, forceUpdate);
+		} else if (redrawMode == RedrawMode.DrawSelectedTiles) {
+			for (int i = 0; i < tileRepositoryService.getSelectedTileIndexList().size(); i++) {
+				paintTile(this, gc,
+						tileRepositoryService.getTileIndex(tileRepositoryService.getSelectedTileIndexList().get(i)),
+						conf, colorPaletteProvider, forceUpdate);
+			}
+
 		} else {
-			// if (redrawMode == RedrawMode.DrawAllTiles) {
 			for (int i = 0; i < tileRepositoryService.getSize(); i++) {
 				paintTile(this, gc, tileRepositoryService.getTileIndex(i), conf, colorPaletteProvider, forceUpdate);
 			}
-			// }
-		}
-		/*
-		 * else if (redrawMode == RedrawMode.DrawSelectedTile) { paintTile(this, gc,
-		 * temporaryIndex, conf, colorPaletteProvider, forceUpdate); }
-		 */
-		if (paintPixelGrid) {
-			paintPixelGrid(gc);
-		}
-		/*
-		 * if (paintSeparator) { paintSeparator(gc); }
-		 */
-		if (paintTileGrid) {
-			paintTileGrid(gc);
 		}
 
-		if (paintTileSubGrid) {
-			paintTileSubGrid(gc);
+		if (paintTileGrid) {
+			paintTileGrid(gc);
 		}
 
 		if (tileDragActive) {
@@ -204,7 +196,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 		forceUpdate = false;
 		redrawMode = RedrawMode.DrawNothing;
-
 	}
 
 	private void paintDragMarker(GC gc) {
@@ -267,13 +258,9 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
-		this.forceUpdate = forceUpdate;
-		System.out.println("forceUpdate:" + forceUpdate);
-		this.redrawMode = redrawMode;
 		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
-		// doDrawAllTiles();
 		doRedraw(redrawMode, null, forceUpdate);
 	}
 
@@ -293,7 +280,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		// doDrawAllTiles();
 		doRedraw(RedrawMode.DrawAllTiles, null, false);
 	}
 
@@ -309,7 +295,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				// doDrawAllTiles();
+
 				doRedraw(RedrawMode.DrawAllTiles, null, false);
 			}
 		});
@@ -317,8 +303,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void tileReordered() {
-		// doDrawAllTiles();
 		doRedraw(RedrawMode.DrawAllTiles, null, false);
 	}
-
 }

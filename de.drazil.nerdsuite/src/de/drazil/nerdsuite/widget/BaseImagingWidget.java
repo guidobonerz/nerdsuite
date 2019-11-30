@@ -203,32 +203,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 		}
 	}
 
-	protected void paintPixelGrid(GC gc) {
-		for (int x = 0; x <= conf.currentWidth * conf.tileColumns; x++) {
-			for (int y = 0; y <= conf.height * conf.tileRows; y++) {
-				gc.setForeground(Constants.PIXEL_GRID_COLOR);
-				if (conf.gridStyle == GridType.Line) {
-					gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
-							conf.height * conf.currentPixelHeight * conf.tileRows);
-					gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns,
-							y * conf.pixelSize);
-				} else {
-					gc.drawPoint(x * conf.currentPixelWidth, y * conf.currentPixelHeight);
-				}
-			}
-		}
-	}
-
-	protected void paintTileSubGrid(GC gc) {
-		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
-		for (int y = conf.height; y < conf.height * conf.tileRows; y += conf.height) {
-			gc.drawLine(0, y * conf.pixelSize, conf.scaledTileWidth, y * conf.pixelSize);
-		}
-		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
-		for (int x = conf.currentWidth; x < conf.currentWidth * conf.tileColumns; x += conf.currentWidth) {
-			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
-		}
-	}
+	
 
 	public void recalc() {
 		int pixmul = conf.pixelConfig.pixmul;

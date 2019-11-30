@@ -149,6 +149,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 			ShiftService service = ServiceFactory.getService(owner, ShiftService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			System.out.println("shift");
 			part.setDirty(true);
 		}
 	}
