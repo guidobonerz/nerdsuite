@@ -337,7 +337,7 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void calculateRedrawArea() {
+	public void redrawCalculatedArea() {
 		redraw();
 	}
 }

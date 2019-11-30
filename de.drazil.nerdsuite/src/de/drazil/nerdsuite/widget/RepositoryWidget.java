@@ -300,7 +300,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void calculateRedrawArea() {
+	public void redrawCalculatedArea() {
 		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile) {
 			drawAll = false;
 			start = tileRepositoryService.getSelectedTileIndexList().get(0);

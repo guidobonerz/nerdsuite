@@ -314,10 +314,10 @@ public abstract class BaseImagingWidget extends BaseWidget
 	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, boolean forceUpdate) {
 		this.forceUpdate = forceUpdate;
 		this.redrawMode = redrawMode;
-		calculateRedrawArea();
+		redrawCalculatedArea();
 	}
 
-	public abstract void calculateRedrawArea();
+	public abstract void redrawCalculatedArea();
 
 	@Override
 	public void beforeRunService() {
