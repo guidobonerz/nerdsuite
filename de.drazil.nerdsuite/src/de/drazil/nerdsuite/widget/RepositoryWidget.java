@@ -304,11 +304,9 @@ public class RepositoryWidget extends BaseImagingWidget {
 			int columns = conf.getColumns();
 			int iys = start / columns;
 			int ys = iys * imageHeight;
-			int xs = (start % columns) * imageWidth;
 
 			int iye = end / columns;
 			int ye = iye * imageHeight;
-			int xe = (end % columns) * imageWidth;
 
 			start = computeTileIndex(0, iys);
 			end = computeTileIndex(columns, iye);

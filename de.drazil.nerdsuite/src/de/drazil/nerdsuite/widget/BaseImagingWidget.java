@@ -233,48 +233,9 @@ public abstract class BaseImagingWidget extends BaseWidget
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
-		// fireSetSelectedTile(ImagingWidget.this, tile);
-		// doDrawAllTiles();
 		doRedraw(RedrawMode.DrawAllTiles, null, false);
-
 	}
 
-	/*
-	 * @Override public void doDrawPixel(BaseImagingWidget source, int x, int y,
-	 * PencilMode pencilMode) { conf.pencilMode = pencilMode; cursorX = x +
-	 * (selectedTileIndexX * conf.width * conf.tileColumns); cursorY = y +
-	 * (selectedTileIndexY * conf.height * conf.tileRows); doDrawPixel(); }
-	 * 
-	 * public void doDrawPixel() { redrawMode = RedrawMode.DrawPixel;
-	 * 
-	 * redraw(tileCursorX * conf.pixelSize, tileCursorY * conf.pixelSize,
-	 * conf.pixelSize, conf.pixelSize, true); }
-	 * 
-	 * @Override public void doDrawTile(boolean forceUpdate) { this.forceUpdate =
-	 * forceUpdate; redrawMode = RedrawMode.DrawSelectedTile; if
-	 * (conf.supportsPainting) {
-	 * 
-	 * redraw(selectedTileIndexX * conf.width * conf.pixelSize * conf.tileColumns,
-	 * selectedTileIndexY * conf.height * conf.pixelSize * conf.tileRows, conf.width
-	 * * conf.pixelSize * conf.tileColumns, conf.height * conf.pixelSize *
-	 * conf.tileRows, true);
-	 * 
-	 * redraw(); } else {
-	 * 
-	 * redraw(selectedTileIndexX * conf.scaledTileWidth, selectedTileIndexY *
-	 * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight, false);
-	 * 
-	 * } }
-	 * 
-	 * @Override public void doDrawAllTiles() { // redrawMode =
-	 * RedrawMode.DrawAllTiles; // setNotification(selectedTileOffset,
-	 * conf.getTileSize()); redraw();
-	 * 
-	 * }
-	 * 
-	 * @Override public void doDrawSelectedTiles() { // redrawMode =
-	 * RedrawMode.DrawSelectedTiles; redraw(); }
-	 */
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns);

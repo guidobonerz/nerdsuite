@@ -251,7 +251,6 @@ public class PainterWidget extends BaseImagingWidget {
 					conf.getHeight() * conf.getTileRows()));
 		}
 		doRedraw(RedrawMode.DrawSelectedTile, null, false);
-		// fireDoRedraw(RedrawMode.DrawSelectedTile, null, false);
 	}
 
 	@Override
@@ -323,7 +322,6 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean forceUpdate) {
 		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, 0, 0, false, conf,
 				colorPaletteProvider, forceUpdate), 0, 0);
-		System.out.println("paint tile");
 	}
 
 	@Override
