@@ -77,7 +77,7 @@ import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.RepositoryWidget;
 import de.drazil.nerdsuite.widget.Tile;
 
-public class GfxEditorView implements IConfirmable, ITileUpdateListener {
+public class GfxEditorView implements ITileUpdateListener {
 
 	private Composite parent;
 	private PainterWidget painter;
@@ -89,6 +89,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 	private TileRepositoryService tileRepositoryService;
 
 	private IColorPaletteProvider colorPaletteProvider;
+	private IConfirmable modificationConfirmation;
 
 	private ColorChooser multiColorChooser;
 	private LayerChooser layerChooser;
@@ -122,6 +123,13 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 						.get(tileRepositoryService.getSelectedTile().getActiveLayer().getColorIndex(index)).getColor();
 			}
 		};
+
+		modificationConfirmation = new IConfirmable() {
+			@Override
+			public boolean isConfirmed(String confirmationMessage) {
+				return MessageDialog.openQuestion(parent.getShell(), "Image Process Confirmation", confirmationMessage);
+			}
+		};
 	}
 
 	@Inject
@@ -148,7 +156,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			ShiftService service = ServiceFactory.getService(owner, ShiftService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
-			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), modificationConfirmation);
 			part.setDirty(true);
 		}
 	}
@@ -159,7 +167,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			RotationService service = ServiceFactory.getService(owner, RotationService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
-			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), modificationConfirmation);
 			part.setDirty(true);
 		}
 	}
@@ -170,7 +178,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			FlipService service = ServiceFactory.getService(owner, FlipService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
-			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), modificationConfirmation);
 			part.setDirty(true);
 		}
 	}
@@ -181,7 +189,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			InvertService service = ServiceFactory.getService(owner, InvertService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
-			service.execute(0, this);
+			service.execute(0, modificationConfirmation);
 			part.setDirty(true);
 		}
 	}
@@ -192,7 +200,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			MirrorService service = ServiceFactory.getService(owner, MirrorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
-			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), modificationConfirmation);
 			part.setDirty(true);
 		}
 	}
@@ -203,7 +211,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			PurgeService service = ServiceFactory.getService(owner, PurgeService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
-			service.execute(this);
+			service.execute(modificationConfirmation);
 			part.setDirty(true);
 		}
 	}
@@ -215,7 +223,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 			boolean multicolor = (Boolean) brokerObject.getTransferObject();
 			MulticolorService service = ServiceFactory.getService(owner, MulticolorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
-			service.execute(multicolor ? 1 : 0, this);
+			service.execute(multicolor ? 1 : 0, modificationConfirmation);
 			tileRepositoryService.getSelectedTile().setMulticolorEnabled(multicolor);
 			multiColorChooser.setMonochrom(!multicolor);
 			part.setDirty(true);
@@ -307,11 +315,6 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 		if (part.isDirty()) {
 
 		}
-	}
-
-	@Override
-	public boolean isConfirmed(String confirmationMessage) {
-		return MessageDialog.openQuestion(parent.getShell(), "Image Process Confirmation", confirmationMessage);
 	}
 
 	@SuppressWarnings("unchecked")

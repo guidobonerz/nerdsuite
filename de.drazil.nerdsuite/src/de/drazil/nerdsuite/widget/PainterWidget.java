@@ -149,19 +149,9 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
 			int index = tileRepositoryService.getSelectedTileIndexList().get(0);
 			paintTile(gc, index, conf, colorPaletteProvider, paintTelevisionMode);
-			/*
-			 * Tile tile = tileRepositoryService.getTile(index);
-			 * gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, 0,
-			 * 0, false, conf, colorPaletteProvider, forceUpdate), 0, 0);
-			 */
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			int index = tileRepositoryService.getTileIndex(temporaryIndex);
 			paintTile(gc, index, conf, colorPaletteProvider, paintTelevisionMode);
-			/*
-			 * Tile tile = tileRepositoryService.getTile(index);
-			 * gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, 0,
-			 * 0, false, conf, colorPaletteProvider, forceUpdate), 0, 0);
-			 */
 		}
 
 		if (paintPixelGrid) {
