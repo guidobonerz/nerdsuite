@@ -53,7 +53,12 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	@Override
 	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, boolean forceUpdate) {
-		
+
+	}
+
+	@Override
+	public void redrawCalculatedArea() {
+		// TODO Auto-generated method stub
 
 	}
 }
