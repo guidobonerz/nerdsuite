@@ -52,6 +52,9 @@ public class TileRepositoryService implements IService {
 	@Setter
 	@JsonIgnore
 	private Rectangle selection;
+	@JsonIgnore
+	@Getter
+	private ImagePainterFactory imagePainterFactory;
 
 	public TileRepositoryService() {
 		tileList = new ArrayList<>();
@@ -59,6 +62,7 @@ public class TileRepositoryService implements IService {
 		tileServiceManagementListener = new ArrayList<>();
 		tileUpdateListener = new ArrayList<>();
 		selectedTileIndexList = new ArrayList<Integer>();
+		imagePainterFactory = new ImagePainterFactory();
 	}
 
 	public Tile addTile(int size) {

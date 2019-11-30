@@ -77,7 +77,7 @@ import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.RepositoryWidget;
 import de.drazil.nerdsuite.widget.Tile;
 
-public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorPaletteProvider {
+public class GfxEditorView implements IConfirmable, ITileUpdateListener {
 
 	private Composite parent;
 	private PainterWidget painter;
@@ -87,6 +87,8 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 	private ScrolledComposite scrollableLayerChooser;
 
 	private TileRepositoryService tileRepositoryService;
+
+	private IColorPaletteProvider colorPaletteProvider;
 
 	private ColorChooser multiColorChooser;
 	private LayerChooser layerChooser;
@@ -107,7 +109,19 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 	EModelService modelService;
 
 	public GfxEditorView() {
+		colorPaletteProvider = new IColorPaletteProvider() {
 
+			@Override
+			public Color getColor(Tile tile, int x, int y) {
+				return null;
+			}
+
+			@Override
+			public Color getColorByIndex(int index) {
+				return PlatformFactory.getPlatformColors(project.getTargetPlatform())
+						.get(tileRepositoryService.getSelectedTile().getActiveLayer().getColorIndex(index)).getColor();
+			}
+		};
 	}
 
 	@Inject
@@ -135,6 +149,7 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 			ShiftService service = ServiceFactory.getService(owner, ShiftService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(Integer.valueOf((int) brokerObject.getTransferObject()), this);
+			System.out.println("shift");
 			part.setDirty(true);
 		}
 	}
@@ -383,8 +398,8 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 		gridData.horizontalSpan = 3;
 		repository.setLayoutData(gridData);
 
-		painter.init(owner, this);
-		repository.init(owner, this);
+		painter.init(owner, colorPaletteProvider);
+		repository.init(owner, colorPaletteProvider);
 
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
@@ -537,17 +552,6 @@ public class GfxEditorView implements IConfirmable, ITileUpdateListener, IColorP
 
 	private void updateWorkspace(boolean addProject, File file) {
 		Initializer.getConfiguration().updateWorkspace(project, file, addProject);
-	}
-
-	@Override
-	public Color getColor(Tile tile, int x, int y) {
-		return null;
-	}
-
-	@Override
-	public Color getColorByIndex(int index) {
-		return PlatformFactory.getPlatformColors(project.getTargetPlatform())
-				.get(tileRepositoryService.getSelectedTile().getActiveLayer().getColorIndex(index)).getColor();
 	}
 
 	private String getHeaderText() {

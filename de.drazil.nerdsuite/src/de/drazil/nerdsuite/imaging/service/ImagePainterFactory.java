@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -18,45 +17,47 @@ import de.drazil.nerdsuite.widget.Tile;
 public class ImagePainterFactory {
 
 	private Map<String, Image> imagePool = null;
-	private Map<String, GC> gcCache = null;
-	private GC gc;
 
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
-		gcCache = new HashMap<>();
 	}
 
 	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
 		String name = tile.getName();
-		Image image = imagePool.get(name);
-		if (null == image || forceUpdate) {
-			image = createOrUpdateImage(tile, x, y, pixelOnly, conf, null, name, colorPaletteProvider);
-			imagePool.put(name, image);
-			System.out.println("create image" + name);
+		Image scaledImage = null;
+		Image mainImage = imagePool.get(name);
+		if (null == mainImage || forceUpdate) {
+			if (forceUpdate && mainImage != null) {
+				mainImage.dispose();
+			}
+			mainImage = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
+			mainImage = updateImage(tile, x, y, pixelOnly, conf, mainImage, name, colorPaletteProvider);
+			imagePool.put(name, mainImage);
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
 		if (conf.getScaleMode() != ScaleMode.None) {
-
-			String sm = conf.getScaleMode().name() + "_" + name;
-			Image img = imagePool.get(sm);
-			if (img != null) {
-				img.dispose();
+			String sm = name + "_" + conf.getScaleMode().name();
+			scaledImage = imagePool.get(sm);
+			if (null == scaledImage || forceUpdate) {
+				if (forceUpdate && scaledImage != null) {
+					scaledImage.dispose();
+				}
+				System.out.println("new scaled image");
+				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
+						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
+				int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
+						: conf.fullHeightPixel >> scaleMode.getScaleFactor();
+				scaledImage = new Image(Display.getDefault(),
+						mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
+				imagePool.put(sm, scaledImage);
 			}
-			// System.out.println("scale down");
-			int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
-					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
-			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
-					: conf.fullHeightPixel >> scaleMode.getScaleFactor();
-
-			img = new Image(Display.getDefault(), image.getImageData().scaledTo(scaledWidth, scaledHeight));
-			imagePool.put(sm, img);
-			image = img;
+			mainImage = scaledImage;
 		}
-		conf.setScaledTileWidth(image.getBounds().width);
-		conf.setScaledTileHeight(image.getBounds().height);
-		return image;
+		conf.setScaledTileWidth(mainImage.getBounds().width);
+		conf.setScaledTileHeight(mainImage.getBounds().height);
+		return mainImage;
 	}
 
 	public boolean hasImages() {
@@ -67,21 +68,9 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image createOrUpdateImage(Tile tile, int px, int py, boolean pixelOnly, ImagingWidgetConfiguration conf,
+	private Image updateImage(Tile tile, int px, int py, boolean pixelOnly, ImagingWidgetConfiguration conf,
 			Image image, String imageName, IColorPaletteProvider colorPaletteProvider) {
-
-		Image img = image;
-		if (img == null) {
-			img = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
-			System.out.println("new Image");
-		}
-
-		gc = gcCache.get(imageName);
-		if (gc == null) {
-			gc = new GC(img);
-			gcCache.put(imageName, gc);
-		}
-
+		GC gc = new GC(image);
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
 		int size = tile.getLayer(0).size();
@@ -104,21 +93,18 @@ public class ImagePainterFactory {
 				x++;
 			}
 		}
-		// gc.dispose();
-		return img;
+		gc.dispose();
+		return image;
 	}
 
 	private void draw(GC gc, int offset, List<Layer> layerList, Tile tile, ImagingWidgetConfiguration conf, int x,
 			int y, IColorPaletteProvider colorPaletteProvider) {
-		Color color;
 		for (Layer l : layerList) {
 			int[] content = l.getContent();
 			if (content[offset] != 0 && (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() && l.isActive())
 					|| tile.isShowInactiveLayerTranslucent())) {
-				color = colorPaletteProvider.getColorByIndex(content[offset]);
 				gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
 			}
-			System.out.println("draw Rect");
 			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
 			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
 		}
