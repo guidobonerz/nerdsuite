@@ -22,7 +22,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private boolean tileSelectionStarted = false;
 	private SelectionRange tileSelectionRange = null;
 	private List<Integer> selectedTileIndexList = null;
-	private boolean drawAll = false;
+	private boolean doPaint = true;
+	private boolean drawAll = true;
 	private int start;
 	private int end;
 
@@ -162,25 +163,27 @@ public class RepositoryWidget extends BaseImagingWidget {
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
+		if (doPaint) {
+			for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
+				int index = tileRepositoryService.getTileIndex(i);
+				paintTile(this, gc, tileRepositoryService.getTileIndex(index), conf, colorPaletteProvider, forceUpdate);
+			}
 
-		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
-			int index = tileRepositoryService.getTileIndex(i);
-			paintTile(this, gc, tileRepositoryService.getTileIndex(index), conf, colorPaletteProvider, forceUpdate);
+			if (paintTileGrid) {
+				paintTileGrid(gc);
+			}
+
+			if (tileDragActive) {
+				paintDragMarker(gc);
+			} else {
+				paintSelection(gc);
+				paintTileMarker(gc);
+			}
+			forceUpdate = false;
+			drawAll = true;
+			doPaint = false;
+			redrawMode = RedrawMode.DrawNothing;
 		}
-
-		if (paintTileGrid) {
-			paintTileGrid(gc);
-		}
-
-		if (tileDragActive) {
-			paintDragMarker(gc);
-		} else {
-			paintSelection(gc);
-			paintTileMarker(gc);
-		}
-		forceUpdate = false;
-		redrawMode = RedrawMode.DrawNothing;
-
 	}
 
 	private void paintDragMarker(GC gc) {
@@ -291,6 +294,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawCalculatedArea() {
+		doPaint = true;
 		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile
 				|| redrawMode == RedrawMode.DrawPixel) {
 			drawAll = false;
@@ -310,6 +314,9 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 			start = computeTileIndex(0, iys);
 			end = computeTileIndex(columns, iye);
+			if (end > tileRepositoryService.getSize()) {
+				end = tileRepositoryService.getSize() - 1;
+			}
 			int height = (1 + iye - iys) * imageHeight;
 			redraw(0, ys, imageWidth * columns, height, false);
 		} else {
