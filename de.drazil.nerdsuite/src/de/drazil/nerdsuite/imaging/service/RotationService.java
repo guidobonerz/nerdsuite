@@ -22,8 +22,8 @@ public class RotationService extends AbstractImagingService {
 	}
 
 	private boolean checkIfSquareBase() {
-		Rectangle r = null;//selectedTile.getSelection();
-		return false;//r.width != r.height;
+		Rectangle r = service.getSelection();
+		return r.width != r.height;
 	}
 
 	@Override

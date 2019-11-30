@@ -59,10 +59,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 		if (tileSelectionStarted) {
 			mc.stop();
 		}
-		if (tileChanged) {
-			computeTileSelection(tileX, tileY, 1);
-			doRedraw(RedrawMode.DrawAllTiles, null, false);
-		}
+		computeTileSelection(tileX, tileY, 1);
+		doRedraw(RedrawMode.DrawAllTiles, null, false);
 	}
 
 	@Override
@@ -125,6 +123,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 				from = to;
 				to = d;
 			}
+			System.out.println(from + " " + to);
 			if (!tileDragActive) {
 				selectedTileIndexList.clear();
 				for (int i = from; i <= to; i++) {
@@ -236,7 +235,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
-		System.out.println("repaint repository");
 		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}

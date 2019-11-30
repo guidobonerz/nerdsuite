@@ -18,6 +18,7 @@ Last Changes:
 - Bulk tile modifications
 - Tile Animation finished
 - Tile Drag Movement/Reordering
+- Sprite Import
 
 Gfx Module Todo:
 - Proper Multicolor handling
@@ -51,8 +52,6 @@ Create/Update disk images
 ![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
 ## Colorchooser
 ![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ColorChooser.png)
-## Image modification on selected range
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/range_selection.png)
 ## Sprite Animation Example
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/drops_animation.gif)
 ## Sprite Animation Example - GI-Joe Firefly Walking left / Imported Hires

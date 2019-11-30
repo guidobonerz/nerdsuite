@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -144,17 +145,13 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
-			// paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY,
-			// conf, colorPaletteProvider);
+			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
-			// paintTile(gc, tileRepositoryService.getSelectedTileIndexList().get(0), conf,
-			// colorPaletteProvider, false);
-			gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(
-					tileRepositoryService.getTile(tileRepositoryService.getSelectedTileIndexList().get(0)), 0, 0, false,
-					conf, colorPaletteProvider, forceUpdate), 0, 0);
+			int index = tileRepositoryService.getSelectedTileIndexList().get(0);
+			paintTile(gc, index, conf, colorPaletteProvider, paintTelevisionMode);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
-			// paintTile(gc, tileRepositoryService.getTileIndex(temporaryIndex), conf,
-			// colorPaletteProvider, false);
+			int index = tileRepositoryService.getTileIndex(temporaryIndex);
+			paintTile(gc, index, conf, colorPaletteProvider, paintTelevisionMode);
 		}
 
 		if (paintPixelGrid) {
@@ -262,7 +259,6 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
-		System.out.println("repaint painter");
 		if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			if (this.tile != null) {
@@ -274,7 +270,6 @@ public class PainterWidget extends BaseImagingWidget {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
 		doRedraw(redrawMode, null, forceUpdate);
-
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
@@ -327,9 +322,12 @@ public class PainterWidget extends BaseImagingWidget {
 				colorPaletteProvider, forceUpdate), 0, 0);
 	}
 
-	public void paintTile(GC gc, int index, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider,
-			boolean forceUpdate) {
-
+	private void paintTile(GC gc, int index, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
+		Tile tile = tileRepositoryService.getTile(index);
+		Image image = tileRepositoryService.getImagePainterFactory().getImage(tile, 0, 0, false, conf,
+				colorPaletteProvider, forceUpdate);
+		gc.drawImage(image, 0, 0);
 	}
 
 	@Override

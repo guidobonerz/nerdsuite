@@ -94,7 +94,8 @@ public abstract class BaseImagingWidget extends BaseWidget
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				conf.setColumns((int) (getParent().getBounds().width / conf.getScaledTileWidth()));
+				int c = (int) ((getParent().getBounds().width - 30) / conf.getScaledTileWidth());
+				conf.setColumns(c == 0 ? 1 : c);
 				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
 						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
 				doRedraw(RedrawMode.DrawAllTiles, null, false);
