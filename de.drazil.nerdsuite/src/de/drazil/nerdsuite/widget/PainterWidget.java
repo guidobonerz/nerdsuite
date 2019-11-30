@@ -37,28 +37,24 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-
-		if (conf.cursorMode == CursorMode.Point) {
-			if (oldCursorX != cursorX || oldCursorY != cursorY) {
-				oldCursorX = cursorX;
-				oldCursorY = cursorY;
+		if (cursorChanged) {
+			if (conf.cursorMode == CursorMode.Point) {
 				setPixel(tile, cursorX, cursorY, conf);
 				forceUpdate = true;
 				doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
 				fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
+
+			} else if (conf.cursorMode == CursorMode.SelectRectangle) {
+				computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
+				doRedraw(RedrawMode.DrawSelectedTile, null, false);
 			}
-		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
-			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
-			doRedraw(RedrawMode.DrawSelectedTile, null, false);
 		}
 	}
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		if (conf.cursorMode == CursorMode.SelectRectangle) {
+		if (conf.cursorMode == CursorMode.SelectRectangle && cursorChanged) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
-			// rangeSelectionStarted = true;
-			// doDrawTile(false);
 			doRedraw(RedrawMode.DrawSelectedTile, null, false);
 		}
 	}
@@ -75,25 +71,18 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseEnter(int modifierMask, int x, int y) {
-		// doDrawTile(false);
 		doRedraw(RedrawMode.DrawSelectedTile, null, false);
 	}
 
 	@Override
 	protected void mouseExit(int modifierMask, int x, int y) {
-		// doDrawTile(false);
 		doRedraw(RedrawMode.DrawSelectedTile, null, false);
 	}
 
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
-		if (conf.cursorMode == CursorMode.Point) {
-			if (oldCursorX != cursorX || oldCursorY != cursorY) {
-				oldCursorX = cursorX;
-				oldCursorY = cursorY;
-				// doDrawTile(false);
-				doRedraw(RedrawMode.DrawSelectedTile, null, false);
-			}
+		if (conf.cursorMode == CursorMode.Point && cursorChanged) {
+			doRedraw(RedrawMode.DrawSelectedTile, null, false);
 		}
 	}
 
@@ -345,5 +334,10 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
 		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
+	}
+
+	@Override
+	public void calculateRedrawArea() {
+		redraw();
 	}
 }

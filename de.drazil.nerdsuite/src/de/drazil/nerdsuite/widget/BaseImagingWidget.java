@@ -7,13 +7,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
@@ -42,18 +42,24 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected int selectedTileIndexY = 0;
 	protected int selectedTileIndex = 0;
 
-	protected int oldCursorX = 0;
-	protected int oldCursorY = 0;
+	protected int oldCursorX = -1;
+	protected int oldCursorY = -1;
 	protected int cursorX = 0;
 	protected int cursorY = 0;
-	protected int oldTileX = 0;
-	protected int oldTileY = 0;
+	protected int oldTileX = -1;
+	protected int oldTileY = -1;
 	protected int tileX = 0;
 	protected int tileY = 0;
+	protected int oldTileCursorX = -1;
+	protected int oldTileCursorY = -1;
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
 	protected int temporaryIndex;
 	protected boolean forceUpdate;
+
+	protected boolean cursorChanged = false;
+	protected boolean tileCursorChanged = false;
+	protected boolean tileChanged = false;
 
 	protected boolean updateCursorLocation = false;
 
@@ -65,6 +71,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected TileRepositoryService tileRepositoryService;
 
 	protected Tile tile = null;
+	protected Image image = null;
 	protected MeasuringController mc;
 
 	protected IColorPaletteProvider colorPaletteProvider;
@@ -90,7 +97,6 @@ public abstract class BaseImagingWidget extends BaseWidget
 				conf.setColumns((int) (getParent().getBounds().width / conf.getScaledTileWidth()));
 				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
 						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
-				// doDrawAllTiles();
 				doRedraw(RedrawMode.DrawAllTiles, null, false);
 			}
 		});
@@ -172,12 +178,32 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected void computeCursorPosition(int x, int y) {
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
-		// tileX = x / (conf.currentWidth * conf.currentPixelWidth * conf.tileColumns);
-		// tileY = y / (conf.height * conf.currentPixelHeight * conf.tileRows);
+		if (oldCursorX != cursorX || oldCursorY != cursorY) {
+			oldCursorX = cursorX;
+			oldCursorY = cursorY;
+			cursorChanged = true;
+		} else {
+			cursorChanged = false;
+		}
 		tileX = x / conf.getScaledTileWidth();
 		tileY = y / conf.getScaledTileHeight();
+		if (oldTileX != tileX || oldTileY != tileY) {
+			oldTileX = tileX;
+			oldTileY = tileY;
+			tileChanged = true;
+		} else {
+			tileChanged = false;
+		}
+
 		tileCursorX = (cursorX - (tileX * conf.width));
 		tileCursorY = (cursorY - (tileY * conf.height));
+		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY) {
+			oldTileCursorX = tileCursorX;
+			oldTileCursorY = tileCursorY;
+			tileCursorChanged = true;
+		} else {
+			tileCursorChanged = false;
+		}
 	}
 
 	private boolean checkKeyPressed(int modifierKey, char charCode) {
@@ -202,8 +228,6 @@ public abstract class BaseImagingWidget extends BaseWidget
 			gc.drawLine(0, y, length, y);
 		}
 	}
-
-	
 
 	public void recalc() {
 		int pixmul = conf.pixelConfig.pixmul;
@@ -290,8 +314,10 @@ public abstract class BaseImagingWidget extends BaseWidget
 	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, boolean forceUpdate) {
 		this.forceUpdate = forceUpdate;
 		this.redrawMode = redrawMode;
-		redraw();
+		calculateRedrawArea();
 	}
+
+	public abstract void calculateRedrawArea();
 
 	@Override
 	public void beforeRunService() {
