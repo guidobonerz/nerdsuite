@@ -32,7 +32,6 @@ public class PainterWidget extends BaseImagingWidget {
 			setPixel(tile, cursorX, cursorY, conf);
 			forceUpdate = true;
 			doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
-			fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
 		}
 	}
 
@@ -41,12 +40,8 @@ public class PainterWidget extends BaseImagingWidget {
 
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-			// if (cursorChanged) {
 			forceUpdate = true;
 			doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
-			fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
-			// }
-
 		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, null, false);
@@ -69,6 +64,8 @@ public class PainterWidget extends BaseImagingWidget {
 				rangeSelectionStarted = false;
 				computeRangeSelection(tileCursorX, tileCursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			}
+		} else if (conf.cursorMode == CursorMode.Point) {
+			fireDoRedraw(RedrawMode.DrawSelectedTile, null, true);
 		}
 	}
 

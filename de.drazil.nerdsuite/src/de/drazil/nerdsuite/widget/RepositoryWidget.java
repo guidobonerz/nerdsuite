@@ -155,9 +155,9 @@ public class RepositoryWidget extends BaseImagingWidget {
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
 
-		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
-			int index = tileRepositoryService.getTileIndex(i);
-			paintTile(this, gc, tileRepositoryService.getTileIndex(index), conf, colorPaletteProvider, forceUpdate);
+		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end+1); i++) {
+			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
+			paintTile(this, gc, index, conf, colorPaletteProvider, forceUpdate);
 		}
 
 		if (paintTileGrid) {
