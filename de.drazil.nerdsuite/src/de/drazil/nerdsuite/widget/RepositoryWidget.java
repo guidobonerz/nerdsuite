@@ -74,6 +74,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			tileSelectionStarted = false;
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
 		}
+		doRedraw(RedrawMode.DrawAllTiles, null, false);
 	}
 
 	@Override
@@ -155,7 +156,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
 
-		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end+1); i++) {
+		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end + 1); i++) {
 			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
 			paintTile(this, gc, index, conf, colorPaletteProvider, forceUpdate);
 		}
@@ -300,7 +301,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			int ye = iye * imageHeight;
 
 			start = computeTileIndex(0, iys);
-			end = computeTileIndex(columns, iye);
+			end = computeTileIndex(columns, iye) + 1;
 			if (end > tileRepositoryService.getSize()) {
 				end = tileRepositoryService.getSize() - 1;
 			}
