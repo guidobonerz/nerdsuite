@@ -124,7 +124,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 				from = to;
 				to = d;
 			}
-			System.out.println(from + " " + to);
 			if (!tileDragActive) {
 				selectedTileIndexList.clear();
 				for (int i = from; i <= to; i++) {
