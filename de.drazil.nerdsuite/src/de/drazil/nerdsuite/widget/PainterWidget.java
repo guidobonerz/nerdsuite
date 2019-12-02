@@ -36,6 +36,9 @@ public class PainterWidget extends BaseImagingWidget {
 			setPixel(tile, cursorX, cursorY, conf);
 			forceUpdate = true;
 			doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
+		} else if (conf.cursorMode == CursorMode.Hand) {
+			ScrolledComposite parent = (ScrolledComposite) getParent();
+
 		}
 	}
 
@@ -51,8 +54,9 @@ public class PainterWidget extends BaseImagingWidget {
 			doRedraw(RedrawMode.DrawSelectedTile, null, false);
 		} else if (conf.cursorMode == CursorMode.Hand) {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
-
-			// parent.setOrigin(origin);
+			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
+			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
+			parent.setOrigin((int) (x * hd), (int) (y * vd));
 		}
 	}
 
