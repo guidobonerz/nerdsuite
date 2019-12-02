@@ -41,7 +41,7 @@ public class AnimationService extends AbstractImagingService {
 			int index = selectedTileIndexList.get(pos);
 			pos += (forward ? 1 : -1);
 			animationIndex.set(0, index);
-			service.redrawTileViewer(animationIndex, false, true);
+			service.redrawTileViewer(animationIndex, ImagePainterFactory.UPDATE_ALL, true);
 			System.out.println("animate");
 			/*
 			 * callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x,

@@ -21,6 +21,7 @@ import de.drazil.nerdsuite.imaging.service.IServiceCallback;
 import de.drazil.nerdsuite.imaging.service.ITileBulkModificationListener;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
+import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.mouse.IMeasuringListener;
@@ -55,7 +56,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
 	protected int temporaryIndex;
-	protected boolean forceUpdate;
+	protected int update;
 
 	protected boolean cursorChanged = false;
 	protected boolean tileCursorChanged = false;
@@ -98,7 +99,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 				conf.setColumns(c == 0 ? 1 : c);
 				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
 						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
-				doRedraw(RedrawMode.DrawAllTiles, null, false);
+				doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.UPDATE_ALL);
 			}
 		});
 	}
@@ -234,7 +235,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
-		doRedraw(RedrawMode.DrawAllTiles, null, false);
+		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.UPDATE_ALL);
 	}
 
 	@Override
@@ -268,13 +269,13 @@ public abstract class BaseImagingWidget extends BaseWidget
 		drawListenerList.remove(redrawListener);
 	}
 
-	protected void fireDoRedraw(RedrawMode redrawMode, PencilMode pencilMode, boolean forceUpdate) {
-		drawListenerList.forEach(l -> l.doRedraw(redrawMode, pencilMode, forceUpdate));
+	protected void fireDoRedraw(RedrawMode redrawMode, PencilMode pencilMode, int update) {
+		drawListenerList.forEach(l -> l.doRedraw(redrawMode, pencilMode, update));
 	}
 
 	@Override
-	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, boolean forceUpdate) {
-		this.forceUpdate = forceUpdate;
+	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int update) {
+		this.update = update;
 		this.redrawMode = redrawMode;
 		redrawCalculatedArea();
 	}
@@ -311,17 +312,17 @@ public abstract class BaseImagingWidget extends BaseWidget
 	}
 
 	@Override
-	public abstract void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate);
+	public abstract void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int update);
 
 	@Override
 	public void tileChanged() {
 		conf.setMultiColorEnabled(tile.isMulticolor());
-		doRedraw(RedrawMode.DrawSelectedTile, null, true);
+		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.NEW | ImagePainterFactory.UPDATE_ALL);
 	}
 
 	@Override
 	public void tilesChanged(List<Integer> selectedTileIndexList) {
-		doRedraw(RedrawMode.DrawSelectedTiles, null, true);
+		doRedraw(RedrawMode.DrawSelectedTiles, null, ImagePainterFactory.NEW | ImagePainterFactory.UPDATE_ALL);
 	}
 
 	@Override
@@ -336,7 +337,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void layerContentChanged(int layer) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, true);
+		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.NEW | ImagePainterFactory.UPDATE_ALL);
 	}
 
 	@Override

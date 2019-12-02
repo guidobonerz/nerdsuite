@@ -18,43 +18,50 @@ public class ImagePainterFactory {
 
 	private Map<String, Image> imagePool = null;
 
+	public final static int NONE = 0;
+	public final static int NEW = 1;
+	public final static int UPDATE_ALL = 2;
+	public final static int UPDATE_PIXEL = 4;
+
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
 	}
 
-	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
+	public Image getImage(Tile tile, int x, int y, int update, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
 		String name = tile.getName();
 		Image scaledImage = null;
 		Image mainImage = imagePool.get(name);
-		if (null == mainImage || forceUpdate) {
-			if (forceUpdate && mainImage != null) {
+		if (null == mainImage || (update & NEW) == NEW || (update & UPDATE_ALL) == UPDATE_ALL) {
+			if ((update & NEW) == NEW && mainImage != null) {
 				mainImage.dispose();
 			}
 			mainImage = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
-			mainImage = updateImage(tile, x, y, pixelOnly, conf, mainImage, name, colorPaletteProvider);
 			imagePool.put(name, mainImage);
+		}
+		if (update == UPDATE_ALL || update == UPDATE_PIXEL) {
+			mainImage = updateImage(tile, x, y, update, conf, mainImage, name, colorPaletteProvider);
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
-		//if (conf.getScaleMode() != ScaleMode.None) {
-			String sm = name + "_" + conf.getScaleMode().name();
-			scaledImage = imagePool.get(sm);
-			if (null == scaledImage || forceUpdate) {
-				if (forceUpdate && scaledImage != null) {
-					scaledImage.dispose();
-				}
-				// System.out.println("new scaled image");
-				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
-						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
-				int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
-						: conf.fullHeightPixel >> scaleMode.getScaleFactor();
-				scaledImage = new Image(Display.getDefault(),
-						mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
-				imagePool.put(sm, scaledImage);
+		// if (conf.getScaleMode() != ScaleMode.None) {
+		String sm = name + "_" + conf.getScaleMode().name();
+		scaledImage = imagePool.get(sm);
+		if (null == scaledImage || (update & NEW) == NEW || (update & UPDATE_ALL) == UPDATE_ALL
+				|| (update & UPDATE_PIXEL) == UPDATE_PIXEL) {
+			if ((update & NEW) == NEW && scaledImage != null) {
+				scaledImage.dispose();
 			}
-			mainImage = scaledImage;
-		//}
+			// System.out.println("new scaled image");
+			int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
+					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
+			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
+					: conf.fullHeightPixel >> scaleMode.getScaleFactor();
+			scaledImage = new Image(Display.getDefault(), mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
+			imagePool.put(sm, scaledImage);
+		}
+		mainImage = scaledImage;
+		// }
 		conf.setScaledTileWidth(mainImage.getBounds().width);
 		conf.setScaledTileHeight(mainImage.getBounds().height);
 		return mainImage;
@@ -68,8 +75,8 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image updateImage(Tile tile, int px, int py, boolean pixelOnly, ImagingWidgetConfiguration conf,
-			Image image, String imageName, IColorPaletteProvider colorPaletteProvider) {
+	private Image updateImage(Tile tile, int px, int py, int update, ImagingWidgetConfiguration conf, Image image,
+			String imageName, IColorPaletteProvider colorPaletteProvider) {
 		GC gc = new GC(image);
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
@@ -77,13 +84,12 @@ public class ImagePainterFactory {
 		int x = 0;
 		int y = 0;
 		List<Layer> layerList = tile.getLayerList();
-		if (pixelOnly) {
+		if ((update & UPDATE_PIXEL) == UPDATE_PIXEL) {
 			int offset = py * width + px;
 			if (offset < size) {
-				// System.out.println("pixel only:" + px + " y:" + py + " offset:" + offset);
 				draw(gc, offset, layerList, tile, conf, px, py, colorPaletteProvider);
 			}
-		} else {
+		} else if ((update & UPDATE_ALL) == UPDATE_ALL) {
 			for (int i = 0; i < size; i++) {
 				if (i % width == 0 && i > 0) {
 					x = 0;
@@ -92,6 +98,8 @@ public class ImagePainterFactory {
 				draw(gc, i, layerList, tile, conf, x, y, colorPaletteProvider);
 				x++;
 			}
+		} else {
+
 		}
 		gc.dispose();
 		return image;

@@ -135,7 +135,7 @@ public class TileRepositoryService implements IService {
 
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
 		this.selectedTileIndexList = tileIndexList;
-		fireTileRedraw(tileIndexList, false, false);
+		fireTileRedraw(tileIndexList, ImagePainterFactory.UPDATE_ALL, false);
 	}
 
 	public List<Integer> getSelectedTileIndexList() {
@@ -202,20 +202,20 @@ public class TileRepositoryService implements IService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireTileRedraw(List<Integer> selectedTileIndexList, boolean forceUpdate, boolean temporary) {
+	private void fireTileRedraw(List<Integer> selectedTileIndexList, int update, boolean temporary) {
 		if (selectedTileIndexList != null) {
 			if (selectedTileIndexList.size() == 1) {
 				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
-						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, forceUpdate));
+						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, update));
 			} else {
-				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
-						RedrawMode.DrawSelectedTiles, forceUpdate));
+				tileUpdateListener.forEach(
+						listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, update));
 			}
 		}
 	}
 
-	public void redrawTileViewer(List<Integer> selectedTileIndexList, boolean forceUpdate, boolean temporary) {
-		fireTileRedraw(selectedTileIndexList, forceUpdate, temporary);
+	public void redrawTileViewer(List<Integer> selectedTileIndexList, int update, boolean temporary) {
+		fireTileRedraw(selectedTileIndexList, update, temporary);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {

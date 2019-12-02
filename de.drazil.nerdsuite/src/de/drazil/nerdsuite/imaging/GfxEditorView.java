@@ -480,7 +480,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	@Override
-	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int  update) {
 		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles
 				|| redrawMode == RedrawMode.DrawTemporarySelectedTile);
 		List<String> tags = new LinkedList<>();
