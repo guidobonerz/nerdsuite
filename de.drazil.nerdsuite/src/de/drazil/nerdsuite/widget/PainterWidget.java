@@ -3,8 +3,11 @@ package de.drazil.nerdsuite.widget;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -13,6 +16,7 @@ import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
+import de.drazil.nerdsuite.model.CustomSize;
 
 public class PainterWidget extends BaseImagingWidget {
 
@@ -32,7 +36,9 @@ public class PainterWidget extends BaseImagingWidget {
 			setPixel(tile, cursorX, cursorY, conf);
 			forceUpdate = true;
 			doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
-			fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
+		} else if (conf.cursorMode == CursorMode.Hand) {
+			ScrolledComposite parent = (ScrolledComposite) getParent();
+
 		}
 	}
 
@@ -41,17 +47,17 @@ public class PainterWidget extends BaseImagingWidget {
 
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-			// if (cursorChanged) {
 			forceUpdate = true;
 			doRedraw(RedrawMode.DrawPixel, null, forceUpdate);
-			fireDoRedraw(RedrawMode.DrawPixel, null, forceUpdate);
-			// }
-
 		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, null, false);
+		} else if (conf.cursorMode == CursorMode.Hand) {
+			ScrolledComposite parent = (ScrolledComposite) getParent();
+			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
+			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
+			parent.setOrigin((int) (x * hd), (int) (y * vd));
 		}
-
 	}
 
 	@Override
@@ -69,6 +75,8 @@ public class PainterWidget extends BaseImagingWidget {
 				rangeSelectionStarted = false;
 				computeRangeSelection(tileCursorX, tileCursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			}
+		} else if (conf.cursorMode == CursorMode.Point) {
+			fireDoRedraw(RedrawMode.DrawSelectedTile, null, true);
 		}
 	}
 
@@ -251,8 +259,11 @@ public class PainterWidget extends BaseImagingWidget {
 	public void setCursorMode(CursorMode cursorMode) {
 		conf.setCursorMode(cursorMode);
 		if (cursorMode == CursorMode.Point) {
+			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
 			tileRepositoryService.setSelection(new Rectangle(0, 0, conf.getWidth() * conf.getTileColumns(),
 					conf.getHeight() * conf.getTileRows()));
+		} else if (cursorMode == CursorMode.Hand) {
+			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_SIZEALL));
 		}
 		doRedraw(RedrawMode.DrawSelectedTile, null, false);
 	}
@@ -344,5 +355,21 @@ public class PainterWidget extends BaseImagingWidget {
 	public void redrawCalculatedArea() {
 		redraw();
 
+	}
+
+	@Override
+	public Point computeSize(int wHint, int hHint, boolean changed) {
+
+		CustomSize cs = tileRepositoryService.getCustomSize();
+
+		// int width = (conf.width * conf.currentPixelWidth * conf.tileColumns *
+		// conf.columns);
+		// int height = (conf.height * conf.currentPixelHeight * conf.tileRows *
+		// conf.rows);
+
+		int width = (cs.getWidth() * conf.currentPixelWidth * cs.getTileColumns() * conf.columns);
+		int height = (cs.getHeight() * conf.currentPixelHeight * cs.getTileRows() * conf.rows);
+		System.out.println(width + " " + height);
+		return new Point(width, height);
 	}
 }

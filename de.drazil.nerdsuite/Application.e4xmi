@@ -71,9 +71,15 @@
         </children>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_-oKP4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.edit" label="Edit">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_CXi2QKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.11" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_Ct3rkKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.12" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_dT-kMBRsEeqge9jya_n-6g">
+          <parameters xmi:id="_6NJ5gBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.62" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="cut"/>
+        </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_CXi2QKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.11" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png" command="_dT-kMBRsEeqge9jya_n-6g">
+          <parameters xmi:id="_9I-KYBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.63" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="copy"/>
+        </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Ct3rkKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.12" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png" command="_dT-kMBRsEeqge9jya_n-6g">
+          <parameters xmi:id="_-LpIUBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.64" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="paste"/>
+        </children>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_D0zT4KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.run" label="Run">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_KIY8YKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.13" label="Build" command="_sVcnUMyREeOnSbGKqjX4ww"/>
@@ -110,6 +116,7 @@
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
   <handlers xmi:id="_9CBz8MznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handler.export" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ExportHandler" command="_2QmjcMznEemJh_xLPhHI6A"/>
   <handlers xmi:id="_d0CMoNvqEemXK8sgYhnEoQ" elementId="de.drazil.nerdsuite.handler.Save" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SaveHandler" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>
+  <handlers xmi:id="_oJseoBRuEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.handler.GlobalClipboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ClipboardHandler" command="_dT-kMBRsEeqge9jya_n-6g"/>
   <bindingTables xmi:id="_SoW6YNc0Eem8ZM0LwkCd1Q" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_bnniINc5EemIEoLjroS7Zw">
     <bindings xmi:id="_Xko04Nc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.0" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
       <tags>type:user</tags>
@@ -182,6 +189,15 @@
     <bindings xmi:id="_y7iMMNdHEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.18" keySequence="M3+SPACE">
       <tags>type:user</tags>
     </bindings>
+    <bindings xmi:id="_armzwBRsEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.keybinding.19" keySequence="CTRL+X" command="_dT-kMBRsEeqge9jya_n-6g">
+      <parameters xmi:id="_BO6hgBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.59" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="cut"/>
+    </bindings>
+    <bindings xmi:id="_ua1XcBRsEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.keybinding.20" keySequence="CTRL+C" command="_dT-kMBRsEeqge9jya_n-6g">
+      <parameters xmi:id="_Co5MMBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.60" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="copy"/>
+    </bindings>
+    <bindings xmi:id="_xajQ4BRsEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.keybinding.21" keySequence="CTRL+V" command="_dT-kMBRsEeqge9jya_n-6g">
+      <parameters xmi:id="_C7W1MBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.61" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="paste"/>
+    </bindings>
   </bindingTables>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
@@ -205,11 +221,18 @@
     <handlers xmi:id="_Dx6Y4NkIEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.handler.Multicolor" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MulticolorHandler" command="_9kXRgNkHEemZC_fHbEbEjw"/>
     <handlers xmi:id="_orpe4OPLEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.handler.SelectionMode" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CursorModeHandler" command="_MEx9MOOsEemaAe-ToSRFZQ"/>
     <handlers xmi:id="_JfXf0AvdEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.handler.Animation" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.AnimationHandler" command="_jkqDIAvcEeq4CuIpZ1rK3Q"/>
+    <handlers xmi:id="_eOq_8BRuEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.handler.Clipboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ClipboardHandler" command="_dT-kMBRsEeqge9jya_n-6g"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="__XCxYNUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.GfxToolbox">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action" command="_Xm69wNdCEemIEoLjroS7Zw"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_e9huUBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_m70akBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.paste" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_dT-kMBRsEeqge9jya_n-6g">
+        <parameters xmi:id="_CQOYEBRuEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.65" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="cut"/>
+      </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_e9huUBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png" command="_dT-kMBRsEeqge9jya_n-6g">
+        <parameters xmi:id="_DfyigBRuEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.66" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="copy"/>
+      </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_m70akBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.paste" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png" command="_dT-kMBRsEeqge9jya_n-6g">
+        <parameters xmi:id="_KjJ3kBRuEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.67" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="paste"/>
+      </children>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_NbHmMNdEEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handledmenuitem.SelectAll" label="Select All" command="_Ll63wNdHEemIEoLjroS7Zw"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_80f-EBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.Purge" label="Purge" command="_jAOccNWOEemb1pFqqqXNXQ"/>
       <children xsi:type="menu:MenuSeparator" xmi:id="_Awy0gBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
@@ -281,6 +304,9 @@
         <parameters xmi:id="_3oZUgNX1Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.parameter.31" name="de.drazil.nerdsuite.commandparameter.PencilMode" value="5"/>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_iBMfQOOuEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.toolbarseparator.5"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_jLS-oBT1EeqfdLolq7w5-g" elementId="de.drazil.nerdsuite.handledtoolitem.8" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/hand.png" type="Radio" command="_MEx9MOOsEemaAe-ToSRFZQ">
+        <parameters xmi:id="_BsezkBT3EeqfdLolq7w5-g" elementId="de.drazil.nerdsuite.parameter.68" name="de.drazil.nerdsuite.commandparameter.CursorMode" value="2"/>
+      </children>
       <children xsi:type="menu:HandledToolItem" xmi:id="_jwahgOOrEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.handledtoolitem.Point" label="Point" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/pointer.png" tooltip="Point" selected="true" type="Radio" command="_MEx9MOOsEemaAe-ToSRFZQ">
         <parameters xmi:id="_a1cVIOOsEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.parameter.45" name="de.drazil.nerdsuite.commandparameter.CursorMode" value="0"/>
       </children>
@@ -407,6 +433,9 @@
   </commands>
   <commands xmi:id="_jkqDIAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.command.Animation" commandName="Animation">
     <parameters xmi:id="_nDWXkAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.commandparameter.AnimationMode" name="AnimationMode"/>
+  </commands>
+  <commands xmi:id="_dT-kMBRsEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.command.Clipboard" commandName="Clipboard">
+    <parameters xmi:id="_5794UBRsEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.commandparameter.ClipboardAction" name="ClipboardAction"/>
   </commands>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
