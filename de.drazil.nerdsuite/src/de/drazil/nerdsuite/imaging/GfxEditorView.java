@@ -24,10 +24,6 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -35,7 +31,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.ScrollBar;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
@@ -356,9 +351,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			}
 		}
 
-		defaultSize = new Point(graphicFormat.getWidth() * graphicFormatVariant.getPixelSize(),
-				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize());
-		actualSize = new Point(
+		defaultSize = new Point(
 				graphicFormat.getWidth() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileColumns(),
 				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileRows());
 		if (customSize != null) {
@@ -368,19 +361,13 @@ public class GfxEditorView implements ITileUpdateListener {
 		}
 
 		GridLayout layout = new GridLayout(2, false);
-
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
 		GridData gridData = null;
-
 		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-
-		gridData.widthHint = actualSize.x > 700 ? 700 : actualSize.x;
-		gridData.heightHint = actualSize.y > 600 ? 600 : actualSize.y;
-
-		gridData = new GridData(GridData.CENTER);
-
+		gridData.widthHint = 640;
+		gridData.heightHint = 400;
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -419,8 +406,6 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		}
 
-		repository.recalc();
-		painter.recalc();
 		painter.addDrawListener(repository);
 
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
@@ -459,6 +444,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	public PainterWidget createPainterWidget() {
 		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
+		scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
@@ -471,30 +457,15 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
 		painter.getConf().setScaleMode(ScaleMode.None);
-		painter.recalc();
-
-		ScrollBar vb = scrollablePainter.getVerticalBar();
-		vb.setThumb(10);
-
-		vb.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				System.out
-						.println(graphicFormat.getHeight() * graphicFormat.getPixelSize() + "    " + vb.getSelection());
-			}
-		});
+		// painter.recalc();
 
 		scrollablePainter.setContent(painter);
 		scrollablePainter.setExpandVertical(true);
 		scrollablePainter.setExpandHorizontal(true);
-		scrollablePainter.setMinSize(actualSize);
+		// Point p = new Point(defaultSize.x > 700 ? 700 : defaultSize.x, defaultSize.y
+		// > 600 ? 600 : defaultSize.y);
+		// scrollablePainter.setSize(p);
 
-		scrollablePainter.addControlListener(new ControlAdapter() {
-			public void controlResized(ControlEvent e) {
-				// scrollablePainter.setMinSize(actualSize);
-			}
-		});
 		return painter;
 
 	}

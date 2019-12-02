@@ -342,4 +342,5 @@ public class PainterWidget extends BaseImagingWidget {
 		redraw();
 
 	}
+
 }
