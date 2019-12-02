@@ -24,6 +24,9 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -92,9 +95,9 @@ public class GfxEditorView implements ITileUpdateListener {
 	private CustomSize customSize = null;
 	private GraphicFormat graphicFormat = null;
 	private GraphicFormatVariant graphicFormatVariant = null;
-	private Point defaultSize;
 	private Point actualSize;
 
+	private CursorMode cursorMode = CursorMode.Point;
 	private File file;
 	private Project project;
 	private String owner;
@@ -125,6 +128,7 @@ public class GfxEditorView implements ITileUpdateListener {
 				return MessageDialog.openQuestion(parent.getShell(), "Image Process Confirmation", confirmationMessage);
 			}
 		};
+
 	}
 
 	@Inject
@@ -242,6 +246,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			CursorMode cursorMode = (CursorMode) brokerObject.getTransferObject();
 			painter.setCursorMode(cursorMode);
+			this.cursorMode = cursorMode;
 		}
 	}
 
@@ -351,7 +356,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			}
 		}
 
-		defaultSize = new Point(
+		actualSize = new Point(
 				graphicFormat.getWidth() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileColumns(),
 				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileRows());
 		if (customSize != null) {
@@ -366,8 +371,8 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter = createPainterWidget();
 		GridData gridData = null;
 		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-		gridData.widthHint = 640;
-		gridData.heightHint = 400;
+		gridData.widthHint = 640 + 25;
+		gridData.heightHint = 400 + 25;
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -424,10 +429,8 @@ public class GfxEditorView implements ITileUpdateListener {
 				tileRepositoryService.setSelectedTileIndex(index);
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
 				painter.setCursorMode(CursorMode.Point);
-
 			}
 		});
-
 	}
 
 	public LayerChooser createLayerChooser() {
@@ -457,14 +460,11 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
 		painter.getConf().setScaleMode(ScaleMode.None);
-		// painter.recalc();
 
 		scrollablePainter.setContent(painter);
 		scrollablePainter.setExpandVertical(true);
 		scrollablePainter.setExpandHorizontal(true);
-		// Point p = new Point(defaultSize.x > 700 ? 700 : defaultSize.x, defaultSize.y
-		// > 600 ? 600 : defaultSize.y);
-		// scrollablePainter.setSize(p);
+		scrollablePainter.setMinSize(actualSize);
 
 		return painter;
 
