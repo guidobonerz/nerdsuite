@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -13,6 +14,7 @@ import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
+import de.drazil.nerdsuite.model.CustomSize;
 
 public class PainterWidget extends BaseImagingWidget {
 
@@ -343,4 +345,19 @@ public class PainterWidget extends BaseImagingWidget {
 
 	}
 
+	@Override
+	public Point computeSize(int wHint, int hHint, boolean changed) {
+
+		CustomSize cs = tileRepositoryService.getCustomSize();
+
+		// int width = (conf.width * conf.currentPixelWidth * conf.tileColumns *
+		// conf.columns);
+		// int height = (conf.height * conf.currentPixelHeight * conf.tileRows *
+		// conf.rows);
+
+		int width = (cs.getWidth() * conf.currentPixelWidth * cs.getTileColumns() * conf.columns);
+		int height = (cs.getHeight() * conf.currentPixelHeight * cs.getTileRows() * conf.rows);
+		System.out.println(width + " " + height);
+		return new Point(width, height);
+	}
 }
