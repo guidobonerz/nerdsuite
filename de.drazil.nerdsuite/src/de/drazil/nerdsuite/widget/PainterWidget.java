@@ -50,8 +50,9 @@ public class PainterWidget extends BaseImagingWidget {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, null, false);
 		} else if (conf.cursorMode == CursorMode.Hand) {
-			((ScrolledComposite) getParent()).setOrigin((cursorX * conf.getPixelSize()) / 2,
-					(cursorY * conf.getPixelSize()) / 2);
+			ScrolledComposite parent = (ScrolledComposite) getParent();
+
+			// parent.setOrigin(origin);
 		}
 	}
 
