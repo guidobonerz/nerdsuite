@@ -16,9 +16,10 @@ Current state: Still buggy and incomplete :-)
 Last Changes:
 - Range selection modification for Shift, Flip, Mirror, Rotate, Invert and Purge
 - Bulk tile modifications
-- Tile Animation finished
-- Tile Drag Movement/Reordering
-- Sprite Import
+- Tile animation finished
+- Tile drag movement/reordering
+- Sprite import
+- Scroll drawing area
 
 Gfx Module Todo:
 - Proper Multicolor handling
