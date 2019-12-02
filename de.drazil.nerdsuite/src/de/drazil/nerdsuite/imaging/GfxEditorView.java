@@ -24,9 +24,6 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -97,7 +94,6 @@ public class GfxEditorView implements ITileUpdateListener {
 	private GraphicFormatVariant graphicFormatVariant = null;
 	private Point actualSize;
 
-	private CursorMode cursorMode = CursorMode.Point;
 	private File file;
 	private Project project;
 	private String owner;
@@ -246,7 +242,6 @@ public class GfxEditorView implements ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			CursorMode cursorMode = (CursorMode) brokerObject.getTransferObject();
 			painter.setCursorMode(cursorMode);
-			this.cursorMode = cursorMode;
 		}
 	}
 
@@ -273,7 +268,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void exportFile(@UIEventTopic("ExportFile") BrokerObject brokerObject) {
 		if (brokerObject.getTransferObject().equals("gfxEditor")) {
 			if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
-				StringBuilder sb = new StringBuilder();
+
 			}
 		}
 	}
