@@ -366,8 +366,8 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter = createPainterWidget();
 		GridData gridData = null;
 		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-		gridData.widthHint = 640 + 25;
-		gridData.heightHint = 400 + 25;
+		gridData.widthHint = actualSize.x > 665 ? 665 : actualSize.x;
+		gridData.heightHint = actualSize.y > 425 ? 425 : actualSize.y;
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
