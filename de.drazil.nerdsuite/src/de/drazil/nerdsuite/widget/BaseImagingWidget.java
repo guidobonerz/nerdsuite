@@ -99,7 +99,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 				conf.setColumns(c == 0 ? 1 : c);
 				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
 						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
-				doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.UPDATE_ALL);
+				doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 			}
 		});
 	}
@@ -235,7 +235,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
-		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.UPDATE_ALL);
+		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -317,12 +317,12 @@ public abstract class BaseImagingWidget extends BaseWidget
 	@Override
 	public void tileChanged() {
 		conf.setMultiColorEnabled(tile.isMulticolor());
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.NEW | ImagePainterFactory.UPDATE_ALL);
+		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
 	}
 
 	@Override
 	public void tilesChanged(List<Integer> selectedTileIndexList) {
-		doRedraw(RedrawMode.DrawSelectedTiles, null, ImagePainterFactory.NEW | ImagePainterFactory.UPDATE_ALL);
+		doRedraw(RedrawMode.DrawSelectedTiles, null, ImagePainterFactory.UPDATE);
 	}
 
 	@Override
@@ -337,7 +337,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void layerContentChanged(int layer) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.NEW | ImagePainterFactory.UPDATE_ALL);
+		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
 	}
 
 	@Override

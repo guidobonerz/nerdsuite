@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
@@ -19,9 +20,9 @@ public class ImagePainterFactory {
 	private Map<String, Image> imagePool = null;
 
 	public final static int NONE = 0;
-	public final static int NEW = 1;
-	public final static int UPDATE_ALL = 2;
-	public final static int UPDATE_PIXEL = 4;
+	public final static int READ = 1;
+	public final static int UPDATE = 2;
+	public final static int UPDATE_PIXEL = 8;
 
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
@@ -32,39 +33,49 @@ public class ImagePainterFactory {
 		String name = tile.getName();
 		Image scaledImage = null;
 		Image mainImage = imagePool.get(name);
-		if (null == mainImage || (update & NEW) == NEW || (update & UPDATE_ALL) == UPDATE_ALL) {
-			if ((update & NEW) == NEW && mainImage != null) {
+		if (null == mainImage || checkMode(update, UPDATE)) {
+			if (mainImage != null && checkMode(update, UPDATE)) {
 				mainImage.dispose();
 			}
+			System.out.println("new image");
 			mainImage = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
+			mainImage.setBackground(Constants.BLACK);
 			imagePool.put(name, mainImage);
 		}
-		if (update == UPDATE_ALL || update == UPDATE_PIXEL) {
+		if (checkMode(update, UPDATE) || checkMode(update, UPDATE_PIXEL)) {
+			System.out.println("pixel");
 			mainImage = updateImage(tile, x, y, update, conf, mainImage, name, colorPaletteProvider);
 		}
 
+		System.out.println("update:" + update);
+
 		ScaleMode scaleMode = conf.getScaleMode();
-		// if (conf.getScaleMode() != ScaleMode.None) {
-		String sm = name + "_" + conf.getScaleMode().name();
-		scaledImage = imagePool.get(sm);
-		if (null == scaledImage || (update & NEW) == NEW || (update & UPDATE_ALL) == UPDATE_ALL
-				|| (update & UPDATE_PIXEL) == UPDATE_PIXEL) {
-			if ((update & NEW) == NEW && scaledImage != null) {
-				scaledImage.dispose();
+		if (conf.getScaleMode() != ScaleMode.None) {
+			String sm = name + "_" + conf.getScaleMode().name();
+			scaledImage = imagePool.get(sm);
+			if (null == scaledImage || checkMode(update, UPDATE)) {
+				if (scaledImage != null && checkMode(update, UPDATE)) {
+					scaledImage.dispose();
+				}
+				System.out.println("new scaled image");
+				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
+						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
+				int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
+						: conf.fullHeightPixel >> scaleMode.getScaleFactor();
+				scaledImage = new Image(Display.getDefault(),
+						mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
+				imagePool.put(sm, scaledImage);
+
 			}
-			// System.out.println("new scaled image");
-			int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
-					: conf.fullWidthPixel >> scaleMode.getScaleFactor();
-			int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
-					: conf.fullHeightPixel >> scaleMode.getScaleFactor();
-			scaledImage = new Image(Display.getDefault(), mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
-			imagePool.put(sm, scaledImage);
+			mainImage = scaledImage;
 		}
-		mainImage = scaledImage;
-		// }
 		conf.setScaledTileWidth(mainImage.getBounds().width);
 		conf.setScaledTileHeight(mainImage.getBounds().height);
 		return mainImage;
+	}
+
+	private boolean checkMode(int update, int value) {
+		return (update & value) == value;
 	}
 
 	public boolean hasImages() {
@@ -84,12 +95,12 @@ public class ImagePainterFactory {
 		int x = 0;
 		int y = 0;
 		List<Layer> layerList = tile.getLayerList();
-		if ((update & UPDATE_PIXEL) == UPDATE_PIXEL) {
+		if (checkMode(update, UPDATE_PIXEL)) {
 			int offset = py * width + px;
 			if (offset < size) {
 				draw(gc, offset, layerList, tile, conf, px, py, colorPaletteProvider);
 			}
-		} else if ((update & UPDATE_ALL) == UPDATE_ALL) {
+		} else if (checkMode(update, UPDATE)) {
 			for (int i = 0; i < size; i++) {
 				if (i % width == 0 && i > 0) {
 					x = 0;

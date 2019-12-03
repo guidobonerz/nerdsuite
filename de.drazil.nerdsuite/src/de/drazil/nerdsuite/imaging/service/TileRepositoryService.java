@@ -135,7 +135,7 @@ public class TileRepositoryService implements IService {
 
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
 		this.selectedTileIndexList = tileIndexList;
-		fireTileRedraw(tileIndexList, ImagePainterFactory.UPDATE_ALL, false);
+		fireTileRedraw(tileIndexList, ImagePainterFactory.READ, false);
 	}
 
 	public List<Integer> getSelectedTileIndexList() {

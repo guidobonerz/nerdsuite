@@ -480,7 +480,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	@Override
-	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int  update) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int update) {
 		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles
 				|| redrawMode == RedrawMode.DrawTemporarySelectedTile);
 		List<String> tags = new LinkedList<>();
@@ -501,8 +501,6 @@ public class GfxEditorView implements ITileUpdateListener {
 		LocalDateTime ldt = LocalDateTime.now();
 		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 		project.setChangedOn(d);
-		// TileRepositoryService service = ServiceFactory.getService(owner,
-		// TileRepositoryService.class);
 		TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 		part.setDirty(false);
 	}

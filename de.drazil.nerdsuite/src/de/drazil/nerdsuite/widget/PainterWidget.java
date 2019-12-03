@@ -33,6 +33,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
+		
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
 			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_PIXEL);
@@ -41,14 +42,13 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-
+	
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-
-			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_ALL);
+			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_PIXEL);
 		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
-			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE_ALL);
+			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Hand) {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
 			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
@@ -59,38 +59,43 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
+		
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
-			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE_ALL);
+			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
 		}
 	}
 
 	@Override
 	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
+		
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
 				rangeSelectionStarted = false;
 				computeRangeSelection(tileCursorX, tileCursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			}
 		} else if (conf.cursorMode == CursorMode.Point) {
-			fireDoRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE_ALL);
+			fireDoRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
 		}
 	}
 
 	@Override
 	protected void mouseEnter(int modifierMask, int x, int y) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE_ALL);
+		
+		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void mouseExit(int modifierMask, int x, int y) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE_ALL);
+		
+		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
+		
 		if (conf.cursorMode == CursorMode.Point && cursorChanged) {
-			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE_ALL);
+			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 		}
 	}
 
@@ -153,10 +158,10 @@ public class PainterWidget extends BaseImagingWidget {
 			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
 			int index = tileRepositoryService.getSelectedTileIndexList().get(0);
-			paintTile(gc, index, conf, colorPaletteProvider, ImagePainterFactory.UPDATE_ALL);
+			paintTile(gc, index, conf, colorPaletteProvider, update);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			int index = tileRepositoryService.getTileIndex(temporaryIndex);
-			paintTile(gc, index, conf, colorPaletteProvider, ImagePainterFactory.UPDATE_ALL);
+			paintTile(gc, index, conf, colorPaletteProvider, update);
 		}
 
 		if (paintPixelGrid) {
@@ -262,7 +267,7 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (cursorMode == CursorMode.Hand) {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_SIZEALL));
 		}
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE_ALL);
+		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -340,7 +345,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE_ALL);
+		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
 	}
 
 	@Override

@@ -76,7 +76,7 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 			selectedTileIndexList.forEach(i -> {
 				each(action, service.getTile(i), imagingWidgetConfiguration, null);
 			});
-			service.redrawTileViewer(selectedTileIndexList, ImagePainterFactory.UPDATE_ALL, false);
+			service.redrawTileViewer(selectedTileIndexList, ImagePainterFactory.UPDATE, false);
 		}
 
 		/*
