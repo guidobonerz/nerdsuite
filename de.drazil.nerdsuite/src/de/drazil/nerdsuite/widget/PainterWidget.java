@@ -33,7 +33,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		
+
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
 			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_PIXEL);
@@ -42,7 +42,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-	
+
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
 			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_PIXEL);
@@ -51,15 +51,16 @@ public class PainterWidget extends BaseImagingWidget {
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Hand) {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
+			Rectangle r = parent.getClientArea();
 			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
 			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
-			parent.setOrigin((int) (x * hd), (int) (y * vd));
+			parent.setOrigin((int) ((x * hd)), ((int) (y * vd)));
 		}
 	}
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		
+
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
@@ -68,7 +69,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
-		
+
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
 				rangeSelectionStarted = false;
@@ -81,19 +82,19 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseEnter(int modifierMask, int x, int y) {
-		
+
 		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void mouseExit(int modifierMask, int x, int y) {
-		
+
 		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
-		
+
 		if (conf.cursorMode == CursorMode.Point && cursorChanged) {
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 		}
