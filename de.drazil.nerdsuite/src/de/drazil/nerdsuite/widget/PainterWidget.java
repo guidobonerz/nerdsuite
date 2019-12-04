@@ -35,7 +35,6 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
-
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
 			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_PIXEL);
@@ -44,14 +43,13 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
 			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_PIXEL);
 		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
-		} else if (conf.cursorMode == CursorMode.Hand) {
+		} else if (conf.cursorMode == CursorMode.Move) {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
 			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
 			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
@@ -66,7 +64,7 @@ public class PainterWidget extends BaseImagingWidget {
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
-		} else if (conf.cursorMode == CursorMode.Hand) {
+		} else if (conf.cursorMode == CursorMode.Move) {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
 			startPos = new Point(x, y);
 			startOrigin = parent.getOrigin();
@@ -87,19 +85,16 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseEnter(int modifierMask, int x, int y) {
-
 		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void mouseExit(int modifierMask, int x, int y) {
-
 		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
-
 		if (conf.cursorMode == CursorMode.Point && cursorChanged) {
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
 		}
@@ -270,7 +265,7 @@ public class PainterWidget extends BaseImagingWidget {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
 			tileRepositoryService.setSelection(new Rectangle(0, 0, conf.getWidth() * conf.getTileColumns(),
 					conf.getHeight() * conf.getTileRows()));
-		} else if (cursorMode == CursorMode.Hand) {
+		} else if (cursorMode == CursorMode.Move) {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_SIZEALL));
 		}
 		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
@@ -362,7 +357,6 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	public void redrawCalculatedArea() {
 		redraw();
-
 	}
 
 	@Override
