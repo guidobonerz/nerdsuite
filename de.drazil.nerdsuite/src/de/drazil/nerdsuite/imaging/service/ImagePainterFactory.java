@@ -44,11 +44,8 @@ public class ImagePainterFactory {
 			imagePool.put(name, mainImage);
 		}
 		if (checkMode(action, UPDATE)) {
-			System.out.println("pixel");
 			mainImage = updateImage(tile, x, y, action, conf, mainImage, name, colorPaletteProvider);
 		}
-
-		System.out.println("update:" + action);
 
 		ScaleMode scaleMode = conf.getScaleMode();
 		if (conf.getScaleMode() != ScaleMode.None) {

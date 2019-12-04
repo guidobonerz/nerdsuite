@@ -11,8 +11,6 @@ public class MulticolorService extends AbstractImagingService {
 
 	@Override
 	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
-		System.out.println(action);
-
 		int[] content = tile.getActiveLayer().getContent();
 		for (int i = 0; i < content.length; i += 2) {
 			if (action == MC_ON) {

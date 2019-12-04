@@ -69,7 +69,6 @@ public class TileRepositoryService implements IService {
 	}
 
 	public Tile addTile(String name, int size) {
-		System.out.println("Add Tile");
 		Tile tile = new Tile(name, size);
 		tileList.add(tile);
 		tileIndexOrderList.add(tileList.indexOf(tile));
@@ -100,7 +99,6 @@ public class TileRepositoryService implements IService {
 
 	public void removeTile(List<Integer> tileIndexList) {
 		if (tileIndexOrderList.size() > 0) {
-			System.out.println("Remove Tile");
 			for (int i = 0; i < tileIndexList.size(); i++) {
 				int tileIndex = tileIndexOrderList.get(i);
 				tileList.remove(tileIndex);
