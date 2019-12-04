@@ -37,11 +37,10 @@ public class ImagePainterFactory {
 		String name = tile.getName();
 		Image scaledImage = null;
 		Image mainImage = imagePool.get(name);
-		if (null == mainImage || checkMode(action, UPDATE)) {
-			if (mainImage != null && checkMode(action, UPDATE)) {
-				mainImage.dispose();
-			}
-			System.out.println("new image");
+		if (null == mainImage) {
+			/*
+			 * if (mainImage != null && checkMode(action, UPDATE)) { mainImage.dispose(); }
+			 */
 			mainImage = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
 			mainImage.setBackground(Constants.BLACK);
 			imagePool.put(name, mainImage);
@@ -51,6 +50,7 @@ public class ImagePainterFactory {
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
+
 		if (conf.getScaleMode() != ScaleMode.None) {
 			String sm = name + "_" + conf.getScaleMode().name();
 			scaledImage = imagePool.get(sm);
@@ -67,11 +67,12 @@ public class ImagePainterFactory {
 						mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
 				imagePool.put(sm, scaledImage);
 
+				conf.setScaledTileWidth(scaledImage.getBounds().width);
+				conf.setScaledTileHeight(scaledImage.getBounds().height);
 			}
 			mainImage = scaledImage;
 		}
-		conf.setScaledTileWidth(mainImage.getBounds().width);
-		conf.setScaledTileHeight(mainImage.getBounds().height);
+
 		return mainImage;
 	}
 

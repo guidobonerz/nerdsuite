@@ -99,7 +99,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 				conf.setColumns(c == 0 ? 1 : c);
 				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
 						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
-				doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+				doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.UPDATE);
 			}
 		});
 	}

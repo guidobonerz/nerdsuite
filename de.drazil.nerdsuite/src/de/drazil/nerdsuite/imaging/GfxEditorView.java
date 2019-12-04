@@ -364,10 +364,19 @@ public class GfxEditorView implements ITileUpdateListener {
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
+		int worksheetWidth = 640;
+		int worksheetHeight = 400;
+		if (actualSize.x > worksheetWidth) {
+			worksheetWidth += 25;
+		}
+		if (actualSize.y > worksheetHeight) {
+			worksheetHeight += 25;
+		}
+
 		GridData gridData = null;
 		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-		gridData.widthHint = actualSize.x > 665 ? 665 : actualSize.x;
-		gridData.heightHint = actualSize.y > 425 ? 425 : actualSize.y;
+		gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
+		gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -442,7 +451,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	public PainterWidget createPainterWidget() {
 		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
-		scrollablePainter.setAlwaysShowScrollBars(true);
+		// scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
