@@ -26,12 +26,8 @@ public class PainterWidget extends BaseImagingWidget {
 	private int selectedPixelRangeY = 0;
 	private int selectedPixelRangeX2 = 0;
 	private int selectedPixelRangeY2 = 0;
-	private int ix = 0;
-	private int iy = 0;
-	private int dx = 0;
-	private int dy = 0;
-	private int ox = 0;
-	private int oy = 0;
+	private Point startPos;
+	private Point startOrigin;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
@@ -57,28 +53,23 @@ public class PainterWidget extends BaseImagingWidget {
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Hand) {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
-			Rectangle r = parent.getClientArea();
 			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
 			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
-
-			dx = Math.abs(x - ix);
-			dy = Math.abs(y - iy);
-
-			ox = (int) ((dx * hd));
-			oy = ((int) (dy * vd));
-
-			System.out.printf("x:%2d  y:%2d  ox:%2d  oy:%2d \n", x, y, ox, oy);
-			parent.setOrigin(ox, oy);
+			int xo = startOrigin.x + (int) ((x - startPos.x) * hd);
+			int yo = startOrigin.y + (int) ((y - startPos.y) * vd);
+			parent.setOrigin(xo, yo);
 		}
 	}
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		ix = x;
-		iy = y;
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
+		} else if (conf.cursorMode == CursorMode.Hand) {
+			ScrolledComposite parent = (ScrolledComposite) getParent();
+			startPos = new Point(x, y);
+			startOrigin = parent.getOrigin();
 		}
 	}
 
