@@ -41,7 +41,7 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.PIXEL);
+			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
 
@@ -49,10 +49,10 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void mouseDragged(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.PIXEL);
+			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
-			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
+			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Move) {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
 			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
@@ -67,7 +67,7 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
-			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
+			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Move) {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
 			startPos = new Point(x, y);
@@ -89,18 +89,18 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseEnter(int modifierMask, int x, int y) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
+		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void mouseExit(int modifierMask, int x, int y) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
+		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point && cursorChanged) {
-			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
+			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class PainterWidget extends BaseImagingWidget {
 				boolean direction = oldScrollStep < scrollStep;
 				conf.pixelSize += direction ? 1 : -1;
 				recalc();
-				doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
+				doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 			}
 		}
 	}
@@ -187,14 +187,12 @@ public class PainterWidget extends BaseImagingWidget {
 
 		if (paintPixelGrid) {
 			paintPixelGrid(gc);
-		}
-
-		if (paintSeparator) {
-			paintSeparator(gc);
-		}
-
-		if (paintTileSubGrid) {
-			paintTileSubGrid(gc);
+			if (paintSeparator) {
+				paintSeparator(gc);
+			}
+			if (paintTileSubGrid) {
+				paintTileSubGrid(gc);
+			}
 		}
 
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
@@ -214,7 +212,7 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
 		for (int x = conf.currentWidth; x < conf.currentWidth * conf.tileColumns; x += conf.currentWidth) {
-			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
+			gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize, conf.scaledTileHeight);
 		}
 	}
 
@@ -235,16 +233,16 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	private void paintPixelGrid(GC gc) {
-		for (int x = 0; x <= conf.currentWidth * conf.tileColumns; x++) {
+		for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
 			for (int y = 0; y <= conf.height * conf.tileRows; y++) {
 				gc.setForeground(Constants.PIXEL_GRID_COLOR);
 				if (conf.gridStyle == GridType.Line) {
-					gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth,
-							conf.height * conf.currentPixelHeight * conf.tileRows);
+					gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize,
+							conf.height * conf.pixelSize * conf.tileRows);
 					gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns,
 							y * conf.pixelSize);
 				} else {
-					gc.drawPoint(x * conf.currentPixelWidth, y * conf.currentPixelHeight);
+					gc.drawPoint(x * conf.pixelSize, y * conf.pixelSize);
 				}
 			}
 		}
@@ -288,7 +286,7 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (cursorMode == CursorMode.Move) {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_SIZEALL));
 		}
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
+		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -303,7 +301,7 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
-		doRedraw(redrawMode, null, action);
+		doRedraw(redrawMode, action);
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
@@ -367,7 +365,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
+		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			} else {
 				System.out.println("tile selection outside range...");
 			}
-			doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 		} else {
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
@@ -61,7 +61,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			mc.stop();
 		}
 		computeTileSelection(tileX, tileY, 1);
-		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			tileSelectionStarted = false;
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
 		}
-		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
 		if (tileChanged) {
-			doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 		}
 	}
 
@@ -143,7 +143,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	public void selectAll() {
 		if (supportsMultiSelection()) {
 			// resetSelectionList();
-			doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 		}
 	}
 
@@ -239,7 +239,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
-		doRedraw(redrawMode, null, action);
+		doRedraw(redrawMode, action);
 	}
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
@@ -256,7 +256,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -271,14 +271,14 @@ public class RepositoryWidget extends BaseImagingWidget {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+				doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 			}
 		});
 	}
 
 	@Override
 	public void tileReordered() {
-		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 	}
 
 	@Override

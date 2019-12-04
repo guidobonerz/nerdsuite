@@ -49,6 +49,7 @@ import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
+import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ImportService;
 import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
@@ -232,7 +233,8 @@ public class GfxEditorView implements ITileUpdateListener {
 			GridState gridState = (GridState) brokerObject.getTransferObject();
 			painter.getConf().setGridStyle(gridState.getGridStyle());
 			painter.getConf().setPixelGridEnabled(gridState.isEnabled());
-			painter.recalc();
+			// painter.recalc();
+			painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 		}
 	}
 
@@ -433,6 +435,8 @@ public class GfxEditorView implements ITileUpdateListener {
 				tileRepositoryService.setSelectedTileIndex(index);
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
 				painter.setCursorMode(CursorMode.Point);
+				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
+				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
 			}
 		});
 	}
