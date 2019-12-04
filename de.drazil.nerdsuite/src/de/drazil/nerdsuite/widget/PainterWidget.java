@@ -177,10 +177,10 @@ public class PainterWidget extends BaseImagingWidget {
 			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider);
 		} else if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
 			int index = tileRepositoryService.getSelectedTileIndexList().get(0);
-			paintTile(gc, index, conf, colorPaletteProvider, update);
+			paintTile(gc, index, conf, colorPaletteProvider, action);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			int index = tileRepositoryService.getTileIndex(temporaryIndex);
-			paintTile(gc, index, conf, colorPaletteProvider, update);
+			paintTile(gc, index, conf, colorPaletteProvider, action);
 		}
 
 		if (paintPixelGrid) {
@@ -201,7 +201,7 @@ public class PainterWidget extends BaseImagingWidget {
 			paintPixelCursor(gc);
 		}
 
-		update = ImagePainterFactory.NONE;
+		action = ImagePainterFactory.NONE;
 		redrawMode = RedrawMode.DrawNothing;
 	}
 
@@ -290,7 +290,7 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int update) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			if (this.tile != null) {
@@ -301,7 +301,7 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
-		doRedraw(redrawMode, null, update);
+		doRedraw(redrawMode, null, action);
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {

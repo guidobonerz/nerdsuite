@@ -42,7 +42,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int update) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		// TODO Auto-generated method stub
 
 	}
@@ -52,7 +52,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int update) {
+	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int action) {
 
 	}
 

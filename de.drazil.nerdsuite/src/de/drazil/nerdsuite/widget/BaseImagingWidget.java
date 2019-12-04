@@ -56,7 +56,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
 	protected int temporaryIndex;
-	protected int update;
+	protected int action;
 
 	protected boolean cursorChanged = false;
 	protected boolean tileCursorChanged = false;
@@ -283,8 +283,8 @@ public abstract class BaseImagingWidget extends BaseWidget
 	}
 
 	@Override
-	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int update) {
-		this.update = update;
+	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int action) {
+		this.action = action;
 		this.redrawMode = redrawMode;
 		redrawCalculatedArea();
 	}
@@ -321,7 +321,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	}
 
 	@Override
-	public abstract void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int update);
+	public abstract void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action);
 
 	@Override
 	public void tileChanged() {

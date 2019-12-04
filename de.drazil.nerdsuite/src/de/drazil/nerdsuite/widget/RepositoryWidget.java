@@ -158,7 +158,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
 			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
-			paintTile(this, gc, index, conf, colorPaletteProvider, update);
+			paintTile(this, gc, index, conf, colorPaletteProvider, action);
 		}
 
 		if (paintTileGrid) {
@@ -171,7 +171,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			paintSelection(gc);
 			paintTileMarker(gc);
 		}
-		update = ImagePainterFactory.NONE;
+		action = ImagePainterFactory.NONE;
 		drawAll = true;
 		redrawMode = RedrawMode.DrawNothing;
 	}
@@ -235,11 +235,11 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int update) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
-		doRedraw(redrawMode, null, update);
+		doRedraw(redrawMode, null, action);
 	}
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,

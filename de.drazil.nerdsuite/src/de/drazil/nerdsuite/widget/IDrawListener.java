@@ -5,6 +5,6 @@ import de.drazil.nerdsuite.enums.RedrawMode;
 
 public interface IDrawListener {
 
-	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int update);
+	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int action);
 
 }

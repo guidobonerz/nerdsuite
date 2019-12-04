@@ -34,7 +34,7 @@ public class LayerChooser extends BaseWidget implements PaintListener, ITileUpda
 	}
 
 	@Override
-	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int update) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		if (selectedTileIndexList != null && selectedTileIndexList.size() == 1) {
 			TileRepositoryService repository = ServiceFactory.getService(serviceOwnerId, TileRepositoryService.class);
 			this.tile = repository.getTile(selectedTileIndexList.get(0));
