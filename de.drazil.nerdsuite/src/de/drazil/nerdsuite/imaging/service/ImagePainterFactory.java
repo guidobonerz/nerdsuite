@@ -100,7 +100,7 @@ public class ImagePainterFactory {
 			if (offset < size) {
 				draw(gc, offset, layerList, tile, conf, px, py, colorPaletteProvider);
 			}
-		} else if (checkMode(update, UPDATE)) {
+		} else {
 			for (int i = 0; i < size; i++) {
 				if (i % width == 0 && i > 0) {
 					x = 0;
@@ -109,8 +109,6 @@ public class ImagePainterFactory {
 				draw(gc, i, layerList, tile, conf, x, y, colorPaletteProvider);
 				x++;
 			}
-		} else {
-
 		}
 		gc.dispose();
 		return image;
