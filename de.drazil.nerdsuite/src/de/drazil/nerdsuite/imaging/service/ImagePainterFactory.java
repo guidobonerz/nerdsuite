@@ -23,7 +23,10 @@ public class ImagePainterFactory {
 	public final static int READ = 1;
 	public final static int UPDATE = 2;
 	public final static int PIXEL = 4;
+	public final static int SCALED = 8;
+
 	public final static int UPDATE_PIXEL = UPDATE + PIXEL;
+	public final static int UPDATE_SCALED = UPDATE + SCALED;
 
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
@@ -43,7 +46,7 @@ public class ImagePainterFactory {
 			mainImage.setBackground(Constants.BLACK);
 			imagePool.put(name, mainImage);
 		}
-		if (checkMode(action, UPDATE)) {
+		if ((action & UPDATE) == UPDATE || (action & PIXEL) == PIXEL) {
 			mainImage = updateImage(tile, x, y, action, conf, mainImage, name, colorPaletteProvider);
 		}
 

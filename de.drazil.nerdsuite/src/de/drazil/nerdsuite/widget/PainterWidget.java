@@ -31,6 +31,7 @@ public class PainterWidget extends BaseImagingWidget {
 	private int scrollDirection = 0;
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
+	private boolean scrollNatural = false;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
@@ -40,7 +41,7 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_PIXEL);
+			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.PIXEL);
 		}
 	}
 
@@ -48,7 +49,7 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void mouseDragged(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.UPDATE_PIXEL);
+			doRedraw(RedrawMode.DrawPixel, null, ImagePainterFactory.PIXEL);
 		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
@@ -174,7 +175,8 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
-			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider);
+			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider,
+					action);
 		} else if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
 			int index = tileRepositoryService.getSelectedTileIndexList().get(0);
 			paintTile(gc, index, conf, colorPaletteProvider, action);
@@ -349,9 +351,10 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider) {
-		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, x, y,
-				ImagePainterFactory.UPDATE_PIXEL, conf, colorPaletteProvider), 0, 0);
+			IColorPaletteProvider colorPaletteProvider, int action) {
+		gc.drawImage(
+				tileRepositoryService.getImagePainterFactory().getImage(tile, x, y, action, conf, colorPaletteProvider),
+				0, 0);
 	}
 
 	private void paintTile(GC gc, int index, ImagingWidgetConfiguration conf,
