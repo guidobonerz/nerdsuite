@@ -50,7 +50,7 @@ public class ImportService implements IService {
 		int tileSize = iconSize * columns * rows;
 		int size = tileSize * bitplane.length / tileSize;
 		int bytesPerRow = width / gf.getStorageEntity();
-		int bc = 1;
+		int bitPerPixel = 1;
 		int mask = 1;
 		for (int o = 0; o < size; o += tileSize) {
 			Tile tile = service.addTile(tileSize * 8);
@@ -63,11 +63,11 @@ public class ImportService implements IService {
 				int wai = ro + xo + yo;
 				for (int i = 0; i < bytesPerRow; i++) {
 					bitplane[o + si + i] = mode == ConversionMode.toBitplane ? 0 : bitplane[o + si + i];
-					for (int m = 7, ti = 0; m >= 0; m -= bc, ti++) {
+					for (int m = 7, ti = 0; m >= 0; m -= bitPerPixel, ti++) {
 						if (mode == ConversionMode.toWorkArray) {
 							workArray[wai + (8 * i) + ti] = (byte) ((bitplane[o + si + i] >> m) & mask);
 						} else if (mode == ConversionMode.toBitplane) {
-							(bitplane[o + si + i]) |= (workArray[wai + (8 * i) + ti] << m);
+							bitplane[o + si + i] |= (workArray[wai + (8 * i) + ti] << m);
 						}
 					}
 				}

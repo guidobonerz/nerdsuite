@@ -28,6 +28,9 @@ public class PainterWidget extends BaseImagingWidget {
 	private int selectedPixelRangeY2 = 0;
 	private Point startPos;
 	private Point startOrigin;
+	private int scrollDirection = 0;
+	private int oldScrollStep = 0;
+	private int scrollStep = 0;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
@@ -97,6 +100,21 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void mouseMove(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point && cursorChanged) {
 			doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.READ);
+		}
+	}
+
+	@Override
+	protected void mouseScrolled(int modifierMask, int x, int y, int count) {
+		if ((modifierMask & SWT.SHIFT) == SWT.SHIFT) {
+			oldScrollStep = scrollStep;
+			scrollStep += count;
+
+			if (Math.abs(scrollStep) % 4 == 0) {
+				boolean direction = oldScrollStep < scrollStep;
+				conf.pixelSize += direction ? 1 : -1;
+				recalc();
+				doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
+			}
 		}
 	}
 

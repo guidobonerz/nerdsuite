@@ -5,16 +5,17 @@ import java.util.List;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
-public class ImageExportService extends AbstractImagingService {
+public class ExportService extends AbstractImagingService {
 
 	public final static int WRITE_PNG = 1;
 	public final static int WRITE_GIF = 2;
 	public final static int WRITE_ANIMATED_GIF = 4;
+	public final static int WRITE_SVG = 8;
 	public final static int ENABLE_TELEVISION_MODE = 128;
 
 	private boolean isTelevisionModeEnabled = false;
 
-	public ImageExportService() {
+	public ExportService() {
 		// TODO Auto-generated constructor stub
 	}
 

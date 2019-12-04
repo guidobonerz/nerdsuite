@@ -177,6 +177,15 @@ public abstract class BaseImagingWidget extends BaseWidget
 		leftMouseButtonPressed(modifierMask, x, y);
 	}
 
+	protected void mouseScrolled(int modifierMask, int x, int y, int count) {
+	}
+
+	@Override
+	protected void mouseScrolledInternal(int modifierMask, int x, int y, int count) {
+		computeCursorPosition(x, y);
+		mouseScrolled(modifierMask, x, y, count);
+	}
+
 	protected void computeCursorPosition(int x, int y) {
 		cursorX = x / conf.currentPixelWidth;
 		cursorY = y / conf.currentPixelHeight;
