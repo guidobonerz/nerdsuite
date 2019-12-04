@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
-import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 
@@ -52,7 +51,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int action) {
+	public void doRedraw(RedrawMode redrawMode, int action) {
 
 	}
 

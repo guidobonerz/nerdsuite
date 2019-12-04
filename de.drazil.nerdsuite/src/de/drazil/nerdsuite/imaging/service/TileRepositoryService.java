@@ -200,20 +200,20 @@ public class TileRepositoryService implements IService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireTileRedraw(List<Integer> selectedTileIndexList, int update, boolean temporary) {
+	private void fireTileRedraw(List<Integer> selectedTileIndexList, int admin, boolean temporary) {
 		if (selectedTileIndexList != null) {
 			if (selectedTileIndexList.size() == 1) {
 				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
-						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, update));
+						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, admin));
 			} else {
 				tileUpdateListener.forEach(
-						listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, update));
+						listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, admin));
 			}
 		}
 	}
 
-	public void redrawTileViewer(List<Integer> selectedTileIndexList, int update, boolean temporary) {
-		fireTileRedraw(selectedTileIndexList, update, temporary);
+	public void redrawTileViewer(List<Integer> selectedTileIndexList, int admin, boolean temporary) {
+		fireTileRedraw(selectedTileIndexList, admin, temporary);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {

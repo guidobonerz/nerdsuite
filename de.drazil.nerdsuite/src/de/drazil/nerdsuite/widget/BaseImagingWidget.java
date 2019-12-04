@@ -99,7 +99,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 				conf.setColumns(c == 0 ? 1 : c);
 				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
 						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
-				doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.UPDATE);
+				doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 			}
 		});
 	}
@@ -244,7 +244,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
-		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+		//doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -279,11 +279,11 @@ public abstract class BaseImagingWidget extends BaseWidget
 	}
 
 	protected void fireDoRedraw(RedrawMode redrawMode, PencilMode pencilMode, int update) {
-		drawListenerList.forEach(l -> l.doRedraw(redrawMode, pencilMode, update));
+		drawListenerList.forEach(l -> l.doRedraw(redrawMode, update));
 	}
 
 	@Override
-	public void doRedraw(RedrawMode redrawMode, PencilMode pencilMode, int action) {
+	public void doRedraw(RedrawMode redrawMode, int action) {
 		this.action = action;
 		this.redrawMode = redrawMode;
 		redrawCalculatedArea();
@@ -326,12 +326,12 @@ public abstract class BaseImagingWidget extends BaseWidget
 	@Override
 	public void tileChanged() {
 		conf.setMultiColorEnabled(tile.isMulticolor());
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
+		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 	}
 
 	@Override
 	public void tilesChanged(List<Integer> selectedTileIndexList) {
-		doRedraw(RedrawMode.DrawSelectedTiles, null, ImagePainterFactory.UPDATE);
+		doRedraw(RedrawMode.DrawSelectedTiles, ImagePainterFactory.UPDATE);
 	}
 
 	@Override
@@ -346,7 +346,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void layerContentChanged(int layer) {
-		doRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
+		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 	}
 
 	@Override
