@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
@@ -18,33 +19,46 @@ public class ImagePainterFactory {
 
 	private Map<String, Image> imagePool = null;
 
+	public final static int NONE = 0;
+	public final static int READ = 1;
+	public final static int UPDATE = 2;
+	public final static int PIXEL = 4;
+	public final static int SCALED = 8;
+
+	public final static int UPDATE_PIXEL = UPDATE + PIXEL;
+	public final static int UPDATE_SCALED = UPDATE + SCALED;
+
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
 	}
 
-	public Image getImage(Tile tile, int x, int y, boolean pixelOnly, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
+	public Image getImage(Tile tile, int x, int y, int action, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider) {
 		String name = tile.getName();
 		Image scaledImage = null;
 		Image mainImage = imagePool.get(name);
-		if (null == mainImage || forceUpdate) {
-			if (forceUpdate && mainImage != null) {
-				mainImage.dispose();
-			}
+		if (null == mainImage) {
+			/*
+			 * if (mainImage != null && checkMode(action, UPDATE)) { mainImage.dispose(); }
+			 */
 			mainImage = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
-			mainImage = updateImage(tile, x, y, pixelOnly, conf, mainImage, name, colorPaletteProvider);
+			mainImage.setBackground(Constants.BLACK);
 			imagePool.put(name, mainImage);
+		}
+		if ((action & UPDATE) == UPDATE || (action & PIXEL) == PIXEL) {
+			mainImage = updateImage(tile, x, y, action, conf, mainImage, name, colorPaletteProvider);
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
-		//if (conf.getScaleMode() != ScaleMode.None) {
+
+		if (conf.getScaleMode() != ScaleMode.None) {
 			String sm = name + "_" + conf.getScaleMode().name();
 			scaledImage = imagePool.get(sm);
-			if (null == scaledImage || forceUpdate) {
-				if (forceUpdate && scaledImage != null) {
+			if (null == scaledImage || checkMode(action, UPDATE)) {
+				if (scaledImage != null && checkMode(action, UPDATE)) {
 					scaledImage.dispose();
 				}
-				// System.out.println("new scaled image");
+				System.out.println("new scaled image");
 				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
 						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
 				int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
@@ -52,12 +66,18 @@ public class ImagePainterFactory {
 				scaledImage = new Image(Display.getDefault(),
 						mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
 				imagePool.put(sm, scaledImage);
+
+				conf.setScaledTileWidth(scaledImage.getBounds().width);
+				conf.setScaledTileHeight(scaledImage.getBounds().height);
 			}
 			mainImage = scaledImage;
-		//}
-		conf.setScaledTileWidth(mainImage.getBounds().width);
-		conf.setScaledTileHeight(mainImage.getBounds().height);
+		}
+
 		return mainImage;
+	}
+
+	private boolean checkMode(int update, int value) {
+		return (update & value) == value;
 	}
 
 	public boolean hasImages() {
@@ -68,8 +88,8 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image updateImage(Tile tile, int px, int py, boolean pixelOnly, ImagingWidgetConfiguration conf,
-			Image image, String imageName, IColorPaletteProvider colorPaletteProvider) {
+	private Image updateImage(Tile tile, int px, int py, int update, ImagingWidgetConfiguration conf, Image image,
+			String imageName, IColorPaletteProvider colorPaletteProvider) {
 		GC gc = new GC(image);
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
@@ -77,10 +97,9 @@ public class ImagePainterFactory {
 		int x = 0;
 		int y = 0;
 		List<Layer> layerList = tile.getLayerList();
-		if (pixelOnly) {
+		if (checkMode(update, PIXEL)) {
 			int offset = py * width + px;
 			if (offset < size) {
-				// System.out.println("pixel only:" + px + " y:" + py + " offset:" + offset);
 				draw(gc, offset, layerList, tile, conf, px, py, colorPaletteProvider);
 			}
 		} else {

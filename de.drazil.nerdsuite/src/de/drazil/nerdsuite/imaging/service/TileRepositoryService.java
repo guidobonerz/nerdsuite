@@ -69,7 +69,6 @@ public class TileRepositoryService implements IService {
 	}
 
 	public Tile addTile(String name, int size) {
-		System.out.println("Add Tile");
 		Tile tile = new Tile(name, size);
 		tileList.add(tile);
 		tileIndexOrderList.add(tileList.indexOf(tile));
@@ -100,7 +99,6 @@ public class TileRepositoryService implements IService {
 
 	public void removeTile(List<Integer> tileIndexList) {
 		if (tileIndexOrderList.size() > 0) {
-			System.out.println("Remove Tile");
 			for (int i = 0; i < tileIndexList.size(); i++) {
 				int tileIndex = tileIndexOrderList.get(i);
 				tileList.remove(tileIndex);
@@ -135,7 +133,7 @@ public class TileRepositoryService implements IService {
 
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
 		this.selectedTileIndexList = tileIndexList;
-		fireTileRedraw(tileIndexList, false, false);
+		fireTileRedraw(tileIndexList, ImagePainterFactory.READ, false);
 	}
 
 	public List<Integer> getSelectedTileIndexList() {
@@ -202,20 +200,20 @@ public class TileRepositoryService implements IService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireTileRedraw(List<Integer> selectedTileIndexList, boolean forceUpdate, boolean temporary) {
+	private void fireTileRedraw(List<Integer> selectedTileIndexList, int update, boolean temporary) {
 		if (selectedTileIndexList != null) {
 			if (selectedTileIndexList.size() == 1) {
 				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
-						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, forceUpdate));
+						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, update));
 			} else {
-				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
-						RedrawMode.DrawSelectedTiles, forceUpdate));
+				tileUpdateListener.forEach(
+						listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, update));
 			}
 		}
 	}
 
-	public void redrawTileViewer(List<Integer> selectedTileIndexList, boolean forceUpdate, boolean temporary) {
-		fireTileRedraw(selectedTileIndexList, forceUpdate, temporary);
+	public void redrawTileViewer(List<Integer> selectedTileIndexList, int update, boolean temporary) {
+		fireTileRedraw(selectedTileIndexList, update, temporary);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {

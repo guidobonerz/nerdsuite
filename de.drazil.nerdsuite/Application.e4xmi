@@ -304,16 +304,16 @@
         <parameters xmi:id="_3oZUgNX1Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.parameter.31" name="de.drazil.nerdsuite.commandparameter.PencilMode" value="5"/>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_iBMfQOOuEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.toolbarseparator.5"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_jLS-oBT1EeqfdLolq7w5-g" elementId="de.drazil.nerdsuite.handledtoolitem.8" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/hand.png" type="Radio" command="_MEx9MOOsEemaAe-ToSRFZQ">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_jLS-oBT1EeqfdLolq7w5-g" elementId="de.drazil.nerdsuite.handledtoolitem.8" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/move.png" tooltip="Move" type="Radio" command="_MEx9MOOsEemaAe-ToSRFZQ">
         <parameters xmi:id="_BsezkBT3EeqfdLolq7w5-g" elementId="de.drazil.nerdsuite.parameter.68" name="de.drazil.nerdsuite.commandparameter.CursorMode" value="2"/>
       </children>
       <children xsi:type="menu:HandledToolItem" xmi:id="_jwahgOOrEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.handledtoolitem.Point" label="Point" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/pointer.png" tooltip="Point" selected="true" type="Radio" command="_MEx9MOOsEemaAe-ToSRFZQ">
         <parameters xmi:id="_a1cVIOOsEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.parameter.45" name="de.drazil.nerdsuite.commandparameter.CursorMode" value="0"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_9CJL0OOoEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.handledtoolitem.SelectRectangle" label="Select Rectangle" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/selection.png" tooltip="Select Rectangle" type="Radio" command="_MEx9MOOsEemaAe-ToSRFZQ">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_9CJL0OOoEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.handledtoolitem.SelectRectangle" label="Select Rectangle" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/selection.png" tooltip="Select" type="Radio" command="_MEx9MOOsEemaAe-ToSRFZQ">
         <parameters xmi:id="_OzppIOOqEemaAe-ToSRFZQ" elementId="de.drazil.nerdsuite.parameter.44" name="de.drazil.nerdsuite.commandparameter.CursorMode" value="1"/>
       </children>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_1CCEENkHEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.handledtoolitem.Multicolor" label="Multicolor" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/color_swatch.png" type="Check" command="_9kXRgNkHEemZC_fHbEbEjw">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_1CCEENkHEemZC_fHbEbEjw" elementId="de.drazil.nerdsuite.handledtoolitem.Multicolor" label="Multicolor" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/color_swatch.png" tooltip="Multicolor" type="Check" command="_9kXRgNkHEemZC_fHbEbEjw">
         <tags>MultiColorButton</tags>
       </children>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_GKBK4NX2Eem5saYSrZ2q0w" elementId="de.drazil.nerdsuite.toolbarseparator.4"/>

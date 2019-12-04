@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
+import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.model.SelectionRange;
 
 public class RepositoryWidget extends BaseImagingWidget {
@@ -46,7 +47,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			} else {
 				System.out.println("tile selection outside range...");
 			}
-			doRedraw(RedrawMode.DrawAllTiles, null, false);
+			doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 		} else {
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
@@ -60,7 +61,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			mc.stop();
 		}
 		computeTileSelection(tileX, tileY, 1);
-		doRedraw(RedrawMode.DrawAllTiles, null, false);
+		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			tileSelectionStarted = false;
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
 		}
-		doRedraw(RedrawMode.DrawAllTiles, null, false);
+		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
 		if (tileChanged) {
-			doRedraw(RedrawMode.DrawAllTiles, null, false);
+			doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 		}
 	}
 
@@ -142,7 +143,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	public void selectAll() {
 		if (supportsMultiSelection()) {
 			// resetSelectionList();
-			doRedraw(RedrawMode.DrawAllTiles, null, false);
+			doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 		}
 	}
 
@@ -157,7 +158,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
 			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
-			paintTile(this, gc, index, conf, colorPaletteProvider, forceUpdate);
+			paintTile(this, gc, index, conf, colorPaletteProvider, action);
 		}
 
 		if (paintTileGrid) {
@@ -170,7 +171,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 			paintSelection(gc);
 			paintTileMarker(gc);
 		}
-		forceUpdate = false;
+		action = ImagePainterFactory.NONE;
 		drawAll = true;
 		redrawMode = RedrawMode.DrawNothing;
 	}
@@ -234,17 +235,17 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
-		doRedraw(redrawMode, null, forceUpdate);
+		doRedraw(redrawMode, null, action);
 	}
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, boolean forceUpdate) {
+			IColorPaletteProvider colorPaletteProvider, int update) {
 		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService.getTile(index), 0,
-				0, false, conf, colorPaletteProvider, forceUpdate);
+				0, update, conf, colorPaletteProvider);
 		int imageWidth = image.getBounds().width;
 		int imageHeight = image.getBounds().height;
 		int columns = conf.getColumns();
@@ -255,7 +256,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		doRedraw(RedrawMode.DrawAllTiles, null, false);
+		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -270,14 +271,14 @@ public class RepositoryWidget extends BaseImagingWidget {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				doRedraw(RedrawMode.DrawAllTiles, null, false);
+				doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 			}
 		});
 	}
 
 	@Override
 	public void tileReordered() {
-		doRedraw(RedrawMode.DrawAllTiles, null, false);
+		doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 	}
 
 	@Override

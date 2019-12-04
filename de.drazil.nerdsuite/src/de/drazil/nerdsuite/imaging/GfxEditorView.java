@@ -364,10 +364,19 @@ public class GfxEditorView implements ITileUpdateListener {
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
+		int worksheetWidth = 640;
+		int worksheetHeight = 400;
+		if (actualSize.x > worksheetWidth) {
+			worksheetWidth += 25;
+		}
+		if (actualSize.y > worksheetHeight) {
+			worksheetHeight += 25;
+		}
+
 		GridData gridData = null;
 		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-		gridData.widthHint = 640 + 25;
-		gridData.heightHint = 400 + 25;
+		gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
+		gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
 		gridData.verticalSpan = 2;
 		scrollablePainter.setLayoutData(gridData);
 
@@ -442,7 +451,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	public PainterWidget createPainterWidget() {
 		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
-		scrollablePainter.setAlwaysShowScrollBars(true);
+		// scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		painter.getConf().setWidgetName("Painter :");
@@ -480,7 +489,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	@Override
-	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, boolean forceUpdate) {
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles
 				|| redrawMode == RedrawMode.DrawTemporarySelectedTile);
 		List<String> tags = new LinkedList<>();
@@ -501,8 +510,6 @@ public class GfxEditorView implements ITileUpdateListener {
 		LocalDateTime ldt = LocalDateTime.now();
 		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 		project.setChangedOn(d);
-		// TileRepositoryService service = ServiceFactory.getService(owner,
-		// TileRepositoryService.class);
 		TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 		part.setDirty(false);
 	}

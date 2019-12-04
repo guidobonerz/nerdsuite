@@ -138,74 +138,73 @@ public abstract class BaseWidget extends Composite {
 	}
 
 	protected void rightMouseButtonClickedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void rightMouseButtonReleasedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void rightMouseButtonPressedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void leftMouseButtonDoubleClickedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void rightMouseButtonDoubleClickedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void leftMouseButtonClickedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void mouseMoveInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void mouseExitInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void mouseEnterInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void mouseDroppedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void mouseDraggedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void middleMouseButtonReleasedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void middleMouseButtonPressedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void leftMouseButtonReleasedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void leftMouseButtonPressedInternal(int modifierMask, int x, int y) {
-		
+
 	}
 
 	protected void leftMouseButtonTimesClickedInternal(int modifierMask, int x, int y, int count) {
-		
+
 	}
 
 	protected void rightMouseButtonTimesClickedInternal(int modifierMask, int x, int y, int count) {
-		
+
 	}
 
 	protected void mouseScrolledInternal(int modifierMask, int x, int y, int count) {
-		
-	}
+	};
 }

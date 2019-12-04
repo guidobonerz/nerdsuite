@@ -63,7 +63,6 @@ public class MeasuringController {
 				while (currentMeasurment == thread) {
 					long diff = System.currentTimeMillis() - startMillies;
 					if (running && mc < triggerMillis.length && diff > triggerMillis[mc]) {
-						System.out.println(mc);
 						fireTimeReached(triggerMillis[mc]);
 						mc++;
 					}
