@@ -7,9 +7,12 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.CursorMode;
@@ -31,7 +34,9 @@ public class PainterWidget extends BaseImagingWidget {
 	private int scrollDirection = 0;
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
-	private boolean scrollNatural = false;
+	private Image overlayImage;
+
+	private boolean overlayChanged = false;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
@@ -186,6 +191,7 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 
 		if (paintPixelGrid) {
+
 			paintPixelGrid(gc);
 			if (paintSeparator) {
 				paintSeparator(gc);
@@ -193,12 +199,13 @@ public class PainterWidget extends BaseImagingWidget {
 			if (paintTileSubGrid) {
 				paintTileSubGrid(gc);
 			}
-		}
 
+		}
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			paintRangeSelection(gc);
-		} else {
+		} else if (conf.cursorMode == CursorMode.Point) {
 			paintPixelCursor(gc);
+		} else {
 		}
 
 		action = ImagePainterFactory.NONE;
