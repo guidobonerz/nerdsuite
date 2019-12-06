@@ -7,12 +7,9 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.CursorMode;
@@ -62,8 +59,11 @@ public class PainterWidget extends BaseImagingWidget {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
 			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
 			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
-			int xo = startOrigin.x + (int) ((x - startPos.x) * hd);
-			int yo = startOrigin.y + (int) ((y - startPos.y) * vd);
+			int xoff = (int) ((x - startPos.x) * (1 - hd));
+			int yoff = (int) ((y - startPos.y) * (1 - vd));
+			int xo = startOrigin.x + xoff;
+			int yo = startOrigin.y + yoff;
+			System.out.printf("%2d  %2d\n", xoff, yoff);
 			parent.setOrigin(xo, yo);
 		}
 	}
