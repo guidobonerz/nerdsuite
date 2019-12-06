@@ -59,8 +59,8 @@ public class PainterWidget extends BaseImagingWidget {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
 			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
 			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
-			int xoff = (int) ((x - startPos.x) * (1 - hd));
-			int yoff = (int) ((y - startPos.y) * (1 - vd));
+			int xoff = (int) ((x - startPos.x) * hd);
+			int yoff = (int) ((y - startPos.y) * vd);
 			int xo = startOrigin.x + xoff;
 			int yo = startOrigin.y + yoff;
 			System.out.printf("%2d  %2d\n", xoff, yoff);
