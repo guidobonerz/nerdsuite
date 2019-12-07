@@ -147,7 +147,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected void mouseEnterInternal(int modifierMask, int x, int y) {
 		mouseIn = true;
 		mouseEnter(modifierMask, x, y);
-		setFocus();
+		//setFocus();
 	}
 
 	protected void mouseDragged(int modifierMask, int x, int y) {

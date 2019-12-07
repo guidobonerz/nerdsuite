@@ -31,7 +31,9 @@ public class PainterWidget extends BaseImagingWidget {
 	private int scrollDirection = 0;
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
-	private boolean scrollNatural = false;
+	private Image overlayImage;
+
+	private boolean overlayChanged = false;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
@@ -57,8 +59,11 @@ public class PainterWidget extends BaseImagingWidget {
 			ScrolledComposite parent = (ScrolledComposite) getParent();
 			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
 			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
-			int xo = startOrigin.x + (int) ((x - startPos.x) * hd);
-			int yo = startOrigin.y + (int) ((y - startPos.y) * vd);
+			int xoff = (int) ((x - startPos.x) * hd);
+			int yoff = (int) ((y - startPos.y) * vd);
+			int xo = startOrigin.x + xoff;
+			int yo = startOrigin.y + yoff;
+			System.out.printf("%2d  %2d\n", xoff, yoff);
 			parent.setOrigin(xo, yo);
 		}
 	}
@@ -177,15 +182,15 @@ public class PainterWidget extends BaseImagingWidget {
 		if (redrawMode == RedrawMode.DrawPixel) {
 			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider,
 					action);
-		} else if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
-			int index = tileRepositoryService.getSelectedTileIndexList().get(0);
-			paintTile(gc, index, conf, colorPaletteProvider, action);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
-			int index = tileRepositoryService.getTileIndex(temporaryIndex);
+			paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
+		} else {
+			int index = tileRepositoryService.getSelectedTileIndexList().get(0);
 			paintTile(gc, index, conf, colorPaletteProvider, action);
 		}
 
 		if (paintPixelGrid) {
+
 			paintPixelGrid(gc);
 			if (paintSeparator) {
 				paintSeparator(gc);
@@ -193,12 +198,13 @@ public class PainterWidget extends BaseImagingWidget {
 			if (paintTileSubGrid) {
 				paintTileSubGrid(gc);
 			}
-		}
 
+		}
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			paintRangeSelection(gc);
-		} else {
+		} else if (conf.cursorMode == CursorMode.Point) {
 			paintPixelCursor(gc);
+		} else {
 		}
 
 		action = ImagePainterFactory.NONE;

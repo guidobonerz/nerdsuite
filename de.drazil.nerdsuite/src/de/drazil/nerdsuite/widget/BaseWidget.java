@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
@@ -8,7 +9,7 @@ import de.drazil.nerdsuite.mouse.IAdvancedMouseMoveListener;
 import de.drazil.nerdsuite.mouse.IAdvancedMouseTrackListener;
 import de.drazil.nerdsuite.mouse.IAdvancedMouseWheelListener;
 
-public abstract class BaseWidget extends Composite {
+public abstract class BaseWidget extends Canvas {
 
 	protected AdvancedMouseAdaper ama = null;
 	protected int modifierMask = 0;

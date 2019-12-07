@@ -80,6 +80,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	private RepositoryWidget repository;
 
 	private ScrolledComposite scrollablePainter;
+	private ScrolledComposite scrollableRepository;
 	private ScrolledComposite scrollableLayerChooser;
 
 	private TileRepositoryService tileRepositoryService;
@@ -332,22 +333,19 @@ public class GfxEditorView implements ITileUpdateListener {
 		file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
 				+ projectType.getSuffix());
 
+		customSize = new CustomSize(graphicFormat.getWidth(), graphicFormat.getHeight(),
+				graphicFormatVariant.getTileColumns(), graphicFormatVariant.getTileRows(),
+				graphicFormat.getStorageEntity());
 		if (projectAction.startsWith("new")) {
 			customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
 			if (projectAction.startsWith("newImport")) {
 				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
 				tileRepositoryService = importService.doImportGraphic((Map<String, Object>) part.getObject());
-				tileRepositoryService.setPlatform(project.getTargetPlatform());
-				tileRepositoryService.setType(project.getProjectType());
-				tileRepositoryService.setVariant(project.getProjectVariant());
 				TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
 			}
 			updateWorkspace(true, file);
 		} else {
 			tileRepositoryService = load(file);
-			tileRepositoryService.setPlatform(project.getTargetPlatform());
-			tileRepositoryService.setType(project.getProjectType());
-			tileRepositoryService.setVariant(project.getProjectVariant());
 			if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
 				customSize = tileRepositoryService.getCustomSize();
 			}
@@ -394,9 +392,9 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollableLayerChooser.setLayoutData(gridData);
 
 		repository = createRepositoryWidget();
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalSpan = 3;
-		repository.setLayoutData(gridData);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		scrollableRepository.setLayoutData(gridData);
 
 		painter.init(owner, colorPaletteProvider);
 		repository.init(owner, colorPaletteProvider);
@@ -437,6 +435,7 @@ public class GfxEditorView implements ITileUpdateListener {
 				painter.setCursorMode(CursorMode.Point);
 				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
+				parent.layout();
 			}
 		});
 	}
@@ -479,7 +478,9 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	private RepositoryWidget createRepositoryWidget() {
-		repository = new RepositoryWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL);
+		scrollableRepository = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.DOUBLE_BUFFERED);
+
+		repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
 		repository.getConf().setWidgetName("Selector:");
 		repository.getConf().setPixelGridEnabled(false);
@@ -488,7 +489,11 @@ public class GfxEditorView implements ITileUpdateListener {
 		repository.getConf().setTileCursorEnabled(true);
 		repository.getConf().setSeparatorEnabled(false);
 		repository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE | TileSelectionModes.MULTI);
-		repository.recalc();
+		// repository.recalc();
+		scrollableRepository.setContent(repository);
+		scrollableRepository.setExpandVertical(true);
+		scrollableRepository.setExpandHorizontal(true);
+		scrollableRepository.setMinSize(actualSize);
 		return repository;
 	}
 
