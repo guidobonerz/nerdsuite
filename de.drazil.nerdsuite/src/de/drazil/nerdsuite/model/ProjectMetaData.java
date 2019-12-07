@@ -8,10 +8,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectMetaData {
-	private String targetPlatform;
 	private String id;
+	private String targetPlatform;
 	private String type;
+	private String typeName;
 	private String variant;
-	private CustomSize customSize;
+	private String variantName;
+	private int width;
+	private int height;
+	private int tileColumns;
+	private int tileRows;
+	private int storageEntity;
+	private String storageType;
 	private String referenceRepositoryName;
 }

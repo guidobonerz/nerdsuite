@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.model.CustomSize;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,10 @@ public class TileRepositoryService implements IService {
 	private List<Integer> selectedTileIndexList = null;
 	@JsonProperty(value = "customFormat")
 	private CustomSize customSize;
+	@Getter
+	@Setter
+	@JsonIgnore
+	private ProjectMetaData metadata;
 	@Getter
 	@Setter
 	@JsonIgnore
@@ -141,7 +146,11 @@ public class TileRepositoryService implements IService {
 	}
 
 	public Tile getTile(int index) {
-		return tileList.get(tileIndexOrderList.get(index));
+		return getTile(index, false);
+	}
+
+	public Tile getTile(int index, boolean naturalOrder) {
+		return tileList.get(naturalOrder ? index : tileIndexOrderList.get(index));
 	}
 
 	@JsonIgnore
