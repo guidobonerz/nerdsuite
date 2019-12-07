@@ -19,7 +19,7 @@
 				"tileRows": 1,
 				"tileColumns": 1,
 				"scaledPixelSize": 4,
-				"pixelSize": 64
+				"pixelSize": 32
 			},
 			{
 				"id": "DX",

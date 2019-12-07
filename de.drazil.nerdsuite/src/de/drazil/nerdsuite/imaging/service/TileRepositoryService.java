@@ -20,18 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class TileRepositoryService implements IService {
-	@Getter
-	@Setter
-	private String platform;
-	@Getter
-	@Setter
-	private String type;
-	@Getter
-	@Setter
-	private String variant;
-	@Getter
-	@Setter
-	private String referenceRepositoryName;
+
 	@JsonIgnore
 	@Setter
 	private String owner = null;
