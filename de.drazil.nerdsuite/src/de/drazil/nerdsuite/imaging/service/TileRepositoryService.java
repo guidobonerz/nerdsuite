@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
+import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
@@ -222,14 +225,14 @@ public class TileRepositoryService implements IService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return service;
 	}
 
-	public static void save(File fileName, TileRepositoryService service, String headerText) {
+	public static void save(File file, TileRepositoryService service, Project project) {
 		try {
-			FileWriter fw = new FileWriter(fileName);
-			fw.write(headerText);
+			FileWriter fw = new FileWriter(file);
+			fw.write(getHeaderText(project, service.getMetadata()));
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 			mapper.writeValue(fw, service);
@@ -239,4 +242,10 @@ public class TileRepositoryService implements IService {
 		}
 	}
 
+	private static String getHeaderText(Project project, ProjectMetaData metadata) {
+		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()));
+		return s;
+	}
 }

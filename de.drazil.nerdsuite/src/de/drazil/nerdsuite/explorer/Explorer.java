@@ -314,6 +314,7 @@ public class Explorer implements IDoubleClickListener {
 					+ "." + project.getSuffix());
 			TileRepositoryService repository = TileRepositoryService.load(file, owner);
 			projectSetup.put("repository", repository);
+			projectSetup.put("file", file);
 
 			MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
 					"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,

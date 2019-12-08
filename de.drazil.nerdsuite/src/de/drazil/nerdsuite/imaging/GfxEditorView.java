@@ -317,6 +317,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
 		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
+		file = (File) ((Map<String, Object>) part.getObject()).get("file");
 		tileRepositoryService = (TileRepositoryService) ((Map<String, Object>) part.getObject()).get("repository");
 		owner = tileRepositoryService.getOwner();
 		metadata = tileRepositoryService.getMetadata();
@@ -488,7 +489,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		LocalDateTime ldt = LocalDateTime.now();
 		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 		project.setChangedOn(d);
-		// TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
+		TileRepositoryService.save(file, tileRepositoryService, project);
 		part.setDirty(false);
 	}
 

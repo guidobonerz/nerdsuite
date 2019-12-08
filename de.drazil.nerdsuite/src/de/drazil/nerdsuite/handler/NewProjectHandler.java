@@ -75,8 +75,7 @@ public class NewProjectHandler {
 
 				String pt = metadata.getType();
 				GraphicFormat gf = GraphicFormatFactory.getFormatById(pt);
-				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(pt,
-						metadata.getVariant());
+				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(pt, metadata.getVariant());
 				project.setSingleFileProject(true);
 				project.setOpen(true);
 				LocalDateTime ldt = LocalDateTime.now();
@@ -115,6 +114,7 @@ public class NewProjectHandler {
 				if (projectAction.startsWith("new")) {
 					File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR
 							+ project.getId().toLowerCase() + "." + projectType.getSuffix());
+					projectSetup.put("file", file);
 					TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
 					repository.setMetadata(metadata);
 					repository.addTile();
@@ -122,7 +122,7 @@ public class NewProjectHandler {
 					if (projectAction.startsWith("newImport")) {
 						ImportService importService = ServiceFactory.getCommonService(ImportService.class);
 						repository = importService.doImportGraphic(projectSetup);
-						TileRepositoryService.save(file, repository, getHeaderText(project, metadata));
+						TileRepositoryService.save(file, repository, project);
 					}
 					Initializer.getConfiguration().updateWorkspace(project, file, true);
 				} else {
@@ -142,13 +142,6 @@ public class NewProjectHandler {
 					Explorer.class);
 			explorer.refresh();
 		}
-	}
-
-	private String getHeaderText(Project project, ProjectMetaData metadata) {
-		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
-				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
-				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()));
-		return s;
 	}
 
 	private File createProjectStructure(Project project, String suffix) {
