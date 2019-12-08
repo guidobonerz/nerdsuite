@@ -4,8 +4,8 @@ import lombok.Getter;
 
 public enum ProjectType {
 	CharSet("CHARSET", ".ns_chr", "icons/chr.png"), SpriteSet("SPRITESET", ".ns_spr", "icons/spr.png"),
-	ScreenSet("SCREENSET", ".ns_scr", "icons/scr.png"), TileMap("TILEMAP", ".ns_tm", null),
-	TileSet("TILESET", ".ns_ts", null), Assembler("ASM", ".asm", null), Basic("bas", ".bas", null);
+	ScreenSet("SCREENSET", ".ns_scr", "icons/scr.png"), TileMap("TILEMAP", ".ns_tm", "icons/tm.png"),
+	TileSet("TILESET", ".ns_ts", "icons/ts.png"), Assembler("ASM", ".asm", null), Basic("bas", ".bas", null);
 
 	@Getter
 	private String id;

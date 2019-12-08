@@ -66,16 +66,15 @@ public class NewProjectHandler {
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 
 				String type = (String) userData.get(ProjectWizard.PROJECT_TYPE);
-				type = type.substring(type.indexOf('_') + 1);
+				String type2 = type.substring(type.indexOf('_') + 1);
 
 				ProjectMetaData metadata = new ProjectMetaData();
 				metadata.setPlatform((String) userData.get(ProjectWizard.TARGET_PLATFORM));
-				metadata.setType(type);
+				metadata.setType(type2);
 				metadata.setVariant((String) userData.get(ProjectWizard.PROJECT_VARIANT));
 
-				String pt = metadata.getType();
-				GraphicFormat gf = GraphicFormatFactory.getFormatById(pt);
-				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(pt, metadata.getVariant());
+				GraphicFormat gf = GraphicFormatFactory.getFormatById(type);
+				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(type, metadata.getVariant());
 				project.setSingleFileProject(true);
 				project.setOpen(true);
 				LocalDateTime ldt = LocalDateTime.now();
@@ -83,7 +82,7 @@ public class NewProjectHandler {
 				project.setCreatedOn(d);
 				project.setChangedOn(d);
 
-				ProjectType projectType = ProjectType.getProjectTypeById(type);
+				ProjectType projectType = ProjectType.getProjectTypeById(type2);
 				project.setIconName(projectType.getIconName());
 				project.setSuffix(projectType.getSuffix());
 
@@ -117,12 +116,14 @@ public class NewProjectHandler {
 					projectSetup.put("file", file);
 					TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
 					repository.setMetadata(metadata);
-					repository.addTile();
+
 					projectSetup.put("repository", repository);
 					if (projectAction.startsWith("newImport")) {
 						ImportService importService = ServiceFactory.getCommonService(ImportService.class);
-						repository = importService.doImportGraphic(projectSetup);
+						importService.doImportGraphic(projectSetup);
 						TileRepositoryService.save(file, repository, project);
+					} else {
+						repository.addTile();
 					}
 					Initializer.getConfiguration().updateWorkspace(project, file, true);
 				} else {
