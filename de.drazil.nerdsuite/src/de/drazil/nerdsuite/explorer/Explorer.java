@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
@@ -308,20 +309,24 @@ public class Explorer implements IDoubleClickListener {
 			projectSetup.put("project", project);
 
 			String owner = project.getId();
+			MUIElement editor = modelService.find(owner, app);
+			if (editor == null) {
+				System.out.println("load tiles");
+				File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR
+						+ project.getId().toLowerCase() + "." + project.getSuffix());
+				TileRepositoryService repository = TileRepositoryService.load(file, owner);
+				projectSetup.put("repository", repository);
+				projectSetup.put("file", file);
 
-			System.out.println("load tiles");
-			File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
-					+ "." + project.getSuffix());
-			TileRepositoryService repository = TileRepositoryService.load(file, owner);
-			projectSetup.put("repository", repository);
-			projectSetup.put("file", file);
+				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+						project.getName(), projectSetup);
 
-			MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-					"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
-					project.getName(), projectSetup);
-
-			E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part,
-					true);
+				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
+						part, true);
+			} else {
+				editor.getParent().setSelectedElement(editor);
+			}
 		}
 	}
 }
