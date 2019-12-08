@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.handler;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -21,14 +22,18 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
+import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.WizardType;
 import de.drazil.nerdsuite.explorer.Explorer;
-import de.drazil.nerdsuite.model.CustomSize;
+import de.drazil.nerdsuite.imaging.service.ImportService;
+import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.CustomFormatDialog;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
@@ -51,27 +56,27 @@ public class NewProjectHandler {
 
 		if (wizardDialog.open() == WizardDialog.OK) {
 
-			Project project = new Project();
-			project.setTargetPlatform((String) userData.get(ProjectWizard.TARGET_PLATFORM));
-			project.setId((String) userData.get(ProjectWizard.PROJECT_ID));
-			project.setName((String) userData.get(ProjectWizard.PROJECT_NAME));
-			project.setProjectType((String) userData.get(ProjectWizard.PROJECT_TYPE));
-			project.setProjectVariant((String) userData.get(ProjectWizard.PROJECT_VARIANT));
+			String projectId = (String) userData.get(ProjectWizard.PROJECT_ID);
+			String projectName = (String) userData.get(ProjectWizard.PROJECT_NAME);
 
-			String perspectiveId = projectTypeId.equals("CODING_PROJECT") ? "de.drazil.nerdsuite.perspective.coding"
-					: "de.drazil.nerdsuite.perspective.gfx";
-			/*
-			 * List<MPerspective> perspectives = modelService.findElements(app,
-			 * perspectiveId, MPerspective.class, null); for (MPerspective perspective :
-			 * perspectives) { if (!perspective.equals(activePerspective)) {
-			 * partService.switchPerspective(perspective); } }
-			 */
+			Project project = new Project();
+			project.setId(projectId);
+			project.setName(projectName);
+
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 
-				String pt = project.getProjectType();
-				GraphicFormat gf = GraphicFormatFactory.getFormatByName(pt);
-				GraphicFormatVariant gfv = GraphicFormatFactory.getGraphicFormatVariantByName(pt,
-						project.getProjectVariant());
+				String type = (String) userData.get(ProjectWizard.PROJECT_TYPE);
+				type = type.substring(type.indexOf('_') + 1);
+
+				ProjectMetaData metadata = new ProjectMetaData();
+				metadata.setPlatform((String) userData.get(ProjectWizard.TARGET_PLATFORM));
+				metadata.setType(type);
+				metadata.setVariant((String) userData.get(ProjectWizard.PROJECT_VARIANT));
+
+				String pt = metadata.getType();
+				GraphicFormat gf = GraphicFormatFactory.getFormatById(pt);
+				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(pt,
+						metadata.getVariant());
 				project.setSingleFileProject(true);
 				project.setOpen(true);
 				LocalDateTime ldt = LocalDateTime.now();
@@ -79,34 +84,56 @@ public class NewProjectHandler {
 				project.setCreatedOn(d);
 				project.setChangedOn(d);
 
-				ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
+				ProjectType projectType = ProjectType.getProjectTypeById(type);
 				project.setIconName(projectType.getIconName());
+				project.setSuffix(projectType.getSuffix());
+
+				metadata.setWidth(gf.getWidth());
+				metadata.setHeight(gf.getHeight());
+				metadata.setRows(gfv.getTileRows());
+				metadata.setColumns(gfv.getTileColumns());
+				metadata.setStorageEntity(gf.getStorageEntity());
+
+				String owner = (String) userData.get(ProjectWizard.PROJECT_TYPE) + "_"
+						+ (String) userData.get(ProjectWizard.PROJECT_VARIANT) + "_"
+						+ (String) userData.get(ProjectWizard.PROJECT_ID);
 
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
-				projectSetup.put("gfxFormat", gf);
-				projectSetup.put("gfxFormatVariant", gfv);
-				projectSetup.put("gfxFormatVariant", gfv);
 				projectSetup.put("importFileName", (String) userData.get(ProjectWizard.FILE_NAME));
 				projectSetup.put("importFormat", (String) userData.get(ProjectWizard.IMPORT_FORMAT));
 				projectSetup.put("bytesToSkip", (Integer) userData.get(ProjectWizard.BYTES_TO_SKIP));
-				projectSetup.put("projectAction",
-						projectSetup.get("importFileName") == null ? "newProjectAction" : "newImportProjectAction");
-				projectSetup.put("owner",
-						project.getProjectType() + "_" + project.getProjectVariant() + "_" + project.getName());
-				CustomSize customSize = new CustomSize(gf.getWidth(), gf.getHeight(), gfv.getTileColumns(),
-						gfv.getTileRows(), gf.getStorageEntity());
-				if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
+				String projectAction = projectSetup.get("importFileName") == null ? "newProjectAction"
+						: "newImportProjectAction";
+				projectSetup.put("projectAction", projectAction);
+
+				if (metadata.getVariant().equalsIgnoreCase("CUSTOM")) {
 					CustomFormatDialog cfd = new CustomFormatDialog(shell);
-					cfd.open(customSize, gfv.isSupportCustomBaseSize());
+					cfd.open(metadata, gfv.isSupportCustomBaseSize());
 				}
-				projectSetup.put("gfxCustomSize", customSize);
+
+				if (projectAction.startsWith("new")) {
+					File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR
+							+ project.getId().toLowerCase() + "." + projectType.getSuffix());
+					TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
+					repository.setMetadata(metadata);
+					repository.addTile();
+					projectSetup.put("repository", repository);
+					if (projectAction.startsWith("newImport")) {
+						ImportService importService = ServiceFactory.getCommonService(ImportService.class);
+						repository = importService.doImportGraphic(projectSetup);
+						TileRepositoryService.save(file, repository, getHeaderText(project, metadata));
+					}
+					Initializer.getConfiguration().updateWorkspace(project, file, true);
+				} else {
+					throw new IllegalArgumentException("No such project action.");
+				}
 
 				// File file = createProjectStructure(project, projectType.getSuffix());
 
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", project,
-						projectSetup);
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+						project.getName(), projectSetup);
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
 						part, true);
@@ -115,6 +142,13 @@ public class NewProjectHandler {
 					Explorer.class);
 			explorer.refresh();
 		}
+	}
+
+	private String getHeaderText(Project project, ProjectMetaData metadata) {
+		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()));
+		return s;
 	}
 
 	private File createProjectStructure(Project project, String suffix) {

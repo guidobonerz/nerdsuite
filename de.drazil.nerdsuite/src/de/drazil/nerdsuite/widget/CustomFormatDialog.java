@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.drazil.nerdsuite.model.CustomSize;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 
 public class CustomFormatDialog extends TitleAreaDialog implements SelectionListener {
 
@@ -24,7 +24,7 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 	private Spinner tileColumnsSpinner;
 	private Spinner tileRowsSpinner;
 
-	private CustomSize customSize;
+	private ProjectMetaData metadata;
 	private boolean supportCustomSize;
 
 	private List<IConfigurationListener> configurationListenerList = null;
@@ -34,8 +34,8 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		configurationListenerList = new ArrayList<>();
 	}
 
-	public int open(CustomSize customSize, boolean supportCustomSize) {
-		this.customSize = customSize;
+	public int open(ProjectMetaData metadata, boolean supportCustomSize) {
+		this.metadata = metadata;
 		this.supportCustomSize = supportCustomSize;
 		return super.open();
 	}
@@ -45,10 +45,10 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		super.create();
 		setTitle("Custom Format Setup");
 
-		tileWidthSpinner.setSelection(customSize.getWidth());
-		tileHeightSpinner.setSelection(customSize.getHeight());
-		tileColumnsSpinner.setSelection(customSize.getTileColumns());
-		tileRowsSpinner.setSelection(customSize.getTileRows());
+		tileWidthSpinner.setSelection(metadata.getWidth());
+		tileHeightSpinner.setSelection(metadata.getHeight());
+		tileColumnsSpinner.setSelection(metadata.getColumns());
+		tileRowsSpinner.setSelection(metadata.getRows());
 	}
 
 	public void addConfigurationListener(IConfigurationListener l) {
@@ -60,10 +60,10 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 	}
 
 	private void fireConfigurationChanged() {
-		customSize.setTileColumns(tileColumnsSpinner.getSelection());
-		customSize.setTileRows(tileRowsSpinner.getSelection());
-		customSize.setWidth(tileWidthSpinner.getSelection());
-		customSize.setHeight(tileHeightSpinner.getSelection());
+		metadata.setColumns(tileColumnsSpinner.getSelection());
+		metadata.setRows(tileRowsSpinner.getSelection());
+		metadata.setWidth(tileWidthSpinner.getSelection());
+		metadata.setHeight(tileHeightSpinner.getSelection());
 	}
 
 	@Override
@@ -91,11 +91,11 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		dataWidth.horizontalAlignment = GridData.FILL;
 
 		tileWidthSpinner = new Spinner(container, SWT.BORDER);
-		tileWidthSpinner.setMinimum(customSize.getStorageEntity());
+		tileWidthSpinner.setMinimum(metadata.getStorageEntity());
 		tileWidthSpinner.setMaximum(1000);
-		tileWidthSpinner.setSelection(customSize.getWidth());
-		tileWidthSpinner.setIncrement(customSize.getStorageEntity());
-		tileWidthSpinner.setPageIncrement(customSize.getStorageEntity());
+		tileWidthSpinner.setSelection(metadata.getWidth());
+		tileWidthSpinner.setIncrement(metadata.getStorageEntity());
+		tileWidthSpinner.setPageIncrement(metadata.getStorageEntity());
 		tileWidthSpinner.setLayoutData(dataWidth);
 		tileWidthSpinner.addSelectionListener(this);
 		tileWidthSpinner.setEnabled(supportCustomSize);
@@ -110,9 +110,9 @@ public class CustomFormatDialog extends TitleAreaDialog implements SelectionList
 		dataHeight.horizontalAlignment = GridData.FILL;
 
 		tileHeightSpinner = new Spinner(container, SWT.BORDER);
-		tileHeightSpinner.setMinimum(customSize.getHeight());
+		tileHeightSpinner.setMinimum(metadata.getHeight());
 		tileHeightSpinner.setMaximum(1000);
-		tileHeightSpinner.setSelection(customSize.getHeight());
+		tileHeightSpinner.setSelection(metadata.getHeight());
 		tileHeightSpinner.setIncrement(1);
 		tileHeightSpinner.setPageIncrement(1);
 		tileHeightSpinner.setLayoutData(dataHeight);

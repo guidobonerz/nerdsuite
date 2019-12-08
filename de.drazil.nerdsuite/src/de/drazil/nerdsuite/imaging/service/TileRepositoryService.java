@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.enums.RedrawMode;
-import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
@@ -24,6 +23,7 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	@Setter
+	@Getter
 	private String owner = null;
 	@JsonProperty(value = "tiles")
 	private List<Tile> tileList = null;
@@ -35,18 +35,14 @@ public class TileRepositoryService implements IService {
 	private List<ITileUpdateListener> tileUpdateListener = null;
 	@JsonProperty(value = "selectedTiles")
 	private List<Integer> selectedTileIndexList = null;
-	@JsonProperty(value = "customFormat")
-	private CustomSize customSize;
 	@Getter
-	@Setter
-	@JsonIgnore
 	private ProjectMetaData metadata;
 	@Getter
 	@Setter
 	@JsonIgnore
 	private Rectangle selection;
-	@JsonIgnore
 	@Getter
+	@JsonIgnore
 	private ImagePainterFactory imagePainterFactory;
 
 	public TileRepositoryService() {
@@ -56,6 +52,15 @@ public class TileRepositoryService implements IService {
 		tileUpdateListener = new ArrayList<>();
 		selectedTileIndexList = new ArrayList<Integer>();
 		imagePainterFactory = new ImagePainterFactory();
+	}
+
+	public void setMetadata(ProjectMetaData metadata) {
+		this.metadata = metadata;
+	}
+
+	public Tile addTile() {
+		return addTile("tile_" + (tileList.size() + 1),
+				metadata.getHeight() * metadata.getWidth() * metadata.getColumns() * metadata.getRows());
 	}
 
 	public Tile addTile(int size) {
@@ -69,14 +74,6 @@ public class TileRepositoryService implements IService {
 		setSelectedTileIndex(tileIndexOrderList.get(getSize() - 1));
 		fireTileAdded();
 		return tile;
-	}
-
-	public void setCustomSize(CustomSize customSize) {
-		this.customSize = customSize;
-	}
-
-	public CustomSize getCustomSize() {
-		return customSize;
 	}
 
 	public void removeLast() {
@@ -225,6 +222,7 @@ public class TileRepositoryService implements IService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return service;
 	}
 
@@ -240,4 +238,5 @@ public class TileRepositoryService implements IService {
 			e.printStackTrace();
 		}
 	}
+
 }

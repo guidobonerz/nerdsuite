@@ -38,11 +38,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.handler.BrokerObject;
-import de.drazil.nerdsuite.model.GraphicFormat;
-import de.drazil.nerdsuite.model.GraphicFormatVariant;
+import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.storagemedia.IMediaReader;
@@ -50,7 +50,6 @@ import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.util.ImageFactory;
-import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 
 public class Explorer implements IDoubleClickListener {
 	private TreeViewer treeViewer;
@@ -305,20 +304,20 @@ public class Explorer implements IDoubleClickListener {
 			Project project = (Project) element;
 			System.out.println(project.getName());
 
-			GraphicFormat gf = GraphicFormatFactory.getFormatByName(project.getProjectType());
-			GraphicFormatVariant gfv = GraphicFormatFactory.getGraphicFormatVariantByName(project.getProjectType(),
-					project.getProjectVariant());
 			Map<String, Object> projectSetup = new HashMap<String, Object>();
 			projectSetup.put("project", project);
-			projectSetup.put("gfxFormat", gf);
-			projectSetup.put("gfxFormatVariant", gfv);
-			projectSetup.put("projectAction", "openProjectAction");
-			projectSetup.put("owner",
-					project.getProjectType() + "_" + project.getProjectVariant() + "_" + project.getName());
+
+			String owner = project.getId();
+
+			System.out.println("load tiles");
+			File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
+					+ "." + project.getSuffix());
+			TileRepositoryService repository = TileRepositoryService.load(file, owner);
+			projectSetup.put("repository", repository);
 
 			MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-					"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", project,
-					projectSetup);
+					"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+					project.getName(), projectSetup);
 
 			E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part,
 					true);
