@@ -26,7 +26,7 @@ public class E4Utils {
 			item.setEnabled(enabled);
 		}
 	}
-	
+
 	public static void setToolItemSelected(MPart part, EModelService modelService, List<String> tags, boolean enabled) {
 		List<MHandledItem> items = modelService.findElements(part.getToolbar(), null, MHandledItem.class, tags);
 		for (MHandledItem item : items) {
@@ -49,12 +49,12 @@ public class E4Utils {
 		}
 	}
 
-	public static MPart createPart(EPartService partService, String id, String contributionUrl, Project project,
-			Map<String, Object> parameterMap) {
+	public static MPart createPart(EPartService partService, String id, String contributionUrl, String owner,
+			String label, Map<String, Object> parameterMap) {
 		MPart part = partService.createPart(id);
-		part.setLabel(project.getName());
+		part.setLabel(label);
 		part.setObject(parameterMap);
-		part.setElementId(project.getProjectType() + project.getName());
+		part.setElementId(owner);
 		part.setContributionURI(contributionUrl);
 		return part;
 	}

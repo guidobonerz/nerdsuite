@@ -1,6 +1,6 @@
 [
 	{
-		"id": "C64_CHAR",
+		"id": "C64_CHARSET",
 		"name": "Char Set",
 		"width": 8,
 		"height": 8,
@@ -57,7 +57,7 @@
 		]
 	},
 	{
-		"id": "C64_SPRITE",
+		"id": "C64_SPRITESET",
 		"name": "Sprite Set",
 		"width": 24,
 		"height": 21,
@@ -112,7 +112,7 @@
 		]
 	},
 	{
-		"id": "C64_SCREEN",
+		"id": "C64_SCREENSET",
 		"name": "Screen Set",
 		"width": 40,
 		"height": 25,

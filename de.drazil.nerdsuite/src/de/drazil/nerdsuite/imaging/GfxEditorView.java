@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -33,14 +32,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.enums.AnimationMode;
 import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
-import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
@@ -50,7 +47,6 @@ import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
-import de.drazil.nerdsuite.imaging.service.ImportService;
 import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
 import de.drazil.nerdsuite.imaging.service.MulticolorService;
@@ -59,13 +55,14 @@ import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
-import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
+import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.LayerChooser;
 import de.drazil.nerdsuite.widget.PainterWidget;
@@ -91,7 +88,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	private ColorChooser multiColorChooser;
 	private LayerChooser layerChooser;
 
-	private CustomSize customSize = null;
+	private ProjectMetaData metadata = null;
 	private GraphicFormat graphicFormat = null;
 	private GraphicFormatVariant graphicFormatVariant = null;
 	private Point actualSize;
@@ -115,7 +112,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 			@Override
 			public Color getColorByIndex(int index) {
-				return PlatformFactory.getPlatformColors(project.getTargetPlatform())
+				return PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform())
 						.get(tileRepositoryService.getSelectedTile().getActiveLayer().getColorIndex(index)).getColor();
 			}
 		};
@@ -320,45 +317,23 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
 		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
-		graphicFormat = (GraphicFormat) ((Map<String, Object>) part.getObject()).get("gfxFormat");
-		graphicFormatVariant = (GraphicFormatVariant) ((Map<String, Object>) part.getObject()).get("gfxFormatVariant");
-		owner = (String) ((Map<String, Object>) part.getObject()).get("owner");
+		file = (File) ((Map<String, Object>) part.getObject()).get("file");
+		tileRepositoryService = (TileRepositoryService) ((Map<String, Object>) part.getObject()).get("repository");
+		owner = tileRepositoryService.getOwner();
+		metadata = tileRepositoryService.getMetadata();
+		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
+		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
+		graphicFormatVariant = GraphicFormatFactory.getFormatVariantById(graphicFormatId, metadata.getVariant());
+		metadata.setDefaultPixelSize(graphicFormat.getPixelSize());
+		metadata.setCurrentPixelWidth(graphicFormat.getPixelSize());
+		metadata.setCurrentPixelHeight(graphicFormat.getPixelSize());
+		metadata.computeSizes();
+		actualSize = new Point(metadata.getTileWidthPixel(), metadata.getTileHeightPixel());
+
+		part.setDirty(false);
 		part.getTransientData().put(Constants.OWNER, owner);
 		part.setTooltip(graphicFormat.getName() + " " + graphicFormatVariant.getName());
 		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
-		String projectAction = (String) ((Map<String, Object>) part.getObject()).get("projectAction");
-		String pt = project.getProjectType();
-		ProjectType projectType = ProjectType.getProjectTypeById(pt.substring(pt.indexOf('_') + 1));
-
-		file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase()
-				+ projectType.getSuffix());
-
-		customSize = new CustomSize(graphicFormat.getWidth(), graphicFormat.getHeight(),
-				graphicFormatVariant.getTileColumns(), graphicFormatVariant.getTileRows(),
-				graphicFormat.getStorageEntity());
-		if (projectAction.startsWith("new")) {
-			customSize = (CustomSize) ((Map<String, Object>) part.getObject()).get("gfxCustomSize");
-			if (projectAction.startsWith("newImport")) {
-				ImportService importService = ServiceFactory.getCommonService(ImportService.class);
-				tileRepositoryService = importService.doImportGraphic((Map<String, Object>) part.getObject());
-				TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
-			}
-			updateWorkspace(true, file);
-		} else {
-			tileRepositoryService = load(file);
-			if (project.getProjectVariant().equalsIgnoreCase("CUSTOM")) {
-				customSize = tileRepositoryService.getCustomSize();
-			}
-		}
-
-		actualSize = new Point(
-				graphicFormat.getWidth() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileColumns(),
-				graphicFormat.getHeight() * graphicFormatVariant.getPixelSize() * graphicFormatVariant.getTileRows());
-		if (customSize != null) {
-			actualSize = new Point(
-					customSize.getWidth() * graphicFormatVariant.getPixelSize() * customSize.getTileColumns(),
-					customSize.getHeight() * graphicFormatVariant.getPixelSize() * customSize.getTileRows());
-		}
 
 		GridLayout layout = new GridLayout(2, false);
 		parent.setLayout(layout);
@@ -381,7 +356,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollablePainter.setLayoutData(gridData);
 
 		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
-				PlatformFactory.getPlatformColors(project.getTargetPlatform()));
+				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
 
 		layerChooser = createLayerChooser();
 
@@ -399,16 +374,14 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter.init(owner, colorPaletteProvider);
 		repository.init(owner, colorPaletteProvider);
 
-		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
-		tileRepositoryService.setCustomSize(customSize);
 
-		if (graphicFormat.getId().endsWith("CHAR")) {
+		if (graphicFormat.getId().endsWith("CHARSET")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
-		} else if (graphicFormat.getId().endsWith("SPRITE")) {
+		} else if (graphicFormat.getId().endsWith("SPRITESET")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
-		} else if (graphicFormat.getId().endsWith("SCREEN")) {
+		} else if (graphicFormat.getId().endsWith("SCREENSET")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
 
 		} else {
@@ -423,9 +396,6 @@ public class GfxEditorView implements ITileUpdateListener {
 		multiColorChooser.addColorSelectionListener(painter);
 		multiColorChooser.addColorSelectionListener(repository);
 
-		if (projectAction.startsWith("new")) {
-			tileRepositoryService.addTile(painter.getConf().getTileSize());
-		}
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -456,7 +426,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
 		// scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
+		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, null);
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
 		painter.getConf().setGridStyle(GridType.Dot);
@@ -481,7 +451,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollableRepository = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.DOUBLE_BUFFERED);
 
 		repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, customSize);
+		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, null);
 		repository.getConf().setWidgetName("Selector:");
 		repository.getConf().setPixelGridEnabled(false);
 		repository.getConf().setTileGridEnabled(true);
@@ -519,14 +489,8 @@ public class GfxEditorView implements ITileUpdateListener {
 		LocalDateTime ldt = LocalDateTime.now();
 		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 		project.setChangedOn(d);
-		TileRepositoryService.save(file, tileRepositoryService, getHeaderText());
+		TileRepositoryService.save(file, tileRepositoryService, project);
 		part.setDirty(false);
-	}
-
-	private TileRepositoryService load(File file) {
-		System.out.println("load tiles");
-		part.setDirty(false);
-		return TileRepositoryService.load(file, owner);
 	}
 
 	@Persist
@@ -536,14 +500,6 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private void updateWorkspace(boolean addProject, File file) {
 		Initializer.getConfiguration().updateWorkspace(project, file, addProject);
-	}
-
-	private String getHeaderText() {
-		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
-				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
-				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()),
-				project.getTargetPlatform(), graphicFormat.getName(), graphicFormatVariant.getName());
-		return s;
 	}
 
 }

@@ -17,6 +17,7 @@ public class Project {
 
 	private String id;
 	private String name;
+	private String suffix;
 	private boolean open;
 	private String targetPlatform;
 	private String projectType;

@@ -17,7 +17,7 @@ import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
-import de.drazil.nerdsuite.model.CustomSize;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 
 public class PainterWidget extends BaseImagingWidget {
 
@@ -386,9 +386,9 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		CustomSize cs = tileRepositoryService.getCustomSize();
-		int width = (cs.getWidth() * conf.currentPixelWidth * cs.getTileColumns() * conf.columns);
-		int height = (cs.getHeight() * conf.currentPixelHeight * cs.getTileRows() * conf.rows);
+		ProjectMetaData metadata = tileRepositoryService.getMetadata();
+		int width = (metadata.getWidth() * conf.currentPixelWidth * metadata.getColumns() * conf.columns);
+		int height = (metadata.getHeight() * conf.currentPixelHeight * metadata.getRows() * conf.rows);
 		return new Point(width, height);
 	}
 }

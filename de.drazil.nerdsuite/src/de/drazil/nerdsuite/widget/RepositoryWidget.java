@@ -158,7 +158,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
 			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
-			paintTile(this, gc, index, conf, colorPaletteProvider, action);
+			paintTile(this, gc, i, conf, colorPaletteProvider, action);
 		}
 
 		if (paintTileGrid) {

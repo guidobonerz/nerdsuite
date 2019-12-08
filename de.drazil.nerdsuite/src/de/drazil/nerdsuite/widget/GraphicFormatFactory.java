@@ -16,7 +16,7 @@ import de.drazil.nerdsuite.model.GraphicFormatVariant;
 public class GraphicFormatFactory {
 	private static List<GraphicFormat> graphicFormatList;
 
-	public static GraphicFormat getFormatByName(String name) {
+	public static GraphicFormat getFormatById(String id) {
 
 		if (null == graphicFormatList) {
 			graphicFormatList = new ArrayList<>();
@@ -29,7 +29,7 @@ public class GraphicFormatFactory {
 				e.printStackTrace();
 			}
 		}
-		return graphicFormatList.stream().filter(gf -> gf.getId().equals(name)).findFirst().orElse(null);
+		return graphicFormatList.stream().filter(gf -> gf.getId().equals(id)).findFirst().orElse(null);
 	}
 
 	public static List<GraphicFormat> getFormatByPrefix(String name) {
@@ -49,11 +49,11 @@ public class GraphicFormatFactory {
 	}
 
 	public static List<GraphicFormatVariant> getFormatVariantListByPrefix(String name) {
-		return getFormatByName(name).getVariants();
+		return getFormatById(name).getVariants();
 	}
 
-	public static GraphicFormatVariant getGraphicFormatVariantByName(String name, String variant) {
-		return getFormatByName(name).getVariants().stream().filter(v -> v.getId().equalsIgnoreCase(variant)).findFirst()
+	public static GraphicFormatVariant getFormatVariantById(String id, String variantId) {
+		return getFormatById(id).getVariants().stream().filter(v -> v.getId().equalsIgnoreCase(variantId)).findFirst()
 				.orElse(null);
 	}
 

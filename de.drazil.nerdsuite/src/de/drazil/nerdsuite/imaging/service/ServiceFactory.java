@@ -46,6 +46,7 @@ public class ServiceFactory {
 		if (s != null && override || s == null) {
 			serviceCacheMap.put(name, service);
 		}
+		service.setOwner(owner);
 	}
 
 	public static Map<String, IService> getServiceCacheMap(String owner) {

@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
-import de.drazil.nerdsuite.model.CustomSize;
+import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.Tile;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +26,7 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	@Setter
+	@Getter
 	private String owner = null;
 	@JsonProperty(value = "tiles")
 	private List<Tile> tileList = null;
@@ -34,14 +38,14 @@ public class TileRepositoryService implements IService {
 	private List<ITileUpdateListener> tileUpdateListener = null;
 	@JsonProperty(value = "selectedTiles")
 	private List<Integer> selectedTileIndexList = null;
-	@JsonProperty(value = "customFormat")
-	private CustomSize customSize;
+	@Getter
+	private ProjectMetaData metadata;
 	@Getter
 	@Setter
 	@JsonIgnore
 	private Rectangle selection;
-	@JsonIgnore
 	@Getter
+	@JsonIgnore
 	private ImagePainterFactory imagePainterFactory;
 
 	public TileRepositoryService() {
@@ -51,6 +55,15 @@ public class TileRepositoryService implements IService {
 		tileUpdateListener = new ArrayList<>();
 		selectedTileIndexList = new ArrayList<Integer>();
 		imagePainterFactory = new ImagePainterFactory();
+	}
+
+	public void setMetadata(ProjectMetaData metadata) {
+		this.metadata = metadata;
+	}
+
+	public Tile addTile() {
+		return addTile("tile_" + (tileList.size() + 1),
+				metadata.getHeight() * metadata.getWidth() * metadata.getColumns() * metadata.getRows());
 	}
 
 	public Tile addTile(int size) {
@@ -64,14 +77,6 @@ public class TileRepositoryService implements IService {
 		setSelectedTileIndex(tileIndexOrderList.get(getSize() - 1));
 		fireTileAdded();
 		return tile;
-	}
-
-	public void setCustomSize(CustomSize customSize) {
-		this.customSize = customSize;
-	}
-
-	public CustomSize getCustomSize() {
-		return customSize;
 	}
 
 	public void removeLast() {
@@ -141,7 +146,11 @@ public class TileRepositoryService implements IService {
 	}
 
 	public Tile getTile(int index) {
-		return tileList.get(tileIndexOrderList.get(index));
+		return getTile(index, false);
+	}
+
+	public Tile getTile(int index, boolean naturalOrder) {
+		return tileList.get(naturalOrder ? index : tileIndexOrderList.get(index));
 	}
 
 	@JsonIgnore
@@ -216,13 +225,14 @@ public class TileRepositoryService implements IService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return service;
 	}
 
-	public static void save(File fileName, TileRepositoryService service, String headerText) {
+	public static void save(File file, TileRepositoryService service, Project project) {
 		try {
-			FileWriter fw = new FileWriter(fileName);
-			fw.write(headerText);
+			FileWriter fw = new FileWriter(file);
+			fw.write(getHeaderText(project, service.getMetadata()));
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 			mapper.writeValue(fw, service);
@@ -230,5 +240,12 @@ public class TileRepositoryService implements IService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static String getHeaderText(Project project, ProjectMetaData metadata) {
+		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()));
+		return s;
 	}
 }

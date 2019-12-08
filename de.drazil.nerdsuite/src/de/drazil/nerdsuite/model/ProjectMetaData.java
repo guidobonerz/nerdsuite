@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +10,42 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectMetaData {
-	private String targetPlatform;
 	private String id;
+	private String platform;
 	private String type;
 	private String variant;
-	private CustomSize customSize;
-	private String referenceRepositoryName;
+	private int width;
+	private int height;
+	private int columns;
+	private int rows;
+	private int storageEntity;
+	private String referenceRepositoryId;
+	@JsonIgnore
+	private int defaultPixelSize;
+	@JsonIgnore
+	private int currentPixelWidth;
+	@JsonIgnore
+	private int currentPixelHeight;
+	@JsonIgnore
+	private int iconSize;
+	@JsonIgnore
+	private int tileSize;
+	@JsonIgnore
+	private int tileWidth;
+	@JsonIgnore
+	private int tileHeight;
+	@JsonIgnore
+	private int tileWidthPixel;
+	@JsonIgnore
+	private int tileHeightPixel;
+
+	@JsonIgnore
+	public void computeSizes() {
+		iconSize = width * height;
+		tileSize = iconSize * columns * rows;
+		tileWidth = width * columns;
+		tileHeight = height * rows;
+		tileWidthPixel = tileWidth * currentPixelWidth;
+		tileHeightPixel = tileHeight * currentPixelHeight;
+	}
 }
