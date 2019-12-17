@@ -279,7 +279,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
-				tileRepositoryService.addTile(tileRepositoryService.getSelectedTile().getLayer(0).getContent().length);
+				tileRepositoryService.addTile();
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
 				tileRepositoryService.removeSelected();
 			} else {

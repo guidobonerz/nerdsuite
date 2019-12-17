@@ -15,6 +15,7 @@ public class ProjectWizard extends Wizard {
 	public static final String PROJECT_NAME = "PROJECT_NAME";
 	public static final String PROJECT_TYPE = "PROJECT_TYPE";
 	public static final String PROJECT_VARIANT = "PROJECT_VARIANT";
+	public static final String PROJECT_MAX_ITEMS = "PROJECT_MAX_ITEMS";
 	public static final String FILE_NAME = "FILE_NAME";
 	public static final String IMPORT_FORMAT = "IMPORT_FORMAT";
 	public static final String BYTES_TO_SKIP = "BYTES_TO_SKIP";

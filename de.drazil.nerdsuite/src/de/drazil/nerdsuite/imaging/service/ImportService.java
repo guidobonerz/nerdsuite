@@ -46,7 +46,8 @@ public class ImportService implements IService {
 		int bitPerPixel = 1;
 		int mask = 1;
 		for (int o = 0; o < size; o += tileSize) {
-			Tile tile = service.addTile(tileSize * 8);
+			//Tile tile = service.addTile(tileSize * 8);
+			Tile tile = service.addTile();
 			int[] workArray = tile.getActiveLayer().getContent();
 			for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
 				s = (si % (iconSize)) == 0 ? 0 : s;

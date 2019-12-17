@@ -6,7 +6,6 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-
 public class GraphicFormat {
 	private String id;
 	private String name;
@@ -16,9 +15,9 @@ public class GraphicFormat {
 	private boolean supportsLayers;
 	private int storageEntity;
 	private String storageType;
+	private int maxItems;
 	private String colorRendererClass;
 	private TileSize tileSize;
 	private Map<String, Object> properties;
 	private List<GraphicFormatVariant> variants;
-
 }
