@@ -123,7 +123,8 @@ public class NewProjectHandler {
 						importService.doImportGraphic(projectSetup);
 						TileRepositoryService.save(file, repository, project);
 					} else {
-						repository.addTile();
+						int maxItems = (int) userData.get(ProjectWizard.PROJECT_MAX_ITEMS);
+						repository.setInitialSize(maxItems);
 					}
 					Initializer.getConfiguration().updateWorkspace(project, file, true);
 				} else {

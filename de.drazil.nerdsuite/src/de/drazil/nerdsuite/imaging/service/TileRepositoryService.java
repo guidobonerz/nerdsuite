@@ -61,21 +61,29 @@ public class TileRepositoryService implements IService {
 		this.metadata = metadata;
 	}
 
+	public void setInitialSize(int size) {
+		for (int i = 0; i < size; i++) {
+			addTileInternal("tile_" + (tileList.size() + 1));
+		}
+		setSelectedTileIndex(0);
+	}
+
 	public Tile addTile() {
-		return addTile("tile_" + (tileList.size() + 1),
-				metadata.getHeight() * metadata.getWidth() * metadata.getColumns() * metadata.getRows());
+		return addTile("tile_" + (tileList.size() + 1));
 	}
 
-	public Tile addTile(int size) {
-		return addTile("tile_" + (tileList.size() + 1), size);
-	}
-
-	public Tile addTile(String name, int size) {
-		Tile tile = new Tile(name, size);
-		tileList.add(tile);
-		tileIndexOrderList.add(tileList.indexOf(tile));
+	public Tile addTile(String name) {
+		Tile tile = addTileInternal(name);
 		setSelectedTileIndex(tileIndexOrderList.get(getSize() - 1));
 		fireTileAdded();
+		return tile;
+	}
+
+	private Tile addTileInternal(String name) {
+		Tile tile = new Tile(name,
+				metadata.getHeight() * metadata.getWidth() * metadata.getColumns() * metadata.getRows());
+		tileList.add(tile);
+		tileIndexOrderList.add(tileList.indexOf(tile));
 		return tile;
 	}
 

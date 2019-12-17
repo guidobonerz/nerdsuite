@@ -8,6 +8,7 @@
 		"supportsLayers": true,
 		"storageEntity": 8,
 		"storageType": "linear",
+		"maxItems": 255,
 		"properties": {
 			"supportsMultiColor": true,
 			"supportsExtendedColorMode": true
@@ -65,6 +66,7 @@
 		"supportsLayers": true,
 		"storageEntity": 8,
 		"storageType": "linear",
+		"maxItems": -1,
 		"properties": {
 			"supportsMultiColor": true
 		},
@@ -120,6 +122,7 @@
 		"supportsLayers": true,
 		"storageEntity": 1,
 		"storageType": "linear",
+		"maxItems": -1,
 		"properties": {
 			"supportsMultiColor": true,
 			"supportsResizing": true,
@@ -154,6 +157,7 @@
 		"supportsLayers": true,
 		"storageEntity": 1,
 		"storageType": "linear",
+		"maxItems": -1,
 		"properties": {
 			"supportsMultiColor": true,
 			"supportsResizing": true,
@@ -188,6 +192,7 @@
 		"supportsLayers": true,
 		"storageEntity": 1,
 		"storageType": "linear",
+		"maxItems": -1,
 		"properties": {
 			"supportsMultiColor": true,
 			"supportsResizing": true,
@@ -222,6 +227,7 @@
 		"supportsLayers": false,
 		"storageEntity": 8,
 		"storageType": "tiled",
+		"maxItems": -1,
 		"tileSize": {
 			"width": 8,
 			"height": 8

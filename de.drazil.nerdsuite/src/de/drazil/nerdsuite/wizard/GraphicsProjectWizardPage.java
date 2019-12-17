@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
 import de.drazil.nerdsuite.model.GraphicFormat;
@@ -35,17 +36,9 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 	private Label gfxFormatLabel;
 	private Label gfxFormatVariantLabel;
 	private Label separatorLabel;
-	private Label basePathLabel;
-	private Label sourcePathLabel;
-	private Label binaryPathLabel;
-	private Label includePathLabel;
-	private Label symbolPathLabel;
+	private Label maxItemsLabel;
 	private Text projectNameText;
-	private Text basePathText;
-	private Text sourcePathText;
-	private Text binaryPathText;
-	private Text includePathText;
-	private Text symbolPathText;
+	private Spinner maxItemsSpinner;
 	private ComboViewer targetPlatformCombo;
 	private ComboViewer gfxFormatCombo;
 	private ComboViewer gfxFormatVariantCombo;
@@ -72,6 +65,14 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		container.setLayout(new FormLayout());
 
 		FormData formData;
+
+		separatorLabel = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+
+		maxItemsLabel = new Label(container, SWT.NONE);
+		maxItemsLabel.setText("Max items");
+
+		maxItemsSpinner = new Spinner(container, SWT.BORDER);
+
 		projectNameLabel = new Label(container, SWT.NONE);
 		projectNameLabel.setText("Project Name");
 		targetPlatformLabel = new Label(container, SWT.NONE);
@@ -137,7 +138,6 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 			public String getText(Object element) {
 				if (element instanceof GraphicFormat) {
 					GraphicFormat current = (GraphicFormat) element;
-
 					return current.getName();
 				}
 				return super.getText(element);
@@ -152,6 +152,9 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantListByPrefix(graphicFormat.getId());
 				gfxFormatVariantCombo.setInput(l);
 				gfxFormatVariantCombo.setSelection(new StructuredSelection(l.get(0)));
+				int maxItems = graphicFormat.getMaxItems() == -1 ? 1 : graphicFormat.getMaxItems();
+				maxItemsSpinner.setValues(maxItems, 1, maxItems, 0, 1, 16);
+				userData.put(ProjectWizard.PROJECT_MAX_ITEMS, maxItems);
 
 			}
 		});
@@ -178,26 +181,6 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 				userData.put(ProjectWizard.PROJECT_VARIANT, graphicFormatVariant.getId());
 			}
 		});
-
-		separatorLabel = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
-
-		basePathLabel = new Label(container, SWT.NONE);
-		basePathLabel.setText("Base Path");
-		sourcePathLabel = new Label(container, SWT.NONE);
-		sourcePathLabel.setText("Source Path");
-		binaryPathLabel = new Label(container, SWT.NONE);
-		binaryPathLabel.setText("Binary Path");
-		includePathLabel = new Label(container, SWT.NONE);
-		includePathLabel.setText("Include Path");
-		symbolPathLabel = new Label(container, SWT.NONE);
-		symbolPathLabel.setText("Symbol Path");
-
-		basePathText = new Text(container, SWT.BORDER);
-		basePathText.setEditable(false);
-		sourcePathText = new Text(container, SWT.BORDER);
-		binaryPathText = new Text(container, SWT.BORDER);
-		includePathText = new Text(container, SWT.BORDER);
-		symbolPathText = new Text(container, SWT.BORDER);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(container, 0);
@@ -252,57 +235,14 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		formData = new FormData();
 		formData.top = new FormAttachment(separatorLabel, 15, SWT.BOTTOM);
 		formData.left = new FormAttachment(separatorLabel, 0, SWT.LEFT);
-		basePathLabel.setLayoutData(formData);
+		maxItemsLabel.setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(basePathLabel, 15, SWT.BOTTOM);
-		formData.left = new FormAttachment(basePathLabel, 0, SWT.LEFT);
-		sourcePathLabel.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(sourcePathLabel, 15, SWT.BOTTOM);
-		formData.left = new FormAttachment(sourcePathLabel, 0, SWT.LEFT);
-		binaryPathLabel.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(binaryPathLabel, 15, SWT.BOTTOM);
-		formData.left = new FormAttachment(binaryPathLabel, 0, SWT.LEFT);
-		includePathLabel.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(includePathLabel, 15, SWT.BOTTOM);
-		formData.left = new FormAttachment(includePathLabel, 0, SWT.LEFT);
-		symbolPathLabel.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(basePathLabel, 0, SWT.TOP);
+		formData.top = new FormAttachment(maxItemsLabel, 0, SWT.TOP);
 		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
-		basePathText.setLayoutData(formData);
+		maxItemsSpinner.setLayoutData(formData);
 
-		formData = new FormData();
-		formData.top = new FormAttachment(sourcePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
-		formData.right = new FormAttachment(container, 300);
-		sourcePathText.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(binaryPathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
-		formData.right = new FormAttachment(container, 300);
-		binaryPathText.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(includePathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
-		formData.right = new FormAttachment(container, 300);
-		includePathText.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(symbolPathLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
-		formData.right = new FormAttachment(container, 300);
-		symbolPathText.setLayoutData(formData);
 	}
 
 	private void setText(String fileName) {
