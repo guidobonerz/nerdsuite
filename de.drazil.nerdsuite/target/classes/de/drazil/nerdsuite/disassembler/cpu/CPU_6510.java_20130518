@@ -1,0 +1,491 @@
+package de.drazil.nerdsuite.disassembler.cpu;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.disassembler.InstructionLine;
+import de.drazil.nerdsuite.disassembler.NumericConverter;
+import de.drazil.nerdsuite.disassembler.Range;
+import de.drazil.nerdsuite.disassembler.ReferenceType;
+import de.drazil.nerdsuite.disassembler.Type;
+import de.drazil.nerdsuite.disassembler.Value;
+import de.drazil.nerdsuite.model.Address;
+import de.drazil.nerdsuite.model.AddressingMode;
+import de.drazil.nerdsuite.model.DisassemblerOpcode;
+import de.drazil.nerdsuite.model.PlatformData;
+import de.drazil.nerdsuite.model.Pointer;
+
+public class CPU_6510 extends AbstractCPU
+{
+	private Map<String, Boolean> pointerTableRemindMap = null;
+
+	public CPU_6510()
+	{
+		pointerTableRemindMap = new HashMap<String, Boolean>();
+	}
+
+	@Override
+	public int getWord(byte byteArray[], int offset)
+	{
+		return NumericConverter.getWordAsInt(byteArray, offset, true);
+	}
+
+	@Override
+	public DisassemblerOpcode getOpcodeByIndex(byte byteArray[], int offset)
+	{
+		return getOpcodeById(NumericConverter.toInt(byteArray[(int) offset]));
+	}
+
+	@Override
+	public DisassemblerOpcode getOpcodeById(int opcode)
+	{
+		return InstructionSet.getDisassemblerOpcodeList().get(opcode);
+	}
+
+	@Override
+	public int getInstructionLength(byte[] byteArray, int offset)
+	{
+		DisassemblerOpcode opcode = getOpcodeById(getByte(byteArray, offset));
+		int len = 1;
+
+		if (opcode != null)
+		{
+			len = opcode.getAddressingMode().getLen();
+		}
+		return len;
+	}
+
+	private void printDisassembly(InstructionLine instructionLIne, byte byteArray[])
+	{
+		int index = getInstructionLineList().indexOf(instructionLIne) - 1;
+		InstructionLine line = getInstructionLineList().get(index);
+
+		if (index > 0 && line.getRange().getLen() >= 1 && line.getRange().getLen() <= 3)
+		{
+			DisassemblerOpcode opcode2 = getOpcodeByIndex(byteArray, line.getRange().getOffset());
+			int value2 = getInstructionValue(byteArray, line.getRange());
+			String sv = NumericConverter.toHexString(value2, opcode2.getAddressingMode().getLen());
+			System.out.println(line.getProgramCounter() + ":  " + opcode2.getInstruction() + " " + opcode2.getAddressingMode().getMnemonic().replace("{value}", sv));
+		}
+	}
+
+	@Override
+	public void parseInstructions(byte[] byteArray, int pc, InstructionLine instructionLine, PlatformData platformData, boolean isInSubroutine)
+	{
+
+		InstructionLine nextLine = null;
+		InstructionLine l1 = null;
+		// split(instructionLine, pc, getOffset(pc, 8192)).setType(Type.Data);
+		// split(l1, pc, getOffset(pc, 11264)).setType(Type.Data);
+
+		InstructionLine currentLine = instructionLine;
+		int i = 0;
+		// while (i < 20000)
+		while (currentLine != null)
+		{
+
+			Range range = currentLine.getRange();
+			DisassemblerOpcode opcode = getOpcodeByIndex(byteArray, range.getOffset());
+			if (opcode != null)
+			{
+
+				if (currentLine.getRange().getLen() < 0 || currentLine.getRange().getLen() == 0)
+				{
+					System.out.println(currentLine.getProgramCounter() + ": negative length or zero ..");
+				}
+
+				System.out.println(currentLine.getProgramCounter());
+
+				if (currentLine.getProgramCounter().toString().equals("62ad"))
+				{
+					System.out.println("halt");
+				}
+
+				String addressingMode = opcode.getAddressingMode().getId();
+				String io = opcode.getIo();
+				int len = opcode.getAddressingMode().getLen();
+				int value = getInstructionValue(byteArray, new Range(range.getOffset(), len));
+				nextLine = split(currentLine, pc, range.getOffset() + len, Type.Unspecified, ReferenceType.NoReference);
+				currentLine.setPassed(true);
+				currentLine.setType(Type.AsmInstruction);
+
+				detectPointers(byteArray, pc, currentLine, platformData);
+
+				if (io.equals("branch"))
+				{
+					boolean getNext = false;
+					// branches
+					if (addressingMode.equals("rel"))
+					{
+						value = currentLine.getProgramCounter().getValue() + ((value & 0x80) == 0x80 ? -(((value ^ 0xff) & 0xff) - 1) : (value + 2));
+
+						getNext = true;
+					}
+					else if (opcode.getInstruction().equals("jmp"))
+					{
+						if (addressingMode.equals("ind"))
+						{
+							// detect jump table
+							if (value <= pc + byteArray.length - 2)
+							{
+								detectIndirectJumpTable(byteArray, pc, currentLine, opcode, value, platformData);
+							}
+						}
+						else
+						{
+
+							getNext = true;
+						}
+					}
+					else if (opcode.getInstruction().equals("jsr"))
+					{
+
+						getNext = true;
+					}
+					if (getNext)
+					{
+						currentLine.setRefValue(new Value(value));
+						if (value >= pc && value <= pc + byteArray.length - 2)
+						{
+							getNextLine(nextLine, pc, getOffset(pc, value), value, Type.AsmInstruction, ReferenceType.JumpMark);
+						}
+					}
+				}
+				else if (io.equals("mod") && addressingMode.equals("abs") || addressingMode.equals("absx") || addressingMode.equals("absy"))
+				{
+					// direkt pointers
+					currentLine.setRefValue(new Value(value));
+					if (value > pc && value <= pc + byteArray.length - 2)
+					{
+						getNextLine(nextLine, pc, getOffset(pc, value), value, Type.Data, ReferenceType.DataReference);
+					}
+				}
+				if (opcode.getInstruction().equals("rts") || (opcode.getInstruction().equals("jmp") && addressingMode.equals("ind")))
+				{
+
+					currentLine.setEndOfCode(true);
+					if (nextLine != null)
+					{
+						int nextIndex = getInstructionLineList().indexOf(nextLine) ;
+
+						while (nextLine != null && nextLine.getType() != Type.AsmInstruction)
+						{
+							if (nextIndex >= getInstructionLineList().size())
+							{
+								nextLine = null;
+							}
+							else
+							{
+								nextLine = getInstructionLineList().get(nextIndex);
+							}
+							nextIndex++;
+						}
+					}
+				}
+
+				currentLine = nextLine;
+			}
+			else
+			{
+				split(currentLine, pc, range.getOffset() + 1);
+				currentLine.setType(Type.Unspecified);
+				currentLine.setPassed(true);
+			}
+
+			i++;
+		}
+	}
+
+	private int getOffset(int pc, int value)
+	{
+		return value - pc + 2;
+	}
+
+	private boolean isPlatFormAddress(PlatformData platformData, int value)
+	{
+		boolean found = false;
+		for (Address address : platformData.getPlatformAddressList())
+		{
+			if (address.getAddress() == value)
+			{
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
+
+	private InstructionLine getNextInstructionLine(InstructionLine currentLine)
+	{
+		InstructionLine nextLine = currentLine;
+		if (currentLine != null && currentLine.getType() != Type.AsmInstruction)
+		{
+			int nextIndex = getInstructionLineList().indexOf(currentLine) + 1;
+			if (nextIndex < getInstructionLineList().size())
+			{
+				nextLine = getNextInstructionLine(getInstructionLineList().get(nextIndex));
+			}
+			else
+			{
+				nextLine = null;
+			}
+		}
+		return nextLine;
+	}
+
+	private InstructionLine getNextLine(InstructionLine instructionLine, int pc, int offset, int value)
+	{
+		return getNextLine(instructionLine, pc, offset, value, instructionLine.getType(), instructionLine.getReferenceType());
+	}
+
+	private InstructionLine getNextLine(InstructionLine instructionLine, int pc, int offset, int value, Type type, ReferenceType referenceType)
+	{
+		if (instructionLine.getRange().getOffset() > offset)
+		{
+			InstructionLine refLine = getInstructionLineByPC(value);
+			if (refLine != null)
+			{
+				refLine.setReferenceType(referenceType);
+			}
+		}
+		else
+		{
+			InstructionLine refLine = getInstructionLineByPC(value);
+			if (refLine == null)
+			{
+				InstructionLine matchLine = findInstructionLineByOffset(offset);
+				InstructionLine splitLine = split(matchLine, pc, offset, type, referenceType);
+			}
+		}
+		return instructionLine;
+	}
+
+	private InstructionLine split(InstructionLine instructionLine, int pc, int offset)
+	{
+		return split(instructionLine, pc, offset, instructionLine.getType(), instructionLine.getReferenceType());
+	}
+
+	private InstructionLine split(InstructionLine instructionLine, int pc, int offset, Type type, ReferenceType referenceType)
+	{
+
+		InstructionLine newLine = splitInstructionLine(instructionLine, pc, offset, type, referenceType);
+		if (newLine == null)
+		{
+			int index = getInstructionLineList().indexOf(instructionLine) + 1;
+			if (index < getInstructionLineList().size())
+			{
+				newLine = getInstructionLineList().get(index);
+			}
+		}
+		return newLine;
+	}
+
+	private void detectIndirectJumpTable(byte byteArray[], int pc, InstructionLine instructionLine, DisassemblerOpcode opcode, int value, PlatformData platformData)
+	{
+		System.out.println("jumptable detection");
+		InstructionLine lowByteLine = null;
+		int matchValue = 0;
+		int index = getInstructionLineList().indexOf(instructionLine) - 1;
+		if (index == -1)
+			return;
+
+		while (matchValue != value)
+		{
+			lowByteLine = getInstructionLineList().get(index);
+			DisassemblerOpcode lookupOpcode = getOpcodeByIndex(byteArray, lowByteLine.getRange().getOffset());
+			AddressingMode lookupAddressingMode = lookupOpcode.getAddressingMode();
+			if (lookupAddressingMode.getId().startsWith("abs") || lookupAddressingMode.getId().startsWith("zp"))
+			{
+				matchValue = getInstructionValue(byteArray, lowByteLine.getRange());
+			}
+			else
+			{
+				matchValue = 0;
+			}
+			index--;
+		}
+
+		InstructionLine lowAddressLine = getInstructionLineList().get(index);
+		InstructionLine highAddressLine = getInstructionLineList().get(index + 2);
+		InstructionLine lowTableLine = getInstructionLineByPC(lowAddressLine.getRefValue());
+		InstructionLine highTableLine = getInstructionLineByPC(highAddressLine.getRefValue());
+
+		String jumpTableId = lowAddressLine.getRefValue() + "|" + highAddressLine.getRefValue();
+
+		Boolean tableChecked = pointerTableRemindMap.get(jumpTableId);
+
+		if (tableChecked == null)
+		{
+			pointerTableRemindMap.put(jumpTableId, true);
+			int jumpTableSize = Math.abs(lowAddressLine.getRefValue().getValue() - highAddressLine.getRefValue().getValue());
+
+			if (lowTableLine.getRange().getLen() != jumpTableSize)
+			{
+				System.out.println("crop low table size");
+			}
+			if (highTableLine.getRange().getLen() != jumpTableSize)
+			{
+				System.out.println("crop high table size");
+				InstructionLine splitLine = split(highTableLine, pc, highTableLine.getRange().getOffset() + jumpTableSize);
+			}
+			for (int i = 0; i < jumpTableSize; i++)
+			{
+				int lowByte = getByte(byteArray, lowTableLine.getRange().getOffset());
+				int highByte = getByte(byteArray, highTableLine.getRange().getOffset());
+				int jumpMark = (int) (highByte << 8 | lowByte);
+
+				if (getInstructionLineByPC(jumpMark) == null)
+				{
+					InstructionLine jmpLine = findInstructionLine(jumpMark);
+					jmpLine.setReferenceType(ReferenceType.JumpMark);
+					jmpLine.setType(Type.AsmInstruction);
+					InstructionLine splitLine = split(jmpLine, pc, getOffset(pc, jumpMark));
+				}
+
+				lowTableLine.setRefValue(new Value(jumpMark, Value.LOWBYTE));
+				lowTableLine.setType(Type.Data);
+				lowTableLine.setReferenceType(ReferenceType.DataReference);
+				lowTableLine = split(lowTableLine, pc, lowTableLine.getRange().getOffset() + 1);
+
+				highTableLine.setRefValue(new Value(jumpMark, Value.HIGHBYTE));
+				highTableLine.setType(Type.Data);
+				highTableLine.setReferenceType(ReferenceType.DataReference);
+				highTableLine = split(highTableLine, pc, highTableLine.getRange().getOffset() + 1);
+			}
+		}
+		System.out.println("ready table detection");
+
+	}
+
+	private void detectPointers(byte byteArray[], int pc, InstructionLine instructionLine, PlatformData platformData)
+	{
+		int checkIndex = getInstructionLineList().indexOf(instructionLine);
+		InstructionLine checkLineA = getInstructionLineList().get(checkIndex);
+		Pointer resultPointer = null;
+		int valueA = 0;
+		int valueB = 0;
+
+		DisassemblerOpcode opcodeA = getOpcodeByIndex(byteArray, checkLineA.getRange().getOffset());
+		valueA = getInstructionValue(byteArray, checkLineA.getRange());
+
+		if (opcodeA != null && isStoreInstruction(opcodeA.getInstruction()) && !isDataAddress(valueA, platformData))
+		{
+			InstructionLine checkLineB = getInstructionLineList().get(checkIndex - 2);
+			DisassemblerOpcode opcodeB = getOpcodeByIndex(byteArray, checkLineB.getRange().getOffset());
+			if (opcodeB != null)
+			{
+				valueB = getInstructionValue(byteArray, checkLineB.getRange());
+				if (isStoreInstruction(opcodeB.getInstruction()) && !isDataAddress(valueA, platformData))
+				{
+					if (Math.abs(valueB - valueA) == 1)
+					{
+						InstructionLine pointerA = getInstructionLineList().get(checkIndex - 1);
+						DisassemblerOpcode pointerAopcode = getOpcodeByIndex(byteArray, pointerA.getRange().getOffset());
+						InstructionLine pointerB = getInstructionLineList().get(checkIndex - 3);
+						DisassemblerOpcode pointerBopcode = getOpcodeByIndex(byteArray, pointerB.getRange().getOffset());
+						if (pointerAopcode.getAddressingMode().getId().equals("imm") && pointerBopcode.getAddressingMode().getId().equals("imm"))
+						{
+							int lowByte = getByte(byteArray, pointerB.getRange().getOffset() + 1);
+							int highByte = getByte(byteArray, pointerA.getRange().getOffset() + 1);
+							int reference = (int) (highByte << 8 | lowByte);
+
+							Boolean checked = pointerTableRemindMap.get(String.valueOf(reference));
+							if (checked != null)
+							{
+								pointerTableRemindMap.put(String.valueOf(reference), new Boolean(true));
+								InstructionLine pointerLine = getInstructionLineByPC(reference);
+								if (pointerLine == null)
+								{
+									pointerLine = findInstructionLine(reference);
+									if (pointerLine != null)
+									{
+										pointerLine = split(pointerLine, pc, getOffset(pc, reference));
+
+										for (Pointer pointer : platformData.getPlatformPointerList())
+										{
+											if (pointer.matches(Math.min(valueA, valueB)))
+											{
+												pointer.setType(Type.AsmInstruction);
+												pointer.setReferenceType(ReferenceType.JumpMark);
+												resultPointer = pointer;
+												break;
+											}
+										}
+										if (resultPointer == null)
+										{
+											resultPointer = new Pointer(reference, Type.Data, ReferenceType.DataReference);
+										}
+										pointerLine.setRefValue(new Value(resultPointer.getAddress()));
+
+										pointerA.setRefValue(new Value(reference, Value.LOWBYTE));
+										pointerB.setRefValue(new Value(reference, Value.HIGHBYTE));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private boolean isDataAddress(int value, PlatformData platformData)
+	{
+		boolean isPlatFormAddress = false;
+		for (Address address : platformData.getPlatformAddressList())
+		{
+			if (isPlatFormAddress = address.matches(value))
+			{
+				break;
+			}
+		}
+		return isPlatFormAddress;
+	}
+
+	@Override
+	public void compressRanges()
+	{
+		int index = 0;
+		InstructionLine currentLine = null;
+
+		while (index < getInstructionLineList().size() - 1)
+		{
+			currentLine = getInstructionLineList().get(index);
+			if (currentLine.getReferenceType() == ReferenceType.DataReference)
+			{
+				int nextIndex = index + 1;
+				for (;;)
+				{
+					if (nextIndex > getInstructionLineList().size() - 1)
+						break;
+					InstructionLine nextLine = getInstructionLineList().get(nextIndex);
+					if (nextLine.getReferenceType() == ReferenceType.DataReference || nextLine.getType() == Type.AsmInstruction)
+						break;
+					Range range = currentLine.getRange();
+					range.setLen(range.getLen() + nextLine.getRange().getLen());
+					getInstructionLineList().remove(nextLine);
+				}
+			}
+			index++;
+		}
+	}
+
+	private boolean isStoreInstruction(String instruction)
+	{
+		return instruction.equals("sta") || instruction.equals("stx") || instruction.equals("sty");
+	}
+
+	@Override
+	public void shrinkInstructionLines(InstructionLine instructionLine, int len)
+	{
+		int lineIndex = getInstructionLineList().indexOf(instructionLine) + 1;
+		int i = 0;
+		while (i < len - 1)
+		{
+			getInstructionLineList().remove(lineIndex);
+			i++;
+		}
+		instructionLine.getRange().setLen(len);
+	}
+}

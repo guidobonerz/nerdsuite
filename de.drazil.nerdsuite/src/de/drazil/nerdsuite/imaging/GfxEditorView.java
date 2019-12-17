@@ -103,6 +103,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	EModelService modelService;
 
 	public GfxEditorView() {
+
 		colorPaletteProvider = new IColorPaletteProvider() {
 
 			@Override
@@ -302,6 +303,24 @@ public class GfxEditorView implements ITileUpdateListener {
 			}
 			repository.recalc();
 			part.setDirty(true);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void clipboard(@UIEventTopic("Clipboard") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("cut")) {
+				tileRepositoryService.getSelectedTile().addLayer();
+			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("copy")) {
+				tileRepositoryService.getSelectedTile().removeActiveLayer();
+			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("paste")) {
+				tileRepositoryService.getSelectedTile().removeActiveLayer();
+				part.setDirty(true);
+			} else {
+
+			}
+
 		}
 	}
 
