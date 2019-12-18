@@ -221,18 +221,23 @@ public class Explorer implements IDoubleClickListener {
 			Object[] entries = null;
 			if (parentElement instanceof Project) {
 				Project project = (Project) parentElement;
-
+				if (project.isMountpoint()) {
+					File file = new File(project.getMountLocation());
+					if (MediaFactory.isMountable(file)) {
+						IMediaReader mediaManager = MediaFactory.mount(file);
+						entries = mediaManager.getEntries(parentElement);
+					}
+				}
 			} else if (parentElement instanceof ProjectFolder) {
 
 			} else if (parentElement instanceof File) {
-				File parentFile = (File) parentElement;
-
-				if (MediaFactory.isMountable(parentFile)) {
-					IMediaReader mediaManager = MediaFactory.mount(parentFile);
-					entries = mediaManager.getEntries(parentElement);
-				} else {
-					entries = parentFile.listFiles();
-				}
+				// File parentFile = (File) parentElement;
+				/*
+				 * if (MediaFactory.isMountable(parentFile)) { IMediaReader mediaManager =
+				 * MediaFactory.mount(parentFile); entries =
+				 * mediaManager.getEntries(parentElement); } else { entries =
+				 * parentFile.listFiles(); }
+				 */
 			} else if (parentElement instanceof MediaEntry) {
 				MediaEntry me = (MediaEntry) parentElement;
 				IMediaReader mediaManager = MediaFactory.mount((File) me.getUserObject());
@@ -269,7 +274,7 @@ public class Explorer implements IDoubleClickListener {
 			boolean hasChildren = false;
 
 			if (element instanceof Project) {
-				hasChildren = !((Project) element).isSingleFileProject();
+				hasChildren = !((Project) element).isSingleFileProject() || ((Project) element).isMountpoint();
 			}
 			if (element instanceof ProjectFolder) {
 				hasChildren = true;

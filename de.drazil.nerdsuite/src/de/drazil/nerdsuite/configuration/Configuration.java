@@ -87,7 +87,7 @@ public class Configuration {
 				System.out.println("create new workspace folder...");
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
-				updateWorkspace(null, null, false);
+				updateWorkspace(null, null, false,false);
 			}
 
 			if (workspace == null) {
@@ -111,11 +111,13 @@ public class Configuration {
 		return workspace;
 	}
 
-	public final void updateWorkspace(Project project, File file, boolean addProject) {
+	public final void updateWorkspace(Project project, File file, boolean addProject, boolean mountOnly) {
 		if (addProject) {
 			workspace.add(project);
 			try {
-				file.createNewFile();
+				if (!mountOnly) {
+					file.createNewFile();
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

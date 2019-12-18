@@ -518,7 +518,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	private void updateWorkspace(boolean addProject, File file) {
-		Initializer.getConfiguration().updateWorkspace(project, file, addProject);
+		Initializer.getConfiguration().updateWorkspace(project, file, addProject,false);
 	}
 
 }

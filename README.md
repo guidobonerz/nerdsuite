@@ -20,10 +20,11 @@ Last Changes:
 - Tile drag movement/reordering
 - Sprite import
 - Scroll drawing area
+- Copy/Paste
+- Mount disk images to project-browser
 
 Gfx Module Todo:
 - Proper Multicolor handling
-- Copy/Paste
 - Undo/Redo
 - Zoom option in all views
 - Layer Preview/Selector
