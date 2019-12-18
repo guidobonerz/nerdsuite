@@ -20,7 +20,7 @@ public class FileSelectionWizardPage extends AbstractBoundWizardPage {
 
 	public FileSelectionWizardPage(Map<String, Object> userData) {
 		super("wizardPage", userData);
-		setTitle("Select a file you wish to import into project");
+		setTitle((String)userData.get("FILE_SELECTION_TITLE"));
 	}
 
 	/**

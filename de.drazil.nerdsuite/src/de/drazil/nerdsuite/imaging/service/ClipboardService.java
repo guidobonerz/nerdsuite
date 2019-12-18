@@ -37,8 +37,6 @@ public class ClipboardService implements IService {
 				service.redrawTileViewer(targetSelectionList, ImagePainterFactory.UPDATE, false);
 			}
 		} else {
-
 		}
 	}
-
 }

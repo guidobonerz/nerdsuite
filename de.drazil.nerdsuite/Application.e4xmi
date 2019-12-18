@@ -32,6 +32,7 @@
         </children>
       </children>
     </children>
+    <handlers xmi:id="_0DEZgCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.handler.2" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MountFileHandler" command="_tHUIUCHZEeqei6yq5Fa4mw"/>
     <mainMenu xmi:id="_1r1OEKLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.0">
       <children xsi:type="menu:Menu" xmi:id="_HDg6wOwLEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.menu.application" label="Application">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_TIRtIOwLEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.settings" label="Settings" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/wrench.png"/>
@@ -69,6 +70,8 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_8dedcNgAEemJ66HOfcS9Xw" elementId="de.drazil.nerdsuite.handledmenuitem.Export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/export.png" command="_2QmjcMznEemJh_xLPhHI6A">
           <parameters xmi:id="_LiaScAloEeqGDptjZacYgw" elementId="de.drazil.nerdsuite.parameter.50" name="de.drazil.nerdsuite.commandparameter.ExportInitiator" value="gfxEditor"/>
         </children>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_cYSmQCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.menuseparator.8"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_c68nYCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.handledmenuitem.Mount" label="Mount..." command="_tHUIUCHZEeqei6yq5Fa4mw"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_-oKP4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.edit" label="Edit">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_9-9o8B4KEeqfzqzHNB-ilQ"/>
@@ -423,6 +426,7 @@
   <commands xmi:id="_BDRugB4LEeqfzqzHNB-ilQ" elementId="org.eclipse.ui.edit.paste" commandName="Paste">
     <parameters xmi:id="_zI_MQCArEeqKcbgI_Ba9XA" elementId="de.drazil.nerdsuite.commandparameter.PasteAction" name="Paste"/>
   </commands>
+  <commands xmi:id="_tHUIUCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.command.Mount" commandName="Mount"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

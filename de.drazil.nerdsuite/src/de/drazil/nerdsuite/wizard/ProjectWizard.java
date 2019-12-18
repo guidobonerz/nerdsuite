@@ -29,6 +29,7 @@ public class ProjectWizard extends Wizard {
 				wizardType == WizardType.ImportAsNewProject ? "Import file as new Project" : "Create new project");
 		this.wizardType = wizardType;
 		this.userData = userData;
+		this.userData.put("FILE_SELECTION_TITLE", "Select a file you wish to import into project");
 	}
 
 	@Override
