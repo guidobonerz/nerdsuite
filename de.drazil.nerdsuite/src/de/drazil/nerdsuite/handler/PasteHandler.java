@@ -12,5 +12,4 @@ public class PasteHandler {
 	public void execute(MPart part, IEventBroker broker) {
 		broker.send("Clipboard", new BrokerObject((String) part.getTransientData().get(Constants.OWNER), "paste"));
 	}
-
 }
