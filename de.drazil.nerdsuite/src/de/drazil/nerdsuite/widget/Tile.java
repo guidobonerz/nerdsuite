@@ -170,6 +170,16 @@ public class Tile {
 	}
 
 	@JsonIgnore
+	public void resetActiveLayer() {
+		getActiveLayer().reset();
+	}
+
+	@JsonIgnore
+	public void resetLayer(int index) {
+		layerList.get(layerIndexOrderList.get(index)).reset();
+	}
+
+	@JsonIgnore
 	public Layer getActiveLayer() {
 		return layerList.stream().filter(x -> x.isActive()).findFirst().orElse(null);
 	}

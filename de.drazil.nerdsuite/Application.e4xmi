@@ -71,15 +71,9 @@
         </children>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_-oKP4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.edit" label="Edit">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_9-9o8B4KEeqfzqzHNB-ilQ">
-          <parameters xmi:id="_6NJ5gBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.62" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="cut"/>
-        </children>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_CXi2QKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.11" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png" command="__xevcB4KEeqfzqzHNB-ilQ">
-          <parameters xmi:id="_9I-KYBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.63" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="copy"/>
-        </children>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_Ct3rkKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.12" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png" command="_BDRugB4LEeqfzqzHNB-ilQ">
-          <parameters xmi:id="_-LpIUBRtEeqge9jya_n-6g" elementId="de.drazil.nerdsuite.parameter.64" name="de.drazil.nerdsuite.commandparameter.ClipboardAction" value="paste"/>
-        </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_9-9o8B4KEeqfzqzHNB-ilQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_CXi2QKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.11" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png" command="__xevcB4KEeqfzqzHNB-ilQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Ct3rkKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.12" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png" command="_BDRugB4LEeqfzqzHNB-ilQ"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_D0zT4KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.run" label="Run">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_KIY8YKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.13" label="Build" command="_sVcnUMyREeOnSbGKqjX4ww"/>
@@ -216,15 +210,9 @@
     <handlers xmi:id="_85ybgB4IEeqfzqzHNB-ilQ" elementId="de.drazil.nerdsuite.handler.Paste" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.PasteHandler" command="_BDRugB4LEeqfzqzHNB-ilQ"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="__XCxYNUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.GfxToolbox">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_ziV2MBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.repeatlastactiontctrll" label="Repeat Last Action" command="_Xm69wNdCEemIEoLjroS7Zw"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_9-9o8B4KEeqfzqzHNB-ilQ">
-        <parameters xmi:id="_jiYVsCApEeqKcbgI_Ba9XA" elementId="de.drazil.nerdsuite.parameter.59" name="de.drazil.nerdsuite.commandparameter.CutAction" value="cut"/>
-      </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_e9huUBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png" command="__xevcB4KEeqfzqzHNB-ilQ">
-        <parameters xmi:id="_84kP8CArEeqKcbgI_Ba9XA" elementId="de.drazil.nerdsuite.parameter.60" name="de.drazil.nerdsuite.commandparameter.CopyAction" value="copy"/>
-      </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_m70akBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.paste" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png" command="_BDRugB4LEeqfzqzHNB-ilQ">
-        <parameters xmi:id="_-IfmwCArEeqKcbgI_Ba9XA" elementId="de.drazil.nerdsuite.parameter.61" name="de.drazil.nerdsuite.commandparameter.PasteAction" value="paste"/>
-      </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_cIpL4BnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_9-9o8B4KEeqfzqzHNB-ilQ"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_e9huUBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png" command="__xevcB4KEeqfzqzHNB-ilQ"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_m70akBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.paste" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png" command="_BDRugB4LEeqfzqzHNB-ilQ"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_NbHmMNdEEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.handledmenuitem.SelectAll" label="Select All" command="_Ll63wNdHEemIEoLjroS7Zw"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_80f-EBnZEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.handledmenuitem.Purge" label="Purge" command="_jAOccNWOEemb1pFqqqXNXQ"/>
       <children xsi:type="menu:MenuSeparator" xmi:id="_Awy0gBnaEemSL5lKTv9t6g" elementId="de.drazil.nerdsuite.menuseparator.3"/>
