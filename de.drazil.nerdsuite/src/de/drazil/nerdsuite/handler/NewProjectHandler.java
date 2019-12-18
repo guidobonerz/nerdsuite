@@ -121,11 +121,11 @@ public class NewProjectHandler {
 					if (projectAction.startsWith("newImport")) {
 						ImportService importService = ServiceFactory.getCommonService(ImportService.class);
 						importService.doImportGraphic(projectSetup);
-						TileRepositoryService.save(file, repository, project);
 					} else {
 						int maxItems = (int) userData.get(ProjectWizard.PROJECT_MAX_ITEMS);
 						repository.setInitialSize(maxItems);
 					}
+					TileRepositoryService.save(file, repository, project);
 					Initializer.getConfiguration().updateWorkspace(project, file, true);
 				} else {
 					throw new IllegalArgumentException("No such project action.");

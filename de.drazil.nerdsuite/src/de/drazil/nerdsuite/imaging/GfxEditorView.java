@@ -43,6 +43,7 @@ import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.AnimationService;
+import de.drazil.nerdsuite.imaging.service.ClipboardService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
@@ -311,16 +312,15 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void clipboard(@UIEventTopic("Clipboard") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("cut")) {
-				tileRepositoryService.getSelectedTile().addLayer();
+				ServiceFactory.getService(owner, ClipboardService.class).clipboardAction(ClipboardService.CUT);
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("copy")) {
-				tileRepositoryService.getSelectedTile().removeActiveLayer();
+				ServiceFactory.getService(owner, ClipboardService.class).clipboardAction(ClipboardService.COPY);
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("paste")) {
-				tileRepositoryService.getSelectedTile().removeActiveLayer();
+				ServiceFactory.getService(owner, ClipboardService.class).clipboardAction(ClipboardService.PASTE);
 				part.setDirty(true);
 			} else {
 
 			}
-
 		}
 	}
 

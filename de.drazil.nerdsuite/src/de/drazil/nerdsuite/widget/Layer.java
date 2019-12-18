@@ -60,6 +60,10 @@ public class Layer {
 		}
 	}
 
+	public void reset() {
+		content = new int[content.length];
+	}
+
 	public int size() {
 		return content.length;
 	}
