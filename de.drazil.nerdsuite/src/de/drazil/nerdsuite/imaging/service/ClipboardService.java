@@ -30,7 +30,10 @@ public class ClipboardService implements IService {
 			for (int i = 0; i < selectionList.size(); i++) {
 				Tile sourceTile = service.getTile(selectionList.get(i));
 				Tile targetTile = service.getTile(targetSelectionList.get(i));
-				targetTile.getActiveLayer().setContent(sourceTile.getActiveLayer().getContent());
+				int[] targetContent = new int[sourceTile.getActiveLayer().getContent().length];
+				for (int j = 0; j < targetContent.length; j++) {
+					targetTile.getActiveLayer().getContent()[j] = sourceTile.getActiveLayer().getContent()[j];
+				}
 				if (initialAction == CUT) {
 					sourceTile.resetActiveLayer();
 				}
