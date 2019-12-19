@@ -267,16 +267,6 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	@Inject
 	@Optional
-	public void exportFile(@UIEventTopic("ExportFile") BrokerObject brokerObject) {
-		if (brokerObject.getTransferObject().equals("gfxEditor")) {
-			if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
-
-			}
-		}
-	}
-
-	@Inject
-	@Optional
 	public void manageTile(@UIEventTopic("Tile") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
@@ -518,7 +508,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	private void updateWorkspace(boolean addProject, File file) {
-		Initializer.getConfiguration().updateWorkspace(project, file, addProject,false);
+		Initializer.getConfiguration().updateWorkspace(project, file, addProject, false);
 	}
 
 }

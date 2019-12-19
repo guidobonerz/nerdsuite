@@ -98,10 +98,10 @@ public class NewProjectHandler {
 
 				Map<String, Object> projectSetup = new HashMap<String, Object>();
 				projectSetup.put("project", project);
-				projectSetup.put("importFileName", (String) userData.get(ProjectWizard.FILE_NAME));
+				projectSetup.put("fileName", (String) userData.get(ProjectWizard.FILE_NAME));
 				projectSetup.put("importFormat", (String) userData.get(ProjectWizard.IMPORT_FORMAT));
 				projectSetup.put("bytesToSkip", (Integer) userData.get(ProjectWizard.BYTES_TO_SKIP));
-				String projectAction = projectSetup.get("importFileName") == null ? "newProjectAction"
+				String projectAction = projectSetup.get("fileName") == null ? "newProjectAction"
 						: "newImportProjectAction";
 				projectSetup.put("projectAction", projectAction);
 

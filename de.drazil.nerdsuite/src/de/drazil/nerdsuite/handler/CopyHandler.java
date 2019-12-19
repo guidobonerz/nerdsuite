@@ -1,4 +1,4 @@
- 
+
 package de.drazil.nerdsuite.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -12,5 +12,4 @@ public class CopyHandler {
 	public void execute(MPart part, IEventBroker broker) {
 		broker.send("Clipboard", new BrokerObject((String) part.getTransientData().get(Constants.OWNER), "copy"));
 	}
-		
 }

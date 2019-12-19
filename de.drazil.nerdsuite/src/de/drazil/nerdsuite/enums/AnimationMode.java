@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.enums;
 
+
 public enum AnimationMode {
 	BackwardFast(0, "backwardFast"), Backward(1, "backward"), Stop(2, "stop"), Forward(3, "forward"), ForwardFast(4, "forwardFast");
 

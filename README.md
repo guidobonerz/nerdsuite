@@ -22,6 +22,7 @@ Last Changes:
 - Scroll drawing area
 - Copy/Paste
 - Mount disk images to project-browser
+- Bitmap Exporter for CharSets and Sprites
 
 Gfx Module Todo:
 - Proper Multicolor handling

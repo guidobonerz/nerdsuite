@@ -1,11 +1,12 @@
 package de.drazil.nerdsuite.imaging.service;
 
-import java.util.List;
+import java.io.File;
+import java.util.Map;
 
-import de.drazil.nerdsuite.model.TileLocation;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 
-public class ExportService extends AbstractImagingService {
+public class ExportService extends IOBaseService {
 
 	public final static int WRITE_PNG = 1;
 	public final static int WRITE_GIF = 2;
@@ -15,38 +16,21 @@ public class ExportService extends AbstractImagingService {
 
 	private boolean isTelevisionModeEnabled = false;
 
-	public ExportService() {
-		// TODO Auto-generated constructor stub
-	}
+	public void doExportGraphic(Map<String, Object> config) {
+		String fileName = (String) config.get("fileName");
+		TileRepositoryService repository = (TileRepositoryService) config.get("repository");
 
-	@Override
-	public boolean needsConfirmation() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		ProjectMetaData metadata = repository.getMetadata();
 
-	@Override
-	public void sendResponse(String message, Object data) {
-		// TODO Auto-generated method stub
+		byte[] content = new byte[repository.getSize() * metadata.getTileSize() / metadata.getStorageEntity()];
+		try {
+			convert(content, 0, repository, ConversionMode.toBitplane);
+			BinaryFileHandler.write(new File(fileName, "exported_font"), content, 0, content.length,
+					true);
 
-	}
-
-	@Override
-	public boolean isReadyToRun(List<TileLocation> tileLocationList, ImagingWidgetConfiguration configuration) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void execute(int action, IConfirmable confirmable) {
-		// TODO Auto-generated method stub
-
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
