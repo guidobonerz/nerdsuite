@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -35,8 +36,10 @@ public class ProjectMetaData {
 	@JsonIgnore
 	private int tileHeight;
 	@JsonIgnore
+	@Getter
 	private int tileWidthPixel;
 	@JsonIgnore
+	@Getter
 	private int tileHeightPixel;
 
 	@JsonIgnore

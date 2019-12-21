@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.ScaleMode;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
@@ -33,7 +34,7 @@ public class ImagePainterFactory {
 	}
 
 	public Image getImage(Tile tile, int x, int y, int action, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider) {
+			IColorPaletteProvider colorPaletteProvider, ProjectMetaData metadata) {
 		String name = tile.getName();
 		Image scaledImage = null;
 		Image mainImage = imagePool.get(name);
@@ -42,6 +43,8 @@ public class ImagePainterFactory {
 			 * if (mainImage != null && checkMode(action, UPDATE)) { mainImage.dispose(); }
 			 */
 			mainImage = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
+			// mainImage = new Image(Display.getDefault(), metadata.getTileWidthPixel(),
+			// metadata.getTileHeightPixel());
 			mainImage.setBackground(Constants.BLACK);
 			imagePool.put(name, mainImage);
 		}

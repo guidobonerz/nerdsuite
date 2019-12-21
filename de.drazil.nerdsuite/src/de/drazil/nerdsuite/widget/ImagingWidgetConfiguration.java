@@ -10,6 +10,7 @@ import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import lombok.Getter;
 
 @Getter
@@ -69,12 +70,12 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public String serviceOwnerId;
 
 	public void setGraphicFormat(GraphicFormat gfxFormat, GraphicFormatVariant gfxFormatVariant,
-			CustomSize customSize) {
+			ProjectMetaData metaData) {
 		setPixelSize(gfxFormatVariant.getPixelSize() > 0 ? gfxFormatVariant.getPixelSize() : gfxFormat.getPixelSize());
-		setWidth(customSize == null ? gfxFormat.getWidth() : customSize.getWidth());
-		setHeight(customSize == null ? gfxFormat.getHeight() : customSize.getHeight());
-		setTileRows(customSize == null ? gfxFormatVariant.getTileRows() : customSize.getTileRows());
-		setTileColumns(customSize == null ? gfxFormatVariant.getTileColumns() : customSize.getTileColumns());
+		setWidth(metaData == null ? gfxFormat.getWidth() : metaData.getWidth());
+		setHeight(metaData == null ? gfxFormat.getHeight() : metaData.getHeight());
+		setTileRows(metaData == null ? gfxFormatVariant.getTileRows() : metaData.getRows());
+		setTileColumns(metaData == null ? gfxFormatVariant.getTileColumns() : metaData.getColumns());
 		scaledPixelSize = gfxFormatVariant.getScaledPixelSize();
 		if (gfxFormat.getId().contains("BITMAP")) {
 			setPixelGridEnabled(false);
@@ -194,13 +195,13 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public void setMultiColorEnabled(boolean multiColorEnabled) {
 		this.multiColorEnabled = multiColorEnabled;
 		if (multiColorEnabled) {
-			//currentPixelWidth = pixelSize * 2;
-			//currentWidth = width / 2;
+			// currentPixelWidth = pixelSize * 2;
+			// currentWidth = width / 2;
 		} else {
-			//currentPixelWidth = pixelSize;
-			//currentWidth = width;
+			// currentPixelWidth = pixelSize;
+			// currentWidth = width;
 		}
-		//computeSizes();
+		// computeSizes();
 	}
 
 	public void setWidgetName(String widgetName) {
