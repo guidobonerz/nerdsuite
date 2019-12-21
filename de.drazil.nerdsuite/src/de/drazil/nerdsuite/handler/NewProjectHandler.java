@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.handler;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;

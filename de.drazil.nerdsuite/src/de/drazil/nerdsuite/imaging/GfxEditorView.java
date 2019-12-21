@@ -435,7 +435,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
 		// scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, null);
+		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, metadata);
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
 		painter.getConf().setGridStyle(GridType.Dot);
@@ -460,7 +460,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollableRepository = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.DOUBLE_BUFFERED);
 
 		repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, null);
+		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, metadata);
 		repository.getConf().setWidgetName("Selector:");
 		repository.getConf().setPixelGridEnabled(false);
 		repository.getConf().setTileGridEnabled(true);
