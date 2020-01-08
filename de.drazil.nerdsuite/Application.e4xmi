@@ -113,6 +113,7 @@
   <handlers xmi:id="_31KDwOwWEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handler.newSourceFile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.NewSourceFile" command="_ka2AIOwWEeSYVemvddr_Tw"/>
   <handlers xmi:id="_9CBz8MznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handler.export" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ExportHandler" command="_2QmjcMznEemJh_xLPhHI6A"/>
   <handlers xmi:id="_d0CMoNvqEemXK8sgYhnEoQ" elementId="de.drazil.nerdsuite.handler.Save" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SaveHandler" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>
+  <handlers xmi:id="_usDZsCQXEequStA2CiJh7Q" elementId="de.drazil.nerdsuite.handler.SVG" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SvgExport" command="_pIj78CQXEequStA2CiJh7Q"/>
   <bindingTables xmi:id="_SoW6YNc0Eem8ZM0LwkCd1Q" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_bnniINc5EemIEoLjroS7Zw">
     <bindings xmi:id="_Xko04Nc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.0" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
       <tags>type:user</tags>
@@ -360,6 +361,7 @@
         <tags>Animator</tags>
         <parameters xmi:id="_3vtAIAvcEeq4CuIpZ1rK3Q" elementId="de.drazil.nerdsuite.parameter.55" name="de.drazil.nerdsuite.commandparameter.AnimationMode" value="forwardFast"/>
       </children>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_i2x00CQXEequStA2CiJh7Q" elementId="de.drazil.nerdsuite.handledtoolitem.SVG" label="SVG" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/application_go.png" command="_pIj78CQXEequStA2CiJh7Q"/>
     </toolbar>
   </descriptors>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.NewProject" commandName="New Project">
@@ -427,6 +429,7 @@
     <parameters xmi:id="_zI_MQCArEeqKcbgI_Ba9XA" elementId="de.drazil.nerdsuite.commandparameter.PasteAction" name="Paste"/>
   </commands>
   <commands xmi:id="_tHUIUCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.command.Mount" commandName="Mount"/>
+  <commands xmi:id="_pIj78CQXEequStA2CiJh7Q" elementId="de.drazil.nerdsuite.command.SVG" commandName="SVG"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
