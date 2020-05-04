@@ -93,7 +93,7 @@ public class Configuration {
 			if (workspace == null) {
 				System.out.println("read workspace file...");
 				ObjectMapper mapper = new ObjectMapper();
-				workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"),
+				workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects.json"),
 						Workspace.class);
 			}
 
@@ -126,7 +126,7 @@ public class Configuration {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			mapper.writeValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects"), workspace);
+			mapper.writeValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects.json"), workspace);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

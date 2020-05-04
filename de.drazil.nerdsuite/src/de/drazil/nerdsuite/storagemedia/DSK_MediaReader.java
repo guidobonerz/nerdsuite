@@ -36,6 +36,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 	private String creator;
 	private int tracks;
 	private int sides;
+	private int diskMode;
 	private DiskFormat diskFormat;
 	private int trackInfoBaseOffset = 0x100;
 	private int directoryBaseOffset = trackInfoBaseOffset + 0x100;
@@ -55,11 +56,11 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		creator = getString(0x22, 0x2f, true);
 		tracks = getByte(0x30);
 		sides = getByte(0x31);
-
-		System.out.println("DiskInfo:" + diskInfo);
-		System.out.println("Creator:" + creator);
-		System.out.println("Tracks:" + tracks);
-		System.out.println("Sides:" + sides);
+		sectorInfobase = trackInfoBaseOffset + 0x18;
+		trackInfoText = getString(trackInfoBaseOffset, trackInfoBaseOffset + 0x0b, true);
+		sectorSize = getByte(trackInfoBaseOffset + 0x14);
+		sectorCount = getByte(trackInfoBaseOffset + 0x15);
+		diskMode = getByte(sectorInfobase + 0x02);
 
 		trackSizes = new int[tracks][sides];
 
@@ -80,16 +81,14 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 			break;
 		}
 
-		base = getDirectoryOffset(directoryBaseOffset, sides, tracks);
-
-		// System.out.printf("Directory Offset: $%05x\n", currentDirectoryEntryOffset);
-
+		base = directoryBaseOffset + ((diskMode == 0x41 ? 2 : 0) * trackSizes[0][0]);
+		System.out.printf("Directory Offset: $%05x\n", base);
+		System.out.println("DiskMode: " + ((diskMode == 0x41) ? "System Disk" : "Data Disk"));
+		System.out.println("DiskInfo:" + diskInfo);
+		System.out.println("Creator:" + creator);
+		System.out.println("Tracks:" + tracks);
+		System.out.println("Sides:" + sides);
 		System.out.printf("TrackSize: $%05x / %02d\n", trackSizes[0][0], trackSizes[0][0]);
-
-		sectorInfobase = trackInfoBaseOffset + 0x18;
-		trackInfoText = getString(trackInfoBaseOffset, trackInfoBaseOffset + 0x0b, true);
-		sectorSize = getByte(trackInfoBaseOffset + 0x14);
-		sectorCount = getByte(trackInfoBaseOffset + 0x15);
 
 		System.out.printf("TrackInfo: $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
 		System.out.printf("unused: 0c-0f  %04x %04x\n", getWord(trackInfoBaseOffset + 0x0c),
@@ -100,9 +99,11 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		System.out.println("SectorSize:" + sectorSize);
 		System.out.println("SectorCount:" + sectorCount);
 		System.out.println("GAP#3 Length:" + getByte(trackInfoBaseOffset + 0x16));
-		System.out.println("Filler Byte:" + getByte(trackInfoBaseOffset + 0x17));
+		System.out.printf("Filler Byte: %02d / %02x\n", getByte(trackInfoBaseOffset + 0x17),
+				getByte(trackInfoBaseOffset + 0x17));
 		System.out.printf("SectorInfo Start: $%05x\n",
 				getByte(trackInfoBaseOffset + 0x14) * getByte(trackInfoBaseOffset + 0x15));
+
 		for (int i = sectorInfobase; i < sectorInfobase + (8 * sectorCount); i += 8) {
 			int sectorId = getByte(i + 0x02);
 			int sectorSize2 = getByte(i + 0x03);
@@ -205,7 +206,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		return content[directoryOffset + 0x0c];
 	}
 
-	private int getDirectoryOffset(int directoryBaseOffset, int sides, int tracks) {
+	private int getDirectoryOffset(int directoryBaseOffset, int sides, int tracks, int diskMode) {
 		int trackOffset = directoryBaseOffset;
 		for (int s = 0; s < sides; s++) {
 			for (int t = 0; t < tracks; t++) {
