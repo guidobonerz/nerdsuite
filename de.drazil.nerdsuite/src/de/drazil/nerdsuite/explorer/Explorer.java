@@ -231,13 +231,14 @@ public class Explorer implements IDoubleClickListener {
 			} else if (parentElement instanceof ProjectFolder) {
 
 			} else if (parentElement instanceof File) {
-				// File parentFile = (File) parentElement;
-				/*
-				 * if (MediaFactory.isMountable(parentFile)) { IMediaReader mediaManager =
-				 * MediaFactory.mount(parentFile); entries =
-				 * mediaManager.getEntries(parentElement); } else { entries =
-				 * parentFile.listFiles(); }
-				 */
+				File parentFile = (File) parentElement;
+
+				if (MediaFactory.isMountable(parentFile)) {
+					IMediaReader mediaManager = MediaFactory.mount(parentFile);
+					entries = mediaManager.getEntries(parentElement);
+				} else {
+					entries = parentFile.listFiles();
+				}
 			} else if (parentElement instanceof MediaEntry) {
 				MediaEntry me = (MediaEntry) parentElement;
 				IMediaReader mediaManager = MediaFactory.mount((File) me.getUserObject());
