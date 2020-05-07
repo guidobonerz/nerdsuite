@@ -57,7 +57,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		tracks = getByte(0x30);
 		sides = getByte(0x31);
 		sectorInfobase = trackInfoBaseOffset + 0x18;
-		trackInfoText = getString(trackInfoBaseOffset, trackInfoBaseOffset + 0x0b, true);
+
 		sectorSize = getByte(trackInfoBaseOffset + 0x14);
 		sectorCount = getByte(trackInfoBaseOffset + 0x15);
 		diskType = getByte(sectorInfobase + 0x02);
@@ -75,39 +75,61 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		case Extended:
 			for (int t = 0; t < tracks; t++) {
 				for (int s = 0; s < sides; s++) {
-					trackSizes[t][s] = content[0x34 + (t * 2) + s] * 0x100;
+					trackSizes[t][s] = content[0x34 + (t + s * 2)] * 0x100;
 				}
 			}
 			break;
+		default: {
+		}
 		}
 
 		base = directoryBaseOffset + ((diskType == 0x41 ? 2 : 0) * trackSizes[0][0]);
 		System.out.printf("Directory Offset: $%05x\n", base);
-		System.out.println("DiskMode: " + ((diskType == 0x41) ? "System Disk" : "Data Disk"));
+		System.out.println("DiskType: " + ((diskType == 0x41) ? "System Disk" : "Data Disk"));
 		System.out.println("DiskInfo:" + diskInfo);
 		System.out.println("Creator:" + creator);
 		System.out.println("Tracks:" + tracks);
 		System.out.println("Sides:" + sides);
 		System.out.printf("TrackSize: $%05x / %02d\n", trackSizes[0][0], trackSizes[0][0]);
 
-		System.out.printf("TrackInfo: $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
-		System.out.printf("unused: 0c-0f  %04x %04x\n", getWord(trackInfoBaseOffset + 0x0c),
-				getWord(trackInfoBaseOffset + 0x0e));
-		System.out.println("TrackNo:" + getByte(trackInfoBaseOffset + 0x10));
-		System.out.println("SideNo:" + getByte(trackInfoBaseOffset + 0x11));
-		System.out.printf("unused: 12-13  %04x\n", getWord(trackInfoBaseOffset + 0x12));
-		System.out.println("SectorSize:" + sectorSize);
-		System.out.println("SectorCount:" + sectorCount);
-		System.out.println("GAP#3 Length:" + getByte(trackInfoBaseOffset + 0x16));
-		System.out.printf("Filler Byte: %02d / %02x\n", getByte(trackInfoBaseOffset + 0x17),
-				getByte(trackInfoBaseOffset + 0x17));
-		System.out.printf("SectorInfo Start: $%05x\n",
-				getByte(trackInfoBaseOffset + 0x14) * getByte(trackInfoBaseOffset + 0x15));
+		for (int tc = 0; tc < tracks; tc++) {
+			for (int sc = 0; sc < sides; sc++) {
+				sectorInfobase = trackInfoBaseOffset + 0x18;
+				trackInfoText = getString(trackInfoBaseOffset, trackInfoBaseOffset + 0x0b, true);
+				System.out.printf("\n\nTrackInfo: $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
+				System.out.printf("unused: 0c-0f  %04x %04x\n", getWord(trackInfoBaseOffset + 0x0c),
+						getWord(trackInfoBaseOffset + 0x0e));
+				System.out.println("TrackNo:" + getByte(trackInfoBaseOffset + 0x10));
+				System.out.println("SideNo:" + getByte(trackInfoBaseOffset + 0x11));
+				System.out.printf("unused: 12-13  %04x\n", getWord(trackInfoBaseOffset + 0x12));
+				System.out.println("SectorSize:" + sectorSize);
+				System.out.println("SectorCount:" + sectorCount);
+				System.out.println("GAP#3 Length:" + getByte(trackInfoBaseOffset + 0x16));
+				System.out.printf("Filler Byte: %02d / %02x\n", getByte(trackInfoBaseOffset + 0x17),
+						getByte(trackInfoBaseOffset + 0x17));
+				System.out.printf("SectorInfo Start: $%05x\n",
+						getByte(trackInfoBaseOffset + 0x14) * getByte(trackInfoBaseOffset + 0x15));
 
-		for (int i = sectorInfobase; i < sectorInfobase + (8 * sectorCount); i += 8) {
-			int sectorId = getByte(i + 0x02);
-			int sectorSize2 = getByte(i + 0x03);
-			System.out.printf("  SectorInfo: Id:$%05x - Size:%s \n", sectorId, sectorSize2);
+				for (int i = sectorInfobase; i < sectorInfobase + (8 * sectorCount); i += 8) {
+					int track = getByte(i + 0x00);
+					int side = getByte(i + 0x01);
+					int id = getByte(i + 0x02);
+					int size = getByte(i + 0x03);
+					int SR1 = getByte(i + 0x04);
+					int SR2 = getByte(i + 0x05);
+					boolean en = (SR1 & 128) == 128;
+					boolean de = (SR1 & 32) == 32;
+					boolean nd = (SR1 & 4) == 4;
+					boolean ma = (SR1 & 1) == 1;
+					boolean cm = (SR2 & 32) == 32;
+					boolean dd = (SR2 & 32) == 32;
+					boolean md = (SR2 & 1) == 1;
+					System.out.printf(
+							"  Track: %02d Side: %01d Id: $%02x Size: %04d Byte EN(%b) DE(%b) ND(%b) MA(%b) CM(%b) DD(%b) MD(%b)\n",
+							track, side, id, (128 << size), en, de, nd, ma, cm, dd, md);
+				}
+				trackInfoBaseOffset += trackSizes[tc][sc];
+			}
 		}
 	}
 
