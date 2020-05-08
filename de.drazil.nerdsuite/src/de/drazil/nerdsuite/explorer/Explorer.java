@@ -105,28 +105,29 @@ public class Explorer implements IDoubleClickListener {
 
 	@Inject
 	@Optional
-	void exportFile(@UIEventTopic("ExportFile") BrokerObject brokerObject) {
-		if (brokerObject.getTransferObject().equals("explorer")) {
-			TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
-			Object o = treeNode.getFirstElement();
-			if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
-				MediaEntry entry = (MediaEntry) o;
-				IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
-				FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
-				saveDialog.setFileName(entry.getName() + "." + entry.getType());
-				String fileName = saveDialog.open();
-				try {
-					mediaManager.exportEntry(entry, new File(fileName));
-					MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
-							"\"" + fileName + "\" was successfully exported.");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning",
-						"Folders can not be exported.");
+	void exportFile(@UIEventTopic("Export") BrokerObject brokerObject) {
+		// if (brokerObject.getTransferObject().equals("Explorer")) {
+		TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
+		Object o = treeNode.getFirstElement();
+		if (o instanceof Project) {
+
+		} else if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
+			MediaEntry entry = (MediaEntry) o;
+			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
+			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
+			saveDialog.setFileName(entry.getName() + "." + entry.getType());
+			String fileName = saveDialog.open();
+			try {
+				mediaManager.exportEntry(entry, new File(fileName));
+				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
+						"\"" + fileName + "\" was successfully exported.");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+		} else {
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be exported.");
 		}
+		// }
 	}
 
 	private void listFiles() {
