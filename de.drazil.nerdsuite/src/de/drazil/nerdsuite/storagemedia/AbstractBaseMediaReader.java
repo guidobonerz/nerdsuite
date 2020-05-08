@@ -116,7 +116,7 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 	public void exportEntry(MediaEntry entry, File file) throws Exception {
 		try {
 			final OutputStream os = new FileOutputStream(file);
-			readContent(entry, new IContentReader() {
+			readContent(entry, new IContentWriter() {
 				@Override
 				public void write(MediaEntry entry, int start, int len, boolean finished) throws Exception {
 					BinaryFileHandler.write(os, content, start, len, finished);
@@ -130,7 +130,7 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 	protected abstract void readHeader();
 
 	@Override
-	public abstract void readContent(MediaEntry entry, IContentReader writer) throws Exception;
+	public abstract void readContent(MediaEntry entry, IContentWriter writer) throws Exception;
 
 	@Override
 	public abstract void readEntries(MediaEntry parent);
