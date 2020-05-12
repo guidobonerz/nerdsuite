@@ -47,6 +47,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 	private String trackInfoText;
 	private int sectorSize;
 	private int sectorCount;
+	private List<Integer> sectorIdList;
 
 	@Override
 	protected void readHeader() {
@@ -91,6 +92,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		System.out.println("Tracks:" + tracks);
 		System.out.println("Sides:" + sides);
 		System.out.printf("TrackSize: $%05x / %02d\n", trackSizes[0][0], trackSizes[0][0]);
+		sectorIdList = new ArrayList<Integer>();
 
 		for (int tc = 0; tc < tracks; tc++) {
 			for (int sc = 0; sc < sides; sc++) {
@@ -111,12 +113,14 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 						getByte(trackInfoBaseOffset + 0x14) * getByte(trackInfoBaseOffset + 0x15));
 
 				for (int i = sectorInfobase; i < sectorInfobase + (8 * sectorCount); i += 8) {
+
 					int track = getByte(i + 0x00);
 					int side = getByte(i + 0x01);
 					int id = getByte(i + 0x02);
 					int size = getByte(i + 0x03);
 					int SR1 = getByte(i + 0x04);
 					int SR2 = getByte(i + 0x05);
+					int dataLength = getWord(i + 0x06);
 					boolean en = (SR1 & 128) == 128;
 					boolean de = (SR1 & 32) == 32;
 					boolean nd = (SR1 & 4) == 4;
@@ -124,9 +128,12 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 					boolean cm = (SR2 & 32) == 32;
 					boolean dd = (SR2 & 32) == 32;
 					boolean md = (SR2 & 1) == 1;
+					if (tc == 0) {
+						sectorIdList.add(id & 0x0f);
+					}
 					System.out.printf(
-							"  Track: %02d Side: %01d Id: $%02x Size: %04d Byte EN(%b) DE(%b) ND(%b) MA(%b) CM(%b) DD(%b) MD(%b)\n",
-							track, side, id, (128 << size), en, de, nd, ma, cm, dd, md);
+							"  Track: %02d Side: %01d Id: $%02x Size: %04d Byte DataLength: %d EN(%b) DE(%b) ND(%b) MA(%b) CM(%b) DD(%b) MD(%b)\n",
+							track, side, id, (128 << size), dataLength, en, de, nd, ma, cm, dd, md);
 				}
 				trackInfoBaseOffset += trackSizes[tc][sc];
 			}
@@ -188,6 +195,17 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 		}
 	}
 
+	private int getSectorIndex(List<Integer> idList, int sector) {
+		int id = -1;
+		for (int i = 0; i < idList.size(); i++) {
+			if (idList.get(i) == sector) {
+				id = i;
+				break;
+			}
+		}
+		return id;
+	}
+
 	private void addContentOffset(List<Integer> offsetList, int offset) {
 		for (int i = (offset + 0x10); i < (offset + 0x20); i++) {
 			int v = content[i] & 0xff;
@@ -203,16 +221,40 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 	public void readContent(MediaEntry entry, IContentWriter writer) throws Exception {
 		List<Integer> blockList = (List<Integer>) entry.getDataLocation();
 		System.out.println(entry.getFullName());
+		int totalSize = entry.getSize();
+		boolean finished = false;
+
 		for (int i = 0; i < blockList.size(); i++) {
+			if (finished) {
+				break;
+			}
+			int size = 0x80 << sectorSize;
 			int block = blockList.get(i) & 0xff;
-			int track = (int) ((block * 2 + 18) / 9);
-			int sector = (int) ((block * 2 + 18) % 9);
-			// int offset = (trackSizes[0][0] * track + 0x200 * sector) - (trackSizes[0][0]
-			// * (sides + 1))
-			// + (diskFormat == DiskFormat.Standard ? 0x200 : 0) + base;
-			int offset = base + (trackSizes[0][0] * track + 0x200 * sector) - (trackSizes[0][0] * (sides + 1))
-					+ (diskFormat == DiskFormat.Extended ? 0x300 : 0);
-			System.out.printf("%02d %02x T:%02x S:%02x %05x\n", i, block, track, sector, offset);
+			int track = ((int) ((block * 2 + 18) / sectorCount)) - 2;
+			int sector = (int) ((block * 2 + 18) % sectorCount);
+			int sectorIndex = getSectorIndex(sectorIdList, sector + 1);
+			int trackOffset = 0x100 + trackSizes[track][0] * track;
+			int sectorOffset = 0x100 + size * sectorIndex;
+
+			for (int s = sector; s < sector + 2 && !finished; s++) {
+				int offset = trackOffset + sectorOffset;
+
+				if (totalSize <= size) {
+					size = totalSize;
+					finished = true;
+				}
+
+				writer.write(entry, offset, size, finished);
+				System.out.printf("%02d %02x T:%02x S:%02x %05x size:%d \n", i, block, track, sector, offset, size);
+
+				sectorOffset += (size * 2);
+				if (sectorOffset > trackSizes[track][0]) {
+					sectorOffset = 0x100 + 0x200;
+				} else if (sectorOffset == trackSizes[track][0]) {
+					sectorOffset += 0x100;
+				}
+				totalSize -= size;
+			}
 		}
 	}
 
