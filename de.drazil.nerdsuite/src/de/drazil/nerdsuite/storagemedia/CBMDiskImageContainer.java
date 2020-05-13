@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.AsciiMap;
 
-public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
+public abstract class CBMDiskImageContainer extends AbstractBaseMediaContainer {
 
 	private int sectorSize = 0x100;
 	protected int directoryTrack = 18;
@@ -31,7 +31,7 @@ public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 	private String dosType;
 	private String diskName;
 
-	public CBMDiskImageReader(File file) {
+	public CBMDiskImageContainer(File file) {
 		super(file);
 	}
 
@@ -86,7 +86,7 @@ public abstract class CBMDiskImageReader extends AbstractBaseMediaReader {
 	}
 
 	@Override
-	public void readContent(MediaEntry entry, IContentWriter writer) throws Exception {
+	public void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
 		if (!entry.getType().trim().equals("DEL")) {
 			int fileTrack = entry.getTrack();
 			int fileSector = entry.getSector();

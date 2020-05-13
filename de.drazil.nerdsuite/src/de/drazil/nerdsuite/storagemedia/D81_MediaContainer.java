@@ -2,9 +2,9 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 
-public class D81_MediaReader extends CBMDiskImageReader {
+public class D81_MediaContainer extends CBMDiskImageContainer {
 
-	public D81_MediaReader(File file) {
+	public D81_MediaContainer(File file) {
 		super(file);
 		directoryTrack = 40;
 		trackOffsets = new int[] { 0x00000, 0x02800, 0x05000, 0x07800, 0x0A000, 0x0C800, 0x0F000, 0x11800, 0x14000,

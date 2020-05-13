@@ -46,7 +46,7 @@ import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
-import de.drazil.nerdsuite.storagemedia.IMediaReader;
+import de.drazil.nerdsuite.storagemedia.IMediaContainer;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.E4Utils;
@@ -113,7 +113,7 @@ public class Explorer implements IDoubleClickListener {
 
 		} else if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
 			MediaEntry entry = (MediaEntry) o;
-			IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
+			IMediaContainer mediaManager = MediaFactory.mount((File) entry.getUserObject());
 			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
 			saveDialog.setFileName(entry.getName() + "." + entry.getType());
 			String fileName = saveDialog.open();
@@ -225,7 +225,7 @@ public class Explorer implements IDoubleClickListener {
 				if (project.isMountpoint()) {
 					File file = new File(project.getMountLocation());
 					if (MediaFactory.isMountable(file)) {
-						IMediaReader mediaManager = MediaFactory.mount(file);
+						IMediaContainer mediaManager = MediaFactory.mount(file);
 						entries = mediaManager.getEntries(parentElement);
 					}
 				}
@@ -235,14 +235,14 @@ public class Explorer implements IDoubleClickListener {
 				File parentFile = (File) parentElement;
 
 				if (MediaFactory.isMountable(parentFile)) {
-					IMediaReader mediaManager = MediaFactory.mount(parentFile);
+					IMediaContainer mediaManager = MediaFactory.mount(parentFile);
 					entries = mediaManager.getEntries(parentElement);
 				} else {
 					entries = parentFile.listFiles();
 				}
 			} else if (parentElement instanceof MediaEntry) {
 				MediaEntry me = (MediaEntry) parentElement;
-				IMediaReader mediaManager = MediaFactory.mount((File) me.getUserObject());
+				IMediaContainer mediaManager = MediaFactory.mount((File) me.getUserObject());
 				entries = mediaManager.getEntries(parentElement);
 			} else {
 			}

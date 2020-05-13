@@ -2,9 +2,9 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 
-public class D71_MediaReader extends CBMDiskImageReader {
+public class D71_MediaContainer extends CBMDiskImageContainer {
 
-	public D71_MediaReader(File file) {
+	public D71_MediaContainer(File file) {
 		super(file);
 		directorySectorInterleave = 3;
 		fileSectorInterleave = 6;

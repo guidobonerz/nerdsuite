@@ -18,12 +18,12 @@ public class MediaEntry {
 	private int size;
 	private int track;
 	private int sector;
-	private Object dataLocation;
 	private IAttributes attributes;
 	private String fontName;
 	private MediaEntry parent;
 	private boolean isDirectory;
 	private boolean isRoot;
+	private Object dataLocation;
 	private Object userObject;
 
 	public MediaEntry() {

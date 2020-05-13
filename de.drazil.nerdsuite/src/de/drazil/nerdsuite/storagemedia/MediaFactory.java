@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class MediaFactory {
 
-	private static Map<String, IMediaReader> mediaStore = new HashMap<>();
+	private static Map<String, IMediaContainer> mediaStore = new HashMap<>();
 	public static String FILE_PATTERN = ".*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR])";
 	public static Pattern pattern = Pattern.compile(FILE_PATTERN);
 
@@ -16,8 +16,8 @@ public class MediaFactory {
 		return file.getName().matches(FILE_PATTERN);
 	}
 
-	public static IMediaReader mount(File file) {
-		IMediaReader mediaProvider = null;
+	public static IMediaContainer mount(File file) {
+		IMediaContainer mediaProvider = null;
 		String fileName = file.getName();
 
 		Matcher matcher = pattern.matcher(fileName);
@@ -26,15 +26,15 @@ public class MediaFactory {
 			mediaProvider = mediaStore.get(suffix);
 			if (mediaProvider == null) {
 				if (suffix.equalsIgnoreCase("d64")) {
-					mediaProvider = new D64_MediaReader(file);
+					mediaProvider = new D64_MediaContainer(file);
 				} else if (suffix.equalsIgnoreCase("d71")) {
-					mediaProvider = new D71_MediaReader(file);
+					mediaProvider = new D71_MediaContainer(file);
 				} else if (suffix.equalsIgnoreCase("d81")) {
-					mediaProvider = new D81_MediaReader(file);
+					mediaProvider = new D81_MediaContainer(file);
 				} else if (suffix.equalsIgnoreCase("dsk")) {
-					mediaProvider = new DSK_MediaReader(file);
+					mediaProvider = new DSK_MediaContainer(file);
 				} else if (suffix.equalsIgnoreCase("atr")) {
-					mediaProvider = new ATR_MediaReader(file);
+					mediaProvider = new ATR_MediaContainer(file);
 				} else {
 
 				}
@@ -59,7 +59,7 @@ public class MediaFactory {
 	}
 
 	public static MediaEntry[] getChildren(MediaEntry entry) {
-		IMediaReader mediaManager = MediaFactory.mount((File) entry.getUserObject());
+		IMediaContainer mediaManager = MediaFactory.mount((File) entry.getUserObject());
 		return mediaManager.getEntries(entry);
 	}
 }
