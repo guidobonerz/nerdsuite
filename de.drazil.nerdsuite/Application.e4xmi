@@ -14,12 +14,18 @@
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="Code Editor"/>
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_Zx9K4M6PEem6S-8Nx2mqeA" elementId="de.drazil.nerdsuite.handledmenuitem.emulator" label="Emulator"/>
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_bzdeoM9KEemWzpmgM2RcRA" elementId="de.drazil.nerdsuite.handledmenuitem.disassembler" label="Disassembler" mnemonics=""/>
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_yzAHcJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.diskimageviewer" label="Disk Image Viewer"/>
                   </children>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_OikQsJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" command="__xevcB4KEeqfzqzHNB-ilQ"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_hHEtsJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.paste" label="Paste" command="_BDRugB4LEeqfzqzHNB-ilQ"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_amTIUJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" command="_9-9o8B4KEeqfzqzHNB-ilQ"/>
                   <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_0_NPwNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.handledmenuitem.delete" label="Delete" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png"/>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A">
                     <parameters xmi:id="_EZgWEAloEeqGDptjZacYgw" elementId="de.drazil.nerdsuite.parameter.49" name="de.drazil.nerdsuite.commandparameter.Export" value="Export"/>
                   </children>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_GUy-AJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.mount" label="Mount" command="_tHUIUCHZEeqei6yq5Fa4mw"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_1Cky0JVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.unmount" label="Unmount" command="_4hLnsJVVEeqVGMXe4sKvrA"/>
                 </menus>
               </children>
             </children>
@@ -50,7 +56,7 @@
             <parameters xmi:id="_3BCkoA9QEeq5B9yImax9_w" elementId="de.drazil.nerdsuite.parameter.57" name="de.drazil.nerdsuite.commandparameter.WizardType" value="0"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_YRilsKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handledmenuitem.6" label="Source File" command="_ka2AIOwWEeSYVemvddr_Tw"/>
-          <children xsi:type="menu:MenuSeparator" xmi:id="_hc_NUNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.menuseparator.7"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_UCMFoJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.diskimage" label="Disk Image" command="_ZjWoIJVWEeqVGMXe4sKvrA"/>
         </children>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_0_JRwKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.7" label="Save" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk.png" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_7jZo8KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.9" label="Save All" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk_multiple.png"/>
@@ -72,6 +78,7 @@
         </children>
         <children xsi:type="menu:MenuSeparator" xmi:id="_cYSmQCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.menuseparator.8"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_c68nYCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.handledmenuitem.Mount" label="Mount..." command="_tHUIUCHZEeqei6yq5Fa4mw"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_DR28AJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.unmount" label="Unmount" command="_4hLnsJVVEeqVGMXe4sKvrA"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_-oKP4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.edit" label="Edit">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_9-9o8B4KEeqfzqzHNB-ilQ"/>
@@ -430,6 +437,8 @@
   </commands>
   <commands xmi:id="_tHUIUCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.command.Mount" commandName="Mount"/>
   <commands xmi:id="_pIj78CQXEequStA2CiJh7Q" elementId="de.drazil.nerdsuite.command.SVG" commandName="SVG"/>
+  <commands xmi:id="_4hLnsJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.command.Unmount" commandName="Unmount"/>
+  <commands xmi:id="_ZjWoIJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.command.DiskImage" commandName="DiskImage"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
