@@ -64,8 +64,6 @@ public final class InstructionSet {
 		return platformData.getPlatformAddressList();
 	}
 
-	// public static void createPlatformspecificData(String baseUrl, String
-	// file) {
 	public static void createPlatformspecificData(Bundle bundle, String file) {
 		ObjectMapper mapper = new ObjectMapper();
 
