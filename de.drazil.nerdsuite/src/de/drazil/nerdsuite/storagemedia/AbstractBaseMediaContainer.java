@@ -12,13 +12,13 @@ import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.util.NumericConverter;
 
-public abstract class AbstractBaseMediaReader implements IMediaReader {
+public abstract class AbstractBaseMediaContainer implements IMediaContainer {
 
 	public byte[] content;
 	private MediaEntry root;
 	private File container;
 
-	public AbstractBaseMediaReader(File file) {
+	public AbstractBaseMediaContainer(File file) {
 		container = file;
 		root = new MediaEntry();
 		root.setRoot(true);
@@ -116,7 +116,7 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 	public void exportEntry(MediaEntry entry, File file) throws Exception {
 		try {
 			final OutputStream os = new FileOutputStream(file);
-			readContent(entry, new IContentWriter() {
+			readContent(entry, new IMediaEntryWriter() {
 				@Override
 				public void write(MediaEntry entry, int start, int len, boolean finished) throws Exception {
 					BinaryFileHandler.write(os, content, start, len, finished);
@@ -130,9 +130,15 @@ public abstract class AbstractBaseMediaReader implements IMediaReader {
 	protected abstract void readHeader();
 
 	@Override
-	public abstract void readContent(MediaEntry entry, IContentWriter writer) throws Exception;
+	public abstract void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception;
 
 	@Override
 	public abstract void readEntries(MediaEntry parent);
+
+	@Override
+	public void getAvailabilityMap() {
+		// TODO Auto-generated method stub
+
+	}
 
 }

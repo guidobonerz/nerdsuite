@@ -20,7 +20,7 @@ public class FileSelectionWizardPage extends AbstractBoundWizardPage {
 
 	public FileSelectionWizardPage(Map<String, Object> userData) {
 		super("wizardPage", userData);
-		setTitle((String)userData.get("FILE_SELECTION_TITLE"));
+		setTitle((String) userData.get("FILE_SELECTION_TITLE"));
 	}
 
 	/**
@@ -44,6 +44,11 @@ public class FileSelectionWizardPage extends AbstractBoundWizardPage {
 			@Override
 			public void handleEvent(Event event) {
 				FileDialog openDialog = new FileDialog(container.getShell(), SWT.OPEN);
+				openDialog.setFilterNames(new String[] { "Nerdsuite files", "DSK Image (CPC/Spectrum)",
+						"ATR Image (Atari)", "D64 Image (Commodore)", "D71 Image (Commodore)", "D81 Image (Commodore)",
+						"All files" });
+				openDialog.setFilterExtensions(
+						new String[] { "*.ns_*", "*.dsk", "*.atr", "*.d64", "*.d71", "*.d81", "*.*" }); // Windows
 				String fileName = openDialog.open();
 				setText(fileName);
 			}

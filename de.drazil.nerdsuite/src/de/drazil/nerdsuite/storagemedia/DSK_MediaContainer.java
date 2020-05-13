@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 
-public class DSK_MediaReader extends AbstractBaseMediaReader {
+public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 
 	private final static int SECTOR_SIZE = 512;
 	private final static int RECORD_SIZE = SECTOR_SIZE >> 2;
@@ -28,7 +28,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 
 	protected int directoryTrack = 2;
 
-	public DSK_MediaReader(File file) {
+	public DSK_MediaContainer(File file) {
 		super(file);
 	}
 
@@ -218,7 +218,7 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void readContent(MediaEntry entry, IContentWriter writer) throws Exception {
+	public void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
 		List<Integer> blockList = (List<Integer>) entry.getDataLocation();
 		System.out.println(entry.getFullName());
 		int totalSize = entry.getSize();
@@ -281,4 +281,5 @@ public class DSK_MediaReader extends AbstractBaseMediaReader {
 
 	}
 
+	 
 }
