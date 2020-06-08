@@ -98,6 +98,19 @@ public class NumericConverter {
 		return value;
 	}
 
+	public static byte getByte(byte byteArray[], int offset) {
+
+		return getByte(byteArray, offset, Endianness.LittleEndian);
+	}
+
+	public static byte getByte(byte byteArray[], int offset, Endianness endianess) {
+		byte[] value = getBytes(byteArray, offset, 1);
+		if (endianess == Endianness.LittleEndian) {
+			value[0] = (byte)((value[0] & 0x0F) << 4 | (value[0] & 0xF0) >> 4);
+		}
+		return value[0];
+	}
+
 	public static byte[] getBytes(byte byteArray[], int offset, int len) {
 		int l = len;
 		int diff = offset + len - byteArray.length;
