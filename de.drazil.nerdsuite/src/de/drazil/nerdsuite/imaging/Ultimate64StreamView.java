@@ -63,9 +63,8 @@ public class Ultimate64StreamView {
 	}
 
 	public class VideoStreamer implements Runnable {
-		private int packetCount = 0;
 		private List<ImageData> buffer;
-		private byte[] data = new byte[52226];
+		private byte[] data = new byte[52224];
 		private byte[] dataBuffer = new byte[780];
 		private boolean running = true;
 		private int offset = 0;
@@ -90,31 +89,27 @@ public class Ultimate64StreamView {
 					// int bitsPerPixel = NumericConverter.getByteAsInt(buf, 9);
 					// int encodingType = NumericConverter.getWordAsInt(buf, 10);
 
-					if (packetCount < 67) {
-						System.arraycopy(dataBuffer, 12, data, offset, dataBuffer.length - 12);
-						offset += (dataBuffer.length - 12);
-						packetCount++;
-					}
-
 					if ((line & 0x8000) == 0x8000) {
-						if (packetCount == 67) {
-							System.arraycopy(dataBuffer, 12, data, offset, dataBuffer.length - 12);
+						if (offset == data.length) {
 							for (int i = 0; i < data.length; i++) {
 								data[i] = NumericConverter.getByte(data, i);
 							}
 							buffer.add(new ImageData(384, 272, 4, pd, 1, data));
+							if (!buffer.isEmpty()) {
+								Display.getDefault().asyncExec(new Runnable() {
+									@Override
+									public void run() {
+										imageViewer.setImage(buffer.get(0));
+										buffer.remove(0);
+									}
+								});
+							}
 						}
-						packetCount = 0;
 						offset = 0;
-						if (buffer.size() > 20) {
-							Display.getDefault().asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									imageViewer.setImage(buffer.get(0));
-									buffer.remove(0);
-								}
-							});
-						}
+					}
+					if (offset < data.length) {
+						System.arraycopy(dataBuffer, 12, data, offset, dataBuffer.length - 12);
+						offset += (dataBuffer.length - 12);
 					}
 
 					videoSocket.send(packet);
