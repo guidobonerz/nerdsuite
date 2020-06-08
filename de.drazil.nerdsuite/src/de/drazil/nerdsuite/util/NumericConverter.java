@@ -104,11 +104,10 @@ public class NumericConverter {
 	}
 
 	public static byte getByte(byte byteArray[], int offset, Endianness endianess) {
-		byte[] value = getBytes(byteArray, offset, 1);
 		if (endianess == Endianness.LittleEndian) {
-			value[0] = (byte)((value[0] & 0x0F) << 4 | (value[0] & 0xF0) >> 4);
+			return (byte) ((byteArray[offset] & 0x0F) << 4 | (byteArray[offset] & 0xF0) >> 4);
 		}
-		return value[0];
+		return byteArray[offset];
 	}
 
 	public static byte[] getBytes(byte byteArray[], int offset, int len) {

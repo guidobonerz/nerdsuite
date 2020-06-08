@@ -41,7 +41,7 @@ import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
 
-public class Ultimate64StreamView {
+public class Ultimate64AppStreamView {
 
 	private Composite parent;
 	private ImageViewWidget imageViewer;
@@ -51,7 +51,7 @@ public class Ultimate64StreamView {
 	private IPlatform platform = null;
 	private PaletteData pd = null;
 
-	public Ultimate64StreamView() {
+	public Ultimate64AppStreamView() {
 		try {
 			videoSocket = new DatagramSocket(11000);
 			audioSocket = new DatagramSocket(11001);
@@ -92,7 +92,7 @@ public class Ultimate64StreamView {
 					if ((line & 0x8000) == 0x8000) {
 						if (offset == data.length) {
 							for (int i = 0; i < data.length; i++) {
-								data[i] = NumericConverter.getByte(data, i);
+								data[i] = (byte) ((data[i] & 0x0F) << 4 | (data[i] & 0xF0) >> 4);
 							}
 							buffer.add(new ImageData(384, 272, 4, pd, 1, data));
 							if (!buffer.isEmpty()) {
