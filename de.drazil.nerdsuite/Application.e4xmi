@@ -378,11 +378,15 @@
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_IpuxIKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.partdescriptor.Ultimate64AppStreamView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64AppStreamView">
+    <menus xmi:id="_lDyEoKpuEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menu.streamcontrol" label="StreamControl">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_FL1boKpuEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.handledmenuitem.ratio" label="Keep AspectRatio" type="Check"/>
+    </menus>
     <toolbar xmi:id="_-vCNIKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.toolbar.2">
       <children xsi:type="menu:HandledToolItem" xmi:id="__TC5IKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.start" label="Start" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_H7FF8KhGEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.stop" label="Stop" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png"/>
     </toolbar>
   </descriptors>
+  <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.NewProject" commandName="New Project">
     <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.ProjectTypeId" name="ProjectTypeId" optional="false"/>
     <parameters xmi:id="_xRlHcA9QEeq5B9yImax9_w" elementId="de.drazil.nerdsuite.commandparameter.WizardType" name="WizardType"/>
