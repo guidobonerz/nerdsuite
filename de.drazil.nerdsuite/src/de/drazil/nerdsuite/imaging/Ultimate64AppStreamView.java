@@ -7,8 +7,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -26,7 +24,6 @@ import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
@@ -63,14 +60,14 @@ public class Ultimate64AppStreamView {
 	}
 
 	public class VideoStreamer implements Runnable {
-		private List<ImageData> buffer;
+
 		private byte[] data = new byte[52224];
 		private byte[] dataBuffer = new byte[780];
 		private boolean running = true;
 		private int offset = 0;
 
 		public VideoStreamer() {
-			buffer = new ArrayList<ImageData>();
+
 		}
 
 		public synchronized void run() {
@@ -91,19 +88,13 @@ public class Ultimate64AppStreamView {
 
 					if ((line & 0x8000) == 0x8000) {
 						if (offset == data.length) {
-							for (int i = 0; i < data.length; i++) {
-								data[i] = (byte) ((data[i] & 0x0F) << 4 | (data[i] & 0xF0) >> 4);
-							}
-							buffer.add(new ImageData(384, 272, 4, pd, 1, data));
-							if (!buffer.isEmpty()) {
-								Display.getDefault().asyncExec(new Runnable() {
-									@Override
-									public void run() {
-										imageViewer.setImage(buffer.get(0));
-										buffer.remove(0);
-									}
-								});
-							}
+							imageViewer.addImageData(data,pd);
+							Display.getDefault().syncExec(new Runnable() {
+								@Override
+								public void run() {
+									imageViewer.drawImage();
+								}
+							});
 						}
 						offset = 0;
 					}
@@ -165,7 +156,9 @@ public class Ultimate64AppStreamView {
 
 		try {
 
-			byte[] f5 = new byte[] { (byte) 0x1b, (byte) 0x5b, (byte) 0x31, (byte) 0x35, (byte) 0x7e };
+			byte[] f5 = new byte[] { 0x1b, 0x5b, 0x31, 0x35, 0x7e, 0x1b, 0x5b, 0x42, 0x1b, 0x5b, 0x42, 0x1b, 0x5b, 0x42,
+					0x1b, 0x5b, 0x42, 0x1b, 0x5b, 0x42, 0x1b, 0x5b, 0x42, 0x1b, 0x5b, 0x42, 0x1b, 0x5b, 0x42, 0xd,
+					0x00 };
 			byte[] remoteStartVideo = new byte[] { (byte) 0x20, (byte) 0xff, (byte) 0x02, (byte) 0x00, (byte) 0x00,
 					(byte) 0x00 };
 			byte[] remoteStartAudio = new byte[] { (byte) 0x21, (byte) 0xff, (byte) 0x02, (byte) 0x00, (byte) 0x00,
