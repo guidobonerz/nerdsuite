@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import lombok.Getter;
 
@@ -53,6 +54,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 	protected void readHeader() {
 
 		diskInfo = getString(0x00, 0x21, true);
+		diskInfo = StringEscapeUtils.escapeJava(diskInfo);
 		diskFormat = getDiskFormat(diskInfo);
 		creator = getString(0x22, 0x2f, true);
 		tracks = getByte(0x30);
@@ -85,31 +87,31 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 		}
 
 		base = directoryBaseOffset + ((diskType == 0x41 ? 2 : 0) * trackSizes[0][0]);
-		System.out.printf("Directory Offset: $%05x\n", base);
-		System.out.println("DiskType: " + ((diskType == 0x41) ? "System Disk" : "Data Disk"));
-		System.out.println("DiskInfo:" + diskInfo);
-		System.out.println("Creator:" + creator);
-		System.out.println("Tracks:" + tracks);
-		System.out.println("Sides:" + sides);
-		System.out.printf("TrackSize: $%05x / %02d\n", trackSizes[0][0], trackSizes[0][0]);
+		System.out.printf("Directory Offset : $%05x\n", base);
+		System.out.printf("DiskType         : %s\n", ((diskType == 0x41) ? "System Disk" : "Data Disk"));
+		System.out.printf("DiskInfo         : %s\n", diskInfo);
+		System.out.printf("Creator          : %s\n", creator);
+		System.out.printf("Tracks           : %02d\n", tracks);
+		System.out.printf("Sides            : %02d\n", sides);
+		System.out.printf("TrackSize        : $%05x / %02d\n", trackSizes[0][0], trackSizes[0][0]);
 		sectorIdList = new ArrayList<Integer>();
 
 		for (int tc = 0; tc < tracks; tc++) {
 			for (int sc = 0; sc < sides; sc++) {
 				sectorInfobase = trackInfoBaseOffset + 0x18;
 				trackInfoText = getString(trackInfoBaseOffset, trackInfoBaseOffset + 0x0b, true);
-				System.out.printf("\n\nTrackInfo: $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
-				System.out.printf("unused: 0c-0f  %04x %04x\n", getWord(trackInfoBaseOffset + 0x0c),
+				System.out.printf("\n\nTrackInfo        : $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
+				System.out.printf("Unused           : 0c-0f  %04x %04x\n", getWord(trackInfoBaseOffset + 0x0c),
 						getWord(trackInfoBaseOffset + 0x0e));
-				System.out.println("TrackNo:" + getByte(trackInfoBaseOffset + 0x10));
-				System.out.println("SideNo:" + getByte(trackInfoBaseOffset + 0x11));
-				System.out.printf("unused: 12-13  %04x\n", getWord(trackInfoBaseOffset + 0x12));
-				System.out.println("SectorSize:" + sectorSize);
-				System.out.println("SectorCount:" + sectorCount);
-				System.out.println("GAP#3 Length:" + getByte(trackInfoBaseOffset + 0x16));
-				System.out.printf("Filler Byte: %02d / %02x\n", getByte(trackInfoBaseOffset + 0x17),
+				System.out.printf("TrackNo          : %02d\n" , getByte(trackInfoBaseOffset + 0x10));
+				System.out.printf("SideNo           : %02d\n" , getByte(trackInfoBaseOffset + 0x11));
+				System.out.printf("Unused           : 12-13  %04x\n", getWord(trackInfoBaseOffset + 0x12));
+				System.out.printf("SectorSize       : %02d\n" , sectorSize);
+				System.out.printf("SectorCount      : %02d\n",+ sectorCount);
+				System.out.printf("GAP#3 Length     : %03d\n" , getByte(trackInfoBaseOffset + 0x16));
+				System.out.printf("Filler Byte      : %02d / %02x\n", getByte(trackInfoBaseOffset + 0x17),
 						getByte(trackInfoBaseOffset + 0x17));
-				System.out.printf("SectorInfo Start: $%05x\n",
+				System.out.printf("SectorInfo Start : $%05x\n",
 						getByte(trackInfoBaseOffset + 0x14) * getByte(trackInfoBaseOffset + 0x15));
 
 				for (int i = sectorInfobase; i < sectorInfobase + (8 * sectorCount); i += 8) {
@@ -281,5 +283,4 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 
 	}
 
-	 
 }

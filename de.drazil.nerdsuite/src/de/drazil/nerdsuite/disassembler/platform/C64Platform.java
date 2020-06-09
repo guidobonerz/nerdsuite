@@ -23,7 +23,7 @@ public class C64Platform extends AbstractPlatform
 
 	public C64Platform(IDialect dialect, boolean ignoreStartAddressBytes)
 	{
-		super(dialect, new CPU_6510(), ignoreStartAddressBytes, "/Users/drazil/Documents/workspace/rcp/de.drazil.NerdSuite/config/c64_platform.json");
+		super(dialect, new CPU_6510(), ignoreStartAddressBytes, "/configuration/platform/c64_platform.json");
 	}
 
 	@Override
