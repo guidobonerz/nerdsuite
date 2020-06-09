@@ -17,41 +17,40 @@ import de.drazil.nerdsuite.Constants;
 public class ImageViewWidget extends Canvas implements PaintListener {
 
 	private List<ImageData> buffer;
+	private PaletteData paletteData;
 
-	public ImageViewWidget(Composite parent, int style) {
+	public ImageViewWidget(Composite parent, int style, PaletteData paletteData) {
 		super(parent, style);
+		this.paletteData = paletteData;
 		buffer = new ArrayList<ImageData>();
 		setBackground(Constants.WHITE);
 		addPaintListener(this);
-
 	}
 
 	public void paintControl(PaintEvent e) {
 		try {
 			if (!buffer.isEmpty()) {
 				ImageData imageData = buffer.get(0);
+				for (int i = 0; i < imageData.data.length; i++) {
+					imageData.data[i] = (byte) ((imageData.data[i] & 0x0F) << 4 | (imageData.data[i] & 0xF0) >> 4);
+				}
+				double ratio = ((double) getClientArea().width / (double) imageData.width);
 				Image image = new Image(getDisplay(),
-						imageData.scaledTo((int) (imageData.width * 3), (int) (imageData.height * 3)));
+						imageData.scaledTo(getClientArea().width, (int) (imageData.height * ratio)));
 				e.gc.drawImage(image, 0, 0);
 				image.dispose();
 				buffer.remove(0);
 			}
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
 	}
 
-	public void addImageData(byte[] data, PaletteData pd) {
-		ImageData imageData = new ImageData(384, 272, 4, pd, 1, data);
-		for (int i = 0; i < data.length; i++) {
-			data[i] = (byte) ((data[i] & 0x0F) << 4 | (data[i] & 0xF0) >> 4);
-		}
-		buffer.add(imageData);
+	public void addImageData(byte[] data) {
+		buffer.add(new ImageData(384, 272, 4, paletteData, 1, data));
 	}
 
 	public void drawImage() {
-		if (buffer.size() > 5) {
+		if (buffer.size() > 2) {
 			redraw();
 			update();
 		}

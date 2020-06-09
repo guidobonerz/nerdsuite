@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import javax.annotation.PostConstruct;
@@ -43,20 +42,8 @@ public class Ultimate64AppStreamView {
 	private Composite parent;
 	private ImageViewWidget imageViewer;
 
-	private DatagramSocket videoSocket;
-	private DatagramSocket audioSocket;
-	private IPlatform platform = null;
-	private PaletteData pd = null;
-
 	public Ultimate64AppStreamView() {
-		try {
-			videoSocket = new DatagramSocket(11000);
-			audioSocket = new DatagramSocket(11001);
 
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public class VideoStreamer implements Runnable {
@@ -65,6 +52,7 @@ public class Ultimate64AppStreamView {
 		private byte[] dataBuffer = new byte[780];
 		private boolean running = true;
 		private int offset = 0;
+		private DatagramSocket socket;
 
 		public VideoStreamer() {
 
@@ -72,23 +60,31 @@ public class Ultimate64AppStreamView {
 
 		public synchronized void run() {
 			try {
+				socket = new DatagramSocket(11000);
 				while (running) {
 					DatagramPacket packet = new DatagramPacket(dataBuffer, dataBuffer.length);
-					videoSocket.receive(packet);
+					socket.receive(packet);
 					InetAddress address = packet.getAddress();
 					int port = packet.getPort();
 					packet = new DatagramPacket(dataBuffer, dataBuffer.length, address, port);
 					// int seq = NumericConverter.getWordAsInt(buf, 0);
-					// int frame = NumericConverter.getWordAsInt(dataBuffer, 2);
+					int frame = NumericConverter.getWordAsInt(dataBuffer, 2);
 					int line = NumericConverter.getWordAsInt(dataBuffer, 4);
 					// int pixelPerLine = NumericConverter.getWordAsInt(buf, 6);
 					// int linesPerPacket = NumericConverter.getByteAsInt(buf, 8);
 					// int bitsPerPixel = NumericConverter.getByteAsInt(buf, 9);
 					// int encodingType = NumericConverter.getWordAsInt(buf, 10);
 
+					if (offset < data.length) {
+						// System.out.printf(" line: %04x\n", line);
+						System.arraycopy(dataBuffer, 12, data, offset, dataBuffer.length - 12);
+						offset += (dataBuffer.length - 12);
+					}
+
 					if ((line & 0x8000) == 0x8000) {
+						// System.out.printf("frame: %04x\n", frame);
 						if (offset == data.length) {
-							imageViewer.addImageData(data,pd);
+							imageViewer.addImageData(data);
 							Display.getDefault().syncExec(new Runnable() {
 								@Override
 								public void run() {
@@ -98,17 +94,13 @@ public class Ultimate64AppStreamView {
 						}
 						offset = 0;
 					}
-					if (offset < data.length) {
-						System.arraycopy(dataBuffer, 12, data, offset, dataBuffer.length - 12);
-						offset += (dataBuffer.length - 12);
-					}
 
-					videoSocket.send(packet);
+					socket.send(packet);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			videoSocket.close();
+			socket.close();
 		}
 	}
 
@@ -117,6 +109,7 @@ public class Ultimate64AppStreamView {
 		private byte[] dataBuffer = new byte[770];
 		private AudioSystem as = null;
 		private boolean running = true;
+		private DatagramSocket socket;
 
 		public AudioStreamer() {
 
@@ -124,6 +117,7 @@ public class Ultimate64AppStreamView {
 
 		public synchronized void run() {
 			try {
+				socket = new DatagramSocket(11001);
 				AudioFormat af = new AudioFormat(48000, 16, 2, true, false);
 				DataLine.Info info = new DataLine.Info(SourceDataLine.class, af);
 				SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
@@ -131,18 +125,18 @@ public class Ultimate64AppStreamView {
 				line.start();
 				while (running) {
 					DatagramPacket packet = new DatagramPacket(dataBuffer, dataBuffer.length);
-					audioSocket.receive(packet);
+					socket.receive(packet);
 					InetAddress address = packet.getAddress();
 					int port = packet.getPort();
 					packet = new DatagramPacket(dataBuffer, dataBuffer.length, address, port);
 					int seq = NumericConverter.getWordAsInt(dataBuffer, 0);
 					line.write(dataBuffer, 2, dataBuffer.length - 2);
-					audioSocket.send(packet);
+					socket.send(packet);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			audioSocket.close();
+			socket.close();
 		}
 	}
 
@@ -209,21 +203,20 @@ public class Ultimate64AppStreamView {
 	@PostConstruct
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
-		platform = new C64Platform(new KickAssemblerDialect(), false);
+		IPlatform platform = new C64Platform(new KickAssemblerDialect(), false);
 		RGB[] palette = new RGB[platform.getPlatFormData().getColorPalette().size()];
 		for (int i = 0; i < palette.length; i++) {
 			palette[i] = platform.getPlatFormData().getColorPalette().get(i).getColor().getRGB();
 		}
-		pd = new PaletteData(palette);
 
 		parent.setLayout(new GridLayout());
-		imageViewer = createImageViewer(parent);
+		imageViewer = createImageViewer(parent, new PaletteData(palette));
 		startStream();
 
 	}
 
-	public ImageViewWidget createImageViewer(Composite parent) {
-		imageViewer = new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED);
+	public ImageViewWidget createImageViewer(Composite parent, PaletteData pd) {
+		imageViewer = new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED, pd);
 		imageViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		return imageViewer;
 	}
