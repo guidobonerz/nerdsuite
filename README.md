@@ -13,6 +13,9 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 09-06-2020:
+- add ultimate64 streaming client
+
 Last Changes:
 - Range selection modification for Shift, Flip, Mirror, Rotate, Invert and Purge
 - Bulk tile modifications
@@ -45,6 +48,8 @@ Export files partly works
 Create/Update disk images
 
 
+## Ultimate64 Streaming Client
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ultimate64-streaming-windows.png)
 ## New Graphic Project Dialog
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
 ## Sprite Editor
