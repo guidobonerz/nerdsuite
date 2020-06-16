@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
+import de.drazil.nerdsuite.util.NumericConverter;
 import lombok.Getter;
 
 public class DSK_MediaContainer extends AbstractBaseMediaContainer {
@@ -103,12 +104,12 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 				System.out.printf("\n\nTrackInfo        : $%05x - %s\n", trackInfoBaseOffset, trackInfoText);
 				System.out.printf("Unused           : 0c-0f  %04x %04x\n", getWord(trackInfoBaseOffset + 0x0c),
 						getWord(trackInfoBaseOffset + 0x0e));
-				System.out.printf("TrackNo          : %02d\n" , getByte(trackInfoBaseOffset + 0x10));
-				System.out.printf("SideNo           : %02d\n" , getByte(trackInfoBaseOffset + 0x11));
+				System.out.printf("TrackNo          : %02d\n", getByte(trackInfoBaseOffset + 0x10));
+				System.out.printf("SideNo           : %02d\n", getByte(trackInfoBaseOffset + 0x11));
 				System.out.printf("Unused           : 12-13  %04x\n", getWord(trackInfoBaseOffset + 0x12));
-				System.out.printf("SectorSize       : %02d\n" , sectorSize);
-				System.out.printf("SectorCount      : %02d\n",+ sectorCount);
-				System.out.printf("GAP#3 Length     : %03d\n" , getByte(trackInfoBaseOffset + 0x16));
+				System.out.printf("SectorSize       : %02d\n", sectorSize);
+				System.out.printf("SectorCount      : %02d\n", +sectorCount);
+				System.out.printf("GAP#3 Length     : %03d\n", getByte(trackInfoBaseOffset + 0x16));
 				System.out.printf("Filler Byte      : %02d / %02x\n", getByte(trackInfoBaseOffset + 0x17),
 						getByte(trackInfoBaseOffset + 0x17));
 				System.out.printf("SectorInfo Start : $%05x\n",
@@ -173,7 +174,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 			if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0 && !StringUtils.isBlank(fileName)) {
 				contentOffsetList = new ArrayList<>();
 				entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
-						currentDirectoryEntryOffset + 0x10, null);
+						currentDirectoryEntryOffset + 0x10, base, null);
 				entry.setUserObject(getContainer());
 				entry.setDataLocation(contentOffsetList);
 				addContentOffset(contentOffsetList, currentDirectoryEntryOffset);
@@ -223,8 +224,9 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 	public void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
 		List<Integer> blockList = (List<Integer>) entry.getDataLocation();
 		System.out.println(entry.getFullName());
-		int totalSize = entry.getSize();
+		int totalSize = 0;
 		boolean finished = false;
+		boolean isBinaryFile = false;
 
 		for (int i = 0; i < blockList.size(); i++) {
 			if (finished) {
@@ -232,7 +234,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 			}
 			int size = 0x80 << sectorSize;
 			int block = blockList.get(i) & 0xff;
-			int track = ((int) ((block * 2 + 18) / sectorCount)) - 2;
+			int track = ((int) ((block * 2 + 18) / sectorCount));//-2
 			int sector = (int) ((block * 2 + 18) % sectorCount);
 			int sectorIndex = getSectorIndex(sectorIdList, sector + 1);
 			int trackOffset = 0x100 + trackSizes[track][0] * track;
@@ -241,9 +243,26 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 			for (int s = sector; s < sector + 2 && !finished; s++) {
 				int offset = trackOffset + sectorOffset;
 
-				if (totalSize <= size) {
-					size = totalSize;
-					finished = true;
+				if (isBinaryFile = hasHeader(content, offset, i)) {
+					totalSize = getWord(offset + 0x18) + 0x80;
+					System.out.printf("Name  : %s\n", getString(offset + 0x01, offset + 0x08, true));
+					System.out.printf("Type  : %s\n", getString(offset + 0x09, offset + 0x0b, true));
+					System.out.printf("Adress: %04x\n", getWord(offset + 0x15));
+					System.out.printf("Length: %04x\n", getWord(offset + 0x18));
+					System.out.printf("Length: %04x\n", getWord(offset + 0x40));
+				}
+				if (isBinaryFile) {
+					if (totalSize <= size) {
+						size = totalSize;
+						finished = true;
+					}
+				} else {
+					for (int j = offset; j < offset + size; j++) {
+						if (content[i] == 0x1a) {
+							size = j - offset;
+							break;
+						}
+					}
 				}
 
 				writer.write(entry, offset, size, finished);
@@ -270,6 +289,18 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 
 	private int getExtent(int directoryOffset) {
 		return content[directoryOffset + 0x0c];
+	}
+
+	private boolean hasHeader(byte[] content, int offset, int blockIndex) {
+		int checkSum = 0;
+		int headerSum = 0;
+		if (blockIndex == 0) {
+			checkSum = NumericConverter.getWordAsInt(content, offset + 0x43);
+			for (int i = offset; i < offset + 0x42; i++) {
+				headerSum += NumericConverter.getByteAsInt(content, i);
+			}
+		}
+		return checkSum == headerSum;
 	}
 
 	private DiskFormat getDiskFormat(String diskInfo) {

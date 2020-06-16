@@ -203,6 +203,7 @@ public class Ultimate64AppStreamView {
 	@PostConstruct
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
+
 		IPlatform platform = new C64Platform(new KickAssemblerDialect(), false);
 		RGB[] palette = new RGB[platform.getPlatFormData().getColorPalette().size()];
 		for (int i = 0; i < palette.length; i++) {

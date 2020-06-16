@@ -25,13 +25,14 @@ public class MediaEntry {
 	private boolean isRoot;
 	private Object dataLocation;
 	private Object userObject;
+	private int contentOffset;
 
 	public MediaEntry() {
 		childrenList = new ArrayList<>();
 	}
 
 	public MediaEntry(int id, String fullName, String name, String type, int size, int track, int sector,
-			Object dataLocation, IAttributes attributes) {
+			Object dataLocation, int contentOffset, IAttributes attributes) {
 		this();
 		this.id = id;
 		this.fullName = fullName;
@@ -41,6 +42,7 @@ public class MediaEntry {
 		this.track = track;
 		this.sector = sector;
 		this.dataLocation = dataLocation;
+		this.contentOffset = contentOffset;
 	}
 
 	public int getChildrenCount() {

@@ -72,7 +72,7 @@ public abstract class CBMDiskImageContainer extends AbstractBaseMediaContainer {
 					if (content[currentDirectoryEntryOffset + 0x02] != 0) {
 						String fullName = String.format("%2$s.%3$s (%1$3d Blocks )", fileSize, fileName, fileTypeName);
 						MediaEntry entry = new MediaEntry(id, fullName, fileName, fileTypeName, fileSize, fileTrack,
-								fileSector, 0, null);
+								fileSector, 0, 0, null);
 						entry.setUserObject(getContainer());
 						MediaFactory.addChildEntry(parent, entry);
 					}
