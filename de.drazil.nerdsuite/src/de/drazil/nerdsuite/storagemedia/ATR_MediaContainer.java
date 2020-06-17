@@ -68,7 +68,7 @@ public class ATR_MediaContainer extends AbstractBaseMediaContainer {
 			int usedSectorBytes = getByte(currentDirectoryEntryOffset);
 			if (entryFlag != 0x00 && entryFlag != 0x80) {
 				String fullName = String.format("%1$s.%2$s (%3$3d )", fileName, fileExtension, entrySectorCount);
-				MediaEntry entry = new MediaEntry(id, fullName, fileName, fileExtension, entrySectorCount, 0, 0, 0, 0,
+				MediaEntry entry = new MediaEntry(id, fullName, fileName, fileExtension, entrySectorCount, 0, 0, 0,
 						null);
 				entry.setDirectory((entryFlag & 0x10) == 0x10);
 				entry.setUserObject(getContainer());

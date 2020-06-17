@@ -174,7 +174,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 			if (isVisibleInCatalog(currentDirectoryEntryOffset) && extent == 0 && !StringUtils.isBlank(fileName)) {
 				contentOffsetList = new ArrayList<>();
 				entry = new MediaEntry(id, fullName, fileName, fileType, fileSize, 0, 0,
-						currentDirectoryEntryOffset + 0x10, base, null);
+						currentDirectoryEntryOffset + 0x10, null);
 				entry.setUserObject(getContainer());
 				entry.setDataLocation(contentOffsetList);
 				addContentOffset(contentOffsetList, currentDirectoryEntryOffset);
@@ -227,6 +227,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 		int totalSize = 0;
 		boolean finished = false;
 		boolean isBinaryFile = false;
+		boolean checkedHeader = false;
 
 		for (int i = 0; i < blockList.size(); i++) {
 			if (finished) {
@@ -234,7 +235,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 			}
 			int size = 0x80 << sectorSize;
 			int block = blockList.get(i) & 0xff;
-			int track = ((int) ((block * 2 + 18) / sectorCount));//-2
+			int track = ((int) ((block * 2 + 18) / sectorCount)) - (diskType == 0x41 ? 0 : 2);
 			int sector = (int) ((block * 2 + 18) % sectorCount);
 			int sectorIndex = getSectorIndex(sectorIdList, sector + 1);
 			int trackOffset = 0x100 + trackSizes[track][0] * track;
@@ -243,13 +244,16 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 			for (int s = sector; s < sector + 2 && !finished; s++) {
 				int offset = trackOffset + sectorOffset;
 
-				if (isBinaryFile = hasHeader(content, offset, i)) {
-					totalSize = getWord(offset + 0x18) + 0x80;
-					System.out.printf("Name  : %s\n", getString(offset + 0x01, offset + 0x08, true));
-					System.out.printf("Type  : %s\n", getString(offset + 0x09, offset + 0x0b, true));
-					System.out.printf("Adress: %04x\n", getWord(offset + 0x15));
-					System.out.printf("Length: %04x\n", getWord(offset + 0x18));
-					System.out.printf("Length: %04x\n", getWord(offset + 0x40));
+				if (!checkedHeader) {
+					if (isBinaryFile = hasHeader(content, offset, i)) {
+						totalSize = getWord(offset + 0x18) + 0x80;
+						System.out.printf("Name  : %s\n", getString(offset + 0x01, offset + 0x08, true));
+						System.out.printf("Type  : %s\n", getString(offset + 0x09, offset + 0x0b, true));
+						System.out.printf("Adress: %04x\n", getWord(offset + 0x15));
+						System.out.printf("Length: %04x\n", getWord(offset + 0x18));
+						System.out.printf("Length: %04x\n", getWord(offset + 0x40));
+					}
+					checkedHeader = true;
 				}
 				if (isBinaryFile) {
 					if (totalSize <= size) {
@@ -257,11 +261,17 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 						finished = true;
 					}
 				} else {
+					boolean found = false;
 					for (int j = offset; j < offset + size; j++) {
-						if (content[i] == 0x1a) {
+						if (content[j] == 0x1a) {
+							found = true;
 							size = j - offset;
+							finished = true;
 							break;
 						}
+					}
+					if (!found) {
+						size = 0x200;
 					}
 				}
 
