@@ -18,6 +18,8 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 
 	private List<ImageData> buffer;
 	private PaletteData paletteData;
+	private int scaledWidth;
+	private int scaledHeight;
 
 	public ImageViewWidget(Composite parent, int style, PaletteData paletteData) {
 		super(parent, style);
@@ -35,8 +37,10 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 					imageData.data[i] = (byte) ((imageData.data[i] & 0x0F) << 4 | (imageData.data[i] & 0xF0) >> 4);
 				}
 				double ratio = ((double) getClientArea().width / (double) imageData.width);
-				Image image = new Image(getDisplay(),
-						imageData.scaledTo(getClientArea().width, (int) (imageData.height * ratio)));
+				scaledWidth = getClientArea().width;
+				scaledHeight = (int) (imageData.height * ratio);
+				Image image = new Image(getDisplay(), imageData.scaledTo(scaledWidth, scaledHeight));
+
 				e.gc.drawImage(image, 0, 0);
 				image.dispose();
 				buffer.remove(0);
@@ -51,7 +55,7 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 
 	public void drawImage() {
 		if (buffer.size() > 2) {
-			redraw();
+			redraw(0, 0, scaledWidth, scaledHeight, false);
 			update();
 		}
 	}

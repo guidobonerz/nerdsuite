@@ -23,8 +23,10 @@ public class MediaEntry {
 	private MediaEntry parent;
 	private boolean isDirectory;
 	private boolean isRoot;
+	private boolean isSystemDisk;
 	private Object dataLocation;
 	private Object userObject;
+	private int contentOffset;
 
 	public MediaEntry() {
 		childrenList = new ArrayList<>();
