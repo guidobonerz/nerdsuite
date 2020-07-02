@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
@@ -128,6 +129,35 @@ public class Explorer implements IDoubleClickListener {
 			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be exported.");
 		}
 		// }
+	}
+
+	@Inject
+	@Optional
+	void U64_LoadAndRun(@UIEventTopic("U64_LoadAndRun") BrokerObject brokerObject, MPart part, IEventBroker broker) {
+
+		TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
+		Object o = treeNode.getFirstElement();
+
+		if (o instanceof Project) {
+			String owner = (String) part.getTransientData().get(Constants.OWNER);
+			broker.send("LoadAndRun", new BrokerObject("", o));
+		} else if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
+			MediaEntry entry = (MediaEntry) o;
+			IMediaContainer mediaManager = MediaFactory.mount((File) entry.getUserObject());
+			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
+			saveDialog.setFileName(entry.getName() + "." + entry.getType());
+			String fileName = saveDialog.open();
+			try {
+				mediaManager.exportEntry(entry, new File(fileName));
+				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
+						"\"" + fileName + "\" was successfully exported.");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be started on Ultimate64");
+		}
+
 	}
 
 	private void listFiles() {

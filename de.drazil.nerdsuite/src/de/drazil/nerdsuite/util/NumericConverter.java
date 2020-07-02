@@ -84,6 +84,22 @@ public class NumericConverter {
 		return value;
 	}
 
+	public static byte[] getWord(int value) {
+		return getWord(value, Endianness.LittleEndian);
+	}
+
+	public static byte[] getWord(int value, Endianness endianess) {
+		byte[] result = new byte[2];
+		result[0] = (byte) (value >> 8 & 0xff);
+		result[1] = (byte) (value & 0xff);
+		if (endianess == Endianness.LittleEndian) {
+			byte x = result[0];
+			result[0] = result[1];
+			result[1] = x;
+		}
+		return result;
+	}
+
 	public static byte[] getWord(byte byteArray[], int offset) {
 		return getWord(byteArray, offset, Endianness.LittleEndian);
 	}
