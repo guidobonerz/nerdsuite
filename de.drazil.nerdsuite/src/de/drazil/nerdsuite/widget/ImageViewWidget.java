@@ -54,7 +54,7 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 	}
 
 	public void drawImage() {
-		if (buffer.size() > 2) {
+		if (buffer.size() > 10) {
 			redraw(0, 0, scaledWidth, scaledHeight, false);
 			update();
 		}
