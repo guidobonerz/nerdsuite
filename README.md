@@ -15,6 +15,7 @@ Current state: Still buggy and incomplete :-)
 
 Last Changes 02-07-2020:
 - add start/stop/reset/remote load&start function to streaming client
+
 Last Changes 09-06-2020:
 - add ultimate64 streaming client
 
