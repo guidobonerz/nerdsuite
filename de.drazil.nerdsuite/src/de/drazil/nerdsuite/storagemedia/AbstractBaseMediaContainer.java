@@ -121,16 +121,55 @@ public abstract class AbstractBaseMediaContainer implements IMediaContainer {
 				public void write(MediaEntry entry, int start, int len, boolean finished) throws Exception {
 					BinaryFileHandler.write(os, content, start, len, finished);
 				}
+
+				@Override
+				public byte[] getData() {
+					// TODO Auto-generated method stub
+					return null;
+				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public byte[] exportEntry(MediaEntry entry) throws Exception {
+		byte[] data = null;
+
+		try {
+
+			data = readContent(entry, new IMediaEntryWriter() {
+				byte[] result = null;
+
+				@Override
+				public void write(MediaEntry entry, int start, int len, boolean finished) throws Exception {
+					if (result == null) {
+						result = new byte[len];
+						System.arraycopy(content, start, result, 0, len);
+					} else {
+						byte[] temp = new byte[result.length + len];
+						int tempLength = result.length;
+						System.arraycopy(result, 0, temp, 0, result.length);
+						result = temp;
+						System.arraycopy(content, start, result, tempLength, len);
+					}
+				}
+
+				@Override
+				public byte[] getData() {
+					return result;
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+
 	protected abstract void readHeader();
 
 	@Override
-	public abstract void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception;
+	public abstract byte[] readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception;
 
 	@Override
 	public abstract void readEntries(MediaEntry parent);

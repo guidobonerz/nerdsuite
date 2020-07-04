@@ -221,7 +221,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
+	public byte[] readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
 		List<Integer> blockList = (List<Integer>) entry.getDataLocation();
 		System.out.println(entry.getFullName());
 		int totalSize = 0;
@@ -287,6 +287,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 				totalSize -= size;
 			}
 		}
+		return null;
 	}
 
 	private boolean isVisibleInCatalog(int directoryOffset) {

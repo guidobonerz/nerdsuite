@@ -14,9 +14,11 @@ public interface IMediaContainer {
 
 	public void readEntries(MediaEntry parent);
 
-	public void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception;
+	public byte[] readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception;
 
 	public void exportEntry(MediaEntry entry, File file) throws Exception;
+
+	public byte[] exportEntry(MediaEntry entry) throws Exception;
 
 	public void getAvailabilityMap();
 }

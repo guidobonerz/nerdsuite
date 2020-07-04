@@ -86,7 +86,7 @@ public abstract class CBMDiskImageContainer extends AbstractBaseMediaContainer {
 	}
 
 	@Override
-	public void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
+	public byte[] readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
 		if (!entry.getType().trim().equals("DEL")) {
 			int fileTrack = entry.getTrack();
 			int fileSector = entry.getSector();
@@ -102,6 +102,7 @@ public abstract class CBMDiskImageContainer extends AbstractBaseMediaContainer {
 				System.out.printf("Next:%05x %02d / %02d\n", fileSectorOffset, fileTrack, fileSector);
 			}
 		}
+		return writer.getData();
 	}
 
 	private int getFileSize(int start) {

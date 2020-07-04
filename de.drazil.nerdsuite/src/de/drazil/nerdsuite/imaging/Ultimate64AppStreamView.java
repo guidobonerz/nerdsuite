@@ -1,6 +1,5 @@
 package de.drazil.nerdsuite.imaging;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -30,12 +29,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
 import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.handler.BrokerObject;
-import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
 
@@ -44,7 +41,9 @@ public class Ultimate64AppStreamView {
 	private Composite parent;
 	private ImageViewWidget imageViewer;
 	private Socket tcpSocket = null;
-	private boolean running = true;
+	private boolean running = false;
+	private Thread videoThread;
+	private Thread audioThread;
 
 	public Ultimate64AppStreamView() {
 
@@ -57,10 +56,6 @@ public class Ultimate64AppStreamView {
 
 		private int offset = 0;
 		private DatagramSocket socket;
-
-		public VideoStreamer() {
-
-		}
 
 		public synchronized void run() {
 			try {
@@ -92,31 +87,25 @@ public class Ultimate64AppStreamView {
 							Display.getDefault().syncExec(new Runnable() {
 								@Override
 								public void run() {
-									imageViewer.drawImage();
+									imageViewer.drawImage(false);
 								}
 							});
 						}
 						offset = 0;
 					}
-
-					socket.send(packet);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+				socket.close();
 			}
-			socket.close();
 		}
 	}
 
 	public class AudioStreamer implements Runnable {
 
 		private byte[] dataBuffer = new byte[770];
-		private AudioSystem as = null;
 		private DatagramSocket socket;
-
-		public AudioStreamer() {
-
-		}
 
 		public synchronized void run() {
 			try {
@@ -134,52 +123,63 @@ public class Ultimate64AppStreamView {
 					packet = new DatagramPacket(dataBuffer, dataBuffer.length, address, port);
 					int seq = NumericConverter.getWordAsInt(dataBuffer, 0);
 					line.write(dataBuffer, 2, dataBuffer.length - 2);
-					socket.send(packet);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				socket.close();
 			}
-			socket.close();
 		}
 	}
 
 	@Inject
 	@Optional
 	public void startStream(@UIEventTopic("StartStream") BrokerObject brokerObject) {
+		startStream();
+	}
+
+	private void startStream() {
+		running = true;
 		startVicStream();
 		startSidStream();
-		running = true;
-		try {
-			Thread.sleep(100);
-			new Thread(new VideoStreamer()).start();
-			new Thread(new AudioStreamer()).start();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		imageViewer.drawImage(false);
+		Thread videoThread = new Thread(new VideoStreamer());
+		Thread audioThread = new Thread(new AudioStreamer());
+		videoThread.start();
+		audioThread.start();
 	}
 
 	@Inject
 	@Optional
 	public void stopStream(@UIEventTopic("StopStream") BrokerObject brokerObject) {
+		stopStream();
+	}
+
+	private void stopStream() {
 		running = false;
+		videoThread = null;
+		audioThread = null;
 		stopVicStream();
 		stopSidStream();
-
+		imageViewer.drawImage(true);
 	}
 
 	@Inject
 	@Optional
 	public void reset(@UIEventTopic("Reset") BrokerObject brokerObject) {
+		stopStream();
 		reset();
+		startStream();
 	}
 
 	@Inject
 	@Optional
 	public void loadAndRunProgram(@UIEventTopic("LoadAndRun") BrokerObject brokerObject) {
 		try {
-			byte[] data = BinaryFileHandler
-					.readFile(new File(((Project) brokerObject.getTransferObject()).getMountLocation()), 0);
+			stopStream(null);
+			byte[] data = (byte[]) brokerObject.getTransferObject();
 			loadCode(data, true);
+			startStream(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

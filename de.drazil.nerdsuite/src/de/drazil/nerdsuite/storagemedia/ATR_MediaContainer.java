@@ -86,7 +86,7 @@ public class ATR_MediaContainer extends AbstractBaseMediaContainer {
 	}
 
 	@Override
-	public void readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
+	public byte[] readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
 
 		int sector = entry.getSector() - 1;
 		long sectorOffset = getSectorOffset(sector);
@@ -106,5 +106,6 @@ public class ATR_MediaContainer extends AbstractBaseMediaContainer {
 			sector = (h + l - 1);
 			sectorOffset = getSectorOffset(sector);
 		}
+		return null;
 	}
 }
