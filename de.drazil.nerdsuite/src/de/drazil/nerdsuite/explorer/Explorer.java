@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.Project;
@@ -139,23 +140,26 @@ public class Explorer implements IDoubleClickListener {
 		Object o = treeNode.getFirstElement();
 
 		if (o instanceof Project) {
-			String owner = (String) part.getTransientData().get(Constants.OWNER);
-			broker.send("LoadAndRun", new BrokerObject("", o));
+			try {
+				byte[] data = BinaryFileHandler.readFile(new File(((Project) o).getMountLocation()), 0);
+				String owner = (String) part.getTransientData().get(Constants.OWNER);
+				broker.send("LoadAndRun", new BrokerObject("", data));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else if (o instanceof MediaEntry && !((MediaEntry) o).isDirectory()) {
 			MediaEntry entry = (MediaEntry) o;
-			IMediaContainer mediaManager = MediaFactory.mount((File) entry.getUserObject());
-			FileDialog saveDialog = new FileDialog(treeViewer.getControl().getShell(), SWT.SAVE);
-			saveDialog.setFileName(entry.getName() + "." + entry.getType());
-			String fileName = saveDialog.open();
+			IMediaContainer mediaContainer = MediaFactory.mount((File) entry.getUserObject());
 			try {
-				mediaManager.exportEntry(entry, new File(fileName));
-				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
-						"\"" + fileName + "\" was successfully exported.");
+				byte[] data = mediaContainer.exportEntry(entry);
+				String owner = (String) part.getTransientData().get(Constants.OWNER);
+				broker.send("LoadAndRun", new BrokerObject("", data));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be started on Ultimate64");
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning",
+					"Folders can not be started on Ultimate64");
 		}
 
 	}

@@ -387,9 +387,12 @@
       <children xsi:type="menu:HandledMenuItem" xmi:id="_FL1boKpuEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.handledmenuitem.ratio" label="Keep AspectRatio" type="Check"/>
     </menus>
     <toolbar xmi:id="_-vCNIKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.toolbar.2">
-      <children xsi:type="menu:HandledToolItem" xmi:id="__TC5IKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.start" label="Start" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" command="_VlskULypEeqwJ_Ky4YAlCA"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_H7FF8KhGEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.stop" label="Stop" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_KbFGALypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handledtoolitem.reset" label="Reset" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/lightning.png" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="__TC5IKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.start" label="Start" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" tooltip="Start Stream" command="_VlskULypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_H7FF8KhGEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.stop" label="Stop" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" tooltip="Stop Stream" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_KbFGALypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handledtoolitem.reset" label="Reset" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/lightning.png" tooltip="Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_JLRoUL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.toolbarseparator.6"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_JuUD8L3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.snapshot" label="Snapshot" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/camera.png" tooltip="Snapshot"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_KLtKkL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.movie" label="Movie" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/film.png"/>
     </toolbar>
   </descriptors>
   <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
