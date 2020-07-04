@@ -100,6 +100,7 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 		this.showDummy = showDummy;
 		redraw(0, 0, scaledWidth, scaledHeight, false);
 		update();
+
 	}
 
 	@Override

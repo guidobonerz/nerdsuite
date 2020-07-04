@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -35,15 +36,19 @@ import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Ultimate64AppStreamView {
 
 	private Composite parent;
 	private ImageViewWidget imageViewer;
 	private Socket tcpSocket = null;
-	private boolean running = false;
 	private Thread videoThread;
 	private Thread audioThread;
+	private VideoStreamer videoStreamer;
+	private AudioStreamer audioStreamer;
+	private boolean running = false;
 
 	public Ultimate64AppStreamView() {
 
@@ -53,6 +58,9 @@ public class Ultimate64AppStreamView {
 
 		private byte[] data = new byte[52224];
 		private byte[] dataBuffer = new byte[780];
+		@Setter
+		@Getter
+		private boolean running = false;
 
 		private int offset = 0;
 		private DatagramSocket socket;
@@ -60,7 +68,8 @@ public class Ultimate64AppStreamView {
 		public synchronized void run() {
 			try {
 				socket = new DatagramSocket(11000);
-				while (running) {
+				// socket.setSoTimeout(1000);
+				while (socket != null && running) {
 					DatagramPacket packet = new DatagramPacket(dataBuffer, dataBuffer.length);
 					socket.receive(packet);
 					InetAddress address = packet.getAddress();
@@ -94,10 +103,13 @@ public class Ultimate64AppStreamView {
 						offset = 0;
 					}
 				}
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
+				System.out.println("video socket closed");
 				socket.close();
+				socket = null;
 			}
 		}
 	}
@@ -106,16 +118,20 @@ public class Ultimate64AppStreamView {
 
 		private byte[] dataBuffer = new byte[770];
 		private DatagramSocket socket;
+		@Setter
+		@Getter
+		private boolean running = false;
 
 		public synchronized void run() {
 			try {
 				socket = new DatagramSocket(11001);
+				// socket.setSoTimeout(1000);
 				AudioFormat af = new AudioFormat(48000, 16, 2, true, false);
 				DataLine.Info info = new DataLine.Info(SourceDataLine.class, af);
 				SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
 				line.open(af, 4096);
 				line.start();
-				while (running) {
+				while (socket != null && running) {
 					DatagramPacket packet = new DatagramPacket(dataBuffer, dataBuffer.length);
 					socket.receive(packet);
 					InetAddress address = packet.getAddress();
@@ -123,11 +139,15 @@ public class Ultimate64AppStreamView {
 					packet = new DatagramPacket(dataBuffer, dataBuffer.length, address, port);
 					int seq = NumericConverter.getWordAsInt(dataBuffer, 0);
 					line.write(dataBuffer, 2, dataBuffer.length - 2);
+
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
+				System.out.println("audio socket closed");
 				socket.close();
+				socket = null;
 			}
 		}
 	}
@@ -139,14 +159,19 @@ public class Ultimate64AppStreamView {
 	}
 
 	private void startStream() {
-		running = true;
-		startVicStream();
-		startSidStream();
-		imageViewer.drawImage(false);
-		Thread videoThread = new Thread(new VideoStreamer());
-		Thread audioThread = new Thread(new AudioStreamer());
-		videoThread.start();
-		audioThread.start();
+		if (!running) {
+			running = true;
+			startVicStream();
+			startSidStream();
+			imageViewer.drawImage(false);
+
+			videoThread = new Thread(videoStreamer);
+			audioThread = new Thread(audioStreamer);
+			videoThread.start();
+			audioThread.start();
+			videoStreamer.setRunning(true);
+			audioStreamer.setRunning(true);
+		}
 	}
 
 	@Inject
@@ -156,30 +181,42 @@ public class Ultimate64AppStreamView {
 	}
 
 	private void stopStream() {
-		running = false;
-		videoThread = null;
-		audioThread = null;
-		stopVicStream();
-		stopSidStream();
-		imageViewer.drawImage(true);
+		if (running) {
+			running = false;
+			videoStreamer.setRunning(false);
+			audioStreamer.setRunning(false);
+			stopVicStream();
+			stopSidStream();
+			videoThread = null;
+			audioThread = null;
+			imageViewer.drawImage(true);
+		}
 	}
 
 	@Inject
 	@Optional
 	public void reset(@UIEventTopic("Reset") BrokerObject brokerObject) {
-		stopStream();
-		reset();
-		startStream();
+		try {
+			stopStream();
+			TimeUnit.MILLISECONDS.sleep(100);
+			reset();
+			TimeUnit.MILLISECONDS.sleep(100);
+			startStream();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Inject
 	@Optional
 	public void loadAndRunProgram(@UIEventTopic("LoadAndRun") BrokerObject brokerObject) {
 		try {
-			stopStream(null);
+			stopStream();
+			TimeUnit.MILLISECONDS.sleep(100);
 			byte[] data = (byte[]) brokerObject.getTransferObject();
 			loadCode(data, true);
-			startStream(null);
+			TimeUnit.MILLISECONDS.sleep(100);
+			startStream();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -204,6 +241,8 @@ public class Ultimate64AppStreamView {
 
 		parent.setLayout(new GridLayout());
 		imageViewer = createImageViewer(parent, new PaletteData(palette));
+		videoStreamer = new VideoStreamer();
+		audioStreamer = new AudioStreamer();
 	}
 
 	public ImageViewWidget createImageViewer(Composite parent, PaletteData pd) {
