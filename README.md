@@ -13,6 +13,9 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 04-07-2020:
+- select/run programs from D64 image
+
 Last Changes 02-07-2020:
 - add start/stop/reset/remote load&start function to streaming client
 

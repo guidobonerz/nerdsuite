@@ -132,6 +132,7 @@
   <handlers xmi:id="_0m2IMLypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_StartStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StartStreamHandler" command="_VlskULypEeqwJ_Ky4YAlCA"/>
   <handlers xmi:id="_7d4RcLypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_StopStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StopStreamHandler" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
   <handlers xmi:id="_AUfbELyqEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_Reset" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
+  <handlers xmi:id="_dQS1AL4IEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.handler.virtualkeyboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.VirtualKeyboardHandler" command="_WRFnML4IEeqDiPHXuf8Njw"/>
   <bindingTables xmi:id="_SoW6YNc0Eem8ZM0LwkCd1Q" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_bnniINc5EemIEoLjroS7Zw">
     <bindings xmi:id="_Xko04Nc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.0" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
       <tags>type:user</tags>
@@ -390,6 +391,8 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="__TC5IKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.start" label="Start" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" tooltip="Start Stream" command="_VlskULypEeqwJ_Ky4YAlCA"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_H7FF8KhGEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.stop" label="Stop" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" tooltip="Stop Stream" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_KbFGALypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handledtoolitem.reset" label="Reset" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/lightning.png" tooltip="Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_mETdwL4HEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.toolbarseparator.7"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_k_2XIL4HEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.handledtoolitem.keyboard" label="Keyboard" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/keyboard.png" tooltip="Toggle Keyboard" command="_WRFnML4IEeqDiPHXuf8Njw"/>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_JLRoUL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.toolbarseparator.6"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_JuUD8L3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.snapshot" label="Snapshot" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/camera.png" tooltip="Snapshot"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_KLtKkL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.movie" label="Movie" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/film.png"/>
@@ -470,6 +473,7 @@
   <commands xmi:id="_OrdWELypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.command.U64_Reset" commandName="U64_Reset"/>
   <commands xmi:id="_VlskULypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.command.U64_StartStream" commandName="U64_StartStream"/>
   <commands xmi:id="_ZRGfELypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.command.U64_StopStream" commandName="U64_StopStream"/>
+  <commands xmi:id="_WRFnML4IEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.command.virtualkeyboard" commandName="Virtualkeyboard"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

@@ -209,6 +209,12 @@ public class Ultimate64AppStreamView {
 
 	@Inject
 	@Optional
+	public void virtualKeyboard(@UIEventTopic("VirtualKeyboard") BrokerObject brokerObject) {
+		sendKeyboardSequence("A\n".getBytes());
+	}
+
+	@Inject
+	@Optional
 	public void loadAndRunProgram(@UIEventTopic("LoadAndRun") BrokerObject brokerObject) {
 		try {
 			stopStream();
@@ -328,6 +334,18 @@ public class Ultimate64AppStreamView {
 		try {
 			tcpSocket.getOutputStream()
 					.write(buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void sendKeyboardSequence(byte[] data) {
+		openSocket();
+		try {
+			tcpSocket.getOutputStream()
+					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x00, (byte) 0x00 }));
+			tcpSocket.getOutputStream().write(data);
+			System.out.println("send keyboard sequence");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
