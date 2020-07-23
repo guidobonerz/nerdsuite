@@ -89,6 +89,10 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		userData.put(ProjectWizard.PROJECT_TYPE, graphicFormatList.get(0).getId());
 		List<GraphicFormatVariant> graphicFormatVariantList = graphicFormatList.get(0).getVariants();
 		userData.put(ProjectWizard.PROJECT_VARIANT, graphicFormatVariantList.get(0).getId());
+		int maxItems = graphicFormatList.get(0).getMaxItems();
+		userData.put(ProjectWizard.PROJECT_MAX_ITEMS, maxItems);
+		maxItemsSpinner.setValues(maxItems, (maxItems == -1) ? -1 : 1, maxItems, 0,
+				1, 1);
 
 		projectNameText = new Text(container, SWT.BORDER);
 		projectNameText.addKeyListener(new KeyAdapter() {

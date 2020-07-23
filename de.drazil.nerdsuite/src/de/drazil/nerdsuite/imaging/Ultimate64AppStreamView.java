@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.imaging;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -36,6 +37,16 @@ import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
+import io.humble.video.Codec;
+import io.humble.video.Encoder;
+import io.humble.video.MediaPacket;
+import io.humble.video.MediaPicture;
+import io.humble.video.Muxer;
+import io.humble.video.MuxerFormat;
+import io.humble.video.PixelFormat;
+import io.humble.video.Rational;
+import io.humble.video.awt.MediaPictureConverter;
+import io.humble.video.awt.MediaPictureConverterFactory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,15 +57,15 @@ public class Ultimate64AppStreamView {
 	private Socket tcpSocket = null;
 	private Thread videoThread;
 	private Thread audioThread;
-	private VideoStreamer videoStreamer;
-	private AudioStreamer audioStreamer;
+	private VideoStreamReceiver videoStreamReceiver;
+	private AudioStreamReceiver audioStreamReceiver;
 	private boolean running = false;
 
 	public Ultimate64AppStreamView() {
 
 	}
 
-	public class VideoStreamer implements Runnable {
+	public class VideoStreamReceiver implements Runnable {
 
 		private byte[] data = new byte[52224];
 		private byte[] dataBuffer = new byte[780];
@@ -114,7 +125,7 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
-	public class AudioStreamer implements Runnable {
+	public class AudioStreamReceiver implements Runnable {
 
 		private byte[] dataBuffer = new byte[770];
 		private DatagramSocket socket;
@@ -165,12 +176,12 @@ public class Ultimate64AppStreamView {
 			startSidStream();
 			imageViewer.drawImage(false);
 
-			videoThread = new Thread(videoStreamer);
-			audioThread = new Thread(audioStreamer);
+			videoThread = new Thread(videoStreamReceiver);
+			audioThread = new Thread(audioStreamReceiver);
 			videoThread.start();
 			audioThread.start();
-			videoStreamer.setRunning(true);
-			audioStreamer.setRunning(true);
+			videoStreamReceiver.setRunning(true);
+			audioStreamReceiver.setRunning(true);
 		}
 	}
 
@@ -183,14 +194,90 @@ public class Ultimate64AppStreamView {
 	private void stopStream() {
 		if (running) {
 			running = false;
-			videoStreamer.setRunning(false);
-			audioStreamer.setRunning(false);
+			videoStreamReceiver.setRunning(false);
+			audioStreamReceiver.setRunning(false);
 			stopVicStream();
 			stopSidStream();
 			videoThread = null;
 			audioThread = null;
 			imageViewer.drawImage(true);
 		}
+	}
+
+	@Inject
+	@Optional
+	public void streamVideo(@UIEventTopic("StreamVideo") BrokerObject brokerObject) {
+		System.out.println("Stream Video");
+	/*
+		int snapsPerSecond = 10;
+		int duration = 100;
+		String formatName = "";
+		String fileName = "";
+		String codecName = "";
+		final Rational framerate = Rational.make(1, snapsPerSecond);
+
+		final Muxer muxer = Muxer.make(fileName, null, formatName);
+
+		final MuxerFormat format = muxer.getFormat();
+		final Codec codec;
+		if (codecName != null) {
+			codec = Codec.findEncodingCodecByName(codecName);
+		} else {
+			codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId());
+		}
+
+		Encoder encoder = Encoder.make(codec);
+
+		encoder.setWidth(320);
+		encoder.setHeight(200);
+
+		final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
+		encoder.setPixelFormat(pixelformat);
+		encoder.setTimeBase(framerate);
+
+		if (format.getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
+			encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
+
+		encoder.open(null, null);
+
+		muxer.addNewStream(encoder);
+
+		muxer.open(null, null);
+
+		MediaPictureConverter converter = null;
+		final MediaPicture picture = MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
+		picture.setTimeBase(framerate);
+
+		final MediaPacket packet = MediaPacket.make();
+		for (int i = 0; i < duration / framerate.getDouble(); i++) {
+			
+			
+			
+			
+			final BufferedImage screen = convertToType(robot.createScreenCapture(screenbounds),
+					BufferedImage.TYPE_3BYTE_BGR);
+
+			if (converter == null)
+				converter = MediaPictureConverterFactory.createConverter(screen, picture);
+			converter.toPicture(picture, screen, i);
+
+			do {
+				encoder.encode(packet, picture);
+				if (packet.isComplete())
+					muxer.write(packet, false);
+			} while (packet.isComplete());
+
+			Thread.sleep((long) (1000 * framerate.getDouble()));
+		}
+
+		do {
+			encoder.encode(packet, null);
+			if (packet.isComplete())
+				muxer.write(packet, false);
+		} while (packet.isComplete());
+
+		muxer.close();
+		*/
 	}
 
 	@Inject
@@ -247,8 +334,8 @@ public class Ultimate64AppStreamView {
 
 		parent.setLayout(new GridLayout());
 		imageViewer = createImageViewer(parent, new PaletteData(palette));
-		videoStreamer = new VideoStreamer();
-		audioStreamer = new AudioStreamer();
+		videoStreamReceiver = new VideoStreamReceiver();
+		audioStreamReceiver = new AudioStreamReceiver();
 	}
 
 	public ImageViewWidget createImageViewer(Composite parent, PaletteData pd) {

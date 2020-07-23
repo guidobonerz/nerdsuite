@@ -51,6 +51,7 @@
         <children xsi:type="menu:Menu" xmi:id="_cSP6MKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.1" label="New">
           <children xsi:type="menu:HandledMenuItem" xmi:id="_fvfdIKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.codingproject" label="Coding Project" command="_ATMWMKaVEeOsl7k25iZUBw">
             <parameters xmi:id="_Cv3pwLrPEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.parameter.16" name="de.drazil.nerdsuite.commandparameter.ProjectTypeId" value="CODING_PROJECT"/>
+            <parameters xmi:id="_kHL3EM0sEeqoTa4zTIwOSg" elementId="de.drazil.nerdsuite.parameter.59" name="de.drazil.nerdsuite.commandparameter.WizardType" value="0"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_F4tfcLrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.handledmenuitem.graphicproject" label="Graphic Project" command="_ATMWMKaVEeOsl7k25iZUBw">
             <parameters xmi:id="_HFfmMLrPEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.parameter.17" name="de.drazil.nerdsuite.commandparameter.ProjectTypeId" value="GRAPHIC_PROJECT"/>
@@ -129,10 +130,6 @@
   <handlers xmi:id="_2yl0sJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.handler.debugstream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.stream.U64DebugStream" command="_uYBcIJ21EeqplavjYfDYxA"/>
   <handlers xmi:id="_lu6AUKdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handler.vicstream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Ultimate64AppStreamHandler" command="_ggW30KdwEeqid_Z8sm-clA"/>
   <handlers xmi:id="_HpVJcLvgEeqNbb2NSJYhoA" elementId="de.drazil.nerdsuite.handler.3" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RunOnU64Handler" command="_kNzE8LvfEeqNbb2NSJYhoA"/>
-  <handlers xmi:id="_0m2IMLypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_StartStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StartStreamHandler" command="_VlskULypEeqwJ_Ky4YAlCA"/>
-  <handlers xmi:id="_7d4RcLypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_StopStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StopStreamHandler" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
-  <handlers xmi:id="_AUfbELyqEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_Reset" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
-  <handlers xmi:id="_dQS1AL4IEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.handler.virtualkeyboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.VirtualKeyboardHandler" command="_WRFnML4IEeqDiPHXuf8Njw"/>
   <bindingTables xmi:id="_SoW6YNc0Eem8ZM0LwkCd1Q" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_bnniINc5EemIEoLjroS7Zw">
     <bindings xmi:id="_Xko04Nc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.0" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
       <tags>type:user</tags>
@@ -384,6 +381,12 @@
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_IpuxIKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.partdescriptor.Ultimate64AppStreamView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64AppStreamView">
+    <handlers xmi:id="_0m2IMLypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_StartStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StartStreamHandler" command="_VlskULypEeqwJ_Ky4YAlCA"/>
+    <handlers xmi:id="_7d4RcLypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_StopStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StopStreamHandler" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
+    <handlers xmi:id="_AUfbELyqEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_Reset" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
+    <handlers xmi:id="_dQS1AL4IEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.handler.virtualkeyboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.VirtualKeyboardHandler" command="_WRFnML4IEeqDiPHXuf8Njw"/>
+    <handlers xmi:id="_9FkPwL5QEeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.handler.streamvideo" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StreamVideoHandler" command="_lhIVEL5QEeq0ivRYGfAMrg"/>
+    <handlers xmi:id="_G0krsL5REeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.handler.screenshot" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ScreenshotHandler" command="_csf2sL5QEeq0ivRYGfAMrg"/>
     <menus xmi:id="_lDyEoKpuEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menu.streamcontrol" label="StreamControl">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_FL1boKpuEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.handledmenuitem.ratio" label="Keep AspectRatio" type="Check"/>
     </menus>
@@ -394,8 +397,8 @@
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_mETdwL4HEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.toolbarseparator.7"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_k_2XIL4HEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.handledtoolitem.keyboard" label="Keyboard" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/keyboard.png" tooltip="Toggle Keyboard" command="_WRFnML4IEeqDiPHXuf8Njw"/>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_JLRoUL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.toolbarseparator.6"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_JuUD8L3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.snapshot" label="Snapshot" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/camera.png" tooltip="Snapshot"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_KLtKkL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.movie" label="Movie" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/film.png"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_JuUD8L3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.screenshot" label="Screenshot" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/camera.png" tooltip="Screenshot" command="_csf2sL5QEeq0ivRYGfAMrg"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_KLtKkL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.video" label="Video" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/film_go.png" command="_lhIVEL5QEeq0ivRYGfAMrg"/>
     </toolbar>
   </descriptors>
   <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
@@ -474,6 +477,8 @@
   <commands xmi:id="_VlskULypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.command.U64_StartStream" commandName="U64_StartStream"/>
   <commands xmi:id="_ZRGfELypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.command.U64_StopStream" commandName="U64_StopStream"/>
   <commands xmi:id="_WRFnML4IEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.command.virtualkeyboard" commandName="Virtualkeyboard"/>
+  <commands xmi:id="_csf2sL5QEeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.command.screenshot" commandName="Screenshot"/>
+  <commands xmi:id="_lhIVEL5QEeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.command.streamvideo" commandName="StreamVideo"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

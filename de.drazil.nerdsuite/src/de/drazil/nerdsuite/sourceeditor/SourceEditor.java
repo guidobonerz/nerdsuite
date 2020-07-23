@@ -102,8 +102,8 @@ public class SourceEditor implements IDocument {
 		 * styledText.addExtendedModifyListener(new ExtendedModifyListener() {
 		 * 
 		 * @Override public void modifyText(ExtendedModifyEvent event) {
-		 * System.out.println("Ext Modify Text"); // TODO Auto-generated method
-		 * stub } });
+		 * System.out.println("Ext Modify Text"); // TODO Auto-generated method stub }
+		 * });
 		 */
 
 		styledText.addModifyListener(new ModifyListener() {
@@ -133,17 +133,15 @@ public class SourceEditor implements IDocument {
 			}
 		});
 		/*
-		 * FontData[] fD = styledText.getFont().getFontData();
-		 * fD[0].setHeight(12); styledText.setFont(new Font(parent.getDisplay(),
-		 * fD[0]));
+		 * FontData[] fD = styledText.getFont().getFontData(); fD[0].setHeight(12);
+		 * styledText.setFont(new Font(parent.getDisplay(), fD[0]));
 		 */
 		/*
-		 * styledText.getVerticalBar().addListener(SWT.Selection, new Listener()
-		 * { int lastIndex = styledText.getTopIndex();
+		 * styledText.getVerticalBar().addListener(SWT.Selection, new Listener() { int
+		 * lastIndex = styledText.getTopIndex();
 		 * 
-		 * public void handleEvent(Event e) { int index =
-		 * styledText.getTopIndex(); if (index != lastIndex) { lastIndex =
-		 * index; styledText.redraw(); } } });
+		 * public void handleEvent(Event e) { int index = styledText.getTopIndex(); if
+		 * (index != lastIndex) { lastIndex = index; styledText.redraw(); } } });
 		 */
 	}
 
@@ -214,9 +212,9 @@ public class SourceEditor implements IDocument {
 	}
 
 	/*
-	 * private Bounds getWordBounds(String text, int caretOffset) { int
-	 * startOffset = caretOffset; int endOffset = caretOffset; int start = 0;
-	 * int end = 0; Bounds bounds = new Bounds(); char c;
+	 * private Bounds getWordBounds(String text, int caretOffset) { int startOffset
+	 * = caretOffset; int endOffset = caretOffset; int start = 0; int end = 0;
+	 * Bounds bounds = new Bounds(); char c;
 	 * 
 	 * boolean whiteSpace = false; while (startOffset > 0) {
 	 * 
@@ -224,8 +222,8 @@ public class SourceEditor implements IDocument {
 	 * Character.isWhitespace(text.charAt(startOffset)))) { if (whiteSpace) {
 	 * startOffset += 1; } break; } startOffset--; } start = startOffset;
 	 * 
-	 * whiteSpace = false; while (endOffset < text.length()) { if (endOffset > 0
-	 * && (whiteSpace = Character.isWhitespace(text.charAt(endOffset)))) { if
+	 * whiteSpace = false; while (endOffset < text.length()) { if (endOffset > 0 &&
+	 * (whiteSpace = Character.isWhitespace(text.charAt(endOffset)))) { if
 	 * (whiteSpace) { endOffset -= 1; } break; } endOffset++; } end = endOffset;
 	 * 
 	 * bounds.setStart(start); bounds.setEnd(end); return bounds; }
