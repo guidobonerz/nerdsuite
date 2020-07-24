@@ -28,7 +28,7 @@ import de.drazil.nerdsuite.model.CpuInstruction;
 import de.drazil.nerdsuite.util.C64Font;
 import de.drazil.nerdsuite.util.IFont;
 
-public class SourceEditor implements IDocument {
+public class SourceEditorView implements IDocument {
 
 	enum WordBounds {
 		Begin, End
@@ -38,7 +38,7 @@ public class SourceEditor implements IDocument {
 	private DocumentStyler documentStyler;
 
 	@Inject
-	public SourceEditor() {
+	public SourceEditorView() {
 
 		documentStyler = new DocumentStyler(this);
 		documentStyler.addRule(new MultiLineRule("/*", "*/", new Token(Constants.T_COMMENT)));

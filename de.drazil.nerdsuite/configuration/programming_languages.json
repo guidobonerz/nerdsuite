@@ -7,9 +7,9 @@
 	},
 	{
 		"id": "C64_ASSEMBLER",
-		"name": "Assembler",
+		"name": "6510 Assembler",
 		"version": 0,
-		"assemblers": [
+		"builder": [
 			{
 				"id": "KICKASS",
 				"name": "KickAssembler"
@@ -57,7 +57,12 @@
 	},
 	{
 		"id": "C128_ASSEMBLER",
-		"name": "Assembler",
+		"name": "8502 Assembler",
+		"version": 0
+	},
+	{
+		"id": "C128_ASSEMBLER",
+		"name": "Z80A Assembler",
 		"version": 0
 	},
 	{
@@ -67,7 +72,7 @@
 	},
 	{
 		"id": "VC20_ASSEMBLER",
-		"name": "Assembler",
+		"name": "6502 Assembler",
 		"version": 0
 	},
 	{
@@ -77,12 +82,12 @@
 	},
 	{
 		"id": "ATARI800XL_ASSEMBLER",
-		"name": "Assembler",
+		"name": "6502 Assembler",
 		"version": 0
 	},
 	{
 		"id": "ATARI2600_ASSEMBLER",
-		"name": "Assembler",
+		"name": "6502 Assembler",
 		"version": 0
 	},
 	{
@@ -92,7 +97,7 @@
 	},
 	{
 		"id": "CPC6128_ASSEMBLER",
-		"name": "Assembler",
+		"name": "Z80 Assembler",
 		"version": 0
 	}
 ]

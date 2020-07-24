@@ -16,5 +16,5 @@ public class ProgrammingLanguage {
 	@JsonInclude(Include.NON_ABSENT)
 	private boolean supportsExampleFile = false;
 	@JsonInclude(Include.NON_ABSENT)
-	private List<SimpleEntity> assemblers;
+	private List<SimpleEntity> builder;
 }

@@ -208,7 +208,7 @@
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
     <children xmi:id="_bnniINc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.bindingcontext.GfxEditor" name="GfxEditor"/>
   </rootContext>
-  <descriptors xmi:id="_8oaA4NUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.partdescriptor.GfxEditorView" bindingContexts="_bnniINc5EemIEoLjroS7Zw" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView">
+  <descriptors xmi:id="_8oaA4NUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.partdescriptor.GfxEditorView" label="GfxEditorView" bindingContexts="_bnniINc5EemIEoLjroS7Zw" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView">
     <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.Layer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.LayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
     <handlers xmi:id="_IGtBcBbBEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.Tile" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.TileHandler" command="_C9g6EBbBEemiVvU0vymBxA"/>
     <handlers xmi:id="_CFlWEBbNEemiVvU0vymBxA" elementId="de.drazil.nerdsuite.handler.GridType" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.GridTypeHandler" command="_9D16gBbMEemiVvU0vymBxA"/>
@@ -380,7 +380,7 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="_i2x00CQXEequStA2CiJh7Q" elementId="de.drazil.nerdsuite.handledtoolitem.SVG" label="SVG" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/application_go.png" command="_pIj78CQXEequStA2CiJh7Q"/>
     </toolbar>
   </descriptors>
-  <descriptors xmi:id="_IpuxIKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.partdescriptor.Ultimate64AppStreamView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64AppStreamView">
+  <descriptors xmi:id="_IpuxIKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.partdescriptor.Ultimate64AppStreamView" label="Ultimate64AppStreamView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64AppStreamView">
     <handlers xmi:id="_0m2IMLypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_StartStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StartStreamHandler" command="_VlskULypEeqwJ_Ky4YAlCA"/>
     <handlers xmi:id="_7d4RcLypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_StopStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StopStreamHandler" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
     <handlers xmi:id="_AUfbELyqEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_Reset" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
@@ -399,6 +399,27 @@
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_JLRoUL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.toolbarseparator.6"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_JuUD8L3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.screenshot" label="Screenshot" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/camera.png" tooltip="Screenshot" command="_csf2sL5QEeq0ivRYGfAMrg"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_KLtKkL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.video" label="Video" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/film_go.png" command="_lhIVEL5QEeq0ivRYGfAMrg"/>
+    </toolbar>
+  </descriptors>
+  <descriptors xmi:id="_NSoYkM3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.partdescriptor.SourceEditorView" label="CodeEditorView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView">
+    <handlers xmi:id="_NSoYkc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handler.U64_StartStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StartStreamHandler" command="_VlskULypEeqwJ_Ky4YAlCA"/>
+    <handlers xmi:id="_NSoYks3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handler.U64_StopStream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StopStreamHandler" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
+    <handlers xmi:id="_NSoYk83ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handler.U64_Reset" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
+    <handlers xmi:id="_NSoYlM3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handler.virtualkeyboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.VirtualKeyboardHandler" command="_WRFnML4IEeqDiPHXuf8Njw"/>
+    <handlers xmi:id="_NSoYlc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handler.streamvideo" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StreamVideoHandler" command="_lhIVEL5QEeq0ivRYGfAMrg"/>
+    <handlers xmi:id="_NSoYls3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handler.screenshot" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ScreenshotHandler" command="_csf2sL5QEeq0ivRYGfAMrg"/>
+    <menus xmi:id="_NSoYl83ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.menu.streamcontrol" label="StreamControl">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_NSoYmM3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handledmenuitem.ratio" label="Keep AspectRatio" type="Check"/>
+    </menus>
+    <toolbar xmi:id="_NSoYmc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.toolbar.2">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_NSoYms3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handledtoolitem.start" label="Start" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" tooltip="Start Stream" command="_VlskULypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_NSoYm83ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handledtoolitem.stop" label="Stop" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" tooltip="Stop Stream" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_NSoYnM3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handledtoolitem.reset" label="Reset" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/lightning.png" tooltip="Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_NSoYnc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.toolbarseparator.7"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_NSoYns3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handledtoolitem.keyboard" label="Keyboard" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/keyboard.png" tooltip="Toggle Keyboard" command="_WRFnML4IEeqDiPHXuf8Njw"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_NSoYn83ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.toolbarseparator.6"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_NSoYoM3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handledtoolitem.screenshot" label="Screenshot" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/camera.png" tooltip="Screenshot" command="_csf2sL5QEeq0ivRYGfAMrg"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_NSoYoc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handledtoolitem.video" label="Video" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/film_go.png" command="_lhIVEL5QEeq0ivRYGfAMrg"/>
     </toolbar>
   </descriptors>
   <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
