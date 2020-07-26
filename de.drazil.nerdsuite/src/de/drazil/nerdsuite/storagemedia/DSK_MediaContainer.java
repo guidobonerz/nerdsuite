@@ -152,6 +152,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 		List<Integer> contentOffsetList = null;
 		while (hasMoreEntries) {
 			MediaEntry entry = null;
+			int userLevel = content[currentDirectoryEntryOffset] & 0xff;
 			String fileName = getString(currentDirectoryEntryOffset + 0x01, currentDirectoryEntryOffset + 0x8, false);
 			String fileType = getString(currentDirectoryEntryOffset + 0x09, currentDirectoryEntryOffset + 0xb, false);
 			int extent = content[currentDirectoryEntryOffset + 0x0c] & 0xff;
@@ -226,7 +227,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 		System.out.println(entry.getFullName());
 		int totalSize = 0;
 		boolean finished = false;
-		boolean isBinaryFile = false;
+		boolean isBinary = false;
 		boolean checkedHeader = false;
 
 		for (int i = 0; i < blockList.size(); i++) {
@@ -245,7 +246,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 				int offset = trackOffset + sectorOffset;
 
 				if (!checkedHeader) {
-					if (isBinaryFile = hasHeader(content, offset, i)) {
+					if (isBinary = hasHeader(content, offset) && i == 0) {
 						totalSize = getWord(offset + 0x18) + 0x80;
 						System.out.printf("Name  : %s\n", getString(offset + 0x01, offset + 0x08, true));
 						System.out.printf("Type  : %s\n", getString(offset + 0x09, offset + 0x0b, true));
@@ -253,9 +254,13 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 						System.out.printf("Length: %04x\n", getWord(offset + 0x18));
 						System.out.printf("Length: %04x\n", getWord(offset + 0x40));
 					}
+					if (!isBinary) {
+						isBinary = !isAscii(content, offset, 0x80);
+						totalSize = entry.getSize();
+					}
 					checkedHeader = true;
 				}
-				if (isBinaryFile) {
+				if (isBinary) {
 					if (totalSize <= size) {
 						size = totalSize;
 						finished = true;
@@ -302,16 +307,28 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 		return content[directoryOffset + 0x0c];
 	}
 
-	private boolean hasHeader(byte[] content, int offset, int blockIndex) {
+	private boolean hasHeader(byte[] content, int offset) {
 		int checkSum = 0;
 		int headerSum = 0;
-		if (blockIndex == 0) {
-			checkSum = NumericConverter.getWordAsInt(content, offset + 0x43);
-			for (int i = offset; i < offset + 0x42; i++) {
-				headerSum += NumericConverter.getByteAsInt(content, i);
+
+		checkSum = NumericConverter.getWordAsInt(content, offset + 0x43);
+		for (int i = offset; i < offset + 0x42; i++) {
+			headerSum += NumericConverter.getByteAsInt(content, i);
+		}
+
+		return checkSum == headerSum;
+	}
+
+	private boolean isAscii(byte[] content, int offset, int length) {
+		boolean isAscii = true;
+
+		for (int i = offset; i < offset + length; i++) {
+			if (!Character.isAlphabetic(content[i])) {
+				isAscii = false;
+				break;
 			}
 		}
-		return checkSum == headerSum;
+		return isAscii;
 	}
 
 	private DiskFormat getDiskFormat(String diskInfo) {

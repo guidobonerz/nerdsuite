@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
@@ -18,6 +19,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -34,6 +37,7 @@ import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.SimpleEntity;
 import de.drazil.nerdsuite.model.TargetPlatform;
 import de.drazil.nerdsuite.validator.IValidatable;
+import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.ProjectTypeFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,7 +63,7 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage {
 	private Text symbolPathText;
 	private ComboViewer targetPlatformCombo;
 	private ComboViewer languageTypeCombo;
-	private ComboViewer assemblerCombo;
+	private ComboViewer builderCombo;
 	private Button createExampleButton;
 	private SimpleEntity projectType;
 	private List<TargetPlatform> targetPlatformList;
@@ -87,11 +91,6 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage {
 
 		FormData formData;
 
-		List<TargetPlatform> targetPlatformList = getTargetPlatFormList();
-		// getModel().setTargetPlatform(targetPlatformList.get(0).getId());
-		List<ProgrammingLanguage> programmingLanguageList = getProgrammingLanguageList(targetPlatformList.get(0));
-		// getModel().setProjectType(programmingLanguageList.get(0).getId());
-
 		projectNameLabel = new Label(container, SWT.NONE);
 		projectNameLabel.setText("Project Name");
 		targetPlatformLabel = new Label(container, SWT.NONE);
@@ -102,11 +101,26 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage {
 		assemblerLabel.setText("Assembler/Compiler");
 		assemblerLabel.setEnabled(enableAssembler);
 
+		List<TargetPlatform> targetPlatformList = PlatformFactory.getTargetPlatFormList();
+		userData.put(ProjectWizard.TARGET_PLATFORM, targetPlatformList.get(0).getId());
+		List<ProgrammingLanguage> programmingLanguageList = getProgrammingLanguageList(targetPlatformList.get(0));
+		userData.put(ProjectWizard.PROJECT_TYPE, programmingLanguageList.get(0).getId());
+		List<SimpleEntity> builderList = programmingLanguageList.get(0).getBuilder();
+		if (null != builderList) {
+			userData.put(ProjectWizard.PROJECT_VARIANT, builderList.get(0).getId());
+		}
+
 		createExampleButton = new Button(container, SWT.CHECK);
 		createExampleButton.setText("Create example file");
 		createExampleButton.setEnabled(programmingLanguageList.get(0).isSupportsExampleFile());
 
 		projectNameText = new Text(container, SWT.BORDER);
+		projectNameText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				setText(projectNameText.getText());
+			}
+		});
 		targetPlatformCombo = new ComboViewer(container, SWT.NONE);
 		targetPlatformCombo.setContentProvider(ArrayContentProvider.getInstance());
 		targetPlatformCombo.setInput(targetPlatformList);
@@ -163,30 +177,31 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage {
 			}
 		});
 
-		assemblerCombo = new ComboViewer(container, SWT.NONE);
-		assemblerCombo.getCombo().setEnabled(enableAssembler);
-		assemblerCombo.setContentProvider(ArrayContentProvider.getInstance());
+		builderCombo = new ComboViewer(container, SWT.NONE);
+		builderCombo.getCombo().setEnabled(enableAssembler);
+		builderCombo.setContentProvider(ArrayContentProvider.getInstance());
 		// assemblerCombo.setInput(codingLanguage);
 		// assemblerCombo.setSelection(new StructuredSelection(codingLanguage.get(0)));
-		assemblerCombo.setLabelProvider(new LabelProvider() {
+		builderCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof SimpleEntity) {
 					SimpleEntity current = (SimpleEntity) element;
-
 					return current.getName();
 				}
 				return super.getText(element);
 			}
 		});
-		/*
-		 * assemblerCombo.addSelectionChangedListener(new ISelectionChangedListener() {
-		 * 
-		 * @Override public void selectionChanged(SelectionChangedEvent event) {
-		 * StructuredSelection selection = (StructuredSelection) event.getSelection();
-		 * SimpleEntity subType = (SimpleEntity) selection.getFirstElement();
-		 * getModel().setProjectType(subType.getId()); } });
-		 */
+
+		builderCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				StructuredSelection selection = (StructuredSelection) event.getSelection();
+				SimpleEntity subType = (SimpleEntity) selection.getFirstElement();
+				userData.put(ProjectWizard.PROJECT_VARIANT, subType.getId());
+			}
+		});
 
 		separatorLabel = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
 
@@ -250,11 +265,11 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage {
 		formData.top = new FormAttachment(assemblerLabel, 0, SWT.TOP);
 		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
-		assemblerCombo.getControl().setLayoutData(formData);
+		builderCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(assemblerCombo.getControl(), 10, SWT.BOTTOM);
-		formData.left = new FormAttachment(assemblerCombo.getControl(), 0, SWT.LEFT);
+		formData.top = new FormAttachment(builderCombo.getControl(), 10, SWT.BOTTOM);
+		formData.left = new FormAttachment(builderCombo.getControl(), 0, SWT.LEFT);
 		createExampleButton.setLayoutData(formData);
 
 		formData = new FormData();
@@ -429,11 +444,22 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage {
 		return programmingLanguageList;
 	}
 
+	private void setText(String fileName) {
+		userData.put(ProjectWizard.PROJECT_ID, projectNameText.getText().toUpperCase());
+		userData.put(ProjectWizard.PROJECT_NAME, projectNameText.getText());
+		setPageComplete(!projectNameText.getText().isEmpty());
+	}
+
 	@Override
-	public boolean isPageComplete() {
-		userData.put("PROJECT_ID", projectNameText.getText().toUpperCase());
-		userData.put("PROJECT_NAME", projectNameText.getText());
-		return true;
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if (visible) {
+			String fileName = FilenameUtils.getBaseName((String) userData.get(ProjectWizard.FILE_NAME));
+			if (fileName != null && !fileName.equals("")) {
+				projectNameText.setText(fileName);
+				setText(fileName);
+			}
+		}
 	}
 
 }

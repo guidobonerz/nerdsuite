@@ -57,33 +57,39 @@ public class NewProjectHandler {
 
 			String projectId = (String) userData.get(ProjectWizard.PROJECT_ID);
 			String projectName = (String) userData.get(ProjectWizard.PROJECT_NAME);
-
+			String targetPlatform = (String) userData.get(ProjectWizard.TARGET_PLATFORM);
+			String type = (String) userData.get(ProjectWizard.PROJECT_TYPE);
+			String subType = type.substring(type.indexOf('_') + 1);
+			String variant = (String) userData.get(ProjectWizard.PROJECT_VARIANT);
 			Project project = new Project();
 			project.setId(projectId);
 			project.setName(projectName);
 
+			ProjectMetaData metadata = new ProjectMetaData();
+			metadata.setPlatform(targetPlatform);
+			metadata.setType(subType);
+			metadata.setVariant(variant);
+
+			String owner = String.format("%s_%s_%s", type, variant, projectId);
+
+			Map<String, Object> projectSetup = new HashMap<String, Object>();
+			projectSetup.put("project", project);
+			projectSetup.put("fileName", (String) userData.get(ProjectWizard.FILE_NAME));
+			LocalDateTime ldt = LocalDateTime.now();
+			Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+			project.setCreatedOn(d);
+			project.setChangedOn(d);
+
+			ProjectType projectType = ProjectType.getProjectTypeById(subType);
+			project.setIconName(projectType.getIconName());
+			project.setSuffix(projectType.getSuffix());
+
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
-
-				String type = (String) userData.get(ProjectWizard.PROJECT_TYPE);
-				String type2 = type.substring(type.indexOf('_') + 1);
-
-				ProjectMetaData metadata = new ProjectMetaData();
-				metadata.setPlatform((String) userData.get(ProjectWizard.TARGET_PLATFORM));
-				metadata.setType(type2);
-				metadata.setVariant((String) userData.get(ProjectWizard.PROJECT_VARIANT));
 
 				GraphicFormat gf = GraphicFormatFactory.getFormatById(type);
 				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(type, metadata.getVariant());
 				project.setSingleFileProject(true);
 				project.setOpen(true);
-				LocalDateTime ldt = LocalDateTime.now();
-				Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
-				project.setCreatedOn(d);
-				project.setChangedOn(d);
-
-				ProjectType projectType = ProjectType.getProjectTypeById(type2);
-				project.setIconName(projectType.getIconName());
-				project.setSuffix(projectType.getSuffix());
 
 				metadata.setWidth(gf.getWidth());
 				metadata.setHeight(gf.getHeight());
@@ -91,13 +97,6 @@ public class NewProjectHandler {
 				metadata.setColumns(gfv.getTileColumns());
 				metadata.setStorageEntity(gf.getStorageEntity());
 
-				String owner = (String) userData.get(ProjectWizard.PROJECT_TYPE) + "_"
-						+ (String) userData.get(ProjectWizard.PROJECT_VARIANT) + "_"
-						+ (String) userData.get(ProjectWizard.PROJECT_ID);
-
-				Map<String, Object> projectSetup = new HashMap<String, Object>();
-				projectSetup.put("project", project);
-				projectSetup.put("fileName", (String) userData.get(ProjectWizard.FILE_NAME));
 				projectSetup.put("importFormat", (String) userData.get(ProjectWizard.IMPORT_FORMAT));
 				projectSetup.put("bytesToSkip", (Integer) userData.get(ProjectWizard.BYTES_TO_SKIP));
 				String projectAction = projectSetup.get("fileName") == null ? "newProjectAction"
@@ -134,6 +133,14 @@ public class NewProjectHandler {
 
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
 						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+						project.getName(), projectSetup);
+
+				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
+						part, true);
+			} else if (projectTypeId.equals("CODING_PROJECT")) {
+
+				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView", owner,
 						project.getName(), projectSetup);
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
