@@ -98,10 +98,10 @@ public class GfxEditorView implements ITileUpdateListener {
 	private Project project;
 	private String owner;
 	@Inject
-	MPart part;
+	private MPart part;
 
 	@Inject
-	EModelService modelService;
+	private EModelService modelService;
 
 	public GfxEditorView() {
 

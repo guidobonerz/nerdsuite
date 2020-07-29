@@ -1,10 +1,16 @@
 package de.drazil.nerdsuite.sourceeditor;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
+import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.LineBackgroundEvent;
 import org.eclipse.swt.custom.LineBackgroundListener;
@@ -25,6 +31,7 @@ import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.model.AssemblerDirective;
 import de.drazil.nerdsuite.model.CpuInstruction;
+import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.util.C64Font;
 import de.drazil.nerdsuite.util.IFont;
 
@@ -36,8 +43,10 @@ public class SourceEditorView implements IDocument {
 
 	private StyledText styledText = null;
 	private DocumentStyler documentStyler;
-
+	private Project project;
 	@Inject
+	private MPart part;
+
 	public SourceEditorView() {
 
 		documentStyler = new DocumentStyler(this);
@@ -67,8 +76,11 @@ public class SourceEditorView implements IDocument {
 	/**
 	 * Create contents of the view part.
 	 */
+	@SuppressWarnings("unchecked")
 	@PostConstruct
-	public void createControls(Composite parent) {
+	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
+
+		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
