@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class PlatformPointer
 {
 	private int address;
-	private Type type;
+	private DataType type;
 	private ReferenceType referenceType;
 
 	public boolean matches(int value)

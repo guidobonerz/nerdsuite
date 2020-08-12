@@ -10,7 +10,7 @@ import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.Type;
+import de.drazil.nerdsuite.model.DataType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
 
@@ -70,11 +70,11 @@ public abstract class AbstractCPU implements ICPU {
 
 	@Override
 	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value len) {
-		return splitInstructionLine(instructionLine, basePc, len, Type.Unspecified, ReferenceType.NoReference);
+		return splitInstructionLine(instructionLine, basePc, len, DataType.Unspecified, ReferenceType.NoReference);
 	}
 
 	@Override
-	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, Type type,
+	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, DataType dataType,
 			ReferenceType referenceType) {
 		Range range = instructionLine.getRange();
 		int oldLen = range.getLen();
@@ -87,7 +87,7 @@ public abstract class AbstractCPU implements ICPU {
 
 		InstructionLine newInstructionLine = new InstructionLine(basePc.add(range.getOffset() + newLen),
 				new Range(range.getOffset() + newLen, oldLen - newLen));
-		newInstructionLine.setType(type);
+		newInstructionLine.setDataType(dataType);
 		newInstructionLine.setReferenceType(referenceType);
 		instructionLineList.add(instructionLineList.indexOf(instructionLine) + 1, newInstructionLine);
 		return newInstructionLine;
@@ -189,8 +189,8 @@ public abstract class AbstractCPU implements ICPU {
 	public InstructionLine getInstructionLineByRef(int reference) {
 		InstructionLine il = null;
 		for (InstructionLine il1 : instructionLineList) {
-			if (il1.hasValue()) {
-				if (il1.getRefValue().getValue() == reference) {
+			if (il1.hasReferenceValue()) {
+				if (il1.getReferenceValue().getValue() == reference) {
 					il = il1;
 					break;
 				}

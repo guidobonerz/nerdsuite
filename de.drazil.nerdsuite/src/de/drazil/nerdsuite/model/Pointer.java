@@ -9,7 +9,7 @@ public class Pointer {
 	private String constName;
 	private String description;
 	private Value address;
-	private Type type;
+	private DataType type;
 	private ReferenceType referenceType;
 
 	public Pointer(String address, String constName, String description) {
@@ -18,7 +18,7 @@ public class Pointer {
 		this.description = description;
 	}
 
-	public Pointer(Value address, Type type, ReferenceType referenceType) {
+	public Pointer(Value address, DataType type, ReferenceType referenceType) {
 		this.address = address;
 		this.type = type;
 		this.referenceType = referenceType;

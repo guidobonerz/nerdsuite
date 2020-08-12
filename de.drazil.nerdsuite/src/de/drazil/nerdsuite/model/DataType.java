@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.model;
 
-public enum Type
+public enum DataType
 {
 	BasicInstruction, Unspecified, AsmInstruction, Data
 }

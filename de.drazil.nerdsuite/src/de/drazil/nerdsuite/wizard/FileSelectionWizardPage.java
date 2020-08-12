@@ -46,9 +46,9 @@ public class FileSelectionWizardPage extends AbstractBoundWizardPage {
 				FileDialog openDialog = new FileDialog(container.getShell(), SWT.OPEN);
 				openDialog.setFilterNames(new String[] { "Nerdsuite files", "DSK Image (CPC/Spectrum)",
 						"ATR Image (Atari)", "D64 Image (Commodore)", "D71 Image (Commodore)", "D81 Image (Commodore)",
-						"All files" });
+						"Cart Image", "All files" });
 				openDialog.setFilterExtensions(
-						new String[] { "*.ns_*", "*.dsk", "*.atr", "*.d64", "*.d71", "*.d81", "*.*" }); // Windows
+						new String[] { "*.ns_*", "*.dsk", "*.atr", "*.d64", "*.d71", "*.d81", "*.crt", "*.*" }); // Windows
 				String fileName = openDialog.open();
 				setText(fileName);
 			}

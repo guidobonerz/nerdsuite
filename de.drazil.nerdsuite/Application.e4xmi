@@ -13,7 +13,7 @@
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_V2RKUOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.imageViewer" label="Graphic Editor"/>
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="Code Editor"/>
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_Zx9K4M6PEem6S-8Nx2mqeA" elementId="de.drazil.nerdsuite.handledmenuitem.emulator" label="Emulator"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_bzdeoM9KEemWzpmgM2RcRA" elementId="de.drazil.nerdsuite.handledmenuitem.disassembler" label="Disassembler" mnemonics=""/>
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_bzdeoM9KEemWzpmgM2RcRA" elementId="de.drazil.nerdsuite.handledmenuitem.disassembler" label="Disassembler" mnemonics="" command="_nKHygNHgEeqQR4qhoQvaeg"/>
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_yzAHcJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.diskimageviewer" label="Disk Image Viewer"/>
                     <children xsi:type="menu:HandledMenuItem" xmi:id="_b9ro4LvfEeqNbb2NSJYhoA" elementId="de.drazil.nerdsuite.handledmenuitem.u64" label="Ultimate64" command="_kNzE8LvfEeqNbb2NSJYhoA"/>
                   </children>
@@ -38,6 +38,12 @@
           </children>
         </children>
       </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_ar-CcNslEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.CodeEditor" label="Coding Perspective"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_AZgl0NsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.SpriteEditor" label="SpriteEditor Perspective"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_IRrb8NsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.CharEditor" label="CharEditor Perspective"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_XmEzENsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.TileEditor" label="TileEditor Perspective"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_cJYmMNsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.TileMapEditor" label="TileMapEditor Perspective"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_NRXpENsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.Disassembler" label="Disassembler Perspective"/>
     </children>
     <handlers xmi:id="_0DEZgCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.handler.2" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MountFileHandler" command="_tHUIUCHZEeqei6yq5Fa4mw"/>
     <mainMenu xmi:id="_1r1OEKLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.0">
@@ -130,6 +136,7 @@
   <handlers xmi:id="_2yl0sJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.handler.debugstream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.stream.U64DebugStream" command="_uYBcIJ21EeqplavjYfDYxA"/>
   <handlers xmi:id="_lu6AUKdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handler.vicstream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Ultimate64AppStreamHandler" command="_ggW30KdwEeqid_Z8sm-clA"/>
   <handlers xmi:id="_HpVJcLvgEeqNbb2NSJYhoA" elementId="de.drazil.nerdsuite.handler.3" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RunOnU64Handler" command="_kNzE8LvfEeqNbb2NSJYhoA"/>
+  <handlers xmi:id="_uj9t4NHgEeqQR4qhoQvaeg" elementId="de.drazil.nerdsuite.handler.Disassembler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.DisassemblerHandler" command="_nKHygNHgEeqQR4qhoQvaeg"/>
   <bindingTables xmi:id="_SoW6YNc0Eem8ZM0LwkCd1Q" elementId="de.drazil.nerdsuite.bindingtable.0" bindingContext="_bnniINc5EemIEoLjroS7Zw">
     <bindings xmi:id="_Xko04Nc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.0" keySequence="M1+ARROW_UP" command="_og63INWJEemb1pFqqqXNXQ">
       <tags>type:user</tags>
@@ -503,6 +510,7 @@
   <commands xmi:id="_WRFnML4IEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.command.virtualkeyboard" commandName="Virtualkeyboard"/>
   <commands xmi:id="_csf2sL5QEeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.command.screenshot" commandName="Screenshot"/>
   <commands xmi:id="_lhIVEL5QEeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.command.streamvideo" commandName="StreamVideo"/>
+  <commands xmi:id="_nKHygNHgEeqQR4qhoQvaeg" elementId="de.drazil.nerdsuite.command.Disassembler" commandName="Disassembler"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
