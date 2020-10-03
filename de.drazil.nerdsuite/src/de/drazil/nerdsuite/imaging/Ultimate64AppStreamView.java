@@ -1,11 +1,11 @@
 package de.drazil.nerdsuite.imaging;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -18,11 +18,7 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
-import org.eclipse.e4.ui.services.EMenuService;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
@@ -35,18 +31,10 @@ import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
 import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
-import io.humble.video.Codec;
-import io.humble.video.Encoder;
-import io.humble.video.MediaPacket;
-import io.humble.video.MediaPicture;
-import io.humble.video.Muxer;
-import io.humble.video.MuxerFormat;
-import io.humble.video.PixelFormat;
-import io.humble.video.Rational;
-import io.humble.video.awt.MediaPictureConverter;
-import io.humble.video.awt.MediaPictureConverterFactory;
+import de.drazil.nerdsuite.widget.PlatformFactory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,9 +48,18 @@ public class Ultimate64AppStreamView {
 	private VideoStreamReceiver videoStreamReceiver;
 	private AudioStreamReceiver audioStreamReceiver;
 	private boolean running = false;
+	private IPlatform platform;
+	private RGB[] palette;
 
 	public Ultimate64AppStreamView() {
 
+		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
+		palette = new RGB[colorList.size()];
+		for (int i = 0; i < palette.length; i++) {
+			// palette[i] =
+			// platform.getPlatFormData().getColorPalette().get(i).getColor().getRGB();
+			palette[i] = colorList.get(i).getColor().getRGB();
+		}
 	}
 
 	public class VideoStreamReceiver implements Runnable {
@@ -208,76 +205,61 @@ public class Ultimate64AppStreamView {
 	@Optional
 	public void streamVideo(@UIEventTopic("StreamVideo") BrokerObject brokerObject) {
 		System.out.println("Stream Video");
-	/*
-		int snapsPerSecond = 10;
-		int duration = 100;
-		String formatName = "";
-		String fileName = "";
-		String codecName = "";
-		final Rational framerate = Rational.make(1, snapsPerSecond);
-
-		final Muxer muxer = Muxer.make(fileName, null, formatName);
-
-		final MuxerFormat format = muxer.getFormat();
-		final Codec codec;
-		if (codecName != null) {
-			codec = Codec.findEncodingCodecByName(codecName);
-		} else {
-			codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId());
-		}
-
-		Encoder encoder = Encoder.make(codec);
-
-		encoder.setWidth(320);
-		encoder.setHeight(200);
-
-		final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
-		encoder.setPixelFormat(pixelformat);
-		encoder.setTimeBase(framerate);
-
-		if (format.getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
-			encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
-
-		encoder.open(null, null);
-
-		muxer.addNewStream(encoder);
-
-		muxer.open(null, null);
-
-		MediaPictureConverter converter = null;
-		final MediaPicture picture = MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
-		picture.setTimeBase(framerate);
-
-		final MediaPacket packet = MediaPacket.make();
-		for (int i = 0; i < duration / framerate.getDouble(); i++) {
-			
-			
-			
-			
-			final BufferedImage screen = convertToType(robot.createScreenCapture(screenbounds),
-					BufferedImage.TYPE_3BYTE_BGR);
-
-			if (converter == null)
-				converter = MediaPictureConverterFactory.createConverter(screen, picture);
-			converter.toPicture(picture, screen, i);
-
-			do {
-				encoder.encode(packet, picture);
-				if (packet.isComplete())
-					muxer.write(packet, false);
-			} while (packet.isComplete());
-
-			Thread.sleep((long) (1000 * framerate.getDouble()));
-		}
-
-		do {
-			encoder.encode(packet, null);
-			if (packet.isComplete())
-				muxer.write(packet, false);
-		} while (packet.isComplete());
-
-		muxer.close();
-		*/
+		/*
+		 * int snapsPerSecond = 10; int duration = 100; String formatName = ""; String
+		 * fileName = ""; String codecName = ""; final Rational framerate =
+		 * Rational.make(1, snapsPerSecond);
+		 * 
+		 * final Muxer muxer = Muxer.make(fileName, null, formatName);
+		 * 
+		 * final MuxerFormat format = muxer.getFormat(); final Codec codec; if
+		 * (codecName != null) { codec = Codec.findEncodingCodecByName(codecName); }
+		 * else { codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId()); }
+		 * 
+		 * Encoder encoder = Encoder.make(codec);
+		 * 
+		 * encoder.setWidth(320); encoder.setHeight(200);
+		 * 
+		 * final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
+		 * encoder.setPixelFormat(pixelformat); encoder.setTimeBase(framerate);
+		 * 
+		 * if (format.getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
+		 * encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
+		 * 
+		 * encoder.open(null, null);
+		 * 
+		 * muxer.addNewStream(encoder);
+		 * 
+		 * muxer.open(null, null);
+		 * 
+		 * MediaPictureConverter converter = null; final MediaPicture picture =
+		 * MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
+		 * picture.setTimeBase(framerate);
+		 * 
+		 * final MediaPacket packet = MediaPacket.make(); for (int i = 0; i < duration /
+		 * framerate.getDouble(); i++) {
+		 * 
+		 * 
+		 * 
+		 * 
+		 * final BufferedImage screen =
+		 * convertToType(robot.createScreenCapture(screenbounds),
+		 * BufferedImage.TYPE_3BYTE_BGR);
+		 * 
+		 * if (converter == null) converter =
+		 * MediaPictureConverterFactory.createConverter(screen, picture);
+		 * converter.toPicture(picture, screen, i);
+		 * 
+		 * do { encoder.encode(packet, picture); if (packet.isComplete())
+		 * muxer.write(packet, false); } while (packet.isComplete());
+		 * 
+		 * Thread.sleep((long) (1000 * framerate.getDouble())); }
+		 * 
+		 * do { encoder.encode(packet, null); if (packet.isComplete())
+		 * muxer.write(packet, false); } while (packet.isComplete());
+		 * 
+		 * muxer.close();
+		 */
 	}
 
 	@Inject
@@ -316,26 +298,21 @@ public class Ultimate64AppStreamView {
 	}
 
 	@PreDestroy
-	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService, MPart part) {
-		if (part.isDirty()) {
-
-		}
+	public void preDestroy(MPart part) {
+		stopStream();
+		closeSocket();
 	}
 
 	@PostConstruct
-	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
-		this.parent = parent;
+	public void postConstruct(Composite parent) {
 
-		IPlatform platform = new C64Platform(new KickAssemblerDialect(), false);
-		RGB[] palette = new RGB[platform.getPlatFormData().getColorPalette().size()];
-		for (int i = 0; i < palette.length; i++) {
-			palette[i] = platform.getPlatFormData().getColorPalette().get(i).getColor().getRGB();
-		}
+		this.parent = parent;
 
 		parent.setLayout(new GridLayout());
 		imageViewer = createImageViewer(parent, new PaletteData(palette));
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
+
 	}
 
 	public ImageViewWidget createImageViewer(Composite parent, PaletteData pd) {

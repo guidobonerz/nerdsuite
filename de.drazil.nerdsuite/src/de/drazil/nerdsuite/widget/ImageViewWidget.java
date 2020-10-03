@@ -95,11 +95,13 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 	}
 
 	public void drawImage(boolean showDummy) {
-		scaledWidth = getClientArea().width;
-		scaledHeight = getClientArea().height;
-		this.showDummy = showDummy;
-		redraw(0, 0, scaledWidth, scaledHeight, false);
-		update();
+		if (!isDisposed()) {
+			scaledWidth = getClientArea().width;
+			scaledHeight = getClientArea().height;
+			this.showDummy = showDummy;
+			redraw(0, 0, scaledWidth, scaledHeight, false);
+			update();
+		}
 
 	}
 
