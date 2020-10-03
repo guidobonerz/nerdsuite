@@ -429,7 +429,6 @@ public class Ultimate64AppStreamView {
 	private void closeSocket() {
 		try {
 			if (tcpSocket != null && tcpSocket.isConnected()) {
-				// tcpSocket.getOutputStream().write(Mes);
 				tcpSocket.close();
 				tcpSocket = null;
 			}
