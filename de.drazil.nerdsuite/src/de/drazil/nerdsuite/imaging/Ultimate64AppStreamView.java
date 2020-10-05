@@ -27,9 +27,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
-import de.drazil.nerdsuite.disassembler.platform.C64Platform;
-import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.util.NumericConverter;
@@ -40,7 +37,6 @@ import lombok.Setter;
 
 public class Ultimate64AppStreamView {
 
-	private Composite parent;
 	private ImageViewWidget imageViewer;
 	private Socket tcpSocket = null;
 	private Thread videoThread;
@@ -48,18 +44,9 @@ public class Ultimate64AppStreamView {
 	private VideoStreamReceiver videoStreamReceiver;
 	private AudioStreamReceiver audioStreamReceiver;
 	private boolean running = false;
-	private IPlatform platform;
-	private RGB[] palette;
 
 	public Ultimate64AppStreamView() {
 
-		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
-		palette = new RGB[colorList.size()];
-		for (int i = 0; i < palette.length; i++) {
-			// palette[i] =
-			// platform.getPlatFormData().getColorPalette().get(i).getColor().getRGB();
-			palette[i] = colorList.get(i).getColor().getRGB();
-		}
 	}
 
 	public class VideoStreamReceiver implements Runnable {
@@ -77,6 +64,7 @@ public class Ultimate64AppStreamView {
 			try {
 				socket = new DatagramSocket(11000);
 				// socket.setSoTimeout(1000);
+				int count = 0;
 				while (socket != null && running) {
 					DatagramPacket packet = new DatagramPacket(dataBuffer, dataBuffer.length);
 					socket.receive(packet);
@@ -98,8 +86,10 @@ public class Ultimate64AppStreamView {
 					}
 
 					if ((line & 0x8000) == 0x8000) {
+
 						// System.out.printf("frame: %04x\n", frame);
-						if (offset == data.length) {
+
+						if (offset == data.length && count==67) {
 							imageViewer.addImageData(data);
 							Display.getDefault().syncExec(new Runnable() {
 								@Override
@@ -108,14 +98,17 @@ public class Ultimate64AppStreamView {
 								}
 							});
 						}
+						count = 0;
+
 						offset = 0;
+					} else {
+						count++;
 					}
 				}
 
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				System.out.println("video socket closed");
 				socket.close();
 				socket = null;
 			}
@@ -153,7 +146,6 @@ public class Ultimate64AppStreamView {
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-				System.out.println("audio socket closed");
 				socket.close();
 				socket = null;
 			}
@@ -168,6 +160,7 @@ public class Ultimate64AppStreamView {
 
 	private void startStream() {
 		if (!running) {
+
 			running = true;
 			startVicStream();
 			startSidStream();
@@ -190,6 +183,7 @@ public class Ultimate64AppStreamView {
 
 	private void stopStream() {
 		if (running) {
+
 			running = false;
 			videoStreamReceiver.setRunning(false);
 			audioStreamReceiver.setRunning(false);
@@ -305,13 +299,16 @@ public class Ultimate64AppStreamView {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
-
-		this.parent = parent;
-
+		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
+		RGB palette[] = new RGB[colorList.size()];
+		for (int i = 0; i < palette.length; i++) {
+			palette[i] = colorList.get(i).getColor().getRGB();
+		}
 		parent.setLayout(new GridLayout());
 		imageViewer = createImageViewer(parent, new PaletteData(palette));
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
+		startStream();
 
 	}
 
@@ -409,7 +406,7 @@ public class Ultimate64AppStreamView {
 			tcpSocket.getOutputStream()
 					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x00, (byte) 0x00 }));
 			tcpSocket.getOutputStream().write(data);
-			System.out.println("send keyboard sequence");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

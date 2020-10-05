@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class MediaFactory {
 
 	private static Map<String, IMediaContainer> mediaStore = new HashMap<>();
-	public static String FILE_PATTERN = ".*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR])";
+	public static String FILE_PATTERN = "(ftp:(.*))|(.*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR]))";
 	public static Pattern pattern = Pattern.compile(FILE_PATTERN);
 
 	public static boolean isMountable(File file) {
@@ -35,6 +35,8 @@ public class MediaFactory {
 					mediaProvider = new DSK_MediaContainer(file);
 				} else if (suffix.equalsIgnoreCase("atr")) {
 					mediaProvider = new ATR_MediaContainer(file);
+				} else if (file.getName().startsWith("ftp:")) {
+					mediaProvider = new FtpMediaContainer(file);
 				} else {
 
 				}
@@ -47,6 +49,7 @@ public class MediaFactory {
 				}
 			}
 		}
+
 		return mediaProvider;
 	}
 
