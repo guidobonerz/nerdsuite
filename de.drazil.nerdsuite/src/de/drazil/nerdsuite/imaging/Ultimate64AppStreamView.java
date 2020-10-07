@@ -71,8 +71,8 @@ public class Ultimate64AppStreamView {
 					InetAddress address = packet.getAddress();
 					int port = packet.getPort();
 					packet = new DatagramPacket(dataBuffer, dataBuffer.length, address, port);
-					// int seq = NumericConverter.getWordAsInt(buf, 0);
-					int frame = NumericConverter.getWordAsInt(dataBuffer, 2);
+					int seq = NumericConverter.getWordAsInt(dataBuffer, 0);
+					// int frame = NumericConverter.getWordAsInt(dataBuffer, 2);
 					int line = NumericConverter.getWordAsInt(dataBuffer, 4);
 					// int pixelPerLine = NumericConverter.getWordAsInt(buf, 6);
 					// int linesPerPacket = NumericConverter.getByteAsInt(buf, 8);
@@ -84,12 +84,11 @@ public class Ultimate64AppStreamView {
 						System.arraycopy(dataBuffer, 12, data, offset, dataBuffer.length - 12);
 						offset += (dataBuffer.length - 12);
 					}
-
+					// System.out.printf("line: %04x\n", line);
+					// System.out.printf("seq: %04d\n", seq);
 					if ((line & 0x8000) == 0x8000) {
 
-						// System.out.printf("frame: %04x\n", frame);
-
-						if (offset == data.length && count==67) {
+						if (offset == data.length && count == 67) {
 							imageViewer.addImageData(data);
 							Display.getDefault().syncExec(new Runnable() {
 								@Override

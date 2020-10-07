@@ -36,7 +36,7 @@ public class FtpMediaContainer implements IMediaContainer {
 	public byte[] read(File file) throws Exception {
 		try {
 			client = new FTPClient();
-			client.connect(file.getName().split(":")[1]);
+			client.connect(file.getName().split("@")[1]);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -74,7 +74,7 @@ public class FtpMediaContainer implements IMediaContainer {
 
 		try {
 			System.out.println(parent.getName());
-			FTPFile files[] = client.listDirectories(parent.getName());
+			FTPFile files[] = client.listFiles(parent.getName());
 
 			for (FTPFile file : files) {
 

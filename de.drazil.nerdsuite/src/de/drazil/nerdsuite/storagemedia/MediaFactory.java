@@ -9,21 +9,30 @@ import java.util.regex.Pattern;
 public class MediaFactory {
 
 	private static Map<String, IMediaContainer> mediaStore = new HashMap<>();
-	public static String FILE_PATTERN = "(ftp:(.*))|(.*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR]))";
-	public static Pattern pattern = Pattern.compile(FILE_PATTERN);
+	public static String SOURCE_PATTERN = "(file|ftp)@(.*)";
+	public static String FILE_PATTERN = "(.*\\.(([dD]64|71|81)|[dD][sS][kK]|[aA][tT][rR]))";
+	public static Pattern sourcePattern = Pattern.compile(SOURCE_PATTERN);
+	public static Pattern filePattern = Pattern.compile(FILE_PATTERN);
 
 	public static boolean isMountable(File file) {
-		return file.getName().matches(FILE_PATTERN);
+		return file.toString().matches(SOURCE_PATTERN);
 	}
 
-	public static IMediaContainer mount(File file) {
+	public static IMediaContainer mount(File sourceFile) {
 		IMediaContainer mediaProvider = null;
-		String fileName = file.getName();
+		String fileName = sourceFile.toString();
 
-		Matcher matcher = pattern.matcher(fileName);
-		if (matcher.find()) {
-			String suffix = matcher.group(1);
-			mediaProvider = mediaStore.get(suffix);
+		Matcher sourceMatcher = sourcePattern.matcher(fileName);
+		if (sourceMatcher.find()) {
+			String type = sourceMatcher.group(1);
+			String source = sourceMatcher.group(2);
+			Matcher fileMatcher = filePattern.matcher(source);
+			String suffix = "";
+			if (fileMatcher.find()) {
+				suffix = fileMatcher.group(2);
+			}
+			File file = new File(source);
+			mediaProvider = mediaStore.get(source);
 			if (mediaProvider == null) {
 				if (suffix.equalsIgnoreCase("d64")) {
 					mediaProvider = new D64_MediaContainer(file);
@@ -35,7 +44,7 @@ public class MediaFactory {
 					mediaProvider = new DSK_MediaContainer(file);
 				} else if (suffix.equalsIgnoreCase("atr")) {
 					mediaProvider = new ATR_MediaContainer(file);
-				} else if (file.getName().startsWith("ftp:")) {
+				} else if (type.equalsIgnoreCase("ftp")) {
 					mediaProvider = new FtpMediaContainer(file);
 				} else {
 
@@ -48,6 +57,7 @@ public class MediaFactory {
 					e.printStackTrace();
 				}
 			}
+
 		}
 
 		return mediaProvider;

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -27,16 +29,17 @@ public class PainterWidget extends BaseImagingWidget {
 	private int selectedPixelRangeX2 = 0;
 	private int selectedPixelRangeY2 = 0;
 	private Point startPos;
-	private Point startOrigin;
 	private int scrollDirection = 0;
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
 	private Image overlayImage;
+	private ScrolledComposite parent;
 
 	private boolean overlayChanged = false;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
+		this.parent = (ScrolledComposite) parent;
 	}
 
 	@Override
@@ -56,15 +59,10 @@ public class PainterWidget extends BaseImagingWidget {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Move) {
-			ScrolledComposite parent = (ScrolledComposite) getParent();
-			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
-			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
-			int xoff = (int) ((x - startPos.x) * hd);
-			int yoff = (int) ((y - startPos.y) * vd);
-			int xo = startOrigin.x + xoff;
-			int yo = startOrigin.y + yoff;
-			System.out.printf("%2d  %2d\n", xoff, yoff);
-			parent.setOrigin(xo, yo);
+			int xoff = x - startPos.x;
+			int yoff = y - startPos.y;
+			parent.setOrigin(parent.getHorizontalBar().getSelection() - xoff,
+					parent.getVerticalBar().getSelection() - yoff);
 		}
 	}
 
@@ -74,9 +72,7 @@ public class PainterWidget extends BaseImagingWidget {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Move) {
-			ScrolledComposite parent = (ScrolledComposite) getParent();
 			startPos = new Point(x, y);
-			startOrigin = parent.getOrigin();
 		}
 	}
 
@@ -356,16 +352,15 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int action) {
-		gc.drawImage(
-				tileRepositoryService.getImagePainterFactory().getImage(tile, x, y, action, conf, colorPaletteProvider,tileRepositoryService.getMetadata()),
-				0, 0);
+		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, x, y, action, conf,
+				colorPaletteProvider, tileRepositoryService.getMetadata()), 0, 0);
 	}
 
 	private void paintTile(GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int update) {
 		Tile tile = tileRepositoryService.getTile(index);
 		Image image = tileRepositoryService.getImagePainterFactory().getImage(tile, 0, 0, update, conf,
-				colorPaletteProvider,tileRepositoryService.getMetadata());
+				colorPaletteProvider, tileRepositoryService.getMetadata());
 		gc.drawImage(image, 0, 0);
 	}
 

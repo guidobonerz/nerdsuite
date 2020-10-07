@@ -218,7 +218,7 @@ public class Explorer implements IDoubleClickListener {
 					cell.setImage(ImageFactory.createImage("icons/folder.png"));
 				}
 
-				if (MediaFactory.pattern.matcher(file.getName()).find()) {
+				if (MediaFactory.filePattern.matcher(file.getName()).find()) {
 					cell.setImage(ImageFactory.createImage("icons/disk.png"));
 				}
 
