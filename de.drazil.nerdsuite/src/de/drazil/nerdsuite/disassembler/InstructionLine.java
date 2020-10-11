@@ -5,124 +5,53 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.Type;
+import de.drazil.nerdsuite.model.DataType;
 import de.drazil.nerdsuite.model.Value;
+import lombok.Data;
 
-public class InstructionLine
-{
+@Data
+public class InstructionLine {
 
 	private Value programCounter;
 	private Range range;
-	private Value refValue;
-	private Type type;
+	private Value referenceValue;
+	private DataType dataType;
 	private ReferenceType referenceType;
 	private boolean isPassed;
 	private boolean endOfCode;
+	private Object userObject;
+	private boolean isRenderable;
 	private List<Value> callerList = null;
 
-	public InstructionLine()
-	{
+	public InstructionLine() {
 	}
 
-	public InstructionLine(Value programCounter, Range range)
-	{
-		this(programCounter, range, Type.Unspecified, ReferenceType.NoReference);
+	public InstructionLine(Value programCounter, Range range) {
+		this(programCounter, range, DataType.Unspecified, ReferenceType.NoReference);
 	}
 
-	public InstructionLine(Value programCounter, Range range, Type type, ReferenceType referenceType)
-	{
+	public InstructionLine(Value programCounter, Range range, DataType dataType, ReferenceType referenceType) {
 		this.callerList = new ArrayList<Value>();
-		setProgramCounter(programCounter);
-		setRange(range);
-		setType(type);
-		setReferenceType(referenceType);
-		setPassed(false);
-		setEndOfCode(false);
+		this.programCounter = programCounter;
+		this.range = range;
+		this.dataType = dataType;
+		this.referenceType = referenceType;
+		this.isPassed = false;
+		this.endOfCode = false;
+		this.isRenderable = false;
 	}
 
-	public void addCaller(Value caller)
-	{
+	public void addCaller(Value caller) {
 		this.callerList.add(caller);
 	}
 
-	public boolean isEndOfCode()
-	{
-		return endOfCode;
-	}
-
-	public void setEndOfCode(boolean endOfCode)
-	{
-		this.endOfCode = endOfCode;
-	}
-
-	public Range getRange()
-	{
-		return range;
-	}
-
-	public void setRange(Range range)
-	{
-		this.range = range;
-	}
-
-	public Value getProgramCounter()
-	{
-		return programCounter;
-	}
-
-	public void setProgramCounter(Value programCounter)
-	{
-		this.programCounter = programCounter;
-	}
-
-	public Value getRefValue()
-	{
-		return refValue;
-	}
-
-	public void setRefValue(Value refValue)
-	{
-		this.refValue = refValue;
-	}
-
-	public boolean hasValue()
-	{
-		return refValue != null;
-	}
-
-	public Type getType()
-	{
-		return type;
-	}
-
-	public void setType(Type type)
-	{
-		this.type = type;
-	}
-
-	public ReferenceType getReferenceType()
-	{
-		return referenceType;
-	}
-
-	public void setReferenceType(ReferenceType referenceType)
-	{
-		this.referenceType = referenceType;
-	}
-
-	public boolean isPassed()
-	{
-		return isPassed;
-	}
-
-	public void setPassed(boolean isPassed)
-	{
-		this.isPassed = isPassed;
+	public boolean hasReferenceValue() {
+		return referenceValue != null;
 	}
 
 	@Override
-	public String toString()
-	{
-		return type + "| pc:" + getProgramCounter() + ", " + range + "  refValue:" + getRefValue() + "    " + getReferenceType();
+	public String toString() {
+		return dataType + "| pc:" + getProgramCounter() + ", " + range + "  refValue:" + getReferenceValue() + "    "
+				+ getReferenceType();
 	}
 }

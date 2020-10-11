@@ -12,7 +12,7 @@ import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Pointer;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.Type;
+import de.drazil.nerdsuite.model.DataType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
 
@@ -31,7 +31,7 @@ public class CPU_6510 extends AbstractCPU {
 	}
 
 	private void printDisassembly(InstructionLine instructionLine, byte byteArray[]) {
-		if (instructionLine.getType() == Type.AsmInstruction) {
+		if (instructionLine.getDataType() == DataType.AsmInstruction) {
 			Opcode opcode = getOpcodeByIndex(byteArray, instructionLine.getRange().getOffset());
 			Value value2 = getInstructionValue(byteArray, instructionLine.getRange());
 			int len = opcode.getAddressingMode().getLen();
@@ -60,7 +60,7 @@ public class CPU_6510 extends AbstractCPU {
 
 				int len = opcode.getAddressingMode().getLen();
 				value = getInstructionValue(byteArray, new Range(range.getOffset(), len));
-				currentLine.setType(Type.AsmInstruction);
+				currentLine.setDataType(DataType.AsmInstruction);
 
 				newLine = split(currentLine, pc, new Value(range.getOffset() + len));
 				printDisassembly(currentLine, byteArray);
@@ -93,7 +93,7 @@ public class CPU_6510 extends AbstractCPU {
 						if (jumpLine != null && !jumpLine.getProgramCounter().matches(value)) {
 							InstructionLine splitLine = split(jumpLine, pc, value.sub(pc));
 							splitLine.setReferenceType(ReferenceType.JumpMark);
-							splitLine.setType(Type.AsmInstruction);
+							splitLine.setDataType(DataType.AsmInstruction);
 						}
 					}
 
@@ -103,7 +103,7 @@ public class CPU_6510 extends AbstractCPU {
 					InstructionLine dataLine = getInstructionLineByPC(value);
 					if (dataLine != null && !dataLine.getProgramCounter().matches(value)) {
 						InstructionLine splitLine = split(dataLine, pc, value.sub(pc));
-						splitLine.setType(Type.Data);
+						splitLine.setDataType(DataType.Data);
 						splitLine.setReferenceType(ReferenceType.DataReference);
 						splitLine.setPassed(true);
 					}
@@ -111,10 +111,10 @@ public class CPU_6510 extends AbstractCPU {
 
 				// detectPointers(byteArray, pc, currentLine, platformData);
 			}
-			currentLine.setRefValue(value);
+			currentLine.setReferenceValue(value);
 			currentLine.setPassed(true);
 			currentLine = markEmptyBlockAsData(byteArray, pc, newLine);
-			if (currentLine.getType() != Type.Unspecified) {
+			if (currentLine.getDataType() != DataType.Unspecified) {
 				currentLine = getNextUnspecifiedLine(currentLine);
 			}
 		}
@@ -136,13 +136,13 @@ public class CPU_6510 extends AbstractCPU {
 			rowIndex = getInstructionLineList().indexOf(currentLine);
 
 			while (!foundLine) {
-				if ((specifiedLine = getInstructionLineList().get(rowIndex++)).getType() != Type.Unspecified) {
+				if ((specifiedLine = getInstructionLineList().get(rowIndex++)).getDataType() != DataType.Unspecified) {
 					foundLine = true;
 					break;
 				}
 			}
 			newLine = split(currentLine, pc, new Value(specifiedLine.getRange().getOffset()));
-			currentLine.setType(Type.Data);
+			currentLine.setDataType(DataType.Data);
 		}
 
 		return newLine;
@@ -150,7 +150,7 @@ public class CPU_6510 extends AbstractCPU {
 
 	private InstructionLine getNextUnspecifiedLine(InstructionLine currentLine) {
 		InstructionLine nextLine = currentLine;
-		if (currentLine != null && currentLine.getType() != Type.Unspecified) {
+		if (currentLine != null && currentLine.getDataType() != DataType.Unspecified) {
 			int nextIndex = getInstructionLineList().indexOf(currentLine) + 1;
 			if (nextIndex < getInstructionLineList().size()) {
 				nextLine = getNextUnspecifiedLine(getInstructionLineList().get(nextIndex));
@@ -216,17 +216,17 @@ public class CPU_6510 extends AbstractCPU {
 
 		InstructionLine lowAddressLine = getInstructionLineList().get(index);
 		InstructionLine highAddressLine = getInstructionLineList().get(index + 2);
-		InstructionLine lowTableLine = getInstructionLineByPC(lowAddressLine.getRefValue());
-		InstructionLine highTableLine = getInstructionLineByPC(highAddressLine.getRefValue());
+		InstructionLine lowTableLine = getInstructionLineByPC(lowAddressLine.getReferenceValue());
+		InstructionLine highTableLine = getInstructionLineByPC(highAddressLine.getReferenceValue());
 
-		String jumpTableId = lowAddressLine.getRefValue() + "|" + highAddressLine.getRefValue();
+		String jumpTableId = lowAddressLine.getReferenceValue() + "|" + highAddressLine.getReferenceValue();
 
 		Boolean tableChecked = pointerTableRemindMap.get(jumpTableId);
 
 		if (tableChecked == null) {
 			pointerTableRemindMap.put(jumpTableId, true);
-			int jumpTableSize = Math
-					.abs(lowAddressLine.getRefValue().getValue() - highAddressLine.getRefValue().getValue());
+			int jumpTableSize = Math.abs(
+					lowAddressLine.getReferenceValue().getValue() - highAddressLine.getReferenceValue().getValue());
 
 			for (int i = 0; i < jumpTableSize; i++) {
 				int lowByte = getByte(byteArray, lowTableLine.getRange().getOffset() + i);
@@ -237,12 +237,12 @@ public class CPU_6510 extends AbstractCPU {
 				// parseInstructions(byteArray, pc, jmpLine, platformData,
 				// Type.AsmInstruction, ReferenceType.JumpMark, inSubroutine);
 
-				lowTableLine.setRefValue(new Value(jumpMark, Value.LOWBYTE));
-				lowTableLine.setType(Type.Data);
+				lowTableLine.setReferenceValue(new Value(jumpMark, Value.LOWBYTE));
+				lowTableLine.setDataType(DataType.Data);
 				lowTableLine.setReferenceType(ReferenceType.DataReference);
 
-				highTableLine.setRefValue(new Value(jumpMark, Value.HIGHBYTE));
-				highTableLine.setType(Type.Data);
+				highTableLine.setReferenceValue(new Value(jumpMark, Value.HIGHBYTE));
+				highTableLine.setDataType(DataType.Data);
 				highTableLine.setReferenceType(ReferenceType.DataReference);
 			}
 		}
@@ -294,20 +294,20 @@ public class CPU_6510 extends AbstractCPU {
 										for (Pointer pointer : platformData.getPlatformPointerList()) {
 											if (pointer.matches(
 													new Value(Math.min(valueA.getValue(), valueB.getValue())))) {
-												pointer.setType(Type.AsmInstruction);
+												pointer.setType(DataType.AsmInstruction);
 												pointer.setReferenceType(ReferenceType.JumpMark);
 												resultPointer = pointer;
 												break;
 											}
 										}
 										if (resultPointer == null) {
-											resultPointer = new Pointer(reference, Type.Data,
+											resultPointer = new Pointer(reference, DataType.Data,
 													ReferenceType.DataReference);
 										}
-										pointerLine.setRefValue(resultPointer.getAddress());
+										pointerLine.setReferenceValue(resultPointer.getAddress());
 
-										pointerA.setRefValue(new Value(reference.getValue(), Value.LOWBYTE));
-										pointerB.setRefValue(new Value(reference.getValue(), Value.HIGHBYTE));
+										pointerA.setReferenceValue(new Value(reference.getValue(), Value.LOWBYTE));
+										pointerB.setReferenceValue(new Value(reference.getValue(), Value.HIGHBYTE));
 									}
 								}
 							}
@@ -342,7 +342,7 @@ public class CPU_6510 extends AbstractCPU {
 						break;
 					InstructionLine nextLine = getInstructionLineList().get(nextIndex);
 					if (nextLine.getReferenceType() == ReferenceType.DataReference
-							|| nextLine.getType() == Type.AsmInstruction)
+							|| nextLine.getDataType() == DataType.AsmInstruction)
 						break;
 					Range range = currentLine.getRange();
 					range.setLen(range.getLen() + nextLine.getRange().getLen());

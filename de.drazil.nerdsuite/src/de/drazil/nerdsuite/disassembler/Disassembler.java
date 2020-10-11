@@ -12,7 +12,7 @@ import de.drazil.nerdsuite.model.ConversionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.Type;
+import de.drazil.nerdsuite.model.DataType;
 import de.drazil.nerdsuite.util.NumericConverter;
 
 public class Disassembler {
@@ -67,11 +67,11 @@ public class Disassembler {
 		String s2 = "";
 		String s3 = " ";
 		String s0 = "";
-		if (opcode != null && instructionLine.getType() == Type.AsmInstruction) {
+		if (opcode != null && instructionLine.getDataType() == DataType.AsmInstruction) {
 			s1 = opcode.getMnemonic();
 			s2 = AbstractCPU.getMnemonicArgument(opcode, range, byteArray);
 			System.out.printf("%s: %3s %8s %30s len:%s %s\n", pc, s1, s2,
-					(instructionLine.hasValue() ? instructionLine.getRefValue() : ""),
+					(instructionLine.hasReferenceValue() ? instructionLine.getReferenceValue() : ""),
 					instructionLine.getRange().getLen(),
 					instructionLine.getReferenceType() == ReferenceType.JumpMark ? "JumpMark" : "");
 		} else {

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
 
-   <extension
-         id="product"
+   <extension id="product"
          point="org.eclipse.core.runtime.products">
       <product
             name="de.drazil.nerdsuite"
@@ -41,5 +40,6 @@
          </property>
       </product>
    </extension>
+   
 
 </plugin>
