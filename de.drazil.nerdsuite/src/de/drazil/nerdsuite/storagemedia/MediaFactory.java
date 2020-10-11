@@ -32,20 +32,20 @@ public class MediaFactory {
 				suffix = fileMatcher.group(2);
 			}
 			File file = new File(source);
-			mediaProvider = mediaStore.get(source);
+			mediaProvider = mediaStore.get(fileName);
 			if (mediaProvider == null) {
 				if (suffix.equalsIgnoreCase("d64")) {
-					mediaProvider = new D64_MediaContainer(file);
+					mediaProvider = new D64_MediaContainer(sourceFile);
 				} else if (suffix.equalsIgnoreCase("d71")) {
-					mediaProvider = new D71_MediaContainer(file);
+					mediaProvider = new D71_MediaContainer(sourceFile);
 				} else if (suffix.equalsIgnoreCase("d81")) {
-					mediaProvider = new D81_MediaContainer(file);
+					mediaProvider = new D81_MediaContainer(sourceFile);
 				} else if (suffix.equalsIgnoreCase("dsk")) {
-					mediaProvider = new DSK_MediaContainer(file);
+					mediaProvider = new DSK_MediaContainer(sourceFile);
 				} else if (suffix.equalsIgnoreCase("atr")) {
-					mediaProvider = new ATR_MediaContainer(file);
+					mediaProvider = new ATR_MediaContainer(sourceFile);
 				} else if (type.equalsIgnoreCase("ftp")) {
-					mediaProvider = new FtpMediaContainer(file);
+					mediaProvider = new FtpMediaContainer(sourceFile);
 				} else {
 
 				}

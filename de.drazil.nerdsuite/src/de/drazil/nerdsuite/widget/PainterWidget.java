@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -29,13 +27,10 @@ public class PainterWidget extends BaseImagingWidget {
 	private int selectedPixelRangeX2 = 0;
 	private int selectedPixelRangeY2 = 0;
 	private Point startPos;
-	private int scrollDirection = 0;
+
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
-	private Image overlayImage;
 	private ScrolledComposite parent;
-
-	private boolean overlayChanged = false;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
@@ -52,17 +47,21 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-		if (conf.cursorMode == CursorMode.Point) {
-			setPixel(tile, cursorX, cursorY, conf);
-			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
-		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
+		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
-		} else if (conf.cursorMode == CursorMode.Move) {
+		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point
+				&& (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			int xoff = x - startPos.x;
 			int yoff = y - startPos.y;
-			parent.setOrigin(parent.getHorizontalBar().getSelection() - xoff,
-					parent.getVerticalBar().getSelection() - yoff);
+			int xo = parent.getHorizontalBar().getSelection() - xoff;
+			int yo = parent.getVerticalBar().getSelection() - yoff;
+			parent.setOrigin(xo, yo);
+			tileRepositoryService.getSelectedTile().setOrigin(new Point(xo, yo));
+
+		} else if (conf.cursorMode == CursorMode.Point) {
+			setPixel(tile, cursorX, cursorY, conf);
+			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
 
@@ -71,7 +70,8 @@ public class PainterWidget extends BaseImagingWidget {
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
-		} else if (conf.cursorMode == CursorMode.Move) {
+		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point
+				&& (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			startPos = new Point(x, y);
 		}
 	}
@@ -304,6 +304,8 @@ public class PainterWidget extends BaseImagingWidget {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
 		doRedraw(redrawMode, action);
+		parent.setOrigin(tileRepositoryService.getSelectedTile().getOrigin());
+
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {

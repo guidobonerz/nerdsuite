@@ -140,7 +140,8 @@ public class Explorer implements IDoubleClickListener {
 
 		if (o instanceof Project) {
 			try {
-				byte[] data = BinaryFileHandler.readFile(new File(((Project) o).getMountLocation()), 0);
+				String fileName = ((Project) o).getMountLocation().split("@")[1];
+				byte[] data = BinaryFileHandler.readFile(new File(fileName), 0);
 				String owner = (String) part.getTransientData().get(Constants.OWNER);
 				broker.send("LoadAndRun", new BrokerObject("", data));
 			} catch (Exception e) {
@@ -358,9 +359,15 @@ public class Explorer implements IDoubleClickListener {
 				projectSetup.put("repository", repository);
 				projectSetup.put("file", file);
 
+				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
+				if (repository.getMetadata().getType().equals("SCREENSET")) {
+					editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ScreenEditorView";
+					File referenceFile = new File(
+							Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + "c64_upper.ns_chr");
+					TileRepositoryService.load(referenceFile, "reference");
+				}
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
-						project.getName(), projectSetup);
+						editorView, owner, project.getName(), projectSetup);
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
 						part, true);

@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.storagemedia;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,7 +37,7 @@ public class FtpMediaContainer implements IMediaContainer {
 	public byte[] read(File file) throws Exception {
 		try {
 			client = new FTPClient();
-			client.connect(file.getName().split("@")[1]);
+			client.connect(file.getName());
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -92,7 +93,7 @@ public class FtpMediaContainer implements IMediaContainer {
 
 	@Override
 	public byte[] readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
@@ -102,10 +103,17 @@ public class FtpMediaContainer implements IMediaContainer {
 
 	}
 
-	@Override
 	public byte[] exportEntry(MediaEntry entry) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		byte[] data = new byte[entry.getSize()];
+
+		try {
+			InputStream is = client.retrieveFileStream(entry.getName());
+			int bytesRead = is.read(data, 0, data.length);
+			is.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return data;
 	}
 
 	@Override
