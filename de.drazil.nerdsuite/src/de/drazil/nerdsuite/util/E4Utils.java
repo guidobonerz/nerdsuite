@@ -50,7 +50,9 @@ public class E4Utils {
 			String label, Map<String, Object> parameterMap) {
 		MPart part = partService.createPart(id);
 		part.setLabel(label);
-		part.setObject(parameterMap);
+		if (parameterMap != null) {
+			part.setObject(parameterMap);
+		}
 		part.setElementId(owner);
 		part.setContributionURI(contributionUrl);
 		return part;

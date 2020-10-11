@@ -84,6 +84,10 @@ public abstract class BaseImagingWidget extends BaseWidget
 		mc.addMeasuringListener(this);
 	}
 
+	protected int getCalculatedColumns() {
+		return ((getParent().getBounds().width - 30) / conf.getScaledTileWidth());
+	}
+
 	public void init(String owner, IColorPaletteProvider colorPaletteProvider) {
 		conf.setServiceOwner(owner);
 
@@ -95,7 +99,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				int c = (int) ((getParent().getBounds().width - 30) / conf.getScaledTileWidth());
+				int c = (int) getCalculatedColumns();
 				conf.setColumns(c == 0 ? 1 : c);
 				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
 						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
@@ -147,7 +151,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected void mouseEnterInternal(int modifierMask, int x, int y) {
 		mouseIn = true;
 		mouseEnter(modifierMask, x, y);
-		//setFocus();
+		// setFocus();
 	}
 
 	protected void mouseDragged(int modifierMask, int x, int y) {
@@ -244,7 +248,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 		int pixmul = conf.pixelConfig.pixmul;
 		conf.currentPixelWidth = conf.pixelSize * pixmul;
 		conf.currentWidth = conf.width / pixmul;
-		//doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
+		// doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 	}
 
 	@Override

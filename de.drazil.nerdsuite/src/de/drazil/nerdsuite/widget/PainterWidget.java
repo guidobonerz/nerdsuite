@@ -27,16 +27,14 @@ public class PainterWidget extends BaseImagingWidget {
 	private int selectedPixelRangeX2 = 0;
 	private int selectedPixelRangeY2 = 0;
 	private Point startPos;
-	private Point startOrigin;
-	private int scrollDirection = 0;
+
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
-	private Image overlayImage;
-
-	private boolean overlayChanged = false;
+	private ScrolledComposite parent;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
+		this.parent = (ScrolledComposite) parent;
 	}
 
 	@Override
@@ -49,22 +47,21 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-		if (conf.cursorMode == CursorMode.Point) {
-			setPixel(tile, cursorX, cursorY, conf);
-			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
-		} else if (conf.cursorMode == CursorMode.SelectRectangle) {
+		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
-		} else if (conf.cursorMode == CursorMode.Move) {
-			ScrolledComposite parent = (ScrolledComposite) getParent();
-			double hd = ((double) (getBounds().width - parent.getClientArea().width) / (double) getBounds().width);
-			double vd = ((double) (getBounds().height - parent.getClientArea().height) / (double) getBounds().height);
-			int xoff = (int) ((x - startPos.x) * hd);
-			int yoff = (int) ((y - startPos.y) * vd);
-			int xo = startOrigin.x + xoff;
-			int yo = startOrigin.y + yoff;
-			System.out.printf("%2d  %2d\n", xoff, yoff);
+		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point
+				&& (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
+			int xoff = x - startPos.x;
+			int yoff = y - startPos.y;
+			int xo = parent.getHorizontalBar().getSelection() - xoff;
+			int yo = parent.getVerticalBar().getSelection() - yoff;
 			parent.setOrigin(xo, yo);
+			tileRepositoryService.getSelectedTile().setOrigin(new Point(xo, yo));
+
+		} else if (conf.cursorMode == CursorMode.Point) {
+			setPixel(tile, cursorX, cursorY, conf);
+			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
 
@@ -73,10 +70,9 @@ public class PainterWidget extends BaseImagingWidget {
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
-		} else if (conf.cursorMode == CursorMode.Move) {
-			ScrolledComposite parent = (ScrolledComposite) getParent();
+		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point
+				&& (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			startPos = new Point(x, y);
-			startOrigin = parent.getOrigin();
 		}
 	}
 
@@ -308,6 +304,8 @@ public class PainterWidget extends BaseImagingWidget {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
 		doRedraw(redrawMode, action);
+		parent.setOrigin(tileRepositoryService.getSelectedTile().getOrigin());
+
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
@@ -356,16 +354,15 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int action) {
-		gc.drawImage(
-				tileRepositoryService.getImagePainterFactory().getImage(tile, x, y, action, conf, colorPaletteProvider,tileRepositoryService.getMetadata()),
-				0, 0);
+		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, x, y, action, conf,
+				colorPaletteProvider, tileRepositoryService.getMetadata()), 0, 0);
 	}
 
 	private void paintTile(GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int update) {
 		Tile tile = tileRepositoryService.getTile(index);
 		Image image = tileRepositoryService.getImagePainterFactory().getImage(tile, 0, 0, update, conf,
-				colorPaletteProvider,tileRepositoryService.getMetadata());
+				colorPaletteProvider, tileRepositoryService.getMetadata());
 		gc.drawImage(image, 0, 0);
 	}
 

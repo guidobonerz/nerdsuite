@@ -3,6 +3,8 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Point;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,13 +34,19 @@ public class Tile {
 	private List<Layer> layerList = null;
 	@JsonProperty(value = "layerIndexOrder")
 	private List<Integer> layerIndexOrderList = null;
+	@JsonIgnore
 	@Setter
 	@Getter
 	private boolean isEmpty = true;
+	@JsonIgnore
+	@Getter
+	@Setter
+	private Point origin;
 
 	public Tile() {
 		createTileListenerList();
 		createLayerList();
+		origin = new Point(0, 0);
 	}
 
 	public Tile(int size) {

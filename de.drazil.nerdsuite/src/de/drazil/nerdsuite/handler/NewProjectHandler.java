@@ -131,9 +131,12 @@ public class NewProjectHandler {
 
 				// File file = createProjectStructure(project, projectType.getSuffix());
 
+				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
+				if (metadata.getType().equals("SCREENSET")) {
+					editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ScreenEditorView";
+				}
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
-						project.getName(), projectSetup);
+						editorView, owner, project.getName(), projectSetup);
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
 						part, true);
