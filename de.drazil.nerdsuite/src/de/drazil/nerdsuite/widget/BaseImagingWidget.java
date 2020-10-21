@@ -88,7 +88,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 		return ((getParent().getBounds().width - 30) / conf.getScaledTileWidth());
 	}
 
-	public void init(String owner, IColorPaletteProvider colorPaletteProvider) {
+	public void init(String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
 		conf.setServiceOwner(owner);
 
 		this.colorPaletteProvider = colorPaletteProvider;
@@ -99,11 +99,15 @@ public abstract class BaseImagingWidget extends BaseWidget
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				int c = (int) getCalculatedColumns();
-				conf.setColumns(c == 0 ? 1 : c);
-				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
-						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
-				doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+
+				if (autowrap) {
+					int c = (int) getCalculatedColumns();
+					conf.setColumns(c == 0 ? 1 : c);
+					conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
+							+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
+					doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+				}
+
 			}
 		});
 	}

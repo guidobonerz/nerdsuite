@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -76,9 +77,11 @@ public class GfxEditorView implements ITileUpdateListener {
 	private Composite parent;
 	private PainterWidget painter;
 	private RepositoryWidget repository;
+	private RepositoryWidget referenceRepository;
 
 	private ScrolledComposite scrollablePainter;
 	private ScrolledComposite scrollableRepository;
+	private ScrolledComposite scrollableReferenceRepository;
 	private ScrolledComposite scrollableLayerChooser;
 
 	private TileRepositoryService tileRepositoryService;
@@ -97,6 +100,8 @@ public class GfxEditorView implements ITileUpdateListener {
 	private File file;
 	private Project project;
 	private String owner;
+	private String referenceOwner;
+	boolean hasReference = false;
 	@Inject
 	private MPart part;
 
@@ -325,10 +330,15 @@ public class GfxEditorView implements ITileUpdateListener {
 	@PostConstruct
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 		this.parent = parent;
-		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
-		file = (File) ((Map<String, Object>) part.getObject()).get("file");
-		tileRepositoryService = (TileRepositoryService) ((Map<String, Object>) part.getObject()).get("repository");
-		owner = tileRepositoryService.getOwner();
+
+		Map<String, Object> pm = (Map<String, Object>) part.getObject();
+		project = (Project) pm.get("project");
+		owner = (String) pm.get("repository");
+		referenceOwner = (String) pm.get("referenceRepository");
+		hasReference = (null != referenceOwner);
+		file = (File) pm.get("file");
+		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
+
 		metadata = tileRepositoryService.getMetadata();
 		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
 		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
@@ -344,7 +354,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		part.setTooltip(graphicFormat.getName() + " " + graphicFormatVariant.getName());
 		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
 
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(hasReference ? 3 : 2, false);
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
@@ -358,30 +368,42 @@ public class GfxEditorView implements ITileUpdateListener {
 		}
 
 		GridData gridData = null;
-		gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
 		gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
 		gridData.verticalSpan = 2;
+		gridData.verticalAlignment = GridData.BEGINNING;
 		scrollablePainter.setLayoutData(gridData);
 
 		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
 				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
-
-		layerChooser = createLayerChooser();
-
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		multiColorChooser.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.FILL_BOTH);
+		if (hasReference) {
+			gridData = new GridData(GridData.FILL);
+			referenceRepository = createReferenceRepositoryWidget();
+			referenceRepository.setLayoutData(gridData);
+		}
+
+		layerChooser = createLayerChooser();
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+
 		scrollableLayerChooser.setLayoutData(gridData);
 
 		repository = createRepositoryWidget();
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = 2;
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.verticalAlignment = SWT.BEGINNING;
+		gridData.horizontalSpan = hasReference ? 3 : 2;
+
 		scrollableRepository.setLayoutData(gridData);
 
-		painter.init(owner, colorPaletteProvider);
-		repository.init(owner, colorPaletteProvider);
+		painter.init(owner, colorPaletteProvider, false);
+		repository.init(owner, colorPaletteProvider, true);
+
+		if (hasReference) {
+			referenceRepository.init(referenceOwner, colorPaletteProvider, false);
+		}
 
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
@@ -414,6 +436,8 @@ public class GfxEditorView implements ITileUpdateListener {
 				painter.setCursorMode(CursorMode.Point);
 				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
+				referenceRepository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
+
 				parent.layout();
 			}
 		});
@@ -423,7 +447,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollableLayerChooser = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
 			@Override
 			public Point computeSize(int wHint, int hHint, boolean changed) {
-				return new Point(180, 500);
+				return new Point(180, 300);
 			}
 		};
 
@@ -475,6 +499,28 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollableRepository.setExpandHorizontal(true);
 		scrollableRepository.setMinSize(actualSize);
 		return repository;
+	}
+
+	private RepositoryWidget createReferenceRepositoryWidget() {
+
+		referenceRepository = new RepositoryWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+		referenceRepository.getConf().setPixelSize(2);
+		referenceRepository.getConf().setWidth(8);
+		referenceRepository.getConf().setHeight(8);
+		referenceRepository.getConf().setTileRows(1);
+		referenceRepository.getConf().setTileColumns(1);
+		referenceRepository.getConf().setRows(16);
+		referenceRepository.getConf().setColumns(16);
+		referenceRepository.getConf().setWidgetName("Reference:");
+		referenceRepository.getConf().setPixelGridEnabled(false);
+		referenceRepository.getConf().setTileGridEnabled(true);
+		referenceRepository.getConf().setTileSubGridEnabled(false);
+		referenceRepository.getConf().setTileCursorEnabled(true);
+		referenceRepository.getConf().setSeparatorEnabled(false);
+		referenceRepository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE);
+		referenceRepository.getConf().setScaleMode(ScaleMode.None);
+
+		return referenceRepository;
 	}
 
 	@Override

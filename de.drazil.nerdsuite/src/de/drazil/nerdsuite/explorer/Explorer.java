@@ -356,18 +356,19 @@ public class Explorer implements IDoubleClickListener {
 				File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR
 						+ project.getId().toLowerCase() + "." + project.getSuffix());
 				TileRepositoryService repository = TileRepositoryService.load(file, owner);
-				projectSetup.put("repository", repository);
+				projectSetup.put("repository", owner);
 				projectSetup.put("file", file);
 
-				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
 				if (repository.getMetadata().getType().equals("SCREENSET")) {
-					editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ScreenEditorView";
 					File referenceFile = new File(
 							Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + "c64_upper.ns_chr");
-					TileRepositoryService.load(referenceFile, "reference");
+					String referenceOwner = "C64_UPPER";
+					projectSetup.put("referenceRepository", referenceOwner);
+					TileRepositoryService.load(referenceFile, referenceOwner);
 				}
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						editorView, owner, project.getName(), projectSetup);
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+						project.getName(), projectSetup);
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
 						part, true);
