@@ -27,7 +27,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -64,6 +63,7 @@ import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
+import de.drazil.nerdsuite.widget.ColorPaletteChooser;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.LayerChooser;
@@ -81,7 +81,6 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private ScrolledComposite scrollablePainter;
 	private ScrolledComposite scrollableRepository;
-	private ScrolledComposite scrollableReferenceRepository;
 	private ScrolledComposite scrollableLayerChooser;
 
 	private TileRepositoryService tileRepositoryService;
@@ -90,6 +89,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	private IConfirmable modificationConfirmation;
 
 	private ColorChooser multiColorChooser;
+	private ColorPaletteChooser colorPaletteChooser;
 	private LayerChooser layerChooser;
 
 	private ProjectMetaData metadata = null;
@@ -375,13 +375,21 @@ public class GfxEditorView implements ITileUpdateListener {
 		gridData.verticalAlignment = GridData.BEGINNING;
 		scrollablePainter.setLayoutData(gridData);
 
-		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
-				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		multiColorChooser.setLayoutData(gridData);
-
+		if (graphicFormat.getId().endsWith("SCREENSET")) {
+			colorPaletteChooser = new ColorPaletteChooser(parent, SWT.DOUBLE_BUFFERED,
+					PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
+			gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+			colorPaletteChooser.setLayoutData(gridData);
+		} else {
+			multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
+					PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
+			gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+			multiColorChooser.setLayoutData(gridData);
+		}
 		if (hasReference) {
 			gridData = new GridData(GridData.FILL);
+			gridData.verticalSpan = 2;
+			gridData.verticalAlignment = GridData.BEGINNING;
 			referenceRepository = createReferenceRepositoryWidget();
 			referenceRepository.setLayoutData(gridData);
 		}
@@ -424,9 +432,12 @@ public class GfxEditorView implements ITileUpdateListener {
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 
-		multiColorChooser.addColorSelectionListener(painter);
-		multiColorChooser.addColorSelectionListener(repository);
+		if (graphicFormat.getId().endsWith("SCREENSET")) {
 
+		} else {
+			multiColorChooser.addColorSelectionListener(painter);
+			multiColorChooser.addColorSelectionListener(repository);
+		}
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -436,8 +447,9 @@ public class GfxEditorView implements ITileUpdateListener {
 				painter.setCursorMode(CursorMode.Point);
 				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
-				referenceRepository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
-
+				if (hasReference) {
+					referenceRepository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
+				}
 				parent.layout();
 			}
 		});
@@ -535,7 +547,9 @@ public class GfxEditorView implements ITileUpdateListener {
 			tags1.add("MultiColorButton");
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolor());
-			multiColorChooser.setMonochrom(!tile.isMulticolor());
+			if (multiColorChooser != null) {
+				multiColorChooser.setMonochrom(!tile.isMulticolor());
+			}
 		}
 	}
 
