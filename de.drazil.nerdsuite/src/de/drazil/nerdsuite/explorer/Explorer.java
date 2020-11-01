@@ -361,7 +361,7 @@ public class Explorer implements IDoubleClickListener {
 
 				if (repository.getMetadata().getType().equals("SCREENSET")) {
 					File referenceFile = new File(
-							Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + "c64_upper.ns_chr");
+							Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + repository.getReference());
 					String referenceOwner = "C64_UPPER";
 					projectSetup.put("referenceRepository", referenceOwner);
 					TileRepositoryService.load(referenceFile, referenceOwner);

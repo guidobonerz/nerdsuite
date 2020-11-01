@@ -69,6 +69,7 @@ import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.LayerChooser;
 import de.drazil.nerdsuite.widget.PainterWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
+import de.drazil.nerdsuite.widget.ReferenceWidget;
 import de.drazil.nerdsuite.widget.RepositoryWidget;
 import de.drazil.nerdsuite.widget.Tile;
 
@@ -77,13 +78,14 @@ public class GfxEditorView implements ITileUpdateListener {
 	private Composite parent;
 	private PainterWidget painter;
 	private RepositoryWidget repository;
-	private RepositoryWidget referenceRepository;
+	private ReferenceWidget referenceRepository;
 
 	private ScrolledComposite scrollablePainter;
 	private ScrolledComposite scrollableRepository;
 	private ScrolledComposite scrollableLayerChooser;
 
 	private TileRepositoryService tileRepositoryService;
+	private TileRepositoryService tileRepositoryReferenceService;
 
 	private IColorPaletteProvider colorPaletteProvider;
 	private IConfirmable modificationConfirmation;
@@ -338,6 +340,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		hasReference = (null != referenceOwner);
 		file = (File) pm.get("file");
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
+		tileRepositoryReferenceService = ServiceFactory.getService(referenceOwner, TileRepositoryService.class);
 
 		metadata = tileRepositoryService.getMetadata();
 		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
@@ -415,6 +418,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
+		tileRepositoryReferenceService.addTileSelectionListener(painter);
 
 		if (graphicFormat.getId().endsWith("CHARSET")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
@@ -513,9 +517,9 @@ public class GfxEditorView implements ITileUpdateListener {
 		return repository;
 	}
 
-	private RepositoryWidget createReferenceRepositoryWidget() {
+	private ReferenceWidget createReferenceRepositoryWidget() {
 
-		referenceRepository = new RepositoryWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+		referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		referenceRepository.getConf().setPixelSize(2);
 		referenceRepository.getConf().setWidth(8);
 		referenceRepository.getConf().setHeight(8);

@@ -18,7 +18,7 @@ public class GraphicFormatFactory {
 
 	public static GraphicFormat getFormatById(String id) {
 
-		return getFormatList().stream().filter(gf -> gf.getId().equals(id)).findFirst().orElse(null);
+		return  getFormatList().stream().filter(gf -> gf.getId().equals(id)).findFirst().orElse(null);
 	}
 
 	public static List<GraphicFormat> getFormatByPrefix(String name) {

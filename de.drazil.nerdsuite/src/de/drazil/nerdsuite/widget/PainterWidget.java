@@ -38,6 +38,11 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	@Override
+	protected int getTileGap() {
+		return 0;
+	}
+
+	@Override
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);

@@ -43,6 +43,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected int selectedTileIndexY = 0;
 	protected int selectedTileIndex = 0;
 
+	protected int tileGap = 0;
 	protected int oldCursorX = -1;
 	protected int oldCursorY = -1;
 	protected int cursorX = 0;
@@ -82,7 +83,10 @@ public abstract class BaseImagingWidget extends BaseWidget
 		conf = new ImagingWidgetConfiguration();
 		mc = new MeasuringController();
 		mc.addMeasuringListener(this);
+		tileGap = getTileGap();
 	}
+
+	protected abstract int getTileGap();
 
 	protected int getCalculatedColumns() {
 		return ((getParent().getBounds().width - 30) / conf.getScaledTileWidth());
@@ -204,8 +208,9 @@ public abstract class BaseImagingWidget extends BaseWidget
 		} else {
 			cursorChanged = false;
 		}
-		tileX = x / conf.getScaledTileWidth();
-		tileY = y / conf.getScaledTileHeight();
+		tileX = x / (conf.getScaledTileWidth() + tileGap);
+		tileY = y / (conf.getScaledTileHeight() + tileGap);
+
 		if (oldTileX != tileX || oldTileY != tileY) {
 			oldTileX = tileX;
 			oldTileY = tileY;

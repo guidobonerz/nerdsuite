@@ -28,6 +28,9 @@ public class TileRepositoryService implements IService {
 	@Setter
 	@Getter
 	private String owner = null;
+	@Getter
+	@Setter
+	private String reference = null;
 	@JsonProperty(value = "tiles")
 	private List<Tile> tileList = null;
 	@JsonProperty(value = "tileIndexOrder")
@@ -206,20 +209,20 @@ public class TileRepositoryService implements IService {
 		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
 	}
 
-	private void fireTileRedraw(List<Integer> selectedTileIndexList, int admin, boolean temporary) {
+	private void fireTileRedraw(List<Integer> selectedTileIndexList, int action, boolean temporary) {
 		if (selectedTileIndexList != null) {
 			if (selectedTileIndexList.size() == 1) {
 				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
-						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, admin));
+						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, action));
 			} else {
 				tileUpdateListener.forEach(
-						listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, admin));
+						listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, action));
 			}
 		}
 	}
 
-	public void redrawTileViewer(List<Integer> selectedTileIndexList, int admin, boolean temporary) {
-		fireTileRedraw(selectedTileIndexList, admin, temporary);
+	public void redrawTileViewer(List<Integer> selectedTileIndexList, int action, boolean temporary) {
+		fireTileRedraw(selectedTileIndexList, action, temporary);
 	}
 
 	public static TileRepositoryService load(File fileName, String owner) {
