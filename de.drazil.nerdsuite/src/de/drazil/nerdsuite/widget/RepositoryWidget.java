@@ -266,7 +266,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
+		tileRepositoryService.setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	@Override

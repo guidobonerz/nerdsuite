@@ -123,7 +123,7 @@ public class NewProjectHandler {
 						int maxItems = (int) userData.get(ProjectWizard.PROJECT_MAX_ITEMS);
 						repository.setInitialSize(maxItems);
 					}
-					TileRepositoryService.save(file, repository, project);
+					repository.save(file, project);
 					Initializer.getConfiguration().updateWorkspace(project, file, true, false);
 				} else {
 					throw new IllegalArgumentException("No such project action.");

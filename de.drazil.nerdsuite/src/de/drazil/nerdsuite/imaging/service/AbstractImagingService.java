@@ -74,7 +74,7 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		selectedTileIndexList = service.getSelectedTileIndexList();
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
 			selectedTileIndexList.forEach(i -> {
-				each(action, service.getTile(i), imagingWidgetConfiguration, null);
+				each(action, i, service.getTile(i), service, imagingWidgetConfiguration, null);
 			});
 			service.redrawTileViewer(selectedTileIndexList, ImagePainterFactory.UPDATE, false);
 		}
@@ -125,7 +125,7 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 	 */
 	// }
 
-	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 
 	}
 

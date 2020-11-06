@@ -13,10 +13,9 @@ public class ShiftService extends AbstractImagingService {
 	public final static int RIGHT = 4;
 
 	@Override
-	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 
-		int[] content = tile.getActiveLayer().getContent();
-
+		int[] content = repositoryService.getActiveLayer().getContent();
 		Rectangle r = service.getSelection();
 
 		if (action == UP) {

@@ -12,8 +12,8 @@ public class FlipService extends AbstractImagingService {
 	public final static int VERTICAL = 2;
 
 	@Override
-	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
-		int[] content = tile.getActiveLayer().getContent();
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
+		int[] content = repositoryService.getActiveLayer().getContent();
 		Rectangle r = service.getSelection();
 		if (action == HORIZONTAL) {
 			for (int y = r.y; y < r.y + r.height; y++) {

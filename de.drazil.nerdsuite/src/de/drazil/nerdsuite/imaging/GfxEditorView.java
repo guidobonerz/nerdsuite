@@ -122,7 +122,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			@Override
 			public Color getColorByIndex(int index) {
 				return PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform())
-						.get(tileRepositoryService.getSelectedTile().getActiveLayer().getColorIndex(index)).getColor();
+						.get(tileRepositoryService.getColorIndex(index)).getColor();
 			}
 		};
 
@@ -166,7 +166,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	@Inject
 	@Optional
-	public void manageRotake(@UIEventTopic("Rotate") BrokerObject brokerObject) {
+	public void manageRotate(@UIEventTopic("Rotate") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			RotationService service = ServiceFactory.getService(owner, RotationService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
@@ -227,7 +227,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			MulticolorService service = ServiceFactory.getService(owner, MulticolorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(multicolor ? 1 : 0, modificationConfirmation);
-			tileRepositoryService.getSelectedTile().setMulticolorEnabled(multicolor);
+			tileRepositoryService.setMulticolorEnabled(multicolor);
 			multiColorChooser.setMonochrom(!multicolor);
 			part.setDirty(true);
 		}
@@ -293,9 +293,9 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageLayer(@UIEventTopic("Layer") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
-				tileRepositoryService.getSelectedTile().addLayer();
+				tileRepositoryService.addLayer();
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
-				tileRepositoryService.getSelectedTile().removeActiveLayer();
+				tileRepositoryService.removeActiveLayer();
 			} else {
 
 			}
@@ -343,6 +343,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		tileRepositoryReferenceService = ServiceFactory.getService(referenceOwner, TileRepositoryService.class);
 
 		metadata = tileRepositoryService.getMetadata();
+		metadata.setReferenceRepositoryId(referenceOwner);
 		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
 		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
 		graphicFormatVariant = GraphicFormatFactory.getFormatVariantById(graphicFormatId, metadata.getVariant());
@@ -418,7 +419,6 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
-		tileRepositoryReferenceService.addTileSelectionListener(painter);
 
 		if (graphicFormat.getId().endsWith("CHARSET")) {
 			repository.getConf().setScaleMode(ScaleMode.D8);
@@ -563,7 +563,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		LocalDateTime ldt = LocalDateTime.now();
 		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 		project.setChangedOn(d);
-		TileRepositoryService.save(file, tileRepositoryService, project);
+		tileRepositoryService.save(file, project);
 		part.setDirty(false);
 	}
 

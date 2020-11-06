@@ -29,8 +29,14 @@ public class ImagePainterFactory {
 	public final static int UPDATE_PIXEL = UPDATE + PIXEL;
 	public final static int UPDATE_SCALED = UPDATE + SCALED;
 
+	public String referenceOwner;
+
 	public ImagePainterFactory() {
 		imagePool = new HashMap<>();
+	}
+
+	public Image getImageByName(String name) {
+		return imagePool.get(name);
 	}
 
 	public Image getImage(Tile tile, int x, int y, int action, ImagingWidgetConfiguration conf,
@@ -127,8 +133,17 @@ public class ImagePainterFactory {
 					|| tile.isShowInactiveLayerTranslucent())) {
 				gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
 			}
-			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
-			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+
+		//	if (referenceOwner == null) {
+				gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
+				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+			/*} else {
+				gc.setBackground(colorPaletteProvider.getColorByIndex(1));
+				TileRepositoryService s = ServiceFactory.getService(referenceOwner, TileRepositoryService.class);
+
+				Image img = s.getImage(3);
+				gc.drawImage(img, x * conf.pixelSize, y * conf.pixelSize);
+			}*/
 		}
 	}
 }
