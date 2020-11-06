@@ -44,6 +44,7 @@ public class PainterWidget extends BaseImagingWidget {
 	public void init(String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
 		// TODO Auto-generated method stub
 		super.init(owner, colorPaletteProvider, autowrap);
+		tileRepositoryService.addTileListener(this);
 
 		String referenceOwnerId = tileRepositoryService.getMetadata().getReferenceRepositoryId();
 		if (null != referenceOwnerId) {
@@ -313,12 +314,12 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
-			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
-			if (this.tile != null) {
-				this.tile.removeTileListener(this);
-			}
-			this.tile = tile;
-			tile.addTileListener(this);
+			// Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
+			// if (this.tile != null) {
+			// this.tile.removeTileListener(this);
+			// }
+			// this.tile = tile;
+			// tile.addTileListener(this);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
