@@ -121,7 +121,6 @@ public class ReferenceWidget extends BaseImagingWidget {
 			boolean paintTelevisionMode) {
 
 		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
-			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
 			paintTile(this, gc, i, conf, colorPaletteProvider, action);
 		}
 
@@ -169,9 +168,8 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int update) {
-		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService,
-				tileRepositoryService.getTileIndex(index), 0, 0, update, conf, colorPaletteProvider,
-				tileRepositoryService.getMetadata());
+		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService, index, 0, 0,
+				update, conf, colorPaletteProvider, tileRepositoryService.getMetadata());
 		int imageWidth = image.getBounds().width + tileGap;
 		int imageHeight = image.getBounds().height + tileGap;
 		int columns = conf.getColumns();
