@@ -553,7 +553,7 @@ public class TileRepositoryService implements IService {
 	}
 
 	public TileContainer load(File fileName) {
-		TileContainer container = null;
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
@@ -567,7 +567,7 @@ public class TileRepositoryService implements IService {
 				referenceRepository = ServiceFactory.getService(referenceOwner, TileRepositoryService.class);
 				referenceRepository.load(referenceFile);
 			}
-
+			
 			computeTileSize();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
