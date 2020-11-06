@@ -41,6 +41,7 @@ public class TileRepositoryService implements IService {
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	private List<ITileUpdateListener> tileUpdateListener = null;
 	private List<ITileListener> tileListenerList = null;
+	@Getter
 	private TileRepositoryService referenceRepository;
 	@Getter
 	private int tileSize;
@@ -50,6 +51,10 @@ public class TileRepositoryService implements IService {
 		tileUpdateListener = new ArrayList<>();
 		imagePainterFactory = new ImagePainterFactory();
 		container = new TileContainer();
+	}
+
+	public boolean hasReference() {
+		return referenceRepository != null;
 	}
 
 	public Image getSelectedImage() {
@@ -553,7 +558,7 @@ public class TileRepositoryService implements IService {
 	}
 
 	public TileContainer load(File fileName) {
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
@@ -567,7 +572,7 @@ public class TileRepositoryService implements IService {
 				referenceRepository = ServiceFactory.getService(referenceOwner, TileRepositoryService.class);
 				referenceRepository.load(referenceFile);
 			}
-			
+
 			computeTileSize();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

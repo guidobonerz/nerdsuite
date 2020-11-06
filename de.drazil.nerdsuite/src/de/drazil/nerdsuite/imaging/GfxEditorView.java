@@ -103,7 +103,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	private Project project;
 	private String owner;
 	private String referenceOwner;
-	boolean hasReference = false;
+
 	@Inject
 	private MPart part;
 
@@ -336,11 +336,10 @@ public class GfxEditorView implements ITileUpdateListener {
 		Map<String, Object> pm = (Map<String, Object>) part.getObject();
 		project = (Project) pm.get("project");
 		owner = (String) pm.get("repository");
-		referenceOwner = (String) pm.get("referenceRepository");
-		hasReference = (null != referenceOwner);
+
 		file = (File) pm.get("file");
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
-		tileRepositoryReferenceService = ServiceFactory.getService(referenceOwner, TileRepositoryService.class);
+		tileRepositoryReferenceService = tileRepositoryService.getReferenceRepository();
 
 		metadata = tileRepositoryService.getMetadata();
 		metadata.setReferenceRepositoryId(referenceOwner);
@@ -358,7 +357,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		part.setTooltip(graphicFormat.getName() + " " + graphicFormatVariant.getName());
 		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
 
-		GridLayout layout = new GridLayout(hasReference ? 3 : 2, false);
+		GridLayout layout = new GridLayout(tileRepositoryService.hasReference() ? 3 : 2, false);
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
@@ -390,7 +389,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 			multiColorChooser.setLayoutData(gridData);
 		}
-		if (hasReference) {
+		if (tileRepositoryService.hasReference()) {
 			gridData = new GridData(GridData.FILL);
 			gridData.verticalSpan = 2;
 			gridData.verticalAlignment = GridData.BEGINNING;
@@ -406,15 +405,15 @@ public class GfxEditorView implements ITileUpdateListener {
 		repository = createRepositoryWidget();
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.horizontalSpan = hasReference ? 3 : 2;
+		gridData.horizontalSpan = tileRepositoryService.hasReference() ? 3 : 2;
 
 		scrollableRepository.setLayoutData(gridData);
 
 		painter.init(owner, colorPaletteProvider, false);
 		repository.init(owner, colorPaletteProvider, true);
 
-		if (hasReference) {
-			referenceRepository.init(referenceOwner, colorPaletteProvider, false);
+		if (tileRepositoryService.hasReference()) {
+			referenceRepository.init("C64_UPPER", colorPaletteProvider, false);
 		}
 
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
@@ -451,7 +450,7 @@ public class GfxEditorView implements ITileUpdateListener {
 				painter.setCursorMode(CursorMode.Point);
 				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
-				if (hasReference) {
+				if (tileRepositoryService.hasReference()) {
 					referenceRepository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
 				}
 				parent.layout();
