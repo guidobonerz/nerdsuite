@@ -323,7 +323,7 @@ public class PainterWidget extends BaseImagingWidget {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
 		doRedraw(redrawMode, action);
-		parent.setOrigin(tileRepositoryService.getSelectedTile().getOrigin());
+		parent.setOrigin(tileRepositoryService.getOrigin());
 
 	}
 
@@ -379,15 +379,16 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int action) {
-		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, x, y, action, conf,
-				colorPaletteProvider, tileRepositoryService.getMetadata()), 0, 0);
+		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService,
+				tileRepositoryService.getSelectedTileIndex(), x, y, action, conf, colorPaletteProvider,
+				tileRepositoryService.getMetadata()), 0, 0);
 	}
 
 	private void paintTile(GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int update) {
 		Tile tile = tileRepositoryService.getTile(index);
-		Image image = tileRepositoryService.getImagePainterFactory().getImage(tile, 0, 0, update, conf,
-				colorPaletteProvider, tileRepositoryService.getMetadata());
+		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService, index, 0, 0,
+				update, conf, colorPaletteProvider, tileRepositoryService.getMetadata());
 		gc.drawImage(image, 0, 0);
 	}
 

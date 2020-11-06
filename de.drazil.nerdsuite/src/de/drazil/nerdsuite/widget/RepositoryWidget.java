@@ -249,8 +249,9 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int update) {
-		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService.getTile(index), 0,
-				0, update, conf, colorPaletteProvider, tileRepositoryService.getMetadata());
+		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService,
+				tileRepositoryService.getTileIndex(index), 0, 0, update, conf, colorPaletteProvider,
+				tileRepositoryService.getMetadata());
 		int imageWidth = image.getBounds().width;
 		int imageHeight = image.getBounds().height;
 		int columns = conf.getColumns();

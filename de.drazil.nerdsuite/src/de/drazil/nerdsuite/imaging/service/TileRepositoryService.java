@@ -42,7 +42,7 @@ public class TileRepositoryService implements IService {
 	private List<ITileUpdateListener> tileUpdateListener = null;
 	private List<ITileListener> tileListenerList = null;
 	private TileRepositoryService referenceRepository;
-
+	@Getter
 	private int tileSize;
 
 	public TileRepositoryService() {
