@@ -3,10 +3,10 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
@@ -16,7 +16,6 @@ import de.drazil.nerdsuite.model.SelectionRange;
 
 public class ReferenceWidget extends BaseImagingWidget {
 
-	private boolean tileDragActive = false;
 	private boolean tileSelectionStarted = false;
 	private SelectionRange tileSelectionRange = null;
 	private List<Integer> selectedTileIndexList = null;
@@ -28,40 +27,26 @@ public class ReferenceWidget extends BaseImagingWidget {
 		super(parent, style);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
+		setBackground(Constants.DARK_GREY);
 	}
 
-	protected int getCalculatedColumns() {
-		return 16;
-	}
-	
 	@Override
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		mc.stop();
-		if (!tileDragActive) {
-			selectedTileIndexX = tileX;
-			selectedTileIndexY = tileY;
-			selectedTileIndex = computeTileIndex(tileX, tileY);
-			computeTileSelection(tileX, tileY, 1);
-			if (selectedTileIndex < tileRepositoryService.getSize()) {
-				tileRepositoryService.setSelectedTileIndex(selectedTileIndex);
-			} else {
-				System.out.println("tile selection outside range...");
-			}
-			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+		selectedTileIndexX = tileX;
+		selectedTileIndexY = tileY;
+		selectedTileIndex = computeTileIndex(tileX, tileY);
+		System.out.printf("select index:%02x\n", selectedTileIndex);
+		computeTileSelection(tileX, tileY, 1);
+		if (selectedTileIndex < tileRepositoryService.getSize()) {
+			tileRepositoryService.setSelectedTileIndex(selectedTileIndex);
 		} else {
-			selectedTileIndexX = tileX;
-			selectedTileIndexY = tileY;
-			selectedTileIndex = computeTileIndex(tileX, tileY);
+			System.out.println("tile selection outside range...");
 		}
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 	}
 
 	@Override
 	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
-		mc.stop();
-		if (tileDragActive) {
-			tileDragActive = false;
-			tileRepositoryService.moveTile(tileSelectionRange.getFrom(), tileSelectionRange.getTo());
-		}
 		if (selectedTileIndexList.size() > 1) {
 			tileSelectionStarted = false;
 			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
@@ -71,7 +56,6 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		mc.start();
 		computeTileSelection(tileX, tileY, 0);
 	}
 
@@ -106,14 +90,24 @@ public class ReferenceWidget extends BaseImagingWidget {
 				from = to;
 				to = d;
 			}
-			if (!tileDragActive) {
-				selectedTileIndexList.clear();
-				for (int i = from; i <= to; i++) {
-					if (i < tileRepositoryService.getSize()) {
-						selectedTileIndexList.add(i);
-					}
+
+			selectedTileIndexList.clear();
+			for (int i = from; i <= to; i++) {
+				if (i < tileRepositoryService.getSize()) {
+					selectedTileIndexList.add(i);
 				}
 			}
+		}
+	}
+
+	private void resetSelectionList() {
+		selectedTileIndexList = new ArrayList<>();
+	}
+
+	public void selectAll() {
+		if (supportsMultiSelection()) {
+			// resetSelectionList();
+			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 		}
 	}
 
@@ -127,12 +121,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 			boolean paintTelevisionMode) {
 
 		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
-			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
 			paintTile(this, gc, i, conf, colorPaletteProvider, action);
-		}
-
-		if (paintTileGrid) {
-			paintTileGrid(gc);
 		}
 
 		paintSelection(gc);
@@ -149,13 +138,13 @@ public class ReferenceWidget extends BaseImagingWidget {
 		selectedTileIndexList.forEach(i -> {
 			int y = i / conf.getColumns();
 			int x = i % conf.getColumns();
-			gc.fillRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
-					conf.scaledTileHeight);
+			gc.fillRectangle(x * (conf.scaledTileWidth + tileGap), y * (conf.scaledTileHeight + tileGap),
+					conf.scaledTileWidth, conf.scaledTileHeight);
 			if (i == temporaryIndex) {
 				gc.setLineWidth(3);
 				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
-				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
-						conf.scaledTileHeight);
+				gc.drawRectangle(x * (conf.scaledTileWidth + tileGap), y * (conf.scaledTileHeight + tileGap),
+						conf.scaledTileWidth, conf.scaledTileHeight);
 			}
 		});
 	}
@@ -164,20 +153,8 @@ public class ReferenceWidget extends BaseImagingWidget {
 		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
-			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
-					conf.scaledTileHeight);
-		}
-	}
-
-	private void paintTileGrid(GC gc) {
-		gc.setLineWidth(1);
-		gc.setLineStyle(SWT.LINE_SOLID);
-		gc.setForeground(Constants.TILE_GRID_COLOR);
-		for (int x = 0; x < conf.columns; x++) {
-			for (int y = 0; y < conf.rows; y++) {
-				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
-						conf.scaledTileHeight);
-			}
+			gc.fillRectangle(tileX * (conf.scaledTileWidth + tileGap), tileY * (conf.scaledTileHeight + tileGap),
+					conf.scaledTileWidth, conf.scaledTileHeight);
 		}
 	}
 
@@ -191,29 +168,29 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int update) {
-		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService.getTile(index), 0,
-				0, update, conf, colorPaletteProvider, tileRepositoryService.getMetadata());
-		int imageWidth = image.getBounds().width;
-		int imageHeight = image.getBounds().height;
+		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService, index, 0, 0,
+				update, conf, colorPaletteProvider, tileRepositoryService.getMetadata());
+		int imageWidth = image.getBounds().width + tileGap;
+		int imageHeight = image.getBounds().height + tileGap;
 		int columns = conf.getColumns();
 		int y = (index / columns) * imageHeight;
-		int x = (columns) * imageWidth;
+		int x = (index % columns) * imageWidth;
 		gc.drawImage(image, x, y);
 	}
 
 	@Override
 	public void activeLayerChanged(int layer) {
-		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+
 	}
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
+		tileRepositoryService.setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	@Override
 	public void tileReordered() {
-		// doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 	}
 
 	@Override
@@ -246,5 +223,19 @@ public class ReferenceWidget extends BaseImagingWidget {
 			drawAll = true;
 			redraw();
 		}
+	}
+
+	@Override
+	public Point computeSize(int wHint, int hHint, boolean changed) {
+		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns) + (conf.columns * tileGap)
+				- tileGap;
+		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows) + (conf.rows * tileGap)
+				- tileGap;
+		return new Point(width, height);
+	}
+
+	@Override
+	protected int getTileGap() {
+		return 2;
 	}
 }

@@ -54,7 +54,8 @@ Handle DiskImages:
 Export files partly works
 Create/Update disk images
 
-
+## Big PETSCII Screen
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen.png)
 ## Ultimate64 Streaming Client
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ultimate64-streaming-windows.png)
 ## New Graphic Project Dialog

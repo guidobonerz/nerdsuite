@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.drazil.nerdsuite.widget.Tile;
+import de.drazil.nerdsuite.widget.Layer;
 
 public class ClipboardService implements IService {
 
@@ -28,14 +28,14 @@ public class ClipboardService implements IService {
 		} else if (action == PASTE) {
 			List<Integer> targetSelectionList = service.getSelectedTileIndexList();
 			for (int i = 0; i < selectionList.size(); i++) {
-				Tile sourceTile = service.getTile(selectionList.get(i));
-				Tile targetTile = service.getTile(targetSelectionList.get(i));
-				int[] targetContent = new int[sourceTile.getActiveLayer().getContent().length];
+				Layer sourceLayer = service.getActiveLayer(selectionList.get(i));
+				Layer targetLayer = service.getActiveLayer(targetSelectionList.get(i));
+				int[] targetContent = new int[sourceLayer.getContent().length];
 				for (int j = 0; j < targetContent.length; j++) {
-					targetTile.getActiveLayer().getContent()[j] = sourceTile.getActiveLayer().getContent()[j];
+					targetLayer.getContent()[j] = sourceLayer.getContent()[j];
 				}
 				if (initialAction == CUT) {
-					sourceTile.resetActiveLayer();
+					service.resetActiveLayer(selectionList.get(i));
 				}
 				service.redrawTileViewer(targetSelectionList, ImagePainterFactory.UPDATE, false);
 			}

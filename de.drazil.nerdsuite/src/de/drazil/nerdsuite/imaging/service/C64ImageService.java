@@ -6,16 +6,10 @@ import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
 
-public class C64ImageService extends AbstractImageService {
+public class C64ImageService {
 
 	private int bytesPerRow = 0;
-
-	@Override
-	public void setTile(Tile tile, ImagingWidgetConfiguration conf) {
-		super.setTile(tile, conf);
-		// bytesPerRow = conf.getWidth() / conf.gfxFormat.getStorageEntity();
-	}
-
+/*
 	public void setPixel(int x, int y) {
 		int[] bitplane = activeLayer.getContent();
 		int ix = x % conf.currentWidth;
@@ -70,8 +64,8 @@ public class C64ImageService extends AbstractImageService {
 			switch (conf.pixelConfig) {
 			case BC1: {
 				for (int j = 128; j > 0; j >>= 1) {
-					// gc.setBackground((b & j) == j ? activeLayer.getSelectedColor() :
-					// Constants.BITMAP_BACKGROUND_COLOR);
+					gc.setBackground((b & j) == j ? activeLayer.getSelectedColor() :
+					 Constants.BITMAP_BACKGROUND_COLOR);
 					gc.fillRectangle((x * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
 							conf.currentPixelWidth - pix, conf.currentPixelHeight - pix);
 					x++;
@@ -88,10 +82,11 @@ public class C64ImageService extends AbstractImageService {
 				 * conf.currentPixelWidth) + pix, (y * conf.currentPixelHeight) + pix,
 				 * conf.currentPixelWidth - pix, conf.currentPixelHeight - pix); x++;
 				 */
-			}
+/*		
+}
 				break;
 			}
 		}
-	}
+	}*/
 
 }

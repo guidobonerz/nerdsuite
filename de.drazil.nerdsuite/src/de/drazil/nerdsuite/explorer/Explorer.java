@@ -44,6 +44,7 @@ import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
@@ -355,19 +356,14 @@ public class Explorer implements IDoubleClickListener {
 				System.out.println("load tiles");
 				File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR
 						+ project.getId().toLowerCase() + "." + project.getSuffix());
-				TileRepositoryService repository = TileRepositoryService.load(file, owner);
-				projectSetup.put("repository", repository);
+				TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
+				repository.load(file);
+				projectSetup.put("repository", owner);
 				projectSetup.put("file", file);
 
-				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
-				if (repository.getMetadata().getType().equals("SCREENSET")) {
-					editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ScreenEditorView";
-					File referenceFile = new File(
-							Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + "c64_upper.ns_chr");
-					TileRepositoryService.load(referenceFile, "reference");
-				}
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						editorView, owner, project.getName(), projectSetup);
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+						project.getName(), projectSetup);
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
 						part, true);

@@ -54,7 +54,7 @@ public class SvgExport {
 		ProjectMetaData metadata = service.getMetadata();
 		Map<String, Point> map = new HashMap<String, Point>();
 
-		int[] content = service.getTile(0).getActiveLayer().getContent();
+		int[] content = service.getActiveLayer().getContent();
 		for (int i = 0; i < content.length; i++) {
 			String key = String.valueOf(content[i]);
 			List<Point> pathList = pathMap.get(key);
@@ -107,8 +107,8 @@ public class SvgExport {
 		}
 
 		// sort
-		//pathList.sort(Comparator.comparingInt(Point::getX1).thenComparingInt(Point::getY1));
-		int a=0;
+		// pathList.sort(Comparator.comparingInt(Point::getX1).thenComparingInt(Point::getY1));
+		int a = 0;
 
 	}
 

@@ -17,6 +17,8 @@ import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
+import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 
 public class PainterWidget extends BaseImagingWidget {
@@ -31,10 +33,28 @@ public class PainterWidget extends BaseImagingWidget {
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
+	private TileRepositoryService referenceRepository;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
 		this.parent = (ScrolledComposite) parent;
+	}
+
+	@Override
+	public void init(String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+		// TODO Auto-generated method stub
+		super.init(owner, colorPaletteProvider, autowrap);
+		tileRepositoryService.addTileListener(this);
+
+		String referenceOwnerId = tileRepositoryService.getMetadata().getReferenceRepositoryId();
+		if (null != referenceOwnerId) {
+			referenceRepository = ServiceFactory.getService(referenceOwnerId, TileRepositoryService.class);
+		}
+	}
+
+	@Override
+	protected int getTileGap() {
+		return 0;
 	}
 
 	@Override
@@ -57,7 +77,7 @@ public class PainterWidget extends BaseImagingWidget {
 			int xo = parent.getHorizontalBar().getSelection() - xoff;
 			int yo = parent.getVerticalBar().getSelection() - yoff;
 			parent.setOrigin(xo, yo);
-			tileRepositoryService.getSelectedTile().setOrigin(new Point(xo, yo));
+			tileRepositoryService.setOrigin(new Point(xo, yo));
 
 		} else if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
@@ -294,22 +314,22 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
-			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
-			if (this.tile != null) {
-				this.tile.removeTileListener(this);
-			}
-			this.tile = tile;
-			tile.addTileListener(this);
+			// Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
+			// if (this.tile != null) {
+			// this.tile.removeTileListener(this);
+			// }
+			// this.tile = tile;
+			// tile.addTileListener(this);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
 		doRedraw(redrawMode, action);
-		parent.setOrigin(tileRepositoryService.getSelectedTile().getOrigin());
+		parent.setOrigin(tileRepositoryService.getOrigin());
 
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
-		Layer layer = tile.getActiveLayer();
+		Layer layer = tileRepositoryService.getActiveLayer();
 
 		switch (conf.paintMode) {
 		case Single: {
@@ -346,23 +366,30 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
-			layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
-					? layer.getSelectedColorIndex()
-					: 0;
+			if (referenceRepository == null) {
+				layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
+						? layer.getSelectedColorIndex()
+						: 0;
+			} else {
+				layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
+						? referenceRepository.getSelectedTileIndex()
+						: 0x20;
+			}
 		}
 	}
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int action) {
-		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tile, x, y, action, conf,
-				colorPaletteProvider, tileRepositoryService.getMetadata()), 0, 0);
+		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService,
+				tileRepositoryService.getSelectedTileIndex(), x, y, action, conf, colorPaletteProvider,
+				tileRepositoryService.getMetadata()), 0, 0);
 	}
 
 	private void paintTile(GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int update) {
 		Tile tile = tileRepositoryService.getTile(index);
-		Image image = tileRepositoryService.getImagePainterFactory().getImage(tile, 0, 0, update, conf,
-				colorPaletteProvider, tileRepositoryService.getMetadata());
+		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService, index, 0, 0,
+				update, conf, colorPaletteProvider, tileRepositoryService.getMetadata());
 		gc.drawImage(image, 0, 0);
 	}
 
@@ -373,7 +400,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
+		tileRepositoryService.setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	@Override

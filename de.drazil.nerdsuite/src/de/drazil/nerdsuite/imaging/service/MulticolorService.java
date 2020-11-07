@@ -10,8 +10,8 @@ public class MulticolorService extends AbstractImagingService {
 	public static final int MC_OFF = 0;
 
 	@Override
-	public void each(int action, Tile tile, ImagingWidgetConfiguration configuration, TileAction tileAction) {
-		int[] content = tile.getActiveLayer().getContent();
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
+		int[] content = repositoryService.getActiveLayer().getContent();
 		for (int i = 0; i < content.length; i += 2) {
 			if (action == MC_ON) {
 				if (content[i] > 0 && content[i + 1] > 0) {

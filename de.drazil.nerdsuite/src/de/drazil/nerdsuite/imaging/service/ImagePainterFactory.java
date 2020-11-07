@@ -29,12 +29,20 @@ public class ImagePainterFactory {
 	public final static int UPDATE_PIXEL = UPDATE + PIXEL;
 	public final static int UPDATE_SCALED = UPDATE + SCALED;
 
-	public ImagePainterFactory() {
+	public TileRepositoryService referenceRepository;
+
+	public ImagePainterFactory(TileRepositoryService referenceRepository) {
+		this.referenceRepository = referenceRepository;
 		imagePool = new HashMap<>();
 	}
 
-	public Image getImage(Tile tile, int x, int y, int action, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, ProjectMetaData metadata) {
+	public Image getImageByName(String name) {
+		return imagePool.get(name);
+	}
+
+	public Image getImage(TileRepositoryService service, int tileIndex, int x, int y, int action,
+			ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider, ProjectMetaData metadata) {
+		Tile tile = service.getTile(tileIndex);
 		String name = tile.getName();
 		Image scaledImage = null;
 		Image mainImage = imagePool.get(name);
@@ -49,7 +57,7 @@ public class ImagePainterFactory {
 			imagePool.put(name, mainImage);
 		}
 		if ((action & UPDATE) == UPDATE || (action & PIXEL) == PIXEL) {
-			mainImage = updateImage(tile, x, y, action, conf, mainImage, name, colorPaletteProvider);
+			mainImage = updateImage(service, tileIndex, x, y, action, conf, mainImage, name, colorPaletteProvider);
 		}
 
 		ScaleMode scaleMode = conf.getScaleMode();
@@ -91,19 +99,20 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image updateImage(Tile tile, int px, int py, int update, ImagingWidgetConfiguration conf, Image image,
-			String imageName, IColorPaletteProvider colorPaletteProvider) {
+	private Image updateImage(TileRepositoryService service, int tileIndex, int px, int py, int update,
+			ImagingWidgetConfiguration conf, Image image, String imageName,
+			IColorPaletteProvider colorPaletteProvider) {
 		GC gc = new GC(image);
 		gc.setAlpha(255);
 		int width = conf.tileWidth;
-		int size = tile.getLayer(0).size();
+		int size = service.getTileSize();
 		int x = 0;
 		int y = 0;
-		List<Layer> layerList = tile.getLayerList();
+		List<Layer> layerList = service.getTile(tileIndex).getLayerList();
 		if (checkMode(update, PIXEL)) {
 			int offset = py * width + px;
 			if (offset < size) {
-				draw(gc, offset, layerList, tile, conf, px, py, colorPaletteProvider);
+				draw(gc, offset, layerList, conf, px, py, colorPaletteProvider);
 			}
 		} else {
 			for (int i = 0; i < size; i++) {
@@ -111,7 +120,7 @@ public class ImagePainterFactory {
 					x = 0;
 					y++;
 				}
-				draw(gc, i, layerList, tile, conf, x, y, colorPaletteProvider);
+				draw(gc, i, layerList, conf, x, y, colorPaletteProvider);
 				x++;
 			}
 		}
@@ -119,16 +128,27 @@ public class ImagePainterFactory {
 		return image;
 	}
 
-	private void draw(GC gc, int offset, List<Layer> layerList, Tile tile, ImagingWidgetConfiguration conf, int x,
-			int y, IColorPaletteProvider colorPaletteProvider) {
+	private void draw(GC gc, int offset, List<Layer> layerList, ImagingWidgetConfiguration conf, int x, int y,
+			IColorPaletteProvider colorPaletteProvider) {
 		for (Layer l : layerList) {
 			int[] content = l.getContent();
-			if (content[offset] != 0 && (!tile.isShowOnlyActiveLayer() || (tile.isShowOnlyActiveLayer() && l.isActive())
-					|| tile.isShowInactiveLayerTranslucent())) {
-				gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 : 255);
+			// if (content[offset] != 0 && (!tile.isShowOnlyActiveLayer() ||
+			// (tile.isShowOnlyActiveLayer() && l.isActive())
+			// || tile.isShowInactiveLayerTranslucent())) {
+			// gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 :
+			// 255);
+			// }
+
+			if (referenceRepository == null) {
+				gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
+				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+
+			} else {
+				gc.setBackground(colorPaletteProvider.getColorByIndex(1));
+				Image img = referenceRepository.getImage(content[offset]);
+				gc.drawImage(img, x * conf.pixelSize, y * conf.pixelSize);
 			}
-			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
-			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+
 		}
 	}
 }

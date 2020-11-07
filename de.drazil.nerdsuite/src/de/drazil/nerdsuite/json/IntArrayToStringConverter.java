@@ -6,11 +6,13 @@ import java.util.stream.IntStream;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
 
-public class IntArrayToStringConveter extends StdConverter<int[], String> {
+public class IntArrayToStringConverter extends StdConverter<int[], String> {
 	@Override
 	public String convert(int[] ia) {
 		ByteBuffer buf = ByteBuffer.allocate(ia.length);
 		IntStream.of(ia).forEach(i -> buf.put((byte) (i & 0xff)));
-		return Base64.getEncoder().encodeToString(buf.array());
+		String result = Base64.getEncoder().encodeToString(buf.array());
+		return result;
+		// return Base64.getEncoder().encodeToString(result.getBytes());
 	}
 }

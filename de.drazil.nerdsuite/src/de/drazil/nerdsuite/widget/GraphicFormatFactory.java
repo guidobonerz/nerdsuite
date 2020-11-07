@@ -18,34 +18,12 @@ public class GraphicFormatFactory {
 
 	public static GraphicFormat getFormatById(String id) {
 
-		if (null == graphicFormatList) {
-			graphicFormatList = new ArrayList<>();
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				graphicFormatList = Arrays.asList(
-						mapper.readValue(bundle.getEntry("configuration/graphic_formats.json"), GraphicFormat[].class));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return graphicFormatList.stream().filter(gf -> gf.getId().equals(id)).findFirst().orElse(null);
+		return  getFormatList().stream().filter(gf -> gf.getId().equals(id)).findFirst().orElse(null);
 	}
 
 	public static List<GraphicFormat> getFormatByPrefix(String name) {
 
-		if (null == graphicFormatList) {
-			graphicFormatList = new ArrayList<>();
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				graphicFormatList = Arrays.asList(
-						mapper.readValue(bundle.getEntry("configuration/graphic_formats.json"), GraphicFormat[].class));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return graphicFormatList.stream().filter(gf -> gf.getId().startsWith(name)).collect(Collectors.toList());
+		return getFormatList().stream().filter(gf -> gf.getId().startsWith(name)).collect(Collectors.toList());
 	}
 
 	public static List<GraphicFormatVariant> getFormatVariantListByPrefix(String name) {
@@ -55,6 +33,21 @@ public class GraphicFormatFactory {
 	public static GraphicFormatVariant getFormatVariantById(String id, String variantId) {
 		return getFormatById(id).getVariants().stream().filter(v -> v.getId().equalsIgnoreCase(variantId)).findFirst()
 				.orElse(null);
+	}
+
+	private static List<GraphicFormat> getFormatList() {
+		if (null == graphicFormatList) {
+			graphicFormatList = new ArrayList<>();
+			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				graphicFormatList = Arrays.asList(
+						mapper.readValue(bundle.getEntry("configuration/graphic_formats.json"), GraphicFormat[].class));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return graphicFormatList;
 	}
 
 }

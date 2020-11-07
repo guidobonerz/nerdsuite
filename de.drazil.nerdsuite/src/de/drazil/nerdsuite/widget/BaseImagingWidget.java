@@ -43,6 +43,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected int selectedTileIndexY = 0;
 	protected int selectedTileIndex = 0;
 
+	protected int tileGap = 0;
 	protected int oldCursorX = -1;
 	protected int oldCursorY = -1;
 	protected int cursorX = 0;
@@ -82,13 +83,16 @@ public abstract class BaseImagingWidget extends BaseWidget
 		conf = new ImagingWidgetConfiguration();
 		mc = new MeasuringController();
 		mc.addMeasuringListener(this);
+		tileGap = getTileGap();
 	}
+
+	protected abstract int getTileGap();
 
 	protected int getCalculatedColumns() {
 		return ((getParent().getBounds().width - 30) / conf.getScaledTileWidth());
 	}
 
-	public void init(String owner, IColorPaletteProvider colorPaletteProvider) {
+	public void init(String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
 		conf.setServiceOwner(owner);
 
 		this.colorPaletteProvider = colorPaletteProvider;
@@ -99,11 +103,15 @@ public abstract class BaseImagingWidget extends BaseWidget
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				int c = (int) getCalculatedColumns();
-				conf.setColumns(c == 0 ? 1 : c);
-				conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
-						+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
-				doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+
+				if (autowrap) {
+					int c = (int) getCalculatedColumns();
+					conf.setColumns(c == 0 ? 1 : c);
+					conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
+							+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
+					doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+				}
+
 			}
 		});
 	}
@@ -200,8 +208,9 @@ public abstract class BaseImagingWidget extends BaseWidget
 		} else {
 			cursorChanged = false;
 		}
-		tileX = x / conf.getScaledTileWidth();
-		tileY = y / conf.getScaledTileHeight();
+		tileX = x / (conf.getScaledTileWidth() + tileGap);
+		tileY = y / (conf.getScaledTileHeight() + tileGap);
+
 		if (oldTileX != tileX || oldTileY != tileY) {
 			oldTileX = tileX;
 			oldTileY = tileY;
