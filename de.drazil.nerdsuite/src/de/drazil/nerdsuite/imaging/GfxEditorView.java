@@ -413,7 +413,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		repository.init(owner, colorPaletteProvider, true);
 
 		if (tileRepositoryService.hasReference()) {
-			referenceRepository.init("C64_UPPER", colorPaletteProvider, false);
+			referenceRepository.init(tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
 		}
 
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);

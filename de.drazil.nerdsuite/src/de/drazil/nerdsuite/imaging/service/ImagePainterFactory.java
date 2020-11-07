@@ -29,9 +29,10 @@ public class ImagePainterFactory {
 	public final static int UPDATE_PIXEL = UPDATE + PIXEL;
 	public final static int UPDATE_SCALED = UPDATE + SCALED;
 
-	public String referenceOwner;
+	public TileRepositoryService referenceRepository;
 
-	public ImagePainterFactory() {
+	public ImagePainterFactory(TileRepositoryService referenceRepository) {
+		this.referenceRepository = referenceRepository;
 		imagePool = new HashMap<>();
 	}
 
@@ -138,17 +139,16 @@ public class ImagePainterFactory {
 			// 255);
 			// }
 
-			// if (referenceOwner == null) {
-			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
-			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
-			/*
-			 * } else { gc.setBackground(colorPaletteProvider.getColorByIndex(1));
-			 * TileRepositoryService s = ServiceFactory.getService(referenceOwner,
-			 * TileRepositoryService.class);
-			 * 
-			 * Image img = s.getImage(3); gc.drawImage(img, x * conf.pixelSize, y *
-			 * conf.pixelSize); }
-			 */
+			if (referenceRepository == null) {
+				gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
+				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+
+			} else {
+				gc.setBackground(colorPaletteProvider.getColorByIndex(1));
+				Image img = referenceRepository.getSelectedImage();
+				gc.drawImage(img, x * conf.pixelSize, y * conf.pixelSize);
+			}
+
 		}
 	}
 }

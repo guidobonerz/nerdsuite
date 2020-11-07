@@ -49,7 +49,6 @@ public class TileRepositoryService implements IService {
 	public TileRepositoryService() {
 		tileServiceManagementListener = new ArrayList<>();
 		tileUpdateListener = new ArrayList<>();
-		imagePainterFactory = new ImagePainterFactory();
 		container = new TileContainer();
 	}
 
@@ -169,7 +168,7 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	public int getSelectedTileIndex() {
-		return container.getTileList().indexOf(getSelectedTile());
+		return container.getTileIndexOrderList().get(container.getTileList().indexOf(getSelectedTile()));
 	}
 
 	public Tile getTile(int index) {
@@ -563,16 +562,16 @@ public class TileRepositoryService implements IService {
 		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
 			container = mapper.readValue(fileName, TileContainer.class);
-
+			String referenceId = null;
 			String referenceRepositoryLocation = container.getReferenceRepositoryLocation();
 			if (null != referenceRepositoryLocation) {
 				File referenceFile = Path.of(Configuration.WORKSPACE_PATH.toString(), referenceRepositoryLocation)
 						.toFile();
-				String referenceOwner = "C64_UPPER";
-				referenceRepository = ServiceFactory.getService(referenceOwner, TileRepositoryService.class);
+				referenceId = referenceFile.getName().split("\\.")[0].toUpperCase();
+				referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
 				referenceRepository.load(referenceFile);
 			}
-
+			imagePainterFactory = new ImagePainterFactory(referenceRepository);
 			computeTileSize();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
