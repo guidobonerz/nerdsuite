@@ -145,7 +145,7 @@ public class ImagePainterFactory {
 
 			} else {
 				gc.setBackground(colorPaletteProvider.getColorByIndex(1));
-				Image img = referenceRepository.getSelectedImage();
+				Image img = referenceRepository.getImage(content[offset]);
 				gc.drawImage(img, x * conf.pixelSize, y * conf.pixelSize);
 			}
 

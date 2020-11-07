@@ -366,15 +366,15 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
-			layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
-					? layer.getSelectedColorIndex()
-					: 0;
-			/*
-			 * if (referenceRepository != null) { if (layer.getPixel() == null) {
-			 * layer.setPixel(new int[layer.getContent().length]); } layer.getPixel()[y *
-			 * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw) ?
-			 * referenceRepository.getSelectedTileIndex() : 0x20; }
-			 */
+			if (referenceRepository == null) {
+				layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
+						? layer.getSelectedColorIndex()
+						: 0;
+			} else {
+				layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
+						? referenceRepository.getSelectedTileIndex()
+						: 0x20;
+			}
 		}
 	}
 

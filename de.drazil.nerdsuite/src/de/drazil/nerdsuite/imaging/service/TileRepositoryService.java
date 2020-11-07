@@ -162,13 +162,12 @@ public class TileRepositoryService implements IService {
 
 	@JsonIgnore
 	public Tile getSelectedTile() {
-		int index = container.getSelectedTileIndexList().get(0);
-		return getTile(index);
+		return getTile(getSelectedTileIndex());
 	}
 
 	@JsonIgnore
 	public int getSelectedTileIndex() {
-		return container.getTileIndexOrderList().get(container.getTileList().indexOf(getSelectedTile()));
+		return container.getSelectedTileIndexList().get(0);
 	}
 
 	public Tile getTile(int index) {
@@ -569,8 +568,11 @@ public class TileRepositoryService implements IService {
 						.toFile();
 				referenceId = referenceFile.getName().split("\\.")[0].toUpperCase();
 				referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
-				referenceRepository.load(referenceFile);
+				TileContainer refContainer = referenceRepository.load(referenceFile);
+				container.getMetadata().setReferenceRepositoryId(referenceId);
+
 			}
+
 			imagePainterFactory = new ImagePainterFactory(referenceRepository);
 			computeTileSize();
 		} catch (Exception e) {

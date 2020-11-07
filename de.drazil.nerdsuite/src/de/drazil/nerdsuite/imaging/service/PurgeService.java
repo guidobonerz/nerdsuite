@@ -17,14 +17,16 @@ public class PurgeService extends AbstractImagingService {
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		return confirmable.isConfirmed("Do you really want to purge this tile?");
 	}
-		
+
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService,
+			ImagingWidgetConfiguration configuration, TileAction tileAction) {
 		int[] content = repositoryService.getActiveLayer().getContent();
 		Rectangle r = service.getSelection();
+		int blankValue = repositoryService.getMetadata().getBlankValue();
 		for (int x = r.x; x < r.x + r.width; x++) {
 			for (int y = r.y; y < r.y + r.height; y++) {
-				content[x + y * configuration.tileWidth] = 0;
+				content[x + y * configuration.tileWidth] = blankValue;
 			}
 		}
 	}

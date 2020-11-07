@@ -342,7 +342,6 @@ public class GfxEditorView implements ITileUpdateListener {
 		tileRepositoryReferenceService = tileRepositoryService.getReferenceRepository();
 
 		metadata = tileRepositoryService.getMetadata();
-		metadata.setReferenceRepositoryId(referenceOwner);
 		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
 		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
 		graphicFormatVariant = GraphicFormatFactory.getFormatVariantById(graphicFormatId, metadata.getVariant());
@@ -479,7 +478,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter.getConf().setWidgetName("Painter :");
 		painter.getConf().setPixelGridEnabled(true);
 		painter.getConf().setGridStyle(GridType.Dot);
-		painter.getConf().setTileGridEnabled(true);
+		painter.getConf().setTileGridEnabled(false);
 		painter.getConf().setTileCursorEnabled(false);
 		painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREEN") ? false : true);
 		painter.getConf().supportsPainting = true;
