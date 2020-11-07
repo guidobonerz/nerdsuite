@@ -17,11 +17,17 @@ public class Tile {
 	private boolean showOnlyActiveLayer = true;
 	private boolean showInactiveLayerTranslucent = false;
 	private boolean multicolor = false;
+	@JsonProperty(value = "backgroundColor")
+	private int backgroundColorIndex = 0;
 	private int originX;
 	private int originY;
 	@JsonProperty(value = "layers")
 	private List<Layer> layerList = new ArrayList<Layer>();
 	@JsonProperty(value = "layerIndexOrder")
 	private List<Integer> layerIndexOrderList = new ArrayList<Integer>();
+
+	public Tile(String name) {
+		this.name = name;
+	}
 
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -38,6 +40,18 @@ public class PainterWidget extends BaseImagingWidget {
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
 		this.parent = (ScrolledComposite) parent;
+		this.parent.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				scrollWorkArea(e.x, e.y);
+			}
+		});
+		this.parent.getVerticalBar().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				scrollWorkArea(e.x, e.y);
+			}
+		});
 	}
 
 	@Override
@@ -74,15 +88,18 @@ public class PainterWidget extends BaseImagingWidget {
 				&& (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			int xoff = x - startPos.x;
 			int yoff = y - startPos.y;
-			int xo = parent.getHorizontalBar().getSelection() - xoff;
-			int yo = parent.getVerticalBar().getSelection() - yoff;
-			parent.setOrigin(xo, yo);
-			tileRepositoryService.setOrigin(new Point(xo, yo));
-
+			scrollWorkArea(xoff, yoff);
 		} else if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
 			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
+	}
+
+	private void scrollWorkArea(int xoff, int yoff) {
+		int xo = parent.getHorizontalBar().getSelection() - xoff;
+		int yo = parent.getVerticalBar().getSelection() - yoff;
+		parent.setOrigin(xo, yo);
+		tileRepositoryService.setOrigin(new Point(xo, yo));
 	}
 
 	@Override

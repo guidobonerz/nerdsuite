@@ -377,17 +377,12 @@ public class GfxEditorView implements ITileUpdateListener {
 		gridData.verticalAlignment = GridData.BEGINNING;
 		scrollablePainter.setLayoutData(gridData);
 
-		if (graphicFormat.getId().endsWith("SCREENSET")) {
-			colorPaletteChooser = new ColorPaletteChooser(parent, SWT.DOUBLE_BUFFERED,
-					PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
-			gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-			colorPaletteChooser.setLayoutData(gridData);
-		} else {
-			multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, 4,
-					PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
-			gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-			multiColorChooser.setLayoutData(gridData);
-		}
+		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED,
+				graphicFormat.getId().endsWith("SCREENSET") ? 2 : 4,
+				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		multiColorChooser.setLayoutData(gridData);
+
 		if (tileRepositoryService.hasReference()) {
 			gridData = new GridData(GridData.FILL);
 			gridData.verticalSpan = 2;
@@ -480,7 +475,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter.getConf().setGridStyle(GridType.Dot);
 		painter.getConf().setTileGridEnabled(false);
 		painter.getConf().setTileCursorEnabled(false);
-		painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREEN") ? false : true);
+		painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREENSET") ? false : true);
 		painter.getConf().supportsPainting = true;
 		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);

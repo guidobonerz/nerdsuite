@@ -97,9 +97,8 @@ public class TileRepositoryService implements IService {
 	}
 
 	private Tile addTileInternal(String name) {
-		Tile tile = new Tile();
-		tile.setName(name);
-		addLayer(tile, name, tileSize);
+		Tile tile = new Tile(name);
+		addLayer(tile, "layer_1", tileSize);
 		container.getTileList().add(tile);
 		container.getTileIndexOrderList().add(container.getTileList().indexOf(tile));
 		return tile;
@@ -192,7 +191,7 @@ public class TileRepositoryService implements IService {
 
 	public void setOrigin(Tile tile, Point origin) {
 		tile.setOriginX(origin.x);
-		tile.setOriginX(origin.y);
+		tile.setOriginY(origin.y);
 	}
 
 	public Point getOrigin() {
@@ -236,9 +235,7 @@ public class TileRepositoryService implements IService {
 	}
 
 	public Layer addLayer(Tile tile, String name, int size) {
-		Layer layer = new Layer();
-		layer.setName(name);
-		layer.setContent(new int[tileSize]);
+		Layer layer = new Layer(name, size);
 		layer.getColorPalette().add(0);
 		layer.getColorPalette().add(1);
 		layer.getColorPalette().add(2);
