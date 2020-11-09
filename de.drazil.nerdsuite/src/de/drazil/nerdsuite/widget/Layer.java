@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.widget;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,7 +22,7 @@ public class Layer {
 	private int[] content = null;
 	@JsonSerialize(converter = IntArrayToStringConverter.class)
 	@JsonDeserialize(converter = StringToIntArrayConverter.class)
-	private int[] colorMap = null;
+	private int[] brush = null;
 	private boolean isActive = false;
 	private boolean isLocked = false;
 	private boolean visible = true;
@@ -34,12 +35,18 @@ public class Layer {
 	public Layer(String name, int size) {
 		this.name = name;
 		this.size = size;
-		init();
+		initAll();
 	}
 
 	@JsonIgnore
-	public void init() {
+	public void initAll() {
 		this.content = new int[size];
-		this.colorMap = new int[size];
+		this.brush = new int[size];
+	}
+
+	@JsonIgnore
+	public void initBrush(int blankValue) {
+		this.brush = new int[content.length];
+		Arrays.fill(brush, blankValue);
 	}
 }

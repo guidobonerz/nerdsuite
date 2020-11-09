@@ -56,14 +56,13 @@ public class TileRepositoryService implements IService {
 		return referenceRepository != null;
 	}
 
-	public Image getSelectedImage() {
-		return imagePainterFactory.getImageByName(getSelectedTile().getName());
-	}
-
-	public Image getImage(int index) {
-		return imagePainterFactory.getImageByName(getTile(index).getName());
-	}
-
+	/*
+	 * public Image getSelectedImage() { return
+	 * imagePainterFactory.getImageByName(getSelectedTile().getName()); }
+	 * 
+	 * public Image getImage(int index, int colorIndex) { return
+	 * imagePainterFactory.getImageByName(getTile(index).getName(), colorIndex); }
+	 */
 	public void setMetadata(ProjectMetaData metadata) {
 		container.setMetadata(metadata);
 		computeTileSize();

@@ -102,7 +102,6 @@ public class GfxEditorView implements ITileUpdateListener {
 	private File file;
 	private Project project;
 	private String owner;
-	private String referenceOwner;
 
 	@Inject
 	private MPart part;
@@ -429,12 +428,9 @@ public class GfxEditorView implements ITileUpdateListener {
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 
-		if (graphicFormat.getId().endsWith("SCREENSET")) {
+		multiColorChooser.addColorSelectionListener(painter);
+		multiColorChooser.addColorSelectionListener(repository);
 
-		} else {
-			multiColorChooser.addColorSelectionListener(painter);
-			multiColorChooser.addColorSelectionListener(repository);
-		}
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {

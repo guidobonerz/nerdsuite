@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
@@ -36,8 +39,13 @@ public class ImagePainterFactory {
 		imagePool = new HashMap<>();
 	}
 
-	public Image getImageByName(String name) {
-		return imagePool.get(name);
+	public Image getImageByName(String name, int colorIndex, IColorPaletteProvider colorPaletteProvider) {
+		Image image = imagePool.get(name);
+		ImageData id = image.getImageData();
+		System.out.println(colorIndex);
+		Color color = colorPaletteProvider.getColorByIndex(colorIndex);
+		id.palette = new PaletteData(color.getRed(), color.getGreen(), color.getBlue());
+		return image;
 	}
 
 	public Image getImage(TileRepositoryService service, int tileIndex, int x, int y, int action,
@@ -112,7 +120,18 @@ public class ImagePainterFactory {
 		if (checkMode(update, PIXEL)) {
 			int offset = py * width + px;
 			if (offset < size) {
-				draw(gc, offset, layerList, conf, px, py, colorPaletteProvider);
+				if (referenceRepository == null) {
+					draw(gc, offset, layerList, conf, px, py, colorPaletteProvider);
+				} else {
+					Layer l = layerList.get(0);
+					if (l.getBrush() != null) {
+						int brushIndex = l.getBrush()[offset];
+						Tile tile = referenceRepository.getTile(brushIndex);
+						Image img = referenceRepository.getImagePainterFactory().getImageByName(tile.getName(),
+								l.getSelectedColorIndex(), colorPaletteProvider);
+						gc.drawImage(img, x * conf.pixelSize, y * conf.pixelSize);
+					}
+				}
 			}
 		} else {
 			for (int i = 0; i < size; i++) {
@@ -138,17 +157,8 @@ public class ImagePainterFactory {
 			// gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 :
 			// 255);
 			// }
-
-			if (referenceRepository == null) {
-				gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
-				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
-
-			} else {
-				gc.setBackground(colorPaletteProvider.getColorByIndex(1));
-				Image img = referenceRepository.getImage(content[offset]);
-				gc.drawImage(img, x * conf.pixelSize, y * conf.pixelSize);
-			}
-
+			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
+			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
 		}
 	}
 }
