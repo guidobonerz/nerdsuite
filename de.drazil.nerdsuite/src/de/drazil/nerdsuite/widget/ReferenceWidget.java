@@ -168,6 +168,8 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int update) {
+		gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService,
+				colorPaletteProvider, conf), 0, 0);
 		/*
 		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService, index, 0, 0,
 				update, conf, colorPaletteProvider, tileRepositoryService.getMetadata());

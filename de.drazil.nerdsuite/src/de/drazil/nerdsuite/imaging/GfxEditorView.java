@@ -120,8 +120,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 			@Override
 			public Color getColorByIndex(int index) {
-				return PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform())
-						.get(index).getColor();
+				return PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()).get(index).getColor();
 			}
 		};
 
@@ -369,22 +368,21 @@ public class GfxEditorView implements ITileUpdateListener {
 		}
 
 		GridData gridData = null;
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
-		gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		//gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
+		//gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
 		gridData.verticalSpan = 2;
 		gridData.verticalAlignment = GridData.BEGINNING;
 		scrollablePainter.setLayoutData(gridData);
 
-		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED,
-				graphicFormat.getId().endsWith("SCREENSET") ? 2 : 4,
+		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, graphicFormat.getId().endsWith("SCREENSET") ? 2 : 4,
 				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		multiColorChooser.setLayoutData(gridData);
 
 		if (tileRepositoryService.hasReference()) {
-			gridData = new GridData(GridData.FILL);
-			gridData.verticalSpan = 2;
+			gridData = new GridData(GridData.FILL_VERTICAL);
+			gridData.verticalSpan = 3;
 			gridData.verticalAlignment = GridData.BEGINNING;
 			referenceRepository = createReferenceRepositoryWidget();
 			referenceRepository.setLayoutData(gridData);
@@ -461,8 +459,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	public PainterWidget createPainterWidget() {
-		scrollablePainter = new ScrolledComposite(parent,
-				SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
+		scrollablePainter = new ScrolledComposite(parent, SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
 		// scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, metadata);
@@ -530,8 +527,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
-		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles
-				|| redrawMode == RedrawMode.DrawTemporarySelectedTile);
+		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawTemporarySelectedTile);
 		List<String> tags = new LinkedList<>();
 		tags.add("Animator");
 		E4Utils.setToolItemEnabled(part, modelService, tags, enableAnimationControls);

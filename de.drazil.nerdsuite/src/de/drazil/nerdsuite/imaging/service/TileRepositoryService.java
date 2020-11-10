@@ -56,6 +56,10 @@ public class TileRepositoryService implements IService {
 		return referenceRepository != null;
 	}
 
+	public void reset() {
+		imagePainterFactory.resetCache();
+	}
+
 	/*
 	 * public Image getSelectedImage() { return
 	 * imagePainterFactory.getImageByName(getSelectedTile().getName()); }
@@ -73,8 +77,7 @@ public class TileRepositoryService implements IService {
 	}
 
 	private void computeTileSize() {
-		tileSize = container.getMetadata().getHeight() * container.getMetadata().getWidth()
-				* container.getMetadata().getColumns() * container.getMetadata().getRows();
+		tileSize = container.getMetadata().getHeight() * container.getMetadata().getWidth() * container.getMetadata().getColumns() * container.getMetadata().getRows();
 	}
 
 	public void setInitialSize(int size) {
@@ -539,11 +542,9 @@ public class TileRepositoryService implements IService {
 	private void fireTileRedraw(List<Integer> selectedTileIndexList, int action, boolean temporary) {
 		if (selectedTileIndexList != null) {
 			if (selectedTileIndexList.size() == 1) {
-				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
-						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, action));
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList, temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, action));
 			} else {
-				tileUpdateListener.forEach(
-						listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, action));
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, action));
 			}
 		}
 	}
@@ -561,8 +562,7 @@ public class TileRepositoryService implements IService {
 			String referenceId = null;
 			String referenceRepositoryLocation = container.getReferenceRepositoryLocation();
 			if (null != referenceRepositoryLocation) {
-				File referenceFile = Path.of(Configuration.WORKSPACE_PATH.toString(), referenceRepositoryLocation)
-						.toFile();
+				File referenceFile = Path.of(Configuration.WORKSPACE_PATH.toString(), referenceRepositoryLocation).toFile();
 				referenceId = referenceFile.getName().split("\\.")[0].toUpperCase();
 				referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
 				TileContainer refContainer = referenceRepository.load(referenceFile);
@@ -593,8 +593,7 @@ public class TileRepositoryService implements IService {
 	}
 
 	private static String getHeaderText(Project project, ProjectMetaData metadata) {
-		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
-				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
+		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(), DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
 				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()));
 		return s;
 	}

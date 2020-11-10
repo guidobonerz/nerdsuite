@@ -37,6 +37,13 @@ public class ImagePainterFactory {
 		imagePool = new HashMap<>();
 	}
 
+	public void resetCache() {
+		for (Image i : imagePool.values()) {
+			i.dispose();
+		}
+		imagePool.clear();
+	}
+
 	public Image getGridLayer(ImagingWidgetConfiguration conf) {
 		String name = conf.getGridStyle().toString();
 		Image image = imagePool.get(name);
@@ -46,14 +53,13 @@ public class ImagePainterFactory {
 			GC gc = new GC(image);
 			gc.setBackground(new Color(new RGB(0, 0, 0)));
 			gc.fillRectangle(0, 0, conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.setForeground(conf.gridStyle == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
 			for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
 				for (int y = 0; y <= conf.height * conf.tileRows; y++) {
-					gc.setForeground(Constants.PIXEL_GRID_COLOR);
+
 					if (conf.gridStyle == GridType.Line) {
-						gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize,
-								conf.height * conf.pixelSize * conf.tileRows);
-						gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns,
-								y * conf.pixelSize);
+						gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize, conf.height * conf.pixelSize * conf.tileRows);
+						gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns, y * conf.pixelSize);
 					} else {
 						gc.drawPoint(x * conf.pixelSize, y * conf.pixelSize);
 					}
@@ -69,8 +75,7 @@ public class ImagePainterFactory {
 		return image;
 	}
 
-	public Image drawSelectedTile(TileRepositoryService service, IColorPaletteProvider colorProvider,
-			ImagingWidgetConfiguration conf) {
+	public Image drawSelectedTile(TileRepositoryService service, IColorPaletteProvider colorProvider, ImagingWidgetConfiguration conf) {
 
 		int x = 0;
 		int y = 0;
@@ -91,8 +96,7 @@ public class ImagePainterFactory {
 		return image;
 	}
 
-	public Image drawPixel(TileRepositoryService service, int x, int y, IColorPaletteProvider colorProvider,
-			ImagingWidgetConfiguration conf) {
+	public Image drawPixel(TileRepositoryService service, int x, int y, IColorPaletteProvider colorProvider, ImagingWidgetConfiguration conf) {
 		// System.out.println("draw pixel");
 
 		Layer layer = service.getActiveLayer();
@@ -106,8 +110,7 @@ public class ImagePainterFactory {
 		return image;
 	}
 
-	public Image getSelectedImage(TileRepositoryService service, IColorPaletteProvider colorProvider,
-			ImagingWidgetConfiguration conf) {
+	public Image getSelectedImage(TileRepositoryService service, IColorPaletteProvider colorProvider, ImagingWidgetConfiguration conf) {
 		Tile tile = service.getSelectedTile();
 		String name = tile.getName();
 		Image mainImage = imagePool.get(name);
