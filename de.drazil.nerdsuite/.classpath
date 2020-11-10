@@ -26,22 +26,5 @@
 	<classpathentry kind="lib" path="ext_libs/humble-video-arch-x86_64-w64-mingw32-0.3.0.jar"/>
 	<classpathentry kind="lib" path="ext_libs/humble-video-noarch-0.3.0.jar"/>
 	<classpathentry kind="lib" path="ext_libs/commons-net-3.7.1.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-assimp.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-assimp-javadoc.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-assimp-natives-windows.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-glfw.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-glfw-javadoc.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-glfw-natives-windows.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-natives-macos.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-natives-windows.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-openal.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-openal-javadoc.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-openal-natives-windows.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-opengl.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-opengl-natives-windows.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-stb.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-stb-javadoc.jar"/>
-	<classpathentry kind="lib" path="ext_libs/opengl/lwjgl-stb-natives-windows.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
