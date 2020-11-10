@@ -121,7 +121,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			@Override
 			public Color getColorByIndex(int index) {
 				return PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform())
-						.get(tileRepositoryService.getColorIndex(index)).getColor();
+						.get(index).getColor();
 			}
 		};
 

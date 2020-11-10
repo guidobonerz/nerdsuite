@@ -424,7 +424,8 @@ public class TileRepositoryService implements IService {
 	}
 
 	public void setActiveLayerColorIndex(int index, int colorIndex, boolean select) {
-		getActiveLayer().getColorPalette().set(index, colorIndex);
+		Layer layer = getActiveLayer();
+		layer.getColorPalette().set(index, colorIndex);
 		if (select) {
 			getActiveLayer().setSelectedColorIndex(index);
 		}

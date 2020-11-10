@@ -8,14 +8,12 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.CursorMode;
-import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
@@ -39,6 +37,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
+
 		this.parent = (ScrolledComposite) parent;
 		this.parent.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -52,6 +51,7 @@ public class PainterWidget extends BaseImagingWidget {
 				scrollWorkArea(e.x, e.y);
 			}
 		});
+
 	}
 
 	@Override
@@ -75,6 +75,7 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
+			System.out.printf("x:%2d   y:%2d\n", cursorX, cursorY);
 			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
@@ -89,8 +90,9 @@ public class PainterWidget extends BaseImagingWidget {
 			int xoff = x - startPos.x;
 			int yoff = y - startPos.y;
 			scrollWorkArea(xoff, yoff);
-		} else if (conf.cursorMode == CursorMode.Point) {
+		} else if (conf.cursorMode == CursorMode.Point && cursorChanged) {
 			setPixel(tile, cursorX, cursorY, conf);
+			// System.out.printf("x:%2d y:%2d\n", cursorX, cursorY);
 			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
@@ -216,23 +218,27 @@ public class PainterWidget extends BaseImagingWidget {
 			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider,
 					action);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
-			paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
+			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
-			int index = tileRepositoryService.getSelectedTileIndexList().get(0);
-			paintTile(gc, index, conf, colorPaletteProvider, action);
+			System.out.println("draw full image");
+			gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService,
+					colorPaletteProvider, conf), 0, 0);
+			// int index = tileRepositoryService.getSelectedTileIndexList().get(0);
+			// paintTile(gc, conf, colorPaletteProvider);
 		}
 
 		if (paintPixelGrid) {
 
-			paintPixelGrid(gc);
+			gc.drawImage(tileRepositoryService.getImagePainterFactory().getGridLayer(conf), 0, 0);
 			if (paintSeparator) {
-				paintSeparator(gc);
+				// paintSeparator(gc);
 			}
 			if (paintTileSubGrid) {
-				paintTileSubGrid(gc);
+				// paintTileSubGrid(gc);
 			}
 
 		}
+
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			paintRangeSelection(gc);
 		} else if (conf.cursorMode == CursorMode.Point) {
@@ -268,22 +274,6 @@ public class PainterWidget extends BaseImagingWidget {
 		if (computeCursorIndex(cursorX, cursorY) < conf.width * conf.height * conf.tileColumns * conf.tileRows) {
 			gc.setForeground(Constants.BRIGHT_ORANGE);
 			gc.drawRectangle(cursorX * conf.pixelSize, cursorY * conf.pixelSize, conf.pixelSize, conf.pixelSize);
-		}
-	}
-
-	private void paintPixelGrid(GC gc) {
-		for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
-			for (int y = 0; y <= conf.height * conf.tileRows; y++) {
-				gc.setForeground(Constants.PIXEL_GRID_COLOR);
-				if (conf.gridStyle == GridType.Line) {
-					gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize,
-							conf.height * conf.pixelSize * conf.tileRows);
-					gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns,
-							y * conf.pixelSize);
-				} else {
-					gc.drawPoint(x * conf.pixelSize, y * conf.pixelSize);
-				}
-			}
 		}
 	}
 
@@ -383,33 +373,31 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
-			layer.getContent()[y * conf.tileWidth + x] = (conf.pencilMode == PencilMode.Draw)
-					? layer.getSelectedColorIndex()
-					: 0;
+			int colorIndex = (conf.pencilMode == PencilMode.Draw) ? layer.getSelectedColorIndex() : 0;
+			int colorId = tileRepositoryService.getActiveLayer().getColorPalette().get(colorIndex);
+			int offset = y * conf.tileWidth + x;
+			layer.getContent()[offset] = colorId;
 
-			if (referenceRepository != null) {
-				int brush[] = layer.getBrush();
-				if (brush == null) {
-					layer.initBrush(tileRepositoryService.getMetadata().getBlankValue());
-				}
-				layer.getBrush()[y * conf.tileWidth + x] = referenceRepository.getSelectedTileIndex();
-			}
+			/*
+			 * if (referenceRepository != null) { int brush[] = layer.getBrush(); if (brush
+			 * == null) {
+			 * layer.initBrush(tileRepositoryService.getMetadata().getBlankValue()); }
+			 * layer.getBrush()[y * conf.tileWidth + x] =
+			 * referenceRepository.getSelectedTileIndex(); }
+			 */
 		}
+
 	}
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf,
 			IColorPaletteProvider colorPaletteProvider, int action) {
-		gc.drawImage(tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService,
-				tileRepositoryService.getSelectedTileIndex(), x, y, action, conf, colorPaletteProvider,
-				tileRepositoryService.getMetadata()), 0, 0);
+		gc.drawImage(tileRepositoryService.getImagePainterFactory().drawPixel(tileRepositoryService, cursorX, cursorY,
+				colorPaletteProvider, conf), 0, 0);
 	}
 
-	private void paintTile(GC gc, int index, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, int update) {
-		Tile tile = tileRepositoryService.getTile(index);
-		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService, index, 0, 0,
-				update, conf, colorPaletteProvider, tileRepositoryService.getMetadata());
-		gc.drawImage(image, 0, 0);
+	private void paintTile(GC gc, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider) {
+		gc.drawImage(tileRepositoryService.getImagePainterFactory().drawSelectedTile(tileRepositoryService,
+				colorPaletteProvider, conf), 0, 0);
 	}
 
 	@Override
@@ -425,6 +413,8 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	public void redrawCalculatedArea() {
 		redraw();
+		// redraw(cursorX * 8, cursorY * 8, 8, 8, false);
+		// System.out.println("redraw calculated");
 	}
 
 	@Override
