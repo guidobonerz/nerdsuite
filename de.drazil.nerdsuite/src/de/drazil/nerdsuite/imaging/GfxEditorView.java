@@ -368,9 +368,11 @@ public class GfxEditorView implements ITileUpdateListener {
 		}
 
 		GridData gridData = null;
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		//gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
-		//gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
+		// gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		// gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth :
+		// actualSize.x;
+		gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
 		gridData.verticalSpan = 2;
 		gridData.verticalAlignment = GridData.BEGINNING;
 		scrollablePainter.setLayoutData(gridData);
@@ -459,7 +461,12 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	public PainterWidget createPainterWidget() {
-		scrollablePainter = new ScrolledComposite(parent, SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
+		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
+		scrollablePainter.addListener(SWT.Resize, event -> {
+			final int width = scrollablePainter.getClientArea().width;
+			final int height = scrollablePainter.getClientArea().height;
+			scrollablePainter.setMinSize(painter.computeSize(width, height));
+		});
 		// scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, metadata);

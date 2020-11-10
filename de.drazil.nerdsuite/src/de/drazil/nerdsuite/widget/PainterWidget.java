@@ -75,7 +75,7 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-			System.out.printf("x:%2d   y:%2d\n", cursorX, cursorY);
+			// System.out.printf("x:%2d y:%2d\n", cursorX, cursorY);
 			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
@@ -138,7 +138,7 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point && cursorChanged) {
-			System.out.printf("x:%2d  y:%2d", cursorX, cursorY);
+			// System.out.printf("x:%2d y:%2d", cursorX, cursorY);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 		}
 	}
@@ -151,14 +151,14 @@ public class PainterWidget extends BaseImagingWidget {
 		if (Math.abs(scrollStep) % 3 == 0) {
 			boolean direction = oldScrollStep < scrollStep;
 			int step = direction ? 2 : -2;
-			if (conf.pixelSize + step >= 7 && conf.pixelSize + step <= 32) {
+			if (conf.pixelSize + step >= 8 && conf.pixelSize + step <= 32) {
 				conf.pixelSize += step;
 				recalc();
 				conf.computeSizes();
 				tileRepositoryService.reset();
 				tileRepositoryService.getImagePainterFactory().drawSelectedTile(tileRepositoryService, colorPaletteProvider, conf);
 				doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
-				getParent().layout();
+				((ScrolledComposite) getParent()).setMinSize(conf.getFullWidthPixel(), conf.getFullHeightPixel());
 			}
 
 		}
@@ -177,7 +177,7 @@ public class PainterWidget extends BaseImagingWidget {
 			selectedPixelRangeY = 0;
 			selectedPixelRangeX2 = 0;
 			selectedPixelRangeY2 = 0;
-			System.out.println("reset");
+			// System.out.println("reset");
 		} else if (mode == 1) {
 			if (!rangeSelectionStarted) {
 				selectedPixelRangeX = x;
@@ -219,7 +219,7 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
-			System.out.println("draw full image");
+			// System.out.println("draw full image");
 			gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService, colorPaletteProvider, conf), 0, 0);
 			// int index = tileRepositoryService.getSelectedTileIndexList().get(0);
 			// paintTile(gc, conf, colorPaletteProvider);
@@ -411,9 +411,11 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
+
 		ProjectMetaData metadata = tileRepositoryService.getMetadata();
 		int width = (metadata.getWidth() * conf.currentPixelWidth * metadata.getColumns() * conf.columns);
 		int height = (metadata.getHeight() * conf.currentPixelHeight * metadata.getRows() * conf.rows);
+		System.out.printf("width:%2d  height:%2d", width, height);
 		return new Point(width, height);
 	}
 }
