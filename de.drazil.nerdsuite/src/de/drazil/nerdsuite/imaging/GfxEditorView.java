@@ -463,9 +463,8 @@ public class GfxEditorView implements ITileUpdateListener {
 	public PainterWidget createPainterWidget() {
 		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
 		scrollablePainter.addListener(SWT.Resize, event -> {
-			final int width = scrollablePainter.getClientArea().width;
-			final int height = scrollablePainter.getClientArea().height;
-			scrollablePainter.setMinSize(painter.computeSize(width, height));
+			
+			//scrollablePainter.setMinSize(painter.computeSize(pain, height));
 		});
 		// scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
@@ -513,7 +512,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	private ReferenceWidget createReferenceRepositoryWidget() {
 
 		referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		referenceRepository.getConf().setPixelSize(2);
+		referenceRepository.getConf().setPixelSize(1);
 		referenceRepository.getConf().setWidth(8);
 		referenceRepository.getConf().setHeight(8);
 		referenceRepository.getConf().setTileRows(1);

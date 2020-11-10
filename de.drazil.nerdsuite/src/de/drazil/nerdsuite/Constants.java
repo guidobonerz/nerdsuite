@@ -54,7 +54,7 @@ public class Constants {
 	public final static Color SOURCE_EDITOR_FOREGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C0C0C0"));
 	public final static Color SOURCE_EDITOR_BACKGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
 	public final static Color SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#404040"));
-	public final static Color PIXEL_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#383838"));
+	public final static Color PIXEL_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#686868"));
 	public final static Color LINE_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#383838"));
 	public final static Color TILE_SUB_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#FFC30D"));
 	public final static Color TILE_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#808080"));

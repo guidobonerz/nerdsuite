@@ -220,9 +220,10 @@ public class PainterWidget extends BaseImagingWidget {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
 			// System.out.println("draw full image");
-			gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService, colorPaletteProvider, conf), 0, 0);
+			// gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService,
+			// colorPaletteProvider, conf), 0, 0);
 			// int index = tileRepositoryService.getSelectedTileIndexList().get(0);
-			// paintTile(gc, conf, colorPaletteProvider);
+			paintTile(gc, conf, colorPaletteProvider);
 		}
 
 		if (paintPixelGrid) {
@@ -371,17 +372,19 @@ public class PainterWidget extends BaseImagingWidget {
 			int colorIndex = (conf.pencilMode == PencilMode.Draw) ? layer.getSelectedColorIndex() : 0;
 			int colorId = tileRepositoryService.getActiveLayer().getColorPalette().get(colorIndex);
 			int offset = y * conf.tileWidth + x;
+
 			layer.getContent()[offset] = colorId;
 
-			/*
-			 * if (referenceRepository != null) { int brush[] = layer.getBrush(); if (brush
-			 * == null) {
-			 * layer.initBrush(tileRepositoryService.getMetadata().getBlankValue()); }
-			 * layer.getBrush()[y * conf.tileWidth + x] =
-			 * referenceRepository.getSelectedTileIndex(); }
-			 */
+			if (referenceRepository != null) {
+				int brush[] = layer.getBrush();
+				if (brush == null) {
+					layer.initBrush(tileRepositoryService.getMetadata().getBlankValue());
+				}
+				int i = referenceRepository.getSelectedTileIndex();
+				layer.getBrush()[offset] = i;
+				
+			}
 		}
-
 	}
 
 	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider, int action) {

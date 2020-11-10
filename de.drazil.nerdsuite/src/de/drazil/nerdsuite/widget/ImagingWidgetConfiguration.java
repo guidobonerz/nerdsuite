@@ -258,6 +258,8 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 
 	public void computeSizes() {
 
+		currentPixelWidth = pixelSize;
+		currentPixelHeight = pixelSize;
 		iconSize = width * height;
 		tileSize = iconSize * tileColumns * tileRows;
 		tileWidth = width * tileColumns;
@@ -268,7 +270,6 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 		fullHeightPixel = tileHeightPixel * rows;
 		scaledTileWidth = fullWidthPixel;
 		scaledTileHeight = fullHeightPixel;
-		currentPixelWidth = pixelSize;
-		currentPixelHeight = pixelSize;
+
 	}
 }
