@@ -471,6 +471,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, metadata);
 		painter.getConf().setWidgetName("Painter :");
+		painter.getConf().setPixelSize(8);
 		painter.getConf().setPixelGridEnabled(true);
 		painter.getConf().setGridStyle(GridType.Dot);
 		painter.getConf().setTileGridEnabled(false);

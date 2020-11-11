@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
@@ -35,8 +34,6 @@ public class TileRepositoryService implements IService {
 	@Getter
 	@Setter
 	private Rectangle selection;
-	@Getter
-	private ImagePainterFactory imagePainterFactory;
 	private TileContainer container;
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	private List<ITileUpdateListener> tileUpdateListener = null;
@@ -56,17 +53,6 @@ public class TileRepositoryService implements IService {
 		return referenceRepository != null;
 	}
 
-	public void reset() {
-		imagePainterFactory.resetCache();
-	}
-
-	/*
-	 * public Image getSelectedImage() { return
-	 * imagePainterFactory.getImageByName(getSelectedTile().getName()); }
-	 * 
-	 * public Image getImage(int index, int colorIndex) { return
-	 * imagePainterFactory.getImageByName(getTile(index).getName(), colorIndex); }
-	 */
 	public void setMetadata(ProjectMetaData metadata) {
 		container.setMetadata(metadata);
 		computeTileSize();
@@ -554,7 +540,6 @@ public class TileRepositoryService implements IService {
 	}
 
 	public TileContainer load(File fileName) {
-
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
@@ -567,10 +552,7 @@ public class TileRepositoryService implements IService {
 				referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
 				TileContainer refContainer = referenceRepository.load(referenceFile);
 				container.getMetadata().setReferenceRepositoryId(referenceId);
-
 			}
-
-			imagePainterFactory = new ImagePainterFactory(referenceRepository);
 			computeTileSize();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

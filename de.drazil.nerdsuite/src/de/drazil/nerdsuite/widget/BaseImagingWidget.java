@@ -70,6 +70,9 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	private List<IDrawListener> drawListenerList = null;
 	protected TileRepositoryService tileRepositoryService;
+	protected TileRepositoryService tileRepositoryReferenceService;
+	@Getter
+	protected ImagePainterFactory imagePainterFactory;
 
 	protected Tile tile = null;
 	protected Image image = null;
@@ -97,7 +100,9 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		this.colorPaletteProvider = colorPaletteProvider;
 
 		drawListenerList = new ArrayList<>();
+		imagePainterFactory = new ImagePainterFactory(conf, colorPaletteProvider);
 		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
+		tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceRepositoryId(), TileRepositoryService.class);
 		addPaintListener(this);
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override

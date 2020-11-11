@@ -157,8 +157,9 @@ public class PainterWidget extends BaseImagingWidget {
 				conf.pixelSize += step;
 				recalc();
 				conf.computeSizes();
-				tileRepositoryService.reset();
-				tileRepositoryService.getImagePainterFactory().drawSelectedTile(tileRepositoryService, colorPaletteProvider, conf);
+				imagePainterFactory.resetCache();
+				// imagePainterFactory.drawSelectedTile(tileRepositoryService,
+				// colorPaletteProvider, conf);
 				doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 				((ScrolledComposite) getParent()).setMinSize(conf.getFullWidthPixel(), conf.getFullHeightPixel());
 			}
@@ -217,7 +218,7 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
-			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, conf, colorPaletteProvider, action);
+			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, action);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
@@ -225,12 +226,12 @@ public class PainterWidget extends BaseImagingWidget {
 			// gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService,
 			// colorPaletteProvider, conf), 0, 0);
 			// int index = tileRepositoryService.getSelectedTileIndexList().get(0);
-			paintTile(gc, conf, colorPaletteProvider);
+			paintTile(gc);
 		}
 
 		if (paintPixelGrid) {
 
-			gc.drawImage(tileRepositoryService.getImagePainterFactory().getGridLayer(conf), 0, 0);
+			gc.drawImage(imagePainterFactory.getGridLayer(conf), 0, 0);
 			if (paintSeparator) {
 				// paintSeparator(gc);
 			}
@@ -389,12 +390,12 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 	}
 
-	private void paintPixel(GC gc, Tile tile, int x, int y, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider, int action) {
-		gc.drawImage(tileRepositoryService.getImagePainterFactory().drawPixel(tileRepositoryService, cursorX, cursorY, colorPaletteProvider, conf), 0, 0);
+	private void paintPixel(GC gc, Tile tile, int x, int y, int action) {
+		gc.drawImage(imagePainterFactory.drawPixel(tileRepositoryService, tileRepositoryReferenceService, null,cursorX, cursorY), 0, 0);
 	}
 
-	private void paintTile(GC gc, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider) {
-		gc.drawImage(tileRepositoryService.getImagePainterFactory().drawSelectedTile(tileRepositoryService, colorPaletteProvider, conf), 0, 0);
+	private void paintTile(GC gc) {
+		gc.drawImage(imagePainterFactory.drawSelectedTile(tileRepositoryService,tileRepositoryReferenceService), 0, 0);
 	}
 
 	@Override
