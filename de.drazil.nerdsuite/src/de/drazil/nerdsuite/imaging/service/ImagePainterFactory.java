@@ -78,7 +78,7 @@ public class ImagePainterFactory {
 	public Image drawSelectedTile(TileRepositoryService service, IColorPaletteProvider colorProvider, ImagingWidgetConfiguration conf) {
 		return drawTile(service, service.getSelectedTileIndex(), colorProvider, conf);
 	}
-
+		
 	public Image drawTile(TileRepositoryService service, int index, IColorPaletteProvider colorProvider, ImagingWidgetConfiguration conf) {
 		int x = 0;
 		int y = 0;
@@ -95,8 +95,14 @@ public class ImagePainterFactory {
 					x = 0;
 					y++;
 				}
-				gc.setBackground(colorProvider.getColorByIndex(content[i]));
-				gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+				if (referenceRepository != null) {
+					int bi = layer.getBrush()[i];
+					Image refImage = referenceRepository.getImagePainterFactory().drawTile(referenceRepository, bi, colorProvider, conf);
+					gc.drawImage(refImage, x * conf.currentPixelWidth, y * conf.currentPixelHeight);
+				} else {
+					gc.setBackground(colorProvider.getColorByIndex(content[i]));
+					gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+				}
 				x++;
 			}
 			gc.dispose();

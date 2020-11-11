@@ -110,6 +110,14 @@ public class ReferenceWidget extends BaseImagingWidget {
 		}
 	}
 
+	public void generateAllTiles() {
+
+		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
+			tileRepositoryService.getImagePainterFactory().drawTile(tileRepositoryService, i, colorPaletteProvider, conf);
+		}
+
+	}
+
 	public void paintControl(PaintEvent e) {
 		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(), conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
 	}

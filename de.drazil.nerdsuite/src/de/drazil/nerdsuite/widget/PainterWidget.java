@@ -63,6 +63,8 @@ public class PainterWidget extends BaseImagingWidget {
 		String referenceOwnerId = tileRepositoryService.getMetadata().getReferenceRepositoryId();
 		if (null != referenceOwnerId) {
 			referenceRepository = ServiceFactory.getService(referenceOwnerId, TileRepositoryService.class);
+			// referenceRepository.getImagePainterFactory().drawTileMap(referenceRepository,
+			// colorPaletteProvider, conf, 3, Constants.DARK_GREY, false);
 		}
 	}
 
@@ -382,7 +384,7 @@ public class PainterWidget extends BaseImagingWidget {
 				}
 				int i = referenceRepository.getSelectedTileIndex();
 				layer.getBrush()[offset] = i;
-				
+
 			}
 		}
 	}

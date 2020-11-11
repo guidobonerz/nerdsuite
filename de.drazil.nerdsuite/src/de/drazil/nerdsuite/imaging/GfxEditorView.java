@@ -407,8 +407,9 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		if (tileRepositoryService.hasReference()) {
 			referenceRepository.init(tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
+			referenceRepository.generateAllTiles();
 		}
-
+		
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
 
@@ -463,8 +464,8 @@ public class GfxEditorView implements ITileUpdateListener {
 	public PainterWidget createPainterWidget() {
 		scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
 		scrollablePainter.addListener(SWT.Resize, event -> {
-			
-			//scrollablePainter.setMinSize(painter.computeSize(pain, height));
+
+			// scrollablePainter.setMinSize(painter.computeSize(pain, height));
 		});
 		// scrollablePainter.setAlwaysShowScrollBars(true);
 		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
