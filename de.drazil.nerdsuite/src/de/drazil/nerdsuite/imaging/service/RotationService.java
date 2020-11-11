@@ -30,7 +30,7 @@ public class RotationService extends AbstractImagingService {
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService,
 			ImagingWidgetConfiguration configuration, TileAction tileAction) {
 		Rectangle r = service.getSelection();
-		int[] content = repositoryService.getActiveLayer().getContent();
+		int[] content =repositoryService.getActiveLayerFromSelectedTile().getContent();
 		int[] contentSelection = new int[r.width * r.height];
 		int[] targetContentSelection = new int[r.width * r.height];
 

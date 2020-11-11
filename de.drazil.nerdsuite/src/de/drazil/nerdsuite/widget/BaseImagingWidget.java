@@ -100,7 +100,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		this.colorPaletteProvider = colorPaletteProvider;
 
 		drawListenerList = new ArrayList<>();
-		imagePainterFactory = new ImagePainterFactory(conf, colorPaletteProvider);
+		imagePainterFactory = new ImagePainterFactory(owner, conf, colorPaletteProvider);
 		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
 		tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceRepositoryId(), TileRepositoryService.class);
 		addPaintListener(this);
@@ -114,7 +114,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 					conf.setRows(tileRepositoryService.getSize() / conf.getColumns() + (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
 					doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 				}
-
 			}
 		});
 	}

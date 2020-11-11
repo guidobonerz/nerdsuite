@@ -7,10 +7,8 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -49,6 +47,10 @@ public class TileRepositoryService implements IService {
 		container = new TileContainer();
 	}
 
+	public void init(int initialSize) {
+		container.setInitialSize(initialSize);
+	}
+
 	public boolean hasReference() {
 		return referenceRepository != null;
 	}
@@ -62,374 +64,70 @@ public class TileRepositoryService implements IService {
 		return container.getMetadata();
 	}
 
-	private void computeTileSize() {
-		tileSize = container.getMetadata().getHeight() * container.getMetadata().getWidth() * container.getMetadata().getColumns() * container.getMetadata().getRows();
+	public String getSelectedTileName() {
+		return getSelectedTile().getName();
 	}
 
-	public void setInitialSize(int size) {
-		for (int i = 0; i < size; i++) {
-			addTileInternal("tile_" + (container.getTileList().size() + 1));
-		}
-		setSelectedTileIndex(0);
+	public String getTileName(int index) {
+		return getTile(index).getName();
 	}
 
-	public Tile addTile() {
-		return addTile("tile_" + (container.getTileList().size() + 1));
+	public Tile getSelectedTile() {
+		return container.getSelectedTile();
 	}
 
-	public Tile addTile(String name) {
-		Tile tile = addTileInternal(name);
-		setSelectedTileIndex(container.getTileIndexOrderList().get(getSize() - 1));
-		fireTileAdded();
-		return tile;
+	public Layer getActiveLayerFromSelectedTile() {
+		return getSelectedTile().getActiveLayer();
 	}
 
-	private Tile addTileInternal(String name) {
-		Tile tile = new Tile(name);
-		addLayer(tile, "layer_1", tileSize);
-		container.getTileList().add(tile);
-		container.getTileIndexOrderList().add(container.getTileList().indexOf(tile));
-		return tile;
+	public Layer getActiveLayerFromTile(int index) {
+		return getTile(index).getActiveLayer();
 	}
 
-	public void removeLast() {
-		if (container.getTileIndexOrderList().size() > 0) {
-			List<Integer> l = new ArrayList<Integer>();
-			l.add(container.getTileIndexOrderList().size() - 1);
-			removeTile(l);
-		}
-	}
-
-	public void removeSelected() {
-		removeTile(container.getSelectedTileIndexList());
-	}
-
-	public void removeTile(List<Integer> tileIndexList) {
-		if (container.getTileIndexOrderList().size() > 0) {
-			for (int i = 0; i < tileIndexList.size(); i++) {
-				int tileIndex = container.getTileIndexOrderList().get(i);
-				container.getTileList().remove(tileIndex);
-				container.getTileIndexOrderList().remove(i);
-			}
-			fireTileRemoved();
-		}
-	}
-
-	public void moveTile(int from, int to) {
-		int v = container.getTileIndexOrderList().get(from);
-		if (to < from) {
-			container.getTileIndexOrderList().remove(from);
-			container.getTileIndexOrderList().add(to, v);
-		} else {
-			container.getTileIndexOrderList().add(to, v);
-			container.getTileIndexOrderList().remove(from);
-		}
-		fireTileReordered();
-	}
-
-	public int getTileIndex(int index) {
-		return container.getTileIndexOrderList().get(index);
+	public int getSelectedTileIndex() {
+		return container.getSelectedTileIndex();
 	}
 
 	public void setSelectedTileIndex(int index) {
-		container.getSelectedTileIndexList().clear();
-		container.getSelectedTileIndexList().add(index);
-		fireTileRedraw(container.getSelectedTileIndexList(), ImagePainterFactory.READ, false);
-
+		container.setSelectedTileIndex(index);
 	}
 
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
 		container.setSelectedTileIndexList(tileIndexList);
-		fireTileRedraw(tileIndexList, ImagePainterFactory.READ, false);
 	}
 
 	public List<Integer> getSelectedTileIndexList() {
 		return container.getSelectedTileIndexList();
 	}
 
-	@JsonIgnore
-	public Tile getSelectedTile() {
-		return getTile(getSelectedTileIndex());
-	}
-
-	@JsonIgnore
-	public int getSelectedTileIndex() {
-		return container.getSelectedTileIndexList().get(0);
-	}
-
-	public Tile getTile(int index) {
-		return getTile(index, false);
-	}
-
-	public Tile getTile(int index, boolean naturalOrder) {
-		return container.getTileList().get(naturalOrder ? index : container.getTileIndexOrderList().get(index));
+	public void moveTile(int from, int to) {
+		container.moveTile(from, to);
 	}
 
 	public int getSize() {
-		return container.getTileList().size();
+		return container.getSize();
 	}
 
-	public void setOrigin(Point origin) {
-		setOrigin(getSelectedTile(), origin);
+	public Tile getTile(int index) {
+		return container.getTile(index);
 	}
 
-	public void setOrigin(int tileIndex, Point origin) {
-		setOrigin(getTile(tileIndex), origin);
+	public Tile getTile(int index, boolean naturalOrder) {
+		return container.getTile(index, naturalOrder);
 	}
 
-	public void setOrigin(Tile tile, Point origin) {
-		tile.setOriginX(origin.x);
-		tile.setOriginY(origin.y);
+	public int getTileIndex(int index) {
+		return container.getTileIndex(index);
 	}
 
-	public Point getOrigin() {
-		return getOrigin(getSelectedTile());
+	public Tile addTile() {
+		return container.addTile();
 	}
 
-	public Point getOrigin(int tileIndex) {
-		return getOrigin(getTile(tileIndex));
+	private void computeTileSize() {
+		tileSize = container.getMetadata().getHeight() * container.getMetadata().getWidth() * container.getMetadata().getColumns() * container.getMetadata().getRows();
 	}
 
-	public Point getOrigin(Tile tile) {
-		return new Point(tile.getOriginX(), tile.getOriginY());
-	}
-
-	public List<Integer> getLayerIndexOrderList(Tile tile) {
-		return tile.getLayerIndexOrderList();
-	}
-
-	public List<Integer> getLayerIndexOrderList() {
-		return getLayerIndexOrderList(getSelectedTile());
-	}
-
-	public Layer getLayer(int tileIndex, int index) {
-		return getLayer(getTile(tileIndex), index);
-	}
-
-	public Layer getLayer(Tile tile, int index) {
-		return tile.getLayerList().get(index);
-	}
-
-	public Layer getLayer(int index) {
-		return getLayer(getSelectedTile(), index);
-	}
-
-	public Layer addLayer(Tile tile) {
-		return addLayer(tile, "layer_" + (tile.getLayerList().size() + 1), tileSize);
-	}
-
-	public Layer addLayer() {
-		return addLayer(getSelectedTile());
-	}
-
-	public Layer addLayer(Tile tile, String name, int size) {
-		Layer layer = new Layer(name, size);
-		layer.getColorPalette().add(0);
-		layer.getColorPalette().add(1);
-		layer.getColorPalette().add(2);
-		layer.getColorPalette().add(3);
-
-		tile.getLayerList().add(layer);
-		tile.getLayerIndexOrderList().add(tile.getLayerList().indexOf(layer));
-		tile.getLayerList().forEach(l -> l.setActive(false));
-		tile.getLayerList().get(tile.getLayerIndexOrderList().size() - 1).setActive(true);
-		layer.setSelectedColorIndex(0);
-		fireLayerAdded();
-		return layer;
-	}
-
-	public void removeActiveLayer() {
-
-	}
-
-	public void removeLastLayer() {
-		removeLastLayer(getSelectedTile());
-	}
-
-	public void removeLastLayer(Tile tile) {
-		if (tile.getLayerIndexOrderList().size() > 0) {
-			removeLayer(tile.getLayerIndexOrderList().get(tile.getLayerIndexOrderList().size()) - 1);
-		}
-	}
-
-	public void removeLayer(int index) {
-		removeLayer(getSelectedTile(), index);
-	}
-
-	public void removeLayer(Tile tile, int index) {
-		if (tile.getLayerIndexOrderList().size() > 0) {
-			int layerIndex = tile.getLayerIndexOrderList().get(index);
-			tile.getLayerList().remove(layerIndex);
-			tile.getLayerIndexOrderList().remove(index);
-			fireLayerRemoved();
-		}
-	}
-
-	public void moveToFront(int index) {
-		moveToFront(getSelectedTile(), index);
-	}
-
-	public void moveToFront(Tile tile, int index) {
-		if (index < 1) {
-			return;
-		}
-		tile.getLayerIndexOrderList().remove(index);
-		tile.getLayerIndexOrderList().add(0, index);
-		fireLayerReordered();
-	}
-
-	public void moveToBack(int index) {
-		moveToBack(getSelectedTile(), index);
-	}
-
-	public void moveToBack(Tile tile, int index) {
-		if (index < 1) {
-			return;
-		}
-		tile.getLayerIndexOrderList().remove(index);
-		tile.getLayerIndexOrderList().add(index);
-		fireLayerReordered();
-	}
-
-	public void moveUp(int index) {
-		moveUp(getSelectedTile(), index);
-	}
-
-	public void moveUp(Tile tile, int index) {
-		if (index < 1) {
-			return;
-		}
-		tile.getLayerIndexOrderList().remove(index);
-		tile.getLayerIndexOrderList().add(index - 1, index);
-		fireLayerReordered();
-	}
-
-	public void moveDown(int index) {
-		moveDown(getSelectedTile(), index);
-	}
-
-	public void moveDown(Tile tile, int index) {
-		if (index < 1) {
-			return;
-		}
-		tile.getLayerIndexOrderList().remove(index);
-		tile.getLayerIndexOrderList().add(index + 1, index);
-		fireLayerReordered();
-	}
-
-	public void move(int from, int to) {
-
-	}
-
-	public void setMulticolorEnabled(boolean multicolorEnabled) {
-		setMulticolorEnabled(getSelectedTile(), multicolorEnabled);
-	}
-
-	public void setMulticolorEnabled(Tile tile, boolean multicolorEnabled) {
-		tile.setMulticolor(multicolorEnabled);
-		fireTileChanged();
-	}
-
-	public void setShowOnlyActiveLayer(boolean showOnlyActiveLayer) {
-		setShowOnlyActiveLayer(getSelectedTile(), showOnlyActiveLayer);
-	}
-
-	public void setShowOnlyActiveLayer(Tile tile, boolean showOnlyActiveLayer) {
-		tile.setShowOnlyActiveLayer(showOnlyActiveLayer);
-		fireLayerVisibilityChanged(-1);
-	}
-
-	public void setShowInactiveLayerTranslucent(boolean showInactiveLayerTranslucent) {
-		setShowInactiveLayerTranslucent(getSelectedTile(), showInactiveLayerTranslucent);
-	}
-
-	public void setShowInactiveLayerTranslucent(Tile tile, boolean showInactiveLayerTranslucent) {
-		tile.setShowInactiveLayerTranslucent(showInactiveLayerTranslucent);
-		fireLayerVisibilityChanged(-1);
-	}
-
-	public void setLayerVisible(int index, boolean visible) {
-		setLayerVisible(getSelectedTile(), index, visible);
-	}
-
-	public void setLayerVisible(Tile tile, int index, boolean visible) {
-		tile.getLayerList().get(tile.getLayerIndexOrderList().get(index)).setVisible(visible);
-		fireLayerVisibilityChanged(index);
-	}
-
-	public void setLayerActive(int index, boolean active) {
-		setLayerActive(getSelectedTile(), index, active);
-	}
-
-	public void setLayerActive(Tile tile, int index, boolean active) {
-		tile.getLayerList().forEach(layer -> layer.setActive(false));
-		tile.getLayerList().get(tile.getLayerIndexOrderList().get(index)).setActive(active);
-		fireActiveLayerChanged(index);
-	}
-
-	public void setLayerLocked(int index, boolean active) {
-		setLayerLocked(getSelectedTile(), index, active);
-	}
-
-	public void setLayerLocked(Tile tile, int index, boolean active) {
-		tile.getLayerList().get(tile.getLayerIndexOrderList().get(index)).setLocked(active);
-		fireActiveLayerChanged(index);
-	}
-
-	public void resetActiveLayer() {
-		resetActiveLayer(getSelectedTile());
-	}
-
-	public void resetActiveLayer(int tileIndex) {
-		resetActiveLayer(getTile(tileIndex));
-	}
-
-	public void resetActiveLayer(Tile tile) {
-		getActiveLayer(tile).setContent(new int[tileSize]);
-	}
-
-	public void resetLayer(int index) {
-		resetLayer(getSelectedTile(), index);
-	}
-
-	public void resetLayer(int tileIndex, int index) {
-		resetLayer(getTile(tileIndex), index);
-	}
-
-	public void resetLayer(Tile tile, int index) {
-		getLayer(tile, index).setContent(new int[tileSize]);
-	}
-
-	public Layer getActiveLayer() {
-		return getActiveLayer(getSelectedTile());
-	}
-
-	public Layer getActiveLayer(int tileIndex) {
-		return getActiveLayer(getTile(tileIndex));
-	}
-
-	public Layer getActiveLayer(Tile tile) {
-		return tile.getLayerList().stream().filter(x -> x.isActive()).findFirst().orElse(null);
-	}
-
-	public void setActiveLayerColorIndex(int index, int colorIndex, boolean select) {
-		Layer layer = getActiveLayer();
-		layer.getColorPalette().set(index, colorIndex);
-		if (select) {
-			getActiveLayer().setSelectedColorIndex(index);
-		}
-		fireActiveLayerChanged(-1);
-	}
-
-	public int getColorIndex(int colorIndex) {
-		return getActiveLayer().getColorPalette().get(colorIndex);
-	}
-
-	/*
-	 * public void setLayerContent(int index, int content[]) {
-	 * layerList.get(layerIndexOrderList.get(index)).setContent(content);
-	 * fireLayerContentChanged(index); }
-	 */
 	public void addTileListener(ITileListener listener) {
 		createTileListenerList();
 		tileListenerList.add(listener);
@@ -514,7 +212,7 @@ public class TileRepositoryService implements IService {
 	}
 
 	private void fireTileAdded() {
-		tileServiceManagementListener.forEach(listener -> listener.tileAdded(getSelectedTile()));
+		tileServiceManagementListener.forEach(listener -> listener.tileAdded(container.getSelectedTile()));
 	}
 
 	private void fireTileRemoved() {

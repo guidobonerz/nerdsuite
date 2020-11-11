@@ -56,15 +56,12 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void init(String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
-		// TODO Auto-generated method stub
 		super.init(owner, colorPaletteProvider, autowrap);
 		tileRepositoryService.addTileListener(this);
 
 		String referenceOwnerId = tileRepositoryService.getMetadata().getReferenceRepositoryId();
 		if (null != referenceOwnerId) {
 			referenceRepository = ServiceFactory.getService(referenceOwnerId, TileRepositoryService.class);
-			// referenceRepository.getImagePainterFactory().drawTileMap(referenceRepository,
-			// colorPaletteProvider, conf, 3, Constants.DARK_GREY, false);
 		}
 	}
 
@@ -77,7 +74,6 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
 			setPixel(tile, cursorX, cursorY, conf);
-			// System.out.printf("x:%2d y:%2d\n", cursorX, cursorY);
 			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
@@ -93,7 +89,6 @@ public class PainterWidget extends BaseImagingWidget {
 			scrollWorkArea(xoff, yoff);
 		} else if (conf.cursorMode == CursorMode.Point && cursorChanged) {
 			setPixel(tile, cursorX, cursorY, conf);
-			// System.out.printf("x:%2d y:%2d\n", cursorX, cursorY);
 			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
@@ -102,7 +97,7 @@ public class PainterWidget extends BaseImagingWidget {
 		int xo = parent.getHorizontalBar().getSelection() - xoff;
 		int yo = parent.getVerticalBar().getSelection() - yoff;
 		parent.setOrigin(xo, yo);
-		tileRepositoryService.setOrigin(new Point(xo, yo));
+		tileRepositoryService.getSelectedTile().setOrigin(new Point(xo, yo));
 	}
 
 	@Override
@@ -140,7 +135,6 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point && cursorChanged) {
-			// System.out.printf("x:%2d y:%2d", cursorX, cursorY);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 		}
 	}
@@ -163,7 +157,6 @@ public class PainterWidget extends BaseImagingWidget {
 				doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 				((ScrolledComposite) getParent()).setMinSize(conf.getFullWidthPixel(), conf.getFullHeightPixel());
 			}
-
 		}
 	}
 
@@ -180,19 +173,15 @@ public class PainterWidget extends BaseImagingWidget {
 			selectedPixelRangeY = 0;
 			selectedPixelRangeX2 = 0;
 			selectedPixelRangeY2 = 0;
-			// System.out.println("reset");
 		} else if (mode == 1) {
 			if (!rangeSelectionStarted) {
 				selectedPixelRangeX = x;
 				selectedPixelRangeY = y;
 				rangeSelectionStarted = true;
 			} else {
-
 				selectedPixelRangeX2 = enabledSquareSelection && y - selectedPixelRangeY > x - selectedPixelRangeX ? selectedPixelRangeX + (selectedPixelRangeY2 - selectedPixelRangeY) : x;
-
 				selectedPixelRangeY2 = enabledSquareSelection && x - selectedPixelRangeX > y - selectedPixelRangeY ? selectedPixelRangeY + (selectedPixelRangeX2 - selectedPixelRangeX) : y;
 			}
-
 		} else if (mode == 2) {
 			int x1 = selectedPixelRangeX;
 			int x2 = selectedPixelRangeX2;
@@ -218,7 +207,7 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
-			paintPixel(gc, tileRepositoryService.getSelectedTile(), cursorX, cursorY, action);
+			paintPixel(gc, cursorX, cursorY, action);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
@@ -330,12 +319,12 @@ public class PainterWidget extends BaseImagingWidget {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
 		doRedraw(redrawMode, action);
-		parent.setOrigin(tileRepositoryService.getOrigin());
+		parent.setOrigin(tileRepositoryService.getSelectedTile().getOrigin());
 
 	}
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
-		Layer layer = tileRepositoryService.getActiveLayer();
+		Layer layer = tileRepositoryService.getSelectedTile().getActiveLayer();
 
 		switch (conf.paintMode) {
 		case Single: {
@@ -373,7 +362,7 @@ public class PainterWidget extends BaseImagingWidget {
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
 			int colorIndex = (conf.pencilMode == PencilMode.Draw) ? layer.getSelectedColorIndex() : 0;
-			int colorId = tileRepositoryService.getActiveLayer().getColorPalette().get(colorIndex);
+			int colorId = tileRepositoryService.getSelectedTile().getActiveLayer().getColorPalette().get(colorIndex);
 			int offset = y * conf.tileWidth + x;
 
 			layer.getContent()[offset] = colorId;
@@ -381,7 +370,7 @@ public class PainterWidget extends BaseImagingWidget {
 			if (referenceRepository != null) {
 				int brush[] = layer.getBrush();
 				if (brush == null) {
-					layer.initBrush(tileRepositoryService.getMetadata().getBlankValue());
+					layer.resetBrush(tileRepositoryService.getMetadata().getBlankValue());
 				}
 				int i = referenceRepository.getSelectedTileIndex();
 				layer.getBrush()[offset] = i;
@@ -390,12 +379,12 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 	}
 
-	private void paintPixel(GC gc, Tile tile, int x, int y, int action) {
-		gc.drawImage(imagePainterFactory.drawPixel(tileRepositoryService, tileRepositoryReferenceService, null,cursorX, cursorY), 0, 0);
+	private void paintPixel(GC gc, int x, int y, int action) {
+		gc.drawImage(imagePainterFactory.drawPixel(tileRepositoryService, tileRepositoryReferenceService, cursorX, cursorY), 0, 0);
 	}
 
 	private void paintTile(GC gc) {
-		gc.drawImage(imagePainterFactory.drawSelectedTile(tileRepositoryService,tileRepositoryReferenceService), 0, 0);
+		gc.drawImage(imagePainterFactory.drawSelectedTile(tileRepositoryService, tileRepositoryReferenceService), 0, 0);
 	}
 
 	@Override
@@ -405,7 +394,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.setActiveLayerColorIndex(colorNo, colorIndex, true);
+		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	@Override

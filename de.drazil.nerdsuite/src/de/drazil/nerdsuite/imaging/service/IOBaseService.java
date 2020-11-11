@@ -32,9 +32,9 @@ public class IOBaseService implements IService {
 			int[] workArray = null;
 			if (conversionMode == ConversionMode.toWorkArray) {
 				Tile tile = service.addTile();
-				workArray = service.getActiveLayer().getContent();
+				workArray = service.getActiveLayerFromSelectedTile().getContent();
 			} else if (conversionMode == ConversionMode.toBitplane) {
-				workArray = service.getActiveLayer(tc).getContent();
+				workArray = service.getActiveLayerFromTile(tc).getContent();
 			}
 			for (int si = 0, s = 0; si < tileSize; si += bytesPerRow, s += bytesPerRow) {
 				s = (si % (iconSize)) == 0 ? 0 : s;

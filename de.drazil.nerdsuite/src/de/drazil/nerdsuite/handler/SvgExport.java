@@ -54,7 +54,7 @@ public class SvgExport {
 		ProjectMetaData metadata = service.getMetadata();
 		Map<String, SvgPoint> map = new HashMap<String, SvgPoint>();
 
-		int[] content = service.getActiveLayer().getContent();
+		int[] content = service.getActiveLayerFromSelectedTile().getContent();
 		for (int i = 0; i < content.length; i++) {
 			String key = String.valueOf(content[i]);
 			List<SvgPoint> pathList = pathMap.get(key);

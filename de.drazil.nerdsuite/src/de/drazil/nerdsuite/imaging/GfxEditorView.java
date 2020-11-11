@@ -225,7 +225,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			MulticolorService service = ServiceFactory.getService(owner, MulticolorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(multicolor ? 1 : 0, modificationConfirmation);
-			tileRepositoryService.setMulticolorEnabled(multicolor);
+			tileRepositoryService.getSelectedTile().setMulticolorEnabled(multicolor);
 			multiColorChooser.setMonochrom(!multicolor);
 			part.setDirty(true);
 		}
@@ -277,7 +277,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
 				tileRepositoryService.addTile();
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
-				tileRepositoryService.removeSelected();
+				// tileRepositoryService.removeSelected();
 			} else {
 
 			}
@@ -291,9 +291,9 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageLayer(@UIEventTopic("Layer") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
-				tileRepositoryService.addLayer();
+				// tileRepositoryService.addLayer();
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
-				tileRepositoryService.removeActiveLayer();
+				// tileRepositoryService.removeActiveLayer();
 			} else {
 
 			}
@@ -409,7 +409,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			referenceRepository.init(tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
 			referenceRepository.generateAllTiles();
 		}
-		
+
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
 

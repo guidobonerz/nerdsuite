@@ -32,20 +32,26 @@ public class Layer {
 	@JsonIgnore
 	private int size;
 
-	public Layer(String name, int size) {
+	public Layer(String name, int size, int contentValue, int brushValue) {
 		this.name = name;
 		this.size = size;
-		initAll();
+		reset(contentValue, brushValue);
 	}
 
 	@JsonIgnore
-	public void initAll() {
-		this.content = new int[size];
-		this.brush = new int[size];
+	public void reset(int contentValue, int brushValue) {
+		resetBrush(brushValue);
+		resetContent(contentValue);
 	}
 
 	@JsonIgnore
-	public void initBrush(int blankValue) {
+	public void resetBrush(int blankValue) {
+		this.brush = new int[content.length];
+		Arrays.fill(brush, blankValue);
+	}
+
+	@JsonIgnore
+	public void resetContent(int blankValue) {
 		this.brush = new int[content.length];
 		Arrays.fill(brush, blankValue);
 	}

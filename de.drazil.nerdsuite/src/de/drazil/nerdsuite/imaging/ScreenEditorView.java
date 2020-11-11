@@ -122,7 +122,7 @@ public class ScreenEditorView implements ITileUpdateListener {
 			@Override
 			public Color getColorByIndex(int index) {
 				return PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform())
-						.get(tileRepositoryService.getColorIndex(index)).getColor();
+						.get(tileRepositoryService.getSelectedTile().getColorIndex(index)).getColor();
 			}
 		};
 
@@ -227,7 +227,7 @@ public class ScreenEditorView implements ITileUpdateListener {
 			MulticolorService service = ServiceFactory.getService(owner, MulticolorService.class);
 			service.setImagingWidgetConfiguration(painter.getConf());
 			service.execute(multicolor ? 1 : 0, modificationConfirmation);
-			tileRepositoryService.setMulticolorEnabled(multicolor);
+			tileRepositoryService.getSelectedTile().setMulticolorEnabled(multicolor);
 			multiColorChooser.setMonochrom(!multicolor);
 			part.setDirty(true);
 		}
@@ -279,7 +279,7 @@ public class ScreenEditorView implements ITileUpdateListener {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
 				tileRepositoryService.addTile();
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
-				tileRepositoryService.removeSelected();
+				//tileRepositoryService.removeSelected();
 			} else {
 
 			}
@@ -293,9 +293,9 @@ public class ScreenEditorView implements ITileUpdateListener {
 	public void manageLayer(@UIEventTopic("Layer") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("add")) {
-				tileRepositoryService.addLayer();
+				//tileRepositoryService.addLayer();
 			} else if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("remove")) {
-				tileRepositoryService.removeActiveLayer();
+				//tileRepositoryService.removeActiveLayer();
 			} else {
 
 			}

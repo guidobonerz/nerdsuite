@@ -113,7 +113,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 	public void generateAllTiles() {
 
 		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
-			imagePainterFactory.drawTile(tileRepositoryService, null, null, i);
+			imagePainterFactory.drawTile(tileRepositoryService, null, i);
 		}
 
 	}
@@ -126,10 +126,6 @@ public class ReferenceWidget extends BaseImagingWidget {
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 
 		gc.drawImage(imagePainterFactory.drawTileMap(tileRepositoryService, null, tileGap, Constants.DARK_GREY, false), 0, 0);
-		// for (int i = (drawAll ? 0 : start); i < (drawAll ?
-		// tileRepositoryService.getSize() : end); i++) {
-		// paintTile(this, gc, 0, conf, colorPaletteProvider, action);
-		// }
 
 		paintSelection(gc);
 		paintTileMarker(gc);
@@ -191,7 +187,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.setActiveLayerColorIndex(colorNo, colorIndex, true);
+		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	@Override

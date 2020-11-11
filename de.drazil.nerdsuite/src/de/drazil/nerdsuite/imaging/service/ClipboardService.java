@@ -28,14 +28,14 @@ public class ClipboardService implements IService {
 		} else if (action == PASTE) {
 			List<Integer> targetSelectionList = service.getSelectedTileIndexList();
 			for (int i = 0; i < selectionList.size(); i++) {
-				Layer sourceLayer = service.getActiveLayer(selectionList.get(i));
-				Layer targetLayer = service.getActiveLayer(targetSelectionList.get(i));
+				Layer sourceLayer = service.getActiveLayerFromTile(selectionList.get(i));
+				Layer targetLayer = service.getActiveLayerFromTile(targetSelectionList.get(i));
 				int[] targetContent = new int[sourceLayer.getContent().length];
 				for (int j = 0; j < targetContent.length; j++) {
 					targetLayer.getContent()[j] = sourceLayer.getContent()[j];
 				}
 				if (initialAction == CUT) {
-					service.resetActiveLayer(selectionList.get(i));
+					service.getActiveLayerFromTile(selectionList.get(i)).reset(0, 0);
 				}
 				service.redrawTileViewer(targetSelectionList, ImagePainterFactory.UPDATE, false);
 			}
