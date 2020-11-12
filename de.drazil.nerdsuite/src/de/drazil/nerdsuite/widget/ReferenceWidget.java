@@ -113,7 +113,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 	public void generateAllTiles() {
 
 		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
-			imagePainterFactory.drawTile(tileRepositoryService, null, i);
+			imagePainterFactory.drawTile(tileRepositoryService, null, i, 1, false);
 		}
 
 	}

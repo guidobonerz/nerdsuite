@@ -83,16 +83,18 @@ public class ImagePainterFactory {
 	}
 
 	public Image drawSelectedTile(TileRepositoryService service, TileRepositoryService referenceService) {
-		return drawTile(service, referenceService, service.getSelectedTileIndex());
+		return drawTile(service, referenceService, service.getSelectedTileIndex(), 255, true);
 	}
 
-	public Image drawTile(TileRepositoryService service, TileRepositoryService refService, int index) {
+	public Image drawTile(TileRepositoryService service, TileRepositoryService refService, int index, int colorIndex, boolean useColorIndex) {
 		int x = 0;
 		int y = 0;
+
 		String name = service.getTileName(index);
+		String internalName = String.format("%s_C%d", name, colorIndex);
 		Layer layer = service.getActiveLayerFromTile(index);
 		int content[] = layer.getContent();
-		Image image = imagePool.get(name);
+		Image image = imagePool.get(internalName);
 		if (image == null) {
 			image = createBaseImage(colorProvider.getColorByIndex(0), conf.tileWidthPixel, conf.tileHeightPixel);
 			GC gc = new GC(image);
@@ -102,28 +104,31 @@ public class ImagePainterFactory {
 					y++;
 				}
 				if (refService != null) {
-
 					int brushIndex = 0;
 					if (layer.getBrush() != null) {
 						brushIndex = layer.getBrush()[i];
 					}
 					ImagePainterFactory factory = ImagePainterFactory.getImageFactory(service.getMetadata().getReferenceRepositoryId());
-					Image refImage = factory.drawTile(refService, null, brushIndex);
+					Image refImage = factory.drawTile(refService, null, brushIndex, content[i], useColorIndex);
 					gc.drawImage(refImage, x * conf.currentPixelWidth, y * conf.currentPixelHeight);
 				} else {
-					gc.setBackground(colorProvider.getColorByIndex(content[i]));
+					int ci = content[i];
+					if (useColorIndex & ci > 0) {
+						ci = colorIndex;
+					}
+					gc.setBackground(colorProvider.getColorByIndex(ci));
 					gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
 				}
 				x++;
 			}
 			gc.dispose();
-			imagePool.put(name, image);
+			imagePool.put(internalName, image);
 		}
 		return image;
 	}
 
 	public Image drawPixel(TileRepositoryService service, TileRepositoryService refService, int x, int y) {
-		String name = service.getSelectedTileName();
+		String name = service.getSelectedTileName()+"_C255";
 		Layer layer = service.getActiveLayerFromSelectedTile();
 		int content[] = layer.getContent();
 		Image image = imagePool.get(name);
@@ -135,8 +140,9 @@ public class ImagePainterFactory {
 		int offset = conf.tileWidth * y + x;
 		if (refService != null) {
 			int brushIndex = layer.getBrush()[offset];
+			int colorIndex = layer.getContent()[offset];
 			ImagePainterFactory factory = ImagePainterFactory.getImageFactory(service.getMetadata().getReferenceRepositoryId());
-			Image refImage = factory.drawTile(refService, null, brushIndex);
+			Image refImage = factory.drawTile(refService, null, brushIndex, colorIndex, true);
 			gc.drawImage(refImage, x * conf.currentPixelWidth, y * conf.currentPixelHeight);
 		} else {
 			gc.setBackground(colorProvider.getColorByIndex(content[offset]));
@@ -152,7 +158,7 @@ public class ImagePainterFactory {
 		Image baseImage = createBaseImage(color, conf.fullWidthPixel + (conf.columns * tileGap), conf.fullHeightPixel + (conf.rows * tileGap));
 		GC gc = new GC(baseImage);
 		for (int i = 0; i < service.getSize(); i++) {
-			Image tileImage = drawTile(service, refService, i);
+			Image tileImage = drawTile(service, refService, i, 1, true);
 			int y = (i / conf.columns) * (conf.tileHeightPixel + tileGap);
 			int x = (i % conf.columns) * (conf.tileWidthPixel + tileGap);
 			gc.drawImage(tileImage, x, y);

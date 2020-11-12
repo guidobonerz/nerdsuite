@@ -17,8 +17,6 @@ import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
-import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 
 public class PainterWidget extends BaseImagingWidget {
@@ -33,7 +31,6 @@ public class PainterWidget extends BaseImagingWidget {
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
-	//private TileRepositoryService referenceRepository;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
@@ -52,19 +49,6 @@ public class PainterWidget extends BaseImagingWidget {
 			}
 		});
 
-	}
-
-	@Override
-	public void init(String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
-		super.init(owner, colorPaletteProvider, autowrap);
-		tileRepositoryService.addTileListener(this);
-
-		String referenceOwnerId = tileRepositoryService.getMetadata().getReferenceRepositoryId();
-		/*
-		if (null != referenceOwnerId) {
-			referenceRepository = ServiceFactory.getService(referenceOwnerId, TileRepositoryService.class);
-		}
-		*/
 	}
 
 	@Override

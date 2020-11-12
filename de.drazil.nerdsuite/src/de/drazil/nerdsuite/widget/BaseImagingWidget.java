@@ -102,6 +102,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		drawListenerList = new ArrayList<>();
 		imagePainterFactory = new ImagePainterFactory(owner, conf, colorPaletteProvider);
 		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
+		tileRepositoryService.addTileListener(this);
 		if (tileRepositoryService.getMetadata().getReferenceRepositoryId() != null) {
 			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceRepositoryId(), TileRepositoryService.class);
 		}
