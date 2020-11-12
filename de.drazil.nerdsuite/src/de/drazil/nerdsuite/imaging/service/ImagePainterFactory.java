@@ -102,7 +102,11 @@ public class ImagePainterFactory {
 					y++;
 				}
 				if (refService != null) {
-					int brushIndex = layer.getBrush()[i];
+
+					int brushIndex = 0;
+					if (layer.getBrush() != null) {
+						brushIndex = layer.getBrush()[i];
+					}
 					ImagePainterFactory factory = ImagePainterFactory.getImageFactory(service.getMetadata().getReferenceRepositoryId());
 					Image refImage = factory.drawTile(refService, null, brushIndex);
 					gc.drawImage(refImage, x * conf.currentPixelWidth, y * conf.currentPixelHeight);

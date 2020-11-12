@@ -16,13 +16,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Tile {
+	@JsonProperty(value = "name")
 	private String name = null;
+	@JsonProperty(value = "showOnlyActiveLayer")
 	private boolean showOnlyActiveLayer = true;
+	@JsonProperty(value = "showInactiveLayerTranslucent")
 	private boolean showInactiveLayerTranslucent = false;
+	@JsonProperty(value = "multicolor")
 	private boolean multicolor = false;
 	@JsonProperty(value = "backgroundColor")
 	private int backgroundColorIndex = 0;
+	@JsonProperty(value = "originX")
 	private int originX;
+	@JsonProperty(value = "originY")
 	private int originY;
 	@JsonProperty(value = "layers")
 	private List<Layer> layerList = new ArrayList<Layer>();
@@ -36,14 +42,17 @@ public class Tile {
 		this.size = size;
 	}
 
+	@JsonIgnore
 	public List<Integer> getLayerIndexOrderList() {
 		return getLayerIndexOrderList();
 	}
 
+	@JsonIgnore
 	public Layer getLayer(int index) {
 		return layerList.get(index);
 	}
 
+	@JsonIgnore
 	public Layer addLayer(String name, int size, int contentValue, int brushValue) {
 		Layer layer = new Layer(name, size, contentValue, brushValue);
 		layer.getColorPalette().add(0);
@@ -60,10 +69,12 @@ public class Tile {
 		return layer;
 	}
 
+	@JsonIgnore
 	public void removeActiveLayer() {
 
 	}
 
+	@JsonIgnore
 	public void removeLayer(Tile tile, int index) {
 		if (tile.getLayerIndexOrderList().size() > 0) {
 			int layerIndex = tile.getLayerIndexOrderList().get(index);
@@ -73,6 +84,7 @@ public class Tile {
 		}
 	}
 
+	@JsonIgnore
 	public void moveToFront(int index) {
 		if (index < 1) {
 			return;
@@ -82,6 +94,7 @@ public class Tile {
 		// fireLayerReordered();
 	}
 
+	@JsonIgnore
 	public void moveToBack(Tile tile, int index) {
 		if (index < 1) {
 			return;
@@ -91,6 +104,7 @@ public class Tile {
 		// fireLayerReordered();
 	}
 
+	@JsonIgnore
 	public void moveUp(int index) {
 		if (index < 1) {
 			return;
@@ -100,6 +114,7 @@ public class Tile {
 		// fireLayerReordered();
 	}
 
+	@JsonIgnore
 	public void moveDown(int index) {
 		if (index < 1) {
 			return;
@@ -109,6 +124,7 @@ public class Tile {
 		// fireLayerReordered();
 	}
 
+	@JsonIgnore
 	public void move(int from, int to) {
 
 	}
@@ -171,15 +187,18 @@ public class Tile {
 		// fireActiveLayerChanged(-1);
 	}
 
+	@JsonIgnore
 	public int getColorIndex(int colorIndex) {
 		return getActiveLayer().getColorPalette().get(colorIndex);
 	}
 
+	@JsonIgnore
 	public void setOrigin(Point origin) {
 		setOriginX(origin.x);
 		setOriginY(origin.y);
 	}
 
+	@JsonIgnore
 	public Point getOrigin() {
 		return new Point(getOriginX(), getOriginY());
 	}

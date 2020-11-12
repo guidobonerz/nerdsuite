@@ -33,7 +33,7 @@ public class PainterWidget extends BaseImagingWidget {
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
-	private TileRepositoryService referenceRepository;
+	//private TileRepositoryService referenceRepository;
 
 	public PainterWidget(Composite parent, int style) {
 		super(parent, style);
@@ -60,9 +60,11 @@ public class PainterWidget extends BaseImagingWidget {
 		tileRepositoryService.addTileListener(this);
 
 		String referenceOwnerId = tileRepositoryService.getMetadata().getReferenceRepositoryId();
+		/*
 		if (null != referenceOwnerId) {
 			referenceRepository = ServiceFactory.getService(referenceOwnerId, TileRepositoryService.class);
 		}
+		*/
 	}
 
 	@Override
@@ -367,12 +369,12 @@ public class PainterWidget extends BaseImagingWidget {
 
 			layer.getContent()[offset] = colorId;
 
-			if (referenceRepository != null) {
+			if (tileRepositoryReferenceService != null) {
 				int brush[] = layer.getBrush();
 				if (brush == null) {
 					layer.resetBrush(tileRepositoryService.getMetadata().getBlankValue());
 				}
-				int i = referenceRepository.getSelectedTileIndex();
+				int i = tileRepositoryReferenceService.getSelectedTileIndex();
 				layer.getBrush()[offset] = i;
 
 			}

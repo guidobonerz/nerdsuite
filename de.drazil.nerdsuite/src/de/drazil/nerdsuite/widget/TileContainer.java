@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TileContainer {
-
+	@JsonProperty(value = "metadata")
 	private ProjectMetaData metadata = null;
 	@JsonProperty(value = "tiles")
 	private List<Tile> tileList = null;
@@ -25,8 +25,10 @@ public class TileContainer {
 	private List<Integer> tileIndexOrderList = null;
 	@JsonProperty(value = "selectedTiles")
 	private List<Integer> selectedTileIndexList = null;
+	@JsonProperty(value = "referenceRepositoryLocation")
 	private String referenceRepositoryLocation = null;
 
+	@JsonIgnore
 	public void setInitialSize(int size) {
 		for (int i = 0; i < size; i++) {
 			addTile();
@@ -34,6 +36,7 @@ public class TileContainer {
 		setSelectedTileIndex(0);
 	}
 
+	@JsonIgnore
 	public Tile addTile() {
 		String name = String.format("%s", "tile_", (getTileList().size() + 1));
 		GraphicFormat format = GraphicFormatFactory.getFormatById(metadata.getType());
@@ -41,6 +44,7 @@ public class TileContainer {
 		return addTile(name, metadata.getTileSize(), 0, metadata.getBlankValue());
 	}
 
+	@JsonIgnore
 	private Tile addTile(String name, int tileSize, int defaultConent, int defaultBrush) {
 		Tile tile = new Tile(name, tileSize);
 		tile.addLayer(name, tileSize, defaultConent, defaultBrush);
@@ -50,6 +54,7 @@ public class TileContainer {
 		return tile;
 	}
 
+	@JsonIgnore
 	public void removeLast() {
 		if (getTileIndexOrderList().size() > 0) {
 			List<Integer> l = new ArrayList<Integer>();
@@ -58,10 +63,12 @@ public class TileContainer {
 		}
 	}
 
+	@JsonIgnore
 	public void removeSelected() {
 		removeTile(getSelectedTileIndexList());
 	}
 
+	@JsonIgnore
 	public void removeTile(List<Integer> tileIndexList) {
 		if (getTileIndexOrderList().size() > 0) {
 			for (int i = 0; i < tileIndexList.size(); i++) {
@@ -73,6 +80,7 @@ public class TileContainer {
 		}
 	}
 
+	@JsonIgnore
 	public void moveTile(int from, int to) {
 		int v = getTileIndexOrderList().get(from);
 		if (to < from) {
@@ -85,6 +93,7 @@ public class TileContainer {
 		// fireTileReordered();
 	}
 
+	@JsonIgnore
 	public int getTileIndex(int index) {
 		return getTileIndexOrderList().get(index);
 	}
@@ -108,26 +117,32 @@ public class TileContainer {
 		return selectedTileIndexList;
 	}
 
+	@JsonIgnore
 	public Tile getSelectedTile() {
 		return getTile(getSelectedTileIndex());
 	}
 
+	@JsonIgnore
 	public int getSelectedTileIndex() {
 		return getSelectedTileIndexList().get(0);
 	}
 
+	@JsonIgnore
 	public void resetActiveLayer(int index) {
 		getTile(index).getActiveLayer().reset(0, 0);
 	}
 
+	@JsonIgnore
 	public Tile getTile(int index) {
 		return getTile(index, false);
 	}
 
+	@JsonIgnore
 	public Tile getTile(int index, boolean naturalOrder) {
 		return getTileList().get(naturalOrder ? index : getTileIndexOrderList().get(index));
 	}
 
+	@JsonIgnore
 	public int getSize() {
 		return getTileList().size();
 	}
