@@ -4,11 +4,12 @@
 		"name": "Char Set",
 		"width": 8,
 		"height": 8,
-		"pixelSize": 32,
+		"pixelSize": 1,
 		"supportsLayers": true,
 		"storageEntity": 8,
 		"storageType": "linear",
 		"maxItems": 255,
+		"blankValue":0,
 		"properties": {
 			"supportsMultiColor": true,
 			"supportsExtendedColorMode": true
@@ -62,11 +63,12 @@
 		"name": "Sprite Set",
 		"width": 24,
 		"height": 21,
-		"pixelSize": 16,
+		"pixelSize": 1,
 		"supportsLayers": true,
 		"storageEntity": 8,
 		"storageType": "linear",
 		"maxItems": -1,
+		"blankValue":0,
 		"properties": {
 			"supportsMultiColor": true
 		},
@@ -118,11 +120,12 @@
 		"name": "Screen Set",
 		"width": 40,
 		"height": 25,
-		"pixelSize": 16,
+		"pixelSize": 8,
 		"supportsLayers": true,
 		"storageEntity": 1,
 		"storageType": "linear",
 		"maxItems": -1,
+		"blankValue":32,
 		"properties": {
 			"supportsMultiColor": true,
 			"supportsResizing": true,
@@ -134,7 +137,7 @@
 				"name": "Standard Size (40x25)",
 				"tileRows": 1,
 				"tileColumns": 1,
-				"pixelSize": 16,
+				"pixelSize": 8,
 				"scaledPixelSize": 2
 			},
 			{
@@ -143,7 +146,7 @@
 				"tileRows": 1,
 				"tileColumns": 1,
 				"scaledPixelSize": 2,
-				"pixelSize": 16,
+				"pixelSize": 8,
 				"supportCustomBaseSize": true
 			}
 		]
@@ -153,11 +156,12 @@
 		"name": "Tile Set",
 		"width": 2,
 		"height": 2,
-		"pixelSize": 16,
+		"pixelSize": 8,
 		"supportsLayers": true,
 		"storageEntity": 1,
 		"storageType": "linear",
 		"maxItems": -1,
+		"blankValue":0,
 		"properties": {
 			"supportsMultiColor": true,
 			"supportsResizing": true,
@@ -193,6 +197,7 @@
 		"storageEntity": 1,
 		"storageType": "linear",
 		"maxItems": -1,
+		"blankValue":0,
 		"properties": {
 			"supportsMultiColor": true,
 			"supportsResizing": true,
@@ -228,6 +233,7 @@
 		"storageEntity": 8,
 		"storageType": "tiled",
 		"maxItems": -1,
+		"blankValue":0,
 		"tileSize": {
 			"width": 8,
 			"height": 8

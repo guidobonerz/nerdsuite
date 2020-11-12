@@ -15,7 +15,7 @@ public class ShiftService extends AbstractImagingService {
 	@Override
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
 
-		int[] content = repositoryService.getActiveLayer().getContent();
+		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		Rectangle r = service.getSelection();
 
 		if (action == UP) {

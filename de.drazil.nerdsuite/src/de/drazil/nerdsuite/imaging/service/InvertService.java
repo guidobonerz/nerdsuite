@@ -9,7 +9,7 @@ import de.drazil.nerdsuite.widget.Tile;
 public class InvertService extends AbstractImagingService {
 	@Override
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
-		int[] content = repositoryService.getActiveLayer().getContent();
+		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		Rectangle r = service.getSelection();
 		for (int x = r.x; x < r.x + r.width; x++) {
 			for (int y = r.y; y < r.y + r.height; y++) {

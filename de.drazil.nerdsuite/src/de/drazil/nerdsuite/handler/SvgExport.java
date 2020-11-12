@@ -2,7 +2,6 @@
 package de.drazil.nerdsuite.handler;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import java.util.Map;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.swt.graphics.Point;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
@@ -30,16 +30,16 @@ public class SvgExport {
 	public final static int BOTTOM = 4;
 	public final static int RIGHT = 8;
 
-	private Map<String, List<Point>> pathMap;
+	private Map<String, List<SvgPoint>> pathMap;
 
 	public SvgExport() {
-		pathMap = new HashMap<String, List<SvgExport.Point>>();
+		pathMap = new HashMap<String, List<SvgExport.SvgPoint>>();
 	}
 
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Data
-	private class Point {
+	private class SvgPoint {
 		int x1;
 		int y1;
 		int x2;
@@ -52,17 +52,17 @@ public class SvgExport {
 		String owner = (String) part.getTransientData().get(Constants.OWNER);
 		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
 		ProjectMetaData metadata = service.getMetadata();
-		Map<String, Point> map = new HashMap<String, Point>();
+		Map<String, SvgPoint> map = new HashMap<String, SvgPoint>();
 
-		int[] content = service.getActiveLayer().getContent();
+		int[] content = service.getActiveLayerFromSelectedTile().getContent();
 		for (int i = 0; i < content.length; i++) {
 			String key = String.valueOf(content[i]);
-			List<Point> pathList = pathMap.get(key);
+			List<SvgPoint> pathList = pathMap.get(key);
 			if (pathList == null) {
-				pathList = new ArrayList<SvgExport.Point>();
+				pathList = new ArrayList<SvgExport.SvgPoint>();
 				pathMap.put(key, pathList);
 			}
-			org.eclipse.swt.graphics.Point pc = getPoint(i, metadata);
+			Point pc = getPoint(i, metadata);
 
 			int borders = getOutlineRanges(pc.x, pc.y, content, metadata);
 			int x1 = pc.x * width;
@@ -70,19 +70,19 @@ public class SvgExport {
 			int x2 = x1 + width;
 			int y2 = y1 + height;
 			if ((borders & TOP) == TOP) {
-				Point p = new Point(x1, y1, x2, y1, false);
+				SvgPoint p = new SvgPoint(x1, y1, x2, y1, false);
 				pathList.add(p);
 			}
 			if ((borders & BOTTOM) == BOTTOM) {
-				Point p = new Point(x1, y2, x2, y2, false);
+				SvgPoint p = new SvgPoint(x1, y2, x2, y2, false);
 				pathList.add(p);
 			}
 			if ((borders & LEFT) == LEFT) {
-				Point p = new Point(x1, y1, x1, y2, false);
+				SvgPoint p = new SvgPoint(x1, y1, x1, y2, false);
 				pathList.add(p);
 			}
 			if ((borders & RIGHT) == RIGHT) {
-				Point p = new Point(x2, y1, x2, y2, false);
+				SvgPoint p = new SvgPoint(x2, y1, x2, y2, false);
 				pathList.add(p);
 			} else {
 
@@ -90,10 +90,10 @@ public class SvgExport {
 		}
 
 		String key = String.valueOf(1);
-		List<Point> pathList = pathMap.get(key);
+		List<SvgPoint> pathList = pathMap.get(key);
 
 		// left to right order
-		for (Point p : pathList) {
+		for (SvgPoint p : pathList) {
 			if (p.x1 > p.x2) {
 				int x = p.x2;
 				p.x2 = p.x1;
@@ -139,8 +139,8 @@ public class SvgExport {
 		}
 	}
 
-	private org.eclipse.swt.graphics.Point getPoint(int i, ProjectMetaData metadata) {
-		return new org.eclipse.swt.graphics.Point(i % metadata.getTileHeight(), i / metadata.getTileWidth());
+	private Point getPoint(int i, ProjectMetaData metadata) {
+		return new Point(i % metadata.getTileHeight(), i / metadata.getTileWidth());
 	}
 
 }

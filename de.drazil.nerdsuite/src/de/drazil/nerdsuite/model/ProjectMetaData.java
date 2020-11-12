@@ -21,6 +21,7 @@ public class ProjectMetaData {
 	private int rows;
 	private int storageEntity;
 	private int blankValue;
+	@JsonIgnore
 	private String referenceRepositoryId;
 	@JsonIgnore
 	private int defaultPixelSize;

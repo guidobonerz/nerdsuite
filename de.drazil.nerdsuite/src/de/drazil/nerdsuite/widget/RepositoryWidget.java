@@ -153,13 +153,11 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(),
-				conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
+		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(), conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
 	}
 
-	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
-			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
-			boolean paintTelevisionMode) {
+	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
+			boolean paintTileCursor, boolean paintTelevisionMode) {
 
 		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
 			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
@@ -191,14 +189,12 @@ public class RepositoryWidget extends BaseImagingWidget {
 		gc.setLineWidth(1);
 		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
-		gc.fillRectangle(xfrom * conf.scaledTileWidth, yfrom * conf.scaledTileHeight, conf.scaledTileWidth,
-				conf.scaledTileHeight);
+		gc.fillRectangle(xfrom * conf.scaledTileWidth, yfrom * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
 		gc.setAlpha(255);
 		gc.setForeground(Constants.BRIGHT_ORANGE);
 		gc.setLineWidth(4);
 		if (abs(to - from) > 0)
-			gc.drawLine(xto * conf.scaledTileWidth, yto * conf.scaledTileHeight, xto * conf.scaledTileWidth,
-					yto * conf.scaledTileHeight + conf.scaledTileHeight);
+			gc.drawLine(xto * conf.scaledTileWidth, yto * conf.scaledTileHeight, xto * conf.scaledTileWidth, yto * conf.scaledTileHeight + conf.scaledTileHeight);
 	}
 
 	private void paintSelection(GC gc) {
@@ -207,13 +203,11 @@ public class RepositoryWidget extends BaseImagingWidget {
 		selectedTileIndexList.forEach(i -> {
 			int y = i / conf.getColumns();
 			int x = i % conf.getColumns();
-			gc.fillRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
-					conf.scaledTileHeight);
+			gc.fillRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
 			if (i == temporaryIndex) {
 				gc.setLineWidth(3);
 				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
-				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
-						conf.scaledTileHeight);
+				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
 			}
 		});
 	}
@@ -222,8 +216,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
-			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth,
-					conf.scaledTileHeight);
+			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
 		}
 	}
 
@@ -233,8 +226,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		gc.setForeground(Constants.TILE_GRID_COLOR);
 		for (int x = 0; x < conf.columns; x++) {
 			for (int y = 0; y < conf.rows; y++) {
-				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth,
-						conf.scaledTileHeight);
+				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
 			}
 		}
 	}
@@ -247,17 +239,16 @@ public class RepositoryWidget extends BaseImagingWidget {
 		doRedraw(redrawMode, action);
 	}
 
-	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, int update) {
-		Image image = tileRepositoryService.getImagePainterFactory().getImage(tileRepositoryService,
-				tileRepositoryService.getTileIndex(index), 0, 0, update, conf, colorPaletteProvider,
-				tileRepositoryService.getMetadata());
-		int imageWidth = image.getBounds().width;
-		int imageHeight = image.getBounds().height;
-		int columns = conf.getColumns();
-		int y = (index / columns) * imageHeight;
-		int x = (index % columns) * imageWidth;
-		gc.drawImage(image, x, y);
+	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider, int update) {
+		/*
+		 * Image image = tileRepositoryService.getImagePainterFactory().getImage(
+		 * tileRepositoryService, tileRepositoryService.getTileIndex(index), 0, 0,
+		 * update, conf, colorPaletteProvider, tileRepositoryService.getMetadata()); int
+		 * imageWidth = image.getBounds().width; int imageHeight =
+		 * image.getBounds().height; int columns = conf.getColumns(); int y = (index /
+		 * columns) * imageHeight; int x = (index % columns) * imageWidth;
+		 * gc.drawImage(image, x, y);
+		 */
 	}
 
 	@Override
@@ -267,7 +258,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.setActiveLayerColorIndex(colorNo, colorIndex, true);
+		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	@Override
@@ -289,13 +280,11 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawCalculatedArea() {
-		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile
-				|| redrawMode == RedrawMode.DrawPixel) {
+		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawPixel) {
 			drawAll = false;
 
 			start = tileRepositoryService.getSelectedTileIndexList().get(0);
-			end = tileRepositoryService.getSelectedTileIndexList()
-					.get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
+			end = tileRepositoryService.getSelectedTileIndexList().get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
 			int imageWidth = conf.getScaledTileWidth();
 			int imageHeight = conf.getScaledTileHeight();

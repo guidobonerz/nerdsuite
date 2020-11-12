@@ -14,7 +14,7 @@ public class MirrorService extends AbstractImagingService {
 
 	@Override
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
-		int[] content = repositoryService.getActiveLayer().getContent();
+		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		Rectangle r = service.getSelection();
 		if (action == UPPER_HALF) {
 			for (int y = r.y, c = 0; y < r.y + r.height / 2; y++, c++) {

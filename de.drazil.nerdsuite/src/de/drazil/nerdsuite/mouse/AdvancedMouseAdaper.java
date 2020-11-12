@@ -10,7 +10,10 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
+import de.drazil.nerdsuite.widget.BaseWidget;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -74,8 +77,7 @@ public class AdvancedMouseAdaper {
 	private List<IAdvancedMouseTrackListener> mouseTrackListenerList = null;
 	private List<IAdvancedMouseWheelListener> mouseWheelListenerList = null;
 
-	private final class InternalMouseAdapter
-			implements MouseMoveListener, MouseTrackListener, MouseWheelListener, MouseListener {
+	private final class InternalMouseAdapter implements MouseMoveListener, MouseTrackListener, MouseWheelListener, MouseListener {
 
 		public InternalMouseAdapter(Composite composite, AdvancedMouseAdaper advancedMouseAdapter) {
 			composite.addMouseListener(this);
@@ -145,8 +147,9 @@ public class AdvancedMouseAdaper {
 
 		@Override
 		public void mouseScrolled(MouseEvent e) {
-			int modifierMask = getModifierMask(e);
-			fireMouseScrolled(modifierMask, e.x, e.y, e.count);
+			if ((e.stateMask & SWT.CONTROL) == SWT.CONTROL) {
+				fireMouseScrolled(getModifierMask(e), e.x, e.y, e.count);
+			}
 		}
 
 		@Override

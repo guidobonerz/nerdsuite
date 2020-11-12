@@ -7,7 +7,6 @@ import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
-import de.drazil.nerdsuite.model.CustomSize;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.ProjectMetaData;
@@ -69,8 +68,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public String widgetName = "<unknown>";
 	public String serviceOwnerId;
 
-	public void setGraphicFormat(GraphicFormat gfxFormat, GraphicFormatVariant gfxFormatVariant,
-			ProjectMetaData metaData) {
+	public void setGraphicFormat(GraphicFormat gfxFormat, GraphicFormatVariant gfxFormatVariant, ProjectMetaData metaData) {
 		setPixelSize(gfxFormatVariant.getPixelSize() > 0 ? gfxFormatVariant.getPixelSize() : gfxFormat.getPixelSize());
 		setWidth(metaData == null ? gfxFormat.getWidth() : metaData.getWidth());
 		setHeight(metaData == null ? gfxFormat.getHeight() : metaData.getHeight());
@@ -260,6 +258,8 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 
 	public void computeSizes() {
 
+		currentPixelWidth = pixelSize;
+		currentPixelHeight = pixelSize;
 		iconSize = width * height;
 		tileSize = iconSize * tileColumns * tileRows;
 		tileWidth = width * tileColumns;
@@ -270,5 +270,6 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 		fullHeightPixel = tileHeightPixel * rows;
 		scaledTileWidth = fullWidthPixel;
 		scaledTileHeight = fullHeightPixel;
+
 	}
 }
