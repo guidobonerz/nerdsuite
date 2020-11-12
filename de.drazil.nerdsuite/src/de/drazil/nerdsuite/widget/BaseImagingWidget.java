@@ -28,9 +28,8 @@ import de.drazil.nerdsuite.mouse.IMeasuringListener;
 import de.drazil.nerdsuite.mouse.MeasuringController;
 import lombok.Getter;
 
-public abstract class BaseImagingWidget extends BaseWidget
-		implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener,
-		ITileListener, ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener {
+public abstract class BaseImagingWidget extends BaseWidget implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener, ITileListener,
+		ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener {
 
 	@Getter
 	protected ImagingWidgetConfiguration conf = null;
@@ -71,6 +70,9 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	private List<IDrawListener> drawListenerList = null;
 	protected TileRepositoryService tileRepositoryService;
+	protected TileRepositoryService tileRepositoryReferenceService;
+	@Getter
+	protected ImagePainterFactory imagePainterFactory;
 
 	protected Tile tile = null;
 	protected Image image = null;
@@ -98,7 +100,12 @@ public abstract class BaseImagingWidget extends BaseWidget
 		this.colorPaletteProvider = colorPaletteProvider;
 
 		drawListenerList = new ArrayList<>();
+		imagePainterFactory = new ImagePainterFactory(owner, conf, colorPaletteProvider);
 		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
+		tileRepositoryService.addTileListener(this);
+		if (tileRepositoryService.getMetadata().getReferenceRepositoryId() != null) {
+			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceRepositoryId(), TileRepositoryService.class);
+		}
 		addPaintListener(this);
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
@@ -107,11 +114,9 @@ public abstract class BaseImagingWidget extends BaseWidget
 				if (autowrap) {
 					int c = (int) getCalculatedColumns();
 					conf.setColumns(c == 0 ? 1 : c);
-					conf.setRows(tileRepositoryService.getSize() / conf.getColumns()
-							+ (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
+					conf.setRows(tileRepositoryService.getSize() / conf.getColumns() + (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
 					doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 				}
-
 			}
 		});
 	}
@@ -208,8 +213,8 @@ public abstract class BaseImagingWidget extends BaseWidget
 		} else {
 			cursorChanged = false;
 		}
-		tileX = x / (conf.getScaledTileWidth() + tileGap);
-		tileY = y / (conf.getScaledTileHeight() + tileGap);
+		tileX = x / (conf.tileWidthPixel + tileGap);
+		tileY = y / (conf.tileHeightPixel + tileGap);
 
 		if (oldTileX != tileX || oldTileY != tileY) {
 			oldTileX = tileX;
@@ -235,13 +240,11 @@ public abstract class BaseImagingWidget extends BaseWidget
 	}
 
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(),
-				conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
+		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(), conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
 	}
 
-	protected abstract void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
-			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
-			boolean paintTelevisionMode);
+	protected abstract void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
+			boolean paintTileCursor, boolean paintTelevisionMode);
 
 	protected void paintTelevisionRaster(GC gc) {
 		int height = conf.height * conf.tileRows * conf.rows * conf.currentPixelHeight;

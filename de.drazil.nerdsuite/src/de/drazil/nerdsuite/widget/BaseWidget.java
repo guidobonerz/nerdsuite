@@ -122,6 +122,7 @@ public abstract class BaseWidget extends Canvas {
 			@Override
 			public void mouseEnter(int modifierMask, int x, int y) {
 				BaseWidget.this.modifierMask = modifierMask;
+				BaseWidget.this.getParent().setFocus();
 				mouseEnterInternal(modifierMask, x, y);
 			}
 		});

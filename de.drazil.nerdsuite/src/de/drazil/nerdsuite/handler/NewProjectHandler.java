@@ -41,16 +41,13 @@ import de.drazil.nerdsuite.wizard.ProjectWizard;
 public class NewProjectHandler {
 
 	@Execute
-	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
-			EPartService partService, EModelService modelService,
-			@Named("de.drazil.nerdsuite.commandparameter.ProjectTypeId") String projectTypeId,
-			@Named("de.drazil.nerdsuite.commandparameter.WizardType") String wizardType) {
+	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell, EPartService partService, EModelService modelService,
+			@Named("de.drazil.nerdsuite.commandparameter.ProjectTypeId") String projectTypeId, @Named("de.drazil.nerdsuite.commandparameter.WizardType") String wizardType) {
 
 		Map<String, Object> userData = new HashMap<>();
 		userData.put(ProjectWizard.PROJECT_TYPE_ID, projectTypeId);
 
-		ProjectWizard projectWizard = new ProjectWizard(WizardType.getWizardTypeById(Integer.valueOf(wizardType)),
-				userData);
+		ProjectWizard projectWizard = new ProjectWizard(WizardType.getWizardTypeById(Integer.valueOf(wizardType)), userData);
 		WizardDialog wizardDialog = new WizardDialog(shell, projectWizard);
 
 		if (wizardDialog.open() == WizardDialog.OK) {
@@ -99,8 +96,7 @@ public class NewProjectHandler {
 
 				projectSetup.put("importFormat", (String) userData.get(ProjectWizard.IMPORT_FORMAT));
 				projectSetup.put("bytesToSkip", (Integer) userData.get(ProjectWizard.BYTES_TO_SKIP));
-				String projectAction = projectSetup.get("fileName") == null ? "newProjectAction"
-						: "newImportProjectAction";
+				String projectAction = projectSetup.get("fileName") == null ? "newProjectAction" : "newImportProjectAction";
 				projectSetup.put("projectAction", projectAction);
 
 				if (metadata.getVariant().equalsIgnoreCase("CUSTOM")) {
@@ -109,8 +105,7 @@ public class NewProjectHandler {
 				}
 
 				if (projectAction.startsWith("new")) {
-					File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR
-							+ project.getId().toLowerCase() + "." + projectType.getSuffix());
+					File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase() + "." + projectType.getSuffix());
 					projectSetup.put("file", file);
 					TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
 					repository.setMetadata(metadata);
@@ -121,7 +116,7 @@ public class NewProjectHandler {
 						importService.doImportGraphic(projectSetup);
 					} else {
 						int maxItems = (int) userData.get(ProjectWizard.PROJECT_MAX_ITEMS);
-						repository.setInitialSize(maxItems);
+						repository.init(maxItems);
 					}
 					repository.save(file, project);
 					Initializer.getConfiguration().updateWorkspace(project, file, true, false);
@@ -135,35 +130,28 @@ public class NewProjectHandler {
 				if (metadata.getType().equals("SCREENSET")) {
 					editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ScreenEditorView";
 				}
-				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						editorView, owner, project.getName(), projectSetup);
+				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView", editorView, owner, project.getName(), projectSetup);
 
-				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
-						part, true);
+				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part, true);
 			} else if (projectTypeId.equals("CODING_PROJECT")) {
 
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
-						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView", owner,
-						project.getName(), projectSetup);
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView", owner, project.getName(), projectSetup);
 
-				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
-						part, true);
+				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part, true);
 			}
-			Explorer explorer = E4Utils.findPartObject(partService, "de.drazil.nerdsuite.part.Explorer",
-					Explorer.class);
+			Explorer explorer = E4Utils.findPartObject(partService, "de.drazil.nerdsuite.part.Explorer", Explorer.class);
 			explorer.refresh();
 		}
 	}
 
 	private File createProjectStructure(Project project, String suffix) {
 
-		File projectFolder = new File(
-				Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase());
+		File projectFolder = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase());
 		projectFolder.mkdir();
 
 		for (ProjectFolder folder : project.getFolderList()) {
-			File subfolder = new File(
-					projectFolder.getAbsolutePath() + Constants.FILE_SEPARATOR + folder.getName().toLowerCase());
+			File subfolder = new File(projectFolder.getAbsolutePath() + Constants.FILE_SEPARATOR + folder.getName().toLowerCase());
 			subfolder.mkdir();
 		}
 

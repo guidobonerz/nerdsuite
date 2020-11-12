@@ -1,23 +1,20 @@
 package de.drazil.nerdsuite.imaging.service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.enums.ScaleMode;
-import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
-import de.drazil.nerdsuite.widget.Tile;
 
 public class ImagePainterFactory {
 
@@ -32,67 +29,151 @@ public class ImagePainterFactory {
 	public final static int UPDATE_PIXEL = UPDATE + PIXEL;
 	public final static int UPDATE_SCALED = UPDATE + SCALED;
 
-	public TileRepositoryService referenceRepository;
+	private ImagingWidgetConfiguration conf;
+	private IColorPaletteProvider colorProvider;
+	private final static Map<String, ImagePainterFactory> cache = new HashMap<String, ImagePainterFactory>();
 
-	public ImagePainterFactory(TileRepositoryService referenceRepository) {
-		this.referenceRepository = referenceRepository;
+	public ImagePainterFactory(String name, ImagingWidgetConfiguration conf, IColorPaletteProvider colorProvider) {
 		imagePool = new HashMap<>();
+		this.conf = conf;
+		this.colorProvider = colorProvider;
+		cache.put(name, this);
 	}
 
-	public Image getImageByName(String name, int colorIndex, IColorPaletteProvider colorPaletteProvider) {
+	public final static ImagePainterFactory getImageFactory(String name) {
+		return cache.get(name);
+	}
+
+	public void resetCache() {
+		for (Image i : imagePool.values()) {
+			i.dispose();
+		}
+		imagePool.clear();
+	}
+
+	public Image getGridLayer(ImagingWidgetConfiguration conf) {
+		String name = conf.getGridStyle().toString();
 		Image image = imagePool.get(name);
-		ImageData id = image.getImageData();
-		System.out.println(colorIndex);
-		Color color = colorPaletteProvider.getColorByIndex(colorIndex);
-		id.palette = new PaletteData(color.getRed(), color.getGreen(), color.getBlue());
+		RGB transparentColor = new RGB(0, 0, 0);
+		if (null == image) {
+			image = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
+			GC gc = new GC(image);
+			gc.setBackground(new Color(new RGB(0, 0, 0)));
+			gc.fillRectangle(0, 0, conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.setForeground(conf.gridStyle == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
+			for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
+				for (int y = 0; y <= conf.height * conf.tileRows; y++) {
+
+					if (conf.gridStyle == GridType.Line) {
+						gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize, conf.height * conf.pixelSize * conf.tileRows);
+						gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns, y * conf.pixelSize);
+					} else {
+						gc.drawPoint(x * conf.pixelSize, y * conf.pixelSize);
+					}
+				}
+			}
+			gc.dispose();
+			ImageData id = image.getImageData();
+
+			id.transparentPixel = id.palette.getPixel(transparentColor);
+			image = new Image(Display.getDefault(), id);
+			imagePool.put(name, image);
+		}
 		return image;
 	}
 
-	public Image getImage(TileRepositoryService service, int tileIndex, int x, int y, int action,
-			ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider, ProjectMetaData metadata) {
-		Tile tile = service.getTile(tileIndex);
-		String name = tile.getName();
-		Image scaledImage = null;
-		Image mainImage = imagePool.get(name);
-		if (null == mainImage) {
-			/*
-			 * if (mainImage != null && checkMode(action, UPDATE)) { mainImage.dispose(); }
-			 */
-			mainImage = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
-			// mainImage = new Image(Display.getDefault(), metadata.getTileWidthPixel(),
-			// metadata.getTileHeightPixel());
-			mainImage.setBackground(Constants.BLACK);
-			imagePool.put(name, mainImage);
-		}
-		if ((action & UPDATE) == UPDATE || (action & PIXEL) == PIXEL) {
-			mainImage = updateImage(service, tileIndex, x, y, action, conf, mainImage, name, colorPaletteProvider);
-		}
+	public Image drawSelectedTile(TileRepositoryService service, TileRepositoryService referenceService) {
+		return drawTile(service, referenceService, service.getSelectedTileIndex(), 255, true);
+	}
 
-		ScaleMode scaleMode = conf.getScaleMode();
+	public Image drawTile(TileRepositoryService service, TileRepositoryService refService, int index, int colorIndex, boolean useColorIndex) {
+		int x = 0;
+		int y = 0;
 
-		if (conf.getScaleMode() != ScaleMode.None) {
-			String sm = name + "_" + conf.getScaleMode().name();
-			scaledImage = imagePool.get(sm);
-			if (null == scaledImage || checkMode(action, UPDATE)) {
-				if (scaledImage != null && checkMode(action, UPDATE)) {
-					scaledImage.dispose();
+		String name = service.getTileName(index);
+		String internalName = String.format("%s_C%d", name, colorIndex);
+		Layer layer = service.getActiveLayerFromTile(index);
+		int content[] = layer.getContent();
+		Image image = imagePool.get(internalName);
+		if (image == null) {
+			image = createBaseImage(colorProvider.getColorByIndex(0), conf.tileWidthPixel, conf.tileHeightPixel);
+			GC gc = new GC(image);
+			for (int i = 0; i < service.getTileSize(); i++) {
+				if (i % conf.tileWidth == 0 && i > 0) {
+					x = 0;
+					y++;
 				}
-				System.out.println("new scaled image");
-				int scaledWidth = scaleMode.getDirection() ? conf.fullWidthPixel << scaleMode.getScaleFactor()
-						: conf.fullWidthPixel >> scaleMode.getScaleFactor();
-				int scaledHeight = scaleMode.getDirection() ? conf.fullHeightPixel << scaleMode.getScaleFactor()
-						: conf.fullHeightPixel >> scaleMode.getScaleFactor();
-				scaledImage = new Image(Display.getDefault(),
-						mainImage.getImageData().scaledTo(scaledWidth, scaledHeight));
-				imagePool.put(sm, scaledImage);
-
-				conf.setScaledTileWidth(scaledImage.getBounds().width);
-				conf.setScaledTileHeight(scaledImage.getBounds().height);
+				if (refService != null) {
+					int brushIndex = 0;
+					if (layer.getBrush() != null) {
+						brushIndex = layer.getBrush()[i];
+					}
+					ImagePainterFactory factory = ImagePainterFactory.getImageFactory(service.getMetadata().getReferenceRepositoryId());
+					Image refImage = factory.drawTile(refService, null, brushIndex, content[i], useColorIndex);
+					gc.drawImage(refImage, x * conf.currentPixelWidth, y * conf.currentPixelHeight);
+				} else {
+					int ci = content[i];
+					if (useColorIndex & ci > 0) {
+						ci = colorIndex;
+					}
+					gc.setBackground(colorProvider.getColorByIndex(ci));
+					gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+				}
+				x++;
 			}
-			mainImage = scaledImage;
+			gc.dispose();
+			imagePool.put(internalName, image);
 		}
+		return image;
+	}
 
-		return mainImage;
+	public Image drawPixel(TileRepositoryService service, TileRepositoryService refService, int x, int y) {
+		String name = service.getSelectedTileName()+"_C255";
+		Layer layer = service.getActiveLayerFromSelectedTile();
+		int content[] = layer.getContent();
+		Image image = imagePool.get(name);
+		if (image == null) {
+			image = createBaseImage(colorProvider.getColorByIndex(layer.getSelectedColorIndex()), conf.fullWidthPixel, conf.fullHeightPixel);
+			imagePool.put(name, image);
+		}
+		GC gc = new GC(image);
+		int offset = conf.tileWidth * y + x;
+		if (refService != null) {
+			int brushIndex = layer.getBrush()[offset];
+			int colorIndex = layer.getContent()[offset];
+			ImagePainterFactory factory = ImagePainterFactory.getImageFactory(service.getMetadata().getReferenceRepositoryId());
+			Image refImage = factory.drawTile(refService, null, brushIndex, colorIndex, true);
+			gc.drawImage(refImage, x * conf.currentPixelWidth, y * conf.currentPixelHeight);
+		} else {
+			gc.setBackground(colorProvider.getColorByIndex(content[offset]));
+			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+		}
+		gc.dispose();
+
+		return image;
+	}
+
+	public Image drawTileMap(TileRepositoryService service, TileRepositoryService refService, int tileGap, Color color, boolean naturalOrder) {
+		conf.computeSizes();
+		Image baseImage = createBaseImage(color, conf.fullWidthPixel + (conf.columns * tileGap), conf.fullHeightPixel + (conf.rows * tileGap));
+		GC gc = new GC(baseImage);
+		for (int i = 0; i < service.getSize(); i++) {
+			Image tileImage = drawTile(service, refService, i, 1, true);
+			int y = (i / conf.columns) * (conf.tileHeightPixel + tileGap);
+			int x = (i % conf.columns) * (conf.tileWidthPixel + tileGap);
+			gc.drawImage(tileImage, x, y);
+		}
+		gc.dispose();
+		return baseImage;
+	}
+
+	private Image createBaseImage(Color color, int width, int height) {
+		Image image = new Image(Display.getDefault(), width, height);
+		GC gc = new GC(image);
+		gc.setBackground(color);
+		gc.fillRectangle(0, 0, width, height);
+		gc.dispose();
+		return image;
 	}
 
 	private boolean checkMode(int update, int value) {
@@ -107,58 +188,4 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	private Image updateImage(TileRepositoryService service, int tileIndex, int px, int py, int update,
-			ImagingWidgetConfiguration conf, Image image, String imageName,
-			IColorPaletteProvider colorPaletteProvider) {
-		GC gc = new GC(image);
-		gc.setAlpha(255);
-		int width = conf.tileWidth;
-		int size = service.getTileSize();
-		int x = 0;
-		int y = 0;
-		List<Layer> layerList = service.getTile(tileIndex).getLayerList();
-		if (checkMode(update, PIXEL)) {
-			int offset = py * width + px;
-			if (offset < size) {
-				if (referenceRepository == null) {
-					draw(gc, offset, layerList, conf, px, py, colorPaletteProvider);
-				} else {
-					Layer l = layerList.get(0);
-					if (l.getBrush() != null) {
-						int brushIndex = l.getBrush()[offset];
-						Tile tile = referenceRepository.getTile(brushIndex);
-						Image img = referenceRepository.getImagePainterFactory().getImageByName(tile.getName(),
-								l.getSelectedColorIndex(), colorPaletteProvider);
-						gc.drawImage(img, x * conf.pixelSize, y * conf.pixelSize);
-					}
-				}
-			}
-		} else {
-			for (int i = 0; i < size; i++) {
-				if (i % width == 0 && i > 0) {
-					x = 0;
-					y++;
-				}
-				draw(gc, i, layerList, conf, x, y, colorPaletteProvider);
-				x++;
-			}
-		}
-		gc.dispose();
-		return image;
-	}
-
-	private void draw(GC gc, int offset, List<Layer> layerList, ImagingWidgetConfiguration conf, int x, int y,
-			IColorPaletteProvider colorPaletteProvider) {
-		for (Layer l : layerList) {
-			int[] content = l.getContent();
-			// if (content[offset] != 0 && (!tile.isShowOnlyActiveLayer() ||
-			// (tile.isShowOnlyActiveLayer() && l.isActive())
-			// || tile.isShowInactiveLayerTranslucent())) {
-			// gc.setAlpha(tile.isShowInactiveLayerTranslucent() && !l.isActive() ? 50 :
-			// 255);
-			// }
-			gc.setBackground(colorPaletteProvider.getColorByIndex(content[offset]));
-			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
-		}
-	}
 }
