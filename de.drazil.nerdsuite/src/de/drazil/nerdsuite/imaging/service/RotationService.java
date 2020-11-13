@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import org.eclipse.swt.graphics.Rectangle;
 
 import de.drazil.nerdsuite.enums.TileAction;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class RotationService extends AbstractImagingService {
@@ -17,8 +17,7 @@ public class RotationService extends AbstractImagingService {
 
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
-		return confirmable.isConfirmed(
-				"Tile does not have a square base\nDo you really want to rotate this tile?\n\nTo prevent data loss click No");
+		return confirmable.isConfirmed("Tile does not have a square base\nDo you really want to rotate this tile?\n\nTo prevent data loss click No");
 	}
 
 	private boolean checkIfSquareBase() {
@@ -27,16 +26,16 @@ public class RotationService extends AbstractImagingService {
 	}
 
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService,
-			ImagingWidgetConfiguration configuration, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction, ProjectMetaData metadata) {
 		Rectangle r = service.getSelection();
-		int[] content =repositoryService.getActiveLayerFromSelectedTile().getContent();
+		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		int[] contentSelection = new int[r.width * r.height];
 		int[] targetContentSelection = new int[r.width * r.height];
+		int tileWidth = metadata.getTileWidth();
 
 		for (int x = r.x, cx = 0; x < r.x + r.width; x++, cx++) {
 			for (int y = r.y, cy = 0; y < r.y + r.height; y++, cy++) {
-				contentSelection[cx + cy * r.width] = content[x + y * configuration.tileWidth];
+				contentSelection[cx + cy * r.width] = content[x + y * tileWidth];
 			}
 		}
 
@@ -57,7 +56,7 @@ public class RotationService extends AbstractImagingService {
 
 		for (int x = r.x, cx = 0; x < r.x + r.width; x++, cx++) {
 			for (int y = r.y, cy = 0; y < r.y + r.height; y++, cy++) {
-				content[x + y * configuration.tileWidth] = targetContentSelection[cx + cy * r.width];
+				content[x + y * tileWidth] = targetContentSelection[cx + cy * r.width];
 			}
 		}
 	}

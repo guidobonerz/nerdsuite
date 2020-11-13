@@ -39,7 +39,6 @@ import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
-import de.drazil.nerdsuite.enums.ScaleMode;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.AnimationService;
@@ -343,11 +342,6 @@ public class GfxEditorView implements ITileUpdateListener {
 		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
 		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
 		graphicFormatVariant = GraphicFormatFactory.getFormatVariantById(graphicFormatId, metadata.getVariant());
-		metadata.setDefaultPixelSize(graphicFormat.getPixelSize());
-		metadata.setCurrentPixelWidth(graphicFormat.getPixelSize());
-		metadata.setCurrentPixelHeight(graphicFormat.getPixelSize());
-		metadata.computeSizes();
-		actualSize = new Point(metadata.getTileWidthPixel(), metadata.getTileHeightPixel());
 
 		part.setDirty(false);
 		part.getTransientData().put(Constants.OWNER, owner);
@@ -358,6 +352,11 @@ public class GfxEditorView implements ITileUpdateListener {
 		parent.setLayout(layout);
 
 		painter = createPainterWidget();
+
+		// actualSize = new Point(metadata.getTileWidthPixel(),
+		// metadata.getTileHeightPixel());
+		actualSize = new Point(640, 400);
+
 		int worksheetWidth = 640;
 		int worksheetHeight = 400;
 		if (actualSize.x > worksheetWidth) {
@@ -402,27 +401,8 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		scrollableRepository.setLayoutData(gridData);
 
-		painter.init(owner, colorPaletteProvider, false);
-		repository.init(owner, colorPaletteProvider, true);
-
-		if (tileRepositoryService.hasReference()) {
-			referenceRepository.init(tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
-			referenceRepository.generateAllTiles();
-		}
-
 		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
-
-		if (graphicFormat.getId().endsWith("CHARSET")) {
-			repository.getConf().setScaleMode(ScaleMode.D8);
-		} else if (graphicFormat.getId().endsWith("SPRITESET")) {
-			repository.getConf().setScaleMode(ScaleMode.D8);
-		} else if (graphicFormat.getId().endsWith("SCREENSET")) {
-			repository.getConf().setScaleMode(ScaleMode.D8);
-
-		} else {
-
-		}
 
 		painter.addDrawListener(repository);
 
@@ -467,20 +447,14 @@ public class GfxEditorView implements ITileUpdateListener {
 
 			// scrollablePainter.setMinSize(painter.computeSize(pain, height));
 		});
-		// scrollablePainter.setAlwaysShowScrollBars(true);
-		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		painter.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, metadata);
-		painter.getConf().setWidgetName("Painter :");
+		painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, colorPaletteProvider, false);
 		painter.getConf().setPixelSize(8);
 		painter.getConf().setPixelGridEnabled(true);
 		painter.getConf().setGridStyle(GridType.Dot);
 		painter.getConf().setTileGridEnabled(false);
 		painter.getConf().setTileCursorEnabled(false);
 		painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREENSET") ? false : true);
-		painter.getConf().supportsPainting = true;
-		painter.getConf().supportsDrawCursor = true;
 		painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
-		painter.getConf().setScaleMode(ScaleMode.None);
 
 		scrollablePainter.setContent(painter);
 		scrollablePainter.setExpandVertical(true);
@@ -494,9 +468,9 @@ public class GfxEditorView implements ITileUpdateListener {
 	private RepositoryWidget createRepositoryWidget() {
 		scrollableRepository = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.DOUBLE_BUFFERED);
 
-		repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant, metadata);
-		repository.getConf().setWidgetName("Selector:");
+		repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, colorPaletteProvider, true);
+		// repository.getConf().setGraphicFormat(graphicFormat, graphicFormatVariant,
+		// metadata);
 		repository.getConf().setPixelGridEnabled(false);
 		repository.getConf().setTileGridEnabled(true);
 		repository.getConf().setTileSubGridEnabled(false);
@@ -513,22 +487,15 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private ReferenceWidget createReferenceRepositoryWidget() {
 
-		referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
-		referenceRepository.getConf().setPixelSize(1);
-		referenceRepository.getConf().setWidth(8);
-		referenceRepository.getConf().setHeight(8);
-		referenceRepository.getConf().setTileRows(1);
-		referenceRepository.getConf().setTileColumns(1);
-		referenceRepository.getConf().setRows(16);
-		referenceRepository.getConf().setColumns(16);
-		referenceRepository.getConf().setWidgetName("Reference:");
+		referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
+		referenceRepository.getConf().setPixelSize(2);
 		referenceRepository.getConf().setPixelGridEnabled(false);
 		referenceRepository.getConf().setTileGridEnabled(true);
 		referenceRepository.getConf().setTileSubGridEnabled(false);
 		referenceRepository.getConf().setTileCursorEnabled(true);
 		referenceRepository.getConf().setSeparatorEnabled(false);
 		referenceRepository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE);
-		referenceRepository.getConf().setScaleMode(ScaleMode.None);
+		referenceRepository.generateAllTiles();
 
 		return referenceRepository;
 	}

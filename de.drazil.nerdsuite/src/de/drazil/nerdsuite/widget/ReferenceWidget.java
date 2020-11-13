@@ -22,8 +22,8 @@ public class ReferenceWidget extends BaseImagingWidget {
 	private int start;
 	private int end;
 
-	public ReferenceWidget(Composite parent, int style) {
-		super(parent, style);
+	public ReferenceWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+		super(parent, style, owner, colorPaletteProvider, autowrap);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
 		// setBackground(Constants.DARK_GREY);
@@ -119,13 +119,13 @@ public class ReferenceWidget extends BaseImagingWidget {
 	}
 
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(), conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
+		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled, conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
 	}
 
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 
-		gc.drawImage(imagePainterFactory.drawTileMap(tileRepositoryService, null, tileGap, Constants.DARK_GREY, false), 0, 0);
+		gc.drawImage(imagePainterFactory.drawTileMap(tileRepositoryService, null, conf.tileGap, Constants.DARK_GREY, false), 0, 0);
 
 		paintSelection(gc);
 		paintTileMarker(gc);
@@ -139,13 +139,13 @@ public class ReferenceWidget extends BaseImagingWidget {
 		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
 		selectedTileIndexList.forEach(i -> {
-			int y = i / conf.getColumns();
-			int x = i % conf.getColumns();
-			gc.fillRectangle(x * (conf.tileWidthPixel + tileGap), y * (conf.tileHeightPixel + tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
+			int y = i / conf.columns;
+			int x = i % conf.columns;
+			gc.fillRectangle(x * (conf.tileWidthPixel + conf.tileGap), y * (conf.tileHeightPixel + conf.tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
 			if (i == temporaryIndex) {
 				gc.setLineWidth(3);
 				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
-				gc.drawRectangle(x * (conf.tileWidthPixel + tileGap), y * (conf.tileHeightPixel + tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
+				gc.drawRectangle(x * (conf.tileWidthPixel + conf.tileGap), y * (conf.tileHeightPixel + conf.tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
 			}
 		});
 	}
@@ -154,7 +154,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
-			gc.fillRectangle(tileX * (conf.tileWidthPixel + tileGap), tileY * (conf.tileHeightPixel + tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.fillRectangle(tileX * (conf.tileWidthPixel + conf.tileGap), tileY * (conf.tileHeightPixel + conf.tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
 		}
 	}
 
@@ -203,22 +203,19 @@ public class ReferenceWidget extends BaseImagingWidget {
 			start = tileRepositoryService.getSelectedTileIndexList().get(0);
 			end = tileRepositoryService.getSelectedTileIndexList().get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
-			int imageWidth = conf.getScaledTileWidth();
-			int imageHeight = conf.getScaledTileHeight();
-			int columns = conf.getColumns();
-			int iys = start / columns;
-			int ys = iys * imageHeight;
+			int iys = start / conf.columns;
+			int ys = iys * conf.tileHeightPixel;
 
-			int iye = end / columns;
-			int ye = iye * imageHeight;
+			int iye = end / conf.columns;
+			int ye = iye * conf.tileHeightPixel;
 
 			start = computeTileIndex(0, iys);
-			end = computeTileIndex(columns, iye);
+			end = computeTileIndex(conf.columns, iye);
 			if (end > tileRepositoryService.getSize()) {
 				end = tileRepositoryService.getSize();
 			}
-			int height = (1 + iye - iys) * imageHeight;
-			redraw(0, ys, imageWidth * columns, height, false);
+			int height = (1 + iye - iys) * conf.tileHeightPixel;
+			redraw(0, ys, conf.tileWidthPixel * conf.columns, height, false);
 		} else {
 			drawAll = true;
 			redraw();
@@ -227,13 +224,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns) + (conf.columns * tileGap) - tileGap;
-		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows) + (conf.rows * tileGap) - tileGap;
-		return new Point(width, height);
+		return new Point(conf.fullWidthPixel, conf.fullHeightPixel);
 	}
 
-	@Override
-	protected int getTileGap() {
-		return 2;
-	}
 }

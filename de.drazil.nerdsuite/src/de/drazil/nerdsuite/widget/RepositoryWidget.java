@@ -8,7 +8,6 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -27,16 +26,11 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private int start;
 	private int end;
 
-	public RepositoryWidget(Composite parent, int style) {
-		super(parent, style);
+	public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+		super(parent, style, owner, colorPaletteProvider, autowrap);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
 		setTriggerMillis(1000);
-	}
-
-	@Override
-	protected int getTileGap() {
-		return 0;
 	}
 
 	@Override
@@ -153,7 +147,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(), conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
+		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled, conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
 	}
 
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
@@ -182,32 +176,32 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private void paintDragMarker(GC gc) {
 		int from = tileSelectionRange.getFrom();
 		int to = tileSelectionRange.getTo();
-		int xfrom = from % conf.getColumns();
-		int yfrom = from / conf.getColumns();
-		int xto = to % conf.getColumns();
-		int yto = to / conf.getColumns();
+		int xfrom = from % conf.columns;
+		int yfrom = from / conf.columns;
+		int xto = to % conf.columns;
+		int yto = to / conf.columns;
 		gc.setLineWidth(1);
 		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
-		gc.fillRectangle(xfrom * conf.scaledTileWidth, yfrom * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
+		gc.fillRectangle(xfrom * conf.tileWidthPixel, yfrom * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
 		gc.setAlpha(255);
 		gc.setForeground(Constants.BRIGHT_ORANGE);
 		gc.setLineWidth(4);
 		if (abs(to - from) > 0)
-			gc.drawLine(xto * conf.scaledTileWidth, yto * conf.scaledTileHeight, xto * conf.scaledTileWidth, yto * conf.scaledTileHeight + conf.scaledTileHeight);
+			gc.drawLine(xto * conf.tileWidthPixel, yto * conf.tileHeightPixel, xto * conf.tileWidthPixel, yto * conf.tileHeightPixel + conf.tileHeightPixel);
 	}
 
 	private void paintSelection(GC gc) {
 		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
 		selectedTileIndexList.forEach(i -> {
-			int y = i / conf.getColumns();
-			int x = i % conf.getColumns();
-			gc.fillRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
+			int y = i / conf.columns;
+			int x = i % conf.columns;
+			gc.fillRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
 			if (i == temporaryIndex) {
 				gc.setLineWidth(3);
 				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
-				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
+				gc.drawRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
 			}
 		});
 	}
@@ -216,7 +210,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
-			gc.fillRectangle(tileX * conf.scaledTileWidth, tileY * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
+			gc.fillRectangle(tileX * conf.tileWidthPixel, tileY * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
 		}
 	}
 
@@ -226,7 +220,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		gc.setForeground(Constants.TILE_GRID_COLOR);
 		for (int x = 0; x < conf.columns; x++) {
 			for (int y = 0; y < conf.rows; y++) {
-				gc.drawRectangle(x * conf.scaledTileWidth, y * conf.scaledTileHeight, conf.scaledTileWidth, conf.scaledTileHeight);
+				gc.drawRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
 			}
 		}
 	}
@@ -286,22 +280,19 @@ public class RepositoryWidget extends BaseImagingWidget {
 			start = tileRepositoryService.getSelectedTileIndexList().get(0);
 			end = tileRepositoryService.getSelectedTileIndexList().get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
-			int imageWidth = conf.getScaledTileWidth();
-			int imageHeight = conf.getScaledTileHeight();
-			int columns = conf.getColumns();
-			int iys = start / columns;
-			int ys = iys * imageHeight;
+			int iys = start / conf.columns;
+			int ys = iys * conf.tileHeightPixel;
 
-			int iye = end / columns;
-			int ye = iye * imageHeight;
+			int iye = end / conf.columns;
+			int ye = iye * conf.tileHeightPixel;
 
 			start = computeTileIndex(0, iys);
-			end = computeTileIndex(columns, iye);
+			end = computeTileIndex(conf.columns, iye);
 			if (end > tileRepositoryService.getSize()) {
 				end = tileRepositoryService.getSize();
 			}
-			int height = (1 + iye - iys) * imageHeight;
-			redraw(0, ys, imageWidth * columns, height, false);
+			int height = (1 + iye - iys) * conf.tileHeightPixel;
+			redraw(0, ys, conf.tileWidthPixel * conf.columns, height, false);
 		} else {
 			drawAll = true;
 			redraw();

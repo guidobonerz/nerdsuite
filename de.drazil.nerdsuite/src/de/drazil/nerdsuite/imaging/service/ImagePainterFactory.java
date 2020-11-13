@@ -36,7 +36,7 @@ public class ImagePainterFactory {
 	private IColorPaletteProvider colorProvider;
 	private final static Map<String, ImagePainterFactory> cache = new HashMap<String, ImagePainterFactory>();
 
-	public ImagePainterFactory(String name, ImagingWidgetConfiguration conf, IColorPaletteProvider colorProvider) {
+	public ImagePainterFactory(String name, IColorPaletteProvider colorProvider, ImagingWidgetConfiguration conf) {
 		imagePool = new HashMap<>();
 		this.conf = conf;
 		this.colorProvider = colorProvider;
@@ -54,8 +54,8 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
-	public Image getGridLayer(ImagingWidgetConfiguration conf) {
-		String name = conf.getGridStyle().toString();
+	public Image getGridLayer() {
+		String name = conf.gridStyle.toString();
 		Image image = imagePool.get(name);
 		if (null == image) {
 			image = createTransparentLayer(conf.fullWidthPixel, conf.fullHeightPixel, new ImagePainterFactory.IPainter() {
@@ -65,10 +65,10 @@ public class ImagePainterFactory {
 					for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
 						for (int y = 0; y <= conf.height * conf.tileRows; y++) {
 							if (conf.gridStyle == GridType.Line) {
-								gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize, conf.height * conf.pixelSize * conf.tileRows);
-								gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns, y * conf.pixelSize);
+								gc.drawLine(x * conf.pixelWidth, 0, x * conf.pixelWidth, conf.tileHeightPixel);
+								gc.drawLine(0, y * conf.pixelHeight, conf.tileWidthPixel, y * conf.pixelHeight);
 							} else {
-								gc.drawPoint(x * conf.pixelSize, y * conf.pixelSize);
+								gc.drawPoint(x * conf.pixelWidth, y * conf.pixelHeight);
 							}
 						}
 					}
@@ -120,14 +120,14 @@ public class ImagePainterFactory {
 					}
 					ImagePainterFactory factory = ImagePainterFactory.getImageFactory(service.getMetadata().getReferenceRepositoryId());
 					Image refImage = factory.drawTile(refService, null, brushIndex, content[i], useColorIndex);
-					gc.drawImage(refImage, x * conf.currentPixelWidth, y * conf.currentPixelHeight);
+					gc.drawImage(refImage, x * conf.pixelWidth, y * conf.pixelHeight);
 				} else {
 					int ci = content[i];
 					if (useColorIndex & ci > 0) {
 						ci = colorIndex;
 					}
 					gc.setBackground(colorProvider.getColorByIndex(ci));
-					gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+					gc.fillRectangle(x * conf.pixelWidth, y * conf.pixelHeight, conf.pixelWidth, conf.pixelHeight);
 				}
 				x++;
 			}
@@ -153,10 +153,10 @@ public class ImagePainterFactory {
 			int colorIndex = layer.getContent()[offset];
 			ImagePainterFactory factory = ImagePainterFactory.getImageFactory(service.getMetadata().getReferenceRepositoryId());
 			Image refImage = factory.drawTile(refService, null, brushIndex, colorIndex, true);
-			gc.drawImage(refImage, x * conf.currentPixelWidth, y * conf.currentPixelHeight);
+			gc.drawImage(refImage, x * conf.pixelWidth, y * conf.pixelHeight);
 		} else {
 			gc.setBackground(colorProvider.getColorByIndex(content[offset]));
-			gc.fillRectangle(x * conf.pixelSize, y * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+			gc.fillRectangle(x * conf.pixelWidth, y * conf.pixelHeight, conf.pixelWidth, conf.pixelHeight);
 		}
 		gc.dispose();
 
@@ -164,7 +164,7 @@ public class ImagePainterFactory {
 	}
 
 	public Image drawTileMap(TileRepositoryService service, TileRepositoryService refService, int tileGap, Color color, boolean naturalOrder) {
-		conf.computeSizes();
+		conf.computeDimensions();
 		Image baseImage = createBaseImage(color, conf.fullWidthPixel + (conf.columns * tileGap), conf.fullHeightPixel + (conf.rows * tileGap));
 		GC gc = new GC(baseImage);
 		for (int i = 0; i < service.getSize(); i++) {

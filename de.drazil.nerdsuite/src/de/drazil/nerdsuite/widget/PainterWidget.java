@@ -17,7 +17,6 @@ import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
-import de.drazil.nerdsuite.model.ProjectMetaData;
 
 public class PainterWidget extends BaseImagingWidget {
 
@@ -32,8 +31,8 @@ public class PainterWidget extends BaseImagingWidget {
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
 
-	public PainterWidget(Composite parent, int style) {
-		super(parent, style);
+	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+		super(parent, style, owner, colorPaletteProvider, autowrap);
 
 		this.parent = (ScrolledComposite) parent;
 		this.parent.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
@@ -49,11 +48,6 @@ public class PainterWidget extends BaseImagingWidget {
 			}
 		});
 
-	}
-
-	@Override
-	protected int getTileGap() {
-		return 0;
 	}
 
 	@Override
@@ -133,21 +127,22 @@ public class PainterWidget extends BaseImagingWidget {
 		if (Math.abs(scrollStep) % 3 == 0) {
 			boolean direction = oldScrollStep < scrollStep;
 			int step = direction ? 2 : -2;
-			if (conf.pixelSize + step >= 8 && conf.pixelSize + step <= 32) {
-				conf.pixelSize += step;
+			if (conf.pixelWidth + step >= 8 && conf.pixelWidth + step <= 32) {
+				conf.pixelWidth += step;
+				conf.pixelHeight = conf.pixelWidth;
 				recalc();
-				conf.computeSizes();
+				conf.computeDimensions();
 				imagePainterFactory.resetCache();
 				// imagePainterFactory.drawSelectedTile(tileRepositoryService,
 				// colorPaletteProvider, conf);
 				doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
-				((ScrolledComposite) getParent()).setMinSize(conf.getFullWidthPixel(), conf.getFullHeightPixel());
+				((ScrolledComposite) getParent()).setMinSize(conf.fullWidthPixel, conf.fullHeightPixel);
 			}
 		}
 	}
 
 	private int computeCursorIndex(int x, int y) {
-		return (x + (y * conf.width * conf.tileColumns));
+		return (x + (y * conf.tileWidth));
 	}
 
 	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
@@ -206,7 +201,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 		if (paintPixelGrid) {
 
-			gc.drawImage(imagePainterFactory.getGridLayer(conf), 0, 0);
+			gc.drawImage(imagePainterFactory.getGridLayer(), 0, 0);
 			if (paintSeparator) {
 				// paintSeparator(gc);
 			}
@@ -227,30 +222,25 @@ public class PainterWidget extends BaseImagingWidget {
 		redrawMode = RedrawMode.DrawNothing;
 	}
 
-	private void paintTileSubGrid(GC gc) {
-		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
-		for (int y = conf.height; y < conf.height * conf.tileRows; y += conf.height) {
-			gc.drawLine(0, y * conf.pixelSize, conf.scaledTileWidth, y * conf.pixelSize);
-		}
-		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
-		for (int x = conf.currentWidth; x < conf.currentWidth * conf.tileColumns; x += conf.currentWidth) {
-			gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize, conf.scaledTileHeight);
-		}
-	}
-
-	private void paintSeparator(GC gc) {
-		gc.setForeground(Constants.BYTE_SEPARATOR_COLOR);
-		int bc = conf.pixelConfig.bitCount;
-		int step = (8 * bc);
-		for (int x = step; x < (conf.scaledTileWidth) / bc; x += step) {
-			gc.drawLine(x * conf.currentPixelWidth, 0, x * conf.currentPixelWidth, conf.scaledTileHeight);
-		}
-	}
-
+	/*
+	 * private void paintTileSubGrid(GC gc) {
+	 * gc.setForeground(Constants.TILE_SUB_GRID_COLOR); for (int y = height; y <
+	 * tileHeight; y += height) { gc.drawLine(0, y * pixelHeight,
+	 * conf.scaledTileWidth, y * pixelHeight); }
+	 * gc.setForeground(Constants.TILE_SUB_GRID_COLOR); for (int x = width; x <
+	 * tileWidth; x += width) { gc.drawLine(x * pixelWidth, 0, x * pixelWidth,
+	 * conf.scaledTileHeight); } }
+	 * 
+	 * private void paintSeparator(GC gc) {
+	 * gc.setForeground(Constants.BYTE_SEPARATOR_COLOR); int bc =
+	 * conf.pixelConfig.bitCount; int step = (8 * bc); for (int x = step; x <
+	 * (conf.scaledTileWidth) / bc; x += step) { gc.drawLine(x * pixelWidth, 0, x *
+	 * pixelWidth, conf.scaledTileHeight); } }
+	 */
 	private void paintPixelCursor(GC gc) {
-		if (computeCursorIndex(cursorX, cursorY) < conf.width * conf.height * conf.tileColumns * conf.tileRows) {
+		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize) {
 			gc.setForeground(Constants.BRIGHT_ORANGE);
-			gc.drawRectangle(cursorX * conf.pixelSize, cursorY * conf.pixelSize, conf.pixelSize, conf.pixelSize);
+			gc.drawRectangle(cursorX * conf.pixelWidth, cursorY * conf.pixelHeight, conf.pixelWidth, conf.pixelHeight);
 		}
 	}
 
@@ -277,15 +267,15 @@ public class PainterWidget extends BaseImagingWidget {
 				y2 = v;
 			}
 
-			gc.drawRectangle(x1 * conf.getPixelSize(), y1 * conf.getPixelSize(), (x2 - x1) * conf.getPixelSize() + conf.getPixelSize(), (y2 - y1) * conf.getPixelSize() + conf.getPixelSize());
+			gc.drawRectangle(x1 * conf.pixelWidth, y1 * conf.pixelHeight, (x2 - x1) * conf.pixelWidth + conf.pixelWidth, (y2 - y1) * conf.pixelHeight + conf.pixelHeight);
 		}
 	}
 
 	public void setCursorMode(CursorMode cursorMode) {
-		conf.setCursorMode(cursorMode);
+		conf.cursorMode = cursorMode;
 		if (cursorMode == CursorMode.Point) {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
-			tileRepositoryService.setSelection(new Rectangle(0, 0, conf.getWidth() * conf.getTileColumns(), conf.getHeight() * conf.getTileRows()));
+			tileRepositoryService.setSelection(new Rectangle(0, 0, conf.tileWidth, conf.tileHeight));
 		} else if (cursorMode == CursorMode.Move) {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_SIZEALL));
 		}
@@ -319,24 +309,24 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 		case VerticalMirror: {
 			setPixel(layer, x, y, conf);
-			int centerX = ((conf.width * conf.tileColumns) / 2);
+			int centerX = conf.tileWidth / 2;
 			int diff = centerX - x - 1;
 			setPixel(layer, centerX + diff, y, conf);
 			break;
 		}
 		case HorizontalMirror: {
 			setPixel(layer, x, y, conf);
-			int centerY = ((conf.height * conf.tileRows) / 2);
+			int centerY = conf.tileHeight / 2;
 			int diff = centerY - y - 1;
 			setPixel(layer, x, centerY + diff, conf);
 			break;
 		}
 		case Kaleidoscope: {
 			setPixel(layer, x, y, conf);
-			int centerX = ((conf.width * conf.tileColumns) / 2);
+			int centerX = conf.tileWidth / 2;
 			int diffX = centerX - x - 1;
 			setPixel(layer, centerX + diffX, y, conf);
-			int centerY = ((conf.height * conf.tileRows) / 2);
+			int centerY = conf.tileHeight / 2;
 			int diffY = centerY - y - 1;
 			setPixel(layer, x, centerY + diffY, conf);
 			setPixel(layer, centerX + diffX, centerY + diffY, conf);
@@ -392,11 +382,6 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-
-		ProjectMetaData metadata = tileRepositoryService.getMetadata();
-		int width = (metadata.getWidth() * conf.currentPixelWidth * metadata.getColumns() * conf.columns);
-		int height = (metadata.getHeight() * conf.currentPixelHeight * metadata.getRows() * conf.rows);
-		System.out.printf("width:%2d  height:%2d", width, height);
-		return new Point(width, height);
+		return new Point(conf.fullWidthPixel, conf.fullHeightPixel);
 	}
 }
