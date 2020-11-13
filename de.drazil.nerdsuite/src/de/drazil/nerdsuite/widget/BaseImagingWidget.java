@@ -341,7 +341,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	@Override
 	public void tileChanged() {
-		conf.setMultiColorEnabled(tile.isMulticolor());
+		conf.setMultiColorEnabled(tile.isMulticolorEnabled());
 		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 	}
 

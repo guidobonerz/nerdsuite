@@ -7,7 +7,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
@@ -17,6 +16,10 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
 
 public class ImagePainterFactory {
+
+	public static interface IPainter {
+		public void paint(GC gc);
+	}
 
 	private Map<String, Image> imagePool = null;
 
@@ -54,31 +57,38 @@ public class ImagePainterFactory {
 	public Image getGridLayer(ImagingWidgetConfiguration conf) {
 		String name = conf.getGridStyle().toString();
 		Image image = imagePool.get(name);
-		RGB transparentColor = new RGB(0, 0, 0);
 		if (null == image) {
-			image = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
-			GC gc = new GC(image);
-			gc.setBackground(new Color(new RGB(0, 0, 0)));
-			gc.fillRectangle(0, 0, conf.tileWidthPixel, conf.tileHeightPixel);
-			gc.setForeground(conf.gridStyle == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
-			for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
-				for (int y = 0; y <= conf.height * conf.tileRows; y++) {
-
-					if (conf.gridStyle == GridType.Line) {
-						gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize, conf.height * conf.pixelSize * conf.tileRows);
-						gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns, y * conf.pixelSize);
-					} else {
-						gc.drawPoint(x * conf.pixelSize, y * conf.pixelSize);
+			image = createTransparentLayer(conf.fullWidthPixel, conf.fullHeightPixel, new ImagePainterFactory.IPainter() {
+				@Override
+				public void paint(GC gc) {
+					gc.setForeground(conf.gridStyle == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
+					for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
+						for (int y = 0; y <= conf.height * conf.tileRows; y++) {
+							if (conf.gridStyle == GridType.Line) {
+								gc.drawLine(x * conf.pixelSize, 0, x * conf.pixelSize, conf.height * conf.pixelSize * conf.tileRows);
+								gc.drawLine(0, y * conf.pixelSize, conf.width * conf.pixelSize * conf.tileColumns, y * conf.pixelSize);
+							} else {
+								gc.drawPoint(x * conf.pixelSize, y * conf.pixelSize);
+							}
+						}
 					}
 				}
-			}
-			gc.dispose();
-			ImageData id = image.getImageData();
-
-			id.transparentPixel = id.palette.getPixel(transparentColor);
-			image = new Image(Display.getDefault(), id);
+			});
 			imagePool.put(name, image);
 		}
+		return image;
+	}
+
+	private Image createTransparentLayer(int width, int height, IPainter painter) {
+		Image image = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
+		GC gc = new GC(image);
+		gc.setBackground(Constants.TRANSPARENT_COLOR);
+		gc.fillRectangle(0, 0, width, height);
+		painter.paint(gc);
+		gc.dispose();
+		ImageData imageData = image.getImageData();
+		imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
+		image = new Image(Display.getDefault(), imageData);
 		return image;
 	}
 
@@ -128,7 +138,7 @@ public class ImagePainterFactory {
 	}
 
 	public Image drawPixel(TileRepositoryService service, TileRepositoryService refService, int x, int y) {
-		String name = service.getSelectedTileName()+"_C255";
+		String name = service.getSelectedTileName() + "_C255";
 		Layer layer = service.getActiveLayerFromSelectedTile();
 		int content[] = layer.getContent();
 		Image image = imagePool.get(name);
