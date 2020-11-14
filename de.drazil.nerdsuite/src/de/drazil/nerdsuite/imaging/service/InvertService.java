@@ -3,14 +3,13 @@ package de.drazil.nerdsuite.imaging.service;
 import org.eclipse.swt.graphics.Rectangle;
 
 import de.drazil.nerdsuite.enums.TileAction;
-import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class InvertService extends AbstractImagingService {
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction, ProjectMetaData metadata) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
-		int tileWidth = metadata.getTileWidth();
+		int tileWidth = conf.getTileWidth();
 		Rectangle r = service.getSelection();
 		for (int x = r.x; x < r.x + r.width; x++) {
 			for (int y = r.y; y < r.y + r.height; y++) {

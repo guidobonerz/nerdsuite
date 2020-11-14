@@ -164,7 +164,7 @@ public class ImagePainterFactory {
 	}
 
 	public Image drawTileMap(TileRepositoryService service, TileRepositoryService refService, int tileGap, Color color, boolean naturalOrder) {
-		conf.computeDimensions();
+
 		Image baseImage = createBaseImage(color, conf.fullWidthPixel + (conf.columns * tileGap), conf.fullHeightPixel + (conf.rows * tileGap));
 		GC gc = new GC(baseImage);
 		for (int i = 0; i < service.getSize(); i++) {

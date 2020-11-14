@@ -15,8 +15,8 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public int tileGap = 0;
 	public int iconSize;
 	public int tileSize;
-	public int columns=1;
-	public int rows=1;
+	public int columns = 1;
+	public int rows = 1;
 	public int width;
 	public int height;
 	public int tileRows;
@@ -43,11 +43,6 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public GridType gridStyle = GridType.Line;
 	public CursorMode cursorMode = CursorMode.Point;
 	public boolean televisionModeEnabled = false;
-
-	public void setPixelSize(int size) {
-		pixelWidth = size;
-		pixelHeight = size;
-	}
 
 	public void computeDimensions() {
 		iconSize = width * height;

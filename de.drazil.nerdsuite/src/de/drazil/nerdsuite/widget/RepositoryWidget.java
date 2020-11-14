@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Display;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.model.SelectionRange;
 
 public class RepositoryWidget extends BaseImagingWidget {
@@ -26,8 +27,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private int start;
 	private int end;
 
-	public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
-		super(parent, style, owner, colorPaletteProvider, autowrap);
+	public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap, int pixelSize) {
+		super(parent, style, owner, colorPaletteProvider, autowrap, pixelSize);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
 		setTriggerMillis(1000);
@@ -297,5 +298,10 @@ public class RepositoryWidget extends BaseImagingWidget {
 			drawAll = true;
 			redraw();
 		}
+	}
+
+	@Override
+	protected String getViewerConfigName() {
+		return ProjectMetaData.REPOSITORY_CONFIG;
 	}
 }

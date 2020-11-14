@@ -57,6 +57,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected int tileCursorY = 0;
 	protected int temporaryIndex;
 	protected int action;
+	private int pixelSize;
 
 	protected boolean cursorChanged = false;
 	protected boolean tileCursorChanged = false;
@@ -85,46 +86,25 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	private ProjectMetaData metadata;
 
-	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
+	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap, int pixelSize) {
 		super(parent, style);
-		conf = new ImagingWidgetConfiguration();
+		this.pixelSize = pixelSize;
 		mc = new MeasuringController();
 		mc.addMeasuringListener(this);
-		init(owner, colorPaletteProvider, autowrap);
-	}
-
-	protected int getCalculatedColumns() {
-		return ((getParent().getBounds().width - 30) / conf.tileWidthPixel);
-	}
-
-	private void init(String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
-		conf.owner = owner;
-
 		this.colorPaletteProvider = colorPaletteProvider;
-
 		drawListenerList = new ArrayList<>();
-		imagePainterFactory = new ImagePainterFactory(owner, colorPaletteProvider, conf);
-		tileRepositoryService = ServiceFactory.getService(conf.owner, TileRepositoryService.class);
+		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		tileRepositoryService.addTileListener(this);
 		metadata = tileRepositoryService.getMetadata();
+		conf = metadata.addViewerConfig(getViewerConfigName());
 		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
 		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
 		graphicFormatVariant = GraphicFormatFactory.getFormatVariantById(graphicFormatId, metadata.getVariant());
 		if (tileRepositoryService.getMetadata().getReferenceRepositoryId() != null) {
 			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceRepositoryId(), TileRepositoryService.class);
 		}
-		if (graphicFormatVariant.getId().equals("CUSTOM")) {
-			conf.width = metadata.getWidth();
-			conf.height = metadata.getHeight();
-			conf.tileColumns = metadata.getColumns();
-			conf.tileRows = metadata.getRows();
-		} else {
-			conf.width = graphicFormat.getWidth();
-			conf.height = graphicFormat.getHeight();
-			conf.tileColumns = graphicFormatVariant.getTileColumns();
-			conf.tileRows = graphicFormatVariant.getTileRows();
-		}
-		conf.computeDimensions();
+
+		imagePainterFactory = new ImagePainterFactory(owner, colorPaletteProvider, conf);
 		addPaintListener(this);
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
@@ -138,6 +118,33 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 				}
 			}
 		});
+	}
+
+	protected int getCalculatedColumns() {
+		return ((getParent().getBounds().width - 30) / conf.tileWidthPixel);
+	}
+
+	protected abstract String getViewerConfigName();
+
+	public void init() {
+		if (graphicFormatVariant.getId().equals("CUSTOM")) {
+			conf.width = metadata.getWidth();
+			conf.height = metadata.getHeight();
+			conf.tileColumns = metadata.getColumns();
+			conf.tileRows = metadata.getRows();
+		} else {
+			conf.width = graphicFormat.getWidth();
+			conf.height = graphicFormat.getHeight();
+			conf.tileColumns = graphicFormatVariant.getTileColumns();
+			conf.tileRows = graphicFormatVariant.getTileRows();
+		}
+		int s = pixelSize;
+		if (tileRepositoryReferenceService != null) {
+			s = tileRepositoryReferenceService.getMetadata().getViewerConfig().get(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG).tileWidthPixel;
+		}
+		conf.pixelWidth = s;
+		conf.pixelHeight = s;
+		metadata.computeDimensions();
 	}
 
 	public void setTriggerMillis(long... triggerMillis) {

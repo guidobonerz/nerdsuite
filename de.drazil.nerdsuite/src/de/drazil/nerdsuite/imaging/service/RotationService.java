@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.imaging.service;
 import org.eclipse.swt.graphics.Rectangle;
 
 import de.drazil.nerdsuite.enums.TileAction;
-import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class RotationService extends AbstractImagingService {
@@ -26,12 +25,12 @@ public class RotationService extends AbstractImagingService {
 	}
 
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction, ProjectMetaData metadata) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 		Rectangle r = service.getSelection();
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		int[] contentSelection = new int[r.width * r.height];
 		int[] targetContentSelection = new int[r.width * r.height];
-		int tileWidth = metadata.getTileWidth();
+		int tileWidth = conf.getTileWidth();
 
 		for (int x = r.x, cx = 0; x < r.x + r.width; x++, cx++) {
 			for (int y = r.y, cy = 0; y < r.y + r.height; y++, cy++) {

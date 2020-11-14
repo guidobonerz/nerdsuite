@@ -13,7 +13,7 @@ import lombok.Setter;
 public abstract class AbstractImagingService extends AbstractExecutableService implements IImagingService {
 
 	@Setter
-	protected ImagingWidgetConfiguration imagingWidgetConfiguration = null;
+	protected ImagingWidgetConfiguration conf = null;
 	protected IServiceCallback serviceCallback = null;
 	@Setter
 	protected int navigationOffset = 0;
@@ -76,7 +76,7 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
 			ProjectMetaData metadata = service.getMetadata();
 			selectedTileIndexList.forEach(i -> {
-				each(action, i, service.getTile(i), service, null, metadata);
+				each(action, i, service.getTile(i), service, null);
 			});
 			service.redrawTileViewer(selectedTileIndexList, ImagePainterFactory.UPDATE, false);
 		}
@@ -127,7 +127,7 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 	 */
 	// }
 
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction, ProjectMetaData metadata) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 
 	}
 

@@ -41,7 +41,7 @@ public class TileContainer {
 		String name = String.format("%s", "tile_", (getTileList().size() + 1));
 		GraphicFormat format = GraphicFormatFactory.getFormatById(metadata.getType());
 		GraphicFormatVariant variant = GraphicFormatFactory.getFormatVariantById(metadata.getType(), metadata.getVariant());
-		return addTile(name, metadata.getTileSize(), 0, metadata.getBlankValue());
+		return addTile(name, format.getHeight() * variant.getTileRows() * format.getWidth() * variant.getTileColumns(), 0, metadata.getBlankValue());
 	}
 
 	@JsonIgnore

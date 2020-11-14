@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.imaging.service;
 import org.eclipse.swt.graphics.Rectangle;
 
 import de.drazil.nerdsuite.enums.TileAction;
-import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class ShiftService extends AbstractImagingService {
@@ -13,18 +12,18 @@ public class ShiftService extends AbstractImagingService {
 	public final static int RIGHT = 4;
 
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction, ProjectMetaData metadata) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		Rectangle r = service.getSelection();
-		int tileWidth = metadata.getTileWidth();
+		int tileWidth = conf.getTileWidth();
 		if (action == UP) {
 			for (int x = r.x; x < r.x + r.width; x++) {
 				int b = content[x + r.y * tileWidth];
 				for (int y = r.y; y < r.y + r.height - 1; y++) {
 					content[x + y * tileWidth] = content[x + (y + 1) * tileWidth];
 				}
-				content[x + (metadata.getTileWidth() * (r.y + r.height - 1))] = b;
+				content[x + (conf.getTileWidth() * (r.y + r.height - 1))] = b;
 			}
 		} else if (action == DOWN) {
 			for (int x = r.x; x < r.x + r.width; x++) {
@@ -40,7 +39,7 @@ public class ShiftService extends AbstractImagingService {
 				for (int x = r.x; x < r.x + r.width - 1; x++) {
 					content[x + y * tileWidth] = content[(x + 1) + y * tileWidth];
 				}
-				content[(r.x + r.width + y * metadata.getTileWidth()) - 1] = b;
+				content[(r.x + r.width + y * conf.getTileWidth()) - 1] = b;
 			}
 		} else if (action == RIGHT) {
 			for (int y = r.y; y < r.y + r.height; y++) {

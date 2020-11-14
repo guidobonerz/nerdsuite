@@ -1,15 +1,20 @@
 package de.drazil.nerdsuite.model;
 
+import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class ProjectMetaData {
+	public final static String PAINTER_CONFIG = "PAINTER_CONFIG";
+	public final static String REPOSITORY_CONFIG = "REPOSITORY_CONFIG";
+	public final static String REFERENCE_REPOSITORY_CONFIG = "REFERENCE_REPOSITORY_CONFIG";
 	private String id;
 	private String platform;
 	private String type;
@@ -23,14 +28,25 @@ public class ProjectMetaData {
 	@JsonIgnore
 	private String referenceRepositoryId;
 	@JsonIgnore
-	private int currentPixelHeight;
+	@Getter
+	private HashMap<String, ImagingWidgetConfiguration> viewerConfig;
+
+	public ProjectMetaData() {
+		viewerConfig = new HashMap<String, ImagingWidgetConfiguration>();
+	}
+
 	@JsonIgnore
-	private int iconSize;
+	public ImagingWidgetConfiguration addViewerConfig(String name) {
+		ImagingWidgetConfiguration conf = new ImagingWidgetConfiguration();
+		viewerConfig.put(name, conf);
+		return conf;
+	}
+
 	@JsonIgnore
-	private int tileSize;
-	@JsonIgnore
-	private int tileWidth;
-	@JsonIgnore
-	private int tileHeight;
+	public void computeDimensions() {
+		for (ImagingWidgetConfiguration conf : viewerConfig.values()) {
+			conf.computeDimensions();
+		}
+	}
 
 }

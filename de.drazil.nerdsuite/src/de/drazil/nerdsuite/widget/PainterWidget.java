@@ -17,6 +17,7 @@ import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 
 public class PainterWidget extends BaseImagingWidget {
 
@@ -31,8 +32,8 @@ public class PainterWidget extends BaseImagingWidget {
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
 
-	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
-		super(parent, style, owner, colorPaletteProvider, autowrap);
+	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap, int pixelSize) {
+		super(parent, style, owner, colorPaletteProvider, autowrap, pixelSize);
 
 		this.parent = (ScrolledComposite) parent;
 		this.parent.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
@@ -383,5 +384,10 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		return new Point(conf.fullWidthPixel, conf.fullHeightPixel);
+	}
+
+	@Override
+	protected String getViewerConfigName() {
+		return ProjectMetaData.PAINTER_CONFIG;
 	}
 }
