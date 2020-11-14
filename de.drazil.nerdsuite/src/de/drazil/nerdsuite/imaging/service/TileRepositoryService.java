@@ -38,8 +38,6 @@ public class TileRepositoryService implements IService {
 	private List<ITileListener> tileListenerList = null;
 	@Getter
 	private TileRepositoryService referenceRepository;
-	@Getter
-	private int tileSize;
 
 	public TileRepositoryService() {
 		tileServiceManagementListener = new ArrayList<>();
@@ -57,7 +55,6 @@ public class TileRepositoryService implements IService {
 
 	public void setMetadata(ProjectMetaData metadata) {
 		container.setMetadata(metadata);
-		computeTileSize();
 	}
 
 	public ProjectMetaData getMetadata() {
@@ -122,10 +119,6 @@ public class TileRepositoryService implements IService {
 
 	public Tile addTile() {
 		return container.addTile();
-	}
-
-	private void computeTileSize() {
-		tileSize = container.getMetadata().getHeight() * container.getMetadata().getWidth() * container.getMetadata().getColumns() * container.getMetadata().getRows();
 	}
 
 	public void addTileListener(ITileListener listener) {
@@ -251,7 +244,7 @@ public class TileRepositoryService implements IService {
 				referenceRepository.load(referenceFile);
 				container.getMetadata().setReferenceRepositoryId(referenceId);
 			}
-			computeTileSize();
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

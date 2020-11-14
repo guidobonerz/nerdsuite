@@ -28,6 +28,8 @@ public class ProjectMetaData {
 	@JsonIgnore
 	private String referenceRepositoryId;
 	@JsonIgnore
+	private int tileSize;
+	@JsonIgnore
 	@Getter
 	private HashMap<String, ImagingWidgetConfiguration> viewerConfig;
 
@@ -44,6 +46,7 @@ public class ProjectMetaData {
 
 	@JsonIgnore
 	public void computeDimensions() {
+		tileSize = width * height * rows * columns;
 		for (ImagingWidgetConfiguration conf : viewerConfig.values()) {
 			conf.computeDimensions();
 		}

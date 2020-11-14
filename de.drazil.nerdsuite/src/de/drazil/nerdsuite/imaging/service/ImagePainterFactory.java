@@ -108,7 +108,7 @@ public class ImagePainterFactory {
 		if (image == null) {
 			image = createBaseImage(colorProvider.getColorByIndex(0), conf.tileWidthPixel, conf.tileHeightPixel);
 			GC gc = new GC(image);
-			for (int i = 0; i < service.getTileSize(); i++) {
+			for (int i = 0; i < service.getMetadata().getTileSize(); i++) {
 				if (i % conf.tileWidth == 0 && i > 0) {
 					x = 0;
 					y++;
@@ -165,7 +165,7 @@ public class ImagePainterFactory {
 
 	public Image drawTileMap(TileRepositoryService service, TileRepositoryService refService, int tileGap, Color color, boolean naturalOrder) {
 
-		Image baseImage = createBaseImage(color, conf.fullWidthPixel + (conf.columns * tileGap), conf.fullHeightPixel + (conf.rows * tileGap));
+		Image baseImage = createBaseImage(color, conf.fullWidthPixel, conf.fullHeightPixel);
 		GC gc = new GC(baseImage);
 		for (int i = 0; i < service.getSize(); i++) {
 			Image tileImage = drawTile(service, refService, i, 1, true);
@@ -184,10 +184,6 @@ public class ImagePainterFactory {
 		gc.fillRectangle(0, 0, width, height);
 		gc.dispose();
 		return image;
-	}
-
-	private boolean checkMode(int update, int value) {
-		return (update & value) == value;
 	}
 
 	public boolean hasImages() {
