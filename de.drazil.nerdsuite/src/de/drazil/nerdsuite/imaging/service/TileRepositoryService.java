@@ -248,7 +248,7 @@ public class TileRepositoryService implements IService {
 				File referenceFile = Path.of(Configuration.WORKSPACE_PATH.toString(), referenceRepositoryLocation).toFile();
 				referenceId = referenceFile.getName().split("\\.")[0].toUpperCase();
 				referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
-				TileContainer refContainer = referenceRepository.load(referenceFile);
+				referenceRepository.load(referenceFile);
 				container.getMetadata().setReferenceRepositoryId(referenceId);
 			}
 			computeTileSize();
