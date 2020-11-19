@@ -13,6 +13,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 
 	public String owner;
 	public int tileGap = 0;
+	public int storageSize = 0;
 	public int iconSize;
 	public int tileSize;
 	public int columns = 1;
@@ -29,6 +30,8 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public int fullHeightPixel;
 	public int pixelWidth = 1;
 	public int pixelHeight = 1;
+	public int pixelPaintWidth = 1;
+	public int pixelPaintHeight = 1;
 	public int cursorLineWidth = 1;
 	public int tileSelectionModes = NONE;
 	public boolean pixelGridEnabled = true;
@@ -45,13 +48,16 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public boolean televisionModeEnabled = false;
 
 	public void computeDimensions() {
+		pixelPaintWidth = pixelWidth * storageSize;
+		pixelPaintHeight = pixelHeight * storageSize;
 		iconSize = width * height;
 		tileSize = iconSize * columns * rows;
 		tileWidth = width * tileColumns;
 		tileHeight = height * tileRows;
-		tileWidthPixel = tileWidth * pixelWidth;
-		tileHeightPixel = tileHeight * pixelHeight;
+		tileWidthPixel = tileWidth * pixelPaintWidth;
+		tileHeightPixel = tileHeight * pixelPaintHeight;
 		fullWidthPixel = tileWidthPixel * columns + (columns * tileGap) - tileGap;
-		fullHeightPixel = tileWidthPixel * rows + (rows * tileGap) - tileGap;
+		fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
+		int a = 0;
 	}
 }

@@ -23,8 +23,8 @@ public class ReferenceWidget extends BaseImagingWidget {
 	private int start;
 	private int end;
 
-	public ReferenceWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap, int pixelPize) {
-		super(parent, style, owner, colorPaletteProvider, autowrap, pixelPize);
+	public ReferenceWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+		super(parent, style, owner, colorPaletteProvider, autowrap);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
 		// setBackground(Constants.DARK_GREY);
@@ -126,7 +126,8 @@ public class ReferenceWidget extends BaseImagingWidget {
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 
-		gc.drawImage(imagePainterFactory.drawTileMap(tileRepositoryService, null, conf.tileGap, Constants.DARK_GREY, false), 0, 0);
+		// gc.drawImage(imagePainterFactory.drawTileMap(tileRepositoryService, null,
+		// conf.tileGap, Constants.DARK_GREY, false), 0, 0);
 
 		paintSelection(gc);
 		paintTileMarker(gc);

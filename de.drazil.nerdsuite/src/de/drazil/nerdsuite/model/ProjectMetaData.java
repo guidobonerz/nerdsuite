@@ -50,6 +50,7 @@ public class ProjectMetaData {
 		for (ImagingWidgetConfiguration conf : viewerConfig.values()) {
 			conf.computeDimensions();
 		}
+		int a = 0;
 	}
 
 }

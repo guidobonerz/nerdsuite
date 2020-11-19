@@ -13,7 +13,7 @@ public class GraphicFormat {
 	private int height;
 	private int pixelSize;
 	private boolean supportsLayers;
-	private int storageEntity;
+	private int storageSize;
 	private String storageType;
 	private int maxItems;
 	private int blankValue;

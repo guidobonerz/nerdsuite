@@ -352,7 +352,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		parent.setLayout(layout);
 
 		painter = getPainterWidget();
-		painter.addDrawListener(repository);
+		// painter.addDrawListener(repository);
 
 		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, graphicFormat.getId().endsWith("SCREENSET") ? 2 : 4,
 				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
@@ -392,32 +392,24 @@ public class GfxEditorView implements ITileUpdateListener {
 		}
 
 		GridData gridData = null;
-		// gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		// gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth :
-		// actualSize.x;
+
+		gridData = new GridData(SWT.BEGINNING, SWT.FILL, false, false, 1, 2);
+		gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
 		gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
-		gridData.verticalSpan = 2;
-		gridData.verticalAlignment = GridData.BEGINNING;
 		scrollablePainter.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		multiColorChooser.setLayoutData(gridData);
 
 		if (tileRepositoryService.hasReference()) {
-			gridData = new GridData(GridData.FILL_VERTICAL);
-			gridData.verticalSpan = 3;
-			gridData.verticalAlignment = GridData.BEGINNING;
+			gridData = new GridData(SWT.FILL, SWT.BEGINNING, false, true, 1, 3);
 			referenceRepository.setLayoutData(gridData);
 		}
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gridData = new GridData(SWT.BEGINNING, SWT.FILL, false, true, 1, 1);
 		scrollableLayerChooser.setLayoutData(gridData);
 
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.horizontalSpan = tileRepositoryService.hasReference() ? 3 : 2;
-
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, tileRepositoryService.hasReference() ? 3 : 2, 1);
 		scrollableRepository.setLayoutData(gridData);
 
 		Display.getDefault().asyncExec(new Runnable() {
@@ -430,7 +422,8 @@ public class GfxEditorView implements ITileUpdateListener {
 				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
 				if (tileRepositoryService.hasReference()) {
-					referenceRepository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
+					// referenceRepository.doRedraw(RedrawMode.DrawAllTiles,
+					// ImagePainterFactory.UPDATE);
 				}
 				parent.layout();
 			}
@@ -457,12 +450,13 @@ public class GfxEditorView implements ITileUpdateListener {
 
 				// scrollablePainter.setMinSize(painter.computeSize(pain, height));
 			});
-			painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, colorPaletteProvider, false, 2);
+			painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, colorPaletteProvider, false);
 			painter.getConf().setPixelGridEnabled(true);
 			painter.getConf().setGridStyle(GridType.Dot);
 			painter.getConf().setTileGridEnabled(false);
 			painter.getConf().setTileCursorEnabled(false);
-			painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREENSET") ? false : true);
+			// painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREENSET")
+			// ? false : true);
 			painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
 
 			scrollablePainter.setContent(painter);
@@ -477,7 +471,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	private RepositoryWidget getRepositoryWidget() {
 		if (scrollableRepository == null) {
 			scrollableRepository = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.DOUBLE_BUFFERED);
-			repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, colorPaletteProvider, true, 1);
+			repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, colorPaletteProvider, true);
 			repository.getConf().setPixelGridEnabled(false);
 			repository.getConf().setTileGridEnabled(true);
 			repository.getConf().setTileSubGridEnabled(false);
@@ -495,7 +489,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private ReferenceWidget getReferenceRepositoryWidget() {
 		if (referenceRepository == null) {
-			referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false, 2);
+			referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
 			referenceRepository.getConf().setRows(16);
 			referenceRepository.getConf().setColumns(16);
 			referenceRepository.getConf().setTileGap(3);

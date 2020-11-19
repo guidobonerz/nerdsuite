@@ -8,6 +8,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -32,8 +33,8 @@ public class PainterWidget extends BaseImagingWidget {
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
 
-	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap, int pixelSize) {
-		super(parent, style, owner, colorPaletteProvider, autowrap, pixelSize);
+	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+		super(parent, style, owner, colorPaletteProvider, autowrap);
 
 		this.parent = (ScrolledComposite) parent;
 		this.parent.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
@@ -83,6 +84,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
+		takePosition  = true;
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
@@ -93,6 +95,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
+
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
 				rangeSelectionStarted = false;
@@ -197,9 +200,9 @@ public class PainterWidget extends BaseImagingWidget {
 			// gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService,
 			// colorPaletteProvider, conf), 0, 0);
 			// int index = tileRepositoryService.getSelectedTileIndexList().get(0);
-			paintTile(gc);
+			// paintTile(gc);
 		}
-
+		paintTile(gc);
 		if (paintPixelGrid) {
 
 			gc.drawImage(imagePainterFactory.getGridLayer(), 0, 0);
@@ -241,7 +244,7 @@ public class PainterWidget extends BaseImagingWidget {
 	private void paintPixelCursor(GC gc) {
 		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize) {
 			gc.setForeground(Constants.BRIGHT_ORANGE);
-			gc.drawRectangle(cursorX * conf.pixelWidth, cursorY * conf.pixelHeight, conf.pixelWidth, conf.pixelHeight);
+			gc.drawRectangle(cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
 		}
 	}
 
@@ -268,7 +271,7 @@ public class PainterWidget extends BaseImagingWidget {
 				y2 = v;
 			}
 
-			gc.drawRectangle(x1 * conf.pixelWidth, y1 * conf.pixelHeight, (x2 - x1) * conf.pixelWidth + conf.pixelWidth, (y2 - y1) * conf.pixelHeight + conf.pixelHeight);
+			gc.drawRectangle(x1 * conf.pixelPaintWidth, y1 * conf.pixelPaintHeight, (x2 - x1) * conf.pixelPaintWidth + conf.pixelPaintWidth, (y2 - y1) * conf.pixelPaintHeight + conf.pixelPaintHeight);
 		}
 	}
 
@@ -357,11 +360,43 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	private void paintPixel(GC gc, int x, int y, int action) {
-		gc.drawImage(imagePainterFactory.drawPixel(tileRepositoryService, tileRepositoryReferenceService, cursorX, cursorY), 0, 0);
+
+		Tile tile = tileRepositoryService.getSelectedTile();
+		Layer layer = tile.getActiveLayer();
+		String name = String.format("%s_%s", tile.getName(), layer.getName());
+		Image image = imagePainterFactory.createOrUpdateLayer(name, action);
+		GC gcLayer = new GC(image);
+		int offset = conf.tileWidth * y + x;
+		gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[offset]));
+		gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+		gcLayer.dispose();
+		paintAll(gc, name, action);
 	}
 
 	private void paintTile(GC gc) {
-		gc.drawImage(imagePainterFactory.drawSelectedTile(tileRepositoryService, tileRepositoryReferenceService), 0, 0);
+		Tile tile = tileRepositoryService.getSelectedTile();
+		Layer layer = tile.getActiveLayer();
+		String name = String.format("%s_%s", tile.getName(), layer.getName());
+		Image image = imagePainterFactory.createOrUpdateLayer(name, action);
+		GC gcLayer = new GC(image);
+		int x = 0;
+		int y = 0;
+		for (int i = 0; i < conf.getTileSize(); i++) {
+			if (i % conf.tileWidth == 0 && i > 0) {
+				x = 0;
+				y++;
+			}
+			gc.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i]));
+			gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+			x++;
+		}
+		gcLayer.dispose();
+		paintAll(gc, name, action);
+	}
+
+	private void paintAll(GC gc, String name, int action) {
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK, action), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, action), 0, 0);
 	}
 
 	@Override
@@ -376,7 +411,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawCalculatedArea() {
-		redraw();
+		redraw(0, 0, conf.fullWidthPixel, conf.fullHeightPixel, false);
 		// redraw(cursorX * 8, cursorY * 8, 8, 8, false);
 		// System.out.println("redraw calculated");
 	}

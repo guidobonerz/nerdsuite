@@ -57,8 +57,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected int tileCursorY = 0;
 	protected int temporaryIndex;
 	protected int action;
-	private int pixelSize;
 
+	protected boolean takePosition;
 	protected boolean cursorChanged = false;
 	protected boolean tileCursorChanged = false;
 	protected boolean tileChanged = false;
@@ -86,9 +86,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	private ProjectMetaData metadata;
 
-	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap, int pixelSize) {
+	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
 		super(parent, style);
-		this.pixelSize = pixelSize;
 		mc = new MeasuringController();
 		mc.addMeasuringListener(this);
 		this.colorPaletteProvider = colorPaletteProvider;
@@ -138,12 +137,16 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 			conf.tileColumns = graphicFormatVariant.getTileColumns();
 			conf.tileRows = graphicFormatVariant.getTileRows();
 		}
-		int s = pixelSize;
+		conf.pixelWidth = graphicFormatVariant.getPixelSize();
+		conf.pixelHeight = graphicFormatVariant.getPixelSize();
+		int s = graphicFormatVariant.getPixelSize();
 		if (tileRepositoryReferenceService != null) {
-			s = tileRepositoryReferenceService.getMetadata().getViewerConfig().get(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG).tileWidthPixel;
+			s = tileRepositoryReferenceService.getMetadata().getViewerConfig().get(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG).tileWidth
+					* tileRepositoryReferenceService.getMetadata().getViewerConfig().get(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG).pixelWidth;
 		}
 		conf.pixelWidth = s;
 		conf.pixelHeight = s;
+		conf.storageSize = graphicFormat.getStorageSize();
 		metadata.computeDimensions();
 	}
 
@@ -230,32 +233,35 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	protected void computeCursorPosition(int x, int y) {
-		cursorX = x / conf.pixelWidth;
-		cursorY = y / conf.pixelHeight;
-		if (oldCursorX != cursorX || oldCursorY != cursorY) {
+		cursorX = x / conf.pixelPaintWidth;
+		cursorY = y / conf.pixelPaintHeight;
+		if (oldCursorX != cursorX || oldCursorY != cursorY || takePosition) {
 			oldCursorX = cursorX;
 			oldCursorY = cursorY;
 			cursorChanged = true;
+			takePosition = false;
 		} else {
 			cursorChanged = false;
 		}
 		tileX = x / (conf.tileWidthPixel + conf.tileGap);
 		tileY = y / (conf.tileHeightPixel + conf.tileGap);
 
-		if (oldTileX != tileX || oldTileY != tileY) {
+		if (oldTileX != tileX || oldTileY != tileY || takePosition) {
 			oldTileX = tileX;
 			oldTileY = tileY;
 			tileChanged = true;
+			takePosition = false;
 		} else {
 			tileChanged = false;
 		}
 
 		tileCursorX = (cursorX - (tileX * conf.width));
 		tileCursorY = (cursorY - (tileY * conf.height));
-		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY) {
+		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY || takePosition) {
 			oldTileCursorX = tileCursorX;
 			oldTileCursorY = tileCursorY;
 			tileCursorChanged = true;
+			takePosition = false;
 		} else {
 			tileCursorChanged = false;
 		}
@@ -308,15 +314,21 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	public void addDrawListener(IDrawListener redrawListener) {
-		drawListenerList.add(redrawListener);
+		if (drawListenerList != null) {
+			drawListenerList.add(redrawListener);
+		}
 	}
 
 	public void removeDrawListener(IDrawListener redrawListener) {
-		drawListenerList.remove(redrawListener);
+		if (drawListenerList != null) {
+			drawListenerList.remove(redrawListener);
+		}
 	}
 
 	protected void fireDoRedraw(RedrawMode redrawMode, PencilMode pencilMode, int update) {
-		drawListenerList.forEach(l -> l.doRedraw(redrawMode, update));
+		if (drawListenerList != null) {
+			drawListenerList.forEach(l -> l.doRedraw(redrawMode, update));
+		}
 	}
 
 	@Override

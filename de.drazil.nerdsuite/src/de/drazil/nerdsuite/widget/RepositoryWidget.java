@@ -27,8 +27,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private int start;
 	private int end;
 
-	public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap, int pixelSize) {
-		super(parent, style, owner, colorPaletteProvider, autowrap, pixelSize);
+	public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+		super(parent, style, owner, colorPaletteProvider, autowrap);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
 		setTriggerMillis(1000);

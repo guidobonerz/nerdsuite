@@ -92,7 +92,7 @@ public class NewProjectHandler {
 				metadata.setHeight(gf.getHeight());
 				metadata.setRows(gfv.getTileRows());
 				metadata.setColumns(gfv.getTileColumns());
-				metadata.setStorageEntity(gf.getStorageEntity());
+				metadata.setStorageEntity(gf.getStorageSize());
 
 				projectSetup.put("importFormat", (String) userData.get(ProjectWizard.IMPORT_FORMAT));
 				projectSetup.put("bytesToSkip", (Integer) userData.get(ProjectWizard.BYTES_TO_SKIP));

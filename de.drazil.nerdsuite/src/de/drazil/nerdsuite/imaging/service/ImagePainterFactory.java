@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.GridType;
+import de.drazil.nerdsuite.enums.Refresh;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
@@ -54,41 +55,90 @@ public class ImagePainterFactory {
 		imagePool.clear();
 	}
 
+	public Image getImage(String name) {
+		return imagePool.get(name);
+	}
+
 	public Image getGridLayer() {
 		String name = conf.gridStyle.toString();
 		Image image = imagePool.get(name);
 		if (null == image) {
-			image = createTransparentLayer(conf.fullWidthPixel, conf.fullHeightPixel, new ImagePainterFactory.IPainter() {
-				@Override
-				public void paint(GC gc) {
-					gc.setForeground(conf.gridStyle == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
-					for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
-						for (int y = 0; y <= conf.height * conf.tileRows; y++) {
-							if (conf.gridStyle == GridType.Line) {
-								gc.drawLine(x * conf.pixelWidth, 0, x * conf.pixelWidth, conf.tileHeightPixel);
-								gc.drawLine(0, y * conf.pixelHeight, conf.tileWidthPixel, y * conf.pixelHeight);
-							} else {
-								gc.drawPoint(x * conf.pixelWidth, y * conf.pixelHeight);
-							}
-						}
+			image = createOrUpdateLayer(name, UPDATE);
+			GC gc = new GC(image);
+			gc.setForeground(conf.gridStyle == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
+			for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
+				for (int y = 0; y <= conf.height * conf.tileRows; y++) {
+					if (conf.gridStyle == GridType.Line) {
+						gc.drawLine(x * conf.pixelPaintWidth, 0, x * conf.pixelPaintWidth, conf.tileHeightPixel);
+						gc.drawLine(0, y * conf.pixelHeight, conf.tileWidthPixel, y * conf.pixelHeight);
+					} else {
+						gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
 					}
 				}
-			});
+			}
+			gc.dispose();
 			imagePool.put(name, image);
 		}
 		return image;
 	}
 
-	private Image createTransparentLayer(int width, int height, IPainter painter) {
-		Image image = new Image(Display.getDefault(), conf.fullWidthPixel, conf.fullHeightPixel);
+	public Image createOrUpdateBaseImage(String name, Color color, int action) {
+		String internalName = String.format("%s_BASEIMAGE", name);
+		Image image = imagePool.get(internalName);
+		if (image == null || action == UPDATE) {
+			image = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
+			GC gc = new GC(image);
+			gc.setBackground(color);
+			gc.fillRectangle(0, 0, conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.dispose();
+			imagePool.put(internalName, image);
+		}
+
+		return image;
+	}
+
+	public Image createOrUpdateMergedImage(String name, Color color, int width, int height, int action) {
+		String internalName = String.format("%s_MERGED", name);
+		Image image = imagePool.get(internalName);
+		if (image == null || action == UPDATE) {
+			new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
+			GC gc = new GC(image);
+			gc.setBackground(color);
+			gc.fillRectangle(0, 0, conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.dispose();
+			imagePool.put(internalName, image);
+		}
+
+		return image;
+	}
+
+	public Image createOrUpdateLayer(String name, int action) {
+		Image image = imagePool.get(name);
+		if (image == null || action == UPDATE) {
+			if (image != null) {
+				image.dispose();
+				imagePool.remove(name);
+			}
+			image = new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel);
+			GC gc = new GC(image);
+			gc.setBackground(Constants.TRANSPARENT_COLOR);
+			gc.fillRectangle(0, 0, conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.dispose();
+			ImageData imageData = image.getImageData();
+			image.dispose();
+			imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
+			image = new Image(Display.getDefault(), imageData);
+			imagePool.put(name, image);
+		}
+		return image;
+	}
+
+	private Image createBaseImage(Color color, int width, int height) {
+		Image image = new Image(Display.getDefault(), width, height);
 		GC gc = new GC(image);
-		gc.setBackground(Constants.TRANSPARENT_COLOR);
+		gc.setBackground(color);
 		gc.fillRectangle(0, 0, width, height);
-		painter.paint(gc);
 		gc.dispose();
-		ImageData imageData = image.getImageData();
-		imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
-		image = new Image(Display.getDefault(), imageData);
 		return image;
 	}
 
@@ -175,15 +225,6 @@ public class ImagePainterFactory {
 		}
 		gc.dispose();
 		return baseImage;
-	}
-
-	private Image createBaseImage(Color color, int width, int height) {
-		Image image = new Image(Display.getDefault(), width, height);
-		GC gc = new GC(image);
-		gc.setBackground(color);
-		gc.fillRectangle(0, 0, width, height);
-		gc.dispose();
-		return image;
 	}
 
 	public boolean hasImages() {
