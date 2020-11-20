@@ -84,7 +84,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		takePosition  = true;
+		takePosition = true;
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
@@ -135,7 +135,7 @@ public class PainterWidget extends BaseImagingWidget {
 				conf.pixelWidth += step;
 				conf.pixelHeight = conf.pixelWidth;
 				recalc();
-				conf.computeDimensions();
+				conf.computeDimensions(tileRepositoryService.getSize());
 				imagePainterFactory.resetCache();
 				// imagePainterFactory.drawSelectedTile(tileRepositoryService,
 				// colorPaletteProvider, conf);
@@ -203,7 +203,7 @@ public class PainterWidget extends BaseImagingWidget {
 			// paintTile(gc);
 			paintTile(gc);
 		}
-		
+
 		if (paintPixelGrid) {
 
 			gc.drawImage(imagePainterFactory.getGridLayer(), 0, 0);

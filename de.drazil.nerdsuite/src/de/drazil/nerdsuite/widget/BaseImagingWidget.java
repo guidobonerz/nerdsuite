@@ -151,7 +151,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		conf.pixelSize = s;
 
 		conf.storageSize = graphicFormat.getStorageSize();
-		metadata.computeDimensions();
+		metadata.computeDimensions(tileRepositoryService.getSize());
 	}
 
 	public void setTriggerMillis(long... triggerMillis) {

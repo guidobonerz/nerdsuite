@@ -65,6 +65,7 @@ import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.ColorPaletteChooser;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.LayerChooser;
 import de.drazil.nerdsuite.widget.PainterWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
@@ -416,8 +417,8 @@ public class GfxEditorView implements ITileUpdateListener {
 				MHandledItem item = E4Utils.getMenuITemByTag(part, modelService, tags);
 				item.setSelected(tileRepositoryService.getSelectedTile().isMulticolorEnabled());
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
-				//painter.setCursorMode(CursorMode.Point);
-				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
+				painter.setCursorMode(CursorMode.Point);
+				//painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
 				if (tileRepositoryService.hasReference()) {
 					// referenceRepository.doRedraw(RedrawMode.DrawAllTiles,
@@ -460,10 +461,8 @@ public class GfxEditorView implements ITileUpdateListener {
 			scrollablePainter.setContent(painter);
 			scrollablePainter.setExpandVertical(true);
 			scrollablePainter.setExpandHorizontal(true);
-
 		}
 		return painter;
-
 	}
 
 	private RepositoryWidget getRepositoryWidget() {
@@ -476,7 +475,6 @@ public class GfxEditorView implements ITileUpdateListener {
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
 			repository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE | TileSelectionModes.MULTI);
-			// repository.recalc();
 			scrollableRepository.setContent(repository);
 			scrollableRepository.setExpandVertical(true);
 			scrollableRepository.setExpandHorizontal(true);
@@ -488,10 +486,9 @@ public class GfxEditorView implements ITileUpdateListener {
 	private ReferenceWidget getReferenceRepositoryWidget() {
 		if (referenceRepository == null) {
 			referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
-			referenceRepository.getConf().setRows(16);
+			referenceRepository.getConf().setRows(ImagingWidgetConfiguration.AUTOMATIC);
 			referenceRepository.getConf().setColumns(16);
 			referenceRepository.getConf().setTileGap(3);
-
 			referenceRepository.getConf().setPixelGridEnabled(false);
 			referenceRepository.getConf().setTileGridEnabled(true);
 			referenceRepository.getConf().setTileSubGridEnabled(false);

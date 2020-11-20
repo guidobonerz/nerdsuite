@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 public class ImagingWidgetConfiguration implements TileSelectionModes {
-
+	public static final int AUTOMATIC = -1;
 	public String owner;
 	public int tileGap = 0;
 	public int storageSize = 0;
@@ -48,7 +48,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public CursorMode cursorMode = CursorMode.Point;
 	public boolean televisionModeEnabled = false;
 
-	public void computeDimensions() {
+	public void computeDimensions(int tileCount) {
 		pixelPaintWidth = pixelSize;
 		pixelPaintHeight = pixelSize;
 		iconSize = width * height;
@@ -57,7 +57,18 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 		tileHeight = height * tileRows;
 		tileWidthPixel = tileWidth * pixelPaintWidth;
 		tileHeightPixel = tileHeight * pixelPaintHeight;
-		fullWidthPixel = tileWidthPixel * columns + (columns * tileGap) - tileGap;
-		fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
+		if (rows == AUTOMATIC && columns > 0) {
+			fullWidthPixel = tileWidthPixel * columns + (columns * tileGap) - tileGap;
+			rows = fullWidthPixel / columns;
+			fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
+		} else if (columns == AUTOMATIC && rows > 0) {
+			fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
+			columns = fullHeightPixel / rows;
+			fullWidthPixel = tileWidthPixel * columns + (columns * tileGap) - tileGap;
+		} else {
+			fullWidthPixel = tileWidthPixel * columns + (columns * tileGap) - tileGap;
+			fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
+		}
+
 	}
 }
