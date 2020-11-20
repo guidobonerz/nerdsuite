@@ -416,7 +416,7 @@ public class GfxEditorView implements ITileUpdateListener {
 				MHandledItem item = E4Utils.getMenuITemByTag(part, modelService, tags);
 				item.setSelected(tileRepositoryService.getSelectedTile().isMulticolorEnabled());
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
-				painter.setCursorMode(CursorMode.Point);
+				//painter.setCursorMode(CursorMode.Point);
 				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
 				if (tileRepositoryService.hasReference()) {
