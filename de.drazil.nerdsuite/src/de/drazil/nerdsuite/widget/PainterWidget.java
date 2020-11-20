@@ -201,8 +201,9 @@ public class PainterWidget extends BaseImagingWidget {
 			// colorPaletteProvider, conf), 0, 0);
 			// int index = tileRepositoryService.getSelectedTileIndexList().get(0);
 			// paintTile(gc);
+			paintTile(gc);
 		}
-		paintTile(gc);
+		
 		if (paintPixelGrid) {
 
 			gc.drawImage(imagePainterFactory.getGridLayer(), 0, 0);
@@ -374,6 +375,7 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	private void paintTile(GC gc) {
+		System.out.println("tile");
 		Tile tile = tileRepositoryService.getSelectedTile();
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s", tile.getName(), layer.getName());
@@ -386,8 +388,8 @@ public class PainterWidget extends BaseImagingWidget {
 				x = 0;
 				y++;
 			}
-			gc.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i]));
-			gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+			gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i]));
+			gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
 			x++;
 		}
 		gcLayer.dispose();

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
@@ -128,7 +129,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 		// gc.drawImage(imagePainterFactory.drawTileMap(tileRepositoryService, null,
 		// conf.tileGap, Constants.DARK_GREY, false), 0, 0);
-
+		paintTiles(gc);
 		paintSelection(gc);
 		paintTileMarker(gc);
 
@@ -180,6 +181,38 @@ public class ReferenceWidget extends BaseImagingWidget {
 		 * imageHeight; int x = (index % columns) * imageWidth; gc.drawImage(image, x,
 		 * y);
 		 */
+	}
+
+	private void paintTiles(GC gc) {
+
+		for (int i0 = 0; i0 < tileRepositoryService.getSize(); i0++) {
+			Tile tile = tileRepositoryService.getTile(i0);
+
+			Layer layer = tile.getActiveLayer();
+			String name = String.format("%s_%s", tile.getName(), layer.getName());
+			Image image = imagePainterFactory.createOrUpdateLayer(name, action);
+			GC gcLayer = new GC(image);
+			int x = 0;
+			int y = 0;
+			for (int i1 = 0; i1 < conf.getTileSize(); i1++) {
+				if (i1 % conf.tileWidth == 0 && i1 > 0) {
+					x = 0;
+					y++;
+				}
+				gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i1]));
+				gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+				x++;
+			}
+			gcLayer.dispose();
+			int y0 = (i0 / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
+			int x0 = (i0 % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
+			gc.drawImage(image, x0, y0);
+		}
+	}
+
+	private void paintAll(GC gc, String name, int action) {
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK, action), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, action), 0, 0);
 	}
 
 	@Override

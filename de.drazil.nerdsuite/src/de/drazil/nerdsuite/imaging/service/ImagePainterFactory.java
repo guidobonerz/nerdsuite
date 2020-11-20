@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.GridType;
-import de.drazil.nerdsuite.enums.Refresh;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Layer;
@@ -108,7 +107,6 @@ public class ImagePainterFactory {
 			gc.dispose();
 			imagePool.put(internalName, image);
 		}
-
 		return image;
 	}
 
@@ -128,6 +126,7 @@ public class ImagePainterFactory {
 			image.dispose();
 			imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
 			image = new Image(Display.getDefault(), imageData);
+			gc.dispose();
 			imagePool.put(name, image);
 		}
 		return image;

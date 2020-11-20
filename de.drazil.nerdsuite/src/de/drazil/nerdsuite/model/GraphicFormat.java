@@ -11,7 +11,6 @@ public class GraphicFormat {
 	private String name;
 	private int width;
 	private int height;
-	private int pixelSize;
 	private boolean supportsLayers;
 	private int storageSize;
 	private String storageType;

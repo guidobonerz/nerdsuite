@@ -30,6 +30,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public int fullHeightPixel;
 	public int pixelWidth = 1;
 	public int pixelHeight = 1;
+	public int pixelSize = 1;
 	public int pixelPaintWidth = 1;
 	public int pixelPaintHeight = 1;
 	public int cursorLineWidth = 1;
@@ -48,16 +49,15 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public boolean televisionModeEnabled = false;
 
 	public void computeDimensions() {
-		pixelPaintWidth = pixelWidth * storageSize;
-		pixelPaintHeight = pixelHeight * storageSize;
+		pixelPaintWidth = pixelSize;
+		pixelPaintHeight = pixelSize;
 		iconSize = width * height;
-		tileSize = iconSize * columns * rows;
+		tileSize = iconSize * tileColumns * tileRows;
 		tileWidth = width * tileColumns;
 		tileHeight = height * tileRows;
 		tileWidthPixel = tileWidth * pixelPaintWidth;
 		tileHeightPixel = tileHeight * pixelPaintHeight;
 		fullWidthPixel = tileWidthPixel * columns + (columns * tileGap) - tileGap;
 		fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
-		int a = 0;
 	}
 }

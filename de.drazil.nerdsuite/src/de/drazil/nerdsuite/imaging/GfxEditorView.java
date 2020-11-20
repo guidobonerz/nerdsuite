@@ -18,6 +18,7 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
+import org.eclipse.e4.ui.model.application.ui.menu.MHandledItem;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -49,7 +50,6 @@ import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
-import de.drazil.nerdsuite.imaging.service.MulticolorService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
@@ -221,10 +221,6 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageMulticolor(@UIEventTopic("Multicolor") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			boolean multicolor = (Boolean) brokerObject.getTransferObject();
-			MulticolorService service = ServiceFactory.getService(owner, MulticolorService.class);
-			service.setConf(painter.getConf());
-			service.execute(multicolor ? 1 : 0, modificationConfirmation);
-			tileRepositoryService.getSelectedTile().setMulticolorEnabled(multicolor);
 			multiColorChooser.setMonochrom(!multicolor);
 			part.setDirty(true);
 		}
@@ -393,12 +389,12 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		GridData gridData = null;
 
-		gridData = new GridData(SWT.BEGINNING, SWT.FILL, false, false, 1, 2);
+		gridData = new GridData(SWT.FILL, SWT.FILL, tileRepositoryService.hasReference() ? true : false, false, 1, 2);
 		gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
 		gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
 		scrollablePainter.setLayoutData(gridData);
 
-		gridData = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
+		gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		multiColorChooser.setLayoutData(gridData);
 
 		if (tileRepositoryService.hasReference()) {
@@ -406,7 +402,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			referenceRepository.setLayoutData(gridData);
 		}
 
-		gridData = new GridData(SWT.BEGINNING, SWT.FILL, false, true, 1, 1);
+		gridData = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
 		scrollableLayerChooser.setLayoutData(gridData);
 
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, tileRepositoryService.hasReference() ? 3 : 2, 1);
@@ -415,8 +411,10 @@ public class GfxEditorView implements ITileUpdateListener {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				int index = tileRepositoryService.getSelectedTileIndex();
-				tileRepositoryService.setSelectedTileIndex(index);
+				List<String> tags = new LinkedList<>();
+				tags.add("MultiColorButton");
+				MHandledItem item = E4Utils.getMenuITemByTag(part, modelService, tags);
+				item.setSelected(tileRepositoryService.getSelectedTile().isMulticolorEnabled());
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
 				painter.setCursorMode(CursorMode.Point);
 				painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);

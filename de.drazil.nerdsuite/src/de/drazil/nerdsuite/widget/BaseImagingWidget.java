@@ -126,6 +126,9 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected abstract String getViewerConfigName();
 
 	public void init() {
+		if (getViewerConfigName().equals(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG)) {
+			int a = 0;
+		}
 		if (graphicFormatVariant.getId().equals("CUSTOM")) {
 			conf.width = metadata.getWidth();
 			conf.height = metadata.getHeight();
@@ -137,15 +140,16 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 			conf.tileColumns = graphicFormatVariant.getTileColumns();
 			conf.tileRows = graphicFormatVariant.getTileRows();
 		}
-		conf.pixelWidth = graphicFormatVariant.getPixelSize();
-		conf.pixelHeight = graphicFormatVariant.getPixelSize();
 		int s = graphicFormatVariant.getPixelSize();
-		if (tileRepositoryReferenceService != null) {
-			s = tileRepositoryReferenceService.getMetadata().getViewerConfig().get(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG).tileWidth
-					* tileRepositoryReferenceService.getMetadata().getViewerConfig().get(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG).pixelWidth;
+		if (getViewerConfigName().equals(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG)) {
+			s = 2;
 		}
-		conf.pixelWidth = s;
-		conf.pixelHeight = s;
+
+		if (tileRepositoryReferenceService != null) {
+			s = 16;
+		}
+		conf.pixelSize = s;
+
 		conf.storageSize = graphicFormat.getStorageSize();
 		metadata.computeDimensions();
 	}
@@ -298,7 +302,9 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(conf.fullWidthPixel, conf.fullHeightPixel);
+		int w = wHint != SWT.DEFAULT ? wHint : conf.fullWidthPixel;
+		int h = hHint != SWT.DEFAULT ? hHint : conf.fullHeightPixel;
+		return new Point(w, h);
 	}
 
 	protected boolean supportsSingleSelection() {
