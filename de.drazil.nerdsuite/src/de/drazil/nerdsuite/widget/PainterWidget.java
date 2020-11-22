@@ -18,6 +18,7 @@ import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
+import de.drazil.nerdsuite.model.Image2;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 
 public class PainterWidget extends BaseImagingWidget {
@@ -192,21 +193,17 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 
 		if (redrawMode == RedrawMode.DrawPixel) {
-			paintPixel(gc, cursorX, cursorY, action);
+			// paintPixel(gc, cursorX, cursorY, action);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
 			// System.out.println("draw full image");
-			// gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService,
-			// colorPaletteProvider, conf), 0, 0);
-			// int index = tileRepositoryService.getSelectedTileIndexList().get(0);
 			// paintTile(gc);
-			paintTile(gc);
 		}
 
 		if (paintPixelGrid) {
 
-			gc.drawImage(imagePainterFactory.getGridLayer(), 0, 0);
+			gc.drawImage(imagePainterFactory.getGridLayer().getImage(), 0, 0);
 			if (paintSeparator) {
 				// paintSeparator(gc);
 			}
@@ -244,8 +241,21 @@ public class PainterWidget extends BaseImagingWidget {
 	 */
 	private void paintPixelCursor(GC gc) {
 		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize) {
+			if (tileRepositoryService.hasReference()) {
+				Tile tile = tileRepositoryService.getSelectedTile();
+				int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
+				Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
+				ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
+				gc.drawImage(ipf.createOrUpdateTileFull(refTile, tile.getColorIndex(1), false).getImage(), cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight);
+			} else {
+				// gc.setForeground(colo);
+				// gc.drawRectangle((cursorX * conf.pixelPaintWidth) - 1, (cursorY *
+				// conf.pixelPaintHeight) - 1, conf.pixelPaintWidth + 1, conf.pixelPaintHeight +
+				// 1);
+			}
+
 			gc.setForeground(Constants.BRIGHT_ORANGE);
-			gc.drawRectangle(cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+			gc.drawRectangle((cursorX * conf.pixelPaintWidth) - 1, (cursorY * conf.pixelPaintHeight) - 1, conf.pixelPaintWidth + 1, conf.pixelPaintHeight + 1);
 		}
 	}
 
@@ -360,17 +370,26 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 	}
 
-	private void paintPixel(GC gc, int x, int y, int action) {
+	private void paintPixel(GC gc, int x, int y, boolean isDirty) {
 
 		Tile tile = tileRepositoryService.getSelectedTile();
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s", tile.getName(), layer.getName());
-		Image image = imagePainterFactory.createOrUpdateLayer(name, action);
-		GC gcLayer = new GC(image);
+		Image2 imageInternal = imagePainterFactory.createLayer();
+		GC gcLayer = new GC(imageInternal.getImage());
 		int offset = conf.tileWidth * y + x;
-		gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[offset]));
-		gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+
+		if (tileRepositoryService.hasReference()) {
+			int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
+			Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
+			ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
+			gcLayer.drawImage(ipf.createOrUpdateTileFull(refTile, layer.getContent()[offset]).getImage(), cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight);
+		} else {
+			gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[offset]));
+			gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+		}
 		gcLayer.dispose();
+
 		paintAll(gc, name, action);
 	}
 
@@ -379,26 +398,29 @@ public class PainterWidget extends BaseImagingWidget {
 		Tile tile = tileRepositoryService.getSelectedTile();
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s", tile.getName(), layer.getName());
-		Image image = imagePainterFactory.createOrUpdateLayer(name, action);
-		GC gcLayer = new GC(image);
-		int x = 0;
-		int y = 0;
+		Image2 imageInternal = imagePainterFactory.createLayer();
+		GC gcLayer = new GC(imageInternal.getImage());
 		for (int i = 0; i < conf.getTileSize(); i++) {
-			if (i % conf.tileWidth == 0 && i > 0) {
-				x = 0;
-				y++;
+			int y = (i / conf.width);
+			int x = (i % conf.width);
+			if (tileRepositoryService.hasReference()) {
+				int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
+				Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
+				ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
+				gcLayer.drawImage(ipf.createOrUpdateTileFull(refTile, layer.getContent()[i]).getImage(), x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
+			} else {
+				gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i]));
+				gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
 			}
-			gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i]));
-			gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
-			x++;
 		}
 		gcLayer.dispose();
+
 		paintAll(gc, name, action);
 	}
 
 	private void paintAll(GC gc, String name, int action) {
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK, action), 0, 0);
-		gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, action), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK).getImage(), 0, 0);
+		// gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, true), 0, 0);
 	}
 
 	@Override

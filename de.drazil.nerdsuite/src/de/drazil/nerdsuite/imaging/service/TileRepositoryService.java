@@ -53,6 +53,10 @@ public class TileRepositoryService implements IService {
 		return referenceRepository != null;
 	}
 
+	public List<Tile> getTileList() {
+		return container.getTileList();
+	}
+
 	public void setMetadata(ProjectMetaData metadata) {
 		container.setMetadata(metadata);
 	}
@@ -82,7 +86,11 @@ public class TileRepositoryService implements IService {
 	}
 
 	public int getSelectedTileIndex() {
-		return container.getSelectedTileIndex();
+		return getSelectedTileIndex(false);
+	}
+
+	public int getSelectedTileIndex(boolean natural) {
+		return container.getSelectedTileIndex(natural);
 	}
 
 	public void setSelectedTileIndex(int index) {

@@ -40,6 +40,8 @@ public class Layer {
 
 	@JsonIgnore
 	private int size;
+	@JsonIgnore
+	private boolean dirty = true;
 
 	public Layer(String name, int size, int contentValue, int brushValue) {
 		this.name = name;

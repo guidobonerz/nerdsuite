@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +38,10 @@ public class Tile {
 	private List<Integer> layerIndexOrderList = new ArrayList<Integer>();
 	@JsonIgnore
 	private int size;
+	@JsonIgnore
+	@Getter
+	@Setter
+	private boolean dirty = true;
 
 	public Tile(String name, int size) {
 		this.name = name;

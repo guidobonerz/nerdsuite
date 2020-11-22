@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -112,14 +113,6 @@ public class ReferenceWidget extends BaseImagingWidget {
 		}
 	}
 
-	public void generateAllTiles() {
-
-		for (int i = 0; i < tileRepositoryService.getSize(); i++) {
-			imagePainterFactory.drawTile(tileRepositoryService, null, i, 1, false);
-		}
-
-	}
-
 	public void paintControl(PaintEvent e) {
 		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled, conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
 	}
@@ -129,7 +122,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 		// gc.drawImage(imagePainterFactory.drawTileMap(tileRepositoryService, null,
 		// conf.tileGap, Constants.DARK_GREY, false), 0, 0);
-		paintTiles(gc);
+		paintTileMap(gc);
 		paintSelection(gc);
 		paintTileMarker(gc);
 
@@ -169,50 +162,9 @@ public class ReferenceWidget extends BaseImagingWidget {
 		doRedraw(redrawMode, action);
 	}
 
-	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider, int update) {
-		// gc.drawImage(tileRepositoryService.getImagePainterFactory().getSelectedImage(tileRepositoryService,
-		// colorPaletteProvider, conf), 0, 0);
-		/*
-		 * Image image = tileRepositoryService.getImagePainterFactory().getImage(
-		 * tileRepositoryService, index, 0, 0, update, conf, colorPaletteProvider,
-		 * tileRepositoryService.getMetadata()); int imageWidth =
-		 * image.getBounds().width + tileGap; int imageHeight = image.getBounds().height
-		 * + tileGap; int columns = conf.getColumns(); int y = (index / columns) *
-		 * imageHeight; int x = (index % columns) * imageWidth; gc.drawImage(image, x,
-		 * y);
-		 */
-	}
-
-	private void paintTiles(GC gc) {
-
-		for (int i0 = 0; i0 < tileRepositoryService.getSize(); i0++) {
-			Tile tile = tileRepositoryService.getTile(i0);
-
-			Layer layer = tile.getActiveLayer();
-			String name = String.format("%s_%s", tile.getName(), layer.getName());
-			Image image = imagePainterFactory.createOrUpdateLayer(name, action);
-			GC gcLayer = new GC(image);
-			int x = 0;
-			int y = 0;
-			for (int i1 = 0; i1 < conf.getTileSize(); i1++) {
-				if (i1 % conf.tileWidth == 0 && i1 > 0) {
-					x = 0;
-					y++;
-				}
-				gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i1]));
-				gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
-				x++;
-			}
-			gcLayer.dispose();
-			int y0 = (i0 / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
-			int x0 = (i0 % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
-			gc.drawImage(image, x0, y0);
-		}
-	}
-
-	private void paintAll(GC gc, String name, int action) {
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK, action), 0, 0);
-		gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, action), 0, 0);
+	private void paintTileMap(GC gc) {
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", Constants.DARK_GREY, 301, 301).getImage(), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateTileMap(1, false).getImage(), 0, 0);
 	}
 
 	@Override

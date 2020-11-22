@@ -119,12 +119,18 @@ public class TileContainer {
 
 	@JsonIgnore
 	public Tile getSelectedTile() {
-		return getTile(getSelectedTileIndex());
+		return getTile(getSelectedTileIndex(false));
 	}
 
 	@JsonIgnore
-	public int getSelectedTileIndex() {
-		return getSelectedTileIndexList().get(0);
+	public int getSelectedTileIndex(boolean natural) {
+		int index = 1;
+		if (natural) {
+			index = tileList.indexOf(getSelectedTile());
+		} else {
+			index = getSelectedTileIndexList().get(0);
+		}
+		return index;
 	}
 
 	@JsonIgnore

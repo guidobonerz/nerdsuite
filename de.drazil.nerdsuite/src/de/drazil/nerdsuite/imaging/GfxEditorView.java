@@ -354,9 +354,6 @@ public class GfxEditorView implements ITileUpdateListener {
 		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, graphicFormat.getId().endsWith("SCREENSET") ? 2 : 4,
 				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
 
-		multiColorChooser.addColorSelectionListener(painter);
-		multiColorChooser.addColorSelectionListener(repository);
-
 		if (tileRepositoryService.hasReference()) {
 			referenceRepository = getReferenceRepositoryWidget();
 		}
@@ -374,6 +371,9 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		painter.init();
 		repository.init();
+
+		multiColorChooser.addColorSelectionListener(painter);
+		multiColorChooser.addColorSelectionListener(repository);
 
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
@@ -418,7 +418,7 @@ public class GfxEditorView implements ITileUpdateListener {
 				item.setSelected(tileRepositoryService.getSelectedTile().isMulticolorEnabled());
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
 				painter.setCursorMode(CursorMode.Point);
-				//painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
+				// painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 				repository.doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.UPDATE);
 				if (tileRepositoryService.hasReference()) {
 					// referenceRepository.doRedraw(RedrawMode.DrawAllTiles,

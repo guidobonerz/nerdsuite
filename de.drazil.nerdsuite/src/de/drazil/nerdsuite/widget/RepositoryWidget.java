@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Display;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
+import de.drazil.nerdsuite.model.Image2;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.model.SelectionRange;
 
@@ -253,8 +254,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 		Tile tile = tileRepositoryService.getSelectedTile();
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s", tile.getName(), layer.getName());
-		Image image = imagePainterFactory.createOrUpdateLayer(name, action);
-		GC gcLayer = new GC(image);
+		Image2 imageInternal = imagePainterFactory.createLayer();
+		GC gcLayer = new GC(imageInternal.getImage());
 		int x = 0;
 		int y = 0;
 		for (int i = 0; i < conf.getTileSize(); i++) {
@@ -267,8 +268,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 			x++;
 		}
 		gcLayer.dispose();
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK, action), 0, 0);
-		gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, action), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK).getImage(), 0, 0);
+		//gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, true), 0, 0);
 	}
 
 	@Override
