@@ -131,6 +131,66 @@ public class ImagePainterFactory {
 		return imageInternal;
 	}
 
+	public Image2 createOrUpdateTilePixel(Tile tile, int colorIndex, int x, int y) {
+		return createOrUpdateTilePixel(tile, colorIndex, x, y, tile.isDirty());
+	}
+
+	public Image2 createOrUpdateTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
+		if (repository.hasReference()) {
+			return _createOrUpdateRefTilePixel(tile, -1, x, y, isDirty);
+		} else {
+			return _createOrUpdateBasicTilePixel(tile, colorIndex, x, y, isDirty);
+		}
+	}
+
+	private Image2 _createOrUpdateBasicTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
+		Layer layer = tile.getActiveLayer();
+		String name = String.format("%s_%s_C%d", tile.getName(), layer.getName(), colorIndex);
+		Image2 imageInternal = imagePool.get(name);
+		if (imageInternal == null || isDirty) {
+			if (isDirty && imageInternal != null) {
+				imageInternal.getImage().dispose();
+				imagePool.remove(name);
+			}
+			imageInternal = createLayer();
+			imageInternal.setDirty(isDirty);
+			GC gc = new GC(imageInternal.getImage());
+			gc.setBackground(colorProvider.getColorByIndex(colorIndex));
+			gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+			gc.dispose();
+			imagePool.put(name, imageInternal);
+		}
+		return imageInternal;
+
+	}
+
+	private Image2 _createOrUpdateRefTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
+		Layer layer = tile.getActiveLayer();
+		String name = String.format("%s_%s_C%d", tile.getName(), layer.getName(), colorIndex);
+		Image2 imageInternal = imagePool.get(name);
+		if (imageInternal == null || isDirty) {
+			if (isDirty && imageInternal != null) {
+				imageInternal.getImage().dispose();
+				imagePool.remove(name);
+			}
+			imagePool.put(name, imageInternal);
+		}
+		imageInternal = createLayer();
+		System.out.println("paint tile cursor");
+		imageInternal.setDirty(isDirty);
+		GC gc = new GC(imageInternal.getImage());
+
+		ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(referenceRepository.getMetadata().getId());
+		ImagingWidgetConfiguration conf = ipf.getConfiguration();
+		int i = conf.tileWidth * y + x;
+		int ci = layer.getContent()[i];
+		int bi = layer.getBrush()[i];
+		gc.drawImage(ipf.createOrUpdateTile(referenceRepository.getTile(bi), ci, isDirty).getImage(), x * conf.tileWidthPixel, y * conf.tileHeightPixel);
+		gc.dispose();
+
+		return imageInternal;
+	}
+
 	public Image2 createOrUpdateTile(Tile tile, int colorIndex) {
 		return createOrUpdateTile(tile, colorIndex, tile.isDirty());
 	}
@@ -179,28 +239,6 @@ public class ImagePainterFactory {
 		}
 		return imageInternal;
 	}
-
-	/*
-	 * Tile tile = tileRepositoryService.getSelectedTile(); Layer layer =
-	 * tile.getActiveLayer(); String name = String.format("%s_%s", tile.getName(),
-	 * layer.getName());
-	 * 
-	 * Image2 imageInternal = imagePainterFactory.createLayer(); GC gcLayer = new
-	 * GC(imageInternal.getImage()); for (int i = 0; i < conf.getTileSize(); i++) {
-	 * int y = (i / conf.width); int x = (i % conf.width); if
-	 * (tileRepositoryService.hasReference()) { int brushIndex =
-	 * tileRepositoryReferenceService.getSelectedTileIndex(true); Tile refTile =
-	 * tileRepositoryReferenceService.getTile(brushIndex, true); ImagePainterFactory
-	 * ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.
-	 * getMetadata().getId());
-	 * gcLayer.drawImage(ipf.createOrUpdateBasicTile(refTile,
-	 * layer.getContent()[i]).getImage(), x * conf.pixelPaintWidth, y *
-	 * conf.pixelPaintHeight); } else {
-	 * gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()
-	 * [i])); gcLayer.fillRectangle(x * conf.pixelPaintWidth, y *
-	 * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight); } }
-	 * gcLayer.dispose();
-	 */
 
 	private Image2 _createOrUpdateRefTile(Tile tile, int colorIndex, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();

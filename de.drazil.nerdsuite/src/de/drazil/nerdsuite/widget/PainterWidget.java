@@ -192,7 +192,9 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", Constants.BLACK).getImage(), 0, 0);
 		if (redrawMode == RedrawMode.DrawPixel) {
-			// paintPixel(gc, cursorX, cursorY, action);
+			gc.drawImage(imagePainterFactory
+					.createOrUpdateTilePixel(tileRepositoryService.getSelectedTile(), tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex(), cursorX, cursorY, false)
+					.getImage(), 0, 0);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
@@ -202,7 +204,6 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 
 		if (paintPixelGrid) {
-
 			gc.drawImage(imagePainterFactory.getGridLayer().getImage(), 0, 0);
 			if (paintSeparator) {
 				// paintSeparator(gc);
@@ -210,7 +211,6 @@ public class PainterWidget extends BaseImagingWidget {
 			if (paintTileSubGrid) {
 				// paintTileSubGrid(gc);
 			}
-
 		}
 
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
@@ -368,28 +368,6 @@ public class PainterWidget extends BaseImagingWidget {
 
 			}
 		}
-	}
-
-	private void paintPixel(GC gc, int x, int y, boolean isDirty) {
-
-		Tile tile = tileRepositoryService.getSelectedTile();
-		Layer layer = tile.getActiveLayer();
-		String name = String.format("%s_%s", tile.getName(), layer.getName());
-		Image2 imageInternal = imagePainterFactory.createLayer();
-		GC gcLayer = new GC(imageInternal.getImage());
-		int offset = conf.tileWidth * y + x;
-
-		if (tileRepositoryService.hasReference()) {
-			int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
-			Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
-			ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
-			gcLayer.drawImage(ipf.createOrUpdateTile(refTile, layer.getContent()[offset]).getImage(), cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight);
-		} else {
-			gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[offset]));
-			gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
-		}
-		gcLayer.dispose();
-
 	}
 
 	@Override
