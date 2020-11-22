@@ -119,6 +119,12 @@ public class ReferenceWidget extends BaseImagingWidget {
 		paintTileMap(gc);
 		paintSelection(gc);
 		paintTileMarker(gc);
+		gc.setBackground(Constants.DARK_GREY);
+		gc.fillRectangle(0, 302, 301, 20);
+		gc.setForeground(Constants.WHITE);
+		int index = tileRepositoryService.getTileList().indexOf(tileRepositoryService.getSelectedTile());
+		int index2 = tileRepositoryService.getSelectedTileIndex();
+		gc.drawString(String.format("Natural %03X / %03d Ordered %03X / %03d", index, index, index2, index2), 0, 305);
 		action = ImagePainterFactory.NONE;
 
 		redrawMode = RedrawMode.DrawNothing;
@@ -201,7 +207,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(conf.fullWidthPixel, conf.fullHeightPixel);
+		return new Point(conf.fullWidthPixel, conf.fullHeightPixel + 20);
 	}
 
 	@Override

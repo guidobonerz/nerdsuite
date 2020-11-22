@@ -48,6 +48,7 @@ public class PainterWidget extends BaseImagingWidget {
 				scrollWorkArea(e.x, e.y);
 			}
 		});
+		setBackground(Constants.BLACK);
 
 	}
 
@@ -240,19 +241,20 @@ public class PainterWidget extends BaseImagingWidget {
 	 */
 	private void paintPixelCursor(GC gc) {
 		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize) {
-			if (tileRepositoryService.hasReference()) {
-				Tile tile = tileRepositoryService.getSelectedTile();
-				int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
-				Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
-				ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
-				gc.drawImage(ipf.createOrUpdateTile(refTile, tile.getColorIndex(1), false).getImage(), cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight);
-			} else {
-				// gc.setForeground(colo);
-				// gc.drawRectangle((cursorX * conf.pixelPaintWidth) - 1, (cursorY *
-				// conf.pixelPaintHeight) - 1, conf.pixelPaintWidth + 1, conf.pixelPaintHeight +
-				// 1);
+			if (conf.pencilMode == PencilMode.Draw) {
+				if (tileRepositoryService.hasReference()) {
+					Tile tile = tileRepositoryService.getSelectedTile();
+					int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
+					Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
+					ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
+					gc.drawImage(ipf.createOrUpdateTile(refTile, tile.getColorIndex(1), false).getImage(), cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight);
+				} else {
+					gc.setForeground(colorPaletteProvider.getColorByIndex(tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex()));
+					gc.fillRectangle((cursorX * conf.pixelPaintWidth), (cursorY * conf.pixelPaintHeight), conf.pixelPaintWidth, conf.pixelPaintHeight);
+				}
+			} else if (conf.pencilMode == PencilMode.Erase) {
+				gc.fillRectangle((cursorX * conf.pixelPaintWidth), (cursorY * conf.pixelPaintHeight), conf.pixelPaintWidth, conf.pixelPaintHeight);
 			}
-
 			gc.setForeground(Constants.BRIGHT_ORANGE);
 			gc.drawRectangle((cursorX * conf.pixelPaintWidth) - 1, (cursorY * conf.pixelPaintHeight) - 1, conf.pixelPaintWidth + 1, conf.pixelPaintHeight + 1);
 		}

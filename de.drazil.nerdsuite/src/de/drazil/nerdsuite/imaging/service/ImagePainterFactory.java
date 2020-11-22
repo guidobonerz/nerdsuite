@@ -296,11 +296,13 @@ public class ImagePainterFactory {
 					}
 					imageInternal = createOrUpdateTile(tile, colorIndex, false);
 					imageInternal.setDirty(isDirty);
-					int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
-					int x = (i % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
-					gc.drawImage(imageInternal.getImage(), x, y);
 					imagePool.put(name, imageInternal);
 				}
+
+				int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
+				int x = (i % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
+				gc.drawImage(imageInternal.getImage(), x, y);
+
 			}
 			gc.dispose();
 
