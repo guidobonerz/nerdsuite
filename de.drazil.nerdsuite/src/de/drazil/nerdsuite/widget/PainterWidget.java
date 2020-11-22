@@ -351,8 +351,17 @@ public class PainterWidget extends BaseImagingWidget {
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
-			int colorIndex = (conf.pencilMode == PencilMode.Draw) ? layer.getSelectedColorIndex() : 0;
-			int colorId = tileRepositoryService.getSelectedTile().getActiveLayer().getColorPalette().get(colorIndex);
+
+			int colorIndex = -1;
+			int colorId = 0;
+
+			if (conf.pencilMode == PencilMode.Draw) {
+				colorIndex = layer.getSelectedColorIndex();
+				colorId = tileRepositoryService.getSelectedTile().getActiveLayer().getColorPalette().get(colorIndex);
+			} else if (conf.pencilMode == PencilMode.Erase) {
+				colorId = tileRepositoryService.getSelectedTile().getActiveLayer().getColorPalette().get(0);
+			}
+
 			int offset = y * conf.tileWidth + x;
 
 			layer.getContent()[offset] = colorId;
@@ -362,7 +371,7 @@ public class PainterWidget extends BaseImagingWidget {
 				if (brush == null) {
 					layer.resetBrush(tileRepositoryService.getMetadata().getBlankValue());
 				}
-				int i = tileRepositoryReferenceService.getSelectedTileIndex();
+				int i = conf.pencilMode == PencilMode.Draw ? tileRepositoryReferenceService.getSelectedTileIndex() : tileRepositoryService.getMetadata().getBlankValue();
 				layer.getBrush()[offset] = i;
 
 			}
