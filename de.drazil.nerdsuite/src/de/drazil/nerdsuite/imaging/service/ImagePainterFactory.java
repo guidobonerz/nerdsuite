@@ -36,13 +36,18 @@ public class ImagePainterFactory {
 	public final static int UPDATE_SCALED = UPDATE + SCALED;
 
 	private TileRepositoryService repository = null;
+	private TileRepositoryService referenceRepository = null;
 	private ImagingWidgetConfiguration conf;
+	private ImagePainterFactory ipf = null;
 	private IColorPaletteProvider colorProvider;
 	private final static Map<String, ImagePainterFactory> cache = new HashMap<String, ImagePainterFactory>();
 
 	public ImagePainterFactory(String name, IColorPaletteProvider colorProvider, ImagingWidgetConfiguration conf) {
 		imagePool = new HashMap<>();
 		this.repository = ServiceFactory.getService(name, TileRepositoryService.class);
+		if (repository.hasReference()) {
+			referenceRepository = repository.getReferenceRepository();
+		}
 		this.conf = conf;
 		this.colorProvider = colorProvider;
 		cache.put(name, this);
@@ -61,6 +66,10 @@ public class ImagePainterFactory {
 
 	public Image2 getImage(String name) {
 		return imagePool.get(name);
+	}
+
+	public ImagingWidgetConfiguration getConfiguration() {
+		return conf;
 	}
 
 	public Image2 getGridLayer() {
@@ -104,20 +113,6 @@ public class ImagePainterFactory {
 		return imageInternal;
 	}
 
-	public Image2 createOrUpdateMergedImage(String name, Color color, int width, int height) {
-		String internalName = String.format("%s_MERGED", name);
-		Image2 imageInternal = imagePool.get(internalName);
-		if (imageInternal == null) {
-			imageInternal = new Image2(new Image(Display.getDefault(), conf.tileWidthPixel, conf.tileHeightPixel), false);
-			GC gc = new GC(imageInternal.getImage());
-			gc.setBackground(color);
-			gc.fillRectangle(0, 0, conf.tileWidthPixel, conf.tileHeightPixel);
-			gc.dispose();
-			imagePool.put(internalName, imageInternal);
-		}
-		return imageInternal;
-	}
-
 	public Image2 createLayer() {
 		return createLayer(conf.tileWidthPixel, conf.tileHeightPixel);
 	}
@@ -136,11 +131,19 @@ public class ImagePainterFactory {
 		return imageInternal;
 	}
 
-	public Image2 createOrUpdateTileFull(Tile tile, int colorIndex) {
-		return createOrUpdateTileFull(tile, colorIndex, tile.isDirty());
+	public Image2 createOrUpdateTile(Tile tile, int colorIndex) {
+		return createOrUpdateTile(tile, colorIndex, tile.isDirty());
 	}
 
-	public Image2 createOrUpdateTileFull(Tile tile, int colorIndex, boolean isDirty) {
+	public Image2 createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
+		if (repository.hasReference()) {
+			return _createOrUpdateRefTile(tile, -1, isDirty);
+		} else {
+			return _createOrUpdateBasicTile(tile, colorIndex, isDirty);
+		}
+	}
+
+	private Image2 _createOrUpdateBasicTile(Tile tile, int colorIndex, boolean isDirty) {
 		Color color = PlatformFactory.getPlatformColors(repository.getMetadata().getPlatform()).get(colorIndex).getColor();
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s_C%d", tile.getName(), layer.getName(), colorIndex);
@@ -178,6 +181,62 @@ public class ImagePainterFactory {
 		return imageInternal;
 	}
 
+	/*
+	 * Tile tile = tileRepositoryService.getSelectedTile(); Layer layer =
+	 * tile.getActiveLayer(); String name = String.format("%s_%s", tile.getName(),
+	 * layer.getName());
+	 * 
+	 * Image2 imageInternal = imagePainterFactory.createLayer(); GC gcLayer = new
+	 * GC(imageInternal.getImage()); for (int i = 0; i < conf.getTileSize(); i++) {
+	 * int y = (i / conf.width); int x = (i % conf.width); if
+	 * (tileRepositoryService.hasReference()) { int brushIndex =
+	 * tileRepositoryReferenceService.getSelectedTileIndex(true); Tile refTile =
+	 * tileRepositoryReferenceService.getTile(brushIndex, true); ImagePainterFactory
+	 * ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.
+	 * getMetadata().getId());
+	 * gcLayer.drawImage(ipf.createOrUpdateBasicTile(refTile,
+	 * layer.getContent()[i]).getImage(), x * conf.pixelPaintWidth, y *
+	 * conf.pixelPaintHeight); } else {
+	 * gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()
+	 * [i])); gcLayer.fillRectangle(x * conf.pixelPaintWidth, y *
+	 * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight); } }
+	 * gcLayer.dispose();
+	 */
+
+	private Image2 _createOrUpdateRefTile(Tile tile, int colorIndex, boolean isDirty) {
+		Layer layer = tile.getActiveLayer();
+		String name = String.format("%s_%s", tile.getName(), layer.getName());
+		Image2 imageInternal = imagePool.get(name);
+		if (imageInternal == null || isDirty) {
+			if (isDirty && imageInternal != null) {
+				imageInternal.getImage().dispose();
+				imagePool.remove(name);
+			}
+			imageInternal = createLayer();
+			System.out.println("paint tile cursor");
+			imageInternal.setDirty(isDirty);
+			GC gc = new GC(imageInternal.getImage());
+			int x = 0;
+			int y = 0;
+			for (int i = 0; i < conf.getTileSize(); i++) {
+				if (i % conf.tileWidth == 0 && i > 0) {
+					x = 0;
+					y++;
+				}
+				int ci = layer.getContent()[i];
+				int bi = layer.getBrush()[i];
+
+				ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(referenceRepository.getMetadata().getId());
+				ImagingWidgetConfiguration conf = ipf.getConfiguration();
+				gc.drawImage(ipf.createOrUpdateTile(referenceRepository.getTile(bi), ci, isDirty).getImage(), x * conf.tileWidthPixel, y * conf.tileHeightPixel);
+				x++;
+			}
+			gc.dispose();
+			imagePool.put(name, imageInternal);
+		}
+		return imageInternal;
+	}
+
 	public Image2 createOrUpdateTileMap(int colorIndex, boolean isDirty) {
 		String repositoryName = repository.getOwner() + "_REPOSITORY";
 		Image2 mapImageInternal = imagePool.get(repositoryName);
@@ -195,7 +254,7 @@ public class ImagePainterFactory {
 						imageInternal.getImage().dispose();
 						imagePool.remove(name);
 					}
-					imageInternal = createOrUpdateTileFull(tile, colorIndex, false);
+					imageInternal = createOrUpdateTile(tile, colorIndex, false);
 					System.out.println("paint tile cursor");
 					imageInternal.setDirty(isDirty);
 					int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
