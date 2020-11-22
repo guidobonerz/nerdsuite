@@ -196,7 +196,9 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
-			gc.drawImage(imagePainterFactory.createOrUpdateTile(tileRepositoryService.getSelectedTile(), -1, false).getImage(), 0, 0);
+			gc.drawImage(
+					imagePainterFactory.createOrUpdateTile(tileRepositoryService.getSelectedTile(), tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex(), false).getImage(),
+					0, 0);
 		}
 
 		if (paintPixelGrid) {
