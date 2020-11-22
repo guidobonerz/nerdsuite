@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.imaging.service;
 
 import de.drazil.nerdsuite.enums.TileAction;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class MulticolorService extends AbstractImagingService {
@@ -10,7 +9,7 @@ public class MulticolorService extends AbstractImagingService {
 	public static final int MC_OFF = 0;
 
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		for (int i = 0; i < content.length; i += 2) {
 			if (action == MC_ON) {

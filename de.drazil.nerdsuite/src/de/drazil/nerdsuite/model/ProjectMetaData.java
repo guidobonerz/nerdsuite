@@ -1,56 +1,56 @@
 package de.drazil.nerdsuite.model;
 
+import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class ProjectMetaData {
+	public final static String PAINTER_CONFIG = "PAINTER_CONFIG";
+	public final static String REPOSITORY_CONFIG = "REPOSITORY_CONFIG";
+	public final static String REFERENCE_REPOSITORY_CONFIG = "REFERENCE_REPOSITORY_CONFIG";
 	private String id;
 	private String platform;
 	private String type;
 	private String variant;
-	private int width;
-	private int height;
-	private int columns;
-	private int rows;
-	private int storageEntity;
-	private int blankValue;
+	private Integer width;
+	private Integer height;
+	private Integer columns;
+	private Integer rows;
+	private Integer storageEntity;
+	private Integer blankValue;
 	@JsonIgnore
 	private String referenceRepositoryId;
 	@JsonIgnore
-	private int defaultPixelSize;
-	@JsonIgnore
-	private int currentPixelWidth;
-	@JsonIgnore
-	private int currentPixelHeight;
-	@JsonIgnore
-	private int iconSize;
-	@JsonIgnore
 	private int tileSize;
 	@JsonIgnore
-	private int tileWidth;
-	@JsonIgnore
-	private int tileHeight;
-	@JsonIgnore
 	@Getter
-	private int tileWidthPixel;
-	@JsonIgnore
-	@Getter
-	private int tileHeightPixel;
+	private HashMap<String, ImagingWidgetConfiguration> viewerConfig;
+
+	public ProjectMetaData() {
+		viewerConfig = new HashMap<String, ImagingWidgetConfiguration>();
+	}
 
 	@JsonIgnore
-	public void computeSizes() {
-		iconSize = width * height;
-		tileSize = iconSize * columns * rows;
-		tileWidth = width * columns;
-		tileHeight = height * rows;
-		tileWidthPixel = tileWidth * currentPixelWidth;
-		tileHeightPixel = tileHeight * currentPixelHeight;
+	public ImagingWidgetConfiguration addViewerConfig(String name) {
+		ImagingWidgetConfiguration conf = new ImagingWidgetConfiguration();
+		viewerConfig.put(name, conf);
+		return conf;
 	}
+
+	@JsonIgnore
+	public void computeDimensions(int tileCount) {
+		tileSize = width * height * rows * columns;
+		for (ImagingWidgetConfiguration conf : viewerConfig.values()) {
+			conf.computeDimensions(tileCount);
+		}
+		int a = 0;
+	}
+
 }

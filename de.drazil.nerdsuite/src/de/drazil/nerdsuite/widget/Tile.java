@@ -9,21 +9,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class Tile {
+	@Getter
 	@JsonProperty(value = "name")
 	private String name = null;
 	@JsonProperty(value = "showOnlyActiveLayer")
 	private boolean showOnlyActiveLayer = true;
 	@JsonProperty(value = "showInactiveLayerTranslucent")
 	private boolean showInactiveLayerTranslucent = false;
+	@Getter
 	@JsonProperty(value = "multicolor")
-	private boolean multicolor = false;
+	private boolean multicolorEnabled = false;
 	@JsonProperty(value = "backgroundColor")
 	private int backgroundColorIndex = 0;
 	@JsonProperty(value = "originX")
@@ -36,15 +38,14 @@ public class Tile {
 	private List<Integer> layerIndexOrderList = new ArrayList<Integer>();
 	@JsonIgnore
 	private int size;
+	@JsonIgnore
+	@Getter
+	@Setter
+	private boolean dirty = true;
 
 	public Tile(String name, int size) {
 		this.name = name;
 		this.size = size;
-	}
-
-	@JsonIgnore
-	public List<Integer> getLayerIndexOrderList() {
-		return getLayerIndexOrderList();
 	}
 
 	@JsonIgnore
@@ -60,10 +61,10 @@ public class Tile {
 		layer.getColorPalette().add(2);
 		layer.getColorPalette().add(3);
 
-		getLayerList().add(layer);
-		getLayerIndexOrderList().add(getLayerList().indexOf(layer));
-		getLayerList().forEach(l -> l.setActive(false));
-		getLayerList().get(getLayerIndexOrderList().size() - 1).setActive(true);
+		layerList.add(layer);
+		layerIndexOrderList.add(layerList.indexOf(layer));
+		layerList.forEach(l -> l.setActive(false));
+		layerList.get(layerIndexOrderList.size() - 1).setActive(true);
 		layer.setSelectedColorIndex(0);
 		// fireLayerAdded();
 		return layer;
@@ -75,11 +76,11 @@ public class Tile {
 	}
 
 	@JsonIgnore
-	public void removeLayer(Tile tile, int index) {
-		if (tile.getLayerIndexOrderList().size() > 0) {
-			int layerIndex = tile.getLayerIndexOrderList().get(index);
-			tile.getLayerList().remove(layerIndex);
-			tile.getLayerIndexOrderList().remove(index);
+	public void removeLayer(int index) {
+		if (layerIndexOrderList.size() > 0) {
+			int layerIndex = layerIndexOrderList.get(index);
+			layerList.remove(layerIndex);
+			layerIndexOrderList.remove(index);
 			// fireLayerRemoved();
 		}
 	}
@@ -89,8 +90,8 @@ public class Tile {
 		if (index < 1) {
 			return;
 		}
-		getLayerIndexOrderList().remove(index);
-		getLayerIndexOrderList().add(0, index);
+		layerIndexOrderList.remove(index);
+		layerIndexOrderList.add(0, index);
 		// fireLayerReordered();
 	}
 
@@ -99,8 +100,8 @@ public class Tile {
 		if (index < 1) {
 			return;
 		}
-		getLayerIndexOrderList().remove(index);
-		getLayerIndexOrderList().add(index);
+		layerIndexOrderList.remove(index);
+		layerIndexOrderList.add(index);
 		// fireLayerReordered();
 	}
 
@@ -109,8 +110,8 @@ public class Tile {
 		if (index < 1) {
 			return;
 		}
-		getLayerIndexOrderList().remove(index);
-		getLayerIndexOrderList().add(index - 1, index);
+		layerIndexOrderList.remove(index);
+		layerIndexOrderList.add(index - 1, index);
 		// fireLayerReordered();
 	}
 
@@ -119,8 +120,8 @@ public class Tile {
 		if (index < 1) {
 			return;
 		}
-		getLayerIndexOrderList().remove(index);
-		getLayerIndexOrderList().add(index + 1, index);
+		layerIndexOrderList.remove(index);
+		layerIndexOrderList.add(index + 1, index);
 		// fireLayerReordered();
 	}
 
@@ -131,13 +132,13 @@ public class Tile {
 
 	@JsonIgnore
 	public void setMulticolorEnabled(boolean multicolorEnabled) {
-		setMulticolor(multicolorEnabled);
+		this.multicolorEnabled = multicolorEnabled;
 		// fireTileChanged();
 	}
 
 	@JsonIgnore
 	public void setShowOnlyActiveLayer(boolean showOnlyActiveLayer) {
-		setShowOnlyActiveLayer(showOnlyActiveLayer);
+		this.showOnlyActiveLayer = showOnlyActiveLayer;
 		// fireLayerVisibilityChanged(-1);
 	}
 
@@ -149,32 +150,32 @@ public class Tile {
 
 	@JsonIgnore
 	public void setLayerVisible(int index, boolean visible) {
-		getLayerList().get(getLayerIndexOrderList().get(index)).setVisible(visible);
+		layerList.get(layerIndexOrderList.get(index)).setVisible(visible);
 		// fireLayerVisibilityChanged(index);
 	}
 
 	@JsonIgnore
 	public void setLayerActive(int index, boolean active) {
-		getLayerList().forEach(layer -> layer.setActive(false));
-		getLayerList().get(getLayerIndexOrderList().get(index)).setActive(active);
+		layerList.forEach(layer -> layer.setActive(false));
+		layerList.get(layerIndexOrderList.get(index)).setActive(active);
 		// fireActiveLayerChanged(index);
 	}
 
 	@JsonIgnore
 	public void setLayerLocked(int index, boolean active) {
-		getLayerList().get(getLayerIndexOrderList().get(index)).setLocked(active);
+		layerList.get(layerIndexOrderList.get(index)).setLocked(active);
 		// fireActiveLayerChanged(index);
 	}
 
 	@JsonIgnore
 	public void resetActiveLayer() {
 		int size = getActiveLayer().getContent().length;
-		// getActiveLayer().re
+
 	}
 
 	@JsonIgnore
 	public Layer getActiveLayer() {
-		return getLayerList().stream().filter(x -> x.isActive()).findFirst().orElse(null);
+		return layerList.stream().filter(x -> x.isActive()).findFirst().orElse(null);
 	}
 
 	@JsonIgnore
@@ -194,12 +195,12 @@ public class Tile {
 
 	@JsonIgnore
 	public void setOrigin(Point origin) {
-		setOriginX(origin.x);
-		setOriginY(origin.y);
+		this.originX = origin.x;
+		this.originY = origin.y;
 	}
 
 	@JsonIgnore
 	public Point getOrigin() {
-		return new Point(getOriginX(), getOriginY());
+		return new Point(originX, originY);
 	}
 }

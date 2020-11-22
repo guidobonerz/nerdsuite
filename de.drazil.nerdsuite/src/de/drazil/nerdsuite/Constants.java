@@ -69,6 +69,7 @@ public class Constants {
 	// public final static Color DEFAULT_STRING_COLOR = new
 	// Color(Display.getCurrent(), SwtUtil.toRGB("#485CCB"));
 
+	public final static Color TRANSPARENT_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#010101"));
 	public final static Color DEFAULT_STRING_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#48FCCB"));
 	public final static Color DEFAULT_DECIMAL_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#6476CB"));
 	public final static Color DEFAULT_HEXADECIMAL_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#94769B"));

@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.drazil.nerdsuite.enums.LayerAction;
 import de.drazil.nerdsuite.enums.TileAction;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
@@ -12,7 +13,7 @@ import lombok.Setter;
 public abstract class AbstractImagingService extends AbstractExecutableService implements IImagingService {
 
 	@Setter
-	protected ImagingWidgetConfiguration imagingWidgetConfiguration = null;
+	protected ImagingWidgetConfiguration conf = null;
 	protected IServiceCallback serviceCallback = null;
 	@Setter
 	protected int navigationOffset = 0;
@@ -73,8 +74,9 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		service = ServiceFactory.getService(owner, TileRepositoryService.class);
 		selectedTileIndexList = service.getSelectedTileIndexList();
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
+			ProjectMetaData metadata = service.getMetadata();
 			selectedTileIndexList.forEach(i -> {
-				each(action, i, service.getTile(i), service, imagingWidgetConfiguration, null);
+				each(action, i, service.getTile(i), service, null);
 			});
 			service.redrawTileViewer(selectedTileIndexList, ImagePainterFactory.UPDATE, false);
 		}
@@ -125,20 +127,8 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 	 */
 	// }
 
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 
-	}
-
-	private void printResult(byte workArray[]) {
-		System.out.println("-----------------------------------------");
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < workArray.length; i++) {
-			if (i % (imagingWidgetConfiguration.width * imagingWidgetConfiguration.tileColumns) == 0) {
-				sb.append("\n");
-			}
-			sb.append(workArray[i]);
-		}
-		System.out.println(sb);
 	}
 
 }

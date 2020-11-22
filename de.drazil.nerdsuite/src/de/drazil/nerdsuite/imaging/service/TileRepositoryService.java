@@ -38,8 +38,6 @@ public class TileRepositoryService implements IService {
 	private List<ITileListener> tileListenerList = null;
 	@Getter
 	private TileRepositoryService referenceRepository;
-	@Getter
-	private int tileSize;
 
 	public TileRepositoryService() {
 		tileServiceManagementListener = new ArrayList<>();
@@ -55,9 +53,12 @@ public class TileRepositoryService implements IService {
 		return referenceRepository != null;
 	}
 
+	public List<Tile> getTileList() {
+		return container.getTileList();
+	}
+
 	public void setMetadata(ProjectMetaData metadata) {
 		container.setMetadata(metadata);
-		computeTileSize();
 	}
 
 	public ProjectMetaData getMetadata() {
@@ -85,7 +86,11 @@ public class TileRepositoryService implements IService {
 	}
 
 	public int getSelectedTileIndex() {
-		return container.getSelectedTileIndex();
+		return getSelectedTileIndex(false);
+	}
+
+	public int getSelectedTileIndex(boolean natural) {
+		return container.getSelectedTileIndex(natural);
 	}
 
 	public void setSelectedTileIndex(int index) {
@@ -122,10 +127,6 @@ public class TileRepositoryService implements IService {
 
 	public Tile addTile() {
 		return container.addTile();
-	}
-
-	private void computeTileSize() {
-		tileSize = container.getMetadata().getHeight() * container.getMetadata().getWidth() * container.getMetadata().getColumns() * container.getMetadata().getRows();
 	}
 
 	public void addTileListener(ITileListener listener) {
@@ -248,10 +249,10 @@ public class TileRepositoryService implements IService {
 				File referenceFile = Path.of(Configuration.WORKSPACE_PATH.toString(), referenceRepositoryLocation).toFile();
 				referenceId = referenceFile.getName().split("\\.")[0].toUpperCase();
 				referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
-				TileContainer refContainer = referenceRepository.load(referenceFile);
+				referenceRepository.load(referenceFile);
 				container.getMetadata().setReferenceRepositoryId(referenceId);
 			}
-			computeTileSize();
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

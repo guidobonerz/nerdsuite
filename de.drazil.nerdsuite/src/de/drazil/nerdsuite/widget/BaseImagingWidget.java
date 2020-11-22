@@ -24,15 +24,16 @@ import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
+import de.drazil.nerdsuite.model.GraphicFormat;
+import de.drazil.nerdsuite.model.GraphicFormatVariant;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.mouse.IMeasuringListener;
 import de.drazil.nerdsuite.mouse.MeasuringController;
 import lombok.Getter;
 
 public abstract class BaseImagingWidget extends BaseWidget implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener, ITileListener,
-		ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener {
+		ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener, TileSelectionModes {
 
-	@Getter
-	protected ImagingWidgetConfiguration conf = null;
 	private boolean keyPressed = false;
 	private int currentKeyCodePressed = 0;
 	private char currentCharacterPressed = 0;
@@ -42,7 +43,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected int selectedTileIndexY = 0;
 	protected int selectedTileIndex = 0;
 
-	protected int tileGap = 0;
 	protected int oldCursorX = -1;
 	protected int oldCursorY = -1;
 	protected int cursorX = 0;
@@ -58,6 +58,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected int temporaryIndex;
 	protected int action;
 
+	protected boolean takePosition;
 	protected boolean cursorChanged = false;
 	protected boolean tileCursorChanged = false;
 	protected boolean tileChanged = false;
@@ -77,35 +78,32 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected Tile tile = null;
 	protected Image image = null;
 	protected MeasuringController mc;
-
+	private GraphicFormat graphicFormat = null;
+	private GraphicFormatVariant graphicFormatVariant = null;
 	protected IColorPaletteProvider colorPaletteProvider;
+	@Getter
+	protected ImagingWidgetConfiguration conf;
 
-	public BaseImagingWidget(Composite parent, int style) {
+	private ProjectMetaData metadata;
+
+	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
 		super(parent, style);
-		conf = new ImagingWidgetConfiguration();
 		mc = new MeasuringController();
 		mc.addMeasuringListener(this);
-		tileGap = getTileGap();
-	}
-
-	protected abstract int getTileGap();
-
-	protected int getCalculatedColumns() {
-		return ((getParent().getBounds().width - 30) / conf.getScaledTileWidth());
-	}
-
-	public void init(String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
-		conf.setServiceOwner(owner);
-
 		this.colorPaletteProvider = colorPaletteProvider;
-
 		drawListenerList = new ArrayList<>();
-		imagePainterFactory = new ImagePainterFactory(owner, conf, colorPaletteProvider);
-		tileRepositoryService = ServiceFactory.getService(conf.getServiceOwnerId(), TileRepositoryService.class);
+		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		tileRepositoryService.addTileListener(this);
+		metadata = tileRepositoryService.getMetadata();
+		conf = metadata.addViewerConfig(getViewerConfigName());
+		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
+		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
+		graphicFormatVariant = GraphicFormatFactory.getFormatVariantById(graphicFormatId, metadata.getVariant());
 		if (tileRepositoryService.getMetadata().getReferenceRepositoryId() != null) {
 			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceRepositoryId(), TileRepositoryService.class);
 		}
+
+		imagePainterFactory = new ImagePainterFactory(owner, colorPaletteProvider, conf);
 		addPaintListener(this);
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
@@ -113,12 +111,47 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 				if (autowrap) {
 					int c = (int) getCalculatedColumns();
-					conf.setColumns(c == 0 ? 1 : c);
-					conf.setRows(tileRepositoryService.getSize() / conf.getColumns() + (tileRepositoryService.getSize() % conf.getColumns() == 0 ? 0 : 1));
+					conf.columns = (c == 0 ? 1 : c);
+					conf.rows = (tileRepositoryService.getSize() / conf.columns + (tileRepositoryService.getSize() % conf.columns == 0 ? 0 : 1));
 					doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 				}
 			}
 		});
+	}
+
+	protected int getCalculatedColumns() {
+		return ((getParent().getBounds().width - 30) / conf.tileWidthPixel);
+	}
+
+	protected abstract String getViewerConfigName();
+
+	public void init() {
+		if (getViewerConfigName().equals(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG)) {
+			int a = 0;
+		}
+		if (graphicFormatVariant.getId().equals("CUSTOM")) {
+			conf.width = metadata.getWidth();
+			conf.height = metadata.getHeight();
+			conf.tileColumns = metadata.getColumns();
+			conf.tileRows = metadata.getRows();
+		} else {
+			conf.width = graphicFormat.getWidth();
+			conf.height = graphicFormat.getHeight();
+			conf.tileColumns = graphicFormatVariant.getTileColumns();
+			conf.tileRows = graphicFormatVariant.getTileRows();
+		}
+		int s = graphicFormatVariant.getPixelSize();
+		if (getViewerConfigName().equals(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG)) {
+			s = 2;
+		}
+
+		if (tileRepositoryReferenceService != null) {
+			s = 16;
+		}
+		conf.pixelSize = s;
+
+		conf.storageSize = graphicFormat.getStorageSize();
+		metadata.computeDimensions(tileRepositoryService.getSize());
 	}
 
 	public void setTriggerMillis(long... triggerMillis) {
@@ -204,32 +237,35 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	protected void computeCursorPosition(int x, int y) {
-		cursorX = x / conf.currentPixelWidth;
-		cursorY = y / conf.currentPixelHeight;
-		if (oldCursorX != cursorX || oldCursorY != cursorY) {
+		cursorX = x / conf.pixelPaintWidth;
+		cursorY = y / conf.pixelPaintHeight;
+		if (oldCursorX != cursorX || oldCursorY != cursorY || takePosition) {
 			oldCursorX = cursorX;
 			oldCursorY = cursorY;
 			cursorChanged = true;
+			takePosition = false;
 		} else {
 			cursorChanged = false;
 		}
-		tileX = x / (conf.tileWidthPixel + tileGap);
-		tileY = y / (conf.tileHeightPixel + tileGap);
+		tileX = x / (conf.tileWidthPixel + conf.tileGap);
+		tileY = y / (conf.tileHeightPixel + conf.tileGap);
 
-		if (oldTileX != tileX || oldTileY != tileY) {
+		if (oldTileX != tileX || oldTileY != tileY || takePosition) {
 			oldTileX = tileX;
 			oldTileY = tileY;
 			tileChanged = true;
+			takePosition = false;
 		} else {
 			tileChanged = false;
 		}
 
 		tileCursorX = (cursorX - (tileX * conf.width));
 		tileCursorY = (cursorY - (tileY * conf.height));
-		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY) {
+		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY || takePosition) {
 			oldTileCursorX = tileCursorX;
 			oldTileCursorY = tileCursorY;
 			tileCursorChanged = true;
+			takePosition = false;
 		} else {
 			tileCursorChanged = false;
 		}
@@ -240,15 +276,15 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, redrawMode, conf.isPixelGridEnabled(), conf.isSeparatorEnabled(), conf.isTileGridEnabled(), conf.isTileSubGridEnabled(), true, conf.isTileCursorEnabled(), true);
+		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled, conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
 	}
 
 	protected abstract void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
 			boolean paintTileCursor, boolean paintTelevisionMode);
 
 	protected void paintTelevisionRaster(GC gc) {
-		int height = conf.height * conf.tileRows * conf.rows * conf.currentPixelHeight;
-		int length = conf.width * conf.tileColumns * conf.columns * conf.currentPixelWidth;
+		int height = conf.fullHeightPixel;
+		int length = conf.fullWidthPixel;
 		for (int y = 0; y < height; y += 2) {
 			gc.setAlpha(60);
 			gc.setForeground(Constants.BLACK);
@@ -257,21 +293,18 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	public void recalc() {
-		int pixmul = conf.pixelConfig.pixmul;
-		conf.currentPixelWidth = conf.pixelSize * pixmul;
-		conf.currentWidth = conf.width / pixmul;
+		/*
+		 * int pixmul = conf.pixelConfig.pixmul; conf.currentPixelWidth = conf.pixelSize
+		 * * pixmul; conf.currentWidth = width / pixmul;
+		 */
 		// doRedraw(RedrawMode.DrawAllTiles, null, ImagePainterFactory.READ);
 	}
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		int width = (conf.width * conf.currentPixelWidth * conf.tileColumns * conf.columns);
-		int height = (conf.height * conf.currentPixelHeight * conf.tileRows * conf.rows);
-		return new Point(width, height);
-	}
-
-	protected boolean supportsPainting() {
-		return conf.supportsPainting;
+		int w = wHint != SWT.DEFAULT ? wHint : conf.fullWidthPixel;
+		int h = hHint != SWT.DEFAULT ? hHint : conf.fullHeightPixel;
+		return new Point(w, h);
 	}
 
 	protected boolean supportsSingleSelection() {
@@ -287,15 +320,21 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	public void addDrawListener(IDrawListener redrawListener) {
-		drawListenerList.add(redrawListener);
+		if (drawListenerList != null) {
+			drawListenerList.add(redrawListener);
+		}
 	}
 
 	public void removeDrawListener(IDrawListener redrawListener) {
-		drawListenerList.remove(redrawListener);
+		if (drawListenerList != null) {
+			drawListenerList.remove(redrawListener);
+		}
 	}
 
 	protected void fireDoRedraw(RedrawMode redrawMode, PencilMode pencilMode, int update) {
-		drawListenerList.forEach(l -> l.doRedraw(redrawMode, update));
+		if (drawListenerList != null) {
+			drawListenerList.forEach(l -> l.doRedraw(redrawMode, update));
+		}
 	}
 
 	@Override
@@ -341,7 +380,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	@Override
 	public void tileChanged() {
-		conf.setMultiColorEnabled(tile.isMulticolor());
 		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 	}
 
@@ -374,4 +412,5 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	public void layerVisibilityChanged(int layer) {
 		redraw();
 	}
+
 }

@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.imaging.service;
 import org.eclipse.swt.graphics.Rectangle;
 
 import de.drazil.nerdsuite.enums.TileAction;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class PurgeService extends AbstractImagingService {
@@ -19,16 +18,17 @@ public class PurgeService extends AbstractImagingService {
 	}
 
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, ImagingWidgetConfiguration configuration, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		int[] brush = repositoryService.getActiveLayerFromSelectedTile().getBrush();
+		int tileWidth = conf.getTileWidth();
 		Rectangle r = service.getSelection();
 		int blankValue = repositoryService.getMetadata().getBlankValue();
 		for (int x = r.x; x < r.x + r.width; x++) {
 			for (int y = r.y; y < r.y + r.height; y++) {
-				content[x + y * configuration.tileWidth] = 0;
+				content[x + y * tileWidth] = 0;
 				if (brush != null) {
-					brush[x + y * configuration.tileWidth] = blankValue;
+					brush[x + y * tileWidth] = blankValue;
 				}
 			}
 		}
