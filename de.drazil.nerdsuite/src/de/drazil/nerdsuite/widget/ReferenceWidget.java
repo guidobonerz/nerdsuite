@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
@@ -21,7 +19,6 @@ public class ReferenceWidget extends BaseImagingWidget {
 	private boolean tileSelectionStarted = false;
 	private SelectionRange tileSelectionRange = null;
 	private List<Integer> selectedTileIndexList = null;
-	private boolean drawAll = true;
 	private int start;
 	private int end;
 
@@ -119,15 +116,11 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
 			boolean paintTileCursor, boolean paintTelevisionMode) {
-
-		// gc.drawImage(imagePainterFactory.drawTileMap(tileRepositoryService, null,
-		// conf.tileGap, Constants.DARK_GREY, false), 0, 0);
 		paintTileMap(gc);
 		paintSelection(gc);
 		paintTileMarker(gc);
-
 		action = ImagePainterFactory.NONE;
-		drawAll = true;
+
 		redrawMode = RedrawMode.DrawNothing;
 	}
 
@@ -185,8 +178,6 @@ public class ReferenceWidget extends BaseImagingWidget {
 	@Override
 	public void redrawCalculatedArea() {
 		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawPixel) {
-			drawAll = false;
-
 			start = tileRepositoryService.getSelectedTileIndexList().get(0);
 			end = tileRepositoryService.getSelectedTileIndexList().get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
@@ -204,7 +195,6 @@ public class ReferenceWidget extends BaseImagingWidget {
 			int height = (1 + iye - iys) * conf.tileHeightPixel;
 			redraw(0, ys, conf.tileWidthPixel * conf.columns, height, false);
 		} else {
-			drawAll = true;
 			redraw();
 		}
 	}
