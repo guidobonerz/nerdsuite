@@ -136,13 +136,13 @@ public class ImagePainterFactory {
 
 	public Image2 createOrUpdateTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		if (repository.hasReference()) {
-			return _createOrUpdateRefTilePixel(tile, -1, x, y, isDirty);
+			return _createOrUpdateTilePixelFromReference(tile, -1, x, y, isDirty);
 		} else {
-			return _createOrUpdateBasicTilePixel(tile, colorIndex, x, y, isDirty);
+			return _createOrUpdateTilePixel(tile, colorIndex, x, y, isDirty);
 		}
 	}
 
-	private Image2 _createOrUpdateBasicTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
+	private Image2 _createOrUpdateTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
 		Image2 imageInternal = imagePool.get(name);
@@ -152,36 +152,40 @@ public class ImagePainterFactory {
 				imagePool.remove(name);
 			}
 			imageInternal = createLayer();
-			imageInternal.setDirty(isDirty);
-			GC gc = new GC(imageInternal.getImage());
-			gc.setBackground(colorProvider.getColorByIndex(colorIndex));
-			gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
-			gc.dispose();
 			imagePool.put(name, imageInternal);
 		}
+
+		imageInternal.setDirty(isDirty);
+		GC gc = new GC(imageInternal.getImage());
+		gc.setBackground(colorProvider.getColorByIndex(colorIndex));
+		gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+		gc.dispose();
+
 		return imageInternal;
 
 	}
 
-	private Image2 _createOrUpdateRefTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
+	private Image2 _createOrUpdateTilePixelFromReference(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
-		String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
+
+		String name = String.format("%s_%s", tile.getName(), layer.getName());
 		Image2 imageInternal = imagePool.get(name);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
 				imageInternal.getImage().dispose();
 				imagePool.remove(name);
 			}
+			imageInternal = createLayer();
 			imagePool.put(name, imageInternal);
 		}
-		imageInternal = createLayer();
-		System.out.println("paint tile cursor");
+
+		// System.out.println("paint tile cursor");
 		imageInternal.setDirty(isDirty);
 		GC gc = new GC(imageInternal.getImage());
 
 		ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(referenceRepository.getMetadata().getId());
 		ImagingWidgetConfiguration conf = ipf.getConfiguration();
-		int i = conf.tileWidth * y + x;
+		int i = this.conf.tileWidth * y + x;
 		int ci = layer.getContent()[i];
 		int bi = layer.getBrush()[i];
 		gc.drawImage(ipf.createOrUpdateTile(referenceRepository.getTile(bi), ci, isDirty).getImage(), x * conf.tileWidthPixel, y * conf.tileHeightPixel);
@@ -196,13 +200,13 @@ public class ImagePainterFactory {
 
 	public Image2 createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
 		if (repository.hasReference()) {
-			return _createOrUpdateRefTile(tile, -1, isDirty);
+			return _createOrUpdateTileFromReference(tile, -1, isDirty);
 		} else {
-			return _createOrUpdateBasicTile(tile, colorIndex, isDirty);
+			return _createOrUpdateTile(tile, colorIndex, isDirty);
 		}
 	}
 
-	private Image2 _createOrUpdateBasicTile(Tile tile, int colorIndex, boolean isDirty) {
+	private Image2 _createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
 		Color color = PlatformFactory.getPlatformColors(repository.getMetadata().getPlatform()).get(colorIndex).getColor();
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
@@ -239,7 +243,7 @@ public class ImagePainterFactory {
 		return imageInternal;
 	}
 
-	private Image2 _createOrUpdateRefTile(Tile tile, int colorIndex, boolean isDirty) {
+	private Image2 _createOrUpdateTileFromReference(Tile tile, int colorIndex, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s", tile.getName(), layer.getName());
 		Image2 imageInternal = imagePool.get(name);
