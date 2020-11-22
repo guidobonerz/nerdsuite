@@ -278,7 +278,7 @@ public class ImagePainterFactory {
 	}
 
 	public Image2 createOrUpdateTileMap(int colorIndex, boolean isDirty) {
-		String repositoryName = repository.getOwner() + "_REPOSITORY";
+		String repositoryName = repository.getOwner();
 		Image2 mapImageInternal = imagePool.get(repositoryName);
 		if (mapImageInternal == null) {
 			mapImageInternal = new Image2(
