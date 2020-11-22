@@ -5,6 +5,7 @@ import java.util.Map;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class ExportService extends IOBaseService {
 
@@ -21,12 +22,12 @@ public class ExportService extends IOBaseService {
 		TileRepositoryService repository = (TileRepositoryService) config.get("repository");
 
 		ProjectMetaData metadata = repository.getMetadata();
+		ImagingWidgetConfiguration conf = metadata.getViewerConfig().get(ProjectMetaData.PAINTER_CONFIG);
 
-		byte[] content = new byte[repository.getSize() * metadata.getTileSize() / metadata.getStorageEntity()];
+		byte[] content = new byte[repository.getSize() * conf.getTileSize() / metadata.getStorageEntity()];
 		try {
 			convert(content, 0, repository, ConversionMode.toBitplane);
-			BinaryFileHandler.write(new File(fileName, "exported_font"), content, 0, content.length,
-					true);
+			BinaryFileHandler.write(new File(fileName, "exported_font"), content, 0, content.length, true);
 
 		} catch (Exception e) {
 			e.printStackTrace();

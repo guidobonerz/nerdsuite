@@ -7,7 +7,7 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public interface IImagingService extends IExecutableService {
 
-	public void setImagingWidgetConfiguration(ImagingWidgetConfiguration configuration);
+	public void setConf(ImagingWidgetConfiguration configuration);
 
 	public void sendResponse(String message, Object data);
 

@@ -15,5 +15,5 @@ public class GraphicFormatVariant {
 	private int tileRows;
 	private int tileColumns;
 	private boolean supportCustomBaseSize;
-	private int scaledPixelSize;
+
 }

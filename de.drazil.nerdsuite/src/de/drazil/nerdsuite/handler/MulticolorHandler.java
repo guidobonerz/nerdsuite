@@ -20,8 +20,7 @@ public class MulticolorHandler {
 		List<String> tags = new LinkedList<>();
 		tags.add("MultiColorButton");
 		MHandledItem item = E4Utils.getMenuITemByTag(part, modelService, tags);
-		broker.send("Multicolor",
-				new BrokerObject((String) part.getTransientData().get(Constants.OWNER), item.isSelected()));
+		broker.send("Multicolor", new BrokerObject((String) part.getTransientData().get(Constants.OWNER), item.isSelected()));
 	}
 
 }

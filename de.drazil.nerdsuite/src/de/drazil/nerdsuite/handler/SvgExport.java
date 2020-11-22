@@ -15,6 +15,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,6 +53,7 @@ public class SvgExport {
 		String owner = (String) part.getTransientData().get(Constants.OWNER);
 		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
 		ProjectMetaData metadata = service.getMetadata();
+		ImagingWidgetConfiguration conf = metadata.getViewerConfig().get(ProjectMetaData.PAINTER_CONFIG);
 		Map<String, SvgPoint> map = new HashMap<String, SvgPoint>();
 
 		int[] content = service.getActiveLayerFromSelectedTile().getContent();
@@ -62,9 +64,9 @@ public class SvgExport {
 				pathList = new ArrayList<SvgExport.SvgPoint>();
 				pathMap.put(key, pathList);
 			}
-			Point pc = getPoint(i, metadata);
+			Point pc = getPoint(i, conf);
 
-			int borders = getOutlineRanges(pc.x, pc.y, content, metadata);
+			int borders = getOutlineRanges(pc.x, pc.y, content, conf);
 			int x1 = pc.x * width;
 			int y1 = pc.y * height;
 			int x2 = x1 + width;
@@ -112,13 +114,13 @@ public class SvgExport {
 
 	}
 
-	private int getOutlineRanges(int x, int y, int[] content, ProjectMetaData metadata) {
+	private int getOutlineRanges(int x, int y, int[] content, ImagingWidgetConfiguration conf) {
 		int borders = 0;
-		int iCenter = getIndex(x, y, metadata);
-		int iTop = getIndex(x, y - 1, metadata);
-		int iBottom = getIndex(x, y + 1, metadata);
-		int iLeft = getIndex(x - 1, y, metadata);
-		int iRight = getIndex(x + 1, y, metadata);
+		int iCenter = getIndex(x, y, conf);
+		int iTop = getIndex(x, y - 1, conf);
+		int iBottom = getIndex(x, y + 1, conf);
+		int iLeft = getIndex(x - 1, y, conf);
+		int iRight = getIndex(x + 1, y, conf);
 		int vc = getValueAtIndex(iCenter, content);
 		borders |= vc != getValueAtIndex(iTop, content) ? TOP : 0;
 		borders |= vc != getValueAtIndex(iBottom, content) ? BOTTOM : 0;
@@ -131,16 +133,16 @@ public class SvgExport {
 		return i == -1 || i > content.length - 1 ? -1 : content[i];
 	}
 
-	private int getIndex(int x, int y, ProjectMetaData metadata) {
-		if (x < 0 || y < 0 || x > metadata.getTileWidth() || y > metadata.getTileHeight()) {
+	private int getIndex(int x, int y, ImagingWidgetConfiguration conf) {
+		if (x < 0 || y < 0 || x > conf.getTileWidth() || y > conf.getTileHeight()) {
 			return -1;
 		} else {
-			return y * metadata.getTileWidth() + x;
+			return y * conf.getTileWidth() + x;
 		}
 	}
 
-	private Point getPoint(int i, ProjectMetaData metadata) {
-		return new Point(i % metadata.getTileHeight(), i / metadata.getTileWidth());
+	private Point getPoint(int i, ImagingWidgetConfiguration conf) {
+		return new Point(i % conf.getTileHeight(), i / conf.getTileWidth());
 	}
 
 }
