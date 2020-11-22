@@ -250,7 +250,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	private void paintTile(GC gc, int index, int action) {
-		System.out.println("tile");
 		Tile tile = tileRepositoryService.getSelectedTile();
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s", tile.getName(), layer.getName());
@@ -269,7 +268,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		}
 		gcLayer.dispose();
 		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK).getImage(), 0, 0);
-		//gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, true), 0, 0);
+		// gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, true), 0, 0);
 	}
 
 	@Override

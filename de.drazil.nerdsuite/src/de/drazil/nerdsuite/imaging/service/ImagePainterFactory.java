@@ -154,7 +154,6 @@ public class ImagePainterFactory {
 				imagePool.remove(name);
 			}
 			imageInternal = createLayer();
-			System.out.println("paint tile cursor");
 			imageInternal.setDirty(isDirty);
 			GC gc = new GC(imageInternal.getImage());
 			int x = 0;
@@ -255,7 +254,6 @@ public class ImagePainterFactory {
 						imagePool.remove(name);
 					}
 					imageInternal = createOrUpdateTile(tile, colorIndex, false);
-					System.out.println("paint tile cursor");
 					imageInternal.setDirty(isDirty);
 					int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
 					int x = (i % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
