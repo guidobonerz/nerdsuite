@@ -38,7 +38,6 @@ public class ImagePainterFactory {
 	private TileRepositoryService repository = null;
 	private TileRepositoryService referenceRepository = null;
 	private ImagingWidgetConfiguration conf;
-	private ImagePainterFactory ipf = null;
 	private IColorPaletteProvider colorProvider;
 	private final static Map<String, ImagePainterFactory> cache = new HashMap<String, ImagePainterFactory>();
 
@@ -145,7 +144,7 @@ public class ImagePainterFactory {
 
 	private Image2 _createOrUpdateBasicTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
-		String name = String.format("%s_%s_C%d", tile.getName(), layer.getName(), colorIndex);
+		String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
 		Image2 imageInternal = imagePool.get(name);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -166,7 +165,7 @@ public class ImagePainterFactory {
 
 	private Image2 _createOrUpdateRefTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
-		String name = String.format("%s_%s_C%d", tile.getName(), layer.getName(), colorIndex);
+		String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
 		Image2 imageInternal = imagePool.get(name);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -206,7 +205,7 @@ public class ImagePainterFactory {
 	private Image2 _createOrUpdateBasicTile(Tile tile, int colorIndex, boolean isDirty) {
 		Color color = PlatformFactory.getPlatformColors(repository.getMetadata().getPlatform()).get(colorIndex).getColor();
 		Layer layer = tile.getActiveLayer();
-		String name = String.format("%s_%s_C%d", tile.getName(), layer.getName(), colorIndex);
+		String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
 		Image2 imageInternal = imagePool.get(name);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -284,7 +283,7 @@ public class ImagePainterFactory {
 			for (int i = 0; i < repository.getSize(); i++) {
 				Tile tile = repository.getTile(i);
 				Layer layer = tile.getActiveLayer();
-				String name = String.format("%s_%s_C%d", tile.getName(), layer.getName(), colorIndex);
+				String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
 				Image2 imageInternal = imagePool.get(name);
 				if (imageInternal == null || isDirty) {
 					if (isDirty && imageInternal != null) {
