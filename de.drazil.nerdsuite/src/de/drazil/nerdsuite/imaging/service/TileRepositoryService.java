@@ -53,6 +53,10 @@ public class TileRepositoryService implements IService {
 		return referenceRepository != null;
 	}
 
+	public void setReferenceRepositoryLocation(String referenceRepositoryLocation) {
+		container.setReferenceRepositoryLocation(referenceRepositoryLocation);
+	}
+
 	public List<Tile> getTileList() {
 		return container.getTileList();
 	}

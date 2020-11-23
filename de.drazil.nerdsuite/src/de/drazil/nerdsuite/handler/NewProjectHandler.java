@@ -93,6 +93,7 @@ public class NewProjectHandler {
 				metadata.setRows(gfv.getTileRows());
 				metadata.setColumns(gfv.getTileColumns());
 				metadata.setStorageEntity(gf.getStorageSize());
+				metadata.computeDimensions();
 
 				projectSetup.put("importFormat", (String) userData.get(ProjectWizard.IMPORT_FORMAT));
 				projectSetup.put("bytesToSkip", (Integer) userData.get(ProjectWizard.BYTES_TO_SKIP));
@@ -106,11 +107,16 @@ public class NewProjectHandler {
 
 				if (projectAction.startsWith("new")) {
 					File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase() + "." + projectType.getSuffix());
-					projectSetup.put("file", file);
 					TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
+					/*
+					if (metadata.getType().equals("SCREENSET")) {
+						repository.setReferenceRepositoryLocation("c64_upper.ns_chr");
+					}
+					*/
 					repository.setMetadata(metadata);
+					projectSetup.put("file", file);
+					projectSetup.put("repositoryOwner", owner);
 
-					projectSetup.put("repository", repository);
 					if (projectAction.startsWith("newImport")) {
 						ImportService importService = ServiceFactory.getCommonService(ImportService.class);
 						importService.doImportGraphic(projectSetup);
@@ -127,9 +133,9 @@ public class NewProjectHandler {
 				// File file = createProjectStructure(project, projectType.getSuffix());
 
 				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
-				if (metadata.getType().equals("SCREENSET")) {
-					editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.ScreenEditorView";
-				}
+
+				
+
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView", editorView, owner, project.getName(), projectSetup);
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part, true);

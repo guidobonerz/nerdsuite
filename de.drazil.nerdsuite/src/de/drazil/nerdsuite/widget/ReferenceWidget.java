@@ -59,8 +59,18 @@ public class ReferenceWidget extends BaseImagingWidget {
 	}
 
 	@Override
+	protected void mouseEnter(int modifierMask, int x, int y) {
+		mouseMove(modifierMask, x, y);
+	}
+
+	@Override
+	protected void mouseExit(int modifierMask, int x, int y) {
+		mouseMove(modifierMask, x, y);
+	}
+
+	@Override
 	protected void mouseMove(int modifierMask, int x, int y) {
-		if (tileChanged) {
+		if (tileChanged || !mouseIn) {
 			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 		}
 	}

@@ -358,7 +358,7 @@ public class Explorer implements IDoubleClickListener {
 						+ project.getId().toLowerCase() + "." + project.getSuffix());
 				TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
 				repository.load(file);
-				projectSetup.put("repository", owner);
+				projectSetup.put("repositoryOwner", owner);
 				projectSetup.put("file", file);
 
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",

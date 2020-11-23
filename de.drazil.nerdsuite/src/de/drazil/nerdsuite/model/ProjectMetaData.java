@@ -45,12 +45,10 @@ public class ProjectMetaData {
 	}
 
 	@JsonIgnore
-	public void computeDimensions(int tileCount) {
+	public void computeDimensions() {
 		tileSize = width * height * rows * columns;
 		for (ImagingWidgetConfiguration conf : viewerConfig.values()) {
-			conf.computeDimensions(tileCount);
+			conf.computeDimensions();
 		}
-		int a = 0;
 	}
-
 }

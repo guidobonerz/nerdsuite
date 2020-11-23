@@ -82,7 +82,7 @@ public class ImagePainterFactory {
 				for (int y = 0; y <= conf.height * conf.tileRows; y++) {
 					if (conf.gridStyle == GridType.Line) {
 						gc.drawLine(x * conf.pixelPaintWidth, 0, x * conf.pixelPaintWidth, conf.tileHeightPixel);
-						gc.drawLine(0, y * conf.pixelHeight, conf.tileWidthPixel, y * conf.pixelHeight);
+						gc.drawLine(0, y * conf.pixelPaintHeight, conf.tileWidthPixel, y * conf.pixelPaintHeight);
 					} else {
 						gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
 					}
