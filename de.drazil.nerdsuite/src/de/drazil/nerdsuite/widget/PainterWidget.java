@@ -48,7 +48,7 @@ public class PainterWidget extends BaseImagingWidget {
 				scrollWorkArea(e.x, e.y);
 			}
 		});
-		// setBackground(Constants.BLACK);
+		setBackground(Constants.BLACK);
 
 	}
 
@@ -68,6 +68,7 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point && (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			int xoff = x - startPos.x;
 			int yoff = y - startPos.y;
+
 			scrollWorkArea(xoff, yoff);
 		} else if (conf.cursorMode == CursorMode.Point && cursorChanged) {
 			setPixel(tile, cursorX, cursorY, conf);

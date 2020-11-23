@@ -6,8 +6,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import de.drazil.nerdsuite.model.GraphicFormat;
-import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -54,13 +52,6 @@ public class TileContainer {
 	public Tile addTile() {
 		initList();
 		String name = String.format("%s%d", "tile_", (getTileList().size() + 1));
-		// String key = String.format("%s_%s", metadata.getPlatform(),
-		// metadata.getType());
-		// GraphicFormat format = GraphicFormatFactory.getFormatById(key);
-		// GraphicFormatVariant variant = GraphicFormatFactory.getFormatVariantById(key,
-		// metadata.getVariant());
-		// return addTile(name, format.getHeight() * variant.getTileRows() *
-		// format.getWidth() * variant.getTileColumns(), 0, metadata.getBlankValue());
 		int blankValue = metadata.getBlankValue() == null ? 0 : metadata.getBlankValue();
 		return addTile(name, metadata.getTileSize(), blankValue);
 	}

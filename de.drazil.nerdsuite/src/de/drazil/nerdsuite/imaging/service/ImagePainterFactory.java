@@ -49,6 +49,7 @@ public class ImagePainterFactory {
 		}
 		this.conf = conf;
 		this.colorProvider = colorProvider;
+		
 		cache.put(name, this);
 	}
 
@@ -120,6 +121,7 @@ public class ImagePainterFactory {
 		Image2 imageInternal = new Image2(new Image(Display.getDefault(), width, height), true);
 		GC gc = new GC(imageInternal.getImage());
 		gc.setBackground(Constants.TRANSPARENT_COLOR);
+		
 		gc.fillRectangle(0, 0, width, height);
 		gc.dispose();
 		ImageData imageData = imageInternal.getImage().getImageData();
