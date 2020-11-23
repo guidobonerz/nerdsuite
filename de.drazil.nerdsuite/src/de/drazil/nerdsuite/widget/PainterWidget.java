@@ -48,7 +48,7 @@ public class PainterWidget extends BaseImagingWidget {
 				scrollWorkArea(e.x, e.y);
 			}
 		});
-		setBackground(Constants.BLACK);
+		//setBackground(Constants.BLACK);
 
 	}
 
@@ -242,7 +242,9 @@ public class PainterWidget extends BaseImagingWidget {
 	 */
 	private void paintPixelCursor(GC gc) {
 		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize) {
+			int pixelWidth = conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1);
 			if (conf.pencilMode == PencilMode.Draw) {
+
 				if (tileRepositoryService.hasReference()) {
 					Tile tile = tileRepositoryService.getSelectedTile();
 					int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
@@ -251,14 +253,14 @@ public class PainterWidget extends BaseImagingWidget {
 					gc.drawImage(ipf.createOrUpdateTile(refTile, tile.getColorIndex(1), false).getImage(), cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight);
 				} else {
 					gc.setBackground(colorPaletteProvider.getColorByIndex(tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex()));
-					gc.fillRectangle((cursorX * conf.pixelPaintWidth), (cursorY * conf.pixelPaintHeight), conf.pixelPaintWidth, conf.pixelPaintHeight);
+					gc.fillRectangle((cursorX * pixelWidth), (cursorY * conf.pixelPaintHeight), pixelWidth, conf.pixelPaintHeight);
 				}
 			} else if (conf.pencilMode == PencilMode.Erase) {
 				gc.setBackground(Constants.BLACK);
-				gc.fillRectangle((cursorX * conf.pixelPaintWidth), (cursorY * conf.pixelPaintHeight), conf.pixelPaintWidth, conf.pixelPaintHeight);
+				gc.fillRectangle((cursorX *pixelWidth), (cursorY * conf.pixelPaintHeight), pixelWidth, conf.pixelPaintHeight);
 			}
 			gc.setForeground(Constants.BRIGHT_ORANGE);
-			gc.drawRectangle((cursorX * conf.pixelPaintWidth) - 1, (cursorY * conf.pixelPaintHeight) - 1, conf.pixelPaintWidth + 1, conf.pixelPaintHeight + 1);
+			gc.drawRectangle((cursorX * pixelWidth) - 1, (cursorY * conf.pixelPaintHeight) - 1, pixelWidth + 1, conf.pixelPaintHeight + 1);
 		}
 	}
 
