@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Rectangle;
@@ -15,10 +14,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
-import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectMetaData;
-import de.drazil.nerdsuite.widget.ITileListener;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
 import de.drazil.nerdsuite.widget.TileContainer;
@@ -33,15 +30,12 @@ public class TileRepositoryService implements IService {
 	@Setter
 	private Rectangle selection;
 	private TileContainer container;
-	private List<ITileManagementListener> tileServiceManagementListener = null;
-	private List<ITileUpdateListener> tileUpdateListener = null;
-	private List<ITileListener> tileListenerList = null;
+
 	@Getter
 	private TileRepositoryService referenceRepository;
 
 	public TileRepositoryService() {
-		tileServiceManagementListener = new ArrayList<>();
-		tileUpdateListener = new ArrayList<>();
+
 		container = new TileContainer();
 	}
 
@@ -133,113 +127,16 @@ public class TileRepositoryService implements IService {
 		return container.addTile();
 	}
 
-	public void addTileListener(ITileListener listener) {
-		createTileListenerList();
-		tileListenerList.add(listener);
-	}
-
-	public void removeTileListener(ITileListener listener) {
-		createTileListenerList();
-		tileListenerList.remove(listener);
-	}
-
-	private void fireLayerAdded() {
-		createTileListenerList();
-		tileListenerList.forEach(listener -> listener.layerAdded());
-	}
-
-	private void fireLayerRemoved() {
-		createTileListenerList();
-		tileListenerList.forEach(listener -> listener.layerRemoved());
-	}
-
-	private void fireLayerVisibilityChanged(int layer) {
-		createTileListenerList();
-		tileListenerList.forEach(listener -> listener.layerVisibilityChanged(layer));
-	}
-
-	private void fireLayerContentChanged(int layer) {
-		createTileListenerList();
-		tileListenerList.forEach(listener -> listener.layerContentChanged(layer));
-	}
-
-	private void fireLayerReordered() {
-		createTileListenerList();
-		tileListenerList.forEach(listener -> listener.layerReordered());
-	}
-
-	private void fireActiveLayerChanged(int layer) {
-		createTileListenerList();
-		tileListenerList.forEach(listener -> listener.activeLayerChanged(layer));
-	}
-
-	private void fireTileChanged() {
-		createTileListenerList();
-		tileListenerList.forEach(listener -> listener.tileChanged());
-	}
-
-	public void sendModificationNotification() {
-		fireLayerContentChanged(0);
-	}
-
-	private void createTileListenerList() {
-		if (tileListenerList == null) {
-			tileListenerList = new ArrayList<>();
-		}
-	}
-
 	public void addTileManagementListener(ITileManagementListener... listeners) {
-		for (ITileManagementListener listener : listeners) {
-			addTileManagementListener(listener);
-		}
-	}
-
-	public void addTileManagementListener(ITileManagementListener listener) {
-		tileServiceManagementListener.add(listener);
-	}
-
-	public void removeTileManagementListener(ITileManagementListener listener) {
-		tileServiceManagementListener.remove(listener);
+		container.addTileManagementListener(listeners);
 	}
 
 	public void addTileSelectionListener(ITileUpdateListener... listeners) {
-		for (ITileUpdateListener listener : listeners) {
-			addTileUpdateListener(listener);
-		}
-	}
-
-	public void addTileUpdateListener(ITileUpdateListener listener) {
-		tileUpdateListener.add(listener);
-	}
-
-	public void removeTileUpdateListener(ITileUpdateListener listener) {
-		tileUpdateListener.remove(listener);
-	}
-
-	private void fireTileAdded() {
-		tileServiceManagementListener.forEach(listener -> listener.tileAdded(container.getSelectedTile()));
-	}
-
-	private void fireTileRemoved() {
-		tileServiceManagementListener.forEach(listener -> listener.tileRemoved());
-	}
-
-	private void fireTileReordered() {
-		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
-	}
-
-	private void fireTileRedraw(List<Integer> selectedTileIndexList, int action, boolean temporary) {
-		if (selectedTileIndexList != null) {
-			if (selectedTileIndexList.size() == 1) {
-				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList, temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, action));
-			} else {
-				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, action));
-			}
-		}
+		container.addTileSelectionListener(listeners);
 	}
 
 	public void redrawTileViewer(List<Integer> selectedTileIndexList, int action, boolean temporary) {
-		fireTileRedraw(selectedTileIndexList, action, temporary);
+		container.redrawTileViewer(selectedTileIndexList, action, temporary);
 	}
 
 	public TileContainer load(File fileName) {
