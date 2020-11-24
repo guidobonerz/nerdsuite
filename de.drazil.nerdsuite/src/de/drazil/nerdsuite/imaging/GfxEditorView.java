@@ -381,33 +381,44 @@ public class GfxEditorView implements ITileUpdateListener {
 		scrollablePainter.setMinSize(actualSize);
 		int worksheetWidth = 640;
 		int worksheetHeight = 400;
-		if (actualSize.x > worksheetWidth) {
-			worksheetWidth += 25;
-		}
-		if (actualSize.y > worksheetHeight) {
-			worksheetHeight += 25;
-		}
-
+		/*
+		 * if (actualSize.x >= worksheetWidth) { worksheetWidth += 25; } if
+		 * (actualSize.y >= worksheetHeight) { worksheetHeight += 25; }
+		 */
 		GridData gridData = null;
 
-		gridData = new GridData(SWT.FILL, SWT.FILL, tileRepositoryService.hasReference() ? true : false, false, 1, 2);
-		gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
-		gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
-		scrollablePainter.setLayoutData(gridData);
+		if (metadata.getType().equals("SCREENSET")) {
+			gridData = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 2);
+			gridData.widthHint = actualSize.x >= worksheetWidth ? worksheetWidth : actualSize.x;
+			gridData.heightHint = actualSize.y >= worksheetHeight ? worksheetHeight : actualSize.y;
+			scrollablePainter.setLayoutData(gridData);
 
-		gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		multiColorChooser.setLayoutData(gridData);
+			gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+			multiColorChooser.setLayoutData(gridData);
 
-		if (tileRepositoryService.hasReference()) {
 			gridData = new GridData(SWT.FILL, SWT.BEGINNING, false, true, 1, 3);
 			referenceRepository.setLayoutData(gridData);
+
+			gridData = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
+			scrollableLayerChooser.setLayoutData(gridData);
+
+			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
+			scrollableRepository.setLayoutData(gridData);
+		} else {
+			gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 2);
+			gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
+			gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
+			scrollablePainter.setLayoutData(gridData);
+
+			gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+			multiColorChooser.setLayoutData(gridData);
+
+			gridData = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
+			scrollableLayerChooser.setLayoutData(gridData);
+
+			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+			scrollableRepository.setLayoutData(gridData);
 		}
-
-		gridData = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
-		scrollableLayerChooser.setLayoutData(gridData);
-
-		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, tileRepositoryService.hasReference() ? 3 : 2, 1);
-		scrollableRepository.setLayoutData(gridData);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override

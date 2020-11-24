@@ -37,6 +37,8 @@ public class Tile {
 	@JsonProperty(value = "layerIndexOrder")
 	private List<Integer> layerIndexOrderList = new ArrayList<Integer>();
 	@JsonIgnore
+	private List<ITileListener> tileListenerList = null;
+	@JsonIgnore
 	private int size;
 	@JsonIgnore
 	@Getter
@@ -66,7 +68,7 @@ public class Tile {
 		layerList.forEach(l -> l.setActive(false));
 		layerList.get(layerIndexOrderList.size() - 1).setActive(true);
 		layer.setSelectedColorIndex(0);
-		// fireLayerAdded();
+		fireLayerAdded();
 		return layer;
 	}
 
@@ -81,7 +83,7 @@ public class Tile {
 			int layerIndex = layerIndexOrderList.get(index);
 			layerList.remove(layerIndex);
 			layerIndexOrderList.remove(index);
-			// fireLayerRemoved();
+			fireLayerRemoved();
 		}
 	}
 
@@ -92,7 +94,7 @@ public class Tile {
 		}
 		layerIndexOrderList.remove(index);
 		layerIndexOrderList.add(0, index);
-		// fireLayerReordered();
+		fireLayerReordered();
 	}
 
 	@JsonIgnore
@@ -102,7 +104,7 @@ public class Tile {
 		}
 		layerIndexOrderList.remove(index);
 		layerIndexOrderList.add(index);
-		// fireLayerReordered();
+		fireLayerReordered();
 	}
 
 	@JsonIgnore
@@ -112,7 +114,7 @@ public class Tile {
 		}
 		layerIndexOrderList.remove(index);
 		layerIndexOrderList.add(index - 1, index);
-		// fireLayerReordered();
+		fireLayerReordered();
 	}
 
 	@JsonIgnore
@@ -122,7 +124,7 @@ public class Tile {
 		}
 		layerIndexOrderList.remove(index);
 		layerIndexOrderList.add(index + 1, index);
-		// fireLayerReordered();
+		fireLayerReordered();
 	}
 
 	@JsonIgnore
@@ -133,38 +135,38 @@ public class Tile {
 	@JsonIgnore
 	public void setMulticolorEnabled(boolean multicolorEnabled) {
 		this.multicolorEnabled = multicolorEnabled;
-		// fireTileChanged();
+		fireTileChanged();
 	}
 
 	@JsonIgnore
 	public void setShowOnlyActiveLayer(boolean showOnlyActiveLayer) {
 		this.showOnlyActiveLayer = showOnlyActiveLayer;
-		// fireLayerVisibilityChanged(-1);
+		fireLayerVisibilityChanged(-1);
 	}
 
 	@JsonIgnore
 	public void setShowInactiveLayerTranslucent(boolean showInactiveLayerTranslucent) {
 		setShowInactiveLayerTranslucent(showInactiveLayerTranslucent);
-		// fireLayerVisibilityChanged(-1);
+		fireLayerVisibilityChanged(-1);
 	}
 
 	@JsonIgnore
 	public void setLayerVisible(int index, boolean visible) {
 		layerList.get(layerIndexOrderList.get(index)).setVisible(visible);
-		// fireLayerVisibilityChanged(index);
+		fireLayerVisibilityChanged(index);
 	}
 
 	@JsonIgnore
 	public void setLayerActive(int index, boolean active) {
 		layerList.forEach(layer -> layer.setActive(false));
 		layerList.get(layerIndexOrderList.get(index)).setActive(active);
-		// fireActiveLayerChanged(index);
+		fireActiveLayerChanged(index);
 	}
 
 	@JsonIgnore
 	public void setLayerLocked(int index, boolean active) {
 		layerList.get(layerIndexOrderList.get(index)).setLocked(active);
-		// fireActiveLayerChanged(index);
+		fireActiveLayerChanged(index);
 	}
 
 	@JsonIgnore
@@ -185,7 +187,7 @@ public class Tile {
 		if (select) {
 			getActiveLayer().setSelectedColorIndex(index);
 		}
-		// fireActiveLayerChanged(-1);
+		fireActiveLayerChanged(-1);
 	}
 
 	@JsonIgnore
@@ -203,4 +205,69 @@ public class Tile {
 	public Point getOrigin() {
 		return new Point(originX, originY);
 	}
+
+	@JsonIgnore
+	public void addTileListener(ITileListener listener) {
+		createTileListenerList();
+		tileListenerList.add(listener);
+	}
+
+	@JsonIgnore
+	public void removeTileListener(ITileListener listener) {
+		createTileListenerList();
+		tileListenerList.remove(listener);
+	}
+
+	@JsonIgnore
+	private void createTileListenerList() {
+		if (tileListenerList == null) {
+			tileListenerList = new ArrayList<>();
+		}
+	}
+
+	@JsonIgnore
+	private void fireLayerAdded() {
+		createTileListenerList();
+		tileListenerList.forEach(listener -> listener.layerAdded());
+	}
+
+	@JsonIgnore
+	private void fireLayerRemoved() {
+		createTileListenerList();
+		tileListenerList.forEach(listener -> listener.layerRemoved());
+	}
+
+	@JsonIgnore
+	private void fireLayerVisibilityChanged(int layer) {
+		createTileListenerList();
+		tileListenerList.forEach(listener -> listener.layerVisibilityChanged(layer));
+	}
+
+	@JsonIgnore
+	private void fireLayerContentChanged(int layer) {
+		createTileListenerList();
+		tileListenerList.forEach(listener -> listener.layerContentChanged(layer));
+	}
+
+	@JsonIgnore
+	private void fireLayerReordered() {
+		createTileListenerList();
+		tileListenerList.forEach(listener -> listener.layerReordered());
+	}
+
+	@JsonIgnore
+	private void fireActiveLayerChanged(int layer) {
+		createTileListenerList();
+		tileListenerList.forEach(listener -> listener.activeLayerChanged(layer));
+	}
+
+	private void fireTileChanged() {
+		createTileListenerList();
+		tileListenerList.forEach(listener -> listener.tileChanged());
+	}
+
+	public void sendModificationNotification() {
+		fireLayerContentChanged(0);
+	}
+
 }

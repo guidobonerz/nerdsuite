@@ -6,14 +6,16 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import de.drazil.nerdsuite.enums.RedrawMode;
+import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
+import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
+import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class TileContainer {
 	@JsonProperty(value = "metadata")
 	private ProjectMetaData metadata = null;
@@ -25,6 +27,15 @@ public class TileContainer {
 	private List<Integer> selectedTileIndexList = null;
 	@JsonProperty(value = "referenceRepositoryLocation")
 	private String referenceRepositoryLocation = null;
+
+	private List<ITileManagementListener> tileServiceManagementListener = null;
+	@JsonIgnore
+	private List<ITileUpdateListener> tileUpdateListener = null;
+
+	public TileContainer() {
+		tileServiceManagementListener = new ArrayList<>();
+		tileUpdateListener = new ArrayList<>();
+	}
 
 	@JsonIgnore
 	public void setInitialSize(int tileCount) {
@@ -63,7 +74,7 @@ public class TileContainer {
 		tile.addLayer(name, tileSize, defaultBrush);
 		getTileList().add(tile);
 		getTileIndexOrderList().add(getTileList().indexOf(tile));
-		// fireTileAdded();
+		fireTileAdded();
 		return tile;
 	}
 
@@ -89,7 +100,7 @@ public class TileContainer {
 				getTileList().remove(tileIndex);
 				getTileIndexOrderList().remove(i);
 			}
-			// fireTileRemoved();
+			fireTileRemoved();
 		}
 	}
 
@@ -103,7 +114,7 @@ public class TileContainer {
 			getTileIndexOrderList().add(to, v);
 			getTileIndexOrderList().remove(from);
 		}
-		// fireTileReordered();
+		fireTileReordered();
 	}
 
 	@JsonIgnore
@@ -116,14 +127,14 @@ public class TileContainer {
 		initList();
 		getSelectedTileIndexList().clear();
 		getSelectedTileIndexList().add(index);
-		// fireTileRedraw(getSelectedTileIndexList(), ImagePainterFactory.READ, false);
+		fireTileRedraw(getSelectedTileIndexList(), ImagePainterFactory.READ, false);
 
 	}
 
 	@JsonIgnore
 	public void setSelectedTileIndexList(List<Integer> tileIndexList) {
 		selectedTileIndexList = tileIndexList;
-		// fireTileRedraw(tileIndexList, ImagePainterFactory.READ, false);
+		fireTileRedraw(tileIndexList, ImagePainterFactory.READ, false);
 	}
 
 	@JsonIgnore
@@ -165,6 +176,71 @@ public class TileContainer {
 	@JsonIgnore
 	public int getSize() {
 		return getTileList().size();
+	}
+
+	@JsonIgnore
+	private void fireTileAdded() {
+		tileServiceManagementListener.forEach(listener -> listener.tileAdded(getSelectedTile()));
+	}
+
+	@JsonIgnore
+	public void addTileManagementListener(ITileManagementListener listener) {
+		tileServiceManagementListener.add(listener);
+	}
+
+	@JsonIgnore
+	public void removeTileManagementListener(ITileManagementListener listener) {
+		tileServiceManagementListener.remove(listener);
+	}
+
+	@JsonIgnore
+	private void fireTileRemoved() {
+		tileServiceManagementListener.forEach(listener -> listener.tileRemoved());
+	}
+
+	@JsonIgnore
+	private void fireTileReordered() {
+		tileServiceManagementListener.forEach(listener -> listener.tileReordered());
+	}
+
+	@JsonIgnore
+	public void addTileManagementListener(ITileManagementListener... listeners) {
+		for (ITileManagementListener listener : listeners) {
+			addTileManagementListener(listener);
+		}
+	}
+
+	@JsonIgnore
+	public void addTileSelectionListener(ITileUpdateListener... listeners) {
+		for (ITileUpdateListener listener : listeners) {
+			addTileUpdateListener(listener);
+		}
+	}
+
+	@JsonIgnore
+	public void addTileUpdateListener(ITileUpdateListener listener) {
+		tileUpdateListener.add(listener);
+	}
+
+	@JsonIgnore
+	public void removeTileUpdateListener(ITileUpdateListener listener) {
+		tileUpdateListener.remove(listener);
+	}
+
+	@JsonIgnore
+	private void fireTileRedraw(List<Integer> selectedTileIndexList, int action, boolean temporary) {
+		if (selectedTileIndexList != null) {
+			if (selectedTileIndexList.size() == 1) {
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList, temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, action));
+			} else {
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, action));
+			}
+		}
+	}
+
+	@JsonIgnore
+	public void redrawTileViewer(List<Integer> selectedTileIndexList, int action, boolean temporary) {
+		fireTileRedraw(selectedTileIndexList, action, temporary);
 	}
 
 }

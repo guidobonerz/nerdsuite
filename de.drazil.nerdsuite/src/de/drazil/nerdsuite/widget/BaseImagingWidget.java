@@ -34,11 +34,6 @@ import lombok.Getter;
 public abstract class BaseImagingWidget extends BaseWidget implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener, ITileListener,
 		ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener, TileSelectionModes {
 
-	private boolean keyPressed = false;
-	private int currentKeyCodePressed = 0;
-	private char currentCharacterPressed = 0;
-	private boolean altS = false;
-
 	protected int selectedTileIndexX = 0;
 	protected int selectedTileIndexY = 0;
 	protected int selectedTileIndex = 0;
@@ -93,7 +88,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		this.colorPaletteProvider = colorPaletteProvider;
 		drawListenerList = new ArrayList<>();
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
-		tileRepositoryService.addTileListener(this);
+		// tileRepositoryService.addTileListener(this);
 		metadata = tileRepositoryService.getMetadata();
 		conf = metadata.addViewerConfig(getViewerConfigName());
 		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
@@ -185,7 +180,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	@Override
 	protected void mouseExitInternal(int modifierMask, int x, int y) {
 		mouseIn = false;
-
 		mouseExit(modifierMask, x, y);
 	}
 
@@ -195,9 +189,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	@Override
 	protected void mouseEnterInternal(int modifierMask, int x, int y) {
 		mouseIn = true;
-
 		mouseEnter(modifierMask, x, y);
-		// setFocus();
 	}
 
 	protected void mouseDragged(int modifierMask, int x, int y) {
@@ -269,10 +261,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		} else {
 			tileCursorChanged = false;
 		}
-	}
-
-	private boolean checkKeyPressed(int modifierKey, char charCode) {
-		return (modifierMask & modifierKey) == modifierKey && currentCharacterPressed == charCode && keyPressed;
 	}
 
 	public void paintControl(PaintEvent e) {

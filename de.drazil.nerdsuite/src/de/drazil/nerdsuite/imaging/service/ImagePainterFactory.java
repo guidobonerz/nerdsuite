@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
@@ -19,10 +20,6 @@ import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.Tile;
 
 public class ImagePainterFactory {
-
-	public static interface IPainter {
-		public void paint(GC gc);
-	}
 
 	private Map<String, Image2> imagePool = null;
 
@@ -49,7 +46,7 @@ public class ImagePainterFactory {
 		}
 		this.conf = conf;
 		this.colorProvider = colorProvider;
-		
+
 		cache.put(name, this);
 	}
 
@@ -121,14 +118,12 @@ public class ImagePainterFactory {
 		Image2 imageInternal = new Image2(new Image(Display.getDefault(), width, height), true);
 		GC gc = new GC(imageInternal.getImage());
 		gc.setBackground(Constants.TRANSPARENT_COLOR);
-		
 		gc.fillRectangle(0, 0, width, height);
 		gc.dispose();
 		ImageData imageData = imageInternal.getImage().getImageData();
 		imageInternal.getImage().dispose();
 		imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
 		imageInternal.setImage(new Image(Display.getDefault(), imageData));
-		gc.dispose();
 		return imageInternal;
 	}
 
@@ -158,11 +153,12 @@ public class ImagePainterFactory {
 		}
 
 		imageInternal.setDirty(isDirty);
-		GC gc = new GC(imageInternal.getImage());
-		gc.setBackground(colorProvider.getColorByIndex(colorIndex));
-		gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
-		gc.dispose();
-
+		if (colorIndex != 0) {
+			GC gc = new GC(imageInternal.getImage());
+			gc.setBackground(colorProvider.getColorByIndex(colorIndex));
+			gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+			gc.dispose();
+		}
 		return imageInternal;
 
 	}
@@ -181,7 +177,6 @@ public class ImagePainterFactory {
 			imagePool.put(name, imageInternal);
 		}
 
-		// System.out.println("paint tile cursor");
 		imageInternal.setDirty(isDirty);
 		GC gc = new GC(imageInternal.getImage());
 
@@ -190,7 +185,11 @@ public class ImagePainterFactory {
 		int i = this.conf.tileWidth * y + x;
 		int ci = layer.getContent()[i];
 		int bi = layer.getBrush()[i];
-		gc.drawImage(ipf.createOrUpdateTile(referenceRepository.getTile(bi), ci, isDirty).getImage(), x * conf.tileWidthPixel, y * conf.tileHeightPixel);
+		Image image = ipf.createOrUpdateTile(referenceRepository.getTile(bi, true), ci, isDirty).getImage();
+		Rectangle dimesion = image.getBounds();
+		gc.setBackground(Constants.TRANSPARENT_COLOR);
+		gc.fillRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, dimesion.width, dimesion.height);
+		gc.drawImage(image, x * conf.tileWidthPixel, y * conf.tileHeightPixel);
 		gc.dispose();
 
 		return imageInternal;
@@ -201,11 +200,18 @@ public class ImagePainterFactory {
 	}
 
 	public Image2 createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
+
+		Image2 image = null;
 		if (repository.hasReference()) {
-			return _createOrUpdateTileFromReference(tile, -1, isDirty);
+			image = _createOrUpdateTileFromReference(tile, -1, isDirty);
 		} else {
-			return _createOrUpdateTile(tile, colorIndex, isDirty);
+			image = _createOrUpdateTile(tile, colorIndex, isDirty);
 		}
+		// ImageData id = image.getImage().getImageData();
+		// ImageData scaled = id.scaledTo((int) (id.width / 4), (int) (id.height / 4));
+		// imagePool.put(tile.getName(), new Image2(new Image(Display.getCurrent(),
+		// scaled), true));
+		return image;
 	}
 
 	private Image2 _createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
@@ -231,12 +237,18 @@ public class ImagePainterFactory {
 				int ci = layer.getContent()[i];
 				Color c = null;
 				if (colorIndex != -1) {
-					c = ci > 0 ? color : colorProvider.getColorByIndex(0);
+					c = ci > 0 ? color : Constants.TRANSPARENT_COLOR;
 				} else {
-					colorProvider.getColorByIndex(ci);
+					if (ci == 0) {
+						c = colorProvider.getColorByIndex(ci);
+					} else {
+						c = Constants.TRANSPARENT_COLOR;
+					}
 				}
+
 				gc.setBackground(c);
 				gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+
 				x++;
 			}
 			gc.dispose();
@@ -255,7 +267,6 @@ public class ImagePainterFactory {
 				imagePool.remove(name);
 			}
 			imageInternal = createLayer();
-			System.out.println("paint tile cursor");
 			imageInternal.setDirty(isDirty);
 			GC gc = new GC(imageInternal.getImage());
 			int x = 0;
@@ -270,7 +281,7 @@ public class ImagePainterFactory {
 
 				ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(referenceRepository.getMetadata().getId());
 				ImagingWidgetConfiguration conf = ipf.getConfiguration();
-				gc.drawImage(ipf.createOrUpdateTile(referenceRepository.getTile(bi), ci, isDirty).getImage(), x * conf.tileWidthPixel, y * conf.tileHeightPixel);
+				gc.drawImage(ipf.createOrUpdateTile(referenceRepository.getTile(bi, true), ci, isDirty).getImage(), x * conf.tileWidthPixel, y * conf.tileHeightPixel);
 				x++;
 			}
 			gc.dispose();

@@ -48,8 +48,6 @@ public class PainterWidget extends BaseImagingWidget {
 				scrollWorkArea(e.x, e.y);
 			}
 		});
-		//setBackground(Constants.BLACK);
-
 	}
 
 	@Override
@@ -191,7 +189,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
 			boolean paintTileCursor, boolean paintTelevisionMode) {
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", Constants.BLACK).getImage(), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", colorPaletteProvider.getColorByIndex(0)).getImage(), 0, 0);
 		if (redrawMode == RedrawMode.DrawPixel) {
 			gc.drawImage(imagePainterFactory
 					.createOrUpdateTilePixel(tileRepositoryService.getSelectedTile(), tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex(), cursorX, cursorY, false)
@@ -257,7 +255,7 @@ public class PainterWidget extends BaseImagingWidget {
 				}
 			} else if (conf.pencilMode == PencilMode.Erase) {
 				gc.setBackground(Constants.BLACK);
-				gc.fillRectangle((cursorX *pixelWidth), (cursorY * conf.pixelPaintHeight), pixelWidth, conf.pixelPaintHeight);
+				gc.fillRectangle((cursorX * pixelWidth), (cursorY * conf.pixelPaintHeight), pixelWidth, conf.pixelPaintHeight);
 			}
 			gc.setForeground(Constants.BRIGHT_ORANGE);
 			gc.drawRectangle((cursorX * pixelWidth) - 1, (cursorY * conf.pixelPaintHeight) - 1, pixelWidth + 1, conf.pixelPaintHeight + 1);
@@ -307,12 +305,12 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
-			// Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
-			// if (this.tile != null) {
-			// this.tile.removeTileListener(this);
-			// }
-			// this.tile = tile;
-			// tile.addTileListener(this);
+			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
+			if (this.tile != null) {
+				this.tile.removeTileListener(this);
+			}
+			this.tile = tile;
+			tile.addTileListener(this);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			temporaryIndex = selectedTileIndexList.get(0);
 		}
@@ -379,7 +377,7 @@ public class PainterWidget extends BaseImagingWidget {
 				if (brush == null) {
 					layer.resetBrush(layer.getContent().length, tileRepositoryService.getMetadata().getBlankValue());
 				}
-				int i = conf.pencilMode == PencilMode.Draw ? tileRepositoryReferenceService.getSelectedTileIndex() : tileRepositoryService.getMetadata().getBlankValue();
+				int i = conf.pencilMode == PencilMode.Draw ? tileRepositoryReferenceService.getSelectedTileIndex(true) : tileRepositoryService.getMetadata().getBlankValue();
 				layer.getBrush()[offset] = i;
 
 			}
@@ -405,7 +403,8 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(conf.fullWidthPixel, conf.fullHeightPixel);
+		// return new Point(conf.fullWidthPixel, conf.fullHeightPixel);
+		return new Point(wHint, hHint);
 	}
 
 	@Override
