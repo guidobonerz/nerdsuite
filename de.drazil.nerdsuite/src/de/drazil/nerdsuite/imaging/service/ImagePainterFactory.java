@@ -49,6 +49,7 @@ public class ImagePainterFactory {
 		}
 		this.conf = conf;
 		this.colorProvider = colorProvider;
+		
 		cache.put(name, this);
 	}
 
@@ -82,7 +83,7 @@ public class ImagePainterFactory {
 				for (int y = 0; y <= conf.height * conf.tileRows; y++) {
 					if (conf.gridStyle == GridType.Line) {
 						gc.drawLine(x * conf.pixelPaintWidth, 0, x * conf.pixelPaintWidth, conf.tileHeightPixel);
-						gc.drawLine(0, y * conf.pixelHeight, conf.tileWidthPixel, y * conf.pixelHeight);
+						gc.drawLine(0, y * conf.pixelPaintHeight, conf.tileWidthPixel, y * conf.pixelPaintHeight);
 					} else {
 						gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
 					}
@@ -120,6 +121,7 @@ public class ImagePainterFactory {
 		Image2 imageInternal = new Image2(new Image(Display.getDefault(), width, height), true);
 		GC gc = new GC(imageInternal.getImage());
 		gc.setBackground(Constants.TRANSPARENT_COLOR);
+		
 		gc.fillRectangle(0, 0, width, height);
 		gc.dispose();
 		ImageData imageData = imageInternal.getImage().getImageData();
@@ -296,11 +298,13 @@ public class ImagePainterFactory {
 					}
 					imageInternal = createOrUpdateTile(tile, colorIndex, false);
 					imageInternal.setDirty(isDirty);
-					int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
-					int x = (i % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
-					gc.drawImage(imageInternal.getImage(), x, y);
 					imagePool.put(name, imageInternal);
 				}
+
+				int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
+				int x = (i % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
+				gc.drawImage(imageInternal.getImage(), x, y);
+
 			}
 			gc.dispose();
 

@@ -48,6 +48,7 @@ public class PainterWidget extends BaseImagingWidget {
 				scrollWorkArea(e.x, e.y);
 			}
 		});
+		//setBackground(Constants.BLACK);
 
 	}
 
@@ -67,6 +68,7 @@ public class PainterWidget extends BaseImagingWidget {
 		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point && (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			int xoff = x - startPos.x;
 			int yoff = y - startPos.y;
+
 			scrollWorkArea(xoff, yoff);
 		} else if (conf.cursorMode == CursorMode.Point && cursorChanged) {
 			setPixel(tile, cursorX, cursorY, conf);
@@ -134,7 +136,7 @@ public class PainterWidget extends BaseImagingWidget {
 				conf.pixelWidth += step;
 				conf.pixelHeight = conf.pixelWidth;
 				recalc();
-				conf.computeDimensions(tileRepositoryService.getSize());
+				conf.computeDimensions();
 				imagePainterFactory.resetCache();
 				// imagePainterFactory.drawSelectedTile(tileRepositoryService,
 				// colorPaletteProvider, conf);
@@ -240,21 +242,25 @@ public class PainterWidget extends BaseImagingWidget {
 	 */
 	private void paintPixelCursor(GC gc) {
 		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize) {
-			if (tileRepositoryService.hasReference()) {
-				Tile tile = tileRepositoryService.getSelectedTile();
-				int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
-				Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
-				ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
-				gc.drawImage(ipf.createOrUpdateTile(refTile, tile.getColorIndex(1), false).getImage(), cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight);
-			} else {
-				// gc.setForeground(colo);
-				// gc.drawRectangle((cursorX * conf.pixelPaintWidth) - 1, (cursorY *
-				// conf.pixelPaintHeight) - 1, conf.pixelPaintWidth + 1, conf.pixelPaintHeight +
-				// 1);
-			}
+			int pixelWidth = conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1);
+			if (conf.pencilMode == PencilMode.Draw) {
 
+				if (tileRepositoryService.hasReference()) {
+					Tile tile = tileRepositoryService.getSelectedTile();
+					int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
+					Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
+					ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
+					gc.drawImage(ipf.createOrUpdateTile(refTile, tile.getColorIndex(1), false).getImage(), cursorX * conf.pixelPaintWidth, cursorY * conf.pixelPaintHeight);
+				} else {
+					gc.setBackground(colorPaletteProvider.getColorByIndex(tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex()));
+					gc.fillRectangle((cursorX * pixelWidth), (cursorY * conf.pixelPaintHeight), pixelWidth, conf.pixelPaintHeight);
+				}
+			} else if (conf.pencilMode == PencilMode.Erase) {
+				gc.setBackground(Constants.BLACK);
+				gc.fillRectangle((cursorX *pixelWidth), (cursorY * conf.pixelPaintHeight), pixelWidth, conf.pixelPaintHeight);
+			}
 			gc.setForeground(Constants.BRIGHT_ORANGE);
-			gc.drawRectangle((cursorX * conf.pixelPaintWidth) - 1, (cursorY * conf.pixelPaintHeight) - 1, conf.pixelPaintWidth + 1, conf.pixelPaintHeight + 1);
+			gc.drawRectangle((cursorX * pixelWidth) - 1, (cursorY * conf.pixelPaintHeight) - 1, pixelWidth + 1, conf.pixelPaintHeight + 1);
 		}
 	}
 
@@ -287,11 +293,13 @@ public class PainterWidget extends BaseImagingWidget {
 
 	public void setCursorMode(CursorMode cursorMode) {
 		conf.cursorMode = cursorMode;
-		if (cursorMode == CursorMode.Point) {
-			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
-			tileRepositoryService.setSelection(new Rectangle(0, 0, conf.tileWidth, conf.tileHeight));
+		if (cursorMode == CursorMode.SelectRectangle) {
+			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_CROSS));
 		} else if (cursorMode == CursorMode.Move) {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_SIZEALL));
+		} else {
+			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
+			tileRepositoryService.setSelection(new Rectangle(0, 0, conf.tileWidth, conf.tileHeight));
 		}
 		doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 	}
@@ -369,7 +377,7 @@ public class PainterWidget extends BaseImagingWidget {
 			if (tileRepositoryReferenceService != null) {
 				int brush[] = layer.getBrush();
 				if (brush == null) {
-					layer.resetBrush(tileRepositoryService.getMetadata().getBlankValue());
+					layer.resetBrush(layer.getContent().length, tileRepositoryService.getMetadata().getBlankValue());
 				}
 				int i = conf.pencilMode == PencilMode.Draw ? tileRepositoryReferenceService.getSelectedTileIndex() : tileRepositoryService.getMetadata().getBlankValue();
 				layer.getBrush()[offset] = i;

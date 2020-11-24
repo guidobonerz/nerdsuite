@@ -48,7 +48,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public CursorMode cursorMode = CursorMode.Point;
 	public boolean televisionModeEnabled = false;
 
-	public void computeDimensions(int tileCount) {
+	public void computeDimensions() {
 		pixelPaintWidth = pixelSize;
 		pixelPaintHeight = pixelSize;
 		iconSize = width * height;

@@ -39,31 +39,33 @@ public class Layer {
 	private List<Integer> colorPalette = new ArrayList<Integer>();
 
 	@JsonIgnore
-	private int size;
-	@JsonIgnore
 	private boolean dirty = true;
 
-	public Layer(String name, int size, int contentValue, int brushValue) {
+	public Layer(String name, int size, int brushValue) {
 		this.name = name;
-		this.size = size;
-		reset(contentValue, brushValue);
+		reset(size, brushValue);
 	}
 
 	@JsonIgnore
-	public void reset(int contentValue, int brushValue) {
-		resetBrush(brushValue);
-		resetContent(contentValue);
+	public int getSize() {
+		return content.length;
 	}
 
 	@JsonIgnore
-	public void resetBrush(int blankValue) {
-		this.brush = new int[content.length];
+	public void reset(int size, int brushValue) {
+		resetContent(size);
+		resetBrush(size, brushValue);
+	}
+
+	@JsonIgnore
+	public void resetBrush(int size, int blankValue) {
+		brush = new int[size];
 		Arrays.fill(brush, blankValue);
 	}
 
 	@JsonIgnore
-	public void resetContent(int blankValue) {
-		this.brush = new int[content.length];
-		Arrays.fill(brush, blankValue);
+	public void resetContent(int contentLength) {
+		content = new int[contentLength];
+		Arrays.fill(content, 0);
 	}
 }
