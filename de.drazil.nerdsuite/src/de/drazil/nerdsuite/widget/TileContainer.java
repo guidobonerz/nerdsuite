@@ -6,8 +6,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import de.drazil.nerdsuite.model.GraphicFormat;
-import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,25 +27,40 @@ public class TileContainer {
 	private String referenceRepositoryLocation = null;
 
 	@JsonIgnore
-	public void setInitialSize(int size) {
-		for (int i = 0; i < size; i++) {
+	public void setInitialSize(int tileCount) {
+		initList();
+		for (int i = 0; i < tileCount; i++) {
 			addTile();
 		}
 		setSelectedTileIndex(0);
 	}
 
-	@JsonIgnore
-	public Tile addTile() {
-		String name = String.format("%s", "tile_", (getTileList().size() + 1));
-		GraphicFormat format = GraphicFormatFactory.getFormatById(metadata.getType());
-		GraphicFormatVariant variant = GraphicFormatFactory.getFormatVariantById(metadata.getType(), metadata.getVariant());
-		return addTile(name, format.getHeight() * variant.getTileRows() * format.getWidth() * variant.getTileColumns(), 0, metadata.getBlankValue());
+	private void initList() {
+		if (tileList == null) {
+			tileList = new ArrayList<Tile>();
+		}
+		if (tileIndexOrderList == null) {
+			tileIndexOrderList = new ArrayList<Integer>();
+		}
+
+		if (selectedTileIndexList == null) {
+			selectedTileIndexList = new ArrayList<Integer>();
+		}
 	}
 
 	@JsonIgnore
-	private Tile addTile(String name, int tileSize, int defaultConent, int defaultBrush) {
+	public Tile addTile() {
+		initList();
+		String name = String.format("%s%d", "tile_", (getTileList().size() + 1));
+		int blankValue = metadata.getBlankValue() == null ? 0 : metadata.getBlankValue();
+		return addTile(name, metadata.getTileSize(), blankValue);
+	}
+
+	@JsonIgnore
+	private Tile addTile(String name, int tileSize, int defaultBrush) {
+		initList();
 		Tile tile = new Tile(name, tileSize);
-		tile.addLayer(name, tileSize, defaultConent, defaultBrush);
+		tile.addLayer(name, tileSize, defaultBrush);
 		getTileList().add(tile);
 		getTileIndexOrderList().add(getTileList().indexOf(tile));
 		// fireTileAdded();
@@ -100,6 +113,7 @@ public class TileContainer {
 
 	@JsonIgnore
 	public void setSelectedTileIndex(int index) {
+		initList();
 		getSelectedTileIndexList().clear();
 		getSelectedTileIndexList().add(index);
 		// fireTileRedraw(getSelectedTileIndexList(), ImagePainterFactory.READ, false);

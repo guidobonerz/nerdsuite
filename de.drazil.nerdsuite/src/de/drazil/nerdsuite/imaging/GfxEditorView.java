@@ -329,7 +329,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		Map<String, Object> pm = (Map<String, Object>) part.getObject();
 		project = (Project) pm.get("project");
-		owner = (String) pm.get("repository");
+		owner = (String) pm.get("repositoryOwner");
 
 		file = (File) pm.get("file");
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);

@@ -126,9 +126,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected abstract String getViewerConfigName();
 
 	public void init() {
-		if (getViewerConfigName().equals(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG)) {
-			int a = 0;
-		}
+
 		if (graphicFormatVariant.getId().equals("CUSTOM")) {
 			conf.width = metadata.getWidth();
 			conf.height = metadata.getHeight();
@@ -151,7 +149,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		conf.pixelSize = s;
 
 		conf.storageSize = graphicFormat.getStorageSize();
-		metadata.computeDimensions(tileRepositoryService.getSize());
+		metadata.computeDimensions();
 	}
 
 	public void setTriggerMillis(long... triggerMillis) {
@@ -187,6 +185,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	@Override
 	protected void mouseExitInternal(int modifierMask, int x, int y) {
 		mouseIn = false;
+
 		mouseExit(modifierMask, x, y);
 	}
 
@@ -196,6 +195,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	@Override
 	protected void mouseEnterInternal(int modifierMask, int x, int y) {
 		mouseIn = true;
+
 		mouseEnter(modifierMask, x, y);
 		// setFocus();
 	}
