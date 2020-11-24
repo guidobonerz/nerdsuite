@@ -9,7 +9,8 @@ public class ImportService extends IOBaseService {
 
 	public void doImportGraphic(Map<String, Object> config) {
 		String fileName = (String) config.get("fileName");
-		TileRepositoryService repository = (TileRepositoryService) config.get("repository");
+		TileRepositoryService repository = ServiceFactory.getService((String)config.get("repositoryOwner"), TileRepositoryService.class);
+		repository.init(1);
 		int bytesToSkip = (Integer) config.get("bytesToSkip");
 
 		byte[] importableContent = new byte[] {};

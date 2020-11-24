@@ -8,7 +8,6 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -155,12 +154,11 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
 			boolean paintTileCursor, boolean paintTelevisionMode) {
-/*
-		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
-			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
-			paintTile(gc, i, action);
-		}
-*/
+		/*
+		 * for (int i = (drawAll ? 0 : start); i < (drawAll ?
+		 * tileRepositoryService.getSize() : end); i++) { int index = drawAll ? i :
+		 * tileRepositoryService.getTileIndex(i); paintTile(gc, i, action); }
+		 */
 		if (paintTileGrid) {
 			paintTileGrid(gc);
 		}
@@ -268,7 +266,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		}
 		gcLayer.dispose();
 		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK).getImage(), 0, 0);
-		// gc.drawImage(imagePainterFactory.createOrUpdateLayer(name, true), 0, 0);
+
 	}
 
 	@Override
