@@ -32,7 +32,11 @@ public class TileRepositoryService implements IService {
 	private TileContainer container;
 
 	public TileRepositoryService getReferenceRepository() {
-		return ServiceFactory.getService(getMetadata().getReferenceId(), TileRepositoryService.class);
+		TileRepositoryService service = null;
+		if (ServiceFactory.checkService(getMetadata().getReferenceId())) {
+			service = ServiceFactory.getService(getMetadata().getReferenceId(), TileRepositoryService.class);
+		}
+		return service;
 	}
 
 	public TileRepositoryService() {
