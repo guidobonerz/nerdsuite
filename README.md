@@ -19,6 +19,7 @@ Last Changes 25-11-2020:
 - PETASCII Painter
 - Performance tuning
 - Code cleanup
+- Scroll drawing area
 
 Last Changes 04-07-2020:
 - select/run programs from D64 image
@@ -35,7 +36,6 @@ Last Changes:
 - Tile animation finished
 - Tile drag movement/reordering
 - Sprite import
-- Scroll drawing area
 - Copy/Paste
 - Mount disk images to project-browser
 - Bitmap Exporter for CharSets and Sprites
