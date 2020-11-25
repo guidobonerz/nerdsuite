@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -21,10 +22,10 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.Workspace;
+import de.drazil.nerdsuite.util.FileUtil;
 
 public class Configuration {
-	public static final File WORKSPACE_PATH = new File(
-			Constants.USER_HOME + Constants.FILE_SEPARATOR + Constants.DEFAULT_WORKSPACE_NAME);
+	public static final File WORKSPACE_PATH = new File(Constants.USER_HOME + Constants.FILE_SEPARATOR + Constants.DEFAULT_WORKSPACE_NAME);
 
 	private Workspace workspace;
 	private Font font = null;
@@ -87,14 +88,13 @@ public class Configuration {
 				System.out.println("create new workspace folder...");
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
-				updateWorkspace(null, null, false,false);
+				updateWorkspace(null, false, false);
 			}
 
 			if (workspace == null) {
 				System.out.println("read workspace file...");
 				ObjectMapper mapper = new ObjectMapper();
-				workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects.json"),
-						Workspace.class);
+				workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects.json"), Workspace.class);
 			}
 
 		} catch (JsonParseException e) {
@@ -111,11 +111,12 @@ public class Configuration {
 		return workspace;
 	}
 
-	public final void updateWorkspace(Project project, File file, boolean addProject, boolean mountOnly) {
+	public final void updateWorkspace(Project project, boolean addProject, boolean mountOnly) {
 		if (addProject) {
 			workspace.add(project);
 			try {
 				if (!mountOnly) {
+					File file = FileUtil.getFileFromProject(project);
 					file.createNewFile();
 				}
 			} catch (IOException e) {

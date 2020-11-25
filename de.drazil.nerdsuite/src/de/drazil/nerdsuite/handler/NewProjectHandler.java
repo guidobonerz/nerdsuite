@@ -10,10 +10,10 @@ import java.util.Map;
 import javax.inject.Named;
 
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -24,7 +24,6 @@ import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.enums.ProjectType;
 import de.drazil.nerdsuite.enums.WizardType;
-import de.drazil.nerdsuite.explorer.Explorer;
 import de.drazil.nerdsuite.imaging.service.ImportService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
@@ -41,8 +40,8 @@ import de.drazil.nerdsuite.wizard.ProjectWizard;
 public class NewProjectHandler {
 
 	@Execute
-	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell, EPartService partService, EModelService modelService,
-			@Named("de.drazil.nerdsuite.commandparameter.ProjectTypeId") String projectTypeId, @Named("de.drazil.nerdsuite.commandparameter.WizardType") String wizardType) {
+	public void execute(MPerspective activePerspective, MApplication app, Shell shell, EPartService partService, EModelService modelService,
+			@Named("de.drazil.nerdsuite.commandparameter.ProjectTypeId") String projectTypeId, @Named("de.drazil.nerdsuite.commandparameter.WizardType") String wizardType, IEventBroker broker) {
 
 		Map<String, Object> userData = new HashMap<>();
 		userData.put(ProjectWizard.PROJECT_TYPE_ID, projectTypeId);
@@ -106,16 +105,19 @@ public class NewProjectHandler {
 				}
 
 				if (projectAction.startsWith("new")) {
-					File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR + project.getId().toLowerCase() + "." + projectType.getSuffix());
-					TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
-					/*
-					if (metadata.getType().equals("SCREENSET")) {
-						repository.setReferenceRepositoryLocation("c64_upper.ns_chr");
-					}
-					*/
+					TileRepositoryService repository = ServiceFactory.getService(projectId, TileRepositoryService.class);
 					repository.setMetadata(metadata);
-					projectSetup.put("file", file);
-					projectSetup.put("repositoryOwner", owner);
+					if (metadata.getType().equals("SCREENSET")) {
+						String id = "C64_UPPER";
+						repository.getMetadata().setReferenceId(id);
+						if (!ServiceFactory.checkService(id)) {
+							TileRepositoryService referenceRepository = ServiceFactory.getService(id, TileRepositoryService.class);
+							referenceRepository.load(id);
+						}
+						metadata.setBlankValue(32);
+					}
+
+					projectSetup.put("repositoryOwner", projectId);
 
 					if (projectAction.startsWith("newImport")) {
 						ImportService importService = ServiceFactory.getCommonService(ImportService.class);
@@ -124,8 +126,8 @@ public class NewProjectHandler {
 						int maxItems = (int) userData.get(ProjectWizard.PROJECT_MAX_ITEMS);
 						repository.init(maxItems);
 					}
-					repository.save(file, project);
-					Initializer.getConfiguration().updateWorkspace(project, file, true, false);
+					repository.save(project);
+					Initializer.getConfiguration().updateWorkspace(project, true, false);
 				} else {
 					throw new IllegalArgumentException("No such project action.");
 				}
@@ -133,8 +135,6 @@ public class NewProjectHandler {
 				// File file = createProjectStructure(project, projectType.getSuffix());
 
 				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
-
-				
 
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView", editorView, owner, project.getName(), projectSetup);
 
@@ -146,8 +146,8 @@ public class NewProjectHandler {
 
 				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part, true);
 			}
-			Explorer explorer = E4Utils.findPartObject(partService, "de.drazil.nerdsuite.part.Explorer", Explorer.class);
-			explorer.refresh();
+
+			broker.send("explorer/refresh", null);
 		}
 	}
 

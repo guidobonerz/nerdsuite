@@ -52,6 +52,7 @@ import de.drazil.nerdsuite.storagemedia.IMediaContainer;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
 import de.drazil.nerdsuite.util.E4Utils;
+import de.drazil.nerdsuite.util.FileUtil;
 import de.drazil.nerdsuite.util.ImageFactory;
 
 public class Explorer implements IDoubleClickListener {
@@ -108,7 +109,6 @@ public class Explorer implements IDoubleClickListener {
 	@Inject
 	@Optional
 	void exportFile(@UIEventTopic("Export") BrokerObject brokerObject) {
-		// if (brokerObject.getTransferObject().equals("Explorer")) {
 		TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
 		Object o = treeNode.getFirstElement();
 		if (o instanceof Project) {
@@ -121,20 +121,18 @@ public class Explorer implements IDoubleClickListener {
 			String fileName = saveDialog.open();
 			try {
 				mediaManager.exportEntry(entry, new File(fileName));
-				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
-						"\"" + fileName + "\" was successfully exported.");
+				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information", "\"" + fileName + "\" was successfully exported.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
 			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be exported.");
 		}
-		// }
 	}
 
 	@Inject
 	@Optional
-	void U64_LoadAndRun(@UIEventTopic("U64_LoadAndRun") BrokerObject brokerObject, MPart part, IEventBroker broker) {
+	void U64_LoadAndRun(@UIEventTopic("U64_LoadAndRun") BrokerObject brokerObject, IEventBroker broker) {
 
 		TreeSelection treeNode = (TreeSelection) treeViewer.getSelection();
 		Object o = treeNode.getFirstElement();
@@ -143,7 +141,6 @@ public class Explorer implements IDoubleClickListener {
 			try {
 				String fileName = ((Project) o).getMountLocation().split("@")[1];
 				byte[] data = BinaryFileHandler.readFile(new File(fileName), 0);
-				String owner = (String) part.getTransientData().get(Constants.OWNER);
 				broker.send("LoadAndRun", new BrokerObject("", data));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -153,14 +150,12 @@ public class Explorer implements IDoubleClickListener {
 			IMediaContainer mediaContainer = MediaFactory.mount((File) entry.getUserObject());
 			try {
 				byte[] data = mediaContainer.exportEntry(entry);
-				String owner = (String) part.getTransientData().get(Constants.OWNER);
 				broker.send("LoadAndRun", new BrokerObject("", data));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning",
-					"Folders can not be started on Ultimate64");
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be started on Ultimate64");
 		}
 
 	}
@@ -201,8 +196,7 @@ public class Explorer implements IDoubleClickListener {
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
 				cell.setText(file.getFullName());
-				cell.setImage(ImageFactory
-						.createImage(file.isDirectory() ? "icons/folder.png" : "icons/document-binary.png"));
+				cell.setImage(ImageFactory.createImage(file.isDirectory() ? "icons/folder.png" : "icons/document-binary.png"));
 				// Font f = FontFactory.getFont(file.getFontName());
 				// cell.setFont(f);
 
@@ -335,7 +329,9 @@ public class Explorer implements IDoubleClickListener {
 
 	}
 
-	public void refresh() {
+	@Inject
+	@Optional
+	public void refresh(@UIEventTopic("explorer/refresh") Object value) {
 		listFiles();
 	}
 
@@ -354,19 +350,16 @@ public class Explorer implements IDoubleClickListener {
 			MUIElement editor = modelService.find(owner, app);
 			if (editor == null) {
 				System.out.println("load tiles");
-				File file = new File(Configuration.WORKSPACE_PATH + Constants.FILE_SEPARATOR
-						+ project.getId().toLowerCase() + "." + project.getSuffix());
+				File file = FileUtil.getFileFromProject(project);
 				TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
-				repository.load(file);
+				repository.load(owner);
 				projectSetup.put("repositoryOwner", owner);
 				projectSetup.put("file", file);
 
-				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView", "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
 						project.getName(), projectSetup);
 
-				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
-						part, true);
+				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part, true);
 			} else {
 				editor.getParent().setSelectedElement(editor);
 			}

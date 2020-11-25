@@ -23,8 +23,6 @@
 	<classpathentry kind="lib" path="ext_libs/miglayout-4.0-swt.jar"/>
 	<classpathentry kind="lib" path="ext_libs/lombok.jar"/>
 	<classpathentry kind="lib" path="ext_libs/commons-io-2.6.jar"/>
-	<classpathentry kind="lib" path="ext_libs/humble-video-arch-x86_64-w64-mingw32-0.3.0.jar"/>
-	<classpathentry kind="lib" path="ext_libs/humble-video-noarch-0.3.0.jar"/>
 	<classpathentry kind="lib" path="ext_libs/commons-net-3.7.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
