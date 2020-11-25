@@ -14,6 +14,12 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+
+Last Changes 25-11-2020:
+- PETASCII Painter
+- Performance tuning
+- Code cleanup
+
 Last Changes 04-07-2020:
 - select/run programs from D64 image
 
@@ -40,7 +46,6 @@ Gfx Module Todo:
 - Zoom option in all views
 - Layer Preview/Selector
 - Layer drag reordering
-- Charscreen reference charset selector
 - TileMap reference tile selector
 - TileSet reference char selector
 - Binary Import
