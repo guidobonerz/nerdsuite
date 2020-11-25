@@ -25,9 +25,7 @@ public class TileContainer {
 	private List<Integer> tileIndexOrderList = null;
 	@JsonProperty(value = "selectedTiles")
 	private List<Integer> selectedTileIndexList = null;
-	@JsonProperty(value = "referenceRepositoryLocation")
-	private String referenceRepositoryLocation = null;
-
+	@JsonIgnore
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	@JsonIgnore
 	private List<ITileUpdateListener> tileUpdateListener = null;

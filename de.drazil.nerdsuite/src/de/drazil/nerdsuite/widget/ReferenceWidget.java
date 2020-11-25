@@ -172,7 +172,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 	}
 
 	private void paintTileMap(GC gc) {
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", Constants.DARK_GREY, 301, 301).getImage(), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", Constants.BLACK, 301, 301).getImage(), 0, 0);
 		gc.drawImage(imagePainterFactory.createOrUpdateTileMap(1, false).getImage(), 0, 0);
 	}
 

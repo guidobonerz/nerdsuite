@@ -262,7 +262,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	@Optional
 	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
-			save(file);
+			save();
 		}
 	}
 
@@ -331,8 +331,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		project = (Project) pm.get("project");
 		owner = (String) pm.get("repositoryOwner");
 
-		file = (File) pm.get("file");
-		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
+		tileRepositoryService = ServiceFactory.getService(project.getId(), TileRepositoryService.class);
 		tileRepositoryReferenceService = tileRepositoryService.getReferenceRepository();
 
 		metadata = tileRepositoryService.getMetadata();
@@ -527,23 +526,23 @@ public class GfxEditorView implements ITileUpdateListener {
 		}
 	}
 
-	private void save(File file) {
+	private void save() {
 		System.out.println("save tiles");
-		updateWorkspace(false, null);
+		updateWorkspace(false);
 		LocalDateTime ldt = LocalDateTime.now();
 		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 		project.setChangedOn(d);
-		tileRepositoryService.save(file, project);
+		tileRepositoryService.save(project);
 		part.setDirty(false);
 	}
 
 	@Persist
 	private void close() {
-		save(file);
+		save();
 	}
 
-	private void updateWorkspace(boolean addProject, File file) {
-		Initializer.getConfiguration().updateWorkspace(project, file, addProject, false);
+	private void updateWorkspace(boolean addProject) {
+		Initializer.getConfiguration().updateWorkspace(project, addProject, false);
 	}
 
 }

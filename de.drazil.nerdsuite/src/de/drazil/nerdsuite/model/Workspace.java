@@ -25,4 +25,8 @@ public class Workspace {
 	public Project getProjectByName(String name) {
 		return projects.stream().filter(e -> e.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
+
+	public Project getProjectById(String id) {
+		return projects.stream().filter(e -> e.getId().equalsIgnoreCase(id)).findFirst().orElse(null);
+	}
 }
