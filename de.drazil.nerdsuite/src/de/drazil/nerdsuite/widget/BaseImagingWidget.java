@@ -94,8 +94,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
 		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
 		graphicFormatVariant = GraphicFormatFactory.getFormatVariantById(graphicFormatId, metadata.getVariant());
-		if (tileRepositoryService.getMetadata().getReferenceRepositoryId() != null) {
-			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceRepositoryId(), TileRepositoryService.class);
+		if (tileRepositoryService.getMetadata().getReferenceId() != null) {
+			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceId(), TileRepositoryService.class);
 		}
 
 		imagePainterFactory = new ImagePainterFactory(owner, colorPaletteProvider, conf);

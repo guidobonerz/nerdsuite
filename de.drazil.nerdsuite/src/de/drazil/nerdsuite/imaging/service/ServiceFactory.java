@@ -12,6 +12,10 @@ public class ServiceFactory {
 
 	}
 
+	public static boolean  checkService(String id) {
+		return serviceOwnerMap.containsKey(id);
+	}
+
 	public static <S extends IService> S getCommonService(Class<? super S> serviceClass) {
 		return getService(COMMON, serviceClass);
 	}

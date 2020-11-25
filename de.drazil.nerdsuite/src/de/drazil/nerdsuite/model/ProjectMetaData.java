@@ -25,8 +25,7 @@ public class ProjectMetaData {
 	private Integer rows;
 	private Integer storageEntity;
 	private Integer blankValue;
-	@JsonIgnore
-	private String referenceRepositoryId;
+	private String referenceId;
 	@JsonIgnore
 	private int tileSize;
 	@JsonIgnore

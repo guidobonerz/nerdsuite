@@ -2,7 +2,6 @@ package de.drazil.nerdsuite.imaging.service;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.nio.file.Path;
 import java.text.DateFormat;
 import java.util.List;
 
@@ -13,9 +12,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.configuration.Configuration;
+import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.util.FileUtil;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
 import de.drazil.nerdsuite.widget.TileContainer;
@@ -31,8 +31,9 @@ public class TileRepositoryService implements IService {
 	private Rectangle selection;
 	private TileContainer container;
 
-	@Getter
-	private TileRepositoryService referenceRepository;
+	public TileRepositoryService getReferenceRepository() {
+		return ServiceFactory.getService(getMetadata().getReferenceId(), TileRepositoryService.class);
+	}
 
 	public TileRepositoryService() {
 
@@ -44,11 +45,7 @@ public class TileRepositoryService implements IService {
 	}
 
 	public boolean hasReference() {
-		return referenceRepository != null;
-	}
-
-	public void setReferenceRepositoryLocation(String referenceRepositoryLocation) {
-		container.setReferenceRepositoryLocation(referenceRepositoryLocation);
+		return getReferenceRepository() != null;
 	}
 
 	public List<Tile> getTileList() {
@@ -139,30 +136,28 @@ public class TileRepositoryService implements IService {
 		container.redrawTileViewer(selectedTileIndexList, action, temporary);
 	}
 
-	public TileContainer load(File fileName) {
+	public TileContainer load(String id) {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
-			container = mapper.readValue(fileName, TileContainer.class);
-			String referenceId = null;
-			String referenceRepositoryLocation = container.getReferenceRepositoryLocation();
-			if (null != referenceRepositoryLocation) {
-				File referenceFile = Path.of(Configuration.WORKSPACE_PATH.toString(), referenceRepositoryLocation).toFile();
-				referenceId = referenceFile.getName().split("\\.")[0].toUpperCase();
-				referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
-				referenceRepository.load(referenceFile);
-				container.getMetadata().setReferenceRepositoryId(referenceId);
+			Project project = Initializer.getConfiguration().getWorkspace().getProjectById(id);
+			File file = FileUtil.getFileFromProject(project);
+			container = mapper.readValue(file, TileContainer.class);
+			String referenceId = container.getMetadata().getReferenceId();
+			if (null != referenceId) {
+				Project referenceProject = Initializer.getConfiguration().getWorkspace().getProjectById(referenceId);
+				TileRepositoryService referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
+				referenceRepository.load(referenceProject.getId());
 			}
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return container;
 	}
 
-	public void save(File file, Project project) {
+	public void save(Project project) {
 		try {
+			File file = FileUtil.getFileFromProject(project);
 			FileWriter fw = new FileWriter(file);
 			fw.write(getHeaderText(project, container.getMetadata()));
 			ObjectMapper mapper = new ObjectMapper();
