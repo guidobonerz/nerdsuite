@@ -36,7 +36,7 @@ public class TileContainer {
 	}
 
 	@JsonIgnore
-	public void setInitialSize(int tileCount) {
+	public void addInitialTiles(int tileCount) {
 		initList();
 		for (int i = 0; i < tileCount; i++) {
 			addTile();

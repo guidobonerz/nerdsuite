@@ -8,8 +8,10 @@ import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class ProjectMetaData {
 	public final static String PAINTER_CONFIG = "PAINTER_CONFIG";
@@ -32,14 +34,48 @@ public class ProjectMetaData {
 	@Getter
 	private HashMap<String, ImagingWidgetConfiguration> viewerConfig;
 
-	public ProjectMetaData() {
+	public ProjectMetaData(GraphicFormat gf, GraphicFormatVariant gfv) {
 		viewerConfig = new HashMap<String, ImagingWidgetConfiguration>();
 	}
 
+	public void init(GraphicFormat gf, GraphicFormatVariant gfv) {
+		_init(getViewerConfig(PAINTER_CONFIG), gf, gfv, 16);
+		_init(getViewerConfig(REPOSITORY_CONFIG), gf, gfv, 16);
+		_init(getViewerConfig(REFERENCE_REPOSITORY_CONFIG), gf, gfv, 2);
+	}
+
+	private void _init(ImagingWidgetConfiguration conf, GraphicFormat gf, GraphicFormatVariant gfv, int pixelSize) {
+		if (gfv.getId().equals("CUSTOM")) {
+			conf.width = width;
+			conf.height = height;
+			conf.tileColumns = columns;
+			conf.tileRows = rows;
+		} else {
+			conf.width = gf.getWidth();
+			conf.height = gf.getHeight();
+			conf.tileColumns = gfv.getTileColumns();
+			conf.tileRows = gfv.getTileRows();
+		}
+		/*
+		 * int s = gfv.getPixelSize(); if
+		 * (getViewerConfigName().equals(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG)) {
+		 * s = 2; }
+		 * 
+		 * if (tileRepositoryReferenceService != null) { s = 16; }
+		 */
+		conf.pixelSize = pixelSize;
+
+		conf.storageSize = gf.getStorageSize();
+		computeDimensions();
+	}
+
 	@JsonIgnore
-	public ImagingWidgetConfiguration addViewerConfig(String name) {
-		ImagingWidgetConfiguration conf = new ImagingWidgetConfiguration();
-		viewerConfig.put(name, conf);
+	public ImagingWidgetConfiguration getViewerConfig(String name) {
+		ImagingWidgetConfiguration conf = viewerConfig.get(name);
+		if (conf == null) {
+			conf = new ImagingWidgetConfiguration();
+			viewerConfig.put(name, conf);
+		}
 		return conf;
 	}
 

@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.widget;
 
+import static java.lang.Math.abs;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +26,10 @@ import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
-import de.drazil.nerdsuite.model.GraphicFormat;
-import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.mouse.IMeasuringListener;
 import de.drazil.nerdsuite.mouse.MeasuringController;
 import lombok.Getter;
-import static java.lang.Math.abs;
 
 public abstract class BaseImagingWidget extends BaseWidget implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener, ITileListener,
 		ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener, TileSelectionModes {
@@ -83,13 +82,13 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected Tile tile = null;
 	protected Image image = null;
 	protected MeasuringController mc;
-	private GraphicFormat graphicFormat = null;
-	private GraphicFormatVariant graphicFormatVariant = null;
+	// private GraphicFormat graphicFormat = null;
+	// private GraphicFormatVariant graphicFormatVariant = null;
 	protected IColorPaletteProvider colorPaletteProvider;
 	@Getter
 	protected ImagingWidgetConfiguration conf;
 
-	private ProjectMetaData metadata;
+	// private ProjectMetaData metadata;
 
 	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
 		super(parent, style);
@@ -99,11 +98,9 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		drawListenerList = new ArrayList<>();
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
 		// tileRepositoryService.addTileListener(this);
-		metadata = tileRepositoryService.getMetadata();
-		conf = metadata.addViewerConfig(getViewerConfigName());
-		String graphicFormatId = metadata.getPlatform() + "_" + metadata.getType();
-		graphicFormat = GraphicFormatFactory.getFormatById(graphicFormatId);
-		graphicFormatVariant = GraphicFormatFactory.getFormatVariantById(graphicFormatId, metadata.getVariant());
+
+		conf = tileRepositoryService.getMetadata().getViewerConfig(getViewerConfigName());
+
 		if (tileRepositoryService.getMetadata().getReferenceId() != null) {
 			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceId(), TileRepositoryService.class);
 		}
@@ -129,33 +126,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	protected abstract String getViewerConfigName();
-
-	public void init() {
-
-		if (graphicFormatVariant.getId().equals("CUSTOM")) {
-			conf.width = metadata.getWidth();
-			conf.height = metadata.getHeight();
-			conf.tileColumns = metadata.getColumns();
-			conf.tileRows = metadata.getRows();
-		} else {
-			conf.width = graphicFormat.getWidth();
-			conf.height = graphicFormat.getHeight();
-			conf.tileColumns = graphicFormatVariant.getTileColumns();
-			conf.tileRows = graphicFormatVariant.getTileRows();
-		}
-		int s = graphicFormatVariant.getPixelSize();
-		if (getViewerConfigName().equals(ProjectMetaData.REFERENCE_REPOSITORY_CONFIG)) {
-			s = 2;
-		}
-
-		if (tileRepositoryReferenceService != null) {
-			s = 16;
-		}
-		conf.pixelSize = s;
-
-		conf.storageSize = graphicFormat.getStorageSize();
-		metadata.computeDimensions();
-	}
 
 	public void setTriggerMillis(long... triggerMillis) {
 		mc.setTriggerMillis(triggerMillis);
@@ -245,9 +215,9 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 			lastCursorX = oldCursorX;
 			lastCursorY = oldCursorY;
 			cursorDiffX = cursorX - lastCursorX;
-			//cursorDiffX = abs(cursorDiffX) > 1 ? cursorDiffX : 0;
+			// cursorDiffX = abs(cursorDiffX) > 1 ? cursorDiffX : 0;
 			cursorDiffY = cursorY - lastCursorY;
-			//cursorDiffY = abs(cursorDiffY) > 1 ? cursorDiffY : 0;
+			cursorDiffY = abs(cursorDiffY) > 1 ? cursorDiffY : 0;
 			oldCursorX = cursorX;
 			oldCursorY = cursorY;
 			cursorChanged = true;

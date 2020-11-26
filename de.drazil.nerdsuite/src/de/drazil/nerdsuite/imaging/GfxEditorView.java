@@ -350,7 +350,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter = getPainterWidget();
 		// painter.addDrawListener(repository);
 
-		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, graphicFormat.getId().endsWith("SCREENSET") ? 2 : 4,
+		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, graphicFormat.getId().endsWith("PETSCII") ? 2 : 4,
 				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
 
 		if (tileRepositoryService.hasReference()) {
@@ -365,11 +365,11 @@ public class GfxEditorView implements ITileUpdateListener {
 		tileRepositoryService.addTileManagementListener(painter, repository);
 
 		if (tileRepositoryService.hasReference()) {
-			referenceRepository.init();
+			//referenceRepository.init();
 		}
 
-		painter.init();
-		repository.init();
+		//painter.init();
+		//repository.init();
 
 		multiColorChooser.addColorSelectionListener(painter);
 		multiColorChooser.addColorSelectionListener(repository);
@@ -386,7 +386,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		 */
 		GridData gridData = null;
 
-		if (metadata.getType().equals("SCREENSET")) {
+		if (metadata.getType().equals("PETSCII") || metadata.getType().equals("SCREENSET")) {
 			gridData = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 2);
 			gridData.widthHint = actualSize.x >= worksheetWidth ? worksheetWidth : actualSize.x;
 			gridData.heightHint = actualSize.y >= worksheetHeight ? worksheetHeight : actualSize.y;

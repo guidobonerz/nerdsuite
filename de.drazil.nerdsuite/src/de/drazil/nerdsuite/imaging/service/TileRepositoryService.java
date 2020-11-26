@@ -44,8 +44,8 @@ public class TileRepositoryService implements IService {
 		container = new TileContainer();
 	}
 
-	public void init(int initialSize) {
-		container.setInitialSize(initialSize);
+	public void init(int tileCount) {
+		container.addInitialTiles(tileCount);
 	}
 
 	public boolean hasReference() {

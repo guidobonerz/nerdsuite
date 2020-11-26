@@ -119,6 +119,35 @@
     "supportCustomBaseSize" : true
   } ]
 }, {
+  "id" : "C64_PETSCII",
+  "name" : "PETSCII",
+  "width" : 40,
+  "height" : 25,
+  "supportsLayers" : true,
+  "storageSize" : 1,
+  "storageType" : "linear",
+  "maxItems" : -1,
+  "blankValue" : 32,
+  "properties" : {
+    "supportsMultiColor" : false,
+    "supportsResizing" : true,
+    "supportsExtendedColorMode" : true
+  },
+  "variants" : [ {
+    "id" : "STANDARD",
+    "name" : "Standard Size (40x25)",
+    "tileRows" : 1,
+    "tileColumns" : 1,
+    "pixelSize" : 16
+  }, {
+    "id" : "CUSTOM",
+    "name" : "Custom Size",
+    "tileRows" : 1,
+    "tileColumns" : 1,
+    "pixelSize" : 16,
+    "supportCustomBaseSize" : true
+  } ]
+}, {
   "id" : "C64_TILESET",
   "name" : "Tile Set",
   "width" : 2,
