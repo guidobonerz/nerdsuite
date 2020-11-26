@@ -1,20 +1,21 @@
 package de.drazil.nerdsuite.widget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Point;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import de.drazil.nerdsuite.model.Image2;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor
 public class Tile {
 	@Getter
 	@JsonProperty(value = "name")
@@ -44,15 +45,58 @@ public class Tile {
 	@Getter
 	@Setter
 	private boolean dirty = true;
+	@JsonIgnore
+	private Map<String, Image2> imagePool = null;
+
+	public Tile() {
+		imagePool = new HashMap<String, Image2>();
+	}
 
 	public Tile(String name, int size) {
+		this();
 		this.name = name;
 		this.size = size;
 	}
 
 	@JsonIgnore
+	public void putImage(Image2 image) {
+		putImage(name, image);
+	}
+
+	@JsonIgnore
+	public void putImage(String name, Image2 image) {
+		imagePool.put(name, image);
+	}
+
+	@JsonIgnore
+	public void removeImage() {
+		removeImage(name);
+	}
+
+	@JsonIgnore
+	public void removeImage(String name) {
+		imagePool.get(name).getImage().dispose();
+		imagePool.remove(name);
+	}
+
+	@JsonIgnore
+	public Image2 getImage() {
+		return getImage(name);
+	}
+
+	@JsonIgnore
+	public Image2 getImage(String name) {
+		return imagePool.get(name);
+	}
+
+	@JsonIgnore
 	public Layer getLayer(int index) {
 		return layerList.get(index);
+	}
+
+	@JsonIgnore
+	public int getSize() {
+		return layerList.size();
 	}
 
 	@JsonIgnore
