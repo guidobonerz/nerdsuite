@@ -331,6 +331,7 @@ public class PainterWidget extends BaseImagingWidget {
 			break;
 		}
 		case VerticalMirror: {
+			drawLine(layer, x1, y1, x2, y2, conf);
 			int centerX = conf.tileWidth / 2;
 			int diffx1 = centerX - x1 - 1;
 			int diffx2 = centerX - x2 - 1;
@@ -338,6 +339,7 @@ public class PainterWidget extends BaseImagingWidget {
 			break;
 		}
 		case HorizontalMirror: {
+			drawLine(layer, x1, y1, x2, y2, conf);
 			int centerY = conf.tileHeight / 2;
 			int diffy1 = centerY - y1 - 1;
 			int diffy2 = centerY - y2 - 1;
@@ -345,6 +347,7 @@ public class PainterWidget extends BaseImagingWidget {
 			break;
 		}
 		case Kaleidoscope: {
+			drawLine(layer, x1, y1, x2, y2, conf);
 			int centerX = conf.tileWidth / 2;
 			int diffx1 = centerX - x1 - 1;
 			int diffx2 = centerX - x2 - 1;
