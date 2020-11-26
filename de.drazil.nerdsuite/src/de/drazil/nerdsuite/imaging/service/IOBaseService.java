@@ -24,7 +24,7 @@ public class IOBaseService implements IService {
 		int iconSize = (width / metadata.getStorageEntity()) * height;
 		int tileSize = iconSize * columns * rows;
 
-		if (metadata.getType().equals("SCREENSET")) {
+		if (metadata.getType().equals("PETSCII") || metadata.getType().equals("SCREENSET")) {
 			if (bitplane.length / tileSize == 2) {
 				for (int i = 0; i < tileSize; i++) {
 					Layer layer = service.getSelectedTile().getActiveLayer();

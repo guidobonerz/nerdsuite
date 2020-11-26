@@ -468,8 +468,5 @@ public class PainterWidget extends BaseImagingWidget {
 		return new Point(wHint, hHint);
 	}
 
-	@Override
-	protected String getViewerConfigName() {
-		return ProjectMetaData.PAINTER_CONFIG;
-	}
+	
 }

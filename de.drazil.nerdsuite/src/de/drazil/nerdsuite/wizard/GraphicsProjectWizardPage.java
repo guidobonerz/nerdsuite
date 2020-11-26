@@ -13,6 +13,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -37,12 +39,22 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 	private Label gfxFormatVariantLabel;
 	private Label separatorLabel;
 	private Label maxItemsLabel;
+	private Label widthLabel;
+	private Label heightLabel;
+	private Label rowsLabel;
+	private Label columnsLabel;
 	private Text projectNameText;
+	private Spinner tileWidthSpinner;
+	private Spinner tileHeightSpinner;
+	private Spinner tileColumnsSpinner;
+	private Spinner tileRowsSpinner;
 	private Spinner maxItemsSpinner;
 	private ComboViewer targetPlatformCombo;
 	private ComboViewer gfxFormatCombo;
 	private ComboViewer gfxFormatVariantCombo;
 	private SimpleEntity projectType;
+	private GraphicFormat gf;
+	private GraphicFormatVariant gfv;
 
 	/**
 	 * Create the wizard.
@@ -82,17 +94,30 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		gfxFormatVariantLabel = new Label(container, SWT.NONE);
 		gfxFormatVariantLabel.setText("Format Variant");
 
+		widthLabel = new Label(container, SWT.NONE);
+		widthLabel.setEnabled(false);
+		widthLabel.setText("Width");
+		heightLabel = new Label(container, SWT.NONE);
+		heightLabel.setEnabled(false);
+		heightLabel.setText("Height");
+		columnsLabel = new Label(container, SWT.NONE);
+		columnsLabel.setEnabled(false);
+		columnsLabel.setText("Columns");
+		rowsLabel = new Label(container, SWT.NONE);
+		rowsLabel.setEnabled(false);
+		rowsLabel.setText("Rows");
+
 		List<TargetPlatform> targetPlatformList = PlatformFactory.getTargetPlatFormList();
 		userData.put(ProjectWizard.TARGET_PLATFORM, targetPlatformList.get(0).getId());
-		List<GraphicFormat> graphicFormatList = GraphicFormatFactory
-				.getFormatByPrefix(targetPlatformList.get(0).getId());
+		List<GraphicFormat> graphicFormatList = GraphicFormatFactory.getFormatByPrefix(targetPlatformList.get(0).getId());
+		gf = graphicFormatList.get(0);
 		userData.put(ProjectWizard.PROJECT_TYPE, graphicFormatList.get(0).getId());
-		List<GraphicFormatVariant> graphicFormatVariantList = graphicFormatList.get(0).getVariants();
+		List<GraphicFormatVariant> graphicFormatVariantList = GraphicFormatFactory.getFormatVariantListByPrefix(graphicFormatList.get(0).getId());
+		gfv = graphicFormatVariantList.get(0);
 		userData.put(ProjectWizard.PROJECT_VARIANT, graphicFormatVariantList.get(0).getId());
 		int maxItems = graphicFormatList.get(0).getMaxItems();
 		userData.put(ProjectWizard.PROJECT_MAX_ITEMS, maxItems);
-		maxItemsSpinner.setValues(maxItems, (maxItems == -1) ? -1 : 1, maxItems, 0,
-				1, 1);
+		maxItemsSpinner.setValues(maxItems, (maxItems == -1) ? -1 : 1, maxItems, 0, 1, 1);
 
 		projectNameText = new Text(container, SWT.BORDER);
 		projectNameText.addKeyListener(new KeyAdapter() {
@@ -140,26 +165,24 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		gfxFormatCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element instanceof GraphicFormat) {
-					GraphicFormat current = (GraphicFormat) element;
-					return current.getName();
-				}
-				return super.getText(element);
+				// if (element instanceof GraphicFormat) {
+				// return ((GraphicFormat) element).getName();
+				// }
+				return ((GraphicFormat) element).getName();
 			}
 		});
 		gfxFormatCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
-				GraphicFormat graphicFormat = (GraphicFormat) selection.getFirstElement();
-				userData.put(ProjectWizard.PROJECT_TYPE, graphicFormat.getId());
-				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantListByPrefix(graphicFormat.getId());
+				gf = (GraphicFormat) selection.getFirstElement();
+				userData.put(ProjectWizard.PROJECT_TYPE, gf.getId());
+				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantListByPrefix(gf.getId());
 				gfxFormatVariantCombo.setInput(l);
 				gfxFormatVariantCombo.setSelection(new StructuredSelection(l.get(0)));
-				int maxItems = graphicFormat.getMaxItems() == -1 ? 1 : graphicFormat.getMaxItems();
+				int maxItems = gf.getMaxItems() == -1 ? 1 : gf.getMaxItems();
 				maxItemsSpinner.setValues(maxItems, 1, maxItems, 0, 1, 16);
 				userData.put(ProjectWizard.PROJECT_MAX_ITEMS, maxItems);
-
 			}
 		});
 
@@ -170,19 +193,59 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		gfxFormatVariantCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element instanceof GraphicFormatVariant) {
-					GraphicFormatVariant current = (GraphicFormatVariant) element;
-					return current.getName();
-				}
-				return super.getText(element);
+				// if (element instanceof GraphicFormatVariant) {
+				// ((GraphicFormatVariant) element).getName();
+				// }
+				return ((GraphicFormatVariant) element).getName();
 			}
 		});
 		gfxFormatVariantCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
-				GraphicFormatVariant graphicFormatVariant = (GraphicFormatVariant) selection.getFirstElement();
-				userData.put(ProjectWizard.PROJECT_VARIANT, graphicFormatVariant.getId());
+				gfv = (GraphicFormatVariant) selection.getFirstElement();
+				userData.put(ProjectWizard.PROJECT_VARIANT, gfv.getId());
+				widthLabel.setEnabled(gfv.getId().equals("CUSTOM"));
+				heightLabel.setEnabled(gfv.getId().equals("CUSTOM"));
+				rowsLabel.setEnabled(gfv.getId().equals("CUSTOM"));
+				columnsLabel.setEnabled(gfv.getId().equals("CUSTOM"));
+				tileWidthSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
+				tileHeightSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
+				tileColumnsSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
+				tileRowsSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
+				setSpinnerValues();
+			}
+		});
+
+		tileWidthSpinner = new Spinner(container, SWT.BORDER);
+		tileWidthSpinner.setEnabled(false);
+		tileWidthSpinner.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				putSpinnerValues();
+			}
+		});
+
+		tileHeightSpinner = new Spinner(container, SWT.BORDER);
+		tileHeightSpinner.setEnabled(false);
+		tileHeightSpinner.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				putSpinnerValues();
+			}
+		});
+
+		tileColumnsSpinner = new Spinner(container, SWT.BORDER);
+		tileColumnsSpinner.setEnabled(false);
+		tileColumnsSpinner.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				putSpinnerValues();
+			}
+		});
+
+		tileRowsSpinner = new Spinner(container, SWT.BORDER);
+		tileRowsSpinner.setEnabled(false);
+		tileRowsSpinner.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				putSpinnerValues();
 			}
 		});
 
@@ -205,6 +268,26 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		formData.top = new FormAttachment(gfxFormatLabel, 15, SWT.BOTTOM);
 		formData.left = new FormAttachment(gfxFormatLabel, 0, SWT.LEFT);
 		gfxFormatVariantLabel.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(gfxFormatVariantLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(gfxFormatVariantLabel, 0, SWT.LEFT);
+		widthLabel.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(widthLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(widthLabel, 0, SWT.LEFT);
+		heightLabel.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(heightLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(heightLabel, 0, SWT.LEFT);
+		columnsLabel.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(columnsLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(columnsLabel, 0, SWT.LEFT);
+		rowsLabel.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(projectNameLabel, 0, SWT.TOP);
@@ -231,7 +314,31 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		gfxFormatVariantCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
-		formData.top = new FormAttachment(gfxFormatVariantLabel, 15, SWT.BOTTOM);
+		formData.top = new FormAttachment(widthLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		tileWidthSpinner.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(heightLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		tileHeightSpinner.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(columnsLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		tileColumnsSpinner.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(rowsLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		tileRowsSpinner.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(rowsLabel, 15, SWT.BOTTOM);
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, 0);
 		separatorLabel.setLayoutData(formData);
@@ -247,6 +354,25 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		formData.right = new FormAttachment(container, 300);
 		maxItemsSpinner.setLayoutData(formData);
 
+		setSpinnerValues();
+	}
+
+	private void setSpinnerValues() {
+		tileWidthSpinner.setValues(gf.getWidth(), 1, 1000, 0, 1, 1);
+		tileHeightSpinner.setValues(gf.getHeight(), 1, 1000, 0, 1, 1);
+		tileColumnsSpinner.setValues(gfv.getTileColumns(), 1, 1000, 0, 1, 1);
+		tileRowsSpinner.setValues(gfv.getTileRows(), 1, 1000, 0, 1, 1);
+		userData.put("width", tileWidthSpinner.getSelection());
+		userData.put("height", tileHeightSpinner.getSelection());
+		userData.put("columns", tileColumnsSpinner.getSelection());
+		userData.put("rows", tileRowsSpinner.getSelection());
+	}
+
+	private void putSpinnerValues() {
+		userData.put("width", tileWidthSpinner.getSelection());
+		userData.put("height", tileHeightSpinner.getSelection());
+		userData.put("columns", tileColumnsSpinner.getSelection());
+		userData.put("rows", tileRowsSpinner.getSelection());
 	}
 
 	private void setText(String fileName) {

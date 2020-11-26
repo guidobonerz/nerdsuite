@@ -50,6 +50,7 @@ public class SvgExport {
 
 	@Execute
 	public void execute(MPart part, IEventBroker broker) {
+		/*
 		String owner = (String) part.getTransientData().get(Constants.OWNER);
 		TileRepositoryService service = ServiceFactory.getService(owner, TileRepositoryService.class);
 		ProjectMetaData metadata = service.getMetadata();
@@ -111,7 +112,7 @@ public class SvgExport {
 		// sort
 		// pathList.sort(Comparator.comparingInt(Point::getX1).thenComparingInt(Point::getY1));
 		int a = 0;
-
+*/
 	}
 
 	private int getOutlineRanges(int x, int y, int[] content, ImagingWidgetConfiguration conf) {

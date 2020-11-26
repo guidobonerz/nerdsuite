@@ -76,8 +76,8 @@ public class ImagePainterFactory {
 			imageInternal = createLayer();
 			GC gc = new GC(imageInternal.getImage());
 			gc.setForeground(conf.gridStyle == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
-			for (int x = 0; x <= conf.width * conf.tileColumns; x++) {
-				for (int y = 0; y <= conf.height * conf.tileRows; y++) {
+			for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x++) {
+				for (int y = 0; y <= conf.iconHeight * conf.tileRows; y++) {
 					if (conf.gridStyle == GridType.Line) {
 						gc.drawLine(x * conf.pixelPaintWidth, 0, x * conf.pixelPaintWidth, conf.tileHeightPixel);
 						gc.drawLine(0, y * conf.pixelPaintHeight, conf.tileWidthPixel, y * conf.pixelPaintHeight);

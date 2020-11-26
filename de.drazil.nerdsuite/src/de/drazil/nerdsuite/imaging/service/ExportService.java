@@ -20,7 +20,7 @@ public class ExportService extends IOBaseService {
 	public void doExportGraphic(Map<String, Object> config) {
 		String fileName = (String) config.get("fileName");
 		TileRepositoryService repository = (TileRepositoryService) config.get("repository");
-
+/*
 		ProjectMetaData metadata = repository.getMetadata();
 		ImagingWidgetConfiguration conf = metadata.getViewerConfig().get(ProjectMetaData.PAINTER_CONFIG);
 
@@ -32,6 +32,7 @@ public class ExportService extends IOBaseService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 }

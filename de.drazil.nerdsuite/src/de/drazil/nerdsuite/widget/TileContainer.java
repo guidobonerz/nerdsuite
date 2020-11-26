@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +30,21 @@ public class TileContainer {
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	@JsonIgnore
 	private List<ITileUpdateListener> tileUpdateListener = null;
+	@JsonIgnore
+	private int tileSize;
 
 	public TileContainer() {
 		tileServiceManagementListener = new ArrayList<>();
 		tileUpdateListener = new ArrayList<>();
 	}
 
+	public void setMetadata(ProjectMetaData metadata) {
+		this.metadata = metadata;
+		this.tileSize = metadata.getWidth() * metadata.getHeight() * metadata.getColumns() * metadata.getRows();
+	}
+
 	@JsonIgnore
-	public void setInitialSize(int tileCount) {
+	public void addInitialTiles(int tileCount) {
 		initList();
 		for (int i = 0; i < tileCount; i++) {
 			addTile();
@@ -62,7 +70,7 @@ public class TileContainer {
 		initList();
 		String name = String.format("%s%d", "tile_", (getTileList().size() + 1));
 		int blankValue = metadata.getBlankValue() == null ? 0 : metadata.getBlankValue();
-		return addTile(name, metadata.getTileSize(), blankValue);
+		return addTile(name, tileSize, blankValue);
 	}
 
 	@JsonIgnore
