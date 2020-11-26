@@ -30,6 +30,7 @@ import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.mouse.IMeasuringListener;
 import de.drazil.nerdsuite.mouse.MeasuringController;
 import lombok.Getter;
+import static java.lang.Math.abs;
 
 public abstract class BaseImagingWidget extends BaseWidget implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener, ITileListener,
 		ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener, TileSelectionModes {
@@ -38,6 +39,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected int selectedTileIndexY = 0;
 	protected int selectedTileIndex = 0;
 
+	protected int lastCursorX = -1;
+	protected int lastCursorY = -1;
 	protected int oldCursorX = -1;
 	protected int oldCursorY = -1;
 	protected int cursorX = 0;
@@ -46,6 +49,13 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected int oldTileY = -1;
 	protected int tileX = 0;
 	protected int tileY = 0;
+	protected int cursorDiffX = -1;
+	protected int cursorDiffY = -1;
+	protected int tileDiffX = -1;
+	protected int tileDiffY = -1;
+	protected int tileCursorDiffX = -1;
+	protected int tileCursorDiffY = -1;
+
 	protected int oldTileCursorX = -1;
 	protected int oldTileCursorY = -1;
 	protected int tileCursorX = 0;
@@ -232,6 +242,12 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		cursorX = x / conf.pixelPaintWidth;
 		cursorY = y / conf.pixelPaintHeight;
 		if (oldCursorX != cursorX || oldCursorY != cursorY || takePosition) {
+			lastCursorX = oldCursorX;
+			lastCursorY = oldCursorY;
+			cursorDiffX = cursorX - lastCursorX;
+			//cursorDiffX = abs(cursorDiffX) > 1 ? cursorDiffX : 0;
+			cursorDiffY = cursorY - lastCursorY;
+			//cursorDiffY = abs(cursorDiffY) > 1 ? cursorDiffY : 0;
 			oldCursorX = cursorX;
 			oldCursorY = cursorY;
 			cursorChanged = true;
@@ -243,6 +259,10 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		tileY = y / (conf.tileHeightPixel + conf.tileGap);
 
 		if (oldTileX != tileX || oldTileY != tileY || takePosition) {
+			tileDiffX = tileX - oldTileX;
+			tileDiffX = abs(tileDiffX) > 1 ? tileDiffX : 0;
+			tileDiffY = tileY - oldTileY;
+			tileDiffY = abs(tileDiffY) > 1 ? tileDiffY : 0;
 			oldTileX = tileX;
 			oldTileY = tileY;
 			tileChanged = true;
@@ -254,6 +274,10 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		tileCursorX = (cursorX - (tileX * conf.width));
 		tileCursorY = (cursorY - (tileY * conf.height));
 		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY || takePosition) {
+			tileCursorDiffX = tileCursorX - oldTileCursorX;
+			tileCursorDiffX = abs(tileCursorDiffX) > 1 ? tileCursorDiffX : 0;
+			tileCursorDiffY = tileCursorY - oldTileCursorY;
+			tileCursorDiffY = abs(tileCursorDiffY) > 1 ? tileCursorDiffY : 0;
 			oldTileCursorX = tileCursorX;
 			oldTileCursorY = tileCursorY;
 			tileCursorChanged = true;
