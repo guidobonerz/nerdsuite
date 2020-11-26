@@ -40,12 +40,11 @@ public class TileRepositoryService implements IService {
 	}
 
 	public TileRepositoryService() {
-
 		container = new TileContainer();
 	}
 
-	public void init(int initialSize) {
-		container.setInitialSize(initialSize);
+	public void init(int tileCount) {
+		container.addInitialTiles(tileCount);
 	}
 
 	public boolean hasReference() {
@@ -141,6 +140,10 @@ public class TileRepositoryService implements IService {
 	}
 
 	public TileContainer load(String id) {
+		return load(id, false);
+	}
+
+	public TileContainer load(String id, boolean isReference) {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
@@ -151,7 +154,7 @@ public class TileRepositoryService implements IService {
 			if (null != referenceId) {
 				Project referenceProject = Initializer.getConfiguration().getWorkspace().getProjectById(referenceId);
 				TileRepositoryService referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
-				referenceRepository.load(referenceProject.getId());
+				referenceRepository.load(referenceProject.getId(), true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

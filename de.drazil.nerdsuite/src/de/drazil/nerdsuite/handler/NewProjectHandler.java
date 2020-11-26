@@ -33,7 +33,6 @@ import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
-import de.drazil.nerdsuite.widget.CustomFormatDialog;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
@@ -61,11 +60,6 @@ public class NewProjectHandler {
 			project.setId(projectId);
 			project.setName(projectName);
 
-			ProjectMetaData metadata = new ProjectMetaData();
-			metadata.setPlatform(targetPlatform);
-			metadata.setType(subType);
-			metadata.setVariant(variant);
-
 			String owner = String.format("%s_%s_%s", type, variant, projectId);
 
 			Map<String, Object> projectSetup = new HashMap<String, Object>();
@@ -75,46 +69,40 @@ public class NewProjectHandler {
 			Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 			project.setCreatedOn(d);
 			project.setChangedOn(d);
-
 			ProjectType projectType = ProjectType.getProjectTypeById(subType);
 			project.setIconName(projectType.getIconName());
 			project.setSuffix(projectType.getSuffix());
 
 			if (projectTypeId.equals("GRAPHIC_PROJECT")) {
 
-				GraphicFormat gf = GraphicFormatFactory.getFormatById(type);
-				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(type, metadata.getVariant());
-				project.setSingleFileProject(true);
-				project.setOpen(true);
-
-				metadata.setWidth(gf.getWidth());
-				metadata.setHeight(gf.getHeight());
-				metadata.setRows(gfv.getTileRows());
-				metadata.setColumns(gfv.getTileColumns());
-				metadata.setStorageEntity(gf.getStorageSize());
-				metadata.computeDimensions();
-
 				projectSetup.put("importFormat", (String) userData.get(ProjectWizard.IMPORT_FORMAT));
 				projectSetup.put("bytesToSkip", (Integer) userData.get(ProjectWizard.BYTES_TO_SKIP));
 				String projectAction = projectSetup.get("fileName") == null ? "newProjectAction" : "newImportProjectAction";
 				projectSetup.put("projectAction", projectAction);
 
-				if (metadata.getVariant().equalsIgnoreCase("CUSTOM")) {
-					CustomFormatDialog cfd = new CustomFormatDialog(shell);
-					cfd.open(metadata, gfv.isSupportCustomBaseSize());
-				}
+				GraphicFormat gf = GraphicFormatFactory.getFormatById(type);
+				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(type, variant);
+				project.setSingleFileProject(true);
+				project.setOpen(true);
+
+				ProjectMetaData metadata = new ProjectMetaData();
+
+				metadata.setPlatform(targetPlatform);
+				metadata.setType(subType);
+				metadata.setVariant(variant);
+				metadata.init((Integer) userData.get("width"), (Integer) userData.get("height"), (Integer) userData.get("columns"), (Integer) userData.get("rows"), gf.getStorageSize());
 
 				if (projectAction.startsWith("new")) {
 					TileRepositoryService repository = ServiceFactory.getService(projectId, TileRepositoryService.class);
 					repository.setMetadata(metadata);
-					if (metadata.getType().equals("SCREENSET")) {
+					if (metadata.getType().equals("PETSCII") || metadata.getType().equals("SCREENSET")) {
 						String id = "C64_UPPER";
 						repository.getMetadata().setReferenceId(id);
 						if (!ServiceFactory.checkService(id)) {
 							TileRepositoryService referenceRepository = ServiceFactory.getService(id, TileRepositoryService.class);
-							referenceRepository.load(id);
+							referenceRepository.load(id, true);
 						}
-						metadata.setBlankValue(32);
+						metadata.setBlankValue(gf.getBlankValue());
 					}
 
 					projectSetup.put("repositoryOwner", projectId);

@@ -6,6 +6,7 @@ import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
+import de.drazil.nerdsuite.model.ProjectMetaData;
 import lombok.Data;
 
 @Data
@@ -18,8 +19,8 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public int tileSize;
 	public int columns = 1;
 	public int rows = 1;
-	public int width;
-	public int height;
+	public int iconWidth;
+	public int iconHeight;
 	public int tileRows;
 	public int tileColumns;
 	public int tileHeight;
@@ -48,13 +49,21 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public CursorMode cursorMode = CursorMode.Point;
 	public boolean televisionModeEnabled = false;
 
+	public ImagingWidgetConfiguration(ProjectMetaData metadata) {
+		iconWidth = metadata.getWidth();
+		iconHeight = metadata.getHeight();
+		tileColumns = metadata.getColumns();
+		tileRows = metadata.getRows();
+		storageSize = metadata.getStorageEntity();
+	}
+
 	public void computeDimensions() {
 		pixelPaintWidth = pixelSize;
 		pixelPaintHeight = pixelSize;
-		iconSize = width * height;
+		iconSize = iconWidth * iconHeight;
 		tileSize = iconSize * tileColumns * tileRows;
-		tileWidth = width * tileColumns;
-		tileHeight = height * tileRows;
+		tileWidth = iconWidth * tileColumns;
+		tileHeight = iconHeight * tileRows;
 		tileWidthPixel = tileWidth * pixelPaintWidth;
 		tileHeightPixel = tileHeight * pixelPaintHeight;
 		if (rows == AUTOMATIC && columns > 0) {
@@ -69,6 +78,5 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 			fullWidthPixel = tileWidthPixel * columns + (columns * tileGap) - tileGap;
 			fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
 		}
-
 	}
 }
