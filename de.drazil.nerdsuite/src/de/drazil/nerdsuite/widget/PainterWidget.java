@@ -191,9 +191,8 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", colorPaletteProvider.getColorByIndex(0)).getImage(), 0, 0);
 		if (redrawMode == RedrawMode.DrawPixel) {
-			gc.drawImage(imagePainterFactory
-					.createOrUpdateTilePixel(tileRepositoryService.getSelectedTile(), tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex(), cursorX, cursorY, false)
-					.getImage(), 0, 0);
+			gc.drawImage(tileRepositoryService.getSelectedTile().getImage().getImage(), 0, 0);
+
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
@@ -321,38 +320,96 @@ public class PainterWidget extends BaseImagingWidget {
 
 	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
 		Layer layer = tileRepositoryService.getSelectedTile().getActiveLayer();
+		int x1 = lastCursorX;
+		int y1 = lastCursorY;
+		int x2 = lastCursorX + cursorDiffX;
+		int y2 = lastCursorY + cursorDiffY;
 
 		switch (conf.paintMode) {
 		case Single: {
-			setPixel(layer, x, y, conf);
+			drawLine(layer, x1, y1, x2, y2, conf);
 			break;
 		}
 		case VerticalMirror: {
-			setPixel(layer, x, y, conf);
 			int centerX = conf.tileWidth / 2;
-			int diff = centerX - x - 1;
-			setPixel(layer, centerX + diff, y, conf);
+			int diffx1 = centerX - x1 - 1;
+			int diffx2 = centerX - x2 - 1;
+			drawLine(layer, centerX + diffx1, y1, centerX + diffx2, y2, conf);
 			break;
 		}
 		case HorizontalMirror: {
-			setPixel(layer, x, y, conf);
 			int centerY = conf.tileHeight / 2;
-			int diff = centerY - y - 1;
-			setPixel(layer, x, centerY + diff, conf);
+			int diffy1 = centerY - y1 - 1;
+			int diffy2 = centerY - y2 - 1;
+			drawLine(layer, x1, centerY + diffy1, x2, centerY + diffy2, conf);
 			break;
 		}
 		case Kaleidoscope: {
-			setPixel(layer, x, y, conf);
 			int centerX = conf.tileWidth / 2;
-			int diffX = centerX - x - 1;
-			setPixel(layer, centerX + diffX, y, conf);
+			int diffx1 = centerX - x1 - 1;
+			int diffx2 = centerX - x2 - 1;
+			drawLine(layer, centerX + diffx1, y1, centerX + diffx2, y2, conf);
 			int centerY = conf.tileHeight / 2;
-			int diffY = centerY - y - 1;
-			setPixel(layer, x, centerY + diffY, conf);
-			setPixel(layer, centerX + diffX, centerY + diffY, conf);
+			int diffy1 = centerY - y1 - 1;
+			int diffy2 = centerY - y2 - 1;
+			drawLine(layer, x1, centerY + diffy1, x2, centerY + diffy2, conf);
+			drawLine(layer, centerX + diffx1, centerY + diffy1, centerX + diffx2, centerY + diffy2, conf);
 			break;
 		}
 		}
+
+	}
+
+	private void drawLine(Layer layer, int x1, int y1, int x2, int y2, ImagingWidgetConfiguration conf) {
+		int x;
+		int y;
+		int dx;
+		int dy;
+		int error;
+		int a;
+		int b;
+		int xstep;
+		int ystep;
+		dx = x2 - x1;
+		dy = y2 - y1;
+		xstep = 1;
+		ystep = 1;
+		x = x1;
+		y = y1;
+		if (dx < 0) {
+			dx = -dx;
+			xstep = -1;
+		}
+		if (dy < 0) {
+			dy = -dy;
+			ystep = -1;
+		}
+		a = dx + dx;
+		b = dy + dy;
+		if (dy <= dx) {
+			error = -dx;
+			while (x != x2) {
+				setPixel(layer, x, y, conf);
+				error = error + b;
+				if (error > 0) {
+					y = y + ystep;
+					error = error - a;
+				}
+				x = x + xstep;
+			}
+		} else {
+			error = -dy;
+			while (y != y2) {
+				setPixel(layer, x, y, conf);
+				error = error + a;
+				if (error > 0) {
+					x = x + xstep;
+					error = error - b;
+				}
+				y = y + ystep;
+			}
+		}
+		setPixel(layer, x, y, conf);
 	}
 
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
@@ -381,6 +438,7 @@ public class PainterWidget extends BaseImagingWidget {
 				layer.getBrush()[offset] = i;
 
 			}
+			imagePainterFactory.createOrUpdateTilePixel(tileRepositoryService.getSelectedTile(), tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex(), x, y, false);
 		}
 	}
 

@@ -2,7 +2,9 @@ package de.drazil.nerdsuite.widget;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,11 +13,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import de.drazil.nerdsuite.json.IntArrayToStringConverter;
 import de.drazil.nerdsuite.json.StringToIntArrayConverter;
+import de.drazil.nerdsuite.model.Image2;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+
 public class Layer {
 	@JsonProperty(value = "name")
 	private String name;
@@ -37,13 +39,46 @@ public class Layer {
 	private int selectedColorIndex = 1;
 	@JsonProperty(value = "colorPalette")
 	private List<Integer> colorPalette = new ArrayList<Integer>();
+	@JsonIgnore
+	private Map<String, Image2> imagePool = null;
 
 	@JsonIgnore
 	private boolean dirty = true;
 
+	public Layer() {
+		imagePool = new HashMap<String, Image2>();
+	}
+
 	public Layer(String name, int size, int brushValue) {
+		this();
 		this.name = name;
 		reset(size, brushValue);
+	}
+
+	@JsonIgnore
+	public void putImage(Image2 image) {
+		putImage(name, image);
+	}
+
+	@JsonIgnore
+	public void putImage(String name, Image2 image) {
+		imagePool.put(name, image);
+	}
+
+	@JsonIgnore
+	public Image2 getImage(String name) {
+		return imagePool.get(name);
+	}
+
+	@JsonIgnore
+	public void removeImage() {
+		removeImage(name);
+	}
+
+	@JsonIgnore
+	public void removeImage(String name) {
+		imagePool.get(name).getImage().dispose();
+		imagePool.remove(name);
 	}
 
 	@JsonIgnore

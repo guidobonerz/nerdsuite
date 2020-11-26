@@ -142,14 +142,13 @@ public class ImagePainterFactory {
 	private Image2 _createOrUpdateTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
-		Image2 imageInternal = imagePool.get(name);
+		Image2 imageInternal = tile.getImage(name);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
-				imageInternal.getImage().dispose();
-				imagePool.remove(name);
+				tile.removeImage(name);
 			}
 			imageInternal = createLayer();
-			imagePool.put(name, imageInternal);
+			tile.putImage(name, imageInternal);
 		}
 
 		imageInternal.setDirty(isDirty);
@@ -166,15 +165,14 @@ public class ImagePainterFactory {
 	private Image2 _createOrUpdateTilePixelFromReference(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
 
-		String name = String.format("%s_%s", tile.getName(), layer.getName());
-		Image2 imageInternal = imagePool.get(name);
+		// String name = String.format("%s_%s", tile.getName(), layer.getName());
+		Image2 imageInternal = tile.getImage();
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
-				imageInternal.getImage().dispose();
-				imagePool.remove(name);
+				tile.removeImage();
 			}
 			imageInternal = createLayer();
-			imagePool.put(name, imageInternal);
+			tile.putImage(imageInternal);
 		}
 
 		imageInternal.setDirty(isDirty);
@@ -218,11 +216,10 @@ public class ImagePainterFactory {
 		Color color = PlatformFactory.getPlatformColors(repository.getMetadata().getPlatform()).get(colorIndex).getColor();
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
-		Image2 imageInternal = imagePool.get(name);
+		Image2 imageInternal = tile.getImage(name);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
-				imageInternal.getImage().dispose();
-				imagePool.remove(name);
+				tile.removeImage(name);
 			}
 			imageInternal = createLayer();
 			imageInternal.setDirty(isDirty);
@@ -252,19 +249,18 @@ public class ImagePainterFactory {
 				x++;
 			}
 			gc.dispose();
-			imagePool.put(name, imageInternal);
+			tile.putImage(name, imageInternal);
 		}
 		return imageInternal;
 	}
 
 	private Image2 _createOrUpdateTileFromReference(Tile tile, int colorIndex, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
-		String name = String.format("%s_%s", tile.getName(), layer.getName());
-		Image2 imageInternal = imagePool.get(name);
+		// String name = String.format("%s_%s", tile.getName(), layer.getName());
+		Image2 imageInternal = tile.getImage();
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
-				imageInternal.getImage().dispose();
-				imagePool.remove(name);
+				tile.removeImage();
 			}
 			imageInternal = createLayer();
 			imageInternal.setDirty(isDirty);
@@ -285,7 +281,7 @@ public class ImagePainterFactory {
 				x++;
 			}
 			gc.dispose();
-			imagePool.put(name, imageInternal);
+			tile.putImage(imageInternal);
 		}
 		return imageInternal;
 	}
@@ -301,7 +297,7 @@ public class ImagePainterFactory {
 				Tile tile = repository.getTile(i);
 				Layer layer = tile.getActiveLayer();
 				String name = String.format("%s_%s_ID:%d", tile.getName(), layer.getName(), colorIndex);
-				Image2 imageInternal = imagePool.get(name);
+				Image2 imageInternal = tile.getImage(name);
 				if (imageInternal == null || isDirty) {
 					if (isDirty && imageInternal != null) {
 						imageInternal.getImage().dispose();
@@ -309,7 +305,7 @@ public class ImagePainterFactory {
 					}
 					imageInternal = createOrUpdateTile(tile, colorIndex, false);
 					imageInternal.setDirty(isDirty);
-					imagePool.put(name, imageInternal);
+					tile.putImage(name, imageInternal);
 				}
 
 				int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);

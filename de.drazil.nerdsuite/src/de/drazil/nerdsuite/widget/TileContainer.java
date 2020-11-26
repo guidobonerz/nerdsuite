@@ -68,8 +68,10 @@ public class TileContainer {
 	@JsonIgnore
 	private Tile addTile(String name, int tileSize, int defaultBrush) {
 		initList();
+
 		Tile tile = new Tile(name, tileSize);
-		tile.addLayer(name, tileSize, defaultBrush);
+		String layerName = String.format("%s_layer_%d", name, (getTileList().size() + 1), (tile.getSize() + 1));
+		tile.addLayer(layerName, tileSize, defaultBrush);
 		getTileList().add(tile);
 		getTileIndexOrderList().add(getTileList().indexOf(tile));
 		fireTileAdded();
