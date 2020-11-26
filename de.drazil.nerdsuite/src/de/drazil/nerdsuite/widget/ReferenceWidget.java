@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Composite;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
-import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.model.SelectionRange;
 
 public class ReferenceWidget extends BaseImagingWidget {
@@ -26,7 +25,6 @@ public class ReferenceWidget extends BaseImagingWidget {
 		super(parent, style, owner, colorPaletteProvider, autowrap);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
-		// setBackground(Constants.DARK_GREY);
 	}
 
 	@Override
@@ -220,8 +218,4 @@ public class ReferenceWidget extends BaseImagingWidget {
 		return new Point(conf.fullWidthPixel, conf.fullHeightPixel + 20);
 	}
 
-	@Override
-	protected String getViewerConfigName() {
-		return ProjectMetaData.REFERENCE_REPOSITORY_CONFIG;
-	}
 }

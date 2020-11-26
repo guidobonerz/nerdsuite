@@ -323,8 +323,4 @@ public class RepositoryWidget extends BaseImagingWidget {
 		}
 	}
 
-	@Override
-	protected String getViewerConfigName() {
-		return ProjectMetaData.REPOSITORY_CONFIG;
-	}
 }

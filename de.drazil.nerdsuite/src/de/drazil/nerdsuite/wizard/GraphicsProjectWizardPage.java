@@ -370,6 +370,10 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		tileHeightSpinner.setValues(gf.getHeight(), 1, 1000, 0, 1, 1);
 		tileColumnsSpinner.setValues(gfv.getTileColumns(), 1, 1000, 0, 1, 1);
 		tileRowsSpinner.setValues(gfv.getTileRows(), 1, 1000, 0, 1, 1);
+		userData.put("width", tileWidthSpinner.getSelection());
+		userData.put("height", tileHeightSpinner.getSelection());
+		userData.put("columns", tileColumnsSpinner.getSelection());
+		userData.put("rows", tileRowsSpinner.getSelection());
 	}
 
 	private void setText(String fileName) {

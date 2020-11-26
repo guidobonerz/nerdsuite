@@ -26,7 +26,6 @@ import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
-import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.mouse.IMeasuringListener;
 import de.drazil.nerdsuite.mouse.MeasuringController;
 import lombok.Getter;
@@ -82,13 +81,9 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	protected Tile tile = null;
 	protected Image image = null;
 	protected MeasuringController mc;
-	// private GraphicFormat graphicFormat = null;
-	// private GraphicFormatVariant graphicFormatVariant = null;
 	protected IColorPaletteProvider colorPaletteProvider;
 	@Getter
 	protected ImagingWidgetConfiguration conf;
-
-	// private ProjectMetaData metadata;
 
 	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
 		super(parent, style);
@@ -97,9 +92,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		this.colorPaletteProvider = colorPaletteProvider;
 		drawListenerList = new ArrayList<>();
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
-		// tileRepositoryService.addTileListener(this);
 
-		conf = tileRepositoryService.getMetadata().getViewerConfig(getViewerConfigName());
+		conf = new ImagingWidgetConfiguration(tileRepositoryService.getMetadata());
 
 		if (tileRepositoryService.getMetadata().getReferenceId() != null) {
 			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceId(), TileRepositoryService.class);
@@ -110,7 +104,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-
 				if (autowrap) {
 					int c = (int) getCalculatedColumns();
 					conf.columns = (c == 0 ? 1 : c);
@@ -125,8 +118,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		return ((getParent().getBounds().width - 30) / conf.tileWidthPixel);
 	}
 
-	protected abstract String getViewerConfigName();
-
+	
+	
 	public void setTriggerMillis(long... triggerMillis) {
 		mc.setTriggerMillis(triggerMillis);
 	}
@@ -217,7 +210,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 			cursorDiffX = cursorX - lastCursorX;
 			// cursorDiffX = abs(cursorDiffX) > 1 ? cursorDiffX : 0;
 			cursorDiffY = cursorY - lastCursorY;
-			cursorDiffY = abs(cursorDiffY) > 1 ? cursorDiffY : 0;
+			// cursorDiffY = abs(cursorDiffY) > 1 ? cursorDiffY : 0;
 			oldCursorX = cursorX;
 			oldCursorY = cursorY;
 			cursorChanged = true;
@@ -241,8 +234,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 			tileChanged = false;
 		}
 
-		tileCursorX = (cursorX - (tileX * conf.width));
-		tileCursorY = (cursorY - (tileY * conf.height));
+		tileCursorX = (cursorX - (tileX * conf.tileWidth));
+		tileCursorY = (cursorY - (tileY * conf.tileHeight));
 		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY || takePosition) {
 			tileCursorDiffX = tileCursorX - oldTileCursorX;
 			tileCursorDiffX = abs(tileCursorDiffX) > 1 ? tileCursorDiffX : 0;

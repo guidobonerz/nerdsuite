@@ -1,8 +1,8 @@
 package de.drazil.nerdsuite.imaging;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,6 +58,7 @@ import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GridState;
+import de.drazil.nerdsuite.model.PixelMap;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
@@ -65,7 +66,6 @@ import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.ColorPaletteChooser;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
-import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.LayerChooser;
 import de.drazil.nerdsuite.widget.PainterWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
@@ -99,7 +99,6 @@ public class GfxEditorView implements ITileUpdateListener {
 	private GraphicFormatVariant graphicFormatVariant = null;
 	private Point actualSize;
 
-	private File file;
 	private Project project;
 	private String owner;
 
@@ -108,6 +107,44 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	@Inject
 	private EModelService modelService;
+
+	private static List<PixelMap> pixelMap = new ArrayList<PixelMap>();
+	static {
+		pixelMap.add(new PixelMap("CHARSET", "STANDARD", "PAINTER", 16));
+		pixelMap.add(new PixelMap("CHARSET", "DX", "PAINTER", 16));
+		pixelMap.add(new PixelMap("CHARSET", "DY", "PAINTER", 16));
+		pixelMap.add(new PixelMap("CHARSET", "DXY", "PAINTER", 16));
+		pixelMap.add(new PixelMap("CHARSET", "CUSTOM", "PAINTER", 16));
+		pixelMap.add(new PixelMap("SPRITESET", "STANDARD", "PAINTER", 8));
+		pixelMap.add(new PixelMap("SPRITESET", "DX", "PAINTER", 8));
+		pixelMap.add(new PixelMap("SPRITESET", "DY", "PAINTER", 8));
+		pixelMap.add(new PixelMap("SPRITESET", "DXY", "PAINTER", 8));
+		pixelMap.add(new PixelMap("SPRITESET", "CUSTOM", "PAINTER", 10));
+		pixelMap.add(new PixelMap("SCREENSET", "STANDARD", "PAINTER", 8));
+		pixelMap.add(new PixelMap("SCREENSET", "DX", "PAINTER", 8));
+		pixelMap.add(new PixelMap("SCREENSET", "DY", "PAINTER", 8));
+		pixelMap.add(new PixelMap("SCREENSET", "DXY", "PAINTER", 8));
+		pixelMap.add(new PixelMap("SCREENSET", "CUSTOM", "PAINTER", 8));
+
+		pixelMap.add(new PixelMap("SCREENSET", "STANDARD", "REFERENCE", 2));
+		pixelMap.add(new PixelMap("SCREENSET", "DX", "REFERENCE", 2));
+		pixelMap.add(new PixelMap("SCREENSET", "DY", "REFERENCE", 2));
+		pixelMap.add(new PixelMap("SCREENSET", "DXY", "REFERENCE", 2));
+		pixelMap.add(new PixelMap("SCREENSET", "CUSTOM", "REFERENCE", 2));
+		
+		pixelMap.add(new PixelMap("PETSCII", "STANDARD", "PAINTER", 16));
+		pixelMap.add(new PixelMap("PETSCII", "DX", "PAINTER", 16));
+		pixelMap.add(new PixelMap("PETSCII", "DY", "PAINTER", 16));
+		pixelMap.add(new PixelMap("PETSCII", "DXY", "PAINTER", 16));
+		pixelMap.add(new PixelMap("PETSCII", "CUSTOM", "PAINTER", 16));
+
+		pixelMap.add(new PixelMap("PETSCII", "STANDARD", "REFERENCE", 2));
+		pixelMap.add(new PixelMap("PETSCII", "DX", "REFERENCE", 2));
+		pixelMap.add(new PixelMap("PETSCII", "DY", "REFERENCE", 2));
+		pixelMap.add(new PixelMap("PETSCII", "DXY", "REFERENCE", 2));
+		pixelMap.add(new PixelMap("PETSCII", "CUSTOM", "REFERENCE", 2));
+
+	}
 
 	public GfxEditorView() {
 
@@ -365,18 +402,18 @@ public class GfxEditorView implements ITileUpdateListener {
 		tileRepositoryService.addTileManagementListener(painter, repository);
 
 		if (tileRepositoryService.hasReference()) {
-			//referenceRepository.init();
+			// referenceRepository.init();
 		}
 
-		//painter.init();
-		//repository.init();
+		// painter.init();
+		// repository.init();
 
 		multiColorChooser.addColorSelectionListener(painter);
 		multiColorChooser.addColorSelectionListener(repository);
 
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		actualSize = new Point(metadata.getViewerConfig().get(ProjectMetaData.PAINTER_CONFIG).getTileWidthPixel(), metadata.getViewerConfig().get(ProjectMetaData.PAINTER_CONFIG).getTileHeightPixel());
+		actualSize = new Point(painter.getConf().getTileWidthPixel(), painter.getConf().getTileHeightPixel());
 		scrollablePainter.setMinSize(actualSize);
 		int worksheetWidth = 640;
 		int worksheetHeight = 400;
@@ -464,10 +501,10 @@ public class GfxEditorView implements ITileUpdateListener {
 			painter.getConf().setGridStyle(GridType.Dot);
 			painter.getConf().setTileGridEnabled(false);
 			painter.getConf().setTileCursorEnabled(false);
-			// painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREENSET")
-			// ? false : true);
+			painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREENSET") ? false : true);
 			painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
-
+			painter.getConf().setPixelSize(getPixelSize(metadata.getType(), metadata.getVariant(), "PAINTER"));
+			painter.getConf().computeDimensions();
 			scrollablePainter.setContent(painter);
 			scrollablePainter.setExpandVertical(true);
 			scrollablePainter.setExpandHorizontal(true);
@@ -485,6 +522,8 @@ public class GfxEditorView implements ITileUpdateListener {
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
 			repository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE | TileSelectionModes.MULTI);
+			repository.getConf().setPixelSize(getPixelSize(metadata.getType(), metadata.getVariant(), "REPOSITORY"));
+			repository.getConf().computeDimensions();
 			scrollableRepository.setContent(repository);
 			scrollableRepository.setExpandVertical(true);
 			scrollableRepository.setExpandHorizontal(true);
@@ -496,7 +535,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	private ReferenceWidget getReferenceRepositoryWidget() {
 		if (referenceRepository == null) {
 			referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
-			referenceRepository.getConf().setRows(ImagingWidgetConfiguration.AUTOMATIC);
+			referenceRepository.getConf().setRows(16);
 			referenceRepository.getConf().setColumns(16);
 			referenceRepository.getConf().setTileGap(3);
 			referenceRepository.getConf().setPixelGridEnabled(false);
@@ -505,8 +544,16 @@ public class GfxEditorView implements ITileUpdateListener {
 			referenceRepository.getConf().setTileCursorEnabled(true);
 			referenceRepository.getConf().setSeparatorEnabled(false);
 			referenceRepository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE);
+			referenceRepository.getConf().setPixelSize(getPixelSize(metadata.getType(), metadata.getVariant(), "REFERENCE"));
+			referenceRepository.getConf().computeDimensions();
 		}
 		return referenceRepository;
+	}
+
+	private int getPixelSize(String type, String variant, String widget) {
+		int size = pixelMap.stream().filter(v -> v.getType().equals(type) && v.getVariant().equals(variant) && v.getWidget().equals(widget)).findFirst().orElse(new PixelMap(null, null, null, 1))
+				.getPixelSize();
+		return size;
 	}
 
 	@Override

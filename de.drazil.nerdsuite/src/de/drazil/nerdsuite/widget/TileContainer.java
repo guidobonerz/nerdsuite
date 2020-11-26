@@ -29,6 +29,8 @@ public class TileContainer {
 	private List<ITileManagementListener> tileServiceManagementListener = null;
 	@JsonIgnore
 	private List<ITileUpdateListener> tileUpdateListener = null;
+	@JsonIgnore
+	private int tileSize;
 
 	public TileContainer() {
 		tileServiceManagementListener = new ArrayList<>();
@@ -62,7 +64,7 @@ public class TileContainer {
 		initList();
 		String name = String.format("%s%d", "tile_", (getTileList().size() + 1));
 		int blankValue = metadata.getBlankValue() == null ? 0 : metadata.getBlankValue();
-		return addTile(name, metadata.getTileSize(), blankValue);
+		return addTile(name, tileSize, blankValue);
 	}
 
 	@JsonIgnore

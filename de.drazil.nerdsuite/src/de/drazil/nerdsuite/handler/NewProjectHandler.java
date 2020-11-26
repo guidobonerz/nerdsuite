@@ -33,7 +33,6 @@ import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
-import de.drazil.nerdsuite.widget.CustomFormatDialog;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
 
@@ -88,15 +87,10 @@ public class NewProjectHandler {
 
 				ProjectMetaData metadata = new ProjectMetaData();
 
-				if (variant.equalsIgnoreCase("CUSTOM")) {
-					CustomFormatDialog cfd = new CustomFormatDialog(shell);
-					cfd.open(metadata, gfv.isSupportCustomBaseSize());
-				}
-
 				metadata.setPlatform(targetPlatform);
 				metadata.setType(subType);
 				metadata.setVariant(variant);
-				metadata.init(gf, gfv);
+				metadata.init((Integer) userData.get("width"), (Integer) userData.get("height"), (Integer) userData.get("columns"), (Integer) userData.get("rows"), gf.getStorageSize());
 
 				if (projectAction.startsWith("new")) {
 					TileRepositoryService repository = ServiceFactory.getService(projectId, TileRepositoryService.class);
@@ -106,9 +100,9 @@ public class NewProjectHandler {
 						repository.getMetadata().setReferenceId(id);
 						if (!ServiceFactory.checkService(id)) {
 							TileRepositoryService referenceRepository = ServiceFactory.getService(id, TileRepositoryService.class);
-							referenceRepository.load(id);
+							referenceRepository.load(id, true);
 						}
-						metadata.setBlankValue(32);
+						metadata.setBlankValue(gf.getBlankValue());
 					}
 
 					projectSetup.put("repositoryOwner", projectId);
