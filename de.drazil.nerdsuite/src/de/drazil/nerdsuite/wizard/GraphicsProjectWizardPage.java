@@ -13,6 +13,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -211,51 +213,41 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 				tileHeightSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
 				tileColumnsSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
 				tileRowsSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
-				setValues();
+				setSpinnerValues();
 			}
 		});
 
 		tileWidthSpinner = new Spinner(container, SWT.BORDER);
 		tileWidthSpinner.setEnabled(false);
-		// tileWidthSpinner.setMinimum(metadata.getStorageEntity());
-		// tileWidthSpinner.setMaximum(1000);
-		// tileWidthSpinner.setSelection(metadata.getWidth());
-		// tileWidthSpinner.setIncrement(metadata.getStorageEntity());
-		// tileWidthSpinner.setPageIncrement(metadata.getStorageEntity());
-		// tileWidthSpinner.setLayoutData(dataWidth);
-		// tileWidthSpinner.addSelectionListener(this);
-		// tileWidthSpinner.setEnabled(supportCustomSize);
+		tileWidthSpinner.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				putSpinnerValues();
+			}
+		});
 
 		tileHeightSpinner = new Spinner(container, SWT.BORDER);
 		tileHeightSpinner.setEnabled(false);
-		// tileHeightSpinner.setMinimum(metadata.getStorageEntity());
-		// tileHeightSpinner.setMaximum(1000);
-		// tileHeightSpinner.setSelection(metadata.getWidth());
-		// tileHeightSpinner.setIncrement(metadata.getStorageEntity());
-		// tileHeightSpinner.setPageIncrement(metadata.getStorageEntity());
-		// tileHeightSpinner.setLayoutData(dataWidth);
-		// tileHeightSpinner.addSelectionListener(this);
-		// tileHeightSpinner.setEnabled(supportCustomSize);
+		tileHeightSpinner.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				putSpinnerValues();
+			}
+		});
 
 		tileColumnsSpinner = new Spinner(container, SWT.BORDER);
 		tileColumnsSpinner.setEnabled(false);
-		// tileColumnsSpinner.setMinimum(1);
-		// tileColumnsSpinner.setMaximum(16);
-		// tileColumnsSpinner.setSelection(1);
-		// tileColumnsSpinner.setIncrement(1);
-		// tileColumnsSpinner.setPageIncrement(1);
-		// tileColumnsSpinner.setLayoutData(dataTileColumns);
-		// tileColumnsSpinner.addSelectionListener(this);
+		tileColumnsSpinner.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				putSpinnerValues();
+			}
+		});
 
 		tileRowsSpinner = new Spinner(container, SWT.BORDER);
 		tileRowsSpinner.setEnabled(false);
-		// tileRowsSpinner.setMinimum(1);
-		// tileRowsSpinner.setMaximum(16);
-		// tileRowsSpinner.setSelection(1);
-		// tileRowsSpinner.setIncrement(1);
-		// tileRowsSpinner.setPageIncrement(1);
-		// tileRowsSpinner.setLayoutData(dataTileRows);
-		// tileRowsSpinner.addSelectionListener(this);
+		tileRowsSpinner.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				putSpinnerValues();
+			}
+		});
 
 		formData = new FormData();
 		formData.top = new FormAttachment(container, 0);
@@ -362,14 +354,21 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		formData.right = new FormAttachment(container, 300);
 		maxItemsSpinner.setLayoutData(formData);
 
-		setValues();
+		setSpinnerValues();
 	}
 
-	private void setValues() {
+	private void setSpinnerValues() {
 		tileWidthSpinner.setValues(gf.getWidth(), 1, 1000, 0, 1, 1);
 		tileHeightSpinner.setValues(gf.getHeight(), 1, 1000, 0, 1, 1);
 		tileColumnsSpinner.setValues(gfv.getTileColumns(), 1, 1000, 0, 1, 1);
 		tileRowsSpinner.setValues(gfv.getTileRows(), 1, 1000, 0, 1, 1);
+		userData.put("width", tileWidthSpinner.getSelection());
+		userData.put("height", tileHeightSpinner.getSelection());
+		userData.put("columns", tileColumnsSpinner.getSelection());
+		userData.put("rows", tileRowsSpinner.getSelection());
+	}
+
+	private void putSpinnerValues() {
 		userData.put("width", tileWidthSpinner.getSelection());
 		userData.put("height", tileHeightSpinner.getSelection());
 		userData.put("columns", tileColumnsSpinner.getSelection());

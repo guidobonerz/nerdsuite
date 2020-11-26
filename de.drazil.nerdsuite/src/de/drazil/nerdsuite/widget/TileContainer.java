@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.widget;
 
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,11 @@ public class TileContainer {
 	public TileContainer() {
 		tileServiceManagementListener = new ArrayList<>();
 		tileUpdateListener = new ArrayList<>();
+	}
+
+	public void setMetadata(ProjectMetaData metadata) {
+		this.metadata = metadata;
+		this.tileSize = metadata.getWidth() * metadata.getHeight() * metadata.getColumns() * metadata.getRows();
 	}
 
 	@JsonIgnore
