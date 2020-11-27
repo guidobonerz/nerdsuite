@@ -417,6 +417,32 @@ public class PainterWidget extends BaseImagingWidget {
 		setPixel(layer, x, y, conf);
 	}
 
+	private void drawCircleSection(Layer layer, int xc, int yc, int x, int y) {
+		setPixel(layer, xc + x, yc + y, conf);
+		setPixel(layer, xc - x, yc + y, conf);
+		setPixel(layer, xc + x, yc - y, conf);
+		setPixel(layer, xc - x, yc - y, conf);
+		setPixel(layer, xc + y, yc + x, conf);
+		setPixel(layer, xc - y, yc + x, conf);
+		setPixel(layer, xc + y, yc - x, conf);
+		setPixel(layer, xc - y, yc - x, conf);
+	}
+
+	public void drawCircle(Layer layer, int xc, int yc, int r) {
+		int x = 0, y = r;
+		int d = 3 - 2 * r;
+		drawCircleSection(layer, xc, yc, x, y);
+		while (y >= x) {
+			x++;
+			if (d > 0) {
+				y--;
+				d = d + 4 * (x - y) + 10;
+			} else
+				d = d + 4 * x + 6;
+			drawCircleSection(layer, xc, yc, x, y);
+		}
+	}
+
 	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
 
