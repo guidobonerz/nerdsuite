@@ -19,6 +19,8 @@ import lombok.Data;
 @Data
 
 public class Layer {
+	@JsonProperty(value = "id")
+	private String id;
 	@JsonProperty(value = "name")
 	private String name;
 	@JsonSerialize(converter = IntArrayToStringConverter.class)
@@ -49,36 +51,37 @@ public class Layer {
 		imagePool = new HashMap<String, Image2>();
 	}
 
-	public Layer(String name, int size, int brushValue) {
+	public Layer(String id, String name, int size, int brushValue) {
 		this();
+		this.id = id;
 		this.name = name;
 		reset(size, brushValue);
 	}
 
 	@JsonIgnore
 	public void putImage(Image2 image) {
-		putImage(name, image);
+		putImage(id, image);
 	}
 
 	@JsonIgnore
-	public void putImage(String name, Image2 image) {
-		imagePool.put(name, image);
+	public void putImage(String id, Image2 image) {
+		imagePool.put(id, image);
 	}
 
 	@JsonIgnore
-	public Image2 getImage(String name) {
-		return imagePool.get(name);
+	public Image2 getImage(String id) {
+		return imagePool.get(id);
 	}
 
 	@JsonIgnore
 	public void removeImage() {
-		removeImage(name);
+		removeImage(id);
 	}
 
 	@JsonIgnore
-	public void removeImage(String name) {
-		imagePool.get(name).getImage().dispose();
-		imagePool.remove(name);
+	public void removeImage(String id) {
+		imagePool.get(id).getImage().dispose();
+		imagePool.remove(id);
 	}
 
 	@JsonIgnore

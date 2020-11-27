@@ -63,7 +63,6 @@ import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
-import de.drazil.nerdsuite.widget.ColorPaletteChooser;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.widget.IColorPaletteProvider;
 import de.drazil.nerdsuite.widget.LayerChooser;
@@ -91,7 +90,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	private IConfirmable modificationConfirmation;
 
 	private ColorChooser multiColorChooser;
-	private ColorPaletteChooser colorPaletteChooser;
+
 	private LayerChooser layerChooser;
 
 	private ProjectMetaData metadata = null;
@@ -110,11 +109,11 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private static List<PixelMap> pixelMap = new ArrayList<PixelMap>();
 	static {
-		pixelMap.add(new PixelMap("CHARSET", "STANDARD", "PAINTER", 16));
-		pixelMap.add(new PixelMap("CHARSET", "DX", "PAINTER", 16));
-		pixelMap.add(new PixelMap("CHARSET", "DY", "PAINTER", 16));
-		pixelMap.add(new PixelMap("CHARSET", "DXY", "PAINTER", 16));
-		pixelMap.add(new PixelMap("CHARSET", "CUSTOM", "PAINTER", 16));
+		pixelMap.add(new PixelMap("CHARSET", "STANDARD", "PAINTER", 32));
+		pixelMap.add(new PixelMap("CHARSET", "DX", "PAINTER", 32));
+		pixelMap.add(new PixelMap("CHARSET", "DY", "PAINTER", 32));
+		pixelMap.add(new PixelMap("CHARSET", "DXY", "PAINTER", 32));
+		pixelMap.add(new PixelMap("CHARSET", "CUSTOM", "PAINTER", 32));
 		pixelMap.add(new PixelMap("SPRITESET", "STANDARD", "PAINTER", 8));
 		pixelMap.add(new PixelMap("SPRITESET", "DX", "PAINTER", 8));
 		pixelMap.add(new PixelMap("SPRITESET", "DY", "PAINTER", 8));
@@ -131,7 +130,7 @@ public class GfxEditorView implements ITileUpdateListener {
 		pixelMap.add(new PixelMap("SCREENSET", "DY", "REFERENCE", 2));
 		pixelMap.add(new PixelMap("SCREENSET", "DXY", "REFERENCE", 2));
 		pixelMap.add(new PixelMap("SCREENSET", "CUSTOM", "REFERENCE", 2));
-		
+
 		pixelMap.add(new PixelMap("PETSCII", "STANDARD", "PAINTER", 16));
 		pixelMap.add(new PixelMap("PETSCII", "DX", "PAINTER", 16));
 		pixelMap.add(new PixelMap("PETSCII", "DY", "PAINTER", 16));
