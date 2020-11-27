@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.text.DateFormat;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.swt.graphics.Rectangle;
 
