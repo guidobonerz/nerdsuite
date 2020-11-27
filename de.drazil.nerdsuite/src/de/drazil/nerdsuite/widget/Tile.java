@@ -18,6 +18,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Tile {
 	@Getter
+	@Setter
+	@JsonProperty(value = "id")
+	private String id = null;
+	@Getter
 	@JsonProperty(value = "name")
 	private String name = null;
 	@JsonProperty(value = "showOnlyActiveLayer")
@@ -52,41 +56,42 @@ public class Tile {
 		imagePool = new HashMap<String, Image2>();
 	}
 
-	public Tile(String name, int size) {
+	public Tile(String id, String name, int size) {
 		this();
+		this.id = id;
 		this.name = name;
 		this.size = size;
 	}
 
 	@JsonIgnore
 	public void putImage(Image2 image) {
-		putImage(name, image);
+		putImage(id, image);
 	}
 
 	@JsonIgnore
-	public void putImage(String name, Image2 image) {
-		imagePool.put(name, image);
+	public void putImage(String id, Image2 image) {
+		imagePool.put(id, image);
 	}
 
 	@JsonIgnore
 	public void removeImage() {
-		removeImage(name);
+		removeImage(id);
 	}
 
 	@JsonIgnore
-	public void removeImage(String name) {
-		imagePool.get(name).getImage().dispose();
-		imagePool.remove(name);
+	public void removeImage(String id) {
+		imagePool.get(id).getImage().dispose();
+		imagePool.remove(id);
 	}
 
 	@JsonIgnore
 	public Image2 getImage() {
-		return getImage(name);
+		return getImage(id);
 	}
 
 	@JsonIgnore
-	public Image2 getImage(String name) {
-		return imagePool.get(name);
+	public Image2 getImage(String id) {
+		return imagePool.get(id);
 	}
 
 	@JsonIgnore
@@ -100,8 +105,8 @@ public class Tile {
 	}
 
 	@JsonIgnore
-	public Layer addLayer(String name, int size, int brushValue) {
-		Layer layer = new Layer(name, size, brushValue);
+	public Layer addLayer(String id, String name, int size, int brushValue) {
+		Layer layer = new Layer(id, name, size, brushValue);
 		layer.getColorPalette().add(0);
 		layer.getColorPalette().add(1);
 		layer.getColorPalette().add(2);

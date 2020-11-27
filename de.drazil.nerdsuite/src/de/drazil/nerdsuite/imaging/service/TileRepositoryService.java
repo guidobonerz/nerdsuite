@@ -150,6 +150,20 @@ public class TileRepositoryService implements IService {
 			Project project = Initializer.getConfiguration().getWorkspace().getProjectById(id);
 			File file = FileUtil.getFileFromProject(project);
 			container = mapper.readValue(file, TileContainer.class);
+			/*
+			 * Pattern tilePattern = Pattern.compile("^tile_(\\d+)$"); Pattern layerPattern
+			 * = Pattern.compile("^layer_(\\d+)$"); for (int ti = 0; ti <
+			 * container.getTileList().size(); ti++) { Tile tile =
+			 * container.getTileList().get(ti); String tileName = tile.getName(); Matcher
+			 * tileMatcher = tilePattern.matcher(tileName); if (tileMatcher.matches()) { int
+			 * value = Integer.parseInt(tileMatcher.group(1));
+			 * tile.setId(String.format("T%03X", value)); } for (int li = 0; li <
+			 * tile.getSize(); li++) { Layer layer = tile.getLayer(li); String layerName =
+			 * layer.getName(); Matcher layerMatcher = layerPattern.matcher(layerName); if
+			 * (layerMatcher.matches()) { int value =
+			 * Integer.parseInt(layerMatcher.group(1)); layer.setId(String.format("L%03X",
+			 * value)); } } }
+			 */
 			String referenceId = container.getMetadata().getReferenceId();
 			if (null != referenceId) {
 				Project referenceProject = Initializer.getConfiguration().getWorkspace().getProjectById(referenceId);
