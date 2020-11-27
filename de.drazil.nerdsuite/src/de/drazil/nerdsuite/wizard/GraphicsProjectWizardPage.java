@@ -205,14 +205,15 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				gfv = (GraphicFormatVariant) selection.getFirstElement();
 				userData.put(ProjectWizard.PROJECT_VARIANT, gfv.getId());
-				widthLabel.setEnabled(gfv.getId().equals("CUSTOM"));
-				heightLabel.setEnabled(gfv.getId().equals("CUSTOM"));
-				rowsLabel.setEnabled(gfv.getId().equals("CUSTOM"));
-				columnsLabel.setEnabled(gfv.getId().equals("CUSTOM"));
-				tileWidthSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
-				tileHeightSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
-				tileColumnsSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
-				tileRowsSpinner.setEnabled(gfv.getId().equals("CUSTOM"));
+				boolean enable = gfv.getId().equals("CUSTOM");
+				widthLabel.setEnabled(enable);
+				heightLabel.setEnabled(enable);
+				rowsLabel.setEnabled(enable);
+				columnsLabel.setEnabled(enable);
+				tileWidthSpinner.setEnabled(enable);
+				tileHeightSpinner.setEnabled(enable);
+				tileColumnsSpinner.setEnabled(enable);
+				tileRowsSpinner.setEnabled(enable);
 				setSpinnerValues();
 			}
 		});

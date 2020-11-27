@@ -1,6 +1,5 @@
 package de.drazil.nerdsuite.widget;
 
-import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,18 +67,17 @@ public class TileContainer {
 	@JsonIgnore
 	public Tile addTile() {
 		initList();
-		String name = String.format("%s%d", "tile_", (getTileList().size() + 1));
+		String id = String.format("T%02H", (getTileList().size() + 1));
 		int blankValue = metadata.getBlankValue() == null ? 0 : metadata.getBlankValue();
-		return addTile(name, tileSize, blankValue);
+		return addTile(id, id, tileSize, blankValue);
 	}
 
 	@JsonIgnore
-	private Tile addTile(String name, int tileSize, int defaultBrush) {
+	private Tile addTile(String id, String name, int tileSize, int defaultBrush) {
 		initList();
-
-		Tile tile = new Tile(name, tileSize);
-		String layerName = String.format("%s_layer_%d", name, (getTileList().size() + 1), (tile.getSize() + 1));
-		tile.addLayer(layerName, tileSize, defaultBrush);
+		Tile tile = new Tile(id, name, tileSize);
+		String layerId = String.format("L%02H", (getTileList().size() + 1), (tile.getSize() + 1));
+		tile.addLayer(layerId, layerId, tileSize, defaultBrush);
 		getTileList().add(tile);
 		getTileIndexOrderList().add(getTileList().indexOf(tile));
 		fireTileAdded();

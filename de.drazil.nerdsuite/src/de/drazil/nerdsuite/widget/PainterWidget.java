@@ -17,7 +17,7 @@ import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
-import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.model.Image2;
 
 public class PainterWidget extends BaseImagingWidget {
 
@@ -191,7 +191,11 @@ public class PainterWidget extends BaseImagingWidget {
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", colorPaletteProvider.getColorByIndex(0)).getImage(), 0, 0);
 		if (redrawMode == RedrawMode.DrawPixel) {
-			gc.drawImage(tileRepositoryService.getSelectedTile().getImage().getImage(), 0, 0);
+			Tile t = tileRepositoryService.getSelectedTile();
+			Image2 i = t.getImage();
+			//if (i != null) {
+				gc.drawImage(i.getImage(), 0, 0);
+			//}
 
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
@@ -468,5 +472,4 @@ public class PainterWidget extends BaseImagingWidget {
 		return new Point(wHint, hHint);
 	}
 
-	
 }
