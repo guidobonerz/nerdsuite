@@ -32,6 +32,8 @@ public class ImagePainterFactory {
 	public final static int UPDATE_PIXEL = UPDATE + PIXEL;
 	public final static int UPDATE_SCALED = UPDATE + SCALED;
 
+	public static final String IMAGE_ID = "%s%sID%03X";
+
 	private TileRepositoryService repository = null;
 	private TileRepositoryService referenceRepository = null;
 	private ImagingWidgetConfiguration conf;
@@ -129,17 +131,15 @@ public class ImagePainterFactory {
 
 	public Image2 createOrUpdateTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		if (repository.hasReference()) {
-			System.out.println("tile pixel reference");
 			return _createOrUpdateTilePixelFromReference(tile, colorIndex, x, y, isDirty);
 		} else {
-			System.out.println("tile pixel");
 			return _createOrUpdateTilePixel(tile, colorIndex, x, y, isDirty);
 		}
 	}
 
 	private Image2 _createOrUpdateTilePixel(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
-		String name = String.format("%s%sID%03X", tile.getId(), layer.getId(), colorIndex);
+		String name = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = tile.getImage(name);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -148,7 +148,6 @@ public class ImagePainterFactory {
 			imageInternal = createLayer();
 			tile.putImage(name, imageInternal);
 		}
-
 		imageInternal.setDirty(isDirty);
 		if (colorIndex != 0) {
 			GC gc = new GC(imageInternal.getImage());
@@ -157,13 +156,11 @@ public class ImagePainterFactory {
 			gc.dispose();
 		}
 		return imageInternal;
-
 	}
 
 	private Image2 _createOrUpdateTilePixelFromReference(Tile tile, int colorIndex, int x, int y, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
-		// ***
-		String id = String.format("%s%sID%03X", tile.getId(), layer.getId(), colorIndex);
+		String id = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = tile.getImage(id);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -196,13 +193,10 @@ public class ImagePainterFactory {
 	}
 
 	public Image2 createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
-
 		Image2 image = null;
 		if (repository.hasReference()) {
-			System.out.println("tile reference");
 			image = _createOrUpdateTileFromReference(tile, colorIndex, isDirty);
 		} else {
-			System.out.println("tile");
 			image = _createOrUpdateTile(tile, colorIndex, isDirty);
 		}
 		return image;
@@ -211,7 +205,7 @@ public class ImagePainterFactory {
 	private Image2 _createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
 		Color color = PlatformFactory.getPlatformColors(repository.getMetadata().getPlatform()).get(colorIndex).getColor();
 		Layer layer = tile.getActiveLayer();
-		String id = String.format("%s%sID%03X", tile.getId(), layer.getId(), colorIndex);
+		String id = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = tile.getImage(id);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -252,8 +246,7 @@ public class ImagePainterFactory {
 
 	private Image2 _createOrUpdateTileFromReference(Tile tile, int colorIndex, boolean isDirty) {
 		Layer layer = tile.getActiveLayer();
-		// ***
-		String id = String.format("%s%sID%03X", tile.getId(), layer.getId(), colorIndex);
+		String id = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = tile.getImage(id);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -293,7 +286,7 @@ public class ImagePainterFactory {
 			for (int i = 0; i < repository.getSize(); i++) {
 				Tile tile = repository.getTile(i);
 				Layer layer = tile.getActiveLayer();
-				String name = String.format("%s%sID%03X", tile.getId(), layer.getId(), colorIndex);
+				String name = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 				Image2 imageInternal = tile.getImage(name);
 				if (imageInternal == null || isDirty) {
 					if (isDirty && imageInternal != null) {

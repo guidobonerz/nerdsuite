@@ -192,7 +192,7 @@ public class PainterWidget extends BaseImagingWidget {
 		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", colorPaletteProvider.getColorByIndex(0)).getImage(), 0, 0);
 		Tile t = tileRepositoryService.getSelectedTile();
 		boolean isScreen = tileRepositoryService.getMetadata().getType().equals("PETSCII");
-		String id = String.format("%s%sID%03X", t.getId(), t.getActiveLayer().getId(), isScreen ? 0xffff : t.getActiveLayer().getSelectedColorIndex());
+		String id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), isScreen ? 0xffff : t.getActiveLayer().getSelectedColorIndex());
 		if (redrawMode == RedrawMode.DrawPixel) {
 			Image2 i = t.getImage(id);
 			gc.drawImage(i.getImage(), 0, 0);
@@ -362,7 +362,6 @@ public class PainterWidget extends BaseImagingWidget {
 			break;
 		}
 		}
-
 	}
 
 	private void drawLine(Layer layer, int x1, int y1, int x2, int y2, ImagingWidgetConfiguration conf) {
@@ -375,43 +374,48 @@ public class PainterWidget extends BaseImagingWidget {
 		int b;
 		int xstep;
 		int ystep;
-		dx = x2 - x1;
-		dy = y2 - y1;
-		xstep = 1;
-		ystep = 1;
-		x = x1;
-		y = y1;
-		if (dx < 0) {
-			dx = -dx;
-			xstep = -1;
-		}
-		if (dy < 0) {
-			dy = -dy;
-			ystep = -1;
-		}
-		a = dx + dx;
-		b = dy + dy;
-		if (dy <= dx) {
-			error = -dx;
-			while (x != x2) {
-				setPixel(layer, x, y, conf);
-				error = error + b;
-				if (error > 0) {
-					y = y + ystep;
-					error = error - a;
-				}
-				x = x + xstep;
-			}
+		if (x1 == x2 && y1 == y2) {
+			x = x1;
+			y = y1;
 		} else {
-			error = -dy;
-			while (y != y2) {
-				setPixel(layer, x, y, conf);
-				error = error + a;
-				if (error > 0) {
+			dx = x2 - x1;
+			dy = y2 - y1;
+			xstep = 1;
+			ystep = 1;
+			x = x1;
+			y = y1;
+			if (dx < 0) {
+				dx = -dx;
+				xstep = -1;
+			}
+			if (dy < 0) {
+				dy = -dy;
+				ystep = -1;
+			}
+			a = dx + dx;
+			b = dy + dy;
+			if (dy <= dx) {
+				error = -dx;
+				while (x != x2) {
+					setPixel(layer, x, y, conf);
+					error = error + b;
+					if (error > 0) {
+						y = y + ystep;
+						error = error - a;
+					}
 					x = x + xstep;
-					error = error - b;
 				}
-				y = y + ystep;
+			} else {
+				error = -dy;
+				while (y != y2) {
+					setPixel(layer, x, y, conf);
+					error = error + a;
+					if (error > 0) {
+						x = x + xstep;
+						error = error - b;
+					}
+					y = y + ystep;
+				}
 			}
 		}
 		setPixel(layer, x, y, conf);

@@ -114,11 +114,13 @@ public class GfxEditorView implements ITileUpdateListener {
 		pixelMap.add(new PixelMap("CHARSET", "DY", "PAINTER", 32));
 		pixelMap.add(new PixelMap("CHARSET", "DXY", "PAINTER", 32));
 		pixelMap.add(new PixelMap("CHARSET", "CUSTOM", "PAINTER", 32));
-		pixelMap.add(new PixelMap("SPRITESET", "STANDARD", "PAINTER", 8));
-		pixelMap.add(new PixelMap("SPRITESET", "DX", "PAINTER", 8));
-		pixelMap.add(new PixelMap("SPRITESET", "DY", "PAINTER", 8));
-		pixelMap.add(new PixelMap("SPRITESET", "DXY", "PAINTER", 8));
-		pixelMap.add(new PixelMap("SPRITESET", "CUSTOM", "PAINTER", 10));
+		
+		pixelMap.add(new PixelMap("SPRITESET", "STANDARD", "PAINTER", 16));
+		pixelMap.add(new PixelMap("SPRITESET", "DX", "PAINTER", 16));
+		pixelMap.add(new PixelMap("SPRITESET", "DY", "PAINTER", 16));
+		pixelMap.add(new PixelMap("SPRITESET", "DXY", "PAINTER", 16));
+		pixelMap.add(new PixelMap("SPRITESET", "CUSTOM", "PAINTER", 16));
+		
 		pixelMap.add(new PixelMap("SCREENSET", "STANDARD", "PAINTER", 8));
 		pixelMap.add(new PixelMap("SCREENSET", "DX", "PAINTER", 8));
 		pixelMap.add(new PixelMap("SCREENSET", "DY", "PAINTER", 8));
