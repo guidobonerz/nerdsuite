@@ -23,7 +23,7 @@ public class PurgeService extends AbstractImagingService {
 		int[] brush = repositoryService.getActiveLayerFromSelectedTile().getBrush();
 		int tileWidth = conf.getTileWidth();
 		Rectangle r = service.getSelection();
-		int blankValue = repositoryService.getMetadata().getBlankValue();
+		Integer blankValue = repositoryService.getMetadata().getBlankValue();
 		for (int x = r.x; x < r.x + r.width; x++) {
 			for (int y = r.y; y < r.y + r.height; y++) {
 				content[x + y * tileWidth] = 0;
