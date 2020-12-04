@@ -58,7 +58,7 @@ import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GridState;
-import de.drazil.nerdsuite.model.PixelMap;
+import de.drazil.nerdsuite.model.ViewSetup;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
@@ -107,43 +107,43 @@ public class GfxEditorView implements ITileUpdateListener {
 	@Inject
 	private EModelService modelService;
 
-	private static List<PixelMap> pixelMap = new ArrayList<PixelMap>();
+	private static List<ViewSetup> pixelMap = new ArrayList<ViewSetup>();
 	static {
-		pixelMap.add(new PixelMap("CHARSET", "STANDARD", "PAINTER", 32));
-		pixelMap.add(new PixelMap("CHARSET", "DX", "PAINTER", 32));
-		pixelMap.add(new PixelMap("CHARSET", "DY", "PAINTER", 32));
-		pixelMap.add(new PixelMap("CHARSET", "DXY", "PAINTER", 32));
-		pixelMap.add(new PixelMap("CHARSET", "CUSTOM", "PAINTER", 32));
-		
-		pixelMap.add(new PixelMap("SPRITESET", "STANDARD", "PAINTER", 16));
-		pixelMap.add(new PixelMap("SPRITESET", "DX", "PAINTER", 16));
-		pixelMap.add(new PixelMap("SPRITESET", "DY", "PAINTER", 16));
-		pixelMap.add(new PixelMap("SPRITESET", "DXY", "PAINTER", 16));
-		pixelMap.add(new PixelMap("SPRITESET", "CUSTOM", "PAINTER", 16));
-		
-		pixelMap.add(new PixelMap("SCREENSET", "STANDARD", "PAINTER", 8));
-		pixelMap.add(new PixelMap("SCREENSET", "DX", "PAINTER", 8));
-		pixelMap.add(new PixelMap("SCREENSET", "DY", "PAINTER", 8));
-		pixelMap.add(new PixelMap("SCREENSET", "DXY", "PAINTER", 8));
-		pixelMap.add(new PixelMap("SCREENSET", "CUSTOM", "PAINTER", 8));
+		pixelMap.add(new ViewSetup("CHARSET", "STANDARD", "PAINTER", 1, 32));
+		pixelMap.add(new ViewSetup("CHARSET", "DX", "PAINTER", 1, 32));
+		pixelMap.add(new ViewSetup("CHARSET", "DY", "PAINTER", 1, 32));
+		pixelMap.add(new ViewSetup("CHARSET", "DXY", "PAINTER", 1, 32));
+		pixelMap.add(new ViewSetup("CHARSET", "CUSTOM", "PAINTER", 1, 32));
 
-		pixelMap.add(new PixelMap("SCREENSET", "STANDARD", "REFERENCE", 2));
-		pixelMap.add(new PixelMap("SCREENSET", "DX", "REFERENCE", 2));
-		pixelMap.add(new PixelMap("SCREENSET", "DY", "REFERENCE", 2));
-		pixelMap.add(new PixelMap("SCREENSET", "DXY", "REFERENCE", 2));
-		pixelMap.add(new PixelMap("SCREENSET", "CUSTOM", "REFERENCE", 2));
+		pixelMap.add(new ViewSetup("SPRITESET", "STANDARD", "PAINTER", 1, 16));
+		pixelMap.add(new ViewSetup("SPRITESET", "DX", "PAINTER", 1, 16));
+		pixelMap.add(new ViewSetup("SPRITESET", "DY", "PAINTER", 1, 16));
+		pixelMap.add(new ViewSetup("SPRITESET", "DXY", "PAINTER", 1, 16));
+		pixelMap.add(new ViewSetup("SPRITESET", "CUSTOM", "PAINTER", 1, 16));
 
-		pixelMap.add(new PixelMap("PETSCII", "STANDARD", "PAINTER", 16));
-		pixelMap.add(new PixelMap("PETSCII", "DX", "PAINTER", 16));
-		pixelMap.add(new PixelMap("PETSCII", "DY", "PAINTER", 16));
-		pixelMap.add(new PixelMap("PETSCII", "DXY", "PAINTER", 16));
-		pixelMap.add(new PixelMap("PETSCII", "CUSTOM", "PAINTER", 16));
+		pixelMap.add(new ViewSetup("SCREENSET", "STANDARD", "PAINTER", 8, 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "DX", "PAINTER", 8, 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "DY", "PAINTER", 8, 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "DXY", "PAINTER", 8, 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "CUSTOM", "PAINTER", 8, 2));
 
-		pixelMap.add(new PixelMap("PETSCII", "STANDARD", "REFERENCE", 2));
-		pixelMap.add(new PixelMap("PETSCII", "DX", "REFERENCE", 2));
-		pixelMap.add(new PixelMap("PETSCII", "DY", "REFERENCE", 2));
-		pixelMap.add(new PixelMap("PETSCII", "DXY", "REFERENCE", 2));
-		pixelMap.add(new PixelMap("PETSCII", "CUSTOM", "REFERENCE", 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "STANDARD", "REFERENCE", 1, 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "DX", "REFERENCE", 1, 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "DY", "REFERENCE", 1, 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "DXY", "REFERENCE", 1, 2));
+		pixelMap.add(new ViewSetup("SCREENSET", "CUSTOM", "REFERENCE", 1, 2));
+
+		pixelMap.add(new ViewSetup("PETSCII", "STANDARD", "PAINTER", 8, 2));
+		pixelMap.add(new ViewSetup("PETSCII", "DX", "PAINTER", 8, 2));
+		pixelMap.add(new ViewSetup("PETSCII", "DY", "PAINTER", 8, 2));
+		pixelMap.add(new ViewSetup("PETSCII", "DXY", "PAINTER", 8, 2));
+		pixelMap.add(new ViewSetup("PETSCII", "CUSTOM", "PAINTER", 8, 2));
+
+		pixelMap.add(new ViewSetup("PETSCII", "STANDARD", "REFERENCE", 1, 2));
+		pixelMap.add(new ViewSetup("PETSCII", "DX", "REFERENCE", 1, 2));
+		pixelMap.add(new ViewSetup("PETSCII", "DY", "REFERENCE", 1, 2));
+		pixelMap.add(new ViewSetup("PETSCII", "DXY", "REFERENCE", 1, 2));
+		pixelMap.add(new ViewSetup("PETSCII", "CUSTOM", "REFERENCE", 1, 2));
 
 	}
 
@@ -414,7 +414,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		actualSize = new Point(painter.getConf().getTileWidthPixel(), painter.getConf().getTileHeightPixel());
+		actualSize = new Point(painter.getConf().getTileWidthPixel() * painter.getConf().getZoomFactor(), painter.getConf().getTileHeightPixel() * painter.getConf().getZoomFactor());
 		scrollablePainter.setMinSize(actualSize);
 		int worksheetWidth = 640;
 		int worksheetHeight = 400;
@@ -504,7 +504,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			painter.getConf().setTileCursorEnabled(false);
 			painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREENSET") ? false : true);
 			painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
-			painter.getConf().setPixelSize(getPixelSize(metadata.getType(), metadata.getVariant(), "PAINTER"));
+			painter.getConf().setViewSetup(getViewSetup(metadata.getType(), metadata.getVariant(), "PAINTER"));
 			painter.getConf().computeDimensions();
 			scrollablePainter.setContent(painter);
 			scrollablePainter.setExpandVertical(true);
@@ -523,7 +523,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
 			repository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE | TileSelectionModes.MULTI);
-			repository.getConf().setPixelSize(getPixelSize(metadata.getType(), metadata.getVariant(), "REPOSITORY"));
+			repository.getConf().setViewSetup(getViewSetup(metadata.getType(), metadata.getVariant(), "REPOSITORY"));
 			repository.getConf().computeDimensions();
 			scrollableRepository.setContent(repository);
 			scrollableRepository.setExpandVertical(true);
@@ -545,16 +545,17 @@ public class GfxEditorView implements ITileUpdateListener {
 			referenceRepository.getConf().setTileCursorEnabled(true);
 			referenceRepository.getConf().setSeparatorEnabled(false);
 			referenceRepository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE);
-			referenceRepository.getConf().setPixelSize(getPixelSize(metadata.getType(), metadata.getVariant(), "REFERENCE"));
+			referenceRepository.getConf().setViewSetup(getViewSetup(metadata.getType(), metadata.getVariant(), "REFERENCE"));
 			referenceRepository.getConf().computeDimensions();
 		}
 		return referenceRepository;
 	}
 
-	private int getPixelSize(String type, String variant, String widget) {
-		int size = pixelMap.stream().filter(v -> v.getType().equals(type) && v.getVariant().equals(variant) && v.getWidget().equals(widget)).findFirst().orElse(new PixelMap(null, null, null, 1))
-				.getPixelSize();
-		return size;
+	private ViewSetup getViewSetup(String type, String variant, String widget) {
+
+		ViewSetup vs = pixelMap.stream().filter(v -> v.getType().equals(type) && v.getVariant().equals(variant) && v.getWidget().equals(widget)).findFirst()
+				.orElse(new ViewSetup(null, null, null, 1, 1));
+		return vs;
 	}
 
 	@Override

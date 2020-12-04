@@ -118,8 +118,6 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		return ((getParent().getBounds().width - 30) / conf.tileWidthPixel);
 	}
 
-	
-	
 	public void setTriggerMillis(long... triggerMillis) {
 		mc.setTriggerMillis(triggerMillis);
 	}
@@ -202,8 +200,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	protected void computeCursorPosition(int x, int y) {
-		cursorX = x / conf.pixelPaintWidth;
-		cursorY = y / conf.pixelPaintHeight;
+		cursorX = x / (conf.pixelPaintWidth * conf.getZoomFactor());
+		cursorY = y / (conf.pixelPaintHeight * conf.getZoomFactor());
 		if (oldCursorX != cursorX || oldCursorY != cursorY || takePosition) {
 			lastCursorX = oldCursorX;
 			lastCursorY = oldCursorY;

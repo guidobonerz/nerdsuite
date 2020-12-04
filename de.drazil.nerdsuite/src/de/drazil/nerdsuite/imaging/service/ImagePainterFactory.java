@@ -7,7 +7,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
@@ -67,6 +66,22 @@ public class ImagePainterFactory {
 		return conf;
 	}
 
+	public void drawScaledImage(GC gc, Tile tile, String imageId, int maxWidth, int x, int y) {
+		Image2 i2 = tile.getImage(imageId);
+		Image i = i2.getImage();
+		if (conf.getZoomFactor() > 1) {
+			ImageData original = i.getImageData();
+			ImageData scaled = original.scaledTo(original.width * conf.getZoomFactor(), original.height * conf.getZoomFactor());
+			// scaled.transparentPixel =
+			// original.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
+			Image scaledImage = new Image(Display.getCurrent(), scaled);
+			gc.drawImage(scaledImage, 0, 0);
+			scaledImage.dispose();
+		} else {
+			gc.drawImage(i, 0, 0);
+		}
+	}
+
 	public Image2 getGridLayer() {
 		String name = conf.gridStyle.toString();
 		Image2 imageInternal = imagePool.get(name);
@@ -77,10 +92,10 @@ public class ImagePainterFactory {
 			for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x++) {
 				for (int y = 0; y <= conf.iconHeight * conf.tileRows; y++) {
 					if (conf.gridStyle == GridType.Line) {
-						gc.drawLine(x * conf.pixelPaintWidth, 0, x * conf.pixelPaintWidth, conf.tileHeightPixel);
-						gc.drawLine(0, y * conf.pixelPaintHeight, conf.tileWidthPixel, y * conf.pixelPaintHeight);
+						gc.drawLine(x * conf.pixelPaintWidth * conf.getZoomFactor(), 0, x * conf.pixelPaintWidth * conf.getZoomFactor(), conf.tileHeightPixel * conf.getZoomFactor());
+						gc.drawLine(0, y * conf.pixelPaintHeight * conf.getZoomFactor(), conf.tileWidthPixel * conf.getZoomFactor(), y * conf.pixelPaintHeight * conf.getZoomFactor());
 					} else {
-						gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
+						gc.drawPoint(x * conf.pixelPaintWidth * conf.getZoomFactor(), y * conf.pixelPaintHeight * conf.getZoomFactor());
 					}
 				}
 			}
@@ -91,7 +106,7 @@ public class ImagePainterFactory {
 	}
 
 	public Image2 createOrUpdateBaseImage(String name, Color color) {
-		return createOrUpdateBaseImage(name, color, conf.tileWidthPixel, conf.tileHeightPixel);
+		return createOrUpdateBaseImage(name, color, conf.tileWidthPixel * conf.getZoomFactor(), conf.tileHeightPixel * conf.getZoomFactor());
 	}
 
 	public Image2 createOrUpdateBaseImage(String name, Color color, int width, int height) {
@@ -151,8 +166,8 @@ public class ImagePainterFactory {
 		imageInternal.setDirty(isDirty);
 		if (colorIndex != 0) {
 			GC gc = new GC(imageInternal.getImage());
-			gc.setBackground(colorProvider.getColorByIndex(colorIndex));
-			gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+			gc.setForeground(colorProvider.getColorByIndex(colorIndex));
+			gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
 			gc.dispose();
 		}
 		return imageInternal;
@@ -172,19 +187,14 @@ public class ImagePainterFactory {
 
 		imageInternal.setDirty(isDirty);
 		GC gc = new GC(imageInternal.getImage());
-
 		ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(referenceRepository.getMetadata().getId());
 		ImagingWidgetConfiguration conf = ipf.getConfiguration();
 		int i = this.conf.tileWidth * y + x;
 		int ci = layer.getContent()[i];
 		int bi = layer.getBrush()[i];
 		Image image = ipf.createOrUpdateTile(referenceRepository.getTile(bi, true), ci, isDirty).getImage();
-		Rectangle dimesion = image.getBounds();
-		gc.setBackground(Constants.TRANSPARENT_COLOR);
-		gc.fillRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, dimesion.width, dimesion.height);
 		gc.drawImage(image, x * conf.tileWidthPixel, y * conf.tileHeightPixel);
 		gc.dispose();
-
 		return imageInternal;
 	}
 
@@ -232,10 +242,8 @@ public class ImagePainterFactory {
 						c = Constants.TRANSPARENT_COLOR;
 					}
 				}
-
-				gc.setBackground(c);
-				gc.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
-
+				gc.setForeground(c);
+				gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
 				x++;
 			}
 			gc.dispose();
