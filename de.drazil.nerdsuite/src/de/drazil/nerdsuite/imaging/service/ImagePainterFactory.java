@@ -156,14 +156,6 @@ public class ImagePainterFactory {
 		Layer layer = tile.getActiveLayer();
 		String name = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = tile.getImage(name);
-		if (imageInternal == null || isDirty) {
-			if (isDirty && imageInternal != null) {
-				tile.removeImage(name);
-			}
-			imageInternal = createLayer();
-			tile.putImage(name, imageInternal);
-		}
-		imageInternal.setDirty(isDirty);
 		if (colorIndex != 0) {
 			GC gc = new GC(imageInternal.getImage());
 			gc.setForeground(colorProvider.getColorByIndex(colorIndex));
@@ -177,15 +169,6 @@ public class ImagePainterFactory {
 		Layer layer = tile.getActiveLayer();
 		String id = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = tile.getImage(id);
-		if (imageInternal == null || isDirty) {
-			if (isDirty && imageInternal != null) {
-				tile.removeImage(id);
-			}
-			imageInternal = createLayer();
-			tile.putImage(id, imageInternal);
-		}
-
-		imageInternal.setDirty(isDirty);
 		GC gc = new GC(imageInternal.getImage());
 		ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(referenceRepository.getMetadata().getId());
 		ImagingWidgetConfiguration conf = ipf.getConfiguration();
