@@ -267,7 +267,7 @@ public class PainterWidget extends BaseImagingWidget {
 			int x = (cursorX * pixelWidth) - 1;
 			int y = (cursorY * conf.pixelPaintHeight * conf.getZoomFactor()) - 1;
 
- 			gc.drawRectangle(x, y, pixelWidth + 1, conf.pixelPaintHeight * conf.getZoomFactor() + 1);
+			gc.drawRectangle(x, y, pixelWidth + 1, conf.pixelPaintHeight * conf.getZoomFactor() + 1);
 		}
 	}
 
@@ -483,6 +483,7 @@ public class PainterWidget extends BaseImagingWidget {
 			}
 			Tile t = tileRepositoryService.getSelectedTile();
 			boolean isScreen = tileRepositoryService.getMetadata().getType().equals("PETSCII");
+
 			imagePainterFactory.createOrUpdateTilePixel(tileRepositoryService.getSelectedTile(), isScreen ? 0xffff : t.getActiveLayer().getSelectedColorIndex(), x, y, false);
 		}
 	}

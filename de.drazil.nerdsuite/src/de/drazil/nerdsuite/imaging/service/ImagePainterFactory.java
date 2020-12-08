@@ -156,12 +156,12 @@ public class ImagePainterFactory {
 		Layer layer = tile.getActiveLayer();
 		String name = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = tile.getImage(name);
-		if (colorIndex != 0) {
-			GC gc = new GC(imageInternal.getImage());
-			gc.setForeground(colorProvider.getColorByIndex(colorIndex));
-			gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
-			gc.dispose();
-		}
+		// if (colorIndex != 0) {
+		GC gc = new GC(imageInternal.getImage());
+ 		gc.setForeground(colorProvider.getColorByIndex(colorIndex));
+		gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
+		gc.dispose();
+		// }
 		return imageInternal;
 	}
 
@@ -215,16 +215,7 @@ public class ImagePainterFactory {
 					y++;
 				}
 				int ci = layer.getContent()[i];
-				Color c = null;
-				if (colorIndex != -1) {
-					c = ci > 0 ? color : Constants.TRANSPARENT_COLOR;
-				} else {
-					if (ci == 0) {
-						c = colorProvider.getColorByIndex(ci);
-					} else {
-						c = Constants.TRANSPARENT_COLOR;
-					}
-				}
+				Color c = ci > 0 ? color : Constants.BLACK;
 				gc.setForeground(c);
 				gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
 				x++;
@@ -258,6 +249,7 @@ public class ImagePainterFactory {
 
 				ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(referenceRepository.getMetadata().getId());
 				ImagingWidgetConfiguration conf = ipf.getConfiguration();
+
 				gc.drawImage(ipf.createOrUpdateTile(referenceRepository.getTile(bi, true), ci, isDirty).getImage(), x * conf.tileWidthPixel, y * conf.tileHeightPixel);
 				x++;
 			}
