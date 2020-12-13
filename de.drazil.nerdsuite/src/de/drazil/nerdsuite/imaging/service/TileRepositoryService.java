@@ -107,6 +107,11 @@ public class TileRepositoryService implements IService {
 		container.moveTile(from, to);
 	}
 
+	public void setDirty(boolean dirty)
+	{
+		container.setDirty(dirty);
+	}
+	
 	public int getSize() {
 		return container.getSize();
 	}
@@ -131,8 +136,8 @@ public class TileRepositoryService implements IService {
 		container.addTileManagementListener(listeners);
 	}
 
-	public void addTileSelectionListener(ITileUpdateListener... listeners) {
-		container.addTileSelectionListener(listeners);
+	public void addTileUpdateListener(ITileUpdateListener... listeners) {
+		container.addTileUpdateListener(listeners);
 	}
 
 	public void redrawTileViewer(List<Integer> selectedTileIndexList, int action, boolean temporary) {

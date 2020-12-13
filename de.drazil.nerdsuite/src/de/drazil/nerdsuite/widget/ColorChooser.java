@@ -19,7 +19,7 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	private static final int COLOR_OFFSET = WIDGET_WIDTH - COLOR_TILE_SIZE;
 	private int maxColors;
 	private int maxColorsTemp;
-	private boolean isMonochrom;
+	private boolean isMulticolorEnabled;
 	private int colorNo;
 	private List<PlatformColor> platformColorList;
 	private int[] platformColorIndexList;
@@ -50,14 +50,12 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 			e.gc.fillRectangle(0, y * COLOR_TILE_SIZE, COLOR_OFFSET, COLOR_TILE_SIZE);
 			e.gc.setForeground(Constants.WHITE);
 			e.gc.drawString(colorNames[y], 5, y * COLOR_TILE_SIZE + 10);
-			e.gc.drawString(":" + platformColorList.get(platformColorIndexList[y]).getName(), 80,
-					y * COLOR_TILE_SIZE + 10);
+			e.gc.drawString(":" + platformColorList.get(platformColorIndexList[y]).getName(), 80, y * COLOR_TILE_SIZE + 10);
 			e.gc.setBackground(platformColorList.get(platformColorIndexList[y]).getColor());
 			e.gc.fillRectangle(COLOR_OFFSET, y * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
 			if (y < maxColors - 1) {
 				e.gc.setForeground(Constants.BLACK);
-				e.gc.drawLine(0, y * COLOR_TILE_SIZE + COLOR_TILE_SIZE, WIDGET_WIDTH,
-						y * COLOR_TILE_SIZE + COLOR_TILE_SIZE);
+				e.gc.drawLine(0, y * COLOR_TILE_SIZE + COLOR_TILE_SIZE, WIDGET_WIDTH, y * COLOR_TILE_SIZE + COLOR_TILE_SIZE);
 			}
 
 			if (y >= maxColorsTemp) {
@@ -71,9 +69,9 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 		e.gc.drawRectangle(1, 1 + colorNo * COLOR_TILE_SIZE, WIDGET_WIDTH - 2, COLOR_TILE_SIZE - 2);
 	}
 
-	public void setMonochrom(boolean monochrom) {
-		isMonochrom = monochrom;
-		maxColorsTemp = isMonochrom ? 2 : maxColors;
+	public void setMulticolorEnabled(boolean multicolorEnabled) {
+		isMulticolorEnabled = multicolorEnabled;
+		maxColorsTemp = !isMulticolorEnabled ? 2 : maxColors;
 		redraw();
 	}
 
@@ -113,8 +111,7 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 		computeCursorPosition(x, y);
 		closePupup();
 		if (colorNo < maxColorsTemp) {
-			colorChooser = new ColorPaletteChooser(getParent(), SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
-					platformColorList);
+			colorChooser = new ColorPaletteChooser(getParent(), SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, platformColorList);
 			colorChooser.setSelectedColor(platformColorIndexList[colorNo]);
 			colorChooser.addColorSelectionListener(this);
 			popupDialog = new CustomPopupDialog(getParent().getShell(), colorChooser);

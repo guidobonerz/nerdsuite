@@ -495,7 +495,9 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
-		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
+		Tile tile = tileRepositoryService.getSelectedTile();
+		tileRepositoryService.setDirty(true);
+		tile.setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	@Override

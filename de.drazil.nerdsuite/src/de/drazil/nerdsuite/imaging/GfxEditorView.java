@@ -260,7 +260,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageMulticolor(@UIEventTopic("Multicolor") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			boolean multicolor = (Boolean) brokerObject.getTransferObject();
-			multiColorChooser.setMonochrom(!multicolor);
+			multiColorChooser.setMulticolorEnabled(multicolor);
 			part.setDirty(true);
 		}
 	}
@@ -399,7 +399,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		repository = getRepositoryWidget();
 
-		tileRepositoryService.addTileSelectionListener(painter, repository, layerChooser, this);
+		tileRepositoryService.addTileUpdateListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
 
 		if (tileRepositoryService.hasReference()) {
@@ -462,8 +462,10 @@ public class GfxEditorView implements ITileUpdateListener {
 			public void run() {
 				List<String> tags = new LinkedList<>();
 				tags.add("MultiColorButton");
+				boolean multicolor = tileRepositoryService.getSelectedTile().isMulticolorEnabled();
 				MHandledItem item = E4Utils.getMenuITemByTag(part, modelService, tags);
-				item.setSelected(tileRepositoryService.getSelectedTile().isMulticolorEnabled());
+				item.setSelected(multicolor);
+				multiColorChooser.setMulticolorEnabled(multicolor);
 				parent.getDisplay().getActiveShell().notifyListeners(SWT.Resize, new Event());
 				painter.setCursorMode(CursorMode.Point);
 				// painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
@@ -570,7 +572,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolorEnabled());
 			if (multiColorChooser != null) {
-				multiColorChooser.setMonochrom(!tile.isMulticolorEnabled());
+				multiColorChooser.setMulticolorEnabled(tile.isMulticolorEnabled());
 			}
 		}
 	}

@@ -158,7 +158,7 @@ public class ImagePainterFactory {
 		Image2 imageInternal = tile.getImage(name);
 		// if (colorIndex != 0) {
 		GC gc = new GC(imageInternal.getImage());
- 		gc.setForeground(colorProvider.getColorByIndex(colorIndex));
+		gc.setForeground(colorProvider.getColorByIndex(tile.getColorIndex(colorIndex)));
 		gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
 		gc.dispose();
 		// }
@@ -188,15 +188,15 @@ public class ImagePainterFactory {
 	public Image2 createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
 		Image2 image = null;
 		if (repository.hasReference()) {
-			image = _createOrUpdateTileFromReference(tile, colorIndex, isDirty);
+			image = _createOrUpdateTileFromReference(tile, colorIndex, tile.isDirty());
 		} else {
-			image = _createOrUpdateTile(tile, colorIndex, isDirty);
+			image = _createOrUpdateTile(tile, colorIndex, tile.isDirty());
 		}
 		return image;
 	}
 
 	private Image2 _createOrUpdateTile(Tile tile, int colorIndex, boolean isDirty) {
-		Color color = PlatformFactory.getPlatformColors(repository.getMetadata().getPlatform()).get(colorIndex).getColor();
+		Color color = PlatformFactory.getPlatformColors(repository.getMetadata().getPlatform()).get(tile.getColorIndex(colorIndex)).getColor();
 		Layer layer = tile.getActiveLayer();
 		String id = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = tile.getImage(id);
@@ -222,6 +222,7 @@ public class ImagePainterFactory {
 			}
 			gc.dispose();
 			tile.putImage(id, imageInternal);
+			tile.setDirty(false);
 		}
 		return imageInternal;
 	}

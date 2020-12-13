@@ -185,6 +185,12 @@ public class TileContainer {
 	}
 
 	@JsonIgnore
+	public void setDirty(boolean dirty) {
+		getSelectedTile().setDirty(dirty);
+		fireTileRedraw(getSelectedTileIndexList(), -1, false);
+	}
+
+	@JsonIgnore
 	private void fireTileAdded() {
 		tileServiceManagementListener.forEach(listener -> listener.tileAdded(getSelectedTile()));
 	}
@@ -217,7 +223,7 @@ public class TileContainer {
 	}
 
 	@JsonIgnore
-	public void addTileSelectionListener(ITileUpdateListener... listeners) {
+	public void addTileUpdateListener(ITileUpdateListener... listeners) {
 		for (ITileUpdateListener listener : listeners) {
 			addTileUpdateListener(listener);
 		}
