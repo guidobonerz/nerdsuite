@@ -52,7 +52,7 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.Point) {
-			setPixel(tile, cursorX, cursorY, conf);
+			setPixel(cursorX, cursorY, conf);
 			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
@@ -68,7 +68,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 			scrollWorkArea(xoff, yoff);
 		} else if (conf.cursorMode == CursorMode.Point && cursorChanged) {
-			setPixel(tile, cursorX, cursorY, conf);
+			setPixel(cursorX, cursorY, conf);
 			doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
 		}
 	}
@@ -189,19 +189,21 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
 			boolean paintTileCursor, boolean paintTelevisionMode) {
 
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("PAINTER", colorPaletteProvider.getColorByIndex(0)).getImage(), 0, 0);
 		Tile t = tileRepositoryService.getSelectedTile();
-		boolean isScreen = tileRepositoryService.getMetadata().getType().equals("PETSCII");
-		String id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), isScreen ? 0xffff : t.getActiveLayer().getSelectedColorIndex());
+
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("PAINTER", colorPaletteProvider.getColorByIndex(0)).getImage(), 0, 0);
+
+		String id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
 		if (redrawMode == RedrawMode.DrawPixel) {
-			imagePainterFactory.drawScaledImage(gc, t, id, -1, 0, 0);
+//			imagePainterFactory.drawScaledImage(gc, t, id, -1, 0, 0);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
-			imagePainterFactory.createOrUpdateTile(tileRepositoryService.getSelectedTile(), isScreen ? 0xffff : t.getActiveLayer().getSelectedColorIndex(), false);
+
+			imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), t.isDirty());
 		}
 		imagePainterFactory.drawScaledImage(gc, t, id, -1, 0, 0);
-
+		t.setDirty(false);
 		if (paintPixelGrid) {
 			gc.drawImage(imagePainterFactory.getGridLayer().getImage(), 0, 0);
 			if (paintSeparator) {
@@ -253,10 +255,16 @@ public class PainterWidget extends BaseImagingWidget {
 					gc.setBackground(Constants.BLACK);
 					gc.fillRectangle(cursorX * conf.pixelPaintWidth * conf.getZoomFactor(), cursorY * conf.pixelPaintHeight * conf.getZoomFactor(), conf.pixelPaintWidth * conf.getZoomFactor(),
 							conf.pixelPaintHeight * conf.getZoomFactor());
-					gc.drawImage(ipf.createOrUpdateTile(refTile, tile.getColorIndex(1), false).getImage(), cursorX * conf.pixelPaintWidth * conf.getZoomFactor(),
+					// int colorIndex =
+					// tile.getColorIndex(tile.getActiveLayer().getSelectedColorIndex());
+					int colorIndex = imagePainterFactory.getForegroundColorIndex();
+					ipf.setForegroundColorIndex(colorIndex);
+					String id = String.format(ImagePainterFactory.IMAGE_ID, refTile.getId(), refTile.getActiveLayer().getId(), colorIndex);
+					gc.drawImage(ipf.createOrUpdateLayer(id, refTile.getActiveLayer(), false).getImage(), cursorX * conf.pixelPaintWidth * conf.getZoomFactor(),
 							cursorY * conf.pixelPaintHeight * conf.getZoomFactor());
 				} else {
-					gc.setBackground(colorPaletteProvider.getColorByIndex(tileRepositoryService.getActiveLayerFromSelectedTile().getSelectedColorIndex()));
+
+					gc.setBackground(colorPaletteProvider.getColorByIndex(imagePainterFactory.getForegroundColorIndex()));
 					gc.fillRectangle((cursorX * pixelWidth), (cursorY * conf.pixelPaintHeight * conf.getZoomFactor()), pixelWidth, conf.pixelPaintHeight * conf.getZoomFactor());
 				}
 			} else if (conf.pencilMode == PencilMode.Erase) {
@@ -328,8 +336,12 @@ public class PainterWidget extends BaseImagingWidget {
 
 	}
 
-	public void setPixel(Tile tile, int x, int y, ImagingWidgetConfiguration conf) {
-		Layer layer = tileRepositoryService.getSelectedTile().getActiveLayer();
+	public void setPixel(int x, int y, ImagingWidgetConfiguration conf) {
+		Tile tile = tileRepositoryService.getSelectedTile();
+		Layer layer = tile.getActiveLayer();
+		// String id = String.format(ImagePainterFactory.IMAGE_ID, tile.getId(),
+		// layer.getId(), layer.getColorPalette().get(layer.getSelectedColorIndex()));
+		String id = String.format(ImagePainterFactory.IMAGE_ID, tile.getId(), layer.getId(), 0);
 		int x1 = lastCursorX;
 		int y1 = lastCursorY;
 		int x2 = lastCursorX + cursorDiffX;
@@ -337,42 +349,42 @@ public class PainterWidget extends BaseImagingWidget {
 
 		switch (conf.paintMode) {
 		case Single: {
-			drawLine(layer, x1, y1, x2, y2, conf);
+			drawLine(id, layer, x1, y1, x2, y2, conf);
 			break;
 		}
 		case VerticalMirror: {
-			drawLine(layer, x1, y1, x2, y2, conf);
+			drawLine(id, layer, x1, y1, x2, y2, conf);
 			int centerX = conf.tileWidth / 2;
 			int diffx1 = centerX - x1 - 1;
 			int diffx2 = centerX - x2 - 1;
-			drawLine(layer, centerX + diffx1, y1, centerX + diffx2, y2, conf);
+			drawLine(id, layer, centerX + diffx1, y1, centerX + diffx2, y2, conf);
 			break;
 		}
 		case HorizontalMirror: {
-			drawLine(layer, x1, y1, x2, y2, conf);
+			drawLine(id, layer, x1, y1, x2, y2, conf);
 			int centerY = conf.tileHeight / 2;
 			int diffy1 = centerY - y1 - 1;
 			int diffy2 = centerY - y2 - 1;
-			drawLine(layer, x1, centerY + diffy1, x2, centerY + diffy2, conf);
+			drawLine(id, layer, x1, centerY + diffy1, x2, centerY + diffy2, conf);
 			break;
 		}
 		case Kaleidoscope: {
-			drawLine(layer, x1, y1, x2, y2, conf);
+			drawLine(id, layer, x1, y1, x2, y2, conf);
 			int centerX = conf.tileWidth / 2;
 			int diffx1 = centerX - x1 - 1;
 			int diffx2 = centerX - x2 - 1;
-			drawLine(layer, centerX + diffx1, y1, centerX + diffx2, y2, conf);
+			drawLine(id, layer, centerX + diffx1, y1, centerX + diffx2, y2, conf);
 			int centerY = conf.tileHeight / 2;
 			int diffy1 = centerY - y1 - 1;
 			int diffy2 = centerY - y2 - 1;
-			drawLine(layer, x1, centerY + diffy1, x2, centerY + diffy2, conf);
-			drawLine(layer, centerX + diffx1, centerY + diffy1, centerX + diffx2, centerY + diffy2, conf);
+			drawLine(id, layer, x1, centerY + diffy1, x2, centerY + diffy2, conf);
+			drawLine(id, layer, centerX + diffx1, centerY + diffy1, centerX + diffx2, centerY + diffy2, conf);
 			break;
 		}
 		}
 	}
 
-	private void drawLine(Layer layer, int x1, int y1, int x2, int y2, ImagingWidgetConfiguration conf) {
+	private void drawLine(String id, Layer layer, int x1, int y1, int x2, int y2, ImagingWidgetConfiguration conf) {
 		int x;
 		int y;
 		int dx;
@@ -405,7 +417,7 @@ public class PainterWidget extends BaseImagingWidget {
 			if (dy <= dx) {
 				error = -dx;
 				while (x != x2) {
-					setPixel(layer, x, y, conf);
+					setPixel(id, layer, x, y, conf);
 					error = error + b;
 					if (error > 0) {
 						y = y + ystep;
@@ -416,7 +428,7 @@ public class PainterWidget extends BaseImagingWidget {
 			} else {
 				error = -dy;
 				while (y != y2) {
-					setPixel(layer, x, y, conf);
+					setPixel(id, layer, x, y, conf);
 					error = error + a;
 					if (error > 0) {
 						x = x + xstep;
@@ -426,24 +438,24 @@ public class PainterWidget extends BaseImagingWidget {
 				}
 			}
 		}
-		setPixel(layer, x, y, conf);
+		setPixel(id, layer, x, y, conf);
 	}
 
-	private void drawCircleSection(Layer layer, int xc, int yc, int x, int y) {
-		setPixel(layer, xc + x, yc + y, conf);
-		setPixel(layer, xc - x, yc + y, conf);
-		setPixel(layer, xc + x, yc - y, conf);
-		setPixel(layer, xc - x, yc - y, conf);
-		setPixel(layer, xc + y, yc + x, conf);
-		setPixel(layer, xc - y, yc + x, conf);
-		setPixel(layer, xc + y, yc - x, conf);
-		setPixel(layer, xc - y, yc - x, conf);
+	private void drawCircleSection(String id, Layer layer, int xc, int yc, int x, int y) {
+		setPixel(id, layer, xc + x, yc + y, conf);
+		setPixel(id, layer, xc - x, yc + y, conf);
+		setPixel(id, layer, xc + x, yc - y, conf);
+		setPixel(id, layer, xc - x, yc - y, conf);
+		setPixel(id, layer, xc + y, yc + x, conf);
+		setPixel(id, layer, xc - y, yc + x, conf);
+		setPixel(id, layer, xc + y, yc - x, conf);
+		setPixel(id, layer, xc - y, yc - x, conf);
 	}
 
-	public void drawCircle(Layer layer, int xc, int yc, int r) {
+	public void drawCircle(String id, Layer layer, int xc, int yc, int r) {
 		int x = 0, y = r;
 		int d = 3 - 2 * r;
-		drawCircleSection(layer, xc, yc, x, y);
+		drawCircleSection(id, layer, xc, yc, x, y);
 		while (y >= x) {
 			x++;
 			if (d > 0) {
@@ -451,11 +463,11 @@ public class PainterWidget extends BaseImagingWidget {
 				d = d + 4 * (x - y) + 10;
 			} else
 				d = d + 4 * x + 6;
-			drawCircleSection(layer, xc, yc, x, y);
+			drawCircleSection(id, layer, xc, yc, x, y);
 		}
 	}
 
-	private void setPixel(Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
+	private void setPixel(String id, Layer layer, int x, int y, ImagingWidgetConfiguration conf) {
 		if (x >= 0 && y >= 0 && x < conf.tileWidth && y < conf.tileHeight) {
 
 			int colorIndex = -1;
@@ -463,9 +475,9 @@ public class PainterWidget extends BaseImagingWidget {
 
 			if (conf.pencilMode == PencilMode.Draw) {
 				colorIndex = layer.getSelectedColorIndex();
-				colorId = tileRepositoryService.getSelectedTile().getActiveLayer().getColorPalette().get(colorIndex);
+				colorId = tileRepositoryService.getSelectedTile().getColorIndex(colorIndex);
 			} else if (conf.pencilMode == PencilMode.Erase) {
-				colorId = tileRepositoryService.getSelectedTile().getActiveLayer().getColorPalette().get(0);
+				colorId = tileRepositoryService.getSelectedTile().getColorIndex(0);
 			}
 
 			int offset = y * conf.tileWidth + x;
@@ -481,10 +493,8 @@ public class PainterWidget extends BaseImagingWidget {
 				layer.getBrush()[offset] = i;
 
 			}
-			Tile t = tileRepositoryService.getSelectedTile();
-			boolean isScreen = tileRepositoryService.getMetadata().getType().equals("PETSCII");
 
-			imagePainterFactory.createOrUpdateTilePixel(tileRepositoryService.getSelectedTile(), isScreen ? 0xffff : t.getActiveLayer().getSelectedColorIndex(), x, y, false);
+			imagePainterFactory.createOrUpdateTilePixel(id, layer, x, y, false);
 		}
 	}
 
@@ -495,14 +505,23 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int colorIndex) {
+		System.out.printf("colorNo:%d  palette:%d\n", colorNo, colorIndex);
 		Tile tile = tileRepositoryService.getSelectedTile();
 		tileRepositoryService.setDirty(true);
+		if (colorNo == 0) {
+			imagePainterFactory.setBackgroundColorIndex(colorIndex);
+		} else {
+			imagePainterFactory.setForegroundColorIndex(colorIndex);
+		}
+
 		tile.setActiveLayerColorIndex(colorNo, colorIndex, true);
 	}
 
 	@Override
 	public void redrawCalculatedArea() {
-		redraw(0, 0, conf.fullWidthPixel * conf.getZoomFactor(), conf.fullHeightPixel * conf.getZoomFactor(), false);
+		redraw();
+		// redraw(0, 0, conf.fullWidthPixel * conf.getZoomFactor(), conf.fullHeightPixel
+		// * conf.getZoomFactor(), false);
 		// redraw(cursorX * 8, cursorY * 8, 8, 8, false);
 		// System.out.println("redraw calculated");
 	}

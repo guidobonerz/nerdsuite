@@ -67,7 +67,7 @@ public class TileContainer {
 	@JsonIgnore
 	public Tile addTile() {
 		initList();
-		String id = String.format("T%02H", (getTileList().size() + 1));
+		String id = String.format("T%03X", (getTileList().size() + 1));
 		int blankValue = metadata.getBlankValue() == null ? 0 : metadata.getBlankValue();
 		return addTile(id, id, tileSize, blankValue);
 	}
@@ -76,7 +76,7 @@ public class TileContainer {
 	private Tile addTile(String id, String name, int tileSize, int defaultBrush) {
 		initList();
 		Tile tile = new Tile(id, name, tileSize);
-		String layerId = String.format("L%02H", (getTileList().size() + 1), (tile.getSize() + 1));
+		String layerId = String.format("L%03X", (getTileList().size() + 1), (tile.getSize() + 1));
 		tile.addLayer(layerId, layerId, tileSize, defaultBrush);
 		getTileList().add(tile);
 		getTileIndexOrderList().add(getTileList().indexOf(tile));
