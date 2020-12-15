@@ -91,10 +91,10 @@ public class ImagePainterFactory {
 			// scaled.transparentPixel =
 			// original.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
 			Image scaledImage = new Image(Display.getCurrent(), scaled);
-			gc.drawImage(scaledImage, 0, 0);
+			gc.drawImage(scaledImage, x, y);
 			scaledImage.dispose();
 		} else {
-			gc.drawImage(i, 0, 0);
+			gc.drawImage(i, x, y);
 		}
 	}
 

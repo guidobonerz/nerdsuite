@@ -260,8 +260,11 @@ public class PainterWidget extends BaseImagingWidget {
 					int colorIndex = imagePainterFactory.getForegroundColorIndex();
 					ipf.setForegroundColorIndex(colorIndex);
 					String id = String.format(ImagePainterFactory.IMAGE_ID, refTile.getId(), refTile.getActiveLayer().getId(), colorIndex);
-					gc.drawImage(ipf.createOrUpdateLayer(id, refTile.getActiveLayer(), false).getImage(), cursorX * conf.pixelPaintWidth * conf.getZoomFactor(),
-							cursorY * conf.pixelPaintHeight * conf.getZoomFactor());
+					ipf.createOrUpdateLayer(id, refTile.getActiveLayer(), false);
+					ipf.drawScaledImage(gc, refTile, id, -1, cursorX * conf.pixelPaintWidth * conf.getZoomFactor(), cursorY * conf.pixelPaintHeight * conf.getZoomFactor());
+					// gc.drawImage(ipf.createOrUpdateLayer(id, refTile.getActiveLayer(),
+					// false).getImage(), cursorX * conf.pixelPaintWidth * conf.getZoomFactor(),
+					// cursorY * conf.pixelPaintHeight * conf.getZoomFactor());
 				} else {
 
 					gc.setBackground(colorPaletteProvider.getColorByIndex(imagePainterFactory.getForegroundColorIndex()));
