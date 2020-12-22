@@ -7,6 +7,7 @@ import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.model.ViewSetup;
 import lombok.Data;
 
 @Data
@@ -17,6 +18,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public int storageSize = 0;
 	public int iconSize;
 	public int tileSize;
+	public int tileSizePixel;
 	public int columns = 1;
 	public int rows = 1;
 	public int iconWidth;
@@ -35,6 +37,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public int pixelPaintWidth = 1;
 	public int pixelPaintHeight = 1;
 	public int cursorLineWidth = 1;
+	public int zoomFactor = 1;
 	public int tileSelectionModes = NONE;
 	public boolean pixelGridEnabled = true;
 	public boolean tileGridEnabled = true;
@@ -48,6 +51,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public GridType gridStyle = GridType.Line;
 	public CursorMode cursorMode = CursorMode.Point;
 	public boolean televisionModeEnabled = false;
+	public ViewSetup viewSetup;
 
 	public ImagingWidgetConfiguration(ProjectMetaData metadata) {
 		iconWidth = metadata.getWidth();
@@ -55,6 +59,11 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 		tileColumns = metadata.getColumns();
 		tileRows = metadata.getRows();
 		storageSize = metadata.getStorageEntity();
+	}
+
+	public void setViewSetup(ViewSetup vs) {
+		pixelSize = vs.getPixelSize();
+		zoomFactor = vs.getZoomFactor();
 	}
 
 	public void computeDimensions() {

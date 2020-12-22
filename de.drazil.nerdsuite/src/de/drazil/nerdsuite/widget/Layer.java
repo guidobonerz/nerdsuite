@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.graphics.Color;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.json.IntArrayToStringConverter;
 import de.drazil.nerdsuite.json.StringToIntArrayConverter;
 import de.drazil.nerdsuite.model.Image2;
