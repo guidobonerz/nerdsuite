@@ -15,7 +15,6 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.model.Image2;
-import de.drazil.nerdsuite.model.ProjectMetaData;
 import de.drazil.nerdsuite.model.SelectionRange;
 
 public class RepositoryWidget extends BaseImagingWidget {
@@ -159,16 +158,12 @@ public class RepositoryWidget extends BaseImagingWidget {
 		 * tileRepositoryService.getSize() : end); i++) { int index = drawAll ? i :
 		 * tileRepositoryService.getTileIndex(i); paintTile(gc, i, action); }
 		 */
-		if (paintTileGrid) {
-			paintTileGrid(gc);
-		}
-
-		if (tileDragActive) {
-			paintDragMarker(gc);
-		} else {
-			paintSelection(gc);
-			paintTileMarker(gc);
-		}
+		/*
+		 * if (paintTileGrid) { paintTileGrid(gc); }
+		 * 
+		 * if (tileDragActive) { paintDragMarker(gc); } else { paintSelection(gc);
+		 * paintTileMarker(gc); }
+		 */
 		action = ImagePainterFactory.NONE;
 		drawAll = true;
 		redrawMode = RedrawMode.DrawNothing;

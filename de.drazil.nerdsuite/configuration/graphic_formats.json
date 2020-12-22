@@ -4,12 +4,12 @@
   "width" : 8,
   "height" : 8,
   "supportsLayers" : true,
+  "supportsMulticolor" : true,
   "storageSize" : 8,
   "storageType" : "linear",
   "maxItems" : 255,
   "blankValue" : 0,
   "properties" : {
-    "supportsMultiColor" : true,
     "supportsExtendedColorMode" : true
   },
   "variants" : [ {
@@ -50,13 +50,11 @@
   "width" : 24,
   "height" : 21,
   "supportsLayers" : true,
+  "supportsMulticolor" : true,
   "storageSize" : 8,
   "storageType" : "linear",
   "maxItems" : -1,
   "blankValue" : 0,
-  "properties" : {
-    "supportsMultiColor" : true
-  },
   "variants" : [ {
     "id" : "STANDARD",
     "name" : "Standard Size (24x21)",
@@ -95,12 +93,12 @@
   "width" : 40,
   "height" : 25,
   "supportsLayers" : true,
+  "supportsMulticolor" : true,
   "storageSize" : 1,
   "storageType" : "linear",
   "maxItems" : -1,
   "blankValue" : 32,
   "properties" : {
-    "supportsMultiColor" : true,
     "supportsResizing" : true,
     "supportsExtendedColorMode" : true
   },
@@ -124,12 +122,12 @@
   "width" : 40,
   "height" : 25,
   "supportsLayers" : true,
+  "supportsMulticolor" : false,
   "storageSize" : 1,
   "storageType" : "linear",
   "maxItems" : -1,
   "blankValue" : 32,
   "properties" : {
-    "supportsMultiColor" : false,
     "supportsResizing" : true,
     "supportsExtendedColorMode" : true
   },
@@ -153,12 +151,12 @@
   "width" : 2,
   "height" : 2,
   "supportsLayers" : true,
+  "supportsMulticolor" : true,
   "storageSize" : 1,
   "storageType" : "linear",
   "maxItems" : -1,
   "blankValue" : 0,
   "properties" : {
-    "supportsMultiColor" : true,
     "supportsResizing" : true,
     "supportsExtendedColorMode" : true
   },
@@ -182,12 +180,12 @@
   "width" : 20,
   "height" : 12,
   "supportsLayers" : true,
+  "supportsMulticolor" : true,
   "storageSize" : 1,
   "storageType" : "linear",
   "maxItems" : -1,
   "blankValue" : 0,
   "properties" : {
-    "supportsMultiColor" : true,
     "supportsResizing" : true,
     "supportsExtendedColorMode" : true
   },
@@ -211,6 +209,7 @@
   "width" : 320,
   "height" : 200,
   "supportsLayers" : false,
+  "supportsMulticolor" : true,
   "storageSize" : 8,
   "storageType" : "tiled",
   "maxItems" : -1,
@@ -218,9 +217,6 @@
   "tileSize" : {
     "width" : 8,
     "height" : 8
-  },
-  "properties" : {
-    "supportsMultiColor" : true
   },
   "variants" : [ {
     "id" : "STANDARD",
@@ -233,7 +229,7 @@
     "name" : "Koala Picture",
     "referenceVariant" : "STANDARD",
     "properties" : {
-      "supportsMultiColor" : true,
+      "supportsMulticolor" : true,
       "backgroundColorOffset" : 10000,
       "bitmapOffset" : 0,
       "screenRamOffset" : 8000,
