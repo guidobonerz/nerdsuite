@@ -12,6 +12,7 @@ public class GraphicFormat {
 	private int width;
 	private int height;
 	private boolean supportsLayers;
+	private boolean supportsMulticolor;
 	private int storageSize;
 	private String storageType;
 	private int maxItems;

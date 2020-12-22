@@ -503,17 +503,17 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void colorSelected(int colorNo, int colorIndex) {
-		System.out.printf("colorNo:%d  palette:%d\n", colorNo, colorIndex);
+	public void colorSelected(int colorNo, int paletteIndex) {
+		System.out.printf("colorNo:%d  palette:%d\n", colorNo, paletteIndex);
 		Tile tile = tileRepositoryService.getSelectedTile();
 		tileRepositoryService.setDirty(true);
 		if (colorNo == 0) {
-			imagePainterFactory.setBackgroundColorIndex(colorIndex);
+			imagePainterFactory.setBackgroundColorIndex(paletteIndex);
 		} else {
-			imagePainterFactory.setForegroundColorIndex(colorIndex);
+			imagePainterFactory.setForegroundColorIndex(paletteIndex);
 		}
 
-		tile.setActiveLayerColorIndex(colorNo, colorIndex, true);
+		tile.setActiveLayerColorIndex(colorNo, paletteIndex, true);
 	}
 
 	@Override
