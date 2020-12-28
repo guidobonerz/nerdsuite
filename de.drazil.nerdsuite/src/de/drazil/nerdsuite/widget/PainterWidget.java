@@ -144,7 +144,7 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	private int computeCursorIndex(int x, int y) {
-		return (x + (y * conf.tileWidth));
+		return (x + (y * conf.tileWidth / (conf.isMulticolor() ? 2 : 1)));
 	}
 
 	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
@@ -241,9 +241,10 @@ public class PainterWidget extends BaseImagingWidget {
 	 * pixelWidth, conf.scaledTileHeight); } }
 	 */
 	private void paintPixelCursor(GC gc) {
-		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize) {
+		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize / (conf.isMulticolor() ? 2 : 1)) {
 
-			int pixelWidth = conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * conf.getZoomFactor();
+			int pixelWidth = conf.pixelPaintWidth * (conf.isMulticolor() ? 2 : 1) * conf.getZoomFactor();
+			int pixelHeight = conf.pixelPaintHeight * conf.getZoomFactor();
 
 			if (conf.pencilMode == PencilMode.Draw) {
 
@@ -253,28 +254,29 @@ public class PainterWidget extends BaseImagingWidget {
 					Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
 					ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
 					gc.setBackground(Constants.BLACK);
-					gc.fillRectangle(cursorX * conf.pixelPaintWidth * conf.getZoomFactor(), cursorY * conf.pixelPaintHeight * conf.getZoomFactor(), conf.pixelPaintWidth * conf.getZoomFactor(),
-							conf.pixelPaintHeight * conf.getZoomFactor());
+					gc.fillRectangle(cursorX * pixelWidth, cursorY * pixelHeight, pixelWidth, pixelHeight);
 					int colorIndex = imagePainterFactory.getForegroundColorIndex();
 					ipf.setForegroundColorIndex(colorIndex);
 					String id = String.format(ImagePainterFactory.IMAGE_ID, refTile.getId(), refTile.getActiveLayer().getId(), colorIndex);
 					ipf.createOrUpdateLayer(id, refTile.getActiveLayer(), false);
-					ipf.drawScaledImage(gc, refTile, id, -1, cursorX * conf.pixelPaintWidth * conf.getZoomFactor(), cursorY * conf.pixelPaintHeight * conf.getZoomFactor());
+					ipf.drawScaledImage(gc, refTile, id, -1, cursorX * pixelWidth, cursorY * pixelHeight);
 
 				} else {
 
 					gc.setBackground(colorPaletteProvider.getColorByIndex(imagePainterFactory.getForegroundColorIndex()));
-					gc.fillRectangle((cursorX * pixelWidth), (cursorY * conf.pixelPaintHeight * conf.getZoomFactor()), pixelWidth, conf.pixelPaintHeight * conf.getZoomFactor());
+					gc.fillRectangle((cursorX * pixelWidth), (cursorY * pixelHeight), pixelWidth, pixelHeight);
 				}
 			} else if (conf.pencilMode == PencilMode.Erase) {
 				gc.setBackground(Constants.BLACK);
-				gc.fillRectangle((cursorX * pixelWidth), (cursorY * conf.pixelPaintHeight * conf.getZoomFactor()), pixelWidth, conf.pixelPaintHeight * conf.getZoomFactor());
+				gc.fillRectangle((cursorX * pixelWidth), (cursorY * pixelHeight), pixelWidth, pixelHeight);
 			}
 			gc.setForeground(Constants.BRIGHT_ORANGE);
 			int x = (cursorX * pixelWidth) - 1;
-			int y = (cursorY * conf.pixelPaintHeight * conf.getZoomFactor()) - 1;
+			int y = (cursorY * pixelHeight) - 1;
 
-			gc.drawRectangle(x, y, pixelWidth + 1, conf.pixelPaintHeight * conf.getZoomFactor() + 1);
+			gc.drawRectangle(x, y, pixelWidth + 1, pixelHeight + 1);
+		} else {
+			System.out.println("outer range");
 		}
 	}
 
@@ -479,9 +481,12 @@ public class PainterWidget extends BaseImagingWidget {
 				colorId = tileRepositoryService.getSelectedTile().getColorIndex(0);
 			}
 
-			int offset = y * conf.tileWidth + x;
+			int offset = y * conf.tileWidth + x * (conf.isMulticolor() ? 2 : 1);
 
 			layer.getContent()[offset] = colorId;
+			if (conf.isMulticolor()) {
+				layer.getContent()[offset + 1] = colorId;
+			}
 
 			if (tileRepositoryReferenceService != null) {
 				int brush[] = layer.getBrush();
