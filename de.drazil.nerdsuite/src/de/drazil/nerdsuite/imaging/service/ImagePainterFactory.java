@@ -226,11 +226,16 @@ public class ImagePainterFactory {
 					y++;
 				}
 				int ci = layer.getContent()[i];
-				Color c = colorProvider.getColorByIndex(ci > 0 ? foregroundColorIndex : 0);
+				Color c = null;
+				if (conf.isMulticolor()) {
+					c = colorProvider.getColorByIndex(ci);
+				} else {
+					c = colorProvider.getColorByIndex(ci > 0 ? foregroundColorIndex : 0);
+				}
 				gc.setForeground(c);
-				
+
 				gc.drawPoint(x, y);
-				
+
 				x++;
 			}
 			gc.dispose();
