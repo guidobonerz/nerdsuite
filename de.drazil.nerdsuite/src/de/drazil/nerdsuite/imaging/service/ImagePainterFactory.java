@@ -172,7 +172,11 @@ public class ImagePainterFactory {
 		Image2 imageInternal = layer.getImage(id);
 		GC gc = new GC(imageInternal.getImage());
 		gc.setForeground(colorProvider.getColorByIndex(foregroundColorIndex));
-		gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
+		int x1 = x * (repository.getSelectedTile().isMulticolorEnabled() ? 2 : 1);
+		gc.drawPoint(x1, y);
+		if (repository.getSelectedTile().isMulticolorEnabled()) {
+			gc.drawPoint(x1 + 1, y);
+		}
 		gc.dispose();
 		return imageInternal;
 	}
@@ -222,9 +226,16 @@ public class ImagePainterFactory {
 					y++;
 				}
 				int ci = layer.getContent()[i];
-				Color c = colorProvider.getColorByIndex(ci > 0 ? foregroundColorIndex : 0);
+				Color c = null;
+				if (repository.getSelectedTile().isMulticolorEnabled()) {
+					c = colorProvider.getColorByIndex(layer.getColorPalette().get(ci));
+				} else {
+					c = colorProvider.getColorByIndex(ci > 0 ? foregroundColorIndex : 0);
+				}
 				gc.setForeground(c);
-				gc.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
+
+				gc.drawPoint(x, y);
+
 				x++;
 			}
 			gc.dispose();

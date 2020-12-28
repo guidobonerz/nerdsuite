@@ -570,9 +570,10 @@ public class GfxEditorView implements ITileUpdateListener {
 			List<String> tags1 = new LinkedList<>();
 			tags1.add("MultiColorButton");
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
-			E4Utils.setToolItemSelected(part, modelService, tags1, tile.isMulticolorEnabled());
+			boolean multicolor = tile.isMulticolorEnabled();
+			E4Utils.setToolItemSelected(part, modelService, tags1, multicolor);
 			if (multiColorChooser != null) {
-				multiColorChooser.setMulticolorEnabled(tile.isMulticolorEnabled());
+				multiColorChooser.setMulticolorEnabled(multicolor);
 			}
 		}
 	}
