@@ -228,7 +228,7 @@ public class ImagePainterFactory {
 				int ci = layer.getContent()[i];
 				Color c = null;
 				if (conf.isMulticolor()) {
-					c = colorProvider.getColorByIndex(ci);
+					c = colorProvider.getColorByIndex(layer.getColorPalette().get(ci));
 				} else {
 					c = colorProvider.getColorByIndex(ci > 0 ? foregroundColorIndex : 0);
 				}

@@ -200,7 +200,7 @@ public class PainterWidget extends BaseImagingWidget {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
 
-			imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), t.isDirty());
+			imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), /*t.isDirty()*/true);
 		}
 		imagePainterFactory.drawScaledImage(gc, t, id, -1, 0, 0);
 		t.setDirty(false);
@@ -483,9 +483,13 @@ public class PainterWidget extends BaseImagingWidget {
 
 			int offset = y * conf.tileWidth + x * (conf.isMulticolor() ? 2 : 1);
 
-			layer.getContent()[offset] = colorId;
-			if (conf.isMulticolor()) {
-				layer.getContent()[offset + 1] = colorId;
+			if (tileRepositoryService.getMetadata().getType().equals("PETSCII")) {
+				layer.getContent()[offset] = colorId;
+			} else {
+				layer.getContent()[offset] = colorIndex;
+				if (conf.isMulticolor()) {
+					layer.getContent()[offset + 1] = colorIndex;
+				}
 			}
 
 			if (tileRepositoryReferenceService != null) {
