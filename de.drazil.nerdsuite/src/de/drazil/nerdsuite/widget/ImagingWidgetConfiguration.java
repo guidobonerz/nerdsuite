@@ -45,7 +45,6 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public boolean tileCursorEnabled = false;
 	public boolean separatorEnabled = true;
 	public boolean layerViewEnabled = false;
-	public boolean multicolor = false;
 	public boolean televisionModeEnabled = false;
 	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public PaintMode paintMode = PaintMode.Single;
@@ -55,7 +54,6 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public ViewSetup viewSetup;
 
 	public ImagingWidgetConfiguration(ProjectMetaData metadata) {
-		multicolor = metadata.isMulticolor();
 		iconWidth = metadata.getWidth();
 		iconHeight = metadata.getHeight();
 		tileColumns = metadata.getColumns();

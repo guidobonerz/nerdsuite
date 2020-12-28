@@ -200,7 +200,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	protected void computeCursorPosition(int x, int y) {
-		cursorX = x / (conf.pixelPaintWidth * (conf.isMulticolor() ? 2 : 1) * conf.getZoomFactor());
+		cursorX = x / (conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled()? 2 : 1) * conf.getZoomFactor());
 		cursorY = y / (conf.pixelPaintHeight * conf.getZoomFactor());
 		if (oldCursorX != cursorX || oldCursorY != cursorY || takePosition) {
 			lastCursorX = oldCursorX;

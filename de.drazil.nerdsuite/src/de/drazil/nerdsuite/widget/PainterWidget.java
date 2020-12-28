@@ -144,7 +144,7 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	private int computeCursorIndex(int x, int y) {
-		return (x + (y * conf.tileWidth / (conf.isMulticolor() ? 2 : 1)));
+		return (x + (y * conf.tileWidth / (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)));
 	}
 
 	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
@@ -200,7 +200,7 @@ public class PainterWidget extends BaseImagingWidget {
 			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
 		} else {
 
-			imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), /*t.isDirty()*/true);
+			imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), t.isDirty());
 		}
 		imagePainterFactory.drawScaledImage(gc, t, id, -1, 0, 0);
 		t.setDirty(false);
@@ -241,9 +241,9 @@ public class PainterWidget extends BaseImagingWidget {
 	 * pixelWidth, conf.scaledTileHeight); } }
 	 */
 	private void paintPixelCursor(GC gc) {
-		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize / (conf.isMulticolor() ? 2 : 1)) {
+		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize / (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)) {
 
-			int pixelWidth = conf.pixelPaintWidth * (conf.isMulticolor() ? 2 : 1) * conf.getZoomFactor();
+			int pixelWidth = conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * conf.getZoomFactor();
 			int pixelHeight = conf.pixelPaintHeight * conf.getZoomFactor();
 
 			if (conf.pencilMode == PencilMode.Draw) {
@@ -481,13 +481,13 @@ public class PainterWidget extends BaseImagingWidget {
 				colorId = tileRepositoryService.getSelectedTile().getColorIndex(0);
 			}
 
-			int offset = y * conf.tileWidth + x * (conf.isMulticolor() ? 2 : 1);
+			int offset = y * conf.tileWidth + x * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1);
 
 			if (tileRepositoryService.getMetadata().getType().equals("PETSCII")) {
 				layer.getContent()[offset] = colorId;
 			} else {
 				layer.getContent()[offset] = colorIndex;
-				if (conf.isMulticolor()) {
+				if (tileRepositoryService.getSelectedTile().isMulticolorEnabled()) {
 					layer.getContent()[offset + 1] = colorIndex;
 				}
 			}

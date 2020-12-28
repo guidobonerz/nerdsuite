@@ -90,7 +90,7 @@ public class NewProjectHandler {
 				metadata.setPlatform(targetPlatform);
 				metadata.setType(subType);
 				metadata.setVariant(variant);
-				metadata.init((Integer) userData.get("width"), (Integer) userData.get("height"), (Integer) userData.get("columns"), (Integer) userData.get("rows"), gf.getStorageSize(), false);
+				metadata.init((Integer) userData.get("width"), (Integer) userData.get("height"), (Integer) userData.get("columns"), (Integer) userData.get("rows"), gf.getStorageSize());
 
 				if (projectAction.startsWith("new")) {
 					TileRepositoryService repository = ServiceFactory.getService(projectId, TileRepositoryService.class);

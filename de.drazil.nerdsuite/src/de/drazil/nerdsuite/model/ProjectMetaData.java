@@ -19,15 +19,12 @@ public class ProjectMetaData {
 	private int storageEntity;
 	private Integer blankValue;
 	private String referenceId;
-	private boolean multicolor;
 
-	public void init(int width, int height, int columns, int rows, int storageSize, boolean multicolor) {
-		this.multicolor = multicolor;
+	public void init(int width, int height, int columns, int rows, int storageSize) {
 		this.width = width;
 		this.height = height;
 		this.columns = columns;
 		this.rows = rows;
 		this.storageEntity = storageSize;
-
 	}
 }
