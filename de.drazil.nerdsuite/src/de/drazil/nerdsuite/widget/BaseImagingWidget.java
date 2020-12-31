@@ -200,7 +200,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	protected void computeCursorPosition(int x, int y) {
-		cursorX = x / (conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled()? 2 : 1) * conf.getZoomFactor());
+		cursorX = x / (conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * conf.getZoomFactor());
 		cursorY = y / (conf.pixelPaintHeight * conf.getZoomFactor());
 		if (oldCursorX != cursorX || oldCursorY != cursorY || takePosition) {
 			lastCursorX = oldCursorX;
@@ -232,8 +232,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 			tileChanged = false;
 		}
 
-		tileCursorX = (cursorX - (tileX * conf.tileWidth));
-		tileCursorY = (cursorY - (tileY * conf.tileHeight));
+		tileCursorX = (cursorX - (tileX * conf.tileWidth * conf.zoomFactor));
+		tileCursorY = (cursorY - (tileY * conf.tileHeight * conf.zoomFactor));
 		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY || takePosition) {
 			tileCursorDiffX = tileCursorX - oldTileCursorX;
 			tileCursorDiffX = abs(tileCursorDiffX) > 1 ? tileCursorDiffX : 0;

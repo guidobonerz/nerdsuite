@@ -76,7 +76,9 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
 			ProjectMetaData metadata = service.getMetadata();
 			selectedTileIndexList.forEach(i -> {
-				each(action, i, service.getTile(i), service, null);
+				Tile tile = service.getTile(i);
+				each(action, i, tile, service, null);
+				tile.setDirty(true);
 			});
 			service.redrawTileViewer(selectedTileIndexList, ImagePainterFactory.UPDATE, false);
 		}
