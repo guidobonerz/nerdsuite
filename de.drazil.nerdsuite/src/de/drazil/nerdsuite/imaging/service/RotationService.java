@@ -21,41 +21,56 @@ public class RotationService extends AbstractImagingService {
 
 	private boolean checkIfSquareBase() {
 		Rectangle r = service.getSelection();
-		return r.width != r.height;
+		return service.getSelectedTile().isMulticolorEnabled() ? r.width / 2 != r.height : r.width != r.height;
 	}
 
 	@Override
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
-		Rectangle r = service.getSelection();
+		Rectangle selection = service.getSelection();
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
-		int[] contentSelection = new int[r.width * r.height];
-		int[] targetContentSelection = new int[r.width * r.height];
+		int[] brush = repositoryService.getActiveLayerFromSelectedTile().getBrush();
+		int width = selection.width / (tile.isMulticolorEnabled() ? 2 : 1);
+		int[] sourceContentSelection = new int[width * selection.height];
+		int[] sourceBrushSelection = new int[width * selection.height];
+		int[] targetContentSelection = new int[width * selection.height];
+		int[] targetBrushSelection = new int[width * selection.height];
 		int tileWidth = conf.getTileWidth();
+		boolean multicolor = tile.isMulticolorEnabled();
+		rotate(action, content, sourceContentSelection, targetContentSelection, tileWidth, selection, multicolor, width);
+		if (brush != null && brush.length > 0) {
+			rotate(action, brush, sourceBrushSelection, targetBrushSelection, tileWidth, selection, multicolor, width);
+		}
 
-		for (int x = r.x, cx = 0; x < r.x + r.width; x++, cx++) {
-			for (int y = r.y, cy = 0; y < r.y + r.height; y++, cy++) {
-				contentSelection[cx + cy * r.width] = content[x + y * tileWidth];
+	}
+
+	private void rotate(int action, int[] data, int[] source, int[] target, int tileWidth, Rectangle selection, boolean multicolor, int width) {
+		for (int x = selection.x, cx = 0; x < selection.x + selection.width; x += (multicolor ? 2 : 1), cx++) {
+			for (int y = selection.y, cy = 0; y < selection.y + selection.height; y++, cy++) {
+				source[cx + cy * width] = data[x + y * tileWidth];
 			}
 		}
 
-		for (int y = 0; y < r.height; y++) {
-			for (int x = 0; x < r.width; x++) {
-				int b = contentSelection[x + (y * r.width)];
+		for (int y = 0; y < selection.height; y++) {
+			for (int x = 0; x < width; x++) {
+				int b = source[x + (y * width)];
 				int o = 0;
 				if (action == CCW) {
-					o = (targetContentSelection.length) - (r.width) - (r.width * x) + y;
+					o = (target.length) - (width) - (width * x) + y;
 				} else if (action == CW) {
-					o = (r.width) - y - 1 + (x * r.width);
+					o = (width) - y - 1 + (x * width);
 				}
-				if (o >= 0 && o < (targetContentSelection.length)) {
-					targetContentSelection[o] = b;
+				if (o >= 0 && o < (target.length)) {
+					target[o] = b;
 				}
 			}
 		}
 
-		for (int x = r.x, cx = 0; x < r.x + r.width; x++, cx++) {
-			for (int y = r.y, cy = 0; y < r.y + r.height; y++, cy++) {
-				content[x + y * tileWidth] = targetContentSelection[cx + cy * r.width];
+		for (int x = selection.x, cx = 0; x < selection.x + selection.width; x += (multicolor ? 2 : 1), cx++) {
+			for (int y = selection.y, cy = 0; y < selection.y + selection.height; y++, cy++) {
+				data[x + y * tileWidth] = target[cx + cy * width];
+				if (multicolor) {
+					data[x + 1 + y * tileWidth] = target[cx + cy * width];
+				}
 			}
 		}
 	}

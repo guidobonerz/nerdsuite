@@ -60,7 +60,7 @@ public class PainterWidget extends BaseImagingWidget {
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
-			computeRangeSelection(tileCursorX, tileCursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
+			computeRangeSelection(cursorX, cursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point && (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			int xoff = x - startPos.x;
@@ -84,7 +84,7 @@ public class PainterWidget extends BaseImagingWidget {
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
 		takePosition = true;
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
-			computeRangeSelection(tileCursorX, tileCursorY, 0, false);
+			computeRangeSelection(cursorX, cursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
 		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point && (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			startPos = new Point(x, y);
@@ -97,7 +97,7 @@ public class PainterWidget extends BaseImagingWidget {
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			if (rangeSelectionStarted) {
 				rangeSelectionStarted = false;
-				computeRangeSelection(tileCursorX, tileCursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
+				computeRangeSelection(cursorX, cursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			}
 		} else if (conf.cursorMode == CursorMode.Point) {
 			fireDoRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
@@ -147,9 +147,9 @@ public class PainterWidget extends BaseImagingWidget {
 		return (x + (y * conf.tileWidth / (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)));
 	}
 
-	private void computeRangeSelection(int tileCursorX, int tileCursorY, int mode, boolean enabledSquareSelection) {
-		int x = tileCursorX < 0 ? 0 : tileCursorX;
-		int y = tileCursorY < 0 ? 0 : tileCursorY;
+	private void computeRangeSelection(int cursorX, int cursorY, int mode, boolean enabledSquareSelection) {
+		int x = cursorX < 0 ? 0 : cursorX;
+		int y = cursorY < 0 ? 0 : cursorY;
 
 		if (mode == 0) {
 			selectedPixelRangeX = 0;
@@ -182,7 +182,15 @@ public class PainterWidget extends BaseImagingWidget {
 				y2 = v;
 			}
 
-			tileRepositoryService.setSelection(new Rectangle(x1, y1, x2 - x1 + 1, y2 - y1 + 1));
+			int width = x2 - x1 + 1;
+			int height = y2 - y1 + 1;
+
+			if (tileRepositoryService.getSelectedTile().isMulticolorEnabled()) {
+				x1 *= 2;
+				width *= 2;
+			}
+
+			tileRepositoryService.setSelection(new Rectangle(x1, y1, width, height));
 		}
 	}
 
@@ -284,6 +292,8 @@ public class PainterWidget extends BaseImagingWidget {
 		gc.setForeground(Constants.BRIGHT_ORANGE);
 		gc.setLineWidth(2);
 		gc.setLineStyle(SWT.LINE_DASH);
+		int zoomFactor = conf.getZoomFactor();
+		int width = (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * zoomFactor;
 
 		int x1 = selectedPixelRangeX;
 		int x2 = selectedPixelRangeX2;
@@ -303,7 +313,8 @@ public class PainterWidget extends BaseImagingWidget {
 				y2 = v;
 			}
 
-			gc.drawRectangle(x1 * conf.pixelPaintWidth, y1 * conf.pixelPaintHeight, (x2 - x1) * conf.pixelPaintWidth + conf.pixelPaintWidth, (y2 - y1) * conf.pixelPaintHeight + conf.pixelPaintHeight);
+			gc.drawRectangle(x1 * conf.pixelPaintWidth * width, y1 * conf.pixelPaintHeight * zoomFactor, ((x2 - x1) * conf.pixelPaintWidth + conf.pixelPaintWidth) * width,
+					((y2 - y1) * conf.pixelPaintHeight + conf.pixelPaintHeight) * zoomFactor);
 		}
 	}
 

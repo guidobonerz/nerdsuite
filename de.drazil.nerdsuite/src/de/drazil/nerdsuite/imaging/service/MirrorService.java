@@ -14,30 +14,40 @@ public class MirrorService extends AbstractImagingService {
 	@Override
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
-		Rectangle r = service.getSelection();
-		int tileWidth = conf.getTileWidth();
+		int[] brush = repositoryService.getActiveLayerFromSelectedTile().getBrush();
+		Rectangle selection = service.getSelection();
+		int tileWidth = conf.tileWidth;
+		int loops = tile.isMulticolorEnabled() ? 2 : 1;
+		mirror(action, content, tileWidth, selection, loops);
+		if (brush != null && brush.length > 0) {
+			mirror(action, brush, tileWidth, selection, loops);
+		}
+
+	}
+
+	private void mirror(int action, int[] data, int tileWidth, Rectangle selection, int loops) {
 		if (action == UPPER_HALF) {
-			for (int y = r.y, c = 0; y < r.y + r.height / 2; y++, c++) {
-				for (int x = r.x; x < r.x + r.width; x++) {
-					content[x + ((r.y + r.height - c - 1) * tileWidth)] = content[x + (y * tileWidth)];
+			for (int y = selection.y, c = 0; y < selection.y + selection.height / 2; y++, c++) {
+				for (int x = selection.x; x < selection.x + selection.width; x++) {
+					data[x + ((selection.y + selection.height - c - 1) * tileWidth)] = data[x + (y * tileWidth)];
 				}
 			}
 		} else if (action == LOWER_HALF) {
-			for (int y = r.y, c = 0; y < r.y + r.height / 2; y++, c++) {
-				for (int x = r.x; x < r.x + r.width; x++) {
-					content[x + (y * tileWidth)] = content[x + ((r.y + r.height - c - 1) * tileWidth)];
+			for (int y = selection.y, c = 0; y < selection.y + selection.height / 2; y++, c++) {
+				for (int x = selection.x; x < selection.x + selection.width; x++) {
+					data[x + (y * tileWidth)] = data[x + ((selection.y + selection.height - c - 1) * tileWidth)];
 				}
 			}
 		} else if (action == LEFT_HALF) {
-			for (int y = r.y; y < r.y + r.height; y++) {
-				for (int x = r.x, c = 0; x < r.x + r.width / 2; x++, c++) {
-					content[r.x + r.width - 1 - c + (y * tileWidth)] = content[x + (y * tileWidth)];
+			for (int y = selection.y; y < selection.y + selection.height; y++) {
+				for (int x = selection.x, c = 0; x < selection.x + selection.width / 2; x++, c++) {
+					data[selection.x + selection.width - 1 - c + (y * tileWidth)] = data[x + (y * tileWidth)];
 				}
 			}
 		} else if (action == RIGHT_HALF) {
-			for (int y = r.y; y < r.y + r.height; y++) {
-				for (int x = r.x, c = 0; x < r.x + r.width / 2; x++, c++) {
-					content[x + (y * tileWidth)] = content[r.x + r.width - 1 - c + (y * tileWidth)];
+			for (int y = selection.y; y < selection.y + selection.height; y++) {
+				for (int x = selection.x, c = 0; x < selection.x + selection.width / 2; x++, c++) {
+					data[x + (y * tileWidth)] = data[selection.x + selection.width - 1 - c + (y * tileWidth)];
 				}
 			}
 		}
