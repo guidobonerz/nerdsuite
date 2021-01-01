@@ -21,7 +21,7 @@ public class RotationService extends AbstractImagingService {
 
 	private boolean checkIfSquareBase() {
 		Rectangle r = service.getSelection();
-		return r.width != r.height;
+		return service.getSelectedTile().isMulticolorEnabled() ? r.width / 2 != r.height : r.width != r.height;
 	}
 
 	@Override
@@ -29,34 +29,35 @@ public class RotationService extends AbstractImagingService {
 		Rectangle selection = service.getSelection();
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
 		int[] brush = repositoryService.getActiveLayerFromSelectedTile().getBrush();
-		int[] sourceContentSelection = new int[selection.width * selection.height];
-		int[] sourceBrushSelection = new int[selection.width * selection.height];
-		int[] targetContentSelection = new int[selection.width * selection.height];
-		int[] targetBrushSelection = new int[selection.width * selection.height];
+		int width = selection.width / (tile.isMulticolorEnabled() ? 2 : 1);
+		int[] sourceContentSelection = new int[width * selection.height];
+		int[] sourceBrushSelection = new int[width * selection.height];
+		int[] targetContentSelection = new int[width * selection.height];
+		int[] targetBrushSelection = new int[width * selection.height];
 		int tileWidth = conf.getTileWidth();
-		int loops = tile.isMulticolorEnabled() ? 2 : 1;
-		rotate(action, content, sourceContentSelection, targetContentSelection, tileWidth, selection, loops);
+		boolean multicolor = tile.isMulticolorEnabled();
+		rotate(action, content, sourceContentSelection, targetContentSelection, tileWidth, selection, multicolor, width);
 		if (brush != null && brush.length > 0) {
-			rotate(action, brush, sourceBrushSelection, targetBrushSelection, tileWidth, selection, loops);
+			rotate(action, brush, sourceBrushSelection, targetBrushSelection, tileWidth, selection, multicolor, width);
 		}
 
 	}
 
-	private void rotate(int action, int[] data, int[] source, int[] target, int tileWidth, Rectangle selection, int loops) {
-		for (int x = selection.x, cx = 0; x < selection.x + selection.width; x++, cx++) {
+	private void rotate(int action, int[] data, int[] source, int[] target, int tileWidth, Rectangle selection, boolean multicolor, int width) {
+		for (int x = selection.x, cx = 0; x < selection.x + selection.width; x += (multicolor ? 2 : 1), cx++) {
 			for (int y = selection.y, cy = 0; y < selection.y + selection.height; y++, cy++) {
-				source[cx + cy * selection.width] = data[x + y * tileWidth];
+				source[cx + cy * width] = data[x + y * tileWidth];
 			}
 		}
 
 		for (int y = 0; y < selection.height; y++) {
-			for (int x = 0; x < selection.width; x++) {
-				int b = source[x + (y * selection.width)];
+			for (int x = 0; x < width; x++) {
+				int b = source[x + (y * width)];
 				int o = 0;
 				if (action == CCW) {
-					o = (target.length) - (selection.width) - (selection.width * x) + y;
+					o = (target.length) - (width) - (width * x) + y;
 				} else if (action == CW) {
-					o = (selection.width) - y - 1 + (x * selection.width);
+					o = (width) - y - 1 + (x * width);
 				}
 				if (o >= 0 && o < (target.length)) {
 					target[o] = b;
@@ -64,9 +65,12 @@ public class RotationService extends AbstractImagingService {
 			}
 		}
 
-		for (int x = selection.x, cx = 0; x < selection.x + selection.width; x++, cx++) {
+		for (int x = selection.x, cx = 0; x < selection.x + selection.width; x += (multicolor ? 2 : 1), cx++) {
 			for (int y = selection.y, cy = 0; y < selection.y + selection.height; y++, cy++) {
-				data[x + y * tileWidth] = target[cx + cy * selection.width];
+				data[x + y * tileWidth] = target[cx + cy * width];
+				if (multicolor) {
+					data[x + 1 + y * tileWidth] = target[cx + cy * width];
+				}
 			}
 		}
 	}
