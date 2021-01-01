@@ -15,39 +15,52 @@ public class ShiftService extends AbstractImagingService {
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
-		Rectangle r = service.getSelection();
+		int[] brush = repositoryService.getActiveLayerFromSelectedTile().getBrush();
+		Rectangle selection = service.getSelection();
 		int tileWidth = conf.getTileWidth();
+		int loops = tile.isMulticolorEnabled() ? 2 : 1;
+		shift(action, content, tileWidth, selection, loops);
+		if (brush != null && brush.length > 0) {
+			shift(action, brush, tileWidth, selection, loops);
+		}
+	}
+
+	private void shift(int action, int[] data, int tileWidth, Rectangle selection, int loops) {
 		if (action == UP) {
-			for (int x = r.x; x < r.x + r.width; x++) {
-				int b = content[x + r.y * tileWidth];
-				for (int y = r.y; y < r.y + r.height - 1; y++) {
-					content[x + y * tileWidth] = content[x + (y + 1) * tileWidth];
+			for (int x = selection.x; x < selection.x + selection.width; x++) {
+				int b = data[x + selection.y * tileWidth];
+				for (int y = selection.y; y < selection.y + selection.height - 1; y++) {
+					data[x + y * tileWidth] = data[x + (y + 1) * tileWidth];
 				}
-				content[x + (conf.getTileWidth() * (r.y + r.height - 1))] = b;
+				data[x + (conf.getTileWidth() * (selection.y + selection.height - 1))] = b;
 			}
 		} else if (action == DOWN) {
-			for (int x = r.x; x < r.x + r.width; x++) {
-				int b = content[x + (tileWidth * (r.y + r.height - 1))];
-				for (int y = r.y + r.height - 1; y > r.y; y--) {
-					content[x + y * tileWidth] = content[x + (y - 1) * tileWidth];
+			for (int x = selection.x; x < selection.x + selection.width; x++) {
+				int b = data[x + (tileWidth * (selection.y + selection.height - 1))];
+				for (int y = selection.y + selection.height - 1; y > selection.y; y--) {
+					data[x + y * tileWidth] = data[x + (y - 1) * tileWidth];
 				}
-				content[x + r.y * tileWidth] = b;
+				data[x + selection.y * tileWidth] = b;
 			}
 		} else if (action == LEFT) {
-			for (int y = r.y; y < r.y + r.height; y++) {
-				int b = content[r.x + y * tileWidth];
-				for (int x = r.x; x < r.x + r.width - 1; x++) {
-					content[x + y * tileWidth] = content[(x + 1) + y * tileWidth];
+			for (int l = 0; l < loops; l++) {
+				for (int y = selection.y; y < selection.y + selection.height; y++) {
+					int b = data[selection.x + y * tileWidth];
+					for (int x = selection.x; x < selection.x + selection.width - 1; x++) {
+						data[x + y * tileWidth] = data[(x + 1) + y * tileWidth];
+					}
+					data[(selection.x + selection.width + y * conf.getTileWidth()) - 1] = b;
 				}
-				content[(r.x + r.width + y * conf.getTileWidth()) - 1] = b;
 			}
 		} else if (action == RIGHT) {
-			for (int y = r.y; y < r.y + r.height; y++) {
-				int b = content[(r.x + r.width + y * tileWidth) - 1];
-				for (int x = r.x + r.width - 1; x > r.x; x--) {
-					content[x + y * tileWidth] = content[(x - 1) + y * tileWidth];
+			for (int l = 0; l < loops; l++) {
+				for (int y = selection.y; y < selection.y + selection.height; y++) {
+					int b = data[(selection.x + selection.width + y * tileWidth) - 1];
+					for (int x = selection.x + selection.width - 1; x > selection.x; x--) {
+						data[x + y * tileWidth] = data[(x - 1) + y * tileWidth];
+					}
+					data[selection.x + y * tileWidth] = b;
 				}
-				content[r.x + y * tileWidth] = b;
 			}
 		}
 	}
