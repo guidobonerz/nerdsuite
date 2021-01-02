@@ -50,6 +50,7 @@ import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.InvertService;
 import de.drazil.nerdsuite.imaging.service.MirrorService;
+import de.drazil.nerdsuite.imaging.service.MulticolorToggleService;
 import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
@@ -158,7 +159,8 @@ public class GfxEditorView implements ITileUpdateListener {
 
 			@Override
 			public Color getColorByIndex(int index) {
-				return PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()).get(index).getColor();
+				return PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()).get(index)
+						.getColor();
 			}
 		};
 
@@ -261,6 +263,8 @@ public class GfxEditorView implements ITileUpdateListener {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			boolean multicolor = (Boolean) brokerObject.getTransferObject();
 			multiColorChooser.setMulticolorEnabled(multicolor);
+			MulticolorToggleService service = ServiceFactory.getService(owner, MulticolorToggleService.class);
+			service.execute(multicolor ? 1 : 0);
 			part.setDirty(true);
 		}
 	}
@@ -388,7 +392,8 @@ public class GfxEditorView implements ITileUpdateListener {
 		painter = getPainterWidget();
 		// painter.addDrawListener(repository);
 
-		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED, graphicFormat.getId().endsWith("PETSCII") ? 2 : 4,
+		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED,
+				graphicFormat.getId().endsWith("PETSCII") ? 2 : 4,
 				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
 
 		if (tileRepositoryService.hasReference()) {
@@ -414,7 +419,8 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		actualSize = new Point(painter.getConf().getTileWidthPixel() * painter.getConf().getZoomFactor(), painter.getConf().getTileHeightPixel() * painter.getConf().getZoomFactor());
+		actualSize = new Point(painter.getConf().getTileWidthPixel() * painter.getConf().getZoomFactor(),
+				painter.getConf().getTileHeightPixel() * painter.getConf().getZoomFactor());
 		scrollablePainter.setMinSize(actualSize);
 		int worksheetWidth = 640;
 		int worksheetHeight = 400;
@@ -499,7 +505,8 @@ public class GfxEditorView implements ITileUpdateListener {
 
 				// scrollablePainter.setMinSize(painter.computeSize(pain, height));
 			});
-			painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, colorPaletteProvider, false);
+			painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner,
+					colorPaletteProvider, false);
 			painter.getConf().setPixelGridEnabled(true);
 			painter.getConf().setGridStyle(GridType.Dot);
 			painter.getConf().setTileGridEnabled(false);
@@ -518,7 +525,8 @@ public class GfxEditorView implements ITileUpdateListener {
 	private RepositoryWidget getRepositoryWidget() {
 		if (scrollableRepository == null) {
 			scrollableRepository = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.DOUBLE_BUFFERED);
-			repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner, colorPaletteProvider, true);
+			repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner,
+					colorPaletteProvider, true);
 			repository.getConf().setPixelGridEnabled(false);
 			repository.getConf().setTileGridEnabled(true);
 			repository.getConf().setTileSubGridEnabled(false);
@@ -537,7 +545,8 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private ReferenceWidget getReferenceRepositoryWidget() {
 		if (referenceRepository == null) {
-			referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
+			referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
+					tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
 			referenceRepository.getConf().setRows(16);
 			referenceRepository.getConf().setColumns(16);
 			referenceRepository.getConf().setTileGap(3);
@@ -547,7 +556,8 @@ public class GfxEditorView implements ITileUpdateListener {
 			referenceRepository.getConf().setTileCursorEnabled(true);
 			referenceRepository.getConf().setSeparatorEnabled(false);
 			referenceRepository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE);
-			referenceRepository.getConf().setViewSetup(getViewSetup(metadata.getType(), metadata.getVariant(), "REFERENCE"));
+			referenceRepository.getConf()
+					.setViewSetup(getViewSetup(metadata.getType(), metadata.getVariant(), "REFERENCE"));
 			referenceRepository.getConf().computeDimensions();
 		}
 		return referenceRepository;
@@ -555,14 +565,16 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private ViewSetup getViewSetup(String type, String variant, String widget) {
 
-		ViewSetup vs = pixelMap.stream().filter(v -> v.getType().equals(type) && v.getVariant().equals(variant) && v.getWidget().equals(widget)).findFirst()
-				.orElse(new ViewSetup(null, null, null, 1, 1));
+		ViewSetup vs = pixelMap.stream()
+				.filter(v -> v.getType().equals(type) && v.getVariant().equals(variant) && v.getWidget().equals(widget))
+				.findFirst().orElse(new ViewSetup(null, null, null, 1, 1));
 		return vs;
 	}
 
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
-		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawTemporarySelectedTile);
+		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles
+				|| redrawMode == RedrawMode.DrawTemporarySelectedTile);
 		List<String> tags = new LinkedList<>();
 		tags.add("Animator");
 		E4Utils.setToolItemEnabled(part, modelService, tags, enableAnimationControls);

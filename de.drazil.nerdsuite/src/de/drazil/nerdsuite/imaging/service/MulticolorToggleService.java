@@ -3,14 +3,16 @@ package de.drazil.nerdsuite.imaging.service;
 import de.drazil.nerdsuite.enums.TileAction;
 import de.drazil.nerdsuite.widget.Tile;
 
-public class MulticolorService extends AbstractImagingService {
+public class MulticolorToggleService extends AbstractImagingService {
 
-	public static final int MC_ON = 1;
-	public static final int MC_OFF = 0;
+	public final static int MC_ON = 1;
+	public final static int MC_OFF = 0;
 
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService,
+			TileAction tileAction) {
 		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
+		tile.setMulticolorEnabled(action == 1 ? true : false);
 		for (int i = 0; i < content.length; i += 2) {
 			if (action == MC_ON) {
 				if (content[i] > 0 && content[i + 1] > 0) {
