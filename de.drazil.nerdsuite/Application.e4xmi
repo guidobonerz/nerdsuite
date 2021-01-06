@@ -65,6 +65,7 @@
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_YRilsKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.handledmenuitem.6" label="Source File" command="_ka2AIOwWEeSYVemvddr_Tw"/>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_UCMFoJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.diskimage" label="Disk Image" command="_ZjWoIJVWEeqVGMXe4sKvrA"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_GMkbsE4IEeuEyPePVhT9ig" elementId="de.drazil.nerdsuite.handledmenuitem.disassembler" label="Disassembler" command="_nKHygNHgEeqQR4qhoQvaeg"/>
         </children>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_0_JRwKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.7" label="Save" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk.png" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_7jZo8KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.9" label="Save All" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk_multiple.png"/>
