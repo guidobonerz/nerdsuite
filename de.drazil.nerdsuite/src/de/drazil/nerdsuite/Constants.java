@@ -98,6 +98,7 @@ public class Constants {
 	public final static Font PT_Mono = new Font(Display.getCurrent(), "PT Mono", 10, SWT.NORMAL);
 	public final static Font SourceCodePro_Mono = new Font(Display.getCurrent(), "Source Code Pro", 10, SWT.NORMAL);
 	public final static Font C64_Pro_Mono_FONT = new Font(Display.getCurrent(), "C64 Pro", 6, SWT.NORMAL);
+	public final static Font C64_Pro_Mono_FONT_10 = new Font(Display.getCurrent(), "C64 Pro", 11, SWT.NORMAL);
 	public final static Font Atari_Classic_FONT = new Font(Display.getCurrent(), "Atari Classic", 12, SWT.NORMAL);
 	public final static Font PetMe2Y_FONT = new Font(Display.getCurrent(), "Pet Me 2Y", 12, SWT.NORMAL);
 	public final static Font PetMe642Y_FONT = new Font(Display.getCurrent(), "Pet Me 64 2Y", 12, SWT.NORMAL);

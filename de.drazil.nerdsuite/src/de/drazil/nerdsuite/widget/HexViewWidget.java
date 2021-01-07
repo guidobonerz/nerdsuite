@@ -8,18 +8,9 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.BidiSegmentEvent;
-import org.eclipse.swt.custom.BidiSegmentListener;
-import org.eclipse.swt.custom.ExtendedModifyEvent;
-import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.custom.VerifyKeyListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
@@ -27,7 +18,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableColumn;
 
 import de.drazil.nerdsuite.Constants;
@@ -39,6 +29,7 @@ public class HexViewWidget extends Composite {
 	private byte[] content = null;
 	private StyledText adressArea = null;
 	private StyledText hexArea = null;
+	private StyledText textArea = null;
 	private int totalRows = 0;
 	private int visibleRows = 0;
 
@@ -70,31 +61,31 @@ public class HexViewWidget extends Composite {
 		this.content = content;
 		int i = 0;
 
-		StringBuilder sb = null;
-		sb = new StringBuilder();
+		StringBuilder sbByte = null;
+		StringBuilder sbText = null;
+		StringBuilder sbAdress = null;
+		sbByte = new StringBuilder();
+		sbText = new StringBuilder();
+		sbAdress = new StringBuilder();
 		while (i < content.length) {
 			if (i % 16 == 0) {
 				if (i > 0) {
-					sb.append("\n");
+					sbByte.append("\n");
+					sbText.append("\n");
 				}
-			}
-			sb.append(String.format("%02x ", content[i]));
-			i++;
-		}
-		sb.append("\n");
-		hexArea.setText(sb.toString());
-
-		i = 0;
-		sb = new StringBuilder();
-		while (i < content.length) {
-			if (i % 16 == 0) {
 				totalRows++;
-				sb.append(String.format("%04x:", i));
-				sb.append("\n");
+				sbAdress.append(String.format("%04x:", i));
+				sbAdress.append("\n");
 			}
+			sbByte.append(String.format("%02x ", content[i]));
+			sbText.append(Character.toChars(0xee00 | ((int) content[i]) & 0xff));
 			i++;
 		}
-		adressArea.setText(sb.toString());
+		sbByte.append("\n");
+		sbText.append("\n");
+		hexArea.setText(sbByte.toString());
+		textArea.setText(sbText.toString());
+		adressArea.setText(sbAdress.toString());
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -103,13 +94,13 @@ public class HexViewWidget extends Composite {
 				int fontHeight = 0;
 				try {
 
-					fontGC.setFont(Constants.EDITOR_FONT);
+					fontGC.setFont(Constants.C64_Pro_Mono_FONT);
 					FontMetrics fm = fontGC.getFontMetrics();
 					fontHeight = fm.getHeight();
 				} finally {
 					fontGC.dispose();
 				}
-				visibleRows = adressArea.getClientArea().height / fontHeight;
+				visibleRows = textArea.getClientArea().height / fontHeight;
 				getVerticalBar().setMinimum(0);
 				getVerticalBar().setMaximum(totalRows);
 				getVerticalBar().setSelection(0);
@@ -119,12 +110,13 @@ public class HexViewWidget extends Composite {
 		});
 	}
 
-	private void updateScrollbar(int offset) {
+	private void updateArea(int offset) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				adressArea.setTopIndex(offset);
 				hexArea.setTopIndex(offset);
+				textArea.setTopIndex(offset);
 			}
 		});
 	}
@@ -135,11 +127,11 @@ public class HexViewWidget extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				e.doit = false;
 				int offset = getVerticalBar().getSelection();
-				updateScrollbar(offset);
+				updateArea(offset);
 			}
 		});
 
-		GridLayout layout = new GridLayout(3, false);
+		GridLayout layout = new GridLayout(4, false);
 		setLayout(layout);
 		GridData gd = null;
 		// ==================
@@ -171,61 +163,42 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessHorizontalSpace = false;
 		hexArea = new StyledText(this, SWT.NONE);
 		hexArea.setFont(Constants.EDITOR_FONT);
-		hexArea.addVerifyKeyListener(new VerifyKeyListener() {
-
-			@Override
-			public void verifyKey(VerifyEvent e) {
-				// System.out.printf("pos:%d", hexArea.getCaretOffset());
-				// hexArea.replaceTextRange(1, 1, "A");
-
-				// e.doit = false;
-			}
-		});
-
 		hexArea.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				adressArea.setTopIndex(hexArea.getTopIndex());
+				textArea.setTopIndex(hexArea.getTopIndex());
 				getVerticalBar().setSelection(hexArea.getTopIndex());
-			}
-		});
-		hexArea.addVerifyListener(new VerifyListener() {
-
-			@Override
-			public void verifyText(VerifyEvent e) {
-				StyledText text = (StyledText) e.getSource();
-				final String oldS = text.getText();
-
-				// String newS = oldS.substring(0, e.start) + '0' + oldS.substring(e.end);
-				// System.out.println(newS.substring(0,50));
-
-			}
-		});
-		hexArea.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-			}
-		});
-
-		hexArea.addExtendedModifyListener(new ExtendedModifyListener() {
-
-			@Override
-			public void modifyText(ExtendedModifyEvent e) {
-				System.out.printf("start: %d length: %d   %s\n", e.start, e.length, e.replacedText);
-				// hexEditor.replaceTextRange(e.start, e.length, "0");
-
 			}
 		});
 
 		hexArea.setLayoutData(gd);
 
+		// ==================
+
+		gd = new GridData();
+		gd.horizontalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.FILL;
+		gd.grabExcessVerticalSpace = true;
+		gd.grabExcessHorizontalSpace = true;
+		textArea = new StyledText(this, SWT.NONE);
+		textArea.setFont(Constants.C64_Pro_Mono_FONT_10);
+		textArea.setLayoutData(gd);
+		textArea.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				adressArea.setTopIndex(textArea.getTopIndex());
+				hexArea.setTopIndex(textArea.getTopIndex());
+				getVerticalBar().setSelection(textArea.getTopIndex());
+			}
+		});
 		/*
 		 * TableEditor editor = new TableEditor(tableViewer.getTable());
 		 * 
 		 * Table table = tableViewer.getTable(); table.setFont(Constants.EDITOR_FONT);
 		 * editor.horizontalAlignment = SWT.LEFT; editor.grabHorizontal = true;
 		 */
+
 		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.NONE);
 		ColumnLabelProvider labelProvider1 = new ColumnLabelProvider() {
 			@Override
