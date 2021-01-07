@@ -8,6 +8,8 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BidiSegmentEvent;
+import org.eclipse.swt.custom.BidiSegmentListener;
 import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.StyledText;
@@ -25,6 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableColumn;
 
 import de.drazil.nerdsuite.Constants;
@@ -116,17 +119,26 @@ public class HexViewWidget extends Composite {
 		});
 	}
 
+	private void updateScrollbar(int offset) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				adressArea.setTopIndex(offset);
+				hexArea.setTopIndex(offset);
+			}
+		});
+	}
+
 	private void initialize() {
 		getVerticalBar().addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				e.doit = false;
 				int offset = getVerticalBar().getSelection();
-				System.out.println(getVerticalBar().getSelection());
-				adressArea.setTopIndex(offset);
-				hexArea.setTopIndex(offset);
+				updateScrollbar(offset);
 			}
 		});
+
 		GridLayout layout = new GridLayout(3, false);
 		setLayout(layout);
 		GridData gd = null;
@@ -135,7 +147,7 @@ public class HexViewWidget extends Composite {
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
 		gd.grabExcessVerticalSpace = true;
-		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessHorizontalSpace = false;
 		gd.verticalSpan = 2;
 		TableViewer tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.getTable().setLayoutData(gd);
@@ -163,10 +175,18 @@ public class HexViewWidget extends Composite {
 
 			@Override
 			public void verifyKey(VerifyEvent e) {
-				System.out.printf("pos:%d", hexArea.getCaretOffset());
-				hexArea.replaceTextRange(1, 1, "A");
+				// System.out.printf("pos:%d", hexArea.getCaretOffset());
+				// hexArea.replaceTextRange(1, 1, "A");
 
 				// e.doit = false;
+			}
+		});
+
+		hexArea.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				adressArea.setTopIndex(hexArea.getTopIndex());
+				getVerticalBar().setSelection(hexArea.getTopIndex());
 			}
 		});
 		hexArea.addVerifyListener(new VerifyListener() {

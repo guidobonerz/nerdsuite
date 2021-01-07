@@ -431,6 +431,10 @@
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_tBX6wNHVEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.partdescriptor.DisassemblerView" label="DisassemblerView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView">
+    <menus xsi:type="menu:PopupMenu" xmi:id="_4jnlcFBGEeuifO0quzh2WA" elementId="de.drazil.nerdsuite.popupmenu.0">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_5oRgYFBGEeuifO0quzh2WA" elementId="de.drazil.nerdsuite.handledmenuitem.code" label="Examine as code"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_6s4_EFBGEeuifO0quzh2WA" elementId="de.drazil.nerdsuite.handledmenuitem.data" label="Examine as data"/>
+    </menus>
     <toolbar xmi:id="_4oLJUNHWEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.toolbar.3"/>
   </descriptors>
   <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
