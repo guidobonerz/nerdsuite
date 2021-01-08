@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.disassembler.HexViewContent;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.model.Value;
 
@@ -57,6 +58,10 @@ public class HexViewWidget extends Composite {
 		initialize();
 	}
 
+	private static boolean isPrintableCharacter(char c) {
+		return c >= 32 && c < 127;
+	}
+
 	public void setContent(byte[] content) {
 		this.content = content;
 		int i = 0;
@@ -70,7 +75,6 @@ public class HexViewWidget extends Composite {
 		while (i < content.length) {
 			if (i % 16 == 0) {
 				if (i > 0) {
-					sbByte.append("\n");
 					sbText.append("\n");
 				}
 				totalRows++;
@@ -78,14 +82,14 @@ public class HexViewWidget extends Composite {
 				sbAdress.append("\n");
 			}
 			sbByte.append(String.format("%02x ", content[i]));
-			sbText.append(Character.toChars(0xee00 | ((int) content[i]) & 0xff));
+			// sbText.append(Character.toChars(0xe000 | ((int) content[i]) & 0xff));
+			sbText.append(isPrintableCharacter((char) content[i]) ? (char) content[i] : '_');
 			i++;
 		}
-		sbByte.append("\n");
-		sbText.append("\n");
-		hexArea.setText(sbByte.toString());
-		textArea.setText(sbText.toString());
-		adressArea.setText(sbAdress.toString());
+
+		hexArea.getContent().setText(sbByte.toString());
+		textArea.getContent().setText(sbText.toString());
+		adressArea.getContent().setText(sbAdress.toString());
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -163,12 +167,14 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessHorizontalSpace = false;
 		hexArea = new StyledText(this, SWT.NONE);
 		hexArea.setFont(Constants.EDITOR_FONT);
+		hexArea.setContent(new HexViewContent());
 		hexArea.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				adressArea.setTopIndex(hexArea.getTopIndex());
 				textArea.setTopIndex(hexArea.getTopIndex());
 				getVerticalBar().setSelection(hexArea.getTopIndex());
+				textArea.setSelectionRange(hexArea.getSelectionRange().x / 3, hexArea.getSelectionRange().y / 3);
 			}
 		});
 
@@ -182,14 +188,16 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = true;
 		textArea = new StyledText(this, SWT.NONE);
-		textArea.setFont(Constants.C64_Pro_Mono_FONT_10);
+		textArea.setFont(Constants.EDITOR_FONT);
 		textArea.setLayoutData(gd);
+
 		textArea.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				adressArea.setTopIndex(textArea.getTopIndex());
 				hexArea.setTopIndex(textArea.getTopIndex());
 				getVerticalBar().setSelection(textArea.getTopIndex());
+
 			}
 		});
 		/*
