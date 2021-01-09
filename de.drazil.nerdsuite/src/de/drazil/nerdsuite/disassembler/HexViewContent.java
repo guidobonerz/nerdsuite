@@ -79,6 +79,7 @@ public class HexViewContent implements StyledTextContent {
 
 	@Override
 	public void setText(String text) {
+		content = new StringBuilder();
 		content.append(text);
 		fireSetText();
 	}

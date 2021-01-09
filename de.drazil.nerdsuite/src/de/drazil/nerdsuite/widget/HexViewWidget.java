@@ -16,13 +16,19 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.TableColumn;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.HexViewContent;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
+import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
+import de.drazil.nerdsuite.disassembler.platform.C64Platform;
+import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.Value;
 
 public class HexViewWidget extends Composite {
@@ -31,11 +37,16 @@ public class HexViewWidget extends Composite {
 	private StyledText adressArea = null;
 	private StyledText hexArea = null;
 	private StyledText textArea = null;
+	private Button startAddress;
 	private int totalRows = 0;
 	private int visibleRows = 0;
+	private IPlatform platform;
+
+	private int memoryOffset = 0;
 
 	public HexViewWidget(Composite parent, int style) {
 		super(parent, style);
+		platform = new C64Platform(new KickAssemblerDialect(), false);
 		list = new ArrayList<InstructionLine>();
 		InstructionLine l1 = new InstructionLine();
 		InstructionLine l2 = new InstructionLine();
@@ -64,7 +75,19 @@ public class HexViewWidget extends Composite {
 
 	public void setContent(byte[] content) {
 		this.content = content;
-		int i = 0;
+		prepareContent();
+	}
+
+	private void prepareContent() {
+
+		int contentOffset = 0;
+		memoryOffset = 0;
+		platform.setIgnoreStartAddressBytes(true);
+		if (startAddress.getSelection()) {
+			platform.setIgnoreStartAddressBytes(false);
+			contentOffset = 2;
+			memoryOffset = platform.getCPU().getWord(content, 0);
+		}
 
 		StringBuilder sbByte = null;
 		StringBuilder sbText = null;
@@ -72,16 +95,18 @@ public class HexViewWidget extends Composite {
 		sbByte = new StringBuilder();
 		sbText = new StringBuilder();
 		sbAdress = new StringBuilder();
-		while (i < content.length) {
-			if (i % 16 == 0) {
+		int b = 0;
+		while (b + contentOffset < content.length) {
+			if (b % 16 == 0) {
 				totalRows++;
-				sbAdress.append(String.format("%04x:", i));
+				sbAdress.append(String.format("%04x:", memoryOffset + b));
 				sbAdress.append("\n");
 			}
-			sbByte.append(String.format("%02x ", content[i]));
-			// sbText.append(Character.toChars(0xe000 | ((int) content[i]) & 0xff));
-			sbText.append(isPrintableCharacter((char) content[i]) ? (char) content[i] : '_');
-			i++;
+			sbByte.append(String.format("%02x ", content[b + contentOffset]));
+			sbText.append(
+					isPrintableCharacter((char) content[b + contentOffset]) ? (char) content[b + contentOffset] : '_');
+
+			b++;
 		}
 
 		hexArea.getContent().setText(sbByte.toString());
@@ -107,6 +132,9 @@ public class HexViewWidget extends Composite {
 				getVerticalBar().setSelection(0);
 				getVerticalBar().setThumb(visibleRows);
 				getVerticalBar().setPageIncrement(visibleRows);
+				
+				hexArea.redraw();
+				
 			}
 		});
 	}
@@ -144,10 +172,52 @@ public class HexViewWidget extends Composite {
 		gd.verticalSpan = 2;
 		TableViewer tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.getTable().setLayoutData(gd);
+
+		gd = new GridData();
+		gd.horizontalAlignment = GridData.BEGINNING;
+		gd.verticalAlignment = GridData.FILL;
+		gd.grabExcessVerticalSpace = false;
+		gd.grabExcessHorizontalSpace = true;
+		gd.horizontalSpan = 3;
+
+		RowLayout rowLayout = new RowLayout();
+		rowLayout.wrap = false;
+		rowLayout.pack = false;
+		rowLayout.justify = true;
+		rowLayout.marginLeft = 5;
+		rowLayout.marginTop = 5;
+		rowLayout.marginRight = 5;
+		rowLayout.marginBottom = 5;
+		rowLayout.spacing = 0;
+
+		Composite c = new Composite(this, SWT.NONE);
+		c.setLayout(rowLayout);
+
+		Group group = new Group(c, SWT.NONE);
+		group.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		Button code = new Button(group, SWT.RADIO);
+		code.setText("Code");
+		code.setSelection(true);
+
+		Button data = new Button(group, SWT.RADIO);
+		data.setText("Data");
+
+		startAddress = new Button(c, SWT.CHECK);
+		startAddress.setText("First two bytes represent StartAddress");
+		startAddress.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				prepareContent();
+			}
+		});
+
+		c.setLayoutData(gd);
+
 		// ==================
 		gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
-		gd.verticalAlignment = GridData.FILL;
+		// gd.verticalAlignment = GridData.FILL;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
 		adressArea = new StyledText(this, SWT.READ_ONLY);
@@ -159,7 +229,7 @@ public class HexViewWidget extends Composite {
 		// ==================
 		gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
-		gd.verticalAlignment = GridData.FILL;
+		// gd.verticalAlignment = GridData.FILL;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
 		hexArea = new StyledText(this, SWT.NONE);
@@ -181,9 +251,9 @@ public class HexViewWidget extends Composite {
 
 		gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
-		gd.verticalAlignment = GridData.FILL;
+		// gd.verticalAlignment = GridData.FILL;
 		gd.grabExcessVerticalSpace = true;
-		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessHorizontalSpace = false;
 		textArea = new StyledText(this, SWT.NONE);
 		textArea.setFont(Constants.EDITOR_FONT);
 		textArea.setContent(new HexViewContent(16, 1));
