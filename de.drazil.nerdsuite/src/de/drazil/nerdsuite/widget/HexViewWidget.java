@@ -74,9 +74,6 @@ public class HexViewWidget extends Composite {
 		sbAdress = new StringBuilder();
 		while (i < content.length) {
 			if (i % 16 == 0) {
-				if (i > 0) {
-					sbText.append("\n");
-				}
 				totalRows++;
 				sbAdress.append(String.format("%04x:", i));
 				sbAdress.append("\n");
@@ -167,7 +164,7 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessHorizontalSpace = false;
 		hexArea = new StyledText(this, SWT.NONE);
 		hexArea.setFont(Constants.EDITOR_FONT);
-		hexArea.setContent(new HexViewContent());
+		hexArea.setContent(new HexViewContent(16, 3));
 		hexArea.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -189,6 +186,7 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessHorizontalSpace = true;
 		textArea = new StyledText(this, SWT.NONE);
 		textArea.setFont(Constants.EDITOR_FONT);
+		textArea.setContent(new HexViewContent(16, 1));
 		textArea.setLayoutData(gd);
 
 		textArea.addSelectionListener(new SelectionAdapter() {
@@ -197,7 +195,7 @@ public class HexViewWidget extends Composite {
 				adressArea.setTopIndex(textArea.getTopIndex());
 				hexArea.setTopIndex(textArea.getTopIndex());
 				getVerticalBar().setSelection(textArea.getTopIndex());
-
+				hexArea.setSelectionRange(textArea.getSelectionRange().x * 3, textArea.getSelectionRange().y * 3);
 			}
 		});
 		/*

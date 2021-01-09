@@ -11,10 +11,16 @@ public class HexViewContent implements StyledTextContent {
 
 	private List<TextChangeListener> listenerList;
 	private StringBuilder content;
+	private int columns;
+	private int width;
+	private int columnWidth;
 
-	public HexViewContent() {
+	public HexViewContent(int columns, int width) {
 		listenerList = new ArrayList<TextChangeListener>();
 		content = new StringBuilder();
+		this.columns = columns;
+		this.width = width;
+		this.columnWidth = columns * width;
 	}
 
 	@Override
@@ -33,13 +39,13 @@ public class HexViewContent implements StyledTextContent {
 			return "";
 		}
 		int start = getOffsetAtLine(lineIndex);
-		String s = getTextRange(start, 16 * 3);
+		String s = getTextRange(start, columnWidth);
 		return s;
 	}
 
 	@Override
 	public int getLineAtOffset(int offset) {
-		int result = offset / (16 * 3);
+		int result = offset / columnWidth;
 		if (result >= getLineCount())
 			return getLineCount() - 1;
 
@@ -48,7 +54,7 @@ public class HexViewContent implements StyledTextContent {
 
 	@Override
 	public int getLineCount() {
-		return content.length() - 1 / ((3 * 16) + 1);
+		return content.length() - 1 / (columnWidth + 1);
 	}
 
 	@Override
@@ -58,7 +64,7 @@ public class HexViewContent implements StyledTextContent {
 
 	@Override
 	public int getOffsetAtLine(int lineIndex) {
-		return lineIndex * 3 * 16;
+		return lineIndex * columnWidth;
 	}
 
 	@Override
