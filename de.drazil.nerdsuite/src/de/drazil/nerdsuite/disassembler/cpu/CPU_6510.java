@@ -7,12 +7,13 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.AddressingMode;
+import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Pointer;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.DataType;
+import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
 
@@ -31,7 +32,7 @@ public class CPU_6510 extends AbstractCPU {
 	}
 
 	private void printDisassembly(InstructionLine instructionLine, byte byteArray[]) {
-		if (instructionLine.getDataType() == DataType.AsmInstruction) {
+		if (instructionLine.getInstructionType() == InstructionType.Asm) {
 			Opcode opcode = getOpcodeByIndex(byteArray, instructionLine.getRange().getOffset());
 			Value value2 = getInstructionValue(byteArray, instructionLine.getRange());
 			int len = opcode.getAddressingMode().getLen();
@@ -59,8 +60,8 @@ public class CPU_6510 extends AbstractCPU {
 				String instructionType = opcode.getType();
 
 				int len = opcode.getAddressingMode().getLen();
-				value = getInstructionValue(byteArray, new Range(range.getOffset(), len));
-				currentLine.setDataType(DataType.AsmInstruction);
+				value = getInstructionValue(byteArray, new Range(range.getOffset(), len, RangeType.Code));
+				currentLine.setInstructionType(InstructionType.Asm);
 
 				newLine = split(currentLine, pc, new Value(range.getOffset() + len));
 				printDisassembly(currentLine, byteArray);
@@ -93,7 +94,7 @@ public class CPU_6510 extends AbstractCPU {
 						if (jumpLine != null && !jumpLine.getProgramCounter().matches(value)) {
 							InstructionLine splitLine = split(jumpLine, pc, value.sub(pc));
 							splitLine.setReferenceType(ReferenceType.JumpMark);
-							splitLine.setDataType(DataType.AsmInstruction);
+							splitLine.setInstructionType(InstructionType.Asm);
 						}
 					}
 
@@ -103,7 +104,7 @@ public class CPU_6510 extends AbstractCPU {
 					InstructionLine dataLine = getInstructionLineByPC(value);
 					if (dataLine != null && !dataLine.getProgramCounter().matches(value)) {
 						InstructionLine splitLine = split(dataLine, pc, value.sub(pc));
-						splitLine.setDataType(DataType.Data);
+						splitLine.setInstructionType(InstructionType.Data);
 						splitLine.setReferenceType(ReferenceType.DataReference);
 						splitLine.setPassed(true);
 					}
@@ -114,7 +115,7 @@ public class CPU_6510 extends AbstractCPU {
 			currentLine.setReferenceValue(value);
 			currentLine.setPassed(true);
 			currentLine = markEmptyBlockAsData(byteArray, pc, newLine);
-			if (currentLine.getDataType() != DataType.Unspecified) {
+			if (currentLine.getInstructionType() != InstructionType.Asm) {
 				currentLine = getNextUnspecifiedLine(currentLine);
 			}
 		}
@@ -136,13 +137,14 @@ public class CPU_6510 extends AbstractCPU {
 			rowIndex = getInstructionLineList().indexOf(currentLine);
 
 			while (!foundLine) {
-				if ((specifiedLine = getInstructionLineList().get(rowIndex++)).getDataType() != DataType.Unspecified) {
+				if ((specifiedLine = getInstructionLineList().get(rowIndex++))
+						.getInstructionType() != InstructionType.Data) {
 					foundLine = true;
 					break;
 				}
 			}
 			newLine = split(currentLine, pc, new Value(specifiedLine.getRange().getOffset()));
-			currentLine.setDataType(DataType.Data);
+			currentLine.setInstructionType(InstructionType.Data);
 		}
 
 		return newLine;
@@ -150,7 +152,7 @@ public class CPU_6510 extends AbstractCPU {
 
 	private InstructionLine getNextUnspecifiedLine(InstructionLine currentLine) {
 		InstructionLine nextLine = currentLine;
-		if (currentLine != null && currentLine.getDataType() != DataType.Unspecified) {
+		if (currentLine != null && currentLine.getInstructionType() != InstructionType.Data) {
 			int nextIndex = getInstructionLineList().indexOf(currentLine) + 1;
 			if (nextIndex < getInstructionLineList().size()) {
 				nextLine = getNextUnspecifiedLine(getInstructionLineList().get(nextIndex));
@@ -238,11 +240,11 @@ public class CPU_6510 extends AbstractCPU {
 				// Type.AsmInstruction, ReferenceType.JumpMark, inSubroutine);
 
 				lowTableLine.setReferenceValue(new Value(jumpMark, Value.LOWBYTE));
-				lowTableLine.setDataType(DataType.Data);
+				lowTableLine.setInstructionType(InstructionType.Data);
 				lowTableLine.setReferenceType(ReferenceType.DataReference);
 
 				highTableLine.setReferenceValue(new Value(jumpMark, Value.HIGHBYTE));
-				highTableLine.setDataType(DataType.Data);
+				highTableLine.setInstructionType(InstructionType.Data);
 				highTableLine.setReferenceType(ReferenceType.DataReference);
 			}
 		}
@@ -294,14 +296,14 @@ public class CPU_6510 extends AbstractCPU {
 										for (Pointer pointer : platformData.getPlatformPointerList()) {
 											if (pointer.matches(
 													new Value(Math.min(valueA.getValue(), valueB.getValue())))) {
-												pointer.setType(DataType.AsmInstruction);
+												pointer.setType(RangeType.Code);
 												pointer.setReferenceType(ReferenceType.JumpMark);
 												resultPointer = pointer;
 												break;
 											}
 										}
 										if (resultPointer == null) {
-											resultPointer = new Pointer(reference, DataType.Data,
+											resultPointer = new Pointer(reference, RangeType.Data,
 													ReferenceType.DataReference);
 										}
 										pointerLine.setReferenceValue(resultPointer.getAddress());
@@ -342,7 +344,7 @@ public class CPU_6510 extends AbstractCPU {
 						break;
 					InstructionLine nextLine = getInstructionLineList().get(nextIndex);
 					if (nextLine.getReferenceType() == ReferenceType.DataReference
-							|| nextLine.getDataType() == DataType.AsmInstruction)
+							|| nextLine.getInstructionType() == InstructionType.Asm)
 						break;
 					Range range = currentLine.getRange();
 					range.setLen(range.getLen() + nextLine.getRange().getLen());

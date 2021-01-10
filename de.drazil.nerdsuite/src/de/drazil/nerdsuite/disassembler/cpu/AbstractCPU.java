@@ -10,7 +10,7 @@ import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.DataType;
+import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
 
@@ -70,11 +70,11 @@ public abstract class AbstractCPU implements ICPU {
 
 	@Override
 	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value len) {
-		return splitInstructionLine(instructionLine, basePc, len, DataType.Unspecified, ReferenceType.NoReference);
+		return splitInstructionLine(instructionLine, basePc, len, RangeType.Unspecified, ReferenceType.NoReference);
 	}
 
 	@Override
-	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, DataType dataType,
+	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, RangeType rangeType,
 			ReferenceType referenceType) {
 		Range range = instructionLine.getRange();
 		int oldLen = range.getLen();
@@ -86,8 +86,8 @@ public abstract class AbstractCPU implements ICPU {
 		range.setLen(newLen);
 
 		InstructionLine newInstructionLine = new InstructionLine(basePc.add(range.getOffset() + newLen),
-				new Range(range.getOffset() + newLen, oldLen - newLen));
-		newInstructionLine.setDataType(dataType);
+				new Range(range.getOffset() + newLen, oldLen - newLen,rangeType));
+		
 		newInstructionLine.setReferenceType(referenceType);
 		instructionLineList.add(instructionLineList.indexOf(instructionLine) + 1, newInstructionLine);
 		return newInstructionLine;

@@ -3,19 +3,20 @@ package de.drazil.nerdsuite.disassembler;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.DataType;
 import de.drazil.nerdsuite.model.Value;
 import lombok.Data;
 
 @Data
 public class InstructionLine {
 
+	private String name;
 	private Value programCounter;
 	private Range range;
 	private Value referenceValue;
-	private DataType dataType;
+	private InstructionType instructionType;
 	private ReferenceType referenceType;
 	private boolean isPassed;
 	private boolean endOfCode;
@@ -27,14 +28,15 @@ public class InstructionLine {
 	}
 
 	public InstructionLine(Value programCounter, Range range) {
-		this(programCounter, range, DataType.Unspecified, ReferenceType.NoReference);
+		this(programCounter, range, InstructionType.Asm, ReferenceType.NoReference);
 	}
 
-	public InstructionLine(Value programCounter, Range range, DataType dataType, ReferenceType referenceType) {
+	public InstructionLine(Value programCounter, Range range, InstructionType instructionType,
+			ReferenceType referenceType) {
 		this.callerList = new ArrayList<Value>();
 		this.programCounter = programCounter;
 		this.range = range;
-		this.dataType = dataType;
+		this.instructionType = instructionType;
 		this.referenceType = referenceType;
 		this.isPassed = false;
 		this.endOfCode = false;
@@ -51,7 +53,7 @@ public class InstructionLine {
 
 	@Override
 	public String toString() {
-		return dataType + "| pc:" + getProgramCounter() + ", " + range + "  refValue:" + getReferenceValue() + "    "
-				+ getReferenceType();
+		return instructionType + "| pc:" + getProgramCounter() + ", " + range + "  refValue:" + getReferenceValue()
+				+ "    " + getReferenceType();
 	}
 }
