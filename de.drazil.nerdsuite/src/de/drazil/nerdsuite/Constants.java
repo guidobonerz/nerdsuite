@@ -49,11 +49,15 @@ public class Constants {
 
 	public final static Color SWAP_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#0000C0"));
 	public final static Color SELECTION_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C00000"));
-	public final static Color TEMPORARY_SELECTION_TILE_MARKER_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#F4D03F"));
+	public final static Color TEMPORARY_SELECTION_TILE_MARKER_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#F4D03F"));
 
-	public final static Color SOURCE_EDITOR_FOREGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#C0C0C0"));
-	public final static Color SOURCE_EDITOR_BACKGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
-	public final static Color SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#404040"));
+	public final static Color SOURCE_EDITOR_FOREGROUND_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#C0C0C0"));
+	public final static Color SOURCE_EDITOR_BACKGROUND_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#000000"));
+	public final static Color SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#404040"));
 	public final static Color PIXEL_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#686868"));
 	public final static Color LINE_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#383838"));
 	public final static Color TILE_SUB_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#FFC30D"));
@@ -65,6 +69,8 @@ public class Constants {
 	public final static Color DEFAULT_COMMENT_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#20CB6E"));
 	public final static Color CBM_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#786abd"));
 	public final static Color CBM_BG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#403285"));
+	public final static Color CODE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#a4957d"));
+	public final static Color DATA_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#00747d"));
 
 	// public final static Color DEFAULT_STRING_COLOR = new
 	// Color(Display.getCurrent(), SwtUtil.toRGB("#485CCB"));
@@ -78,7 +84,8 @@ public class Constants {
 	public final static Color DEFAULT_DIRCETIVE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#809E35"));
 	public final static Color DEFAULT_OPCODE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#9090FF"));
 	public final static Color DEFAULT_ILLEGAL_OPCODE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A6924B"));
-	public final static Color DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A64425"));
+	public final static Color DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR = new Color(Display.getCurrent(),
+			SwtUtil.toRGB("#A64425"));
 	public final static Color DEFAULT_CURLY_BRACES_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A3A3A3"));
 	public final static Color WHITE = new Color(Display.getCurrent(), SwtUtil.toRGB("#FFFFFF"));
 	public final static Color BLACK = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
@@ -101,15 +108,17 @@ public class Constants {
 	public final static Font C64_Pro_Mono_FONT_10 = new Font(Display.getCurrent(), "C64 Pro", 11, SWT.NORMAL);
 	public final static Font Atari_Classic_FONT = new Font(Display.getCurrent(), "Atari Classic", 10, SWT.NORMAL);
 	public final static Font CPC_FONT = new Font(Display.getCurrent(), "Amstrad CPC correcy", 11, SWT.NORMAL);
-	
+
 	public final static Font PetMe2Y_FONT = new Font(Display.getCurrent(), "Pet Me 2Y", 12, SWT.NORMAL);
 	public final static Font PetMe642Y_FONT = new Font(Display.getCurrent(), "Pet Me 64 2Y", 12, SWT.NORMAL);
 	public final static Font PetMe64_FONT = new Font(Display.getCurrent(), "Pet Me 64", 6, SWT.NORMAL);
 
-	public final static TextStyle TEXTSTYLE_PetMe642Y_ASCII = new TextStyle(PetMe642Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_PetMe642Y_ASCII = new TextStyle(PetMe642Y_FONT, DEFAULT_COMMENT_COLOR,
+			BLACK);
 	public final static TextStyle TEXTSTYLE_PetMe2Y_ASCII = new TextStyle(PetMe2Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_C64_ASCII = new TextStyle(C64_Pro_Mono_FONT, DEFAULT_COMMENT_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_ATARI_ASCII = new TextStyle(Atari_Classic_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_ATARI_ASCII = new TextStyle(Atari_Classic_FONT, DEFAULT_COMMENT_COLOR,
+			BLACK);
 	public final static TextStyle TEXTSTYLE_STRING = new TextStyle(EDITOR_FONT, DEFAULT_STRING_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_COMMENT = new TextStyle(EDITOR_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_DECIMAL = new TextStyle(EDITOR_FONT, DEFAULT_DECIMAL_COLOR, BLACK);
@@ -118,9 +127,15 @@ public class Constants {
 	public final static TextStyle TEXTSTYLE_LABEL = new TextStyle(EDITOR_FONT, DEFAULT_LABEL_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_DIRECTIVE = new TextStyle(EDITOR_FONT, DEFAULT_DIRCETIVE_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_OPCODE_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_ILLEGAL_OPCODE_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_UNSTABLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_CURLY_BRACES = new TextStyle(EDITOR_FONT, DEFAULT_CURLY_BRACES_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_ILLEGAL_OPCODE_COLOR,
+			BLACK);
+	public final static TextStyle TEXTSTYLE_UNSTABLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT,
+			DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_CURLY_BRACES = new TextStyle(EDITOR_FONT, DEFAULT_CURLY_BRACES_COLOR,
+			BLACK);
+	public final static TextStyle TEXTSTYLE_CODE = new TextStyle(EDITOR_FONT, CODE_COLOR, WHITE);
+	public final static TextStyle TEXTSTYLE_DATA = new TextStyle(EDITOR_FONT, DATA_COLOR, WHITE);
+	public final static TextStyle TEXTSTYLE_UNDEFINED = new TextStyle(EDITOR_FONT, WHITE, BLACK);
 
 	public final static String T_C64_BASIC_STRING = "C64BASIC_STRING";
 	public final static String T_Atari_BASIC_STRING = "Atari_BASIC_STRING";
@@ -139,6 +154,7 @@ public class Constants {
 	public final static String T_ILLEGAL_OPCODE = "ILLEGAL_OPCODE";
 	public final static String T_UNSTABLE_ILLEGAL_OPCODE = "UNSTABLE_ILLEGAL_OPCODE";
 
-	public final static String PROJECT_FILE_INFO_HEADER = "// Nerdsuite Project by drazil 2017-2020\n" + "// Projectname_____: %s\n" + "// Created on______: %s\n" + "// Changed on______: %s\n";
+	public final static String PROJECT_FILE_INFO_HEADER = "// Nerdsuite Project by drazil 2017-2020\n"
+			+ "// Projectname_____: %s\n" + "// Created on______: %s\n" + "// Changed on______: %s\n";
 
 }

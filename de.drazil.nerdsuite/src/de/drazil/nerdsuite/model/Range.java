@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Range
-{
+public class Range {
 	private int offset = 0;
 	private int len = 0;
+	private RangeType rangeType;
 }

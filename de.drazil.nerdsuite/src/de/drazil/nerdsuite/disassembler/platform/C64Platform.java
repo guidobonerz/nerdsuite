@@ -12,8 +12,9 @@ import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
+import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.DataType;
+import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 
 public class C64Platform extends AbstractPlatform
@@ -67,8 +68,8 @@ public class C64Platform extends AbstractPlatform
 			Value asmStart = basicParser.getLastBasicLineAddress(byteArray).add(2);
 			InstructionLine instructionLine = getCPU().getInstructionLineList().get(0);
 			instructionLine.setPassed(true);
-			instructionLine.setDataType(DataType.BasicInstruction);
-			getCPU().splitInstructionLine(instructionLine, programCounter, asmStart.sub(programCounter).add(2), DataType.Unspecified, ReferenceType.NoReference);
+			instructionLine.setInstructionType(InstructionType.Basic);
+			getCPU().splitInstructionLine(instructionLine, programCounter, asmStart.sub(programCounter).add(2), RangeType.Unspecified, ReferenceType.NoReference);
 		}
 	}
 
