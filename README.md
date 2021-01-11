@@ -14,10 +14,11 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 11-01-2021:
+- start to implement interactive(visual) disassembler
+
 Last Changes 26-11-2020:
 - pixel paint performance/gapless painting
-
-
 
 Last Changes 25-11-2020:
 - PETASCII Painter
