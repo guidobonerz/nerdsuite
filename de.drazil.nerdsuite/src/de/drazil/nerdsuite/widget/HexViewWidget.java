@@ -1,16 +1,25 @@
 package de.drazil.nerdsuite.widget;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.LineStyleEvent;
+import org.eclipse.swt.custom.LineStyleListener;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
@@ -29,25 +38,35 @@ import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
 import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
+import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 
-public class HexViewWidget extends Composite {
+public class HexViewWidget extends Composite implements LineStyleListener {
 	private List<InstructionLine> list;
 	private byte[] content = null;
 	private StyledText adressArea = null;
 	private StyledText hexArea = null;
 	private StyledText textArea = null;
 	private Button startAddress;
-	private int totalRows = 0;
+	private Button code;
+	private Button data;
+	private Button undefined;
 	private int visibleRows = 0;
 	private IPlatform platform;
-
-	private int memoryOffset = 0;
+	private List<Range> rangeList;
+	private int selStart;
+	private int selLength;
+	private int contentOffset = 0;
+	private boolean selectStart = false;
+	private RangeType selectedRangeType = RangeType.Code;
 
 	public HexViewWidget(Composite parent, int style) {
 		super(parent, style);
 		platform = new C64Platform(new KickAssemblerDialect(), false);
 		list = new ArrayList<InstructionLine>();
+		rangeList = new ArrayList<Range>();
+
 		InstructionLine l1 = new InstructionLine();
 		InstructionLine l2 = new InstructionLine();
 		InstructionLine l3 = new InstructionLine();
@@ -75,13 +94,102 @@ public class HexViewWidget extends Composite {
 
 	public void setContent(byte[] content) {
 		this.content = content;
+		rangeList = new ArrayList<Range>();
+		rangeList.add(new Range(0, content.length, RangeType.Unspecified));
 		prepareContent();
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				GC fontGC = new GC(Display.getCurrent());
+				int fontHeight = 0;
+				try {
+
+					fontGC.setFont(Constants.EDITOR_FONT);
+					FontMetrics fm = fontGC.getFontMetrics();
+					fontHeight = fm.getHeight();
+				} finally {
+					fontGC.dispose();
+				}
+				visibleRows = getClientArea().height / fontHeight;
+				getVerticalBar().setMinimum(0);
+				getVerticalBar().setMaximum(hexArea.getLineCount());
+				getVerticalBar().setSelection(0);
+				getVerticalBar().setThumb(visibleRows);
+				getVerticalBar().setPageIncrement(visibleRows);
+				adressArea.redraw();
+				hexArea.redraw();
+				textArea.redraw();
+			}
+		});
+	}
+
+	private void handleDataRange(int start, int length, RangeType rangeType) {
+		List<Range> result = findRanges(start, length);
+		for (Range range : result) {
+			splitRange(range, rangeType, start, length);
+		}
+		Range lastRange = null;
+		for (int i = 0; i < rangeList.size(); i++) {
+			Range r = rangeList.get(i);
+			if (lastRange != null && lastRange.getRangeType() == r.getRangeType()) {
+				int l = lastRange.getLen() + r.getLen();
+				lastRange.setLen(l);
+				rangeList.remove(i);
+			}
+			lastRange = r;
+		}
+	}
+
+	private List<Range> findRanges(int start, int length) {
+
+		List<Range> resultList = rangeList.stream()
+				.filter(r -> start <= r.getOffset() && start + length >= r.getOffset() + r.getLen() /* OVER ALL */)
+				.collect(Collectors.toList());
+		for (Range r : resultList) {
+			rangeList.remove(r);
+		}
+
+		resultList = rangeList
+				.stream().filter(r -> start >= r.getOffset() && start + length <= r.getOffset() + r.getLen() /* IN */
+						|| start > r.getOffset() && start < r.getOffset() + r.getLen()
+								&& start + length >= r.getOffset() + r.getLen() /* OVERLAP START */
+						|| start < r.getOffset() && start + length > r.getOffset()
+								&& start + length < r.getOffset() + r.getLen()/* OVERLAP END */)
+				.collect(Collectors.toList());
+		Collections.sort(resultList, new Comparator<Range>() {
+			@Override
+			public int compare(Range o1, Range o2) {
+				return Integer.compare(o1.getOffset(), o2.getOffset());
+			}
+		});
+		return resultList;
+	}
+
+	private void splitRange(Range r, RangeType rangeType, int start, int length) {
+		int rangeIndex = rangeList.indexOf(r);
+		int oldStart = r.getOffset();
+		int oldEnd = r.getLen();
+		if (start >= r.getOffset() && start + length <= r.getOffset() + r.getLen()) /* IN */ {
+			r.setLen(start - oldStart);
+			Range newRange1 = new Range(start, length, rangeType);
+			Range newRange2 = new Range(start + length, oldEnd - (start + length), r.getRangeType());
+			rangeList.add(rangeIndex + 1, newRange1);
+			rangeList.add(rangeIndex + 2, newRange2);
+		} else if (start > r.getOffset() && start < r.getOffset() + r.getLen()
+				&& start + length >= r.getOffset() + r.getLen()) /* OVERLAP START */ {
+			r.setLen(start - oldStart);
+			Range nextRange = rangeList.get(rangeIndex + 1);
+			nextRange.setOffset(start + length);
+			nextRange.setLen(nextRange.getOffset() + nextRange.getLen() - ((start + length)));
+			rangeList.add(rangeIndex + 1, new Range(start, length, rangeType));
+		}
 	}
 
 	private void prepareContent() {
 
-		int contentOffset = 0;
-		memoryOffset = 0;
+		int b = 0;
+		contentOffset = 0;
+		int memoryOffset = 0;
 		platform.setIgnoreStartAddressBytes(true);
 		if (startAddress.getSelection()) {
 			platform.setIgnoreStartAddressBytes(false);
@@ -95,48 +203,20 @@ public class HexViewWidget extends Composite {
 		sbByte = new StringBuilder();
 		sbText = new StringBuilder();
 		sbAdress = new StringBuilder();
-		int b = 0;
+
 		while (b + contentOffset < content.length) {
 			if (b % 16 == 0) {
-				totalRows++;
 				sbAdress.append(String.format("%04x:", memoryOffset + b));
-				sbAdress.append("\n");
 			}
 			sbByte.append(String.format("%02x ", content[b + contentOffset]));
 			sbText.append(
 					isPrintableCharacter((char) content[b + contentOffset]) ? (char) content[b + contentOffset] : '_');
-
 			b++;
 		}
 
 		hexArea.getContent().setText(sbByte.toString());
 		textArea.getContent().setText(sbText.toString());
 		adressArea.getContent().setText(sbAdress.toString());
-
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				GC fontGC = new GC(Display.getCurrent());
-				int fontHeight = 0;
-				try {
-
-					fontGC.setFont(Constants.C64_Pro_Mono_FONT);
-					FontMetrics fm = fontGC.getFontMetrics();
-					fontHeight = fm.getHeight();
-				} finally {
-					fontGC.dispose();
-				}
-				visibleRows = textArea.getClientArea().height / fontHeight;
-				getVerticalBar().setMinimum(0);
-				getVerticalBar().setMaximum(totalRows);
-				getVerticalBar().setSelection(0);
-				getVerticalBar().setThumb(visibleRows);
-				getVerticalBar().setPageIncrement(visibleRows);
-				
-				hexArea.redraw();
-				
-			}
-		});
 	}
 
 	private void updateArea(int offset) {
@@ -148,6 +228,32 @@ public class HexViewWidget extends Composite {
 				textArea.setTopIndex(offset);
 			}
 		});
+	}
+
+	@Override
+	public void lineGetStyle(LineStyleEvent event) {
+		List<StyleRange> list = new ArrayList<StyleRange>();
+		for (Range range : rangeList) {
+
+			Color fgc = Constants.BLACK;
+			Color bgc = null;
+			switch (range.getRangeType()) {
+			case Code:
+				bgc = Constants.CODE_COLOR;
+				break;
+			case Data:
+				bgc = Constants.DATA_COLOR;
+				break;
+			default:
+				bgc = Constants.WHITE;
+				break;
+			}
+
+			StyleRange styleRange = new StyleRange(range.getOffset() * 3 - contentOffset * 3, range.getLen() * 3, fgc,
+					bgc);
+			list.add(styleRange);
+		}
+		event.styles = list.toArray(new StyleRange[list.size()]);
 	}
 
 	private void initialize() {
@@ -171,6 +277,27 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessHorizontalSpace = false;
 		gd.verticalSpan = 2;
 		TableViewer tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+
+		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		ColumnLabelProvider labelProvider1 = new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				InstructionLine il = (InstructionLine) element;
+				String[] userObject = (String[]) il.getUserObject();
+				return String.format("%04x> %-10s %s", il.getProgramCounter().getValue(), userObject[0], userObject[1]);
+			}
+
+			@Override
+			public Font getFont(Object element) {
+				return Constants.EDITOR_FONT;
+			}
+		};
+		tableViewerColumn1.setLabelProvider(labelProvider1);
+		TableColumn codeLine = tableViewerColumn1.getColumn();
+		codeLine.setWidth(300);
+
+		tableViewer.setContentProvider(new ArrayContentProvider());
+		tableViewer.setInput(list);
 		tableViewer.getTable().setLayoutData(gd);
 
 		gd = new GridData();
@@ -196,12 +323,50 @@ public class HexViewWidget extends Composite {
 		Group group = new Group(c, SWT.NONE);
 		group.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button code = new Button(group, SWT.RADIO);
+		code = new Button(group, SWT.RADIO);
+		code.setBackground(Constants.CODE_COLOR);
+		code.setForeground(Constants.WHITE);
 		code.setText("Code");
 		code.setSelection(true);
+		code.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				selectedRangeType = RangeType.Code;
+				hexArea.setSelectionForeground(Constants.WHITE);
+				textArea.setSelectionForeground(Constants.WHITE);
+				hexArea.setSelectionBackground(Constants.CODE_COLOR);
+				textArea.setSelectionBackground(Constants.CODE_COLOR);
+			}
+		});
 
-		Button data = new Button(group, SWT.RADIO);
+		data = new Button(group, SWT.RADIO);
 		data.setText("Data");
+		data.setBackground(Constants.DATA_COLOR);
+		data.setForeground(Constants.WHITE);
+		data.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				selectedRangeType = RangeType.Data;
+				hexArea.setSelectionForeground(Constants.WHITE);
+				textArea.setSelectionForeground(Constants.WHITE);
+				hexArea.setSelectionBackground(Constants.DATA_COLOR);
+				textArea.setSelectionBackground(Constants.DATA_COLOR);
+			}
+		});
+
+		undefined = new Button(group, SWT.RADIO);
+		undefined.setText("Undefined");
+		undefined.setBackground(Constants.WHITE);
+		undefined.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				selectedRangeType = RangeType.Unspecified;
+				hexArea.setSelectionForeground(Constants.BLACK);
+				textArea.setSelectionForeground(Constants.BLACK);
+				hexArea.setSelectionBackground(Constants.WHITE);
+				textArea.setSelectionBackground(Constants.WHITE);
+			}
+		});
 
 		startAddress = new Button(c, SWT.CHECK);
 		startAddress.setText("First two bytes represent StartAddress");
@@ -209,6 +374,7 @@ public class HexViewWidget extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				prepareContent();
+				hexArea.redraw();
 			}
 		});
 
@@ -217,31 +383,52 @@ public class HexViewWidget extends Composite {
 		// ==================
 		gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
-		// gd.verticalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.BEGINNING;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
 		adressArea = new StyledText(this, SWT.READ_ONLY);
 		adressArea.setEditable(false);
 		adressArea.setEnabled(false);
+		adressArea.setContent(new HexViewContent(5));
 		adressArea.setFont(Constants.EDITOR_FONT);
 		adressArea.setLayoutData(gd);
 
 		// ==================
 		gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
-		// gd.verticalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.BEGINNING;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
 		hexArea = new StyledText(this, SWT.NONE);
 		hexArea.setFont(Constants.EDITOR_FONT);
-		hexArea.setContent(new HexViewContent(16, 3));
+		hexArea.setSelectionBackground(Constants.CODE_COLOR);
+		hexArea.setContent(new HexViewContent(48));
+		hexArea.addLineStyleListener(this);
+		hexArea.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				selectStart = false;
+				selStart = hexArea.getSelectionRange().x / 3;
+				selLength = hexArea.getSelectionRange().y / 3;
+				textArea.setSelectionRange(selStart, selLength);
+				if (selLength > 0) {
+					handleDataRange(selStart, selLength, selectedRangeType);
+					hexArea.redraw();
+				}
+
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				selectStart = true;
+			}
+		});
 		hexArea.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				adressArea.setTopIndex(hexArea.getTopIndex());
 				textArea.setTopIndex(hexArea.getTopIndex());
 				getVerticalBar().setSelection(hexArea.getTopIndex());
-				textArea.setSelectionRange(hexArea.getSelectionRange().x / 3, hexArea.getSelectionRange().y / 3);
 			}
 		});
 
@@ -251,15 +438,17 @@ public class HexViewWidget extends Composite {
 
 		gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
-		// gd.verticalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.BEGINNING;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
 		textArea = new StyledText(this, SWT.NONE);
 		textArea.setFont(Constants.EDITOR_FONT);
-		textArea.setContent(new HexViewContent(16, 1));
+		textArea.setSelectionBackground(Constants.CODE_COLOR);
+		textArea.setContent(new HexViewContent(16));
 		textArea.setLayoutData(gd);
 
 		textArea.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				adressArea.setTopIndex(textArea.getTopIndex());
@@ -268,72 +457,6 @@ public class HexViewWidget extends Composite {
 				hexArea.setSelectionRange(textArea.getSelectionRange().x * 3, textArea.getSelectionRange().y * 3);
 			}
 		});
-		/*
-		 * TableEditor editor = new TableEditor(tableViewer.getTable());
-		 * 
-		 * Table table = tableViewer.getTable(); table.setFont(Constants.EDITOR_FONT);
-		 * editor.horizontalAlignment = SWT.LEFT; editor.grabHorizontal = true;
-		 */
-
-		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		ColumnLabelProvider labelProvider1 = new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				InstructionLine il = (InstructionLine) element;
-				String[] userObject = (String[]) il.getUserObject();
-				return String.format("%04x> %-10s %s", il.getProgramCounter().getValue(), userObject[0], userObject[1]);
-			}
-
-			@Override
-			public Font getFont(Object element) {
-				return Constants.EDITOR_FONT;
-			}
-		};
-		tableViewerColumn1.setLabelProvider(labelProvider1);
-		TableColumn codeLine = tableViewerColumn1.getColumn();
-		codeLine.setWidth(300);
-		/*
-		 * TableViewerColumn tableViewerColumn2 = new TableViewerColumn(tableViewer,
-		 * SWT.NONE); ColumnLabelProvider labelProvider2 = new ColumnLabelProvider() {
-		 * 
-		 * @Override public String getText(Object element) {
-		 * 
-		 * return String.format("%04x %02x %02x %02x %02x %02x %02x %02x %02x %s", 0, 1,
-		 * 2, 3, 4, 5, 6, 7, 8, "abcdefgh"); }
-		 * 
-		 * @Override public Font getFont(Object element) { FontData fd[] =
-		 * Constants.EDITOR_FONT.getFontData(); fd[0].setHeight(12); Font f = new
-		 * Font(Display.getDefault(), fd[0]); return f; } };
-		 * 
-		 * tableViewerColumn2.setLabelProvider(labelProvider2); TableColumn dataLine =
-		 * tableViewerColumn2.getColumn(); dataLine.setWidth(300);
-		 */
-
-		tableViewer.setContentProvider(new ArrayContentProvider());
-		tableViewer.setInput(list);
-		/*
-		 * table.addListener(SWT.MouseDown, new Listener() { public void
-		 * handleEvent(Event event) { Rectangle clientArea = table.getClientArea();
-		 * Point pt = new Point(event.x, event.y); int index = table.getTopIndex();
-		 * while (index < table.getItemCount()) { boolean visible = false; final
-		 * TableItem item = table.getItem(index); for (int i = 0; i <
-		 * table.getColumnCount(); i++) { Rectangle rect = item.getBounds(i); if
-		 * (rect.contains(pt)) { final int column = i; Text text = new Text(table,
-		 * SWT.NONE);
-		 * 
-		 * Listener textListener = new Listener() { public void handleEvent(final Event
-		 * e) { switch (e.type) { case SWT.FocusOut: item.setText(column,
-		 * text.getText()); text.dispose(); break; case SWT.Traverse: switch (e.detail)
-		 * { case SWT.TRAVERSE_RETURN: item.setText(column, text.getText()); // FALL
-		 * THROUGH case SWT.TRAVERSE_ESCAPE: text.dispose(); e.doit = false; } break; }
-		 * } }; text.addListener(SWT.FocusOut, textListener);
-		 * text.addListener(SWT.Traverse, textListener); editor.setEditor(text, item,
-		 * i);
-		 * 
-		 * text.setText(item.getText(i)); // text.selectAll(); text.setFocus(); return;
-		 * } if (!visible && rect.intersects(clientArea)) { visible = true; } } if
-		 * (!visible) return; index++; } } });
-		 */
 
 	}
 }

@@ -7,7 +7,7 @@ import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.DataType;
+import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 
 public interface ICPU
@@ -28,7 +28,7 @@ public interface ICPU
 
 	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset);
 
-	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, DataType type, ReferenceType referenceType);
+	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, RangeType type, ReferenceType referenceType);
 
 	public InstructionLine findInstructionLine(Value value);
 

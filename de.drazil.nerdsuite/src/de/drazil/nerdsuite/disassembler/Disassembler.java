@@ -9,10 +9,11 @@ import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
 import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.ConversionType;
+import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.DataType;
+import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.util.NumericConverter;
 
 public class Disassembler {
@@ -67,7 +68,7 @@ public class Disassembler {
 		String s2 = "";
 		String s3 = " ";
 		String s0 = "";
-		if (opcode != null && instructionLine.getDataType() == DataType.AsmInstruction) {
+		if (opcode != null && instructionLine.getInstructionType() == InstructionType.Asm) {
 			s1 = opcode.getMnemonic();
 			s2 = AbstractCPU.getMnemonicArgument(opcode, range, byteArray);
 			System.out.printf("%s: %3s %8s %30s len:%s %s\n", pc, s1, s2,
