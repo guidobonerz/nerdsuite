@@ -1,6 +1,8 @@
 package de.drazil.nerdsuite.widget;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +57,7 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 	private List<Range> rangeList;
 	private int selStart;
 	private int selLength;
+	private int contentOffset = 0;
 	private boolean selectStart = false;
 	private RangeType selectedRangeType = RangeType.Code;
 
@@ -123,40 +126,69 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 	private void handleDataRange(int start, int length, RangeType rangeType) {
 		List<Range> result = findRanges(start, length);
 		for (Range range : result) {
-			// System.out.printf("found start:%d end:%d", range.getOffset(),
-			// range.getLen());
-			splitOrRemoveRange(range, rangeType, start, length);
+			splitRange(range, rangeType, start, length);
 		}
-	}
-
-	private void splitOrRemoveRange(Range range, RangeType rangeType, int start, int length) {
-		int rangeIndex = rangeList.indexOf(range);
-		if (start > range.getOffset() && start + length < range.getOffset() + range.getLen()) {
-			int oldStart = range.getOffset();
-			int oldEnd = range.getLen();
-			range.setLen(start - oldStart);
-			Range newRange1 = new Range(start, length, rangeType);
-			Range newRange2 = new Range(start + length, oldEnd - (start + length), range.getRangeType());
-			rangeList.add(newRange1);
-			rangeList.add(newRange2);
+		Range lastRange = null;
+		for (int i = 0; i < rangeList.size(); i++) {
+			Range r = rangeList.get(i);
+			if (lastRange != null && lastRange.getRangeType() == r.getRangeType()) {
+				int l = lastRange.getLen() + r.getLen();
+				lastRange.setLen(l);
+				rangeList.remove(i);
+			}
+			lastRange = r;
 		}
 	}
 
 	private List<Range> findRanges(int start, int length) {
-		List<Range> resultList = rangeList.stream().filter(
-				r -> start <= r.getOffset() && start <= r.getOffset() && start + length <= r.getOffset() + r.getLen()
-						|| start >= r.getOffset() && start + length >= r.getOffset() + r.getLen()
-						|| start <= r.getOffset() && start + length >= r.getOffset() + r.getLen()
-						|| start >= r.getOffset() && start + length <= r.getOffset() + r.getLen())
-				.collect(Collectors.toList());
 
+		List<Range> resultList = rangeList.stream()
+				.filter(r -> start <= r.getOffset() && start + length >= r.getOffset() + r.getLen() /* OVER ALL */)
+				.collect(Collectors.toList());
+		for (Range r : resultList) {
+			rangeList.remove(r);
+		}
+
+		resultList = rangeList
+				.stream().filter(r -> start >= r.getOffset() && start + length <= r.getOffset() + r.getLen() /* IN */
+						|| start > r.getOffset() && start < r.getOffset() + r.getLen()
+								&& start + length >= r.getOffset() + r.getLen() /* OVERLAP START */
+						|| start < r.getOffset() && start + length > r.getOffset()
+								&& start + length < r.getOffset() + r.getLen()/* OVERLAP END */)
+				.collect(Collectors.toList());
+		Collections.sort(resultList, new Comparator<Range>() {
+			@Override
+			public int compare(Range o1, Range o2) {
+				return Integer.compare(o1.getOffset(), o2.getOffset());
+			}
+		});
 		return resultList;
+	}
+
+	private void splitRange(Range r, RangeType rangeType, int start, int length) {
+		int rangeIndex = rangeList.indexOf(r);
+		int oldStart = r.getOffset();
+		int oldEnd = r.getLen();
+		if (start >= r.getOffset() && start + length <= r.getOffset() + r.getLen()) /* IN */ {
+			r.setLen(start - oldStart);
+			Range newRange1 = new Range(start, length, rangeType);
+			Range newRange2 = new Range(start + length, oldEnd - (start + length), r.getRangeType());
+			rangeList.add(rangeIndex + 1, newRange1);
+			rangeList.add(rangeIndex + 2, newRange2);
+		} else if (start > r.getOffset() && start < r.getOffset() + r.getLen()
+				&& start + length >= r.getOffset() + r.getLen()) /* OVERLAP START */ {
+			r.setLen(start - oldStart);
+			Range nextRange = rangeList.get(rangeIndex + 1);
+			nextRange.setOffset(start + length);
+			nextRange.setLen(nextRange.getOffset() + nextRange.getLen() - ((start + length)));
+			rangeList.add(rangeIndex + 1, new Range(start, length, rangeType));
+		}
 	}
 
 	private void prepareContent() {
 
 		int b = 0;
-		int contentOffset = 0;
+		contentOffset = 0;
 		int memoryOffset = 0;
 		platform.setIgnoreStartAddressBytes(true);
 		if (startAddress.getSelection()) {
@@ -217,7 +249,8 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 				break;
 			}
 
-			StyleRange styleRange = new StyleRange(range.getOffset() * 3, range.getLen() * 3, fgc, bgc);
+			StyleRange styleRange = new StyleRange(range.getOffset() * 3 - contentOffset * 3, range.getLen() * 3, fgc,
+					bgc);
 			list.add(styleRange);
 		}
 		event.styles = list.toArray(new StyleRange[list.size()]);
