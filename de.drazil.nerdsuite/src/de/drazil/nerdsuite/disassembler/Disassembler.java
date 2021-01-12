@@ -13,7 +13,6 @@ import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
-import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.util.NumericConverter;
 
 public class Disassembler {
@@ -36,7 +35,7 @@ public class Disassembler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		byteArray = platform.parseBinary(byteArray);
+		//byteArray = platform.parseBinary(byteArray);
 
 		Map<String, ConversionType> conversionMap = new HashMap<String, ConversionType>();
 		// conversionMap.put("099a", ConversionType.CharsetData);
@@ -60,10 +59,7 @@ public class Disassembler {
 		Range range = instructionLine.getRange();
 		Opcode opcode = platform.getCPU().getOpcodeByIndex(byteArray, range.getOffset());
 		String pc = NumericConverter.toHexString(instructionLine.getProgramCounter().getValue(), 4);
-		if (pc.equals("23f1")) {
-			int a = 0;
 
-		}
 		String s1 = "";
 		String s2 = "";
 		String s3 = " ";

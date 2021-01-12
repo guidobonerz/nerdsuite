@@ -53,6 +53,11 @@ public abstract class AbstractCPU implements ICPU {
 	}
 
 	@Override
+	public void clear() {
+		instructionLineList.clear();
+	}
+
+	@Override
 	public void addInstructionLine(InstructionLine instructionLine) {
 		instructionLineList.add(instructionLine);
 	}
@@ -74,8 +79,8 @@ public abstract class AbstractCPU implements ICPU {
 	}
 
 	@Override
-	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, RangeType rangeType,
-			ReferenceType referenceType) {
+	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset,
+			RangeType rangeType, ReferenceType referenceType) {
 		Range range = instructionLine.getRange();
 		int oldLen = range.getLen();
 		int newLen = offset.sub(range.getOffset()).getValue();
@@ -86,8 +91,8 @@ public abstract class AbstractCPU implements ICPU {
 		range.setLen(newLen);
 
 		InstructionLine newInstructionLine = new InstructionLine(basePc.add(range.getOffset() + newLen),
-				new Range(range.getOffset() + newLen, oldLen - newLen,rangeType));
-		
+				new Range(range.getOffset() + newLen, oldLen - newLen, rangeType));
+
 		newInstructionLine.setReferenceType(referenceType);
 		instructionLineList.add(instructionLineList.indexOf(instructionLine) + 1, newInstructionLine);
 		return newInstructionLine;

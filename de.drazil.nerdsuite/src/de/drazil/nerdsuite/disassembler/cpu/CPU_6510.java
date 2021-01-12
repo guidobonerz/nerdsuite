@@ -12,8 +12,8 @@ import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Pointer;
 import de.drazil.nerdsuite.model.Range;
-import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.RangeType;
+import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
 
@@ -46,6 +46,11 @@ public class CPU_6510 extends AbstractCPU {
 	}
 
 	@Override
+	public void parseInstructions2(byte[] byteArray, Value pc, InstructionLine instructionLine,
+			PlatformData platformData, int stage) {
+	}
+
+	@Override
 	public void parseInstructions(byte[] byteArray, Value pc, InstructionLine instructionLine,
 			PlatformData platformData, int stage) {
 		InstructionLine currentLine = instructionLine;
@@ -65,9 +70,7 @@ public class CPU_6510 extends AbstractCPU {
 
 				newLine = split(currentLine, pc, new Value(range.getOffset() + len));
 				printDisassembly(currentLine, byteArray);
-				if (currentLine.getProgramCounter().toString().equals("1f80")) {
-					int a = 0;
-				}
+
 				if (newLine.getRange().getLen() < 0 || newLine.getRange().getLen() == 0) {
 					System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");
 				}
