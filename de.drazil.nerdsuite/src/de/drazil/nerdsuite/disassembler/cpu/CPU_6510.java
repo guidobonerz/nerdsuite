@@ -39,8 +39,9 @@ public class CPU_6510 extends AbstractCPU {
 			if (len - 1 > 0) {
 				sv = NumericConverter.toHexString(value2.getValue(), (len - 1) * 2);
 			}
-			System.out.println(instructionLine.getProgramCounter() + ":  " + opcode.getMnemonic() + " "
-					+ opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv));
+			String text = String.format("%s: %s %s", instructionLine.getProgramCounter(), opcode.getMnemonic(),
+					opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv));
+			instructionLine.setUserObject(text);
 		}
 	}
 
@@ -50,7 +51,11 @@ public class CPU_6510 extends AbstractCPU {
 		InstructionLine currentLine = instructionLine;
 		InstructionLine newLine = null;
 		Value value = null;
+		int i = 0;
 		while (currentLine != null) {
+			if (currentLine.getProgramCounter().getValue() >20000) {
+				break;
+			}
 			Range range = currentLine.getRange();
 			int offset = range.getOffset();
 			Opcode opcode = getOpcodeByIndex(byteArray, offset);
@@ -62,9 +67,12 @@ public class CPU_6510 extends AbstractCPU {
 			value = getInstructionValue(byteArray, new Range(offset, len, RangeType.Code));
 			currentLine.setInstructionType(InstructionType.Asm);
 			newLine = split(currentLine, pc, new Value(offset + len));
+			addInstructionLine(newLine);
 			printDisassembly(currentLine, opcode, byteArray);
 			currentLine.setPassed(true);
 			currentLine = newLine;
+			i++;
+
 		}
 	}
 
@@ -87,7 +95,7 @@ public class CPU_6510 extends AbstractCPU {
 				currentLine.setInstructionType(InstructionType.Asm);
 
 				newLine = split(currentLine, pc, new Value(range.getOffset() + len));
-				printDisassembly(currentLine, opcode,byteArray);
+				printDisassembly(currentLine, opcode, byteArray);
 
 				if (newLine.getRange().getLen() < 0 || newLine.getRange().getLen() == 0) {
 					System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");

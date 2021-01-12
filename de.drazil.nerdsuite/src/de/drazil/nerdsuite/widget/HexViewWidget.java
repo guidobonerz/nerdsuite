@@ -251,8 +251,10 @@ public class HexViewWidget extends Composite {
 			@Override
 			public String getText(Object element) {
 				InstructionLine il = (InstructionLine) element;
-				String[] userObject = (String[]) il.getUserObject();
-				return String.format("%04x> %-10s %s", il.getProgramCounter().getValue(), userObject[0], userObject[1]);
+				// String[] userObject = (String[]) il.getUserObject();
+				// return String.format("%04x> %-10s %s", il.getProgramCounter().getValue(),
+				// userObject[0], userObject[1]);
+				return (String) il.getUserObject();
 			}
 
 			@Override
