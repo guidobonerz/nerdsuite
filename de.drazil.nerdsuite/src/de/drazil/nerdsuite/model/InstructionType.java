@@ -1,5 +1,5 @@
 package de.drazil.nerdsuite.model;
 
 public enum InstructionType {
-	Data, Asm, Basic, Sprite, Bitmap, Charset, Music
+	Data, Asm, Basic, Sprite, Bitmap, Charset, Music, Text
 }

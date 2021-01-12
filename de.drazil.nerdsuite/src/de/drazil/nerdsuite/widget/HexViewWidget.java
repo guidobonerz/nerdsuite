@@ -42,7 +42,7 @@ import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 
 public class HexViewWidget extends Composite {
-	private List<InstructionLine> list;
+
 	private byte[] content = null;
 	private StyledText adressArea = null;
 	private StyledText hexArea = null;
@@ -64,9 +64,7 @@ public class HexViewWidget extends Composite {
 	public HexViewWidget(Composite parent, int style) {
 		super(parent, style);
 		platform = new C64Platform(new KickAssemblerDialect(), false);
-		list = new ArrayList<InstructionLine>();
 		rangeList = new ArrayList<Range>();
-
 		initialize();
 	}
 
@@ -267,7 +265,6 @@ public class HexViewWidget extends Composite {
 		codeLine.setWidth(300);
 
 		tableViewer.setContentProvider(new ArrayContentProvider());
-		tableViewer.setInput(list);
 		tableViewer.getTable().setLayoutData(gd);
 
 		gd = new GridData();
@@ -391,6 +388,8 @@ public class HexViewWidget extends Composite {
 					handleDataRange(selStart, selLength, selectedRangeType);
 					hexArea.redraw();
 					textArea.redraw();
+					platform.parseBinary(content, new Range(selStart, selLength, RangeType.Code));
+					tableViewer.setInput(platform.getCPU().getInstructionLineList());
 				}
 			}
 

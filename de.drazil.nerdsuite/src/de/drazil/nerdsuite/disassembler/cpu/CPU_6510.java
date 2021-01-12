@@ -31,9 +31,8 @@ public class CPU_6510 extends AbstractCPU {
 		return NumericConverter.getWordAsInt(byteArray, offset, Endianness.LittleEndian);
 	}
 
-	private void printDisassembly(InstructionLine instructionLine, byte byteArray[]) {
+	private void printDisassembly(InstructionLine instructionLine, Opcode opcode, byte byteArray[]) {
 		if (instructionLine.getInstructionType() == InstructionType.Asm) {
-			Opcode opcode = getOpcodeByIndex(byteArray, instructionLine.getRange().getOffset());
 			Value value2 = getInstructionValue(byteArray, instructionLine.getRange());
 			int len = opcode.getAddressingMode().getLen();
 			String sv = "";
@@ -48,6 +47,25 @@ public class CPU_6510 extends AbstractCPU {
 	@Override
 	public void parseInstructions2(byte[] byteArray, Value pc, InstructionLine instructionLine,
 			PlatformData platformData, int stage) {
+		InstructionLine currentLine = instructionLine;
+		InstructionLine newLine = null;
+		Value value = null;
+		while (currentLine != null) {
+			Range range = currentLine.getRange();
+			int offset = range.getOffset();
+			Opcode opcode = getOpcodeByIndex(byteArray, offset);
+
+			String addressingMode = opcode.getAddressingMode().getId();
+			String instructionType = opcode.getType();
+
+			int len = opcode.getAddressingMode().getLen();
+			value = getInstructionValue(byteArray, new Range(offset, len, RangeType.Code));
+			currentLine.setInstructionType(InstructionType.Asm);
+			newLine = split(currentLine, pc, new Value(offset + len));
+			printDisassembly(currentLine, opcode, byteArray);
+			currentLine.setPassed(true);
+			currentLine = newLine;
+		}
 	}
 
 	@Override
@@ -69,7 +87,7 @@ public class CPU_6510 extends AbstractCPU {
 				currentLine.setInstructionType(InstructionType.Asm);
 
 				newLine = split(currentLine, pc, new Value(range.getOffset() + len));
-				printDisassembly(currentLine, byteArray);
+				printDisassembly(currentLine, opcode,byteArray);
 
 				if (newLine.getRange().getLen() < 0 || newLine.getRange().getLen() == 0) {
 					System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");

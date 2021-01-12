@@ -71,10 +71,12 @@ public class C64Platform extends AbstractPlatform {
 	public byte[] parseBinary(byte[] byteArray, Range range) {
 
 		System.out.println("init   : build memory map");
+		setProgrammCounter(new Value(2064));
 		init(byteArray, range);
 		// System.out.println("stage 1: parse header information");
 		// parseStartSequence(byteArray, pc);
 		System.out.println("stage 2: parse instructions");
+
 		getCPU().parseInstructions2(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
 				getPlatFormData(), 2);
 		// System.out.println("stage 3: compress ranges");
