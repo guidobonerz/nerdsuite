@@ -37,7 +37,8 @@ public class DisassemblerView {
 
 		HexViewWidget hvw = new HexViewWidget(parent, SWT.V_SCROLL);
 		hvw.setContent(content);
-		menuService.registerContextMenu(hvw.getDisassembleView(), "de.drazil.nerdsuite.popupmenu.disassemblerView");
+		menuService.registerContextMenu(hvw.getDisassemblyView(), "de.drazil.nerdsuite.popupmenu.disassemblyView");
+		menuService.registerContextMenu(hvw.getBinaryView(), "de.drazil.nerdsuite.popupmenu.binaryView");
 
 	}
 

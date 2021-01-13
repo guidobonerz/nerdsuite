@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -31,6 +30,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.TableColumn;
 
 import de.drazil.nerdsuite.Constants;
@@ -41,13 +41,16 @@ import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
+import de.drazil.nerdsuite.model.Value;
 
 public class HexViewWidget extends Composite {
 
 	private byte[] content = null;
-	private StyledText adressArea = null;
+	private StyledText addressArea = null;
 	private StyledText hexArea = null;
 	private StyledText textArea = null;
+	private Button autoDiscover;
+	private Button startAnalyse;
 	private Button startAddress;
 	private Button code;
 	private Button binary;
@@ -62,6 +65,7 @@ public class HexViewWidget extends Composite {
 	private RangeType selectedRangeType = RangeType.Code;
 	private boolean wasShifted = false;
 	private TableViewer tableViewer;
+	private boolean addressChecked = false;
 
 	public HexViewWidget(Composite parent, int style) {
 		super(parent, style);
@@ -74,8 +78,12 @@ public class HexViewWidget extends Composite {
 		return c >= 32 && c < 127;
 	}
 
-	public Composite getDisassembleView() {
+	public Composite getDisassemblyView() {
 		return tableViewer.getTable();
+	}
+
+	public Composite getBinaryView() {
+		return hexArea;
 	}
 
 	public void setContent(byte[] content) {
@@ -102,9 +110,20 @@ public class HexViewWidget extends Composite {
 				getVerticalBar().setSelection(0);
 				getVerticalBar().setThumb(visibleRows);
 				getVerticalBar().setPageIncrement(visibleRows);
-				adressArea.redraw();
+				addressArea.redraw();
 				hexArea.redraw();
 				textArea.redraw();
+
+				Value pc = platform.checkAdress(content, 0);
+				if (pc != null) {
+					MessageBox message = new MessageBox(getParent().getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+					message.setMessage(String.format("$%04x as StartAddress found\nApply it?", pc.getValue()));
+					message.setText("Start address found");
+					if (message.open() == SWT.YES) {
+						startAddress.setSelection(true);
+						prepareContent();
+					}
+				}
 			}
 		});
 	}
@@ -216,14 +235,16 @@ public class HexViewWidget extends Composite {
 
 		hexArea.getContent().setText(sbByte.toString());
 		textArea.getContent().setText(sbText.toString());
-		adressArea.getContent().setText(sbAdress.toString());
+		addressArea.getContent().setText(sbAdress.toString());
+		hexArea.redraw();
+		textArea.redraw();
 	}
 
 	private void updateArea(int offset) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				adressArea.setTopIndex(offset);
+				addressArea.setTopIndex(offset);
 				hexArea.setTopIndex(offset);
 				textArea.setTopIndex(offset);
 			}
@@ -349,8 +370,6 @@ public class HexViewWidget extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				prepareContent();
-				hexArea.redraw();
-				textArea.redraw();
 			}
 		});
 
@@ -362,12 +381,12 @@ public class HexViewWidget extends Composite {
 		gd.verticalAlignment = GridData.BEGINNING;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
-		adressArea = new StyledText(this, SWT.READ_ONLY);
-		adressArea.setEditable(false);
-		adressArea.setEnabled(false);
-		adressArea.setContent(new HexViewContent(5));
-		adressArea.setFont(Constants.EDITOR_FONT);
-		adressArea.setLayoutData(gd);
+		addressArea = new StyledText(this, SWT.READ_ONLY);
+		addressArea.setEditable(false);
+		addressArea.setEnabled(false);
+		addressArea.setContent(new HexViewContent(5));
+		addressArea.setFont(Constants.EDITOR_FONT);
+		addressArea.setLayoutData(gd);
 
 		// ==================
 		gd = new GridData();
@@ -385,32 +404,37 @@ public class HexViewWidget extends Composite {
 				event.styles = getStyleRanges(3);
 			}
 		});
+
 		hexArea.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-				selectStart = false;
-				selStart = hexArea.getSelectionRange().x / 3;
-				selLength = hexArea.getSelectionRange().y / 3;
-				textArea.setSelectionRange(selStart, selLength);
-				if (selLength > 0) {
-					platform.getCPU().clear();
-					handleDataRange(selStart, selLength, selectedRangeType);
-					hexArea.redraw();
-					textArea.redraw();
-					platform.parseBinary(content, new Range(selStart, selLength, RangeType.Code));
-					tableViewer.setInput(platform.getCPU().getInstructionLineList());
+				if (e.button == 1) {
+					selectStart = false;
+					selStart = hexArea.getSelectionRange().x / 3;
+					selLength = hexArea.getSelectionRange().y / 3;
+					textArea.setSelectionRange(selStart, selLength);
+					if (selLength > 0) {
+						platform.getCPU().clear();
+						handleDataRange(selStart, selLength, selectedRangeType);
+						hexArea.redraw();
+						textArea.redraw();
+						platform.parseBinary(content, new Range(selStart, selLength, RangeType.Code));
+						tableViewer.setInput(platform.getCPU().getInstructionLineList());
+					}
 				}
 			}
 
 			@Override
 			public void mouseDown(MouseEvent e) {
-				selectStart = true;
+				if (e.button == 1) {
+					selectStart = true;
+				}
 			}
 		});
 		hexArea.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				adressArea.setTopIndex(hexArea.getTopIndex());
+				addressArea.setTopIndex(hexArea.getTopIndex());
 				textArea.setTopIndex(hexArea.getTopIndex());
 				getVerticalBar().setSelection(hexArea.getTopIndex());
 			}
@@ -440,7 +464,7 @@ public class HexViewWidget extends Composite {
 		textArea.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				adressArea.setTopIndex(textArea.getTopIndex());
+				addressArea.setTopIndex(textArea.getTopIndex());
 				hexArea.setTopIndex(textArea.getTopIndex());
 				getVerticalBar().setSelection(textArea.getTopIndex());
 				hexArea.setSelectionRange(textArea.getSelectionRange().x * 3, textArea.getSelectionRange().y * 3);

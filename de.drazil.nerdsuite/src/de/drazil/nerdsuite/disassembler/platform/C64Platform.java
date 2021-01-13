@@ -84,4 +84,21 @@ public class C64Platform extends AbstractPlatform {
 		System.out.println("ready.");
 		return byteArray;
 	}
+
+	@Override
+	public int[] getCommonStartAdresses() {
+		return new int[] { 2049, 4096, 8192, 16384, 32768, 49152 };
+	}
+
+	@Override
+	public Value checkAdress(byte[] content, int start) {
+		Value adress = null;
+		for (int i : getCommonStartAdresses()) {
+			if (i == getCPU().getWord(content, start)) {
+				adress = new Value(i);
+				break;
+			}
+		}
+		return adress;
+	}
 }
