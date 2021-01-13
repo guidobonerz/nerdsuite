@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -40,17 +41,16 @@ import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
-import de.drazil.nerdsuite.model.Value;
 
-public class HexViewWidget extends Composite implements LineStyleListener {
-	private List<InstructionLine> list;
+public class HexViewWidget extends Composite {
+
 	private byte[] content = null;
 	private StyledText adressArea = null;
 	private StyledText hexArea = null;
 	private StyledText textArea = null;
 	private Button startAddress;
 	private Button code;
-	private Button data;
+	private Button binary;
 	private Button undefined;
 	private int visibleRows = 0;
 	private IPlatform platform;
@@ -60,36 +60,22 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 	private int contentOffset = 0;
 	private boolean selectStart = false;
 	private RangeType selectedRangeType = RangeType.Code;
+	private boolean wasShifted = false;
+	private TableViewer tableViewer;
 
 	public HexViewWidget(Composite parent, int style) {
 		super(parent, style);
 		platform = new C64Platform(new KickAssemblerDialect(), false);
-		list = new ArrayList<InstructionLine>();
 		rangeList = new ArrayList<Range>();
-
-		InstructionLine l1 = new InstructionLine();
-		InstructionLine l2 = new InstructionLine();
-		InstructionLine l3 = new InstructionLine();
-		InstructionLine l4 = new InstructionLine();
-
-		list.add(l1);
-		list.add(l2);
-		list.add(l3);
-		list.add(l4);
-
-		l1.setProgramCounter(new Value(1));
-		l2.setProgramCounter(new Value(2));
-		l3.setProgramCounter(new Value(3));
-		l4.setProgramCounter(new Value(4));
-		l1.setUserObject(new String[] { "loop1", "lda #$01" });
-		l2.setUserObject(new String[] { "", "inc $d020" });
-		l3.setUserObject(new String[] { "", "jmp loop1" });
-		l4.setUserObject(new String[] { "", "rts" });
 		initialize();
 	}
 
 	private static boolean isPrintableCharacter(char c) {
 		return c >= 32 && c < 127;
+	}
+
+	public Composite getDisassembleView() {
+		return tableViewer.getTable();
 	}
 
 	public void setContent(byte[] content) {
@@ -138,6 +124,9 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 			}
 			lastRange = r;
 		}
+		if (rangeList.isEmpty()) {
+			rangeList.add(new Range(0, content.length, RangeType.Unspecified));
+		}
 	}
 
 	private List<Range> findRanges(int start, int length) {
@@ -149,19 +138,18 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 			rangeList.remove(r);
 		}
 
-		resultList = rangeList
-				.stream().filter(r -> start >= r.getOffset() && start + length <= r.getOffset() + r.getLen() /* IN */
+		resultList = rangeList.stream()
+				.filter(r -> start >= r.getOffset() && start + length <= r.getOffset() + r.getLen() /* IN */
 						|| start > r.getOffset() && start < r.getOffset() + r.getLen()
 								&& start + length >= r.getOffset() + r.getLen() /* OVERLAP START */
-						|| start < r.getOffset() && start + length > r.getOffset()
-								&& start + length < r.getOffset() + r.getLen()/* OVERLAP END */)
-				.collect(Collectors.toList());
+				).collect(Collectors.toList());
 		Collections.sort(resultList, new Comparator<Range>() {
 			@Override
 			public int compare(Range o1, Range o2) {
 				return Integer.compare(o1.getOffset(), o2.getOffset());
 			}
 		});
+
 		return resultList;
 	}
 
@@ -169,10 +157,11 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 		int rangeIndex = rangeList.indexOf(r);
 		int oldStart = r.getOffset();
 		int oldEnd = r.getLen();
-		if (start >= r.getOffset() && start + length <= r.getOffset() + r.getLen()) /* IN */ {
+		if (start >= r.getOffset() && start + length <= r.getOffset() + r.getLen()
+				&& r.getRangeType() != rangeType) /* IN */ {
 			r.setLen(start - oldStart);
 			Range newRange1 = new Range(start, length, rangeType);
-			Range newRange2 = new Range(start + length, oldEnd - (start + length), r.getRangeType());
+			Range newRange2 = new Range(start + length, oldStart + oldEnd - (start + length), r.getRangeType());
 			rangeList.add(rangeIndex + 1, newRange1);
 			rangeList.add(rangeIndex + 2, newRange2);
 		} else if (start > r.getOffset() && start < r.getOffset() + r.getLen()
@@ -185,16 +174,27 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 		}
 	}
 
-	private void prepareContent() {
+	private void shiftRange(int offset) {
+		for (Range r : rangeList) {
+			int start = r.getOffset() + offset;
+			r.setOffset(start);
+		}
+	}
 
+	private void prepareContent() {
 		int b = 0;
-		contentOffset = 0;
 		int memoryOffset = 0;
 		platform.setIgnoreStartAddressBytes(true);
 		if (startAddress.getSelection()) {
 			platform.setIgnoreStartAddressBytes(false);
 			contentOffset = 2;
 			memoryOffset = platform.getCPU().getWord(content, 0);
+			wasShifted = true;
+			shiftRange(-2);
+		} else {
+			shiftRange(wasShifted ? 2 : 0);
+			wasShifted = false;
+			contentOffset = 0;
 		}
 
 		StringBuilder sbByte = null;
@@ -230,32 +230,6 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 		});
 	}
 
-	@Override
-	public void lineGetStyle(LineStyleEvent event) {
-		List<StyleRange> list = new ArrayList<StyleRange>();
-		for (Range range : rangeList) {
-
-			Color fgc = Constants.BLACK;
-			Color bgc = null;
-			switch (range.getRangeType()) {
-			case Code:
-				bgc = Constants.CODE_COLOR;
-				break;
-			case Data:
-				bgc = Constants.DATA_COLOR;
-				break;
-			default:
-				bgc = Constants.WHITE;
-				break;
-			}
-
-			StyleRange styleRange = new StyleRange(range.getOffset() * 3 - contentOffset * 3, range.getLen() * 3, fgc,
-					bgc);
-			list.add(styleRange);
-		}
-		event.styles = list.toArray(new StyleRange[list.size()]);
-	}
-
 	private void initialize() {
 		getVerticalBar().addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -276,15 +250,17 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
 		gd.verticalSpan = 2;
-		TableViewer tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 
 		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.NONE);
 		ColumnLabelProvider labelProvider1 = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				InstructionLine il = (InstructionLine) element;
-				String[] userObject = (String[]) il.getUserObject();
-				return String.format("%04x> %-10s %s", il.getProgramCounter().getValue(), userObject[0], userObject[1]);
+				// String[] userObject = (String[]) il.getUserObject();
+				// return String.format("%04x> %-10s %s", il.getProgramCounter().getValue(),
+				// userObject[0], userObject[1]);
+				return (String) il.getUserObject();
 			}
 
 			@Override
@@ -297,7 +273,6 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 		codeLine.setWidth(300);
 
 		tableViewer.setContentProvider(new ArrayContentProvider());
-		tableViewer.setInput(list);
 		tableViewer.getTable().setLayoutData(gd);
 
 		gd = new GridData();
@@ -339,18 +314,18 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 			}
 		});
 
-		data = new Button(group, SWT.RADIO);
-		data.setText("Data");
-		data.setBackground(Constants.DATA_COLOR);
-		data.setForeground(Constants.WHITE);
-		data.addSelectionListener(new SelectionAdapter() {
+		binary = new Button(group, SWT.RADIO);
+		binary.setText("Binary");
+		binary.setBackground(Constants.BINARY_COLOR);
+		binary.setForeground(Constants.WHITE);
+		binary.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				selectedRangeType = RangeType.Data;
+				selectedRangeType = RangeType.Binary;
 				hexArea.setSelectionForeground(Constants.WHITE);
 				textArea.setSelectionForeground(Constants.WHITE);
-				hexArea.setSelectionBackground(Constants.DATA_COLOR);
-				textArea.setSelectionBackground(Constants.DATA_COLOR);
+				hexArea.setSelectionBackground(Constants.BINARY_COLOR);
+				textArea.setSelectionBackground(Constants.BINARY_COLOR);
 			}
 		});
 
@@ -375,6 +350,7 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 			public void widgetSelected(SelectionEvent e) {
 				prepareContent();
 				hexArea.redraw();
+				textArea.redraw();
 			}
 		});
 
@@ -403,7 +379,12 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 		hexArea.setFont(Constants.EDITOR_FONT);
 		hexArea.setSelectionBackground(Constants.CODE_COLOR);
 		hexArea.setContent(new HexViewContent(48));
-		hexArea.addLineStyleListener(this);
+		hexArea.addLineStyleListener(new LineStyleListener() {
+			@Override
+			public void lineGetStyle(LineStyleEvent event) {
+				event.styles = getStyleRanges(3);
+			}
+		});
 		hexArea.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -412,10 +393,13 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 				selLength = hexArea.getSelectionRange().y / 3;
 				textArea.setSelectionRange(selStart, selLength);
 				if (selLength > 0) {
+					platform.getCPU().clear();
 					handleDataRange(selStart, selLength, selectedRangeType);
 					hexArea.redraw();
+					textArea.redraw();
+					platform.parseBinary(content, new Range(selStart, selLength, RangeType.Code));
+					tableViewer.setInput(platform.getCPU().getInstructionLineList());
 				}
-
 			}
 
 			@Override
@@ -445,10 +429,15 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 		textArea.setFont(Constants.EDITOR_FONT);
 		textArea.setSelectionBackground(Constants.CODE_COLOR);
 		textArea.setContent(new HexViewContent(16));
+		textArea.addLineStyleListener(new LineStyleListener() {
+			@Override
+			public void lineGetStyle(LineStyleEvent event) {
+				event.styles = getStyleRanges(1);
+			}
+		});
 		textArea.setLayoutData(gd);
 
 		textArea.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				adressArea.setTopIndex(textArea.getTopIndex());
@@ -458,5 +447,29 @@ public class HexViewWidget extends Composite implements LineStyleListener {
 			}
 		});
 
+	}
+
+	private StyleRange[] getStyleRanges(int width) {
+		List<StyleRange> list = new ArrayList<StyleRange>();
+		for (Range range : rangeList) {
+
+			Color fgc = Constants.BLACK;
+			Color bgc = null;
+			switch (range.getRangeType()) {
+			case Code:
+				bgc = Constants.CODE_COLOR;
+				break;
+			case Binary:
+				bgc = Constants.BINARY_COLOR;
+				break;
+			default:
+				bgc = Constants.WHITE;
+				break;
+			}
+
+			StyleRange styleRange = new StyleRange(range.getOffset() * width, range.getLen() * width, fgc, bgc);
+			list.add(styleRange);
+		}
+		return list.toArray(new StyleRange[list.size()]);
 	}
 }
