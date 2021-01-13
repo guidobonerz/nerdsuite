@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -49,7 +50,7 @@ public class HexViewWidget extends Composite {
 	private StyledText textArea = null;
 	private Button startAddress;
 	private Button code;
-	private Button data;
+	private Button binary;
 	private Button undefined;
 	private int visibleRows = 0;
 	private IPlatform platform;
@@ -60,6 +61,7 @@ public class HexViewWidget extends Composite {
 	private boolean selectStart = false;
 	private RangeType selectedRangeType = RangeType.Code;
 	private boolean wasShifted = false;
+	private TableViewer tableViewer;
 
 	public HexViewWidget(Composite parent, int style) {
 		super(parent, style);
@@ -70,6 +72,10 @@ public class HexViewWidget extends Composite {
 
 	private static boolean isPrintableCharacter(char c) {
 		return c >= 32 && c < 127;
+	}
+
+	public Composite getDisassembleView() {
+		return tableViewer.getTable();
 	}
 
 	public void setContent(byte[] content) {
@@ -244,7 +250,7 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
 		gd.verticalSpan = 2;
-		TableViewer tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 
 		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.NONE);
 		ColumnLabelProvider labelProvider1 = new ColumnLabelProvider() {
@@ -308,18 +314,18 @@ public class HexViewWidget extends Composite {
 			}
 		});
 
-		data = new Button(group, SWT.RADIO);
-		data.setText("Data");
-		data.setBackground(Constants.DATA_COLOR);
-		data.setForeground(Constants.WHITE);
-		data.addSelectionListener(new SelectionAdapter() {
+		binary = new Button(group, SWT.RADIO);
+		binary.setText("Binary");
+		binary.setBackground(Constants.BINARY_COLOR);
+		binary.setForeground(Constants.WHITE);
+		binary.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				selectedRangeType = RangeType.Data;
+				selectedRangeType = RangeType.Binary;
 				hexArea.setSelectionForeground(Constants.WHITE);
 				textArea.setSelectionForeground(Constants.WHITE);
-				hexArea.setSelectionBackground(Constants.DATA_COLOR);
-				textArea.setSelectionBackground(Constants.DATA_COLOR);
+				hexArea.setSelectionBackground(Constants.BINARY_COLOR);
+				textArea.setSelectionBackground(Constants.BINARY_COLOR);
 			}
 		});
 
@@ -387,6 +393,7 @@ public class HexViewWidget extends Composite {
 				selLength = hexArea.getSelectionRange().y / 3;
 				textArea.setSelectionRange(selStart, selLength);
 				if (selLength > 0) {
+					platform.getCPU().clear();
 					handleDataRange(selStart, selLength, selectedRangeType);
 					hexArea.redraw();
 					textArea.redraw();
@@ -452,8 +459,8 @@ public class HexViewWidget extends Composite {
 			case Code:
 				bgc = Constants.CODE_COLOR;
 				break;
-			case Data:
-				bgc = Constants.DATA_COLOR;
+			case Binary:
+				bgc = Constants.BINARY_COLOR;
 				break;
 			default:
 				bgc = Constants.WHITE;

@@ -332,7 +332,7 @@ public class CPU_6510 extends AbstractCPU {
 											}
 										}
 										if (resultPointer == null) {
-											resultPointer = new Pointer(reference, RangeType.Data,
+											resultPointer = new Pointer(reference, RangeType.Binary,
 													ReferenceType.DataReference);
 										}
 										pointerLine.setReferenceValue(resultPointer.getAddress());

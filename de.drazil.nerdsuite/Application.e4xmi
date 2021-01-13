@@ -431,7 +431,20 @@
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_tBX6wNHVEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.partdescriptor.DisassemblerView" label="DisassemblerView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView">
-    <toolbar xmi:id="_4oLJUNHWEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.toolbar.3"/>
+    <menus xsi:type="menu:PopupMenu" xmi:id="_MKymcFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.popupmenu.disassemblerView">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_NUrmsFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.renameLabel" label="Rename Label" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/selection-input.png"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_Npk4oFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.jumptolabel" label="JumpToLabel" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow-curve-270.png"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_P_K6MFWHEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.returnToCaller" label="Return to caller" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow-return-090-left.png"/>
+      <children xsi:type="menu:Menu" xmi:id="_9uNLoFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.menu.specifyDataAs" label="Specify labeled binary block as...">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_BCSykFWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.asm" label="Assembler Code"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_B0gSoFWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.basic" label="Basic Code"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_eTsQEFWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.data" label="Plain data"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_CL6GAFWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.text" label="Text"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Cg7TwFWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.bitmap" label="Bitmap"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_NZmGcFWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.charset" label="Charset"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_PE6_0FWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.sprite" label="Sprite"/>
+      </children>
+    </menus>
   </descriptors>
   <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.NewProject" commandName="New Project">
