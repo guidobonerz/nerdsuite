@@ -66,6 +66,7 @@ public class HexViewWidget extends Composite {
 	private boolean wasShifted = false;
 	private TableViewer tableViewer;
 	private boolean addressChecked = false;
+	private Value pc;
 
 	public HexViewWidget(Composite parent, int style) {
 		super(parent, style);
@@ -114,13 +115,14 @@ public class HexViewWidget extends Composite {
 				hexArea.redraw();
 				textArea.redraw();
 
-				Value pc = platform.checkAdress(content, 0);
+				pc = platform.checkAdress(content, 0);
 				if (pc != null) {
 					MessageBox message = new MessageBox(getParent().getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-					message.setMessage(String.format("$%04x as StartAddress found\nApply it?", pc.getValue()));
-					message.setText("Start address found");
+					message.setMessage(String.format("0x%04x as StartAddress found\nApply it?", pc.getValue()));
+					message.setText("StartA ddress found");
 					if (message.open() == SWT.YES) {
 						startAddress.setSelection(true);
+						platform.setProgrammCounter(new Value(pc.getValue()));
 						prepareContent();
 					}
 				}
@@ -418,7 +420,8 @@ public class HexViewWidget extends Composite {
 						handleDataRange(selStart, selLength, selectedRangeType);
 						hexArea.redraw();
 						textArea.redraw();
-						platform.parseBinary(content, new Range(selStart, selLength, RangeType.Code));
+						platform.setProgrammCounter(new Value(pc.getValue()));
+						platform.parseBinary(content, new Range(selStart + contentOffset, selLength, RangeType.Code));
 						tableViewer.setInput(platform.getCPU().getInstructionLineList());
 					}
 				}

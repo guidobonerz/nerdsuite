@@ -54,7 +54,7 @@ public abstract class AbstractCPU implements ICPU {
 
 	@Override
 	public void clear() {
-		instructionLineList.clear();
+		instructionLineList = new ArrayList<InstructionLine>();
 	}
 
 	@Override

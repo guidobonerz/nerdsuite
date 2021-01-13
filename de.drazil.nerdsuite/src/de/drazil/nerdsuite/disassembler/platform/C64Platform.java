@@ -71,14 +71,14 @@ public class C64Platform extends AbstractPlatform {
 	public byte[] parseBinary(byte[] byteArray, Range range) {
 
 		System.out.println("init   : build memory map");
-		setProgrammCounter(new Value(2064));
+		setProgrammCounter(getProgrammCounter().add(range.getOffset() - 2));
 		init(byteArray, range);
 		// System.out.println("stage 1: parse header information");
 		// parseStartSequence(byteArray, pc);
 		System.out.println("stage 2: parse instructions");
 
-		getCPU().parseInstructions2(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-				getPlatFormData(), 2);
+		getCPU().parseInstructions(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
+				getPlatFormData(), new Range(range.getOffset(), range.getLen(), range.getRangeType()), 2);
 		// System.out.println("stage 3: compress ranges");
 		// getCPU().compressRanges();
 		System.out.println("ready.");
@@ -86,14 +86,14 @@ public class C64Platform extends AbstractPlatform {
 	}
 
 	@Override
-	public int[] getCommonStartAdresses() {
+	public int[] getCommonStartAddresses() {
 		return new int[] { 2049, 4096, 8192, 16384, 32768, 49152 };
 	}
 
 	@Override
 	public Value checkAdress(byte[] content, int start) {
 		Value adress = null;
-		for (int i : getCommonStartAdresses()) {
+		for (int i : getCommonStartAddresses()) {
 			if (i == getCPU().getWord(content, start)) {
 				adress = new Value(i);
 				break;

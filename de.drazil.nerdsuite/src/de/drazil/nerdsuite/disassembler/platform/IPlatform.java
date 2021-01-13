@@ -35,7 +35,7 @@ public interface IPlatform {
 
 	public PlatformData getPlatFormData();
 
-	public int[] getCommonStartAdresses();
+	public int[] getCommonStartAddresses();
 
 	public Value checkAdress(byte content[], int start);
 }
