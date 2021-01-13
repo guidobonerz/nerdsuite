@@ -54,11 +54,8 @@ public interface ICPU {
 
 	public void compressRanges();
 
-	public void parseInstructions2(byte byteArray[], Value pc, InstructionLine instructionLine,
-			PlatformData platformData, int stage);
-
 	public void parseInstructions(byte byteArray[], Value pc, InstructionLine instructionLine,
-			PlatformData platformData, int stage);
+			PlatformData platformData, Range discoverableRange, int stage);
 
 	public void packInstructionLines(InstructionLine instructionLine, int len);
 }
