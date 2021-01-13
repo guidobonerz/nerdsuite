@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.disassembler.cpu;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
@@ -31,15 +33,18 @@ public class CPU_6510 extends AbstractCPU {
 		return NumericConverter.getWordAsInt(byteArray, offset, Endianness.LittleEndian);
 	}
 
-	private void printDisassembly(InstructionLine instructionLine, Opcode opcode, Value value) {
+	private void printDisassembly(InstructionLine instructionLine, Opcode opcode, Value value, Address address) {
 		if (instructionLine.getInstructionType() == InstructionType.Asm) {
 			int len = opcode.getAddressingMode().getLen();
 			String sv = "";
 			if (len - 1 > 0) {
 				sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
 			}
-			String text = String.format("%s: %s %s", instructionLine.getProgramCounter(), opcode.getMnemonic(),
-					opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv));
+			String pan = String.format("< %s, %s >", (address != null ? address.getConstName() : ""),
+					(address != null ? address.getDescription() : ""));
+			String text = String.format("%s: %s %s %s", instructionLine.getProgramCounter(), opcode.getMnemonic(),
+					opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv),
+					address != null ? pan : "");
 			instructionLine.setUserObject(text);
 		}
 	}
@@ -50,10 +55,8 @@ public class CPU_6510 extends AbstractCPU {
 		InstructionLine currentLine = instructionLine;
 		InstructionLine newLine = null;
 		Value value = null;
-		int lineNo = 0;
 		while (currentLine != null) {
 			if (!currentLine.isPassed()) {
-				System.out.printf("Line:%d\n", (lineNo + 1));
 				Range range = currentLine.getRange();
 				int offset = range.getOffset();
 				Opcode opcode = getOpcodeByIndex(byteArray, offset);
@@ -107,7 +110,12 @@ public class CPU_6510 extends AbstractCPU {
 					 */
 
 				}
-				printDisassembly(currentLine, opcode, value);
+				int v = value.getValue();
+				Address address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
+						.findFirst().orElse(null);
+				
+
+				printDisassembly(currentLine, opcode, value, address);
 				newLine = split(currentLine, pc, new Value(offset + len));
 				if (newLine == null) {
 					break;
@@ -117,6 +125,7 @@ public class CPU_6510 extends AbstractCPU {
 					System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");
 				}
 				// detectPointers(byteArray, pc, currentLine, platformData);
+
 			}
 			currentLine.setReferenceValue(value);
 			currentLine.setPassed(true);
@@ -124,7 +133,6 @@ public class CPU_6510 extends AbstractCPU {
 			if (currentLine.getInstructionType() != InstructionType.Asm) {
 				currentLine = getNextUnspecifiedLine(currentLine);
 			}
-			lineNo++;
 		}
 	}
 

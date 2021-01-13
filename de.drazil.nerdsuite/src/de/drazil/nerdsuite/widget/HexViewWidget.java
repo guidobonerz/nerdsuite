@@ -275,7 +275,7 @@ public class HexViewWidget extends Composite {
 		gd.verticalSpan = 2;
 		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 
-		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.H_SCROLL | SWT.V_SCROLL);
 		ColumnLabelProvider labelProvider1 = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -293,7 +293,7 @@ public class HexViewWidget extends Composite {
 		};
 		tableViewerColumn1.setLabelProvider(labelProvider1);
 		TableColumn codeLine = tableViewerColumn1.getColumn();
-		codeLine.setWidth(300);
+		codeLine.setWidth(500);
 
 		tableViewer.setContentProvider(new ArrayContentProvider());
 		tableViewer.getTable().setLayoutData(gd);

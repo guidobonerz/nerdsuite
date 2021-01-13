@@ -8,20 +8,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Address {
-	@JsonIgnore 
+	@JsonIgnore
 	private Value value;
 	private String address;
 	private String constName;
 	private String description;
 
 	public Address(String address, String constName, String description) {
-		this.value = new Value(address);
+		this.address = address;
 		this.constName = constName;
 		this.description = description;
 	}
 
 	public int getAddressValue() {
-		return value.getValue();
+		return Integer.parseInt(address, 16);
 	}
 
 	public boolean matches(int value) {
