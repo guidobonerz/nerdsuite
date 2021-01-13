@@ -70,7 +70,7 @@ public class Constants {
 	public final static Color CBM_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#786abd"));
 	public final static Color CBM_BG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#403285"));
 	public final static Color CODE_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#a4957d"));
-	public final static Color DATA_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#00747d"));
+	public final static Color BINARY_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#00747d"));
 
 	// public final static Color DEFAULT_STRING_COLOR = new
 	// Color(Display.getCurrent(), SwtUtil.toRGB("#485CCB"));
@@ -134,7 +134,7 @@ public class Constants {
 	public final static TextStyle TEXTSTYLE_CURLY_BRACES = new TextStyle(EDITOR_FONT, DEFAULT_CURLY_BRACES_COLOR,
 			BLACK);
 	public final static TextStyle TEXTSTYLE_CODE = new TextStyle(EDITOR_FONT, CODE_COLOR, WHITE);
-	public final static TextStyle TEXTSTYLE_DATA = new TextStyle(EDITOR_FONT, DATA_COLOR, WHITE);
+	public final static TextStyle TEXTSTYLE_DATA = new TextStyle(EDITOR_FONT, BINARY_COLOR, WHITE);
 	public final static TextStyle TEXTSTYLE_UNDEFINED = new TextStyle(EDITOR_FONT, WHITE, BLACK);
 
 	public final static String T_C64_BASIC_STRING = "C64BASIC_STRING";

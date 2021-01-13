@@ -3,10 +3,10 @@ package de.drazil.nerdsuite.disassembler.platform;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.PlatformData;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.Value;
 
-public interface IPlatform
-{
+public interface IPlatform {
 	public IDialect getDialect();
 
 	public void setDialect(IDialect dialect);
@@ -23,11 +23,15 @@ public interface IPlatform
 
 	public void setCPU(ICPU cpu);
 
+	public void setProgrammCounter(Value pc);
+
+	public Value getProgrammCounter();
+
 	public void handlePlatformSpecific(byte byteArray[], int offset);
 
-	public void init(byte byteArray[], Value programCounter, int offset);
+	public void init(byte byteArray[], Range range);
 
-	public byte[] parseBinary(byte byteArray[]);
+	public byte[] parseBinary(byte byteArray[], Range range);
 
 	public PlatformData getPlatFormData();
 

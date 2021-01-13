@@ -10,8 +10,7 @@ import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 
-public interface ICPU
-{
+public interface ICPU {
 	public final static int JUMP_MODE = 1;
 	public final static int BRANCH_MODE = 2;
 	public final static int SUBROUTINE_MODE = 4;
@@ -24,11 +23,14 @@ public interface ICPU
 
 	public Opcode getOpcodeById(int opcode);
 
+	public void clear();
+
 	public void addInstructionLine(InstructionLine instructionLine);
 
 	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset);
 
-	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset, RangeType type, ReferenceType referenceType);
+	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset,
+			RangeType type, ReferenceType referenceType);
 
 	public InstructionLine findInstructionLine(Value value);
 
@@ -52,7 +54,11 @@ public interface ICPU
 
 	public void compressRanges();
 
-	public void parseInstructions(byte byteArray[], Value pc, InstructionLine instructionLine, PlatformData platformData,  int stage);
+	public void parseInstructions2(byte byteArray[], Value pc, InstructionLine instructionLine,
+			PlatformData platformData, int stage);
+
+	public void parseInstructions(byte byteArray[], Value pc, InstructionLine instructionLine,
+			PlatformData platformData, int stage);
 
 	public void packInstructionLines(InstructionLine instructionLine, int len);
 }
