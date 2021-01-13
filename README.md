@@ -65,7 +65,7 @@ Export files partly works
 Create/Update disk images
 
 ## Disassembler Screen (in Progress)
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm.png)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm2.png)
 ## Big PETSCII Screen
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen2.png)
 ## Ultimate64 Streaming Client
