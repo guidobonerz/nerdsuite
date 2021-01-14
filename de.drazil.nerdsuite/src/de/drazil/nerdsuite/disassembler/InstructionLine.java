@@ -22,7 +22,7 @@ public class InstructionLine {
 	private boolean endOfCode;
 	private Object userObject;
 	private boolean isRenderable;
-	private String labelName;
+	private String labelName="";
 	private List<Value> callerList = null;
 
 	public InstructionLine() {
