@@ -7,8 +7,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
+import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -19,6 +22,10 @@ import de.drazil.nerdsuite.widget.HexViewWidget;
 public class DisassemblerView {
 
 	@Inject
+	private MPart part;
+
+	private HexViewWidget hvw;
+
 	public DisassemblerView() {
 
 	}
@@ -35,11 +42,29 @@ public class DisassemblerView {
 			e.printStackTrace();
 		}
 
-		HexViewWidget hvw = new HexViewWidget(parent, SWT.V_SCROLL);
+		hvw = new HexViewWidget(parent, SWT.V_SCROLL);
 		hvw.setContent(content);
 		menuService.registerContextMenu(hvw.getDisassemblyView(), "de.drazil.nerdsuite.popupmenu.disassemblyView");
 		menuService.registerContextMenu(hvw.getBinaryView(), "de.drazil.nerdsuite.popupmenu.binaryView");
 
+	}
+
+	@Inject
+	@Optional
+	public void jumpToAddress(@UIEventTopic("JumpToAddress") Object o) {
+		hvw.jumpToAddress();
+	}
+
+	@Inject
+	@Optional
+	public void returnToCaller(@UIEventTopic("ReturnToCaller") Object o) {
+		hvw.returnToCaller();
+	}
+
+	@Inject
+	@Optional
+	public void setLabel(@UIEventTopic("SetLabel") String name) {
+		hvw.setLabel(name);
 	}
 
 	@PreDestroy

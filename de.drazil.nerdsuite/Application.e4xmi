@@ -431,10 +431,13 @@
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_tBX6wNHVEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.partdescriptor.DisassemblerView" label="DisassemblerView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView">
+    <handlers xmi:id="_fWufgFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.4" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.JumpToAddressHandler" command="_V20PgFY2Eeu6p9lPyfXaSg"/>
+    <handlers xmi:id="_vQIBIFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.returnToCaller" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ReturnToCallerHandler" command="_xfrB4FY2Eeu6p9lPyfXaSg"/>
+    <handlers xmi:id="_8WSmIFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.setLabel" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SetLabelHandler" command="_5v1hQFY2Eeu6p9lPyfXaSg"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="_MKymcFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.popupmenu.disassemblyView">
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_NUrmsFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.renameLabel" label="Rename label" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/selection-input.png"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_Npk4oFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.jumptolabel" label="Jump to label" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow-curve-270.png"/>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_P_K6MFWHEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.returnToCaller" label="Return to caller" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow-return-090-left.png"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_NUrmsFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.renameLabel" label="Set label" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/selection-input.png" command="_5v1hQFY2Eeu6p9lPyfXaSg"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_Npk4oFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.jumpToAddress" label="Jump to address" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow-curve-270.png" command="_V20PgFY2Eeu6p9lPyfXaSg"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_P_K6MFWHEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.returnToOrigin" label="Return to origin" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow-return-090-left.png" command="_xfrB4FY2Eeu6p9lPyfXaSg"/>
       <children xsi:type="menu:Menu" xmi:id="_9uNLoFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.menu.specifyDataAs" label="Specify labeled binary block as...">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_BCSykFWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.asm" label="Assembler Code"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_B0gSoFWEEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.basic" label="Basic Code"/>
@@ -451,6 +454,7 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_4jZIEFWNEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.charset" label="Charset"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_kvaN8FWSEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.bitmap" label="Bitmap"/>
       </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_Jjlt4FY3Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handledmenuitem.discover" label="Discover"/>
     </menus>
     <toolbar xmi:id="_6QgV4FWoEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.toolbar.3">
       <children xsi:type="menu:HandledToolItem" xmi:id="_6sr7kFWoEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledtoolitem.code2" label="Code" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disasm.png" command="_jAOccNWOEemb1pFqqqXNXQ"/>
@@ -535,6 +539,9 @@
   <commands xmi:id="_csf2sL5QEeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.command.screenshot" commandName="Screenshot"/>
   <commands xmi:id="_lhIVEL5QEeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.command.streamvideo" commandName="StreamVideo"/>
   <commands xmi:id="_nKHygNHgEeqQR4qhoQvaeg" elementId="de.drazil.nerdsuite.command.Disassembler" commandName="Disassembler"/>
+  <commands xmi:id="_V20PgFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.command.jumpToAddress" commandName="Jump to address"/>
+  <commands xmi:id="_xfrB4FY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.command.returnToOrigin" commandName="Return to origin"/>
+  <commands xmi:id="_5v1hQFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.command.setLabel" commandName="Set label"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

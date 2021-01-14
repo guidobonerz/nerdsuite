@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -67,11 +70,13 @@ public class HexViewWidget extends Composite {
 	private TableViewer tableViewer;
 	private boolean addressChecked = false;
 	private Value pc;
+	private Stack<InstructionLine> jumpStack;
 
 	public HexViewWidget(Composite parent, int style) {
 		super(parent, style);
 		platform = new C64Platform(new KickAssemblerDialect(), false);
 		rangeList = new ArrayList<Range>();
+		jumpStack = new Stack<InstructionLine>();
 		initialize();
 	}
 
@@ -85,6 +90,29 @@ public class HexViewWidget extends Composite {
 
 	public Composite getBinaryView() {
 		return hexArea;
+	}
+
+	public void jumpToAddress() {
+		IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
+		InstructionLine line = (InstructionLine) selection.getFirstElement();
+		InstructionLine refLine = platform.getCPU().findInstructionLineByProgrammCounter(line.getReferenceValue());
+		selectInstruction(refLine);
+		jumpStack.push(line);
+	}
+
+	public void returnToCaller() {
+		if (!jumpStack.isEmpty()) {
+			selectInstruction(jumpStack.pop());
+		}
+	}
+
+	private void selectInstruction(InstructionLine line) {
+		tableViewer.setSelection(new StructuredSelection(tableViewer.getElementAt(platform.getCPU().getIndexOf(line))),
+				true);
+	}
+
+	public void setLabel(String name) {
+
 	}
 
 	public void setContent(byte[] content) {

@@ -2,8 +2,6 @@ package de.drazil.nerdsuite.disassembler.cpu;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
@@ -40,8 +38,7 @@ public class CPU_6510 extends AbstractCPU {
 			if (len - 1 > 0) {
 				sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
 			}
-			String pan = String.format("< %s, %s >", (address != null ? address.getConstName() : ""),
-					(address != null ? address.getDescription() : ""));
+			String pan = String.format("< %s >", (address != null ? address.getDescription() : ""));
 			String text = String.format("%s: %s %s %s", instructionLine.getProgramCounter(), opcode.getMnemonic(),
 					opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv),
 					address != null ? pan : "");
@@ -113,8 +110,8 @@ public class CPU_6510 extends AbstractCPU {
 				int v = value.getValue();
 				Address address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
 						.findFirst().orElse(null);
-				
 
+				
 				printDisassembly(currentLine, opcode, value, address);
 				newLine = split(currentLine, pc, new Value(offset + len));
 				if (newLine == null) {
@@ -302,7 +299,7 @@ public class CPU_6510 extends AbstractCPU {
 								pointerTableRemindMap.put(String.valueOf(reference), new Boolean(true));
 								InstructionLine pointerLine = getInstructionLineByPC(reference);
 								if (pointerLine == null) {
-									pointerLine = findInstructionLine(reference);
+									pointerLine = findInstructionLineByProgrammCounter(reference);
 									if (pointerLine != null) {
 										// pointerLine = split(pointerLine, pc,
 										// getOffset(pc,

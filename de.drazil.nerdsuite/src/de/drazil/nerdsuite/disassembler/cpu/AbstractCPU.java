@@ -99,7 +99,7 @@ public abstract class AbstractCPU implements ICPU {
 	}
 
 	@Override
-	public InstructionLine findInstructionLine(Value programmCounter) {
+	public InstructionLine findInstructionLineByProgrammCounter(Value programmCounter) {
 		InstructionLine instructionLine = null;
 		for (InstructionLine il : instructionLineList) {
 			if (programmCounter.getValue() >= il.getProgramCounter().getValue()
@@ -109,6 +109,10 @@ public abstract class AbstractCPU implements ICPU {
 			}
 		}
 		return instructionLine;
+	}
+
+	public int getIndexOf(InstructionLine line) {
+		return instructionLineList.indexOf(line);
 	}
 
 	@Override
