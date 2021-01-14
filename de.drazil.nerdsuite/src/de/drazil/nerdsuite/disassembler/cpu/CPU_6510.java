@@ -39,7 +39,8 @@ public class CPU_6510 extends AbstractCPU {
 				sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
 			}
 			String pan = String.format("< %s >", (address != null ? address.getDescription() : ""));
-			String text = String.format("%s: %s %s %s", instructionLine.getProgramCounter(), opcode.getMnemonic(),
+			String text = String.format("%s: %30s %s %s %s", instructionLine.getProgramCounter(),
+					instructionLine.getLabelName(), opcode.getMnemonic(),
 					opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv),
 					address != null ? pan : "");
 			instructionLine.setUserObject(text);
@@ -111,7 +112,6 @@ public class CPU_6510 extends AbstractCPU {
 				Address address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
 						.findFirst().orElse(null);
 
-				
 				printDisassembly(currentLine, opcode, value, address);
 				newLine = split(currentLine, pc, new Value(offset + len));
 				if (newLine == null) {

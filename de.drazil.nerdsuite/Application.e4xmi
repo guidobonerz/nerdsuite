@@ -211,10 +211,19 @@
       <tags>type:user</tags>
     </bindings>
   </bindingTables>
+  <bindingTables xmi:id="_7rH1UFZOEeuJj-MnBSw8MA" elementId="de.drazil.nerdsuite.bindingtable.1" bindingContext="__j6EwFZOEeuJj-MnBSw8MA">
+    <bindings xmi:id="_DtrWgFZPEeuJj-MnBSw8MA" elementId="de.drazil.nerdsuite.keybinding.19" keySequence="M1+ARROW_DOWN" command="_V20PgFY2Eeu6p9lPyfXaSg">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_JtSIgFZPEeuJj-MnBSw8MA" elementId="de.drazil.nerdsuite.keybinding.20" keySequence="M1+ARROW_UP" command="_xfrB4FY2Eeu6p9lPyfXaSg">
+      <tags>type:user</tags>
+    </bindings>
+  </bindingTables>
   <rootContext xmi:id="_POaA2KF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_POaA2aF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_POaA2qF9EeOMYoHAic2wfQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
     <children xmi:id="_bnniINc5EemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.bindingcontext.GfxEditor" name="GfxEditor"/>
+    <children xmi:id="__j6EwFZOEeuJj-MnBSw8MA" elementId="de.drazil.nerdsuite.bindingcontext.disassembler" name="Disassembler"/>
   </rootContext>
   <descriptors xmi:id="_8oaA4NUoEem7aKaccBqojA" elementId="de.drazil.nerdsuite.partdescriptor.GfxEditorView" label="GfxEditorView" bindingContexts="_bnniINc5EemIEoLjroS7Zw" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView">
     <handlers xmi:id="_Xp0dMAT-EemsC5geQwPptA" elementId="de.drazil.nerdsuite.handler.Layer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.LayerHandler" command="_CYRyMAT-EemsC5geQwPptA"/>
@@ -430,9 +439,9 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="_NSoYoc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.handledtoolitem.video" label="Video" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/film_go.png" command="_lhIVEL5QEeq0ivRYGfAMrg"/>
     </toolbar>
   </descriptors>
-  <descriptors xmi:id="_tBX6wNHVEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.partdescriptor.DisassemblerView" label="DisassemblerView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView">
+  <descriptors xmi:id="_tBX6wNHVEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.partdescriptor.DisassemblerView" label="DisassemblerView" bindingContexts="__j6EwFZOEeuJj-MnBSw8MA" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView">
     <handlers xmi:id="_fWufgFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.4" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.JumpToAddressHandler" command="_V20PgFY2Eeu6p9lPyfXaSg"/>
-    <handlers xmi:id="_vQIBIFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.returnToCaller" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ReturnToCallerHandler" command="_xfrB4FY2Eeu6p9lPyfXaSg"/>
+    <handlers xmi:id="_vQIBIFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.returnToOrigin" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ReturnToOriginHandler" command="_xfrB4FY2Eeu6p9lPyfXaSg"/>
     <handlers xmi:id="_8WSmIFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.setLabel" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SetLabelHandler" command="_5v1hQFY2Eeu6p9lPyfXaSg"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="_MKymcFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.popupmenu.disassemblyView">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_NUrmsFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.renameLabel" label="Set label" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/selection-input.png" command="_5v1hQFY2Eeu6p9lPyfXaSg"/>
