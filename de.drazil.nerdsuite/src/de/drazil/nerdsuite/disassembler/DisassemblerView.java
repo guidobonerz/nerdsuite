@@ -57,8 +57,8 @@ public class DisassemblerView {
 
 	@Inject
 	@Optional
-	public void returnToCaller(@UIEventTopic("ReturnToCaller") Object o) {
-		hvw.returnToCaller();
+	public void returnToCaller(@UIEventTopic("ReturnToOrigin") Object o) {
+		hvw.returnToOrigin();
 	}
 
 	@Inject

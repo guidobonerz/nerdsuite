@@ -96,19 +96,32 @@ public class HexViewWidget extends Composite {
 		IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
 		InstructionLine line = (InstructionLine) selection.getFirstElement();
 		InstructionLine refLine = platform.getCPU().findInstructionLineByProgrammCounter(line.getReferenceValue());
-		selectInstruction(refLine);
-		jumpStack.push(line);
+		if (refLine == null) {
+			MessageBox message = new MessageBox(getParent().getShell(), SWT.OK | SWT.ICON_WARNING);
+			message.setMessage(String.format("0x%04x is currently unreachable!", line.getReferenceValue().getValue()));
+			message.setText("Target unreachable");
+			message.open();
+		} else {
+			selectInstruction(refLine);
+			jumpStack.push(line);
+		}
 	}
 
-	public void returnToCaller() {
+	public void returnToOrigin() {
 		if (!jumpStack.isEmpty()) {
 			selectInstruction(jumpStack.pop());
+		} else {
+			MessageBox message = new MessageBox(getParent().getShell(), SWT.OK | SWT.ICON_INFORMATION);
+			message.setMessage("Base origin already reached!");
+			message.setText("Base origin reached");
+			message.open();
 		}
 	}
 
 	private void selectInstruction(InstructionLine line) {
-		tableViewer.setSelection(new StructuredSelection(tableViewer.getElementAt(platform.getCPU().getIndexOf(line))),
-				true);
+		int index = platform.getCPU().getIndexOf(line);
+		tableViewer.setSelection(new StructuredSelection(tableViewer.getElementAt(index)), true);
+		tableViewer.getTable().showSelection(); // setTopIndex(index);
 	}
 
 	public void setLabel(String name) {
@@ -147,7 +160,7 @@ public class HexViewWidget extends Composite {
 				if (pc != null) {
 					MessageBox message = new MessageBox(getParent().getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 					message.setMessage(String.format("0x%04x as StartAddress found\nApply it?", pc.getValue()));
-					message.setText("StartA ddress found");
+					message.setText("StartAddress found");
 					if (message.open() == SWT.YES) {
 						startAddress.setSelection(true);
 						platform.setProgrammCounter(new Value(pc.getValue()));

@@ -488,5 +488,161 @@
     "address" : "dd0f",
     "constName" : "CIA2_CONTROL_TIMER_B",
     "description" : "Control Timer B"
+  }, {
+    "address" : "ff81",
+    "constName" : "SCINIT",
+    "description" : "Initialize VIC; restore default input/output to keyboard/screen; clear screen; set PAL/NTSC switch and interrupt timer."
+  }, {
+    "address" : "ff84",
+    "constName" : "IOINIT",
+    "description" : "Initialize CIA's, SID volume; setup memory configuration; set and start interrupt timer."
+  }, {
+    "address" : "ff87",
+    "constName" : "RAMTAS",
+    "description" : "Clear memory addresses $0002-$0101 and $0200-$03FF; run memory test and set start and end address of BASIC work area accordingly; set screen memory to $0400 and datasette buffer to $033C"
+  }, {
+    "address" : "ff8a",
+    "constName" : "RESTOR",
+    "description" : "Fill vector table at memory addresses $0314-$0333 with default values."
+  }, {
+    "address" : "ff8d",
+    "constName" : "VECTOR",
+    "description" : "Copy vector table at memory addresses $0314-$0333 from or into user table. Input: Carry: 0 = Copy user table into vector table, 1 = Copy vector table into user table; X/Y = Pointer to user table."
+  }, {
+    "address" : "ff90",
+    "constName" : "SETMSG",
+    "description" : "Set system error display switch at memory address $009D."
+  }, {
+    "address" : "ff93",
+    "constName" : "LSTNSA",
+    "description" : "Send LISTEN secondary address to serial bus. (Must call LISTEN beforehands.)"
+  }, {
+    "address" : "ff96",
+    "constName" : "TALKSA",
+    "description" : "Send TALK secondary address to serial bus. (Must call TALK beforehands.)"
+  }, {
+    "address" : "ff99",
+    "constName" : "MEMBOT",
+    "description" : "Save or restore start address of BASIC work area."
+  }, {
+    "address" : "ff9c",
+    "constName" : "MEMTOP",
+    "description" : "Save or restore end address of BASIC work area."
+  }, {
+    "address" : "ff9f",
+    "constName" : "SCNKEY",
+    "description" : "Query keyboard; put current matrix code into memory address $00CB, current status of shift keys into memory address $028D and PETSCII code into keyboard buffer."
+  }, {
+    "address" : "ffa2",
+    "constName" : "SETTMO",
+    "description" : "Unknown. (Set serial bus timeout.)"
+  }, {
+    "address" : "ffa5",
+    "constName" : "IECIN",
+    "description" : "Read byte from serial bus. (Must call TALK and TALKSA beforehands.)"
+  }, {
+    "address" : "ffa8",
+    "constName" : "IECOUT",
+    "description" : "Write byte to serial bus. (Must call LISTEN and LSTNSA beforehands.)"
+  }, {
+    "address" : "ffab",
+    "constName" : "UNTALK",
+    "description" : "Send UNTALK command to serial bus."
+  }, {
+    "address" : "ffae",
+    "constName" : "UNLSTN",
+    "description" : "Send UNLISTEN command to serial bus."
+  }, {
+    "address" : "ffb1",
+    "constName" : "LISTEN",
+    "description" : "Send LISTEN command to serial bus."
+  }, {
+    "address" : "ffb4",
+    "constName" : "TALK",
+    "description" : "Send TALK command to serial bus."
+  }, {
+    "address" : "ffb7",
+    "constName" : "READST",
+    "description" : "Fetch status of current input/output device, value of ST variable. (For RS232, status is cleared.)"
+  }, {
+    "address" : "ffba",
+    "constName" : "SETLFS",
+    "description" : "Set file parameters."
+  }, {
+    "address" : "ffbd",
+    "constName" : "SETNAM",
+    "description" : "Set file name parameters."
+  }, {
+    "address" : "ffc0",
+    "constName" : "OPEN",
+    "description" : "Open file. (Must call SETLFS and SETNAM beforehands.)"
+  }, {
+    "address" : "ffc3",
+    "constName" : "CLOSE",
+    "description" : "Close file."
+  }, {
+    "address" : "ffc6",
+    "constName" : "CHKIN",
+    "description" : "Define file as default input. (Must call OPEN beforehands.)"
+  }, {
+    "address" : "ffc9",
+    "constName" : "CHKOUT",
+    "description" : "Define file as default output. (Must call OPEN beforehands.)"
+  }, {
+    "address" : "ffcc",
+    "constName" : "CLRCHN",
+    "description" : "Close default input/output files (for serial bus, send UNTALK and/or UNLISTEN); restore default input/output to keyboard/screen."
+  }, {
+    "address" : "ffcf",
+    "constName" : "CHRIN",
+    "description" : "Read byte from default input (for keyboard, read a line from the screen). (If not keyboard, must call OPEN and CHKIN beforehands.)"
+  }, {
+    "address" : "ffd2",
+    "constName" : "CHROUT",
+    "description" : "Write byte to default output. (If not screen, must call OPEN and CHKOUT beforehands.)"
+  }, {
+    "address" : "ffd5",
+    "constName" : "LOAD",
+    "description" : "Load or verify file. (Must call SETLFS and SETNAM beforehands.)"
+  }, {
+    "address" : "ffd8",
+    "constName" : "SAVE",
+    "description" : "Save file. (Must call SETLFS and SETNAM beforehands.)"
+  }, {
+    "address" : "ffdb",
+    "constName" : "SETTIM",
+    "description" : "Set Time of Day, at memory address $00A0-$00A2."
+  }, {
+    "address" : "ffde",
+    "constName" : "RDTIM",
+    "description" : "Read Time of Day, at memory address $00A0-$00A2."
+  }, {
+    "address" : "ffe1",
+    "constName" : "STOP",
+    "description" : "Query Stop key indicator, at memory address $0091; if pressed, call CLRCHN and clear keyboard buffer."
+  }, {
+    "address" : "ffe4",
+    "constName" : "GETIN",
+    "description" : "Read byte from default input. (If not keyboard, must call OPEN and CHKIN beforehands.)"
+  }, {
+    "address" : "ffe7",
+    "constName" : "CLALL",
+    "description" : "Clear file table; call CLRCHN."
+  }, {
+    "address" : "ffea",
+    "constName" : "UDTIM",
+    "description" : "Update Time of Day, at memory address $00A0-$00A2, and Stop key indicator, at memory address $0091."
+  }, {
+    "address" : "ffed",
+    "constName" : "SCREEN",
+    "description" : "Fetch number of screen rows and columns."
+  }, {
+    "address" : "fff0",
+    "constName" : "PLOT",
+    "description" : "Save or restore cursor position."
+  }, {
+    "address" : "fff3",
+    "constName" : "IOBASE",
+    "description" : "Fetch CIA #1 base address."
   } ]
 }
