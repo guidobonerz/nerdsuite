@@ -25,6 +25,8 @@ public interface ICPU {
 
 	public void clear();
 
+	public int getIndexOf(InstructionLine line);
+
 	public void addInstructionLine(InstructionLine instructionLine);
 
 	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset);
@@ -32,7 +34,7 @@ public interface ICPU {
 	public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset,
 			RangeType type, ReferenceType referenceType);
 
-	public InstructionLine findInstructionLine(Value value);
+	public InstructionLine findInstructionLineByProgrammCounter(Value value);
 
 	public InstructionLine findInstructionLineByOffset(Value offset);
 

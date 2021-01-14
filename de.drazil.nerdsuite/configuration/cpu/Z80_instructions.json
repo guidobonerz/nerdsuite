@@ -1,0 +1,934 @@
+{
+  "cpuInstructionList" : [ {
+    "id" : "adc",
+    "type" : "mod",
+    "description" : "add M to A with carry",
+    "opcodeList" : [ {
+      "addressingModeId" : "A,(HL)",
+      "hex" : "8e",
+      "cycles" : 2,
+      "flags" : "-------"
+    }, {
+      "addressingModeId" : "A,(IX+o)",
+      "hex" : "dd8e",
+      "cycles" : 2,
+      "flags" : "-------"
+    } ],
+    "addressingModeList" : [ {
+      "id" : "A,(HL)",
+      "addressingMode" : "Immediate",
+      "argumentTemplate" : "",
+      "len" : 2
+    }, {
+      "id" : "A,(IX+o)",
+      "addressingMode" : "Zero Page",
+      "argumentTemplate" : "{value}",
+      "len" : 2
+    }, {
+      "id" : "A,(IY+o)",
+      "addressingMode" : "Zero Page, X",
+      "argumentTemplate" : "{value},X",
+      "len" : 2
+    }, {
+      "id" : "A,n",
+      "addressingMode" : "Zero Page, Y",
+      "argumentTemplate" : "{value},X",
+      "len" : 2
+    }, {
+      "id" : "A,r",
+      "addressingMode" : "(Indirect Zero Page, X)",
+      "argumentTemplate" : "({value},X)",
+      "len" : 2
+    }, {
+      "id" : "A,IXp",
+      "addressingMode" : "(Indirect Zero Page), Y",
+      "argumentTemplate" : "({value}),Y",
+      "len" : 2
+    }, {
+      "id" : "A,IYq",
+      "addressingMode" : "Absolute",
+      "argumentTemplate" : "{value}",
+      "len" : 3
+    }, {
+      "id" : "HL,BC",
+      "addressingMode" : "Absolute, X",
+      "argumentTemplate" : "{value},X",
+      "len" : 3
+    }, {
+      "id" : "HL,DE",
+      "addressingMode" : "Absolute, Y",
+      "argumentTemplate" : "{value},Y",
+      "len" : 3
+    }, {
+      "id" : "HL,HL",
+      "addressingMode" : "Relative",
+      "argumentTemplate" : "{value}",
+      "len" : 2
+    }, {
+      "id" : "HL,SP",
+      "addressingMode" : "Indirect",
+      "argumentTemplate" : "({value})",
+      "len" : 3
+    }, {
+      "id" : "IX,BC",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IX,DE",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IX,IX",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IX,SP",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IY,BC",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IY,DE",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IY,IY",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IY,SP",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(HL)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(IX+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(IY+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IXp",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IYq",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "b,(HL)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "b,(IX+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "b,(IY+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "b,r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "M,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "NC,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "NZ,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "P,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "PE,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "PO,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "Z,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "A",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "B",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "BC",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "DE",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "H",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IX",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IY",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "L",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "SP",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "o",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "SP",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(SP),HL",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(SP),IX",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(SP),IY",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "AF,AF",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "DE,HL",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "A,(C)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "A,(n)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "B,(C)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,(C)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,(C)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E,(C)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "H,(C)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "L,(C)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "F,(C)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(IX)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(IY)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "NC,o",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "NZ,o",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "Z,o",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(BC),A",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(DE),A",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(HL),n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(HL),r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(IX+o),n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(IX+o),r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(IY+o),n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(IY+o),r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(nn),A",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(nn),BC",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(nn),DE",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(nn),HL",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(nn),IX",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(nn),IY",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(nn),SP",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "A,(BC)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "A,(DE)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "A,(nn)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "A,I",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "A,R",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "B,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "B,IXp",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "B,IYq",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "BC,(nn)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "BC,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,(HL)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,(IX+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,(IY+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,IXp",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "C,IYq",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,(HL)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,(IX+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,(IY+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,IXp",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,IXp",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,IYq",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "D,IXp",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "DE,(nn)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "DE,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E,(HL)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E,(IX+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E,(IY+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E,r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E,IXp",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "E,IYq",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "H,(HL)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "H,(IX+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "H,(IY+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "H,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "H,r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "HL,(nn)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "HL,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "I,A",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IX,(nn)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IX,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IXh,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IXh,p",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IXl,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IXl,p",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IY,(nn)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IY,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IYh,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IYh,q",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IYl,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "IYl,q",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "L,(HL)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "L,(IX+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "L,(IY+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "L,n",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "L,r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "R,A",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "SP,(nn)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "SP,HL",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "SP,IX",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "SP,IY",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "SP,nn",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(C),A",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(C),B",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(C),C",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(C),D",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(C),E",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(C),H",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(C),L",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "(n),A",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "AF",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "HL",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "b,(IX+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 4
+    }, {
+      "id" : "b,(IY+o)",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 4
+    }, {
+      "id" : "b,r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "M",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "NC",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "NZ",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "P",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "PE",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "PO",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "Z",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "0",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "8H",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "10H",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "18",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "20H",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "28H",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "30H",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "38H",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    }, {
+      "id" : "B,r",
+      "addressingMode" : "No Argument",
+      "argumentTemplate" : "",
+      "len" : 1
+    } ]
+  } ]
+}
