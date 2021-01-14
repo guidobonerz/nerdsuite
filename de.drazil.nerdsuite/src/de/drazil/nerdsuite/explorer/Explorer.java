@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
-import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
@@ -121,7 +120,8 @@ public class Explorer implements IDoubleClickListener {
 			String fileName = saveDialog.open();
 			try {
 				mediaManager.exportEntry(entry, new File(fileName));
-				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information", "\"" + fileName + "\" was successfully exported.");
+				MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Information",
+						"\"" + fileName + "\" was successfully exported.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -155,7 +155,8 @@ public class Explorer implements IDoubleClickListener {
 				e.printStackTrace();
 			}
 		} else {
-			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", "Folders can not be started on Ultimate64");
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning",
+					"Folders can not be started on Ultimate64");
 		}
 
 	}
@@ -196,7 +197,8 @@ public class Explorer implements IDoubleClickListener {
 			} else if (o instanceof MediaEntry) {
 				MediaEntry file = (MediaEntry) o;
 				cell.setText(file.getFullName());
-				cell.setImage(ImageFactory.createImage(file.isDirectory() ? "icons/folder.png" : "icons/document-binary.png"));
+				cell.setImage(ImageFactory
+						.createImage(file.isDirectory() ? "icons/folder.png" : "icons/document-binary.png"));
 				// Font f = FontFactory.getFont(file.getFontName());
 				// cell.setFont(f);
 
@@ -356,10 +358,12 @@ public class Explorer implements IDoubleClickListener {
 				projectSetup.put("repositoryOwner", owner);
 				projectSetup.put("file", file);
 
-				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView", "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
 						project.getName(), projectSetup);
 
-				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part, true);
+				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
+						part, true);
 			} else {
 				editor.getParent().setSelectedElement(editor);
 			}
