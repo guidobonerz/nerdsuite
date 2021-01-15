@@ -7,6 +7,7 @@ public class Opcode
 {
 	private String mnemonic;
 	private String addressingModeId;
+	private String prefix;
 	private String hex;
 	private int cycles;
 	private String flags;

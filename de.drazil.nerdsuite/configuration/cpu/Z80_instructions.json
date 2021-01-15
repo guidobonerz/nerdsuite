@@ -1,934 +1,3429 @@
 {
   "cpuInstructionList" : [ {
-    "id" : "adc",
-    "type" : "mod",
-    "description" : "add M to A with carry",
+    "id" : "ADC",
+    "type" : "?",
+    "description" : "?",
     "opcodeList" : [ {
-      "addressingModeId" : "A,(HL)",
-      "hex" : "8e",
-      "cycles" : 2,
-      "flags" : "-------"
-    }, {
-      "addressingModeId" : "A,(IX+o)",
-      "hex" : "dd8e",
-      "cycles" : 2,
-      "flags" : "-------"
-    } ],
-    "addressingModeList" : [ {
-      "id" : "A,(HL)",
-      "addressingMode" : "Immediate",
-      "argumentTemplate" : "",
-      "len" : 2
-    }, {
-      "id" : "A,(IX+o)",
-      "addressingMode" : "Zero Page",
-      "argumentTemplate" : "{value}",
-      "len" : 2
-    }, {
-      "id" : "A,(IY+o)",
-      "addressingMode" : "Zero Page, X",
-      "argumentTemplate" : "{value},X",
-      "len" : 2
-    }, {
-      "id" : "A,n",
-      "addressingMode" : "Zero Page, Y",
-      "argumentTemplate" : "{value},X",
-      "len" : 2
-    }, {
-      "id" : "A,r",
-      "addressingMode" : "(Indirect Zero Page, X)",
-      "argumentTemplate" : "({value},X)",
-      "len" : 2
-    }, {
-      "id" : "A,IXp",
-      "addressingMode" : "(Indirect Zero Page), Y",
-      "argumentTemplate" : "({value}),Y",
-      "len" : 2
-    }, {
-      "id" : "A,IYq",
-      "addressingMode" : "Absolute",
-      "argumentTemplate" : "{value}",
-      "len" : 3
-    }, {
-      "id" : "HL,BC",
-      "addressingMode" : "Absolute, X",
-      "argumentTemplate" : "{value},X",
-      "len" : 3
-    }, {
-      "id" : "HL,DE",
-      "addressingMode" : "Absolute, Y",
-      "argumentTemplate" : "{value},Y",
-      "len" : 3
-    }, {
-      "id" : "HL,HL",
-      "addressingMode" : "Relative",
-      "argumentTemplate" : "{value}",
-      "len" : 2
-    }, {
-      "id" : "HL,SP",
-      "addressingMode" : "Indirect",
-      "argumentTemplate" : "({value})",
-      "len" : 3
-    }, {
-      "id" : "IX,BC",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IX,DE",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IX,IX",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IX,SP",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IY,BC",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IY,DE",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IY,IY",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IY,SP",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(HL)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(IX+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(IY+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IXp",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IYq",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "b,(HL)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "b,(IX+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "b,(IY+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "b,r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "M,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "NC,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "NZ,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "P,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "PE,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "PO,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "Z,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "A",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "B",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "BC",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "DE",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "H",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IX",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IY",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "L",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "SP",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "o",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "SP",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(SP),HL",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(SP),IX",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(SP),IY",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "AF,AF",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "DE,HL",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "A,(C)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "A,(n)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "B,(C)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,(C)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,(C)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E,(C)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "H,(C)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "L,(C)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "F,(C)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(IX)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(IY)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "NC,o",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "NZ,o",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "Z,o",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(BC),A",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(DE),A",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(HL),n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(HL),r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(IX+o),n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(IX+o),r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(IY+o),n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(IY+o),r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(nn),A",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(nn),BC",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(nn),DE",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(nn),HL",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(nn),IX",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(nn),IY",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(nn),SP",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "A,(BC)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "A,(DE)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "A,(nn)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "A,I",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "A,R",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "B,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "B,IXp",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "B,IYq",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "BC,(nn)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "BC,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,(HL)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,(IX+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,(IY+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,IXp",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "C,IYq",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,(HL)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,(IX+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,(IY+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,IXp",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,IXp",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,IYq",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "D,IXp",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "DE,(nn)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "DE,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E,(HL)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E,(IX+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E,(IY+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E,r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E,IXp",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "E,IYq",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "H,(HL)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "H,(IX+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "H,(IY+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "H,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "H,r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "HL,(nn)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "HL,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "I,A",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IX,(nn)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IX,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IXh,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IXh,p",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IXl,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IXl,p",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IY,(nn)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IY,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IYh,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IYh,q",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IYl,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "IYl,q",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "L,(HL)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "L,(IX+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "L,(IY+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "L,n",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "L,r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "R,A",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "SP,(nn)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "SP,HL",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "SP,IX",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "SP,IY",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "SP,nn",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(C),A",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(C),B",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(C),C",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(C),D",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(C),E",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(C),H",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(C),L",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "(n),A",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "AF",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "HL",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "b,(IX+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 4
-    }, {
-      "id" : "b,(IY+o)",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 4
-    }, {
-      "id" : "b,r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "M",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "NC",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "NZ",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "P",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "PE",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "PO",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "Z",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "0",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "8H",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "10H",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "18",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "20H",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "28H",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "30H",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "38H",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
-    }, {
-      "id" : "B,r",
-      "addressingMode" : "No Argument",
-      "argumentTemplate" : "",
-      "len" : 1
+      "adressingModeId" : "A,(HL)",
+      "prefix" : "",
+      "hex" : "8E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "8E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "8E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,n",
+      "prefix" : "",
+      "hex" : "CE",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,r",
+      "prefix" : "",
+      "hex" : "88",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,IXp",
+      "prefix" : "DD",
+      "hex" : "88",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,IYq",
+      "prefix" : "FD",
+      "hex" : "88",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,BC",
+      "prefix" : "ED",
+      "hex" : "4A",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,DE",
+      "prefix" : "ED",
+      "hex" : "5A",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,HL",
+      "prefix" : "ED",
+      "hex" : "6A",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,SP",
+      "prefix" : "ED",
+      "hex" : "7A",
+      "cycles" : 15,
+      "flags" : "-----"
     } ]
+  }, {
+    "id" : "ADD",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "A,(HL)",
+      "prefix" : "",
+      "hex" : "86",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "86",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "86",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,n",
+      "prefix" : "",
+      "hex" : "C6",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,r",
+      "prefix" : "",
+      "hex" : "80",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,IXp",
+      "prefix" : "DD",
+      "hex" : "80",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,IYq",
+      "prefix" : "FD",
+      "hex" : "80",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,BC",
+      "prefix" : "",
+      "hex" : "09",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,DE",
+      "prefix" : "",
+      "hex" : "19",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,HL",
+      "prefix" : "",
+      "hex" : "29",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,SP",
+      "prefix" : "",
+      "hex" : "39",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX,BC",
+      "prefix" : "DD",
+      "hex" : "09",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX,DE",
+      "prefix" : "DD",
+      "hex" : "19",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX,IX",
+      "prefix" : "DD",
+      "hex" : "29",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX,SP",
+      "prefix" : "DD",
+      "hex" : "39",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY,BC",
+      "prefix" : "FD",
+      "hex" : "09",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY,DE",
+      "prefix" : "FD",
+      "hex" : "19",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY,IY",
+      "prefix" : "FD",
+      "hex" : "29",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY,SP",
+      "prefix" : "FD",
+      "hex" : "39",
+      "cycles" : 15,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "AND",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "A6",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "A6",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "A6",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "n",
+      "prefix" : "",
+      "hex" : "E6",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "A0",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXp",
+      "prefix" : "DD",
+      "hex" : "A0",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYq",
+      "prefix" : "FD",
+      "hex" : "A0",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "BIT",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "b,(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "CALL",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "nn",
+      "prefix" : "",
+      "hex" : "CD",
+      "cycles" : 17,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,nn",
+      "prefix" : "",
+      "hex" : "DC",
+      "cycles" : 44486,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "M,nn",
+      "prefix" : "",
+      "hex" : "FC",
+      "cycles" : 44486,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "NC,nn",
+      "prefix" : "",
+      "hex" : "D4",
+      "cycles" : 44486,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "NZ,nn",
+      "prefix" : "",
+      "hex" : "C4",
+      "cycles" : 44486,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "P,nn",
+      "prefix" : "",
+      "hex" : "F4",
+      "cycles" : 44486,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "PE,nn",
+      "prefix" : "",
+      "hex" : "EC",
+      "cycles" : 44486,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "PO,nn",
+      "prefix" : "",
+      "hex" : "E4",
+      "cycles" : 44486,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "Z,nn",
+      "prefix" : "",
+      "hex" : "CC",
+      "cycles" : 44486,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "CCF",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "CCF",
+      "prefix" : "",
+      "hex" : "3F",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "CP",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "BE",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "BE",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "BE",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "n",
+      "prefix" : "",
+      "hex" : "FE",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "B8",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXp",
+      "prefix" : "DD",
+      "hex" : "B8",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYq",
+      "prefix" : "FD",
+      "hex" : "B8",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "CPD",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "CPD",
+      "prefix" : "ED",
+      "hex" : "A9",
+      "cycles" : 16,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "CPDR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "CPDR",
+      "prefix" : "ED",
+      "hex" : "B9",
+      "cycles" : 21,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "CPI",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "CPI",
+      "prefix" : "ED",
+      "hex" : "A1",
+      "cycles" : 16,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "CPIR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "CPIR",
+      "prefix" : "ED",
+      "hex" : "B1",
+      "cycles" : 21,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "CPL",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "CPL",
+      "prefix" : "",
+      "hex" : "2F",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "DAA",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "DAA",
+      "prefix" : "",
+      "hex" : "27",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "DEC",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "35",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "35",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "35",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A",
+      "prefix" : "",
+      "hex" : "3D",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B",
+      "prefix" : "",
+      "hex" : "05",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "BC",
+      "prefix" : "",
+      "hex" : "0B",
+      "cycles" : 6,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C",
+      "prefix" : "",
+      "hex" : "0D",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D",
+      "prefix" : "",
+      "hex" : "15",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "DE",
+      "prefix" : "",
+      "hex" : "1B",
+      "cycles" : 6,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E",
+      "prefix" : "",
+      "hex" : "1D",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "H",
+      "prefix" : "",
+      "hex" : "25",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL",
+      "prefix" : "",
+      "hex" : "2B",
+      "cycles" : 6,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX",
+      "prefix" : "DD",
+      "hex" : "2B",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY",
+      "prefix" : "FD",
+      "hex" : "2B",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXp",
+      "prefix" : "DD",
+      "hex" : "05",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYq",
+      "prefix" : "FD",
+      "hex" : "05",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "L",
+      "prefix" : "",
+      "hex" : "2D",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "SP",
+      "prefix" : "",
+      "hex" : "3B",
+      "cycles" : 6,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "DI",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "DI",
+      "prefix" : "",
+      "hex" : "F3",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "DJNZ",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "o",
+      "prefix" : "",
+      "hex" : "10",
+      "cycles" : 44421,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "EI",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "EI",
+      "prefix" : "",
+      "hex" : "FB",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "EX",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(SP),HL",
+      "prefix" : "",
+      "hex" : "E3",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(SP),IX",
+      "prefix" : "DD",
+      "hex" : "E3",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(SP),IY",
+      "prefix" : "FD",
+      "hex" : "E3",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "AF,AF'",
+      "prefix" : "",
+      "hex" : "08",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "DE,HL",
+      "prefix" : "",
+      "hex" : "EB",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "EXX",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "EXX",
+      "prefix" : "",
+      "hex" : "D9",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "HALT",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "HALT",
+      "prefix" : "",
+      "hex" : "76",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "IM",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "IM 0",
+      "prefix" : "ED",
+      "hex" : "46",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IM 1",
+      "prefix" : "ED",
+      "hex" : "56",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IM 2",
+      "prefix" : "ED",
+      "hex" : "5E",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "IN",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "A,(C)",
+      "prefix" : "ED",
+      "hex" : "78",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(n)",
+      "prefix" : "",
+      "hex" : "DB",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B,(C)",
+      "prefix" : "ED",
+      "hex" : "40",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,(C)",
+      "prefix" : "ED",
+      "hex" : "48",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D,(C)",
+      "prefix" : "ED",
+      "hex" : "50",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E,(C)",
+      "prefix" : "ED",
+      "hex" : "58",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "H,(C)",
+      "prefix" : "ED",
+      "hex" : "60",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "L,(C)",
+      "prefix" : "ED",
+      "hex" : "68",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "F,(C)",
+      "prefix" : "ED",
+      "hex" : "70",
+      "cycles" : 12,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "INC",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "34",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "34",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "34",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A",
+      "prefix" : "",
+      "hex" : "3C",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B",
+      "prefix" : "",
+      "hex" : "04",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "BC",
+      "prefix" : "",
+      "hex" : "03",
+      "cycles" : 6,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C",
+      "prefix" : "",
+      "hex" : "0C",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D",
+      "prefix" : "",
+      "hex" : "14",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "DE",
+      "prefix" : "",
+      "hex" : "13",
+      "cycles" : 6,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E",
+      "prefix" : "",
+      "hex" : "1C",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "H",
+      "prefix" : "",
+      "hex" : "24",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL",
+      "prefix" : "",
+      "hex" : "23",
+      "cycles" : 6,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX",
+      "prefix" : "DD",
+      "hex" : "23",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY",
+      "prefix" : "FD",
+      "hex" : "23",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXp",
+      "prefix" : "DD",
+      "hex" : "04",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYq",
+      "prefix" : "FD",
+      "hex" : "04",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "L",
+      "prefix" : "",
+      "hex" : "2C",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "SP",
+      "prefix" : "",
+      "hex" : "33",
+      "cycles" : 6,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "IND",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "IND",
+      "prefix" : "ED",
+      "hex" : "AA",
+      "cycles" : 16,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "INDR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "INDR",
+      "prefix" : "ED",
+      "hex" : "BA",
+      "cycles" : 21,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "INI",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "INI",
+      "prefix" : "ED",
+      "hex" : "A2",
+      "cycles" : 16,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "INIR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "INR",
+      "prefix" : "ED",
+      "hex" : "B2",
+      "cycles" : 21,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "JP",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "nn",
+      "prefix" : "",
+      "hex" : "C3",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "E9",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX)",
+      "prefix" : "DD",
+      "hex" : "E9",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY)",
+      "prefix" : "FD",
+      "hex" : "E9",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,nn",
+      "prefix" : "",
+      "hex" : "DA",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "M,nn",
+      "prefix" : "",
+      "hex" : "FA",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "NC,nn",
+      "prefix" : "",
+      "hex" : "D2",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "NZ,nn",
+      "prefix" : "",
+      "hex" : "C2",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "P,nn",
+      "prefix" : "",
+      "hex" : "F2",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "PE,nn",
+      "prefix" : "",
+      "hex" : "EA",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "PO,nn",
+      "prefix" : "",
+      "hex" : "E2",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "Z,nn",
+      "prefix" : "",
+      "hex" : "CA",
+      "cycles" : 10,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "JR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "o",
+      "prefix" : "",
+      "hex" : "18",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,o",
+      "prefix" : "",
+      "hex" : "38",
+      "cycles" : 44389,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "NC,o",
+      "prefix" : "",
+      "hex" : "30",
+      "cycles" : 44389,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "NZ,o",
+      "prefix" : "",
+      "hex" : "20",
+      "cycles" : 44389,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "Z,o",
+      "prefix" : "",
+      "hex" : "28",
+      "cycles" : 44389,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "LD",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(BC),A",
+      "prefix" : "",
+      "hex" : "02",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(DE),A",
+      "prefix" : "",
+      "hex" : "12",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(HL),n",
+      "prefix" : "",
+      "hex" : "36",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(HL),r",
+      "prefix" : "",
+      "hex" : "70",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o),n",
+      "prefix" : "DD",
+      "hex" : "36",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o),r",
+      "prefix" : "DD",
+      "hex" : "70",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o),n",
+      "prefix" : "FD",
+      "hex" : "36",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o),r",
+      "prefix" : "FD",
+      "hex" : "70",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(nn),A",
+      "prefix" : "",
+      "hex" : "32",
+      "cycles" : 13,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(nn),BC",
+      "prefix" : "ED",
+      "hex" : "43",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(nn),DE",
+      "prefix" : "ED",
+      "hex" : "53",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(nn),HL",
+      "prefix" : "",
+      "hex" : "22",
+      "cycles" : 16,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(nn),IX",
+      "prefix" : "DD",
+      "hex" : "22",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(nn),IY",
+      "prefix" : "FD",
+      "hex" : "22",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(nn),SP",
+      "prefix" : "ED",
+      "hex" : "73",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(BC)",
+      "prefix" : "",
+      "hex" : "0A",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(DE)",
+      "prefix" : "",
+      "hex" : "1A",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(HL)",
+      "prefix" : "",
+      "hex" : "7E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "7E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "7E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(nn)",
+      "prefix" : "",
+      "hex" : "3A",
+      "cycles" : 13,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,n",
+      "prefix" : "",
+      "hex" : "3E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,r",
+      "prefix" : "",
+      "hex" : "78",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,IXp",
+      "prefix" : "DD",
+      "hex" : "78",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,IYq",
+      "prefix" : "FD",
+      "hex" : "78",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,I",
+      "prefix" : "ED",
+      "hex" : "57",
+      "cycles" : 9,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,R",
+      "prefix" : "ED",
+      "hex" : "5F",
+      "cycles" : 9,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B,(HL)",
+      "prefix" : "",
+      "hex" : "46",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "46",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "46",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B,n",
+      "prefix" : "",
+      "hex" : "06",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B,r",
+      "prefix" : "",
+      "hex" : "40",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B,IXp",
+      "prefix" : "DD",
+      "hex" : "40",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "B,IYq",
+      "prefix" : "FD",
+      "hex" : "40",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "BC,(nn)",
+      "prefix" : "ED",
+      "hex" : "4B",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "BC,nn",
+      "prefix" : "",
+      "hex" : "01",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,(HL)",
+      "prefix" : "",
+      "hex" : "4E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "4E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "4E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,n",
+      "prefix" : "",
+      "hex" : "0E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,r",
+      "prefix" : "",
+      "hex" : "48",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,IXp",
+      "prefix" : "DD",
+      "hex" : "48",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C,IYq",
+      "prefix" : "FD",
+      "hex" : "48",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D,(HL)",
+      "prefix" : "",
+      "hex" : "56",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "56",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "56",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D,n",
+      "prefix" : "",
+      "hex" : "16",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D,r",
+      "prefix" : "",
+      "hex" : "50",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D,IXp",
+      "prefix" : "DD",
+      "hex" : "50",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "D,IYq",
+      "prefix" : "FD",
+      "hex" : "50",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "DE,(nn)",
+      "prefix" : "ED",
+      "hex" : "5B",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "DE,nn",
+      "prefix" : "",
+      "hex" : "11",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E,(HL)",
+      "prefix" : "",
+      "hex" : "5E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "5E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "5E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E,n",
+      "prefix" : "",
+      "hex" : "1E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E,r",
+      "prefix" : "",
+      "hex" : "58",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E,IXp",
+      "prefix" : "DD",
+      "hex" : "58",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "E,IYq",
+      "prefix" : "FD",
+      "hex" : "58",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "H,(HL)",
+      "prefix" : "",
+      "hex" : "66",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "H,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "66",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "H,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "66",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "H,n",
+      "prefix" : "",
+      "hex" : "26",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "H,r",
+      "prefix" : "",
+      "hex" : "60",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,(nn)",
+      "prefix" : "",
+      "hex" : "2A",
+      "cycles" : 16,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,nn",
+      "prefix" : "",
+      "hex" : "21",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "I,A",
+      "prefix" : "ED",
+      "hex" : "47",
+      "cycles" : 9,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX,(nn)",
+      "prefix" : "DD",
+      "hex" : "2A",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX,nn",
+      "prefix" : "DD",
+      "hex" : "21",
+      "cycles" : 14,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXh,n",
+      "prefix" : "DD",
+      "hex" : "26",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXh,p",
+      "prefix" : "DD",
+      "hex" : "60",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXl,n",
+      "prefix" : "DD",
+      "hex" : "2E",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXl,p",
+      "prefix" : "DD",
+      "hex" : "68",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY,(nn)",
+      "prefix" : "FD",
+      "hex" : "2A",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY,nn",
+      "prefix" : "FD",
+      "hex" : "21",
+      "cycles" : 14,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYh,n",
+      "prefix" : "FD",
+      "hex" : "26",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYh,q",
+      "prefix" : "FD",
+      "hex" : "60",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYl,n",
+      "prefix" : "FD",
+      "hex" : "2E",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYl,q",
+      "prefix" : "FD",
+      "hex" : "68",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "L,(HL)",
+      "prefix" : "",
+      "hex" : "6E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "L,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "6E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "L,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "6E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "L,n",
+      "prefix" : "",
+      "hex" : "2E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "L,r",
+      "prefix" : "",
+      "hex" : "68",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "R,A",
+      "prefix" : "ED",
+      "hex" : "4F",
+      "cycles" : 9,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "SP,(nn)",
+      "prefix" : "ED",
+      "hex" : "7B",
+      "cycles" : 20,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "SP,HL",
+      "prefix" : "",
+      "hex" : "F9",
+      "cycles" : 6,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "SP,IX",
+      "prefix" : "DD",
+      "hex" : "F9",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "SP,IY",
+      "prefix" : "FD",
+      "hex" : "F9",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "SP,nn",
+      "prefix" : "",
+      "hex" : "31",
+      "cycles" : 10,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "LDD",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "LDD",
+      "prefix" : "ED",
+      "hex" : "A8",
+      "cycles" : 16,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "LDDR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "LDDR",
+      "prefix" : "ED",
+      "hex" : "B8",
+      "cycles" : 21,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "LDI",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "LDI",
+      "prefix" : "ED",
+      "hex" : "A0",
+      "cycles" : 16,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "LDIR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "LIDR",
+      "prefix" : "ED",
+      "hex" : "B0",
+      "cycles" : 21,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "MULUB",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "A,r",
+      "prefix" : "ED",
+      "hex" : "C1",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "MULUW",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "HL,BC",
+      "prefix" : "ED",
+      "hex" : "C3",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,BC",
+      "prefix" : "ED",
+      "hex" : "C3",
+      "cycles" : 3,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "NEG",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "NEG",
+      "prefix" : "ED",
+      "hex" : "44",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "NOP",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "NOP",
+      "prefix" : "",
+      "hex" : "00",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "OR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "B6",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "B6",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "B6",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "n",
+      "prefix" : "",
+      "hex" : "F6",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "B0",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXp",
+      "prefix" : "DD",
+      "hex" : "B0",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYq",
+      "prefix" : "FD",
+      "hex" : "B0",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "OTDR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "OTDR",
+      "prefix" : "ED",
+      "hex" : "BB",
+      "cycles" : 21,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "OTIR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "OTIR",
+      "prefix" : "ED",
+      "hex" : "B3",
+      "cycles" : 21,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "OUT",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(C),A",
+      "prefix" : "ED",
+      "hex" : "79",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(C),B",
+      "prefix" : "ED",
+      "hex" : "41",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(C),C",
+      "prefix" : "ED",
+      "hex" : "49",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(C),D",
+      "prefix" : "ED",
+      "hex" : "51",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(C),E",
+      "prefix" : "ED",
+      "hex" : "59",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(C),H",
+      "prefix" : "ED",
+      "hex" : "61",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(C),L",
+      "prefix" : "ED",
+      "hex" : "69",
+      "cycles" : 12,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(n),A",
+      "prefix" : "",
+      "hex" : "D3",
+      "cycles" : 11,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "OUTD",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "OUTD",
+      "prefix" : "ED",
+      "hex" : "AB",
+      "cycles" : 16,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "OUTI",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "OUTI",
+      "prefix" : "ED",
+      "hex" : "A3",
+      "cycles" : 16,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "POP",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "AF",
+      "prefix" : "",
+      "hex" : "F1",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "BC",
+      "prefix" : "",
+      "hex" : "C1",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "DE",
+      "prefix" : "",
+      "hex" : "D1",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL",
+      "prefix" : "",
+      "hex" : "E1",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX",
+      "prefix" : "DD",
+      "hex" : "E1",
+      "cycles" : 14,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY",
+      "prefix" : "FD",
+      "hex" : "E1",
+      "cycles" : 14,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "PUSH",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "AF",
+      "prefix" : "",
+      "hex" : "F5",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "BC",
+      "prefix" : "",
+      "hex" : "C5",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "DE",
+      "prefix" : "",
+      "hex" : "D5",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL",
+      "prefix" : "",
+      "hex" : "E5",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IX",
+      "prefix" : "DD",
+      "hex" : "E5",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IY",
+      "prefix" : "FD",
+      "hex" : "E5",
+      "cycles" : 15,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RES",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "b,(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RET",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "",
+      "prefix" : "",
+      "hex" : "C9",
+      "cycles" : 10,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "C",
+      "prefix" : "",
+      "hex" : "D8",
+      "cycles" : 44327,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "M",
+      "prefix" : "",
+      "hex" : "F8",
+      "cycles" : 44327,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "NC",
+      "prefix" : "",
+      "hex" : "D0",
+      "cycles" : 44327,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "NZ",
+      "prefix" : "",
+      "hex" : "C0",
+      "cycles" : 44327,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "P",
+      "prefix" : "",
+      "hex" : "F0",
+      "cycles" : 44327,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "PE",
+      "prefix" : "",
+      "hex" : "E8",
+      "cycles" : 44327,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "PO",
+      "prefix" : "",
+      "hex" : "E0",
+      "cycles" : 44327,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "Z",
+      "prefix" : "",
+      "hex" : "C8",
+      "cycles" : 44327,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RETI",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "RETI",
+      "prefix" : "ED",
+      "hex" : "4D",
+      "cycles" : 14,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RETN",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "RETN",
+      "prefix" : "ED",
+      "hex" : "45",
+      "cycles" : 14,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RL",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RLA",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "RLA",
+      "prefix" : "",
+      "hex" : "17",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RLC",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RLCA",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "RLCA",
+      "prefix" : "",
+      "hex" : "07",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RLD",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "RLD",
+      "prefix" : "ED",
+      "hex" : "6F",
+      "cycles" : 18,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RRA",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "RRA",
+      "prefix" : "",
+      "hex" : "1F",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RRC",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RRCA",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "RRCA",
+      "prefix" : "",
+      "hex" : "0F",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RRD",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "RRD",
+      "prefix" : "ED",
+      "hex" : "67",
+      "cycles" : 18,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "RST",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "0",
+      "prefix" : "",
+      "hex" : "C7",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "RST 8H",
+      "prefix" : "",
+      "hex" : "CF",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "RST 10H",
+      "prefix" : "",
+      "hex" : "D7",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "RST 18H",
+      "prefix" : "",
+      "hex" : "DF",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "RST 20H",
+      "prefix" : "",
+      "hex" : "E7",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "RST 28H",
+      "prefix" : "",
+      "hex" : "EF",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "RST 30H",
+      "prefix" : "",
+      "hex" : "F7",
+      "cycles" : 11,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "RST 38H",
+      "prefix" : "",
+      "hex" : "FF",
+      "cycles" : 11,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "SBC",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "A,(HL)",
+      "prefix" : "",
+      "hex" : "9E",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "9E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "9E",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,n",
+      "prefix" : "",
+      "hex" : "DE",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,r",
+      "prefix" : "",
+      "hex" : "98",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,IXp",
+      "prefix" : "DD",
+      "hex" : "98",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "A,IYq",
+      "prefix" : "FD",
+      "hex" : "98",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,BC",
+      "prefix" : "ED",
+      "hex" : "42",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,DE",
+      "prefix" : "ED",
+      "hex" : "52",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,HL",
+      "prefix" : "ED",
+      "hex" : "62",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "HL,SP",
+      "prefix" : "ED",
+      "hex" : "72",
+      "cycles" : 15,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "SCF",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "SCF",
+      "prefix" : "",
+      "hex" : "37",
+      "cycles" : 4,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "SET",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "b,(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "b,r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "SLA",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "SRA",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "SRL",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 15,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "CB",
+      "cycles" : 23,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "CB",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "SUB",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "96",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "96",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "96",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "n",
+      "prefix" : "",
+      "hex" : "D6",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "90",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXp",
+      "prefix" : "DD",
+      "hex" : "90",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYq",
+      "prefix" : "FD",
+      "hex" : "90",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  }, {
+    "id" : "XOR",
+    "type" : "?",
+    "description" : "?",
+    "opcodeList" : [ {
+      "adressingModeId" : "(HL)",
+      "prefix" : "",
+      "hex" : "AE",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IX+o)",
+      "prefix" : "DD",
+      "hex" : "AE",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "(IY+o)",
+      "prefix" : "FD",
+      "hex" : "AE",
+      "cycles" : 19,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "n",
+      "prefix" : "",
+      "hex" : "EE",
+      "cycles" : 7,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "r",
+      "prefix" : "",
+      "hex" : "A8",
+      "cycles" : 4,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IXp",
+      "prefix" : "DD",
+      "hex" : "A8",
+      "cycles" : 8,
+      "flags" : "-----"
+    }, {
+      "adressingModeId" : "IYq",
+      "prefix" : "FD",
+      "hex" : "A8",
+      "cycles" : 8,
+      "flags" : "-----"
+    } ]
+  } ],
+  "addressingModeList" : [ {
+    "id" : "A,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,(HL)",
+    "len" : 1
+  }, {
+    "id" : "A,(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "A,(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "A,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,{n}",
+    "len" : 1
+  }, {
+    "id" : "A,r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,{r}",
+    "len" : 1
+  }, {
+    "id" : "A,IXp",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,IX{p}",
+    "len" : 1
+  }, {
+    "id" : "A,IYq",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,IY{q}",
+    "len" : 1
+  }, {
+    "id" : "HL,BC",
+    "addressingMode" : "?",
+    "argumentTemplate" : "HL,BC",
+    "len" : 1
+  }, {
+    "id" : "HL,DE",
+    "addressingMode" : "?",
+    "argumentTemplate" : "HL,DE",
+    "len" : 1
+  }, {
+    "id" : "HL,HL",
+    "addressingMode" : "?",
+    "argumentTemplate" : "HL,HL",
+    "len" : 1
+  }, {
+    "id" : "HL,SP",
+    "addressingMode" : "?",
+    "argumentTemplate" : "HL,SP",
+    "len" : 1
+  }, {
+    "id" : "A,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,(HL)",
+    "len" : 1
+  }, {
+    "id" : "IX,BC",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IX,BC",
+    "len" : 1
+  }, {
+    "id" : "IX,DE",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IX,DE",
+    "len" : 1
+  }, {
+    "id" : "IX,IX",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IX,IX",
+    "len" : 1
+  }, {
+    "id" : "IX,SP",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IX,SP",
+    "len" : 1
+  }, {
+    "id" : "IY,BC",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IY,BC",
+    "len" : 1
+  }, {
+    "id" : "IY,DE",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IY,DE",
+    "len" : 1
+  }, {
+    "id" : "IY,IY",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IY,IY",
+    "len" : 1
+  }, {
+    "id" : "IY,SP",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IY,SP",
+    "len" : 1
+  }, {
+    "id" : "(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(HL)",
+    "len" : 1
+  }, {
+    "id" : "(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "{n}",
+    "len" : 1
+  }, {
+    "id" : "r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "{r}",
+    "len" : 1
+  }, {
+    "id" : "IXp",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IX{p}",
+    "len" : 1
+  }, {
+    "id" : "IYq",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IY{q}",
+    "len" : 1
+  }, {
+    "id" : "b,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "{b},(HL)",
+    "len" : 1
+  }, {
+    "id" : "b,(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "{b},(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "b,(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "{b},(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "b,r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "{b},{r}",
+    "len" : 1
+  }, {
+    "id" : "nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "{nn}",
+    "len" : 1
+  }, {
+    "id" : "C,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,{nn}",
+    "len" : 1
+  }, {
+    "id" : "M,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "M,{nn}",
+    "len" : 1
+  }, {
+    "id" : "NC,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "NC,{nn}",
+    "len" : 1
+  }, {
+    "id" : "NZ,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "NZ,{nn}",
+    "len" : 1
+  }, {
+    "id" : "P,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "P,{nn}",
+    "len" : 1
+  }, {
+    "id" : "PE,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "PE,{nn}",
+    "len" : 1
+  }, {
+    "id" : "PO,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "PO,{nn}",
+    "len" : 1
+  }, {
+    "id" : "Z,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "Z,{nn}",
+    "len" : 1
+  }, {
+    "id" : "A",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A",
+    "len" : 1
+  }, {
+    "id" : "B",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B",
+    "len" : 1
+  }, {
+    "id" : "BC",
+    "addressingMode" : "?",
+    "argumentTemplate" : "BC",
+    "len" : 1
+  }, {
+    "id" : "C",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C",
+    "len" : 1
+  }, {
+    "id" : "D",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D",
+    "len" : 1
+  }, {
+    "id" : "DE",
+    "addressingMode" : "?",
+    "argumentTemplate" : "DE",
+    "len" : 1
+  }, {
+    "id" : "E",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E",
+    "len" : 1
+  }, {
+    "id" : "H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "H",
+    "len" : 1
+  }, {
+    "id" : "HL",
+    "addressingMode" : "?",
+    "argumentTemplate" : "HL",
+    "len" : 1
+  }, {
+    "id" : "IX",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IX",
+    "len" : 1
+  }, {
+    "id" : "IY",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IY",
+    "len" : 1
+  }, {
+    "id" : "L",
+    "addressingMode" : "?",
+    "argumentTemplate" : "L",
+    "len" : 1
+  }, {
+    "id" : "SP",
+    "addressingMode" : "?",
+    "argumentTemplate" : "SP",
+    "len" : 1
+  }, {
+    "id" : "o",
+    "addressingMode" : "?",
+    "argumentTemplate" : "{o}",
+    "len" : 1
+  }, {
+    "id" : "(SP),HL",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(SP),HL",
+    "len" : 1
+  }, {
+    "id" : "(SP),IX",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(SP),IX",
+    "len" : 1
+  }, {
+    "id" : "(SP),IY",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(SP),IY",
+    "len" : 1
+  }, {
+    "id" : "AF,AF'",
+    "addressingMode" : "?",
+    "argumentTemplate" : "AF,AF'",
+    "len" : 1
+  }, {
+    "id" : "DE,HL",
+    "addressingMode" : "?",
+    "argumentTemplate" : "DE,HL",
+    "len" : 1
+  }, {
+    "id" : "IM 0",
+    "addressingMode" : "?",
+    "argumentTemplate" : "0",
+    "len" : 2
+  }, {
+    "id" : "IM 1",
+    "addressingMode" : "?",
+    "argumentTemplate" : "1",
+    "len" : 2
+  }, {
+    "id" : "IM 2",
+    "addressingMode" : "?",
+    "argumentTemplate" : "2",
+    "len" : 2
+  }, {
+    "id" : "A,(C)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,(C)",
+    "len" : 1
+  }, {
+    "id" : "A,(n)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,({n})",
+    "len" : 1
+  }, {
+    "id" : "B,(C)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B,(C)",
+    "len" : 1
+  }, {
+    "id" : "C,(C)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,(C)",
+    "len" : 1
+  }, {
+    "id" : "D,(C)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D,(C)",
+    "len" : 1
+  }, {
+    "id" : "E,(C)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E,(C)",
+    "len" : 1
+  }, {
+    "id" : "H,(C)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "H,(C)",
+    "len" : 1
+  }, {
+    "id" : "L,(C)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "L,(C)",
+    "len" : 1
+  }, {
+    "id" : "F,(C)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "F,(C)",
+    "len" : 1
+  }, {
+    "id" : "(IX)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(IX)",
+    "len" : 1
+  }, {
+    "id" : "(IY)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(IY)",
+    "len" : 1
+  }, {
+    "id" : "C,o",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,{o}",
+    "len" : 1
+  }, {
+    "id" : "NC,o",
+    "addressingMode" : "?",
+    "argumentTemplate" : "NC,{o}",
+    "len" : 1
+  }, {
+    "id" : "NZ,o",
+    "addressingMode" : "?",
+    "argumentTemplate" : "NZ,{o}",
+    "len" : 1
+  }, {
+    "id" : "Z,o",
+    "addressingMode" : "?",
+    "argumentTemplate" : "Z,{o}",
+    "len" : 1
+  }, {
+    "id" : "(BC),A",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(BC),A",
+    "len" : 1
+  }, {
+    "id" : "(DE),A",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(DE),A",
+    "len" : 1
+  }, {
+    "id" : "(HL),n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(HL),{n}",
+    "len" : 1
+  }, {
+    "id" : "(HL),r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(HL),{r}",
+    "len" : 1
+  }, {
+    "id" : "(IX+o),n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(IX+{o}),{n}",
+    "len" : 1
+  }, {
+    "id" : "(IX+o),r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(IX+{o}),{r}",
+    "len" : 1
+  }, {
+    "id" : "(IY+o),n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(IY+{o}),{n}",
+    "len" : 1
+  }, {
+    "id" : "(IY+o),r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(IY+{o}),{r}",
+    "len" : 1
+  }, {
+    "id" : "(nn),A",
+    "addressingMode" : "?",
+    "argumentTemplate" : "({nn}),A",
+    "len" : 1
+  }, {
+    "id" : "(nn),BC",
+    "addressingMode" : "?",
+    "argumentTemplate" : "({nn}),BC",
+    "len" : 1
+  }, {
+    "id" : "(nn),DE",
+    "addressingMode" : "?",
+    "argumentTemplate" : "({nn}),DE",
+    "len" : 1
+  }, {
+    "id" : "(nn),HL",
+    "addressingMode" : "?",
+    "argumentTemplate" : "({nn}),HL",
+    "len" : 1
+  }, {
+    "id" : "(nn),IX",
+    "addressingMode" : "?",
+    "argumentTemplate" : "({nn}),IX",
+    "len" : 1
+  }, {
+    "id" : "(nn),IY",
+    "addressingMode" : "?",
+    "argumentTemplate" : "({nn}),IY",
+    "len" : 1
+  }, {
+    "id" : "(nn),SP",
+    "addressingMode" : "?",
+    "argumentTemplate" : "({nn}),SP",
+    "len" : 1
+  }, {
+    "id" : "A,(BC)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,(BC)",
+    "len" : 1
+  }, {
+    "id" : "A,(DE)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,(DE)",
+    "len" : 1
+  }, {
+    "id" : "A,(nn)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,({nn})",
+    "len" : 1
+  }, {
+    "id" : "A,I",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,I",
+    "len" : 1
+  }, {
+    "id" : "A,R",
+    "addressingMode" : "?",
+    "argumentTemplate" : "A,R",
+    "len" : 1
+  }, {
+    "id" : "B,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B,(HL)",
+    "len" : 1
+  }, {
+    "id" : "B,(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B,(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "B,(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B,(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "B,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B,{n}",
+    "len" : 1
+  }, {
+    "id" : "B,r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B,{r}",
+    "len" : 1
+  }, {
+    "id" : "B,IXp",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B,IX{p}",
+    "len" : 1
+  }, {
+    "id" : "B,IYq",
+    "addressingMode" : "?",
+    "argumentTemplate" : "B,IY{q}",
+    "len" : 1
+  }, {
+    "id" : "BC,(nn)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "BC,({nn})",
+    "len" : 1
+  }, {
+    "id" : "BC,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "BC,{nn}",
+    "len" : 1
+  }, {
+    "id" : "C,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,(HL)",
+    "len" : 1
+  }, {
+    "id" : "C,(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "C,(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "C,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,{n}",
+    "len" : 1
+  }, {
+    "id" : "C,r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,{r}",
+    "len" : 1
+  }, {
+    "id" : "C,IXp",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,IX{p}",
+    "len" : 1
+  }, {
+    "id" : "C,IYq",
+    "addressingMode" : "?",
+    "argumentTemplate" : "C,IY{q}",
+    "len" : 1
+  }, {
+    "id" : "D,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D,(HL)",
+    "len" : 1
+  }, {
+    "id" : "D,(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D,(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "D,(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D,(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "D,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D,{n}",
+    "len" : 1
+  }, {
+    "id" : "D,r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D,{r}",
+    "len" : 1
+  }, {
+    "id" : "D,IXp",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D,IX{p}",
+    "len" : 1
+  }, {
+    "id" : "D,IYq",
+    "addressingMode" : "?",
+    "argumentTemplate" : "D,IY{q}",
+    "len" : 1
+  }, {
+    "id" : "DE,(nn)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "DE,({nn})",
+    "len" : 1
+  }, {
+    "id" : "DE,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "DE,{nn}",
+    "len" : 1
+  }, {
+    "id" : "E,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E,(HL)",
+    "len" : 1
+  }, {
+    "id" : "E,(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E,(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "E,(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E,(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "E,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E,{n}",
+    "len" : 1
+  }, {
+    "id" : "E,r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E,{r}",
+    "len" : 1
+  }, {
+    "id" : "E,IXp",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E,IX{p}",
+    "len" : 1
+  }, {
+    "id" : "E,IYq",
+    "addressingMode" : "?",
+    "argumentTemplate" : "E,IY{q}",
+    "len" : 1
+  }, {
+    "id" : "H,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "H,(HL)",
+    "len" : 1
+  }, {
+    "id" : "H,(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "H,(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "H,(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "H,(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "H,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "H,{n}",
+    "len" : 1
+  }, {
+    "id" : "H,r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "H,{r}",
+    "len" : 1
+  }, {
+    "id" : "HL,(nn)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "HL,({nn})",
+    "len" : 1
+  }, {
+    "id" : "HL,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "HL,{nn}",
+    "len" : 1
+  }, {
+    "id" : "I,A",
+    "addressingMode" : "?",
+    "argumentTemplate" : "I,A",
+    "len" : 1
+  }, {
+    "id" : "IX,(nn)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IX,({nn})",
+    "len" : 1
+  }, {
+    "id" : "IX,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IX,{nn}",
+    "len" : 1
+  }, {
+    "id" : "IXh,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IXh,{n}",
+    "len" : 1
+  }, {
+    "id" : "IXh,p",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IXh,{p}",
+    "len" : 1
+  }, {
+    "id" : "IXl,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IXl,{n}",
+    "len" : 1
+  }, {
+    "id" : "IXl,p",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IXl,{p}",
+    "len" : 1
+  }, {
+    "id" : "IY,(nn)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IY,({nn})",
+    "len" : 1
+  }, {
+    "id" : "IY,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IY,{nn}",
+    "len" : 1
+  }, {
+    "id" : "IYh,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IYh,{n}",
+    "len" : 1
+  }, {
+    "id" : "IYh,q",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IYh,{q}",
+    "len" : 1
+  }, {
+    "id" : "IYl,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IYl,{n}",
+    "len" : 1
+  }, {
+    "id" : "IYl,q",
+    "addressingMode" : "?",
+    "argumentTemplate" : "IYl,{q}",
+    "len" : 1
+  }, {
+    "id" : "L,(HL)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "L,(HL)",
+    "len" : 1
+  }, {
+    "id" : "L,(IX+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "L,(IX+{o})",
+    "len" : 1
+  }, {
+    "id" : "L,(IY+o)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "L,(IY+{o})",
+    "len" : 1
+  }, {
+    "id" : "L,n",
+    "addressingMode" : "?",
+    "argumentTemplate" : "L,{n}",
+    "len" : 1
+  }, {
+    "id" : "L,r",
+    "addressingMode" : "?",
+    "argumentTemplate" : "L,{r}",
+    "len" : 1
+  }, {
+    "id" : "R,A",
+    "addressingMode" : "?",
+    "argumentTemplate" : "R,A",
+    "len" : 1
+  }, {
+    "id" : "SP,(nn)",
+    "addressingMode" : "?",
+    "argumentTemplate" : "SP,({nn})",
+    "len" : 1
+  }, {
+    "id" : "SP,HL",
+    "addressingMode" : "?",
+    "argumentTemplate" : "SP,HL",
+    "len" : 1
+  }, {
+    "id" : "SP,IX",
+    "addressingMode" : "?",
+    "argumentTemplate" : "SP,IX",
+    "len" : 1
+  }, {
+    "id" : "SP,IY",
+    "addressingMode" : "?",
+    "argumentTemplate" : "SP,IY",
+    "len" : 1
+  }, {
+    "id" : "SP,nn",
+    "addressingMode" : "?",
+    "argumentTemplate" : "SP,{nn}",
+    "len" : 1
+  }, {
+    "id" : "(C),A",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(C),A",
+    "len" : 1
+  }, {
+    "id" : "(C),B",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(C),B",
+    "len" : 1
+  }, {
+    "id" : "(C),C",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(C),C",
+    "len" : 1
+  }, {
+    "id" : "(C),D",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(C),D",
+    "len" : 1
+  }, {
+    "id" : "(C),E",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(C),E",
+    "len" : 1
+  }, {
+    "id" : "(C),H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(C),H",
+    "len" : 1
+  }, {
+    "id" : "(C),L",
+    "addressingMode" : "?",
+    "argumentTemplate" : "(C),L",
+    "len" : 1
+  }, {
+    "id" : "(n),A",
+    "addressingMode" : "?",
+    "argumentTemplate" : "({n}),A",
+    "len" : 1
+  }, {
+    "id" : "AF",
+    "addressingMode" : "?",
+    "argumentTemplate" : "AF",
+    "len" : 1
+  }, {
+    "id" : "M",
+    "addressingMode" : "?",
+    "argumentTemplate" : "M",
+    "len" : 1
+  }, {
+    "id" : "NC",
+    "addressingMode" : "?",
+    "argumentTemplate" : "NC",
+    "len" : 1
+  }, {
+    "id" : "NZ",
+    "addressingMode" : "?",
+    "argumentTemplate" : "NZ",
+    "len" : 1
+  }, {
+    "id" : "P",
+    "addressingMode" : "?",
+    "argumentTemplate" : "P",
+    "len" : 1
+  }, {
+    "id" : "PE",
+    "addressingMode" : "?",
+    "argumentTemplate" : "PE",
+    "len" : 1
+  }, {
+    "id" : "PO",
+    "addressingMode" : "?",
+    "argumentTemplate" : "PO",
+    "len" : 1
+  }, {
+    "id" : "Z",
+    "addressingMode" : "?",
+    "argumentTemplate" : "Z",
+    "len" : 1
+  }, {
+    "id" : "RST 0",
+    "addressingMode" : "?",
+    "argumentTemplate" : "8H",
+    "len" : 1
+  }, {
+    "id" : "RST 8H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "8H",
+    "len" : 1
+  }, {
+    "id" : "RST 10H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "10H",
+    "len" : 1
+  }, {
+    "id" : "RST 18H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "18H",
+    "len" : 1
+  }, {
+    "id" : "RST 20H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "20H",
+    "len" : 1
+  }, {
+    "id" : "RST 28H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "28H",
+    "len" : 1
+  }, {
+    "id" : "RST 30H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "30H",
+    "len" : 1
+  }, {
+    "id" : "RST 38H",
+    "addressingMode" : "?",
+    "argumentTemplate" : "38H",
+    "len" : 1
   } ]
 }

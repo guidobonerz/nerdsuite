@@ -39,11 +39,9 @@ public class CPU_6510 extends AbstractCPU {
 				sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
 			}
 			String pan = String.format("< %s >", (address != null ? address.getDescription() : ""));
-			String text = String.format("%s: %30s %s %s %s", instructionLine.getProgramCounter(),
-					instructionLine.getLabelName(), opcode.getMnemonic(),
+			instructionLine.setUserObject(new Object[] { instructionLine.getProgramCounter(), opcode.getMnemonic(),
 					opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv),
-					address != null ? pan : "");
-			instructionLine.setUserObject(text);
+					address != null ? pan : "" });
 		}
 	}
 
