@@ -43,8 +43,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.HexViewContent;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
-import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
-import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
@@ -76,9 +74,9 @@ public class HexViewWidget extends Composite {
 	private Value pc;
 	private Stack<InstructionLine> jumpStack;
 
-	public HexViewWidget(Composite parent, int style) {
+	public HexViewWidget(Composite parent, int style, IPlatform platform) {
 		super(parent, style);
-		platform = new C64Platform(new KickAssemblerDialect(), false);
+		this.platform = platform;
 		rangeList = new ArrayList<Range>();
 		jumpStack = new Stack<InstructionLine>();
 		initialize();
@@ -161,7 +159,7 @@ public class HexViewWidget extends Composite {
 				textArea.redraw();
 
 				pc = platform.checkAdress(content, 0);
-				if (pc != null) {
+				if (pc.getValue() > 0) {
 					MessageBox message = new MessageBox(getParent().getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 					message.setMessage(String.format("Found potential StartAddress 0x%04x\nApply it?", pc.getValue()));
 					message.setText("StartAddress found");
@@ -351,8 +349,15 @@ public class HexViewWidget extends Composite {
 			public String getText(Object element) {
 				InstructionLine il = (InstructionLine) element;
 				Object[] userObject = (Object[]) il.getUserObject();
-				return String.format("%s: %-20s %s %s %s", userObject[0], il.getLabelName(), userObject[1],
-						userObject[2], userObject[3]);
+				String s = "";
+				try {
+					s = String.format("%s: %-20s %s %s %s", userObject[0], il.getLabelName(), userObject[1],
+							userObject[2], userObject[3]);
+					;
+				} catch (NullPointerException ne) {
+					int a = 0;
+				}
+				return s;
 			}
 
 			@Override

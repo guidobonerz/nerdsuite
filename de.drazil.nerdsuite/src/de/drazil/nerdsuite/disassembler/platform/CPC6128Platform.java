@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.basic.BasicParser;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
-import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
+import de.drazil.nerdsuite.disassembler.cpu.CPU_Z80;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
@@ -18,12 +18,12 @@ import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 
-public class C64Platform extends AbstractPlatform {
+public class CPC6128Platform extends AbstractPlatform {
 
 	private BasicInstructions basicInstructions;
 
-	public C64Platform(IDialect dialect, boolean ignoreStartAddressBytes) {
-		super(dialect, new CPU_6510(), ignoreStartAddressBytes, "/configuration/platform/c64_platform.json");
+	public CPC6128Platform(IDialect dialect, boolean ignoreStartAddressBytes) {
+		super(dialect, new CPU_Z80(), ignoreStartAddressBytes, "/configuration/platform/cpc6128_platform.json");
 	}
 
 	@Override
@@ -77,11 +77,8 @@ public class C64Platform extends AbstractPlatform {
 		// parseStartSequence(byteArray, pc);
 		System.out.println("stage 2: parse instructions");
 
-		long start = System.currentTimeMillis();
 		getCPU().parseInstructions(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
 				getPlatFormData(), new Range(range.getOffset(), range.getLen(), range.getRangeType()), 2);
-		long duration = (System.currentTimeMillis() - start);
-		System.out.printf("%d Seconds", duration);
 		// System.out.println("stage 3: compress ranges");
 		// getCPU().compressRanges();
 		System.out.println("ready.");
@@ -90,12 +87,12 @@ public class C64Platform extends AbstractPlatform {
 
 	@Override
 	public int[] getCommonStartAddresses() {
-		return new int[] { 2049, 4096, 8192, 16384, 32768, 49152 };
+		return new int[] { 0 };
 	}
 
 	@Override
 	public Value checkAdress(byte[] content, int start) {
-		Value adress = null;
+		Value adress = new Value(0);
 		for (int i : getCommonStartAddresses()) {
 			if (i == getCPU().getWord(content, start)) {
 				adress = new Value(i);

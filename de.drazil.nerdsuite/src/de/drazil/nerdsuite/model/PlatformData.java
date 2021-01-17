@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class PlatformData {
+	private String platformId;
 	private String cpuInstructionSource;
 	private String basicInstructionSource;
 	private String graphicFormatSource;

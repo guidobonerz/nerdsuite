@@ -10,7 +10,8 @@ import org.eclipse.swt.widgets.Display;
 import de.drazil.nerdsuite.util.SwtUtil;
 
 public class Constants {
-	public final static String PLUGIN_BASE_PATH = "platform:/plugin/de.drazil.nerdsuite/";
+	public final static String APP_ID = "de.drazil.nerdsuite";
+	public final static String PLUGIN_BASE_PATH = String.format("platform:/plugin/%s/", APP_ID);
 	public final static String OWNER = "OWNER";
 
 	public final static String PREFERENCES_TEXTCOLOR_OPCODE = "preferences.textcolor.instruction";

@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.disassembler.cpu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
@@ -43,13 +44,13 @@ public abstract class AbstractCPU implements ICPU {
 	}
 
 	@Override
-	public Opcode getOpcodeByIndex(byte byteArray[], int offset) {
-		return getOpcodeById(NumericConverter.toInt(byteArray[(int) offset]));
+	public Opcode getOpcodeByIndex(String platformId, String prefix, byte byteArray[], int offset) {
+		return getOpcodeById(platformId, prefix, NumericConverter.toInt(byteArray[(int) offset]));
 	}
 
 	@Override
-	public Opcode getOpcodeById(int opcode) {
-		return InstructionSet.getOpcodeList().get(opcode);
+	public Opcode getOpcodeById(String platformId, String prefix, int opcode) {
+		return InstructionSet.getOpcodeList(platformId, prefix).get(opcode);
 	}
 
 	@Override
@@ -60,17 +61,6 @@ public abstract class AbstractCPU implements ICPU {
 	@Override
 	public void addInstructionLine(InstructionLine instructionLine) {
 		instructionLineList.add(instructionLine);
-	}
-
-	@Override
-	public int getInstructionLength(byte[] byteArray, int offset) {
-		Opcode opcode = getOpcodeById(getByte(byteArray, offset));
-		int len = 1;
-
-		if (opcode != null) {
-			len = opcode.getAddressingMode().getLen();
-		}
-		return len;
 	}
 
 	@Override

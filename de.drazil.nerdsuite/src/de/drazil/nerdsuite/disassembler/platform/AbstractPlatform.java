@@ -9,6 +9,8 @@ import org.osgi.framework.Bundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
@@ -30,7 +32,8 @@ public abstract class AbstractPlatform implements IPlatform {
 		setDialect(dialect);
 		setCPU(cpu);
 		setIgnoreStartAddressBytes(ignoreStartAddressBytes);
-		readAddresses(addressFileName);
+		readPlatformData(addressFileName);
+
 	}
 
 	public IDialect getDialect() {
@@ -59,7 +62,8 @@ public abstract class AbstractPlatform implements IPlatform {
 
 	public void init(byte byteArray[], Range range) {
 		getCPU().addInstructionLine(new InstructionLine(getProgrammCounter(), range,
-				range.getRangeType() == RangeType.Code ? InstructionType.Asm : InstructionType.Data, ReferenceType.NoReference));
+				range.getRangeType() == RangeType.Code ? InstructionType.Asm : InstructionType.Data,
+				ReferenceType.NoReference));
 	}
 
 	@Override
@@ -77,14 +81,15 @@ public abstract class AbstractPlatform implements IPlatform {
 		return platformData;
 	}
 
-	private void readAddresses(String fileName) {
+	private void readPlatformData(String fileName) {
 
 		try {
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			Bundle bundle = Platform.getBundle(Constants.APP_ID);
 			URL url = bundle.getEntry(fileName);
 			File file = new File(FileLocator.resolve(url).toURI());
 			ObjectMapper mapper = new ObjectMapper();
 			platformData = mapper.readValue(file, PlatformData.class);
+			InstructionSet.init(platformData);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

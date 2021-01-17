@@ -1,4 +1,5 @@
 {
+  "platformId" : "cpc6128",
   "cpuInstructionSource" : "configuration/cpu/z80_instructions.json",
   "basicInstructionSource" : "configuration/basic/locomotive_basic.json",
   "graphicFormatSource" : "configuration/graphicformat/cpc_graphic_formats",
