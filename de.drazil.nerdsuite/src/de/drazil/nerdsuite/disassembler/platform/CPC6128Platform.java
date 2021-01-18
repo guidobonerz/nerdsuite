@@ -77,11 +77,20 @@ public class CPC6128Platform extends AbstractPlatform {
 		// parseStartSequence(byteArray, pc);
 		System.out.println("stage 2: parse instructions");
 
-		getCPU().parseInstructions(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-				getPlatFormData(), new Range(range.getOffset(), range.getLen(), range.getRangeType()), 2);
+		long start = System.currentTimeMillis();
+		try {
+			getCPU().parseInstructions(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
+					getPlatFormData(), new Range(range.getOffset(), range.getLen(), range.getRangeType()), 2);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			System.out.printf("%d ms", System.currentTimeMillis() - start);
+			System.out.println("ready.");
+		}
 		// System.out.println("stage 3: compress ranges");
 		// getCPU().compressRanges();
-		System.out.println("ready.");
+
 		return byteArray;
 	}
 

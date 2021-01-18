@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.assembler;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +81,7 @@ public final class InstructionSet {
 			try {
 				cpuInstructions = mapper.readValue(bundle.getEntry(platformData.getCpuInstructionSource()),
 						CpuInstructions.class);
-				List<CpuInstruction> cpuInstructionList = cpuInstructions.getCpuInstructionList();
+				Collection<CpuInstruction> cpuInstructionList = cpuInstructions.getCpuInstructionList();
 
 				// setup aliases
 

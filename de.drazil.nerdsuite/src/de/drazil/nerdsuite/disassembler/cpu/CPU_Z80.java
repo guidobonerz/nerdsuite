@@ -56,17 +56,20 @@ public class CPU_Z80 extends AbstractCPU {
 			if (!currentLine.isPassed()) {
 				Range range = currentLine.getRange();
 				int offset = range.getOffset();
-				String prefix = String.format("%02X", NumericConverter.toInt(byteArray[(int) offset]));
 				String so = String.format("%04X", offset);
-				if (so.equals("0077")) {
-					int a = 0;
-				}
+				String prefix1 = String.format("%02X", NumericConverter.toInt(byteArray[(int) offset]));
+				String prefix2 = String.format("%02X", NumericConverter.toInt(byteArray[(int) offset + 1]));
+				String prefix = prefix1 + prefix2;
 
 				Opcode opcode = null;
 				int addLen = 0;
-				if (prefix.equals("CB") || prefix.equals("ED") || prefix.equals("DD") || prefix.equals("FD")) {
+				if (prefix.equals("DDCB") || prefix.equals("DCCB")) {
+					addLen = 2;
+					opcode = getOpcodeByIndex("cpc6128", prefix, byteArray, offset + 2);
+				} else if (prefix1.equals("CB") || prefix1.equals("ED") || prefix1.equals("DD")
+						|| prefix1.equals("FD")) {
 					addLen = 1;
-					opcode = getOpcodeByIndex("cpc6128", prefix, byteArray, offset + 1);
+					opcode = getOpcodeByIndex("cpc6128", prefix1, byteArray, offset + 1);
 				} else {
 					opcode = getOpcodeByIndex("cpc6128", "", byteArray, offset);
 				}
