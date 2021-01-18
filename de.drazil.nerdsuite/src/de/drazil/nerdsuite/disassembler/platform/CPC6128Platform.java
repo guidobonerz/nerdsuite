@@ -85,7 +85,7 @@ public class CPC6128Platform extends AbstractPlatform {
 			e.printStackTrace();
 		} finally {
 			System.out.printf("line: %d\n", getCPU().getLine());
-			System.out.printf("%d ms", System.currentTimeMillis() - start);
+			System.out.printf("%d ms\n", System.currentTimeMillis() - start);
 			System.out.println("ready.");
 		}
 		// System.out.println("stage 3: compress ranges");

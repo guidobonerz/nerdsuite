@@ -22,18 +22,19 @@ public class CPU_Z80 extends AbstractCPU {
 		return NumericConverter.getWordAsInt(byteArray, offset, Endianness.LittleEndian);
 	}
 
-	private void printDisassembly(InstructionLine instructionLine, Opcode opcode, Value value, Address address) {
-		if (instructionLine.getInstructionType() == InstructionType.Asm) {
-			int len = opcode.getAddressingMode().getLen();
-			String sv = "";
-			if (len - 1 > 0) {
-				sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
-			}
-			String pan = String.format("< %s >", (address != null ? address.getDescription() : ""));
-			instructionLine.setUserObject(new Object[] { instructionLine.getProgramCounter(), opcode.getMnemonic(),
-					opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv),
-					address != null ? pan : "" });
-		}
+	private void printDisassembly(InstructionLine instructionLine, Opcode opcode, String addressingMode,
+			Address address) {
+		/*
+		 * if (instructionLine.getInstructionType() == InstructionType.Asm) { int len =
+		 * opcode.getAddressingMode().getLen(); String sv = ""; if (len - 1 > 0) { sv =
+		 * NumericConverter.toHexString(value.getValue(), (len - 1) * 2); } String pan =
+		 * String.format("< %s >", (address != null ? address.getDescription() : ""));
+		 * instructionLine.setUserObject(new Object[] {
+		 * instructionLine.getProgramCounter(), opcode.getMnemonic(),
+		 * opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv),
+		 * address != null ? pan : "" }); }
+		 */
+
 	}
 
 	@Override
@@ -66,17 +67,29 @@ public class CPU_Z80 extends AbstractCPU {
 				}
 
 				String addressingMode = opcode.getAddressingMode().getId();
+				String addressingModeTemplate = opcode.getAddressingMode().getArgumentTemplate();
 				String instructionType = opcode.getType();
 
-				System.out.printf("%s: %s %s\n", so, opcode.getMnemonic(), addressingMode);
-
 				int len = opcode.getAddressingMode().getLen() + addLen;
+				String addressingModeString = addressingModeTemplate;
+				if (addressingModeTemplate.contains("{WORD}")) {
+					int x = getWord(byteArray, offset + opcode.getValueStartPos());
+					addressingModeString = addressingModeTemplate.replace("{WORD}", String.format("%04X", x));
+					value = new Value(x);
+				} else if (addressingModeTemplate.contains("{BYTE}")) {
+					int x = getByte(byteArray, offset + opcode.getValueStartPos());
+					addressingModeString = addressingModeTemplate.replace("{BYTE}", String.format("%02X", x));
+					value = new Value(x);
+				}
+
+				String instruction = String.format("%s: %s %s\n", so, opcode.getMnemonic(), addressingModeString);
+
+				System.out.printf(instruction);
 
 				if (offset + len > discoverableRange.getOffset() + discoverableRange.getLen()) {
 					break;
 				}
 
-				value = getInstructionValue(byteArray, new Range(offset, len, RangeType.Code));
 				currentLine.setInstructionType(InstructionType.Asm);
 
 				int v = value.getValue();
@@ -84,8 +97,9 @@ public class CPU_Z80 extends AbstractCPU {
 				 * Address address = platformData.getPlatformAddressList().stream().filter(p ->
 				 * p.getAddressValue() == v) .findFirst().orElse(null);
 				 */
-
-				printDisassembly(currentLine, opcode, value, null/* address */);
+				instructionLine.setUserObject(new Object[] { instructionLine.getProgramCounter(), opcode.getMnemonic(),
+						addressingModeString, "" });
+				// printDisassembly(currentLine, opcode, value, null/* address */);
 				newLine = split(currentLine, pc, new Value(offset + len));
 				if (newLine == null) {
 					break;
