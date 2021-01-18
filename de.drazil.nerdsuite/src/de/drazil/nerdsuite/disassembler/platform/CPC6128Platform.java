@@ -71,7 +71,7 @@ public class CPC6128Platform extends AbstractPlatform {
 	public byte[] parseBinary(byte[] byteArray, Range range) {
 
 		System.out.println("init   : build memory map");
-		setProgrammCounter(getProgrammCounter().add(range.getOffset() - 2));
+		setProgrammCounter(getProgrammCounter().add(range.getOffset()));
 		init(byteArray, range);
 		// System.out.println("stage 1: parse header information");
 		// parseStartSequence(byteArray, pc);

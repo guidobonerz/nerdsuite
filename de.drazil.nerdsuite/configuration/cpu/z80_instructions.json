@@ -1818,61 +1818,64 @@
       "prefix" : "",
       "hex" : "C4",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "Z,NN",
       "prefix" : "",
       "hex" : "CC",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "NN",
       "prefix" : "",
       "hex" : "CD",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "NC,NN",
       "prefix" : "",
       "hex" : "D4",
       "valueStartPos" : 1,
-      "cycles" : 0
-    }, {
-      "addressingModeId" : "NC,NN",
-      "prefix" : "",
-      "hex" : "D4",
-      "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "C,NN",
       "prefix" : "",
       "hex" : "DC",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "PO,NN",
       "prefix" : "",
       "hex" : "E4",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "PE,NN",
       "prefix" : "",
       "hex" : "EC",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "P,NN",
       "prefix" : "",
       "hex" : "F4",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "M,NN",
       "prefix" : "",
       "hex" : "FC",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     } ]
   }, {
     "id" : "SRA",
@@ -2455,31 +2458,36 @@
       "prefix" : "",
       "hex" : "C2",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "$+3",
       "prefix" : "",
       "hex" : "C3",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "Z,$+3",
       "prefix" : "",
       "hex" : "CA",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "NC,$+3",
       "prefix" : "",
       "hex" : "D2",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "C,$+3",
       "prefix" : "",
       "hex" : "DA",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "(IX)",
       "prefix" : "DD",
@@ -2491,7 +2499,8 @@
       "prefix" : "",
       "hex" : "E2",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "(HL)",
       "prefix" : "",
@@ -2503,19 +2512,22 @@
       "prefix" : "",
       "hex" : "EA",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "P,$+3",
       "prefix" : "",
       "hex" : "F2",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "M,$+3",
       "prefix" : "",
       "hex" : "FA",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH"
     }, {
       "addressingModeId" : "(IY)",
       "prefix" : "FD",
@@ -2532,31 +2544,36 @@
       "prefix" : "",
       "hex" : "18",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH_SHORT"
     }, {
       "addressingModeId" : "NZ,$+2",
       "prefix" : "",
       "hex" : "20",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH_SHORT"
     }, {
       "addressingModeId" : "Z,$+2",
       "prefix" : "",
       "hex" : "28",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH_SHORT"
     }, {
       "addressingModeId" : "NC,$+2",
       "prefix" : "",
       "hex" : "30",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH_SHORT"
     }, {
       "addressingModeId" : "C,$+2",
       "prefix" : "",
       "hex" : "38",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"BRANCH_SHORT"
     } ]
   }, {
     "id" : "RLC",
@@ -3684,7 +3701,8 @@
       "prefix" : "",
       "hex" : "01",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(BC),A",
       "prefix" : "",
@@ -3714,7 +3732,8 @@
       "prefix" : "",
       "hex" : "11",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(DE),A",
       "prefix" : "",
@@ -3744,7 +3763,8 @@
       "prefix" : "",
       "hex" : "21",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(NN),HL",
       "prefix" : "",
@@ -3762,7 +3782,8 @@
       "prefix" : "",
       "hex" : "2A",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "L,N",
       "prefix" : "",
@@ -3774,13 +3795,15 @@
       "prefix" : "",
       "hex" : "31",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(NN),A",
       "prefix" : "",
       "hex" : "32",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(HL),N",
       "prefix" : "",
@@ -3792,7 +3815,8 @@
       "prefix" : "",
       "hex" : "3A",
       "valueStartPos" : 1,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "A,N",
       "prefix" : "",
@@ -4188,13 +4212,15 @@
       "prefix" : "DD",
       "hex" : "22",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "IX,(NN)",
       "prefix" : "DD",
       "hex" : "2A",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(IX+N),N",
       "prefix" : "DD",
@@ -4296,7 +4322,8 @@
       "prefix" : "ED",
       "hex" : "43",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "I,A",
       "prefix" : "ED",
@@ -4308,13 +4335,15 @@
       "prefix" : "ED",
       "hex" : "4B",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(NN),DE",
       "prefix" : "ED",
       "hex" : "53",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "A,I",
       "prefix" : "ED",
@@ -4332,13 +4361,15 @@
       "prefix" : "ED",
       "hex" : "73",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "SP,(NN)",
       "prefix" : "ED",
       "hex" : "7B",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "SP,HL",
       "prefix" : "",
@@ -4350,19 +4381,22 @@
       "prefix" : "FD",
       "hex" : "21",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(NN),IY",
       "prefix" : "FD",
       "hex" : "22",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "IY,(NN)",
       "prefix" : "FD",
       "hex" : "2A",
       "valueStartPos" : 2,
-      "cycles" : 0
+      "cycles" : 0,
+      "type":"MOD"
     }, {
       "addressingModeId" : "(IY+N),N",
       "prefix" : "FD",

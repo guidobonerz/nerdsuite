@@ -351,11 +351,10 @@ public class HexViewWidget extends Composite {
 				Object[] userObject = (Object[]) il.getUserObject();
 				String s = "";
 				try {
-					s = String.format("%s: %-20s %s %s %s", userObject[0], il.getLabelName(), userObject[1],
-							userObject[2], userObject[3]);
-					;
+					s = String.format("%s: %-20s %s %s %s %s", userObject[0], il.getLabelName(), userObject[1],
+							userObject[2], userObject[3], userObject[4]);
 				} catch (NullPointerException ne) {
-					int a = 0;
+
 				}
 				return s;
 			}
