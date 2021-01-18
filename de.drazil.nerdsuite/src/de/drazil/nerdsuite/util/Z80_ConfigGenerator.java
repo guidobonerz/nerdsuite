@@ -119,27 +119,28 @@ public class Z80_ConfigGenerator {
 				opcode.setValueStartPos(valueStartPosition);
 				cpuInstruction.getOpcodeList().add(opcode);
 
-				String mode = instruction[0];
+				String mode0 = instruction[0];
+				String mode1 = instruction[0];
 				if (instruction.length > 1) {
 					if (instruction[1].contains("$+2")) {
 						length += 1;
 					} else if (instruction[1].contains("$+3")) {
 						length += 2;
 					}
-
-					mode = instruction[1].replace("NN", "{WORD}").replace("N", "{BYTE}");
-					mode = mode.replace("$+2", "{BYTE}").replace("$+3", "{WORD}");
+					mode0 = instruction[1];
+					mode1 = instruction[1].replace("NN", "{WORD}").replace("N", "{BYTE}");
+					mode1 = mode1.replace("$+2", "{BYTE}").replace("$+3", "{WORD}");
 				}
-				AddressingMode am = addressingMap.get(mode);
+				AddressingMode am = addressingMap.get(mode0);
 				if (am == null) {
 					am = new AddressingMode();
-					am.setId(mode);
+					am.setId(mode0);
 					am.setLen(length);
-					am.setAddressingMode(mode);
-					am.setArgumentTemplate(mode);
-					addressingMap.put(mode, am);
+					am.setAddressingMode(mode0);
+					am.setArgumentTemplate(mode1);
+					addressingMap.put(mode0, am);
 				}
-				opcode.setAddressingModeId(mode);
+				opcode.setAddressingModeId(mode0);
 
 			}
 			instructions.setAddressingModeList(addressingMap.values());

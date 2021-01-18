@@ -2,7 +2,6 @@ package de.drazil.nerdsuite.disassembler.cpu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
@@ -10,13 +9,14 @@ import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Range;
-import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.RangeType;
+import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
 
 public abstract class AbstractCPU implements ICPU {
 
+	protected int line;
 	private static ICPU cpu = null;
 	private static byte byteArray0[] = null;
 	private List<InstructionLine> instructionLineList = null;
@@ -28,6 +28,17 @@ public abstract class AbstractCPU implements ICPU {
 
 	public static ICPU getCPU() {
 		return cpu;
+	}
+
+	@Override
+	public int getLine() {
+		return line;
+	}
+
+	@Override
+	public void resetLine() {
+		line = 0;
+
 	}
 
 	public static void setByteArray(byte byteArray[]) {

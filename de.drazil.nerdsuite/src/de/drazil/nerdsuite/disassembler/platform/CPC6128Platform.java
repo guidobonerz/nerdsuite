@@ -82,9 +82,9 @@ public class CPC6128Platform extends AbstractPlatform {
 			getCPU().parseInstructions(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
 					getPlatFormData(), new Range(range.getOffset(), range.getLen(), range.getRangeType()), 2);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
+			System.out.printf("line: %d\n", getCPU().getLine());
 			System.out.printf("%d ms", System.currentTimeMillis() - start);
 			System.out.println("ready.");
 		}

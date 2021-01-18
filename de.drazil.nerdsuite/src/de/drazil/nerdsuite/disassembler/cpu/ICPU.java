@@ -25,6 +25,10 @@ public interface ICPU {
 
 	public void clear();
 
+	public void resetLine();
+
+	public int getLine();
+
 	public int getIndexOf(InstructionLine line);
 
 	public void addInstructionLine(InstructionLine instructionLine);

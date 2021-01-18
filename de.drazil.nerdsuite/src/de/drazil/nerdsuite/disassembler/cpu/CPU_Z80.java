@@ -52,6 +52,7 @@ public class CPU_Z80 extends AbstractCPU {
 		InstructionLine currentLine = instructionLine;
 		InstructionLine newLine = null;
 		Value value = null;
+		line = 1;
 		while (currentLine != null) {
 			if (!currentLine.isPassed()) {
 				Range range = currentLine.getRange();
@@ -102,7 +103,7 @@ public class CPU_Z80 extends AbstractCPU {
 					System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");
 				}
 				// detectPointers(byteArray, pc, currentLine, platformData);
-
+				line++;
 			}
 			currentLine.setReferenceValue(value);
 			currentLine.setPassed(true);
@@ -110,6 +111,7 @@ public class CPU_Z80 extends AbstractCPU {
 			if (currentLine.getInstructionType() != InstructionType.Asm) {
 				currentLine = getNextUnspecifiedLine(currentLine);
 			}
+
 		}
 	}
 
