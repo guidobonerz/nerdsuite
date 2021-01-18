@@ -45,8 +45,6 @@ public class Z80_ConfigGenerator {
 
 	public static void main(String args[]) {
 
-	
-
 		try {
 
 			Map<String, CpuInstruction> cpuInstructionMap = new HashMap<>();
@@ -141,7 +139,7 @@ public class Z80_ConfigGenerator {
 					am.setId(mode0);
 					am.setLen(length);
 					am.setAddressingMode(mode0);
-					am.setArgumentTemplate(mode1);
+					am.setArgumentTemplate(mode1.equals(cpuInstruction.getId()) ? "" : mode1);
 					addressingMap.put(mode0, am);
 				}
 				opcode.setAddressingModeId(mode0);

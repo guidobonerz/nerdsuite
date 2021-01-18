@@ -4497,7 +4497,7 @@
   "addressingModeList" : [ {
     "id" : "RRA",
     "addressingMode" : "RRA",
-    "argumentTemplate" : "RRA",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "",
@@ -4512,12 +4512,12 @@
   }, {
     "id" : "EXX",
     "addressingMode" : "EXX",
-    "argumentTemplate" : "EXX",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "RRD",
     "addressingMode" : "RRD",
-    "argumentTemplate" : "RRD",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "SP,HL",
@@ -4622,7 +4622,7 @@
   }, {
     "id" : "LDDR",
     "addressingMode" : "LDDR",
-    "argumentTemplate" : "LDDR",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "AF",
@@ -4702,7 +4702,7 @@
   }, {
     "id" : "RLCA",
     "addressingMode" : "RLCA",
-    "argumentTemplate" : "RLCA",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "(NN),HL",
@@ -4767,7 +4767,7 @@
   }, {
     "id" : "CPIR",
     "addressingMode" : "CPIR",
-    "argumentTemplate" : "CPIR",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "6,A",
@@ -4802,7 +4802,7 @@
   }, {
     "id" : "N",
     "addressingMode" : "N",
-    "argumentTemplate" : "N",
+    "argumentTemplate" : "{BYTE}",
     "len" : 2
   }, {
     "id" : "6,E",
@@ -4827,7 +4827,7 @@
   }, {
     "id" : "INDR",
     "addressingMode" : "INDR",
-    "argumentTemplate" : "INDR",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "6,H",
@@ -4857,7 +4857,7 @@
   }, {
     "id" : "HALT",
     "addressingMode" : "HALT",
-    "argumentTemplate" : "HALT",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "A,(HL)",
@@ -4922,7 +4922,7 @@
   }, {
     "id" : "RET",
     "addressingMode" : "RET",
-    "argumentTemplate" : "RET",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "DE",
@@ -4937,7 +4937,7 @@
   }, {
     "id" : "LDIR",
     "addressingMode" : "LDIR",
-    "argumentTemplate" : "LDIR",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "38H",
@@ -4952,7 +4952,7 @@
   }, {
     "id" : "DI",
     "addressingMode" : "DI",
-    "argumentTemplate" : "DI",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "(HL),L",
@@ -5117,7 +5117,7 @@
   }, {
     "id" : "EI",
     "addressingMode" : "EI",
-    "argumentTemplate" : "EI",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "E,N",
@@ -5132,7 +5132,7 @@
   }, {
     "id" : "NOP",
     "addressingMode" : "NOP",
-    "argumentTemplate" : "NOP",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "HL,HL",
@@ -5142,7 +5142,7 @@
   }, {
     "id" : "RRCA",
     "addressingMode" : "RRCA",
-    "argumentTemplate" : "RRCA",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "B,(HL)",
@@ -5362,7 +5362,7 @@
   }, {
     "id" : "OUTD",
     "addressingMode" : "OUTD",
-    "argumentTemplate" : "OUTD",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "2,(IX+N)",
@@ -5382,7 +5382,7 @@
   }, {
     "id" : "OUTI",
     "addressingMode" : "OUTI",
-    "argumentTemplate" : "OUTI",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "18H",
@@ -5462,7 +5462,7 @@
   }, {
     "id" : "OTDR",
     "addressingMode" : "OTDR",
-    "argumentTemplate" : "OTDR",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "C,B",
@@ -5512,7 +5512,7 @@
   }, {
     "id" : "INIR",
     "addressingMode" : "INIR",
-    "argumentTemplate" : "INIR",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "IX",
@@ -5537,7 +5537,7 @@
   }, {
     "id" : "RLA",
     "addressingMode" : "RLA",
-    "argumentTemplate" : "RLA",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "2,A",
@@ -5567,7 +5567,7 @@
   }, {
     "id" : "RLD",
     "addressingMode" : "RLD",
-    "argumentTemplate" : "RLD",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "P,$+3",
@@ -5647,7 +5647,7 @@
   }, {
     "id" : "DAA",
     "addressingMode" : "DAA",
-    "argumentTemplate" : "DAA",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "H,(IX+N)",
@@ -5682,7 +5682,7 @@
   }, {
     "id" : "NEG",
     "addressingMode" : "NEG",
-    "argumentTemplate" : "NEG",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "0,(IX+N)",
@@ -5697,7 +5697,7 @@
   }, {
     "id" : "CPD",
     "addressingMode" : "CPD",
-    "argumentTemplate" : "CPD",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "4,(IX+N)",
@@ -5717,12 +5717,12 @@
   }, {
     "id" : "CPI",
     "addressingMode" : "CPI",
-    "argumentTemplate" : "CPI",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "CPL",
     "addressingMode" : "CPL",
-    "argumentTemplate" : "CPL",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "(SP),IX",
@@ -5852,7 +5852,7 @@
   }, {
     "id" : "CPDR",
     "addressingMode" : "CPDR",
-    "argumentTemplate" : "CPDR",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "(IX+N),D",
@@ -5907,7 +5907,7 @@
   }, {
     "id" : "NC",
     "addressingMode" : "NC",
-    "argumentTemplate" : "{BYTE}C",
+    "argumentTemplate" : "NC",
     "len" : 1
   }, {
     "id" : "E,(HL)",
@@ -5922,7 +5922,7 @@
   }, {
     "id" : "IND",
     "addressingMode" : "IND",
-    "argumentTemplate" : "IND",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "NN",
@@ -5947,7 +5947,7 @@
   }, {
     "id" : "INI",
     "addressingMode" : "INI",
-    "argumentTemplate" : "INI",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "0,B",
@@ -5982,12 +5982,12 @@
   }, {
     "id" : "RETN",
     "addressingMode" : "RETN",
-    "argumentTemplate" : "RETN",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "NZ",
     "addressingMode" : "NZ",
-    "argumentTemplate" : "{BYTE}Z",
+    "argumentTemplate" : "NZ",
     "len" : 1
   }, {
     "id" : "0,H",
@@ -5997,7 +5997,7 @@
   }, {
     "id" : "LDD",
     "addressingMode" : "LDD",
-    "argumentTemplate" : "LDD",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "4,(HL)",
@@ -6012,7 +6012,7 @@
   }, {
     "id" : "RETI",
     "addressingMode" : "RETI",
-    "argumentTemplate" : "RETI",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "0,L",
@@ -6027,7 +6027,7 @@
   }, {
     "id" : "LDI",
     "addressingMode" : "LDI",
-    "argumentTemplate" : "LDI",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "DE,HL",
@@ -6097,7 +6097,7 @@
   }, {
     "id" : "CCF",
     "addressingMode" : "CCF",
-    "argumentTemplate" : "CCF",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "(IY+N),N",
@@ -6117,7 +6117,7 @@
   }, {
     "id" : "OTIR",
     "addressingMode" : "OTIR",
-    "argumentTemplate" : "OTIR",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "HL,BC",
@@ -6167,7 +6167,7 @@
   }, {
     "id" : "SCF",
     "addressingMode" : "SCF",
-    "argumentTemplate" : "SCF",
+    "argumentTemplate" : "",
     "len" : 1
   }, {
     "id" : "(IY+N),L",
