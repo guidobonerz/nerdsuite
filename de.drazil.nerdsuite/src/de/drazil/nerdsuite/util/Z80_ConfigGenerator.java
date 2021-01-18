@@ -45,7 +45,10 @@ public class Z80_ConfigGenerator {
 
 	public static void main(String args[]) {
 
+	
+
 		try {
+
 			Map<String, CpuInstruction> cpuInstructionMap = new HashMap<>();
 			Map<String, Opcode> opcodeMap = new HashMap<>();
 			Map<String, AddressingMode> addressingMap = new HashMap<>();
@@ -127,6 +130,7 @@ public class Z80_ConfigGenerator {
 					} else if (instruction[1].contains("$+3")) {
 						length += 2;
 					}
+
 					mode0 = instruction[1];
 					mode1 = instruction[1].replace("NN", "{WORD}").replace("N", "{BYTE}");
 					mode1 = mode1.replace("$+2", "{BYTE}").replace("$+3", "{WORD}");

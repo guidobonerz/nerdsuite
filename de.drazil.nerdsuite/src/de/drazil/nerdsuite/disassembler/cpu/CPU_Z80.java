@@ -82,7 +82,17 @@ public class CPU_Z80 extends AbstractCPU {
 					value = new Value(x);
 				}
 
-				String instruction = String.format("%s: %s %s\n", so, opcode.getMnemonic(), addressingModeString);
+				String byteString = "";
+				for (int i = 0; i < 4; i++) {
+					if (i < opcode.getAddressingMode().getLen() + addLen) {
+						byteString += String.format("%02X ", byteArray[offset + i]);
+					} else {
+						byteString += "   ";
+					}
+				}
+
+				String instruction = String.format("%s: %s %s %s\n", so, byteString, opcode.getMnemonic(),
+						addressingModeString);
 
 				System.out.printf(instruction);
 
