@@ -19,7 +19,7 @@ public class Address {
 		this.constName = constName;
 		this.description = description;
 	}
-
+	@JsonIgnore
 	public int getAddressValue() {
 		return Integer.parseInt(address, 16);
 	}

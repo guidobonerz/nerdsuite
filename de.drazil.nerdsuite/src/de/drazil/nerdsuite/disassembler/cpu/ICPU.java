@@ -19,11 +19,15 @@ public interface ICPU {
 
 	public int getByte(byte byteArray[], int offset);
 
-	public Opcode getOpcodeByIndex(byte byteArray[], int offset);
+	public Opcode getOpcodeByIndex(String platformId, String prefix, byte byteArray[], int offset);
 
-	public Opcode getOpcodeById(int opcode);
+	public Opcode getOpcodeById(String platformId, String prefix, int opcode);
 
 	public void clear();
+
+	public void resetLine();
+
+	public int getLine();
 
 	public int getIndexOf(InstructionLine line);
 
@@ -52,7 +56,7 @@ public interface ICPU {
 
 	public Value getInstructionValue(byte byteArray[], Range range);
 
-	public int getInstructionLength(byte byteArray[], int offset);
+	// public int getInstructionLength(byte byteArray[], int offset);
 
 	public void compressRanges();
 

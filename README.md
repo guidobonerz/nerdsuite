@@ -1,5 +1,5 @@
 # nerdsuite
-Nerdsuite is an IDE (based on eclipse 4.10/2018-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
+Nerdsuite is an IDE (based on eclipse 4.18.0/2020-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
 Once finished, it will contain a SourceCode Editor (Assembler/Basic), Visual Disassembler, GfxEditor (for CharSets, SpriteSets, TileSets, TileMaps, Screens and Bitmaps)  
 Currently I work mostly on the graphics part.  
 
@@ -13,6 +13,9 @@ Currently I work mostly on the graphics part.
 | Mac (2 GHz Core2Duo / 8GB) | MacOS 10.11.6 El Capitan | yes | very slow | 1.8.0_25
 
 Current state: Still buggy and incomplete :-)
+
+Last Changes 19-01-2021:
+- added z80 disassembly
 
 Last Changes 11-01-2021:
 - start to implement interactive(visual) disassembler
@@ -63,9 +66,10 @@ Gfx Module Todo:
 Handle DiskImages:
 Export files partly works
 Create/Update disk images
-
-## Disassembler Screen (in Progress)
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm2.png)
+## Disassembler Z80 Screen (in Progress)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/z80.png)
+## Disassembler 6502/10 Screen (in Progress)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/6502.png)
 ## Big PETSCII Screen
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen2.png)
 ## Ultimate64 Streaming Client

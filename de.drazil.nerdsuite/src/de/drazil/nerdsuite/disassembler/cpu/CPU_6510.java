@@ -39,11 +39,9 @@ public class CPU_6510 extends AbstractCPU {
 				sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
 			}
 			String pan = String.format("< %s >", (address != null ? address.getDescription() : ""));
-			String text = String.format("%s: %30s %s %s %s", instructionLine.getProgramCounter(),
-					instructionLine.getLabelName(), opcode.getMnemonic(),
+			instructionLine.setUserObject(new Object[] { instructionLine.getProgramCounter(), opcode.getMnemonic(),
 					opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv),
-					address != null ? pan : "");
-			instructionLine.setUserObject(text);
+					address != null ? pan : "" });
 		}
 	}
 
@@ -57,7 +55,7 @@ public class CPU_6510 extends AbstractCPU {
 			if (!currentLine.isPassed()) {
 				Range range = currentLine.getRange();
 				int offset = range.getOffset();
-				Opcode opcode = getOpcodeByIndex(byteArray, offset);
+				Opcode opcode = getOpcodeByIndex("C64", "", byteArray, offset);
 
 				String addressingMode = opcode.getAddressingMode().getId();
 				String instructionType = opcode.getType();
@@ -218,7 +216,7 @@ public class CPU_6510 extends AbstractCPU {
 		AddressingMode lookupAddressingMode = null;
 		while (!matchValue.matches(value)) {
 			lowByteLine = getInstructionLineList().get(index);
-			lookupOpcode = getOpcodeByIndex(byteArray, lowByteLine.getRange().getOffset());
+			lookupOpcode = getOpcodeByIndex("", "", byteArray, lowByteLine.getRange().getOffset());
 			lookupAddressingMode = lookupOpcode.getAddressingMode();
 			if (lookupAddressingMode.getId().startsWith("abs") || lookupAddressingMode.getId().startsWith("zp")) {
 				matchValue = getInstructionValue(byteArray, lowByteLine.getRange());
@@ -274,20 +272,20 @@ public class CPU_6510 extends AbstractCPU {
 		Value valueA = new Value(0);
 		Value valueB = new Value(0);
 
-		Opcode opcodeA = getOpcodeByIndex(byteArray, checkLineA.getRange().getOffset());
+		Opcode opcodeA = getOpcodeByIndex("C64", "", byteArray, checkLineA.getRange().getOffset());
 		valueA = getInstructionValue(byteArray, checkLineA.getRange());
 
 		if (opcodeA != null && isStoreInstruction(opcodeA.getMnemonic()) && !isDataAddress(valueA, platformData)) {
 			InstructionLine checkLineB = getInstructionLineList().get(checkIndex - 2);
-			Opcode opcodeB = getOpcodeByIndex(byteArray, checkLineB.getRange().getOffset());
+			Opcode opcodeB = getOpcodeByIndex("C64", "", byteArray, checkLineB.getRange().getOffset());
 			if (opcodeB != null) {
 				valueB = getInstructionValue(byteArray, checkLineB.getRange());
 				if (isStoreInstruction(opcodeB.getMnemonic()) && !isDataAddress(valueA, platformData)) {
 					if (Math.abs(valueB.getValue() - valueA.getValue()) == 1) {
 						InstructionLine pointerA = getInstructionLineList().get(checkIndex - 1);
-						Opcode pointerAopcode = getOpcodeByIndex(byteArray, pointerA.getRange().getOffset());
+						Opcode pointerAopcode = getOpcodeByIndex("C64", "", byteArray, pointerA.getRange().getOffset());
 						InstructionLine pointerB = getInstructionLineList().get(checkIndex - 3);
-						Opcode pointerBopcode = getOpcodeByIndex(byteArray, pointerB.getRange().getOffset());
+						Opcode pointerBopcode = getOpcodeByIndex("C64", "", byteArray, pointerB.getRange().getOffset());
 						if (pointerAopcode.getAddressingMode().getId().equals("imm")
 								&& pointerBopcode.getAddressingMode().getId().equals("imm")) {
 							int lowByte = getByte(byteArray, pointerB.getRange().getOffset() + 1);

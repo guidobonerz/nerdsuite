@@ -9,8 +9,6 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 
-import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
-import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.util.NumericConverter;
 
@@ -22,7 +20,7 @@ public class U64DebugStream extends Thread {
 	private IPlatform platform = null;
 
 	public U64DebugStream() throws Exception {
-		platform = new C64Platform(new KickAssemblerDialect(), false);
+		// platform = new C64Platform(new KickAssemblerDialect(), false);
 		socket = new DatagramSocket(11002);
 	}
 

@@ -62,7 +62,7 @@ public class SourceEditorView implements IDocument {
 		for (AssemblerDirective directive : InstructionSet.getDirectiveList()) {
 			documentStyler.addRule(new WordRule(directive.getId(), new Token(Constants.T_DIRECTIVE)));
 		}
-		for (CpuInstruction instruction : InstructionSet.getCpuInstructionList()) {
+		for (CpuInstruction instruction : InstructionSet.getCpuInstructionList("")) {
 			documentStyler.addRule(new WordRule(instruction.getId(),
 					new Token(CPU_6510.getInstructionTokenKey(instruction.isIllegal(), !instruction.isStable()))));
 		}

@@ -35,7 +35,7 @@ public class Disassembler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//byteArray = platform.parseBinary(byteArray);
+		// byteArray = platform.parseBinary(byteArray);
 
 		Map<String, ConversionType> conversionMap = new HashMap<String, ConversionType>();
 		// conversionMap.put("099a", ConversionType.CharsetData);
@@ -57,7 +57,7 @@ public class Disassembler {
 
 	private void printDiasassembly(InstructionLine instructionLine, Map<String, ConversionType> conversionMap) {
 		Range range = instructionLine.getRange();
-		Opcode opcode = platform.getCPU().getOpcodeByIndex(byteArray, range.getOffset());
+		Opcode opcode = platform.getCPU().getOpcodeByIndex("", "", byteArray, range.getOffset());
 		String pc = NumericConverter.toHexString(instructionLine.getProgramCounter().getValue(), 4);
 
 		String s1 = "";
