@@ -55,7 +55,8 @@ public class CPU_6510 extends AbstractCPU {
 			if (!currentLine.isPassed()) {
 				Range range = currentLine.getRange();
 				int offset = range.getOffset();
-				Opcode opcode = getOpcodeByIndex("C64", "", byteArray, offset);
+				String so = String.format("%04X", offset);
+				Opcode opcode = getOpcodeByIndex(platformData.getPlatformId(), "", byteArray, offset);
 
 				String addressingMode = opcode.getAddressingMode().getId();
 				String instructionType = opcode.getType();
@@ -106,11 +107,33 @@ public class CPU_6510 extends AbstractCPU {
 					 */
 
 				}
-				int v = value.getValue();
-				Address address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
-						.findFirst().orElse(null);
 
-				printDisassembly(currentLine, opcode, value, address);
+				String byteString = "";
+				for (int i = 0; i < 4; i++) {
+					if (i < opcode.getAddressingMode().getLen()) {
+						byteString += String.format("%02X ", byteArray[offset + i]);
+					} else {
+						byteString += "   ";
+					}
+				}
+
+				Address address = null;
+				if ("mod".equals(instructionType)) {
+					int v = value.getValue();
+					address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
+							.findFirst().orElse(null);
+				}
+
+				// printDisassembly(currentLine, opcode, value, address);
+				String sv = "";
+				if (len - 1 > 0) {
+					sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
+				}
+				String addressingModeString = opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv);
+
+				currentLine.setUserObject(new Object[] { so, "", byteString, opcode.getMnemonic(), addressingModeString,
+						address != null ? address.getConstName() : "" });
+
 				newLine = split(currentLine, pc, new Value(offset + len));
 				if (newLine == null) {
 					break;
