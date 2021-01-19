@@ -52,442 +52,1020 @@
     "value" : "#959595",
     "name" : "Light Grey"
   } ],
-  "platformPointerList" : [ {
-    "address" : "0314",
-    "constName" : "HWIRQ",
-    "description" : "Vector: Hardware Interrupt (IRQ)"
-  } ],
+  "platformPointerList" : [ ],
   "platformAddressList" : [ {
-    "address" : "d000",
-    "constName" : "VIC_SPRITE_0_X",
-    "description" : "X-Coordinate of Sprite 0"
-  }, {
-    "address" : "d001",
-    "constName" : "VIC_SPRITE_0_Y",
-    "description" : "Y-Coordinate of Sprite 0"
-  }, {
-    "address" : "d002",
-    "constName" : "VIC_SPRITE_1_X",
-    "description" : "X-Coordinate of Sprite 1"
-  }, {
-    "address" : "d003",
-    "constName" : "VIC_SPRITE_1_Y",
-    "description" : "Y-Coordinate of Sprite 1"
-  }, {
-    "address" : "d004",
-    "constName" : "VIC_SPRITE_2_X",
-    "description" : "X-Coordinate of Sprite 2"
-  }, {
-    "address" : "d005",
-    "constName" : "VIC_SPRITE_2_Y",
-    "description" : "Y-Coordinate of Sprite 2"
-  }, {
-    "address" : "d006",
-    "constName" : "VIC_SPRITE_3_X",
-    "description" : "X-Coordinate of Sprite 3"
-  }, {
-    "address" : "d007",
-    "constName" : "VIC_SPRITE_3_Y",
-    "description" : "Y-Coordinate of Sprite 3"
-  }, {
-    "address" : "d008",
-    "constName" : "VIC_SPRITE_4_X",
-    "description" : "X-Coordinate of Sprite 4"
-  }, {
-    "address" : "d009",
-    "constName" : "VIC_SPRITE_4_Y",
-    "description" : "Y-Coordinate of Sprite 4"
-  }, {
-    "address" : "d00a",
-    "constName" : "VIC_SPRITE_5_X",
-    "description" : "X-Coordinate of Sprite 5"
-  }, {
-    "address" : "d00b",
-    "constName" : "VIC_SPRITE_5_Y",
-    "description" : "Y-Coordinate of Sprite 5"
-  }, {
-    "address" : "d00c",
-    "constName" : "VIC_SPRITE_6_X",
-    "description" : "X-Coordinate of Sprite 6"
-  }, {
-    "address" : "d00d",
-    "constName" : "VIC_SPRITE_6_Y",
-    "description" : "Y-Coordinate of Sprite 6"
-  }, {
-    "address" : "d00e",
-    "constName" : "VIC_SPRITE_7_X",
-    "description" : "X-Coordinate of Sprite 7"
-  }, {
-    "address" : "d00f",
-    "constName" : "VIC_SPRITE_7_Y",
-    "description" : "Y-Coordinate of Sprite 7"
-  }, {
-    "address" : "d010",
-    "constName" : "VIC_SPRITES_X_8TH_BIT",
-    "description" : "Bit 8 of X-Coordinate for Sprite 07"
-  }, {
-    "address" : "d011",
-    "constName" : "VIC_CONTROL_1",
-    "description" : "VIC ControlRegister"
-  }, {
-    "address" : "d012",
-    "constName" : "VIC_RASTERLINE",
-    "description" : "Rasterline"
-  }, {
-    "address" : "d013",
-    "constName" : "VIC_LIGHTPEN_X",
-    "description" : "Lightpen X-Coordinate"
-  }, {
-    "address" : "d014",
-    "constName" : "VIC_LIGHTPEN_Y",
-    "description" : "Lightpen Y-Coordinate"
-  }, {
-    "address" : "d015",
-    "constName" : "VIC_SPRITE_ENABLE",
-    "description" : "SpriteSwitch OnOff 07"
-  }, {
-    "address" : "d016",
-    "constName" : "VIC_CONTROL_REGISTER_2",
-    "description" : "VIC ControlRegister"
-  }, {
-    "address" : "d017",
-    "constName" : "VIC_SPRITES_EXPAND_Y",
-    "description" : "SpriteSwitch Expand Y 07"
-  }, {
-    "address" : "d018",
-    "constName" : "VIC_MEMORY_CONTROL",
-    "description" : "VIC Memory CrontrolRegister"
-  }, {
-    "address" : "d019",
-    "constName" : "VIC_INTERRUPT_REQUEST_1",
-    "description" : "Interrupt RequestRegister"
-  }, {
-    "address" : "d01a",
-    "constName" : "VIC_INTERRUPT_REQUEST_2",
-    "description" : "Interrupt RerquestRegister"
-  }, {
-    "address" : "d01b",
-    "constName" : "VIC_SPRITES_PRIORITY",
-    "description" : "Sprite Priority 07"
-  }, {
-    "address" : "d01c",
-    "constName" : "VIC_SPRITES_DISPLAY_MODE",
-    "description" : "Sprite DisplayMode 07"
-  }, {
-    "address" : "d01d",
-    "constName" : "VIC_SPRITES_EXPAND_X",
-    "description" : "SpriteSwitch Expand X 07"
-  }, {
-    "address" : "d01e",
-    "constName" : "VIC_SPRITE_SPRITE_COLLISION",
-    "description" : "SpriteSprite CollisionRegister 07"
-  }, {
-    "address" : "d01f",
-    "constName" : "VIC_SPRITES_BACKGROUND_COLLISION",
-    "description" : "SpriteBackground Collisionregister 07"
-  }, {
-    "address" : "d020",
-    "constName" : "VIC_FRAME_COLOR",
-    "description" : "FrameColor"
-  }, {
-    "address" : "d021",
-    "constName" : "VIC_BACKGROUND_COLOR",
-    "description" : "BackgroundColor"
-  }, {
-    "address" : "d022",
-    "constName" : "VIC_BACKGROUND_COLOR_1",
-    "description" : "BackgroundColor 1"
-  }, {
-    "address" : "d023",
-    "constName" : "VIC_BACKGROUND_COLOR_2",
-    "description" : "BackgroundColor 2"
-  }, {
-    "address" : "d024",
-    "constName" : "VIC_BACKGROUND_COLOR_3",
-    "description" : "BackgroundColor 3"
-  }, {
-    "address" : "d025",
-    "constName" : "VIC_SPRITE_MULTI_COLOR_0",
-    "description" : "Unique SpriteColor 0 MulticolorMode 015"
-  }, {
-    "address" : "d026",
-    "constName" : "VIC_SPRITE_MULTI_COLOR_1",
-    "description" : "Unique SpriteColor 1 MulticolorMode 015"
-  }, {
-    "address" : "d027",
-    "constName" : "VIC_SPRITE_COLOR_0",
-    "description" : "SpriteColor 0 015"
-  }, {
-    "address" : "d028",
-    "constName" : "VIC_SPRITE_COLOR_1",
-    "description" : "SpriteColor 1 015"
-  }, {
-    "address" : "d029",
-    "constName" : "VIC_SPRITE_COLOR_2",
-    "description" : "SpriteColor 2 015"
-  }, {
-    "address" : "d02a",
-    "constName" : "VIC_SPRITE_COLOR_3",
-    "description" : "SpriteColor 3 015"
-  }, {
-    "address" : "d02b",
-    "constName" : "VIC_SPRITE_COLOR_4",
-    "description" : "SpriteColor 4 015"
-  }, {
-    "address" : "d02c",
-    "constName" : "VIC_SPRITE_COLOR_5",
-    "description" : "SpriteColor 5 015"
-  }, {
-    "address" : "d02d",
-    "constName" : "VIC_SPRITE_COLOR_6",
-    "description" : "SpriteColor 6 015"
-  }, {
-    "address" : "d02e",
-    "constName" : "VIC_SPRITE_COLOR_7",
-    "description" : "SpriteColor 7 015"
-  }, {
-    "address" : "d400",
-    "constName" : "SID_CHANNEL_1_FREQ_LOWBYTE",
-    "description" : "Channel 1 Frequence LowByte"
-  }, {
-    "address" : "d401",
-    "constName" : "SID_CHANNEL_1_FREQ_HIGHBYTE",
-    "description" : "Channel 1 Frequence HighByte"
-  }, {
-    "address" : "d402",
-    "constName" : "SID_CHANNEL_1_PULSE_WIDTH_LOW",
-    "description" : "Channel 1 Pulsewidth LowByte"
-  }, {
-    "address" : "d403",
-    "constName" : "SID_CHANNEL_1_PULSE_WIDTH_HIGH",
-    "description" : "Channel 1 Pulsewidth HighByte"
-  }, {
-    "address" : "d404",
-    "constName" : "SID_CHANNEL_1_MODULATION",
-    "description" : "Channel 1 Modulation Saw,Tri,Ring"
-  }, {
-    "address" : "d405",
-    "constName" : "SID_CHANNEL_1_ATTACK_DECAY",
-    "description" : "Channel 1 Attack, Decay"
-  }, {
-    "address" : "d406",
-    "constName" : "SID_CHANNEL_1_SUSTAIN_RELEASE",
-    "description" : "Channel 1 Sustain, Release"
-  }, {
-    "address" : "d407",
-    "constName" : "SID_CHANNEL_2_FREQ_LOWBYTE",
-    "description" : "Channel 2 Frequence LowByte"
-  }, {
-    "address" : "d408",
-    "constName" : "SID_CHANNEL_2_FREQ_HIGHBYTE",
-    "description" : "Channel 2 Frequence HighByte"
-  }, {
-    "address" : "d409",
-    "constName" : "SID_CHANNEL_2_PULSE_WIDTH_LOW",
-    "description" : "Channel 2 Pulsewidth LowByte"
-  }, {
-    "address" : "d40a",
-    "constName" : "SID_CHANNEL_2_PULSE_WIDTH_HIGH",
-    "description" : "Channel 2 Pulsewidth HighByte"
-  }, {
-    "address" : "d40b",
-    "constName" : "SID_CHANNEL_2_MODULATION",
-    "description" : "Channel 2 Modulation Saw,Tri,Ring"
-  }, {
-    "address" : "d40c",
-    "constName" : "SID_CHANNEL_2_ATTACK_DECAY",
-    "description" : "Channel 2 Attack, Decay"
-  }, {
-    "address" : "d40d",
-    "constName" : "SID_CHANNEL_2_SUSTAIN_RELEASE",
-    "description" : "Channel 2 Sustain, Release"
-  }, {
-    "address" : "d40e",
-    "constName" : "SID_CHANNEL_3_FREQ_LOWBYTE",
-    "description" : "Channel 3 Frequence LowByte"
-  }, {
-    "address" : "d40f",
-    "constName" : "SID_CHANNEL_3_FREQ_HIGHBYTE",
-    "description" : "Channel 3 Frequence HighByte"
-  }, {
-    "address" : "d410",
-    "constName" : "SID_CHANNEL_3_PULSE_WIDTH_LOW",
-    "description" : "Channel 3 Pulsewidth LowByte"
-  }, {
-    "address" : "d411",
-    "constName" : "SID_CHANNEL_3_PULSE_WIDTH_HIGH",
-    "description" : "Channel 3 Pulsewidth HighByte"
-  }, {
-    "address" : "d412",
-    "constName" : "SID_CHANNEL_3_MODULATION",
-    "description" : "Channel 3 Modulation Saw,Tri,Ring"
-  }, {
-    "address" : "d413",
-    "constName" : "SID_CHANNEL_3_ATTACK_DECAY",
-    "description" : "Channel 3 Attack, Decay"
-  }, {
-    "address" : "d414",
-    "constName" : "SID_CHANNEL_3_SUSTAIN_RELEASE",
-    "description" : "Channel 3 Sustain, Release"
-  }, {
-    "address" : "d415",
-    "constName" : "SID_FILTER_CUT_OFF_LOW",
-    "description" : "Filter Cut off low"
-  }, {
-    "address" : "d416",
-    "constName" : "SID_FILTER_CUT_OFF_HIGH",
-    "description" : "Filter Cut off high"
-  }, {
-    "address" : "d417",
-    "constName" : "SID_RESONANCE_FILTER",
-    "description" : "Filter Cut off low"
-  }, {
-    "address" : "d418",
-    "constName" : "SID_MODE_VOLUME",
-    "description" : "Filter Cut off low"
-  }, {
-    "address" : "d419",
-    "constName" : "SID_POTENTIOMETER_X",
-    "description" : "Potentiometer X"
-  }, {
-    "address" : "d41a",
-    "constName" : "SID_POTENTIOMETER_Y",
-    "description" : "Potentiometer Y"
-  }, {
-    "address" : "d41b",
-    "constName" : "SID_CHANNEL_3_OSCILATOR",
-    "description" : "Channel 3 Oscilator"
-  }, {
-    "address" : "d41c",
-    "constName" : "SID_CHANNEL_3_ENEVELOPE",
-    "description" : "Channel 3 Envelope"
-  }, {
-    "address" : "dc00",
-    "constName" : "CIA1_DATA_PORT_A",
-    "description" : "Data Port A"
-  }, {
-    "address" : "dc01",
-    "constName" : "CIA1_DATA_PORT_B",
-    "description" : "Data Port B"
-  }, {
-    "address" : "dc02",
-    "constName" : "CIA1_DATA_DIR_A",
-    "description" : "Data Direction A"
-  }, {
-    "address" : "dc03",
-    "constName" : "CIA1_DATA_DIR_B",
-    "description" : "Data Direction B"
-  }, {
-    "address" : "dc04",
-    "constName" : "CIA1_TIMER_A_LOW_BYTE",
-    "description" : "Timer A LowByte"
-  }, {
-    "address" : "dc05",
-    "constName" : "CIA1_TIMER_A_HIGH_BYTE",
-    "description" : "Timer A HighByte"
-  }, {
-    "address" : "dc06",
-    "constName" : "CIA1_TIMER_B_LOW_BYTE",
-    "description" : "Timer B LowByte"
-  }, {
-    "address" : "dc07",
-    "constName" : "CIA1_TIMER_B_HIGH_BYTE",
-    "description" : "Timer B HighByte"
-  }, {
-    "address" : "dc08",
-    "constName" : "CIA1_REAL_TIME_MILLIS",
-    "description" : "Real Time 10ths"
-  }, {
-    "address" : "dc09",
-    "constName" : "CIA1_REAL_TIME_SECONDS",
-    "description" : "Real Time Seconds"
-  }, {
-    "address" : "dc0a",
-    "constName" : "CIA1_REAL_TIME_MINUTES",
-    "description" : "Real Time Minutes"
-  }, {
-    "address" : "dc0b",
-    "constName" : "CIA1_REAL_TIME_HOURS",
-    "description" : "Real Time HOURS"
-  }, {
-    "address" : "dc0c",
-    "constName" : "CIA1_SERIAL_SHIFT",
-    "description" : "Serial Shift"
-  }, {
-    "address" : "dc0d",
-    "constName" : "CIA1_IRQ_CONTROL_STATE",
-    "description" : "Interrupt Control and State"
-  }, {
-    "address" : "dc0e",
-    "constName" : "CIA1_CONTROL_TIMER_A",
-    "description" : "Control Timer A"
-  }, {
-    "address" : "dc0f",
-    "constName" : "CIA1_CONTROL_TIMER_B",
-    "description" : "Control Timer B"
-  }, {
-    "address" : "dd00",
-    "constName" : "CIA2_DATA_PORT_A",
-    "description" : "DataPortA"
-  }, {
-    "address" : "dd01",
-    "constName" : "CIA2_DATA_PORT_B",
-    "description" : "Data Port B"
-  }, {
-    "address" : "dd02",
-    "constName" : "CIA2_DATA_DIR_A",
-    "description" : "Data Direction A"
-  }, {
-    "address" : "dd03",
-    "constName" : "CIA2_DATA_DIR_B",
-    "description" : "Data Direction B"
-  }, {
-    "address" : "dd04",
-    "constName" : "CIA2_TIMER_A_LOW_BYTE",
-    "description" : "Timer A LowByte"
-  }, {
-    "address" : "dd05",
-    "constName" : "CIA2_TIMER_A_HIGH_BYTE",
-    "description" : "Timer A HighByte"
-  }, {
-    "address" : "dd06",
-    "constName" : "CIA2_TIMER_B_LOW_BYTE",
-    "description" : "Timer B LowByte"
-  }, {
-    "address" : "dd07",
-    "constName" : "CIA2_TIMER_B_HIGH_BYTE",
-    "description" : "Timer B HighByte"
-  }, {
-    "address" : "dd08",
-    "constName" : "CIA2_REAL_TIME_MILLIS",
-    "description" : "Real Time 110s"
-  }, {
-    "address" : "dd09",
-    "constName" : "CIA2_REAL_TIME_SECONDS",
-    "description" : "Real Time Seconds"
-  }, {
-    "address" : "dd0a",
-    "constName" : "CIA2_REAL_TIME_MINUTES",
-    "description" : "Real Time Minutes"
-  }, {
-    "address" : "dd0b",
-    "constName" : "CIA2_REAL_TIME_HOURS",
-    "description" : "Real Time HOURS"
-  }, {
-    "address" : "dd0c",
-    "constName" : "CIA2_SERIAL_SHIFT",
-    "description" : "Serial Shift"
-  }, {
-    "address" : "dd0d",
-    "constName" : "CIA2_IRQ_CONTROL_STATE",
-    "description" : "Interrupt Control and State"
-  }, {
-    "address" : "dd0e",
-    "constName" : "CIA2_CONTROL_TIMER_A",
-    "description" : "Control Timer A"
-  }, {
-    "address" : "dd0f",
-    "constName" : "CIA2_CONTROL_TIMER_B",
-    "description" : "Control Timer B"
+    "address" : "0000",
+    "constName" : "RESET"
+  }, {
+    "address" : "0008",
+    "constName" : "KL_LO_JUMP"
+  }, {
+    "address" : "000B",
+    "constName" : "KL_LO_CALL_HL"
+  }, {
+    "address" : "000E",
+    "constName" : "KL_JP_BC",
+    "description" : "in: BC=addr"
+  }, {
+    "address" : "0010",
+    "constName" : "KL_SIDE_CALL_SP"
+  }, {
+    "address" : "0013",
+    "constName" : "KL_SIDE_CALL_HL"
+  }, {
+    "address" : "0016",
+    "constName" : "KL_JP_DE",
+    "description" : "in: DE=addr"
+  }, {
+    "address" : "0018",
+    "constName" : "KL_FAR_CALL_SP"
+  }, {
+    "address" : "001B",
+    "constName" : "KL_FAR_CALL_C_HL"
+  }, {
+    "address" : "001E",
+    "constName" : "KL_JP_HL",
+    "description" : "in: HL=addr"
+  }, {
+    "address" : "0020",
+    "constName" : "KL_RAM_LD_A_HL",
+    "description" : "in: HL=src, out: A=[HL]"
+  }, {
+    "address" : "0023",
+    "constName" : "KL_FAR_CALL_HL"
+  }, {
+    "address" : "0028",
+    "constName" : "KL_FIRM_JUMP"
+  }, {
+    "address" : "002B",
+    "constName" : "DATA",
+    "description" : "(OLD C' WHEN RST 30h OCCURRED WITH LO_ROM ENABLED)"
+  }, {
+    "address" : "0030",
+    "constName" : "FREE_FOR_USER",
+    "description" : " (RST6)"
+  }, {
+    "address" : "0038",
+    "constName" : "INTERRUPT",
+    "description" : "(RST7/IRQ)"
+  }, {
+    "address" : "003B",
+    "constName" : "EXT_INTERRUPT_VECTOR"
+  }, {
+    "address" : "0066",
+    "constName" : "GARBAGE",
+    "description" : "(THERE'S NO NMI HANDLER IN ROM)"
+  }, {
+    "address" : "B900",
+    "constName" : "KL_U_ROM_ENABLE",
+    "description" : "out: A=old C'"
+  }, {
+    "address" : "B903",
+    "constName" : "KL_U_ROM_DISABLE",
+    "description" : "out: A=old C'"
+  }, {
+    "address" : "B906",
+    "constName" : "KL_L_ROM_ENABLE",
+    "description" : "out: A=old C'"
+  }, {
+    "address" : "B909",
+    "constName" : "KL_L_ROM_DISABLE",
+    "description" : "out: A=old C'"
+  }, {
+    "address" : "B90C",
+    "constName" : "KL_ROM_RESTORE",
+    "description" : "in: A=new C' (Bit2,3)"
+  }, {
+    "address" : "B90F",
+    "constName" : "KL_ROM_SELECT",
+    "description" : "in: C=upper ROM bank (select, and enable that bank)"
+  }, {
+    "address" : "B912",
+    "constName" : "KL_CURR_SELECTION",
+    "description" : "out: A=upper ROM bank"
+  }, {
+    "address" : "B915",
+    "constName" : "KL_PROBE_ROM",
+    "description" : "in: C=upper ROM bank, out: A=[C000h], HL=[C001h]"
+  }, {
+    "address" : "B918",
+    "constName" : "KL_ROM_DESELECT",
+    "description" : "in: B=new C', C=upper ROM bank, out: B=A, C=old bank"
+  }, {
+    "address" : "B91B",
+    "constName" : "KL_RAM_LDIR",
+    "description" : "in: HL=src, DE=dest, BC=len"
+  }, {
+    "address" : "B91E",
+    "constName" : "KL_RAM_LDDR",
+    "description" : "in: HL=src_end, DE=dest_end, BC=len"
+  }, {
+    "address" : "B921",
+    "constName" : "KL_POLL_SYNCHRONOUS"
+  }, {
+    "address" : "BB00",
+    "constName" : "KM_INITIALIZE"
+  }, {
+    "address" : "BB03",
+    "constName" : "KM_RESET"
+  }, {
+    "address" : "BB06",
+    "constName" : "KM_WAIT_CHAR",
+    "description" : "     out: A=char (waits until valid char)"
+  }, {
+    "address" : "BB09",
+    "constName" : "KM_READ_CHAR",
+    "description" : "    out: A=char, cy=1=valid char"
+  }, {
+    "address" : "BB0C",
+    "constName" : "KM_CHAR_RETURN",
+    "description" : "   in: A=char (writeback max one char to keybuf)"
+  }, {
+    "address" : "BB0F",
+    "constName" : "KM_SET_EXPAND",
+    "description" : "  in: B=code, HL=ptr to new string, C=length"
+  }, {
+    "address" : "BB12",
+    "constName" : "KM_GET_EXPAND",
+    "description" : " in: A=code (0-1F,80-9F), L=index, out:A=char, cy,zf"
+  }, {
+    "address" : "BB15",
+    "constName" : "KM_EXP_BUF_RESET",
+    "description" : "in: de=begin, hl=length of buffer, out: cy: 1=okay"
+  }, {
+    "address" : "BB18",
+    "constName" : "KM_WAIT_KEY",
+    "description" : " out: A=char (waits until key pressed)"
+  }, {
+    "address" : "BB1B",
+    "constName" : "KM_READ_KEY",
+    "description" : "out: cy:0=none, cy:1=key pressed, A=char"
+  }, {
+    "address" : "BB1E",
+    "constName" : "KM_TEST_KEY",
+    "description" : "in: A=keyno, out: nz=pressed, C=ctrl/shift flags"
+  }, {
+    "address" : "BB21",
+    "constName" : "KM_GET_LOCKS",
+    "description" : "out: H=caps lock (caps), L=shift lock (ctrl+caps)"
+  }, {
+    "address" : "BB24",
+    "constName" : "KM_GET_JOYSTICK",
+    "description" : "out: H=joystick 0, L=joystick 1"
+  }, {
+    "address" : "BB27",
+    "constName" : "KM_SET_TRANSLATE",
+    "description" : "in: A=keyno, B=char (normal)"
+  }, {
+    "address" : "BB2A",
+    "constName" : "KM_GET_TRANSLATE",
+    "description" : "in: A=keyno, out: A=char (normal)"
+  }, {
+    "address" : "BB2D",
+    "constName" : "KM_SET_SHIFT",
+    "description" : "in: A=keyno, B=char (with shift)"
+  }, {
+    "address" : "BB30",
+    "constName" : "KM_GET_SHIFT",
+    "description" : "in: A=keyno, out: A=char (with shift)"
+  }, {
+    "address" : "BB33",
+    "constName" : "KM_SET_CTRL",
+    "description" : "in: A=keyno, B=char (with control)"
+  }, {
+    "address" : "BB36",
+    "constName" : "KM_GET_CTRL",
+    "description" : "in: A=keyno, out: A=char (with control)"
+  }, {
+    "address" : "BB39",
+    "constName" : "KM_SET_REPEAT",
+    "description" : "in: A=keyno, B=repeat flag (FFh=on)"
+  }, {
+    "address" : "BB3C",
+    "constName" : "KM_GET_REPEAT",
+    "description" : "in: A=keyno, out: nz=repeat"
+  }, {
+    "address" : "BB3F",
+    "constName" : "KM_SET_DELAY",
+    "description" : "in: H=1st delay, L=repeat delay"
+  }, {
+    "address" : "BB42",
+    "constName" : "KM_GET_DELAY",
+    "description" : "out: H=1st delay, L=repeat delay"
+  }, {
+    "address" : "BB45",
+    "constName" : "KM_ARM_BREAK",
+    "description" : "in: de=procedure, c=ROM config"
+  }, {
+    "address" : "BB48",
+    "constName" : "KM_DISARM_BREAK",
+    "description" : "in: none"
+  }, {
+    "address" : "BB4B",
+    "constName" : "KM_BREAK_EVENT"
+  }, {
+    "address" : "BB4E",
+    "constName" : "TXT_INITIALIZE"
+  }, {
+    "address" : "BB51",
+    "constName" : "TXT_RESET"
+  }, {
+    "address" : "BB54",
+    "constName" : "TXT_VDU_DISABLE"
+  }, {
+    "address" : "BB57",
+    "constName" : "TXT_VDU_ENABLE"
+  }, {
+    "address" : "BB5A",
+    "constName" : "TXT_OUTPUT",
+    "description" : "in: A=char "
+  }, {
+    "address" : "BB5D",
+    "constName" : "TXT_WR_CHAR",
+    "description" : "in: A=char "
+  }, {
+    "address" : "BB60",
+    "constName" : "TXT_RD_CHAR",
+    "description" : "out: A=char, Z=space, cy=1=okay"
+  }, {
+    "address" : "BB63",
+    "constName" : "TXT_SET_GRAPHIC",
+    "description" : "in: A=0=normal text position, A>0=graphics position"
+  }, {
+    "address" : "BB66",
+    "constName" : "TXT_SET_WINDOW",
+    "description" : "in: H=x1, L=y1, D=x2, E=y2 (x=0..79, y=0..24)"
+  }, {
+    "address" : "BB69",
+    "constName" : "TXT_GET_WINDOW",
+    "description" : "out: H=x1, L=y1, D=x2, E=y2, cy=0=hardware scrolling"
+  }, {
+    "address" : "BB6C",
+    "constName" : "TXT_CLEAR_WINDOW",
+    "description" : "fill window by PAPER color"
+  }, {
+    "address" : "BB6F",
+    "constName" : "TXT_SET_COLUMN",
+    "description" : "in: A=x"
+  }, {
+    "address" : "BB72",
+    "constName" : "TXT_SET_ROW",
+    "description" : "in: A=y"
+  }, {
+    "address" : "BB75",
+    "constName" : "TXT_SET_CURSOR",
+    "description" : "in: H=x, L=y"
+  }, {
+    "address" : "BB78",
+    "constName" : "TXT_GET_CURSOR",
+    "description" : "out: H=x, L=y"
+  }, {
+    "address" : "BB7B",
+    "constName" : "TXT_CUR_ENABLE"
+  }, {
+    "address" : "BB7E",
+    "constName" : "TXT_CUR_DISABLE"
+  }, {
+    "address" : "BB81",
+    "constName" : "TXT_CUR_ON"
+  }, {
+    "address" : "BB84",
+    "constName" : "TXT_CUR_OFF"
+  }, {
+    "address" : "BB87",
+    "constName" : "TXT_VALIDATE",
+    "description" : "io: H=x, L=y, out: cy: 1=position ok, 0=scroll"
+  }, {
+    "address" : "BB8A",
+    "constName" : "TXT_PLACE_CURSOR"
+  }, {
+    "address" : "BB8D",
+    "constName" : "TXT_REMOVE_CURSOR"
+  }, {
+    "address" : "BB90",
+    "constName" : "TXT_SET_PEN",
+    "description" : "in: A=foreground color 0..15"
+  }, {
+    "address" : "BB93",
+    "constName" : "TXT_GET_PEN",
+    "description" : "out: A=foreground color 0..15"
+  }, {
+    "address" : "BB96",
+    "constName" : "TXT_SET_PAPER",
+    "description" : "in: A=background color 0..15"
+  }, {
+    "address" : "BB99",
+    "constName" : "TXT_GET_PAPER",
+    "description" : "out: A=background color 0..15"
+  }, {
+    "address" : "BB9C",
+    "constName" : "TXT_INVERSE",
+    "description" : "exchange foreground and background colors"
+  }, {
+    "address" : "BB9F",
+    "constName" : "TXT_SET_BACK",
+    "description" : "in: A=0=normal, A=1=transparent/OR"
+  }, {
+    "address" : "BBA2",
+    "constName" : "TXT_GET_BACK",
+    "description" : "out: Z=normal, NZ=transparent/OR"
+  }, {
+    "address" : "BBA5",
+    "constName" : "TXT_GET_MATRIX",
+    "description" : "in: A=char, out: HL=char bitmap ptr, cy:0=ROM,1=RAM"
+  }, {
+    "address" : "BBA8",
+    "constName" : "TXT_SET_MATRIX",
+    "description" : "in: A=char, HL=ptr to 8x8 char bitmap"
+  }, {
+    "address" : "BBAB",
+    "constName" : "TXT_SET_M_TABLE",
+    "description" : "in: D=00h=RAM, E=1st char, HL=RAM chars, out: cy,A,HL"
+  }, {
+    "address" : "BBAE",
+    "constName" : "TXT_GET_M_TABLE",
+    "description" : "out: cy=1=RAM, A=1st char, HL=RAM chars"
+  }, {
+    "address" : "BBB1",
+    "constName" : "TXT_GET_CONTROLS",
+    "description" : "out: HL=ptr to table of control characters"
+  }, {
+    "address" : "BBB4",
+    "constName" : "TXT_STR_SELECT",
+    "description" : "in: A=new window number, out: A=old (# 0..7)"
+  }, {
+    "address" : "BBB7",
+    "constName" : "TXT_SWAP_STREAMS",
+    "description" : "in: B,C=window numbers to be exchanged"
+  }, {
+    "address" : "BBBA",
+    "constName" : "GRA_INITIALIZE"
+  }, {
+    "address" : "BBBD",
+    "constName" : "GRA_RESET_HOOKS",
+    "description" : "out: [BDDC+00h..0Ah]=Default jump opcodes/addresses"
+  }, {
+    "address" : "BBC0",
+    "constName" : "GRA_MOVE_ABSOLUTE",
+    "description" : "in: de=x, hl=y  "
+  }, {
+    "address" : "BBC3",
+    "constName" : "GRA_MOVE_RELATIVE",
+    "description" : "in: de=x, hl=y  "
+  }, {
+    "address" : "BBC6",
+    "constName" : "GRA_ASK_CURSOR",
+    "description" : "out: de=x, hl=y "
+  }, {
+    "address" : "BBC9",
+    "constName" : "GRA_SET_ORIGIN",
+    "description" : "in: de=x, hl=y (also does MOVE 0,0)"
+  }, {
+    "address" : "BBCC",
+    "constName" : "GRA_GET_ORIGIN",
+    "description" : "out: de=x, hl=y"
+  }, {
+    "address" : "BBCF",
+    "constName" : "GRA_SET_WIN_WIDTH",
+    "description" : "in: de=x1/left, hl=x2/right"
+  }, {
+    "address" : "BBD2",
+    "constName" : "GRA_SET_WIN_HEIGHT",
+    "description" : "in: de=y1/top, hl=y2/bottom"
+  }, {
+    "address" : "BBD5",
+    "constName" : "GRA_GET_WIN_WIDTH",
+    "description" : "out: de=x1/left, hl=x2/right"
+  }, {
+    "address" : "BBD8",
+    "constName" : "GRA_GET_WIN_HEIGHT",
+    "description" : "out: de=y1/top, hl=y2/bottom"
+  }, {
+    "address" : "BBDB",
+    "constName" : "GRA_CLEAR_WINDOW",
+    "description" : "fill window by PAPER (also does MOVE 0,0)"
+  }, {
+    "address" : "BBDE",
+    "constName" : "GRA_SET_PEN",
+    "description" : "in: A=color (0..15) for PLOT/LINE/WR_CHAR"
+  }, {
+    "address" : "BBE1",
+    "constName" : "GRA_GET_PEN",
+    "description" : "out: A=color (0..15)"
+  }, {
+    "address" : "BBE4",
+    "constName" : "GRA_SET_PAPER",
+    "description" : "in: A=color (0..15) for CLEAR_WINDOW/WR_CHAR"
+  }, {
+    "address" : "BBE7",
+    "constName" : "GRA_GET_PAPER",
+    "description" : "out: A=color (0..15"
+  }, {
+    "address" : "BBEA",
+    "constName" : "GRA_PLOT_ABSOLUTE",
+    "description" : "in: de=x, hl=y  "
+  }, {
+    "address" : "BBED",
+    "constName" : "GRA_PLOT_RELATIVE",
+    "description" : "in: de=x, hl=y  "
+  }, {
+    "address" : "BBF0",
+    "constName" : "GRA_TEST_ABSOLUTE",
+    "description" : "in: de=x, hl=y, out: A=color (0..15) of pixel"
+  }, {
+    "address" : "BBF3",
+    "constName" : "GRA_TEST_RELATIVE",
+    "description" : "in: de=x, hl=y, out: A=color (0..15) of pixel"
+  }, {
+    "address" : "BBF6",
+    "constName" : "GRA_LINE_ABSOLUTE",
+    "description" : "in: de=x, hl=y  "
+  }, {
+    "address" : "BBF9",
+    "constName" : "GRA_LINE_RELATIVE",
+    "description" : "in: de=x, hl=y  "
+  }, {
+    "address" : "BBFC",
+    "constName" : "GRA_WR_CHAR",
+    "description" : "in: A=char      "
+  }, {
+    "address" : "BBFF",
+    "constName" : "SCR_INITIALIZE"
+  }, {
+    "address" : "BC02",
+    "constName" : "SCR_RESET"
+  }, {
+    "address" : "BC05",
+    "constName" : "SCR_SET_OFFSET",
+    "description" : "in: HL.bit10..0 = vram offset 0..7FFh"
+  }, {
+    "address" : "BC08",
+    "constName" : "SCR_SET_BASE",
+    "description" : "in: A.bit7-6 = vram block 0..3"
+  }, {
+    "address" : "BC0B",
+    "constName" : "SCR_GET_LOCATION",
+    "description" : "out: A.bit7-6=block, HL.bit10..0=offset"
+  }, {
+    "address" : "BC0E",
+    "constName" : "SCR_SET_MODE",
+    "description" : "in: A=mode (0=160x200x16, 1=320x200x4, 2=640x200x2)"
+  }, {
+    "address" : "BC11",
+    "constName" : "SCR_GET_MODE",
+    "description" : "out: A=mode (cy=mode0, z=mode1, ie. cmp mode,1)"
+  }, {
+    "address" : "BC14",
+    "constName" : "SCR_MODE_CLEAR",
+    "description" : "clear vram, set offset=0000h, update inks"
+  }, {
+    "address" : "BC17",
+    "constName" : "SCR_CHAR_LIMITS",
+    "description" : "out: B=max_x(19,39,79), C=max_y(24)"
+  }, {
+    "address" : "BC1A",
+    "constName" : "SCR_CHAR_POSITION",
+    "description" : "in: H=x, L=y, out: HL=vram addr, B=bytes/char"
+  }, {
+    "address" : "BC1D",
+    "constName" : "SCR_DOT_POSITION",
+    "description" : "in: DE=x, HL=y, out: HL=vram addr, C=mask, DE, B"
+  }, {
+    "address" : "BC20",
+    "constName" : "SCR_NEXT_BYTE",
+    "description" : "out: HL=HL+1 (wrapped within 800h-byte block)"
+  }, {
+    "address" : "BC23",
+    "constName" : "SCR_PREV_BYTE",
+    "description" : "out: HL=HL-1 (wrapped within 800h-byte block)"
+  }, {
+    "address" : "BC26",
+    "constName" : "SCR_NEXT_LINE",
+    "description" : "out: HL=HL+800h, or HL=HL+50h-3800h (or so)"
+  }, {
+    "address" : "BC29",
+    "constName" : "SCR_PREV_LINE",
+    "description" : "out: HL=HL-800h, or HL=HL-50h+3800h (or so)"
+  }, {
+    "address" : "BC2C",
+    "constName" : "SCR_INK_ENCODE",
+    "description" : "in: A=color, out: A=color_mask"
+  }, {
+    "address" : "BC2F",
+    "constName" : "SCR_INK_DECODE",
+    "description" : "in: A=color_mask, out: A=color"
+  }, {
+    "address" : "BC32",
+    "constName" : "SCR_SET_INK",
+    "description" : "in: A=index, B=color1, C=color2"
+  }, {
+    "address" : "BC35",
+    "constName" : "SCR_GET_INK",
+    "description" : "in: A=index, out: B=color1, C=color2"
+  }, {
+    "address" : "BC38",
+    "constName" : "SCR_SET_BORDER",
+    "description" : "in: B=color1, C=color2"
+  }, {
+    "address" : "BC3B",
+    "constName" : "SCR_GET_BORDER",
+    "description" : "out: B=color1, C=color2"
+  }, {
+    "address" : "BC3E",
+    "constName" : "SCR_SET_FLASHING",
+    "description" : "in: H=count1, L=count2"
+  }, {
+    "address" : "BC41",
+    "constName" : "SCR_GET_FLASHING",
+    "description" : "out: H=count1, L=count2"
+  }, {
+    "address" : "BC44",
+    "constName" : "SCR_FILL_BOX",
+    "description" : "in: A=fillbyte, H=x1, L=y1, D=x2, E=y2"
+  }, {
+    "address" : "BC47",
+    "constName" : "SCR_FLOOD_BOX",
+    "description" : "in: A=fillbyte, HL=vram addr, D=xsiz, E=ysiz"
+  }, {
+    "address" : "BC4A",
+    "constName" : "SCR_CHAR_INVERT",
+    "description" : "in: H=x, L=y, B=paper, C=pen"
+  }, {
+    "address" : "BC4D",
+    "constName" : "SCR_HARDWARE_ROLL",
+    "description" : "in: A=paper, B=dir(0=down, FFh=up)"
+  }, {
+    "address" : "BC50",
+    "constName" : "SCR_SOFTWARE_ROLL",
+    "description" : "in: A=paper, B=dir(\"\"), H=x1, L=y1, D=x2, E=y2"
+  }, {
+    "address" : "BC53",
+    "constName" : "SCR_UNPACK",
+    "description" : "in: HL=src, DE=dest (mono 8x8 char to colored 8x8)"
+  }, {
+    "address" : "BC56",
+    "constName" : "SCR_REPACK",
+    "description" : "in: H=x, L=y, A=pen, DE=dest (colored 8x8 to mono)"
+  }, {
+    "address" : "BC59",
+    "constName" : "SCR_ACCESS",
+    "description" : "in: A=drawmode (0=Normal, 1=XOR, 2=AND, 3=OR)"
+  }, {
+    "address" : "BC5C",
+    "constName" : "SCR_PIXELS",
+    "description" : "in: HL=vram addr, C=xmask, B=color"
+  }, {
+    "address" : "BC5F",
+    "constName" : "SCR_HORIZONTAL",
+    "description" : "in: A=pen, DE=x1, BC=x2, HL=y"
+  }, {
+    "address" : "BC62",
+    "constName" : "SCR_VERTICAL",
+    "description" : "in: A=pen, HL=y1, BC=y2, DE=x"
+  }, {
+    "address" : "BC65",
+    "constName" : "CAS_INITIALIZE"
+  }, {
+    "address" : "BC68",
+    "constName" : "CAS_SET_SPEED",
+    "description" : "in: HL=upper16bit, A=lower8bit"
+  }, {
+    "address" : "BC6B",
+    "constName" : "CAS_NOISY",
+    "description" : "in: A=output cassette messages (0=yes, >0=no)"
+  }, {
+    "address" : "BC6E",
+    "constName" : "CAS_START_MOTOR",
+    "description" : "out: A.bit4 old motor status (0=off, 1=on), cy=0, z=1"
+  }, {
+    "address" : "BC71",
+    "constName" : "CAS_STOP_MOTOR",
+    "description" : "out: A.bit4 old motor status (0=off, 1=on), cy=0, z=1"
+  }, {
+    "address" : "BC74",
+    "constName" : "CAS_RESTORE_MOTOR",
+    "description" : "in: A.bit4 new motor status (0=off, 1=on), cy=0, z=1"
+  }, {
+    "address" : "BC77",
+    "constName" : "CAS_IN_OPEN",
+    "description" : "in: HL=fname, B=fnamelen, DE=workbuf,"
+  }, {
+    "address" : "BC7A",
+    "constName" : "CAS_IN_CLOSE",
+    "description" : "out: DE=workbuf, cy=0=failed (no open file)"
+  }, {
+    "address" : "BC7D",
+    "constName" : "CAS_IN_ABANDON",
+    "description" : "out: DE=workbuf, cy=1, z=0, A=all_closed (FFh=yes)"
+  }, {
+    "address" : "BC80",
+    "constName" : "CAS_IN_CHAR",
+    "description" : "out: A=char, cy=0=error, zf=errtype"
+  }, {
+    "address" : "BC83",
+    "constName" : "CAS_IN_DIRECT",
+    "description" : "in: HL=dest, out: HL=entrypoint, cy=0=err, zf=errtype"
+  }, {
+    "address" : "BC86",
+    "constName" : "CAS_RETURN",
+    "description" : "in: A=char (undo CAS_IN_CHAR, char back to buffer)"
+  }, {
+    "address" : "BC89",
+    "constName" : "CAS_TEST_EOF",
+    "description" : "out: CY=0=eof (end of file)"
+  }, {
+    "address" : "BC8C",
+    "constName" : "CAS_OUT_OPEN",
+    "description" : "in: HL=fname, B=fnamelen, DE=workbuf, out: HL,cy,zf"
+  }, {
+    "address" : "BC8F",
+    "constName" : "CAS_OUT_CLOSE",
+    "description" : "out: DE=workbuf, cy=0=failed (zf=errtype)"
+  }, {
+    "address" : "BC92",
+    "constName" : "CAS_OUT_ABANDON",
+    "description" : "out: DE=workbuf, cy=1, z=0, A=all_closed (FFh=yes)"
+  }, {
+    "address" : "BC95",
+    "constName" : "CAS_OUT_CHAR",
+    "description" : "in: A=char, out: cy=0=error, zf=errtype"
+  }, {
+    "address" : "BC98",
+    "constName" : "CAS_OUT_DIRECT",
+    "description" : "in: HL=src, DE=len, BC=entrypoint, A=type, out: cy/zf"
+  }, {
+    "address" : "BC9B",
+    "constName" : "CAS_CATALOG",
+    "description" : "in: DE=workbuf, out: DE=workbuf, cy=0=error"
+  }, {
+    "address" : "BC9E",
+    "constName" : "CAS_WRITE",
+    "description" : "in: HL=src, DE=len, A=ID(2Ch=header, 16h=data), out?"
+  }, {
+    "address" : "BCA1",
+    "constName" : "CAS_READ",
+    "description" : "in: HL=dest, DE=len, A=ID(2Ch=header, 16h=data), out?"
+  }, {
+    "address" : "BCA4",
+    "constName" : "CAS_CHECK",
+    "description" : "in: HL=src, DE=len, A=ID(2Ch=header, 16h=data), out?"
+  }, {
+    "address" : "BCA7",
+    "constName" : "SOUND_RESET"
+  }, {
+    "address" : "BCAA",
+    "constName" : "SOUND_QUEUE",
+    "description" : "in: HL=dat "
+  }, {
+    "address" : "BCAD",
+    "constName" : "SOUND_CHECK",
+    "description" : "in: A=channel mask, out: A=channel status"
+  }, {
+    "address" : "BCB0",
+    "constName" : "SOUND_ARM_EVENT"
+  }, {
+    "address" : "BCB3",
+    "constName" : "SOUND_RELEASE",
+    "description" : "in: A=channel mask"
+  }, {
+    "address" : "BCB6",
+    "constName" : "SOUND_PAUSE"
+  }, {
+    "address" : "BCB9",
+    "constName" : "SOUND_UNPAUSE"
+  }, {
+    "address" : "BCBC",
+    "constName" : "SOUND_SET_ENV",
+    "description" : "in: A=number (1..15), HL=data (must be >3FFFh)"
+  }, {
+    "address" : "BCBF",
+    "constName" : "SOUND_SET_ENT",
+    "description" : "in: A=number (1..15), HL=data (must be >3FFFh)"
+  }, {
+    "address" : "BCC2",
+    "constName" : "SOUND_GET_ENV",
+    "description" : "in: A=number (1..15), out: HL=data"
+  }, {
+    "address" : "BCC5",
+    "constName" : "SOUND_GET_ENT",
+    "description" : "in: A=number (1..15), out: HL=data"
+  }, {
+    "address" : "BCC8",
+    "constName" : "KL_CHOKE_OFF"
+  }, {
+    "address" : "BCCB",
+    "constName" : "KL_ROM_WALK"
+  }, {
+    "address" : "BCCE",
+    "constName" : "KL_INIT_BACK"
+  }, {
+    "address" : "BCD1",
+    "constName" : "KL_LOG_EXT"
+  }, {
+    "address" : "BCD4",
+    "constName" : "KL_FIND_COMMAND"
+  }, {
+    "address" : "BCD7",
+    "constName" : "KL_NEW_FRAME_FLY"
+  }, {
+    "address" : "BCDA",
+    "constName" : "KL_ADD_FRAME_FLY"
+  }, {
+    "address" : "BCDD",
+    "constName" : "KL_DELETE_FRAME_FLY"
+  }, {
+    "address" : "BCE0",
+    "constName" : "KL_NEW_FAST_TICKER"
+  }, {
+    "address" : "BCE3",
+    "constName" : "KL_ADD_FAST_TICKER"
+  }, {
+    "address" : "BCE6",
+    "constName" : "KL_DELETE_FAST_TICKER"
+  }, {
+    "address" : "BCE9",
+    "constName" : "KL_ADD_TICKER"
+  }, {
+    "address" : "BCEC",
+    "constName" : "KL_DELETE_TICKER"
+  }, {
+    "address" : "BCEF",
+    "constName" : "KL_INIT_EVENT"
+  }, {
+    "address" : "BCF2",
+    "constName" : "KL_EVENT"
+  }, {
+    "address" : "BCF5",
+    "constName" : "KL_SYNC_RESET"
+  }, {
+    "address" : "BCF8",
+    "constName" : "KL_DEL_SYNCHRONOUS"
+  }, {
+    "address" : "BCFB",
+    "constName" : "KL_NEXT_SYNC"
+  }, {
+    "address" : "BCFE",
+    "constName" : "KL_DO_SYNC"
+  }, {
+    "address" : "BD01",
+    "constName" : "KL_DONE_SYNC"
+  }, {
+    "address" : "BD04",
+    "constName" : "KL_EVENT_DISABLE"
+  }, {
+    "address" : "BD07",
+    "constName" : "KL_EVENT_ENABLE"
+  }, {
+    "address" : "BD0A",
+    "constName" : "KL_DISARM_EVENT"
+  }, {
+    "address" : "BD0D",
+    "constName" : "KL_TIME_PLEASE",
+    "description" : "out: hl=low, de=high (64bit, incremented at 300Hz)"
+  }, {
+    "address" : "BD10",
+    "constName" : "KL_TIME_SET",
+    "description" : "in:  hl=low, de=high (64bit, incremented at 300Hz)"
+  }, {
+    "address" : "BD13",
+    "constName" : "MC_BOOT_PROGRAM",
+    "description" : "in: HL=loader_callback, out: starts program"
+  }, {
+    "address" : "BD16",
+    "constName" : "MC_START_PROGRAM",
+    "description" : "in: HL=entrypoint (0000h=BASIC), C=ROMcfg"
+  }, {
+    "address" : "BD19",
+    "constName" : "MC_WAIT_FLYBACK",
+    "description" : "wait until/unless PIO.Port B bit0=1 (vsync)"
+  }, {
+    "address" : "BD1C",
+    "constName" : "MC_SET_MODE",
+    "description" : "in: A=video mode (0..2) (for C' and gate array)"
+  }, {
+    "address" : "BD1F",
+    "constName" : "MC_SCREEN_OFFSET",
+    "description" : "in: A=base, HL=offset   (for CRTC)"
+  }, {
+    "address" : "BD22",
+    "constName" : "MC_CLEAR_INKS",
+    "description" : "in: DE=ptr to border and 1 ink"
+  }, {
+    "address" : "BD25",
+    "constName" : "MC_SET_INKS",
+    "description" : "in: DE=ptr to border and 16 inks"
+  }, {
+    "address" : "BD28",
+    "constName" : "MC_RESET_PRINTER",
+    "description" : "out: [BDF1]=default jp opcode"
+  }, {
+    "address" : "BD2B",
+    "constName" : "MC_PRINT_CHAR",
+    "description" : "in: A=char, out: CY=1=okay, CY=0=busy/timeout"
+  }, {
+    "address" : "BD2E",
+    "constName" : "MC_BUSY_PRINTER",
+    "description" : "out: CY=1=busy, CY=0=ready"
+  }, {
+    "address" : "BD31",
+    "constName" : "MC_SEND_PRINTER",
+    "description" : "in: A=char, out: CY=1"
+  }, {
+    "address" : "BD34",
+    "constName" : "MC_SOUND_REGISTER",
+    "description" : "in: A=PSG index, C=PSG data"
+  }, {
+    "address" : "BD37",
+    "constName" : "JUMP_RESTORE",
+    "description" : "out: [BB00..BDCC]=defaults"
+  }, {
+    "address" : "BD3A",
+    "constName" : "EDIT",
+    "description" : "io: HL=input buffer, out: CY=0=ESC (also Z=1=ESC)"
+  }, {
+    "address" : "BD3D",
+    "constName" : "FLO_COPY",
+    "description" : " [HL]=[DE], A=exponent"
+  }, {
+    "address" : "BD40",
+    "constName" : "FLO_int",
+    "description" : "DE=dest, HL=unsigned16bit, A.7=sign"
+  }, {
+    "address" : "BD43",
+    "constName" : "FLO_4-byte"
+  }, {
+    "address" : "BD46",
+    "constName" : "FLO_real"
+  }, {
+    "address" : "BD49",
+    "constName" : "FLO_round"
+  }, {
+    "address" : "BD4C",
+    "constName" : "FLO_FIX"
+  }, {
+    "address" : "BD4F",
+    "constName" : "FLO_INT"
+  }, {
+    "address" : "BD52",
+    "constName" : "FLO_prepare"
+  }, {
+    "address" : "BD55",
+    "constName" : "FLO_mul"
+  }, {
+    "address" : "BD58",
+    "constName" : "FLO_ADD"
+  }, {
+    "address" : "BD5B",
+    "constName" : "FLO_SUB1[HL]=[HL]-[DE]"
+  }, {
+    "address" : "BD5E",
+    "constName" : "FLO_SUB2[HL]=[DE]-[HL]"
+  }, {
+    "address" : "BD61",
+    "constName" : "FLO_MUL"
+  }, {
+    "address" : "BD64",
+    "constName" : "FLO_DIV"
+  }, {
+    "address" : "BD67",
+    "constName" : "FLO_SHIFT"
+  }, {
+    "address" : "BD6A",
+    "constName" : "FLO_COMPARE"
+  }, {
+    "address" : "BD6D",
+    "constName" : "FLO_NEG"
+  }, {
+    "address" : "BD70",
+    "constName" : "FLO_SGN"
+  }, {
+    "address" : "BD73",
+    "constName" : "FLO_DEG/RAD",
+    "description" : "in: A=00h=RAD, FFh=DEG"
+  }, {
+    "address" : "BD76",
+    "constName" : "FLO_PI",
+    "description" : " [HL]=PI"
+  }, {
+    "address" : "BD79",
+    "constName" : "FLO_SQRT",
+    "description" : " [HL]=[HL]^0.5"
+  }, {
+    "address" : "BD7C",
+    "constName" : "FLO_POT",
+    "description" : " [HL]=[HL]^[DE]"
+  }, {
+    "address" : "BD7F",
+    "constName" : "FLO_LOG",
+    "description" : " [HL]=LOG([HL])"
+  }, {
+    "address" : "BD82",
+    "constName" : "FLO_LOG10",
+    "description" : " [HL]=LOG10([HL])"
+  }, {
+    "address" : "BD85",
+    "constName" : "FLO_EXP",
+    "description" : " [HL]=EXP([HL])"
+  }, {
+    "address" : "BD88",
+    "constName" : "FLO_SIN",
+    "description" : " [HL]=SIN([HL])"
+  }, {
+    "address" : "BD8B",
+    "constName" : "FLO_COS",
+    "description" : " [HL]=COS([HL])"
+  }, {
+    "address" : "BD8E",
+    "constName" : "FLO_TAN",
+    "description" : " [HL]=TAN([HL])"
+  }, {
+    "address" : "BD91",
+    "constName" : "FLO_ATN",
+    "description" : " [HL]=ATN([HL])"
+  }, {
+    "address" : "BD94",
+    "constName" : "FLO_5-byte"
+  }, {
+    "address" : "BD97",
+    "constName" : "FLO_RND_INIT",
+    "description" : "seed=89656C07h"
+  }, {
+    "address" : "BD9A",
+    "constName" : "FLO_RND_SEED",
+    "description" : "seed=89656C07h xor [HL]"
+  }, {
+    "address" : "BD9D",
+    "constName" : "FLO_RND",
+    "description" : "\\on 664/6128 these are \"inserted\""
+  }, {
+    "address" : "BDA0",
+    "constName" : "FLO_RND",
+    "description" : "/in the above \"N/A\" locations"
+  }, {
+    "address" : "BDA3",
+    "constName" : "INT_ABS",
+    "description" : "  HL=ABS(HL), B.7=SIGN(HL), C=2=Mantisse, E=0=Int"
+  }, {
+    "address" : "BDA6",
+    "constName" : "INT_POS",
+    "description" : "  HL=HL, B.7=0=Positive, C=2=Mantisse, E=0=Int"
+  }, {
+    "address" : "BDA9",
+    "constName" : "INT_UNDO",
+    "description" : " in: HL=unsigned, B.7=sign, out: HL=signed, cy,zf"
+  }, {
+    "address" : "BDAC",
+    "constName" : "INT_ADD",
+    "description" : "  HL=HL+DE, Z=1=zero, CY=1=signed_overflow"
+  }, {
+    "address" : "BDAF",
+    "constName" : "INT_SUB1",
+    "description" : " HL=HL-DE, Z=1=zero, CY=0=signed_overflow"
+  }, {
+    "address" : "BDB2",
+    "constName" : "INT_SUB2",
+    "description" : " HL=DE-HL, Z=1=zero, CY=0=signed_overflow"
+  }, {
+    "address" : "BDB5",
+    "constName" : "INT_MUL",
+    "description" : "  HL=HL*DE"
+  }, {
+    "address" : "BDB8",
+    "constName" : "INT_DIV",
+    "description" : "  HL=HL/DE"
+  }, {
+    "address" : "BDBB",
+    "constName" : "INT_MOD",
+    "description" : "  HL=HL MOD DE"
+  }, {
+    "address" : "BDBE",
+    "constName" : "INT_UMUL",
+    "description" : " HL=HL*DE, CY=1=unsigned_overflow"
+  }, {
+    "address" : "BDC1",
+    "constName" : "INT_UDIV",
+    "description" : " HL=HL/DE, DE=HL MOD DE, Z=1=error (div0)"
+  }, {
+    "address" : "BDC4",
+    "constName" : "INT_CMP",
+    "description" : "  A=SGN(HL-DE) "
+  }, {
+    "address" : "BDC7",
+    "constName" : "INT_NEG",
+    "description" : "  HL=-HL       "
+  }, {
+    "address" : "BDCA",
+    "constName" : "INT_SGN",
+    "description" : "  A=SGN(HL)    "
+  }, {
+    "address" : "C000",
+    "constName" : "ROM HEADER"
+  }, {
+    "address" : "C004",
+    "constName" : "Pointer",
+    "description" : "Names end with bit7=1, list ends with 00h"
+  }, {
+    "address" : "C006",
+    "constName" : "List"
   } ]
 }

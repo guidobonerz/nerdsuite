@@ -349,13 +349,8 @@ public class HexViewWidget extends Composite {
 			public String getText(Object element) {
 				InstructionLine il = (InstructionLine) element;
 				Object[] userObject = (Object[]) il.getUserObject();
-				String s = "";
-				try {
-					s = String.format("%s: %-20s %s %s %s %s", userObject[0], il.getLabelName(), userObject[1],
-							userObject[2], userObject[3], userObject[4]);
-				} catch (NullPointerException ne) {
-
-				}
+				String s = String.format("%s: %-30s %-13s %s %-15s %s", userObject[0], userObject[1], userObject[2],
+						userObject[3], userObject[4], userObject[5]);
 				return s;
 			}
 

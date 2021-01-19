@@ -1819,63 +1819,63 @@
       "hex" : "C4",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "Z,NN",
       "prefix" : "",
       "hex" : "CC",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "NN",
       "prefix" : "",
       "hex" : "CD",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "NC,NN",
       "prefix" : "",
       "hex" : "D4",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "C,NN",
       "prefix" : "",
       "hex" : "DC",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "PO,NN",
       "prefix" : "",
       "hex" : "E4",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "PE,NN",
       "prefix" : "",
       "hex" : "EC",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "P,NN",
       "prefix" : "",
       "hex" : "F4",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "M,NN",
       "prefix" : "",
       "hex" : "FC",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     } ]
   }, {
     "id" : "SRA",
@@ -2459,35 +2459,35 @@
       "hex" : "C2",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "$+3",
       "prefix" : "",
       "hex" : "C3",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "Z,$+3",
       "prefix" : "",
       "hex" : "CA",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "NC,$+3",
       "prefix" : "",
       "hex" : "D2",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "C,$+3",
       "prefix" : "",
       "hex" : "DA",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "(IX)",
       "prefix" : "DD",
@@ -2500,7 +2500,7 @@
       "hex" : "E2",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "(HL)",
       "prefix" : "",
@@ -2513,21 +2513,21 @@
       "hex" : "EA",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "P,$+3",
       "prefix" : "",
       "hex" : "F2",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "M,$+3",
       "prefix" : "",
       "hex" : "FA",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"BRANCH"
+      "type" : "BRANCH"
     }, {
       "addressingModeId" : "(IY)",
       "prefix" : "FD",
@@ -2539,41 +2539,37 @@
     "id" : "JR",
     "illegal" : false,
     "stable" : true,
+    "type" : "BRANCH_REL",
     "opcodeList" : [ {
       "addressingModeId" : "$+2",
       "prefix" : "",
       "hex" : "18",
       "valueStartPos" : 1,
-      "cycles" : 0,
-      "type":"BRANCH_SHORT"
+      "cycles" : 0
     }, {
       "addressingModeId" : "NZ,$+2",
       "prefix" : "",
       "hex" : "20",
       "valueStartPos" : 1,
-      "cycles" : 0,
-      "type":"BRANCH_SHORT"
+      "cycles" : 0
     }, {
       "addressingModeId" : "Z,$+2",
       "prefix" : "",
       "hex" : "28",
       "valueStartPos" : 1,
-      "cycles" : 0,
-      "type":"BRANCH_SHORT"
+      "cycles" : 0
     }, {
       "addressingModeId" : "NC,$+2",
       "prefix" : "",
       "hex" : "30",
       "valueStartPos" : 1,
-      "cycles" : 0,
-      "type":"BRANCH_SHORT"
+      "cycles" : 0
     }, {
       "addressingModeId" : "C,$+2",
       "prefix" : "",
       "hex" : "38",
       "valueStartPos" : 1,
-      "cycles" : 0,
-      "type":"BRANCH_SHORT"
+      "cycles" : 0
     } ]
   }, {
     "id" : "RLC",
@@ -3652,6 +3648,7 @@
     "id" : "DJNZ",
     "illegal" : false,
     "stable" : true,
+    "type" : "BRANCH_REL",
     "opcodeList" : [ {
       "addressingModeId" : "$+2",
       "prefix" : "",
@@ -3696,13 +3693,13 @@
     "id" : "LD",
     "illegal" : false,
     "stable" : true,
+    "type" : "MOD",
     "opcodeList" : [ {
       "addressingModeId" : "BC,NN",
       "prefix" : "",
       "hex" : "01",
       "valueStartPos" : 1,
-      "cycles" : 0,
-      "type":"MOD"
+      "cycles" : 0
     }, {
       "addressingModeId" : "(BC),A",
       "prefix" : "",
@@ -3733,7 +3730,7 @@
       "hex" : "11",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "(DE),A",
       "prefix" : "",
@@ -3764,7 +3761,7 @@
       "hex" : "21",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "(NN),HL",
       "prefix" : "",
@@ -3783,7 +3780,7 @@
       "hex" : "2A",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "L,N",
       "prefix" : "",
@@ -3796,14 +3793,14 @@
       "hex" : "31",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "(NN),A",
       "prefix" : "",
       "hex" : "32",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "(HL),N",
       "prefix" : "",
@@ -3816,7 +3813,7 @@
       "hex" : "3A",
       "valueStartPos" : 1,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "A,N",
       "prefix" : "",
@@ -4213,14 +4210,14 @@
       "hex" : "22",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "IX,(NN)",
       "prefix" : "DD",
       "hex" : "2A",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "(IX+N),N",
       "prefix" : "DD",
@@ -4323,7 +4320,7 @@
       "hex" : "43",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "I,A",
       "prefix" : "ED",
@@ -4336,14 +4333,14 @@
       "hex" : "4B",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "(NN),DE",
       "prefix" : "ED",
       "hex" : "53",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "A,I",
       "prefix" : "ED",
@@ -4362,14 +4359,14 @@
       "hex" : "73",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "SP,(NN)",
       "prefix" : "ED",
       "hex" : "7B",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "SP,HL",
       "prefix" : "",
@@ -4382,21 +4379,21 @@
       "hex" : "21",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "(NN),IY",
       "prefix" : "FD",
       "hex" : "22",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "IY,(NN)",
       "prefix" : "FD",
       "hex" : "2A",
       "valueStartPos" : 2,
       "cycles" : 0,
-      "type":"MOD"
+      "type" : "MOD"
     }, {
       "addressingModeId" : "(IY+N),N",
       "prefix" : "FD",

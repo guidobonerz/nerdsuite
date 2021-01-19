@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.disassembler.cpu;
 
 import de.drazil.nerdsuite.disassembler.InstructionLine;
+import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
@@ -54,14 +55,17 @@ public class CPU_Z80 extends AbstractCPU {
 				String instructionType = opcode.getType();
 
 				int len = opcode.getAddressingMode().getLen() + addLen;
+				boolean isAdress = false;
 				String addressingModeString = addressingModeTemplate;
 				if (addressingModeTemplate.contains("{WORD}")) {
+					isAdress = true;
 					value = new Value(getWord(byteArray, offset + opcode.getValueStartPos()));
 					addressingModeString = addressingModeTemplate.replace("{WORD}",
 							String.format("%04X", value.getValue()));
 				} else if (addressingModeTemplate.contains("{BYTE}")) {
 					value = new Value(getByte(byteArray, offset + opcode.getValueStartPos()), Value.BYTE);
-					if (opcode.getMnemonic().equals("JR")) {
+					if (("BRANCH_REL").equals(instructionType)) {
+						isAdress = true;
 						value = currentLine.getProgramCounter()
 								.add(((value.getValue() & 0x80) == 0x80 ? -(((value.getValue() ^ 0xff) & 0xff) - 1)
 										: value.add(2).getValue()));
@@ -93,13 +97,20 @@ public class CPU_Z80 extends AbstractCPU {
 
 				currentLine.setInstructionType(InstructionType.Asm);
 
-				/*
-				 * int v = value.getValue(); Address address =
-				 * platformData.getPlatformAddressList().stream().filter(p ->
-				 * p.getAddressValue() == v) .findFirst().orElse(null);
-				 */
-				currentLine
-						.setUserObject(new Object[] { so, byteString, opcode.getMnemonic(), addressingModeString, "" });
+				int v = value.getValue();
+				Address refAddress = null;
+				if (isAdress) {
+					refAddress = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
+							.findFirst().orElse(null);
+				}
+
+				int label = currentLine.getProgramCounter().getValue();
+				Address pcAddress = platformData.getPlatformAddressList().stream()
+						.filter(p -> p.getAddressValue() == label).findFirst().orElse(null);
+
+				currentLine.setUserObject(new Object[] { so, null == pcAddress ? "" : pcAddress.getConstName(),
+						byteString, opcode.getMnemonic(), addressingModeString,
+						(null != refAddress && "MOD".equals(instructionType) ? refAddress.getConstName() : "") });
 
 				newLine = split(currentLine, pc, new Value(offset + len));
 				if (newLine == null) {
