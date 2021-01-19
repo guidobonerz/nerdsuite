@@ -67,9 +67,9 @@ Handle DiskImages:
 Export files partly works
 Create/Update disk images
 ## Disassembler Z80 Screen (in Progress)
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/z80.png)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasmz80.png)
 ## Disassembler 6502/10 Screen (in Progress)
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/6502.png)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm6502.png)
 ## Big PETSCII Screen
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen2.png)
 ## Ultimate64 Streaming Client
