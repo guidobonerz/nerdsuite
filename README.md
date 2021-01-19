@@ -1,5 +1,5 @@
 # nerdsuite
-Nerdsuite is an IDE (based on eclipse 4.10/2018-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
+Nerdsuite is an IDE (based on eclipse 4.18.0/2020-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
 Once finished, it will contain a SourceCode Editor (Assembler/Basic), Visual Disassembler, GfxEditor (for CharSets, SpriteSets, TileSets, TileMaps, Screens and Bitmaps)  
 Currently I work mostly on the graphics part.  
 
