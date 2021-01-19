@@ -14,6 +14,9 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 19-01-2021:
+- added z80 disassembly
+
 Last Changes 11-01-2021:
 - start to implement interactive(visual) disassembler
 
@@ -63,9 +66,10 @@ Gfx Module Todo:
 Handle DiskImages:
 Export files partly works
 Create/Update disk images
-
-## Disassembler Screen (in Progress)
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm2.png)
+## Disassembler Z80 Screen (in Progress)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/z80.png)
+## Disassembler 6502/10 Screen (in Progress)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/6502.png)
 ## Big PETSCII Screen
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen2.png)
 ## Ultimate64 Streaming Client
