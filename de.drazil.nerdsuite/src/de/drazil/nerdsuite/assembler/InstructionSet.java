@@ -1,12 +1,18 @@
 package de.drazil.nerdsuite.assembler;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.AddressingMode;
 import de.drazil.nerdsuite.model.AssemblerDirective;
@@ -19,17 +25,18 @@ import de.drazil.nerdsuite.model.PlatformData;
 public final class InstructionSet {
 
 	private static List<String> labelList = new ArrayList<String>(30);
-	private static List<Opcode> opcodeList = new ArrayList<Opcode>(256);
+	// private static List<Opcode> opcodeList = new ArrayList<Opcode>(256);
 	private static List<AssemblerDirective> directiveList = null;
-	private static List<CpuInstruction> cpuInstructionList = null;
+	// private static List<CpuInstruction> cpuInstructionList = null;
 
 	private static PlatformData platformData = null;
 	private static CpuInstructions cpuInstructions = null;
+	private static Map<String, Map<String, List<Opcode>>> platformOpcodeMap = new HashMap<String, Map<String, List<Opcode>>>();
 
-	public static void init(Bundle bundle) throws Exception {
-
-		createPlatformspecificData(bundle, "configuration/platform/c64_platform.json");
-		createDirectiveList(bundle, "configuration/kickass_syntax.json");
+	public static void init(PlatformData platformData) throws Exception {
+		Bundle bundle = Platform.getBundle(Constants.APP_ID);
+		createPlatformspecificData(bundle, platformData);
+		// createDirectiveList(bundle, "configuration/kickass_syntax.json");
 	}
 
 	public static List<AssemblerDirective> getDirectiveList() {
@@ -48,12 +55,12 @@ public final class InstructionSet {
 		}
 	}
 
-	public static List<CpuInstruction> getCpuInstructionList() {
-		return cpuInstructionList;
+	public static List<CpuInstruction> getCpuInstructionList(String platformId) {
+		return null;// cpuInstructionList;
 	}
 
-	public static List<Opcode> getOpcodeList() {
-		return opcodeList;
+	public static List<Opcode> getOpcodeList(String platformId, String prefix) {
+		return platformOpcodeMap.get(platformId).get(prefix);
 	}
 
 	public static PlatformData getPlatformData() {
@@ -64,49 +71,58 @@ public final class InstructionSet {
 		return platformData.getPlatformAddressList();
 	}
 
-	public static void createPlatformspecificData(Bundle bundle, String file) {
+	public static void createPlatformspecificData(Bundle bundle, PlatformData platformData) {
+
 		ObjectMapper mapper = new ObjectMapper();
 
-		try {
-			platformData = mapper.readValue(bundle.getEntry(file), PlatformData.class);
-			cpuInstructions = mapper.readValue(bundle.getEntry(platformData.getCpuInstructionSource()),
-					CpuInstructions.class);
-			cpuInstructionList = cpuInstructions.getCpuInstructionList();
+		Map<String, List<Opcode>> opcodeListMap = platformOpcodeMap.get(platformData.getPlatformId());
+		if (opcodeListMap == null) {
+			opcodeListMap = new HashMap<String, List<Opcode>>();
+			try {
+				cpuInstructions = mapper.readValue(bundle.getEntry(platformData.getCpuInstructionSource()),
+						CpuInstructions.class);
+				Collection<CpuInstruction> cpuInstructionList = cpuInstructions.getCpuInstructionList();
 
-			// setup aliases
-			List<CpuInstruction> aliasOpcodeList = new ArrayList<CpuInstruction>();
-			for (int i = 0; i < 256; i++)
-				opcodeList.add(null);
+				// setup aliases
 
-			for (CpuInstruction cpuInstruction : cpuInstructionList) {
-				for (Opcode opcode : cpuInstruction.getOpcodeList()) {
-					String opcodeName = opcode.getHex();
-					int index = Integer.parseInt(opcodeName, 16);
-					opcode.setMnemonic(cpuInstruction.getId());
-					opcode.setType(cpuInstruction.getType());
-					opcode.setAddressingMode(findAddressingMode(opcode.getAddressingModeId()));
-					opcodeList.set(index, opcode);
-				}
-
-				List<String> aliasNameList = cpuInstruction.getAlias();
-				if (aliasNameList != null) {
-					aliasNameList.add(cpuInstruction.getId());
-					for (String alias : aliasNameList) {
-						if (!cpuInstruction.getId().equals(alias)) {
-							CpuInstruction aliasInstruction = new CpuInstruction(aliasNameList,
-									cpuInstruction.getType(), cpuInstruction.getFlags(), cpuInstruction.getCategory(),
-									cpuInstruction.isIllegal(), cpuInstruction.isStable(),
-									cpuInstruction.getOpcodeList());
-							aliasInstruction.setId(alias);
-							aliasInstruction.setDescription(cpuInstruction.getDescription());
-							aliasOpcodeList.add(aliasInstruction);
+				for (CpuInstruction cpuInstruction : cpuInstructionList) {
+					for (Opcode opcode : cpuInstruction.getOpcodeList()) {
+						String prefix = opcode.getPrefix();
+						List<Opcode> opcodeList = opcodeListMap.get(prefix);
+						if (opcodeList == null) {
+							opcodeList = new ArrayList<Opcode>(256);
+							for (int i = 0; i < 256; i++) {
+								opcodeList.add(null);
+							}
+							opcodeListMap.put(prefix, opcodeList);
 						}
+
+						String opcodeName = opcode.getHex();
+						int index = Integer.parseInt(opcodeName, 16);
+						opcode.setMnemonic(cpuInstruction.getId());
+						opcode.setType(cpuInstruction.getType());
+						opcode.setAddressingMode(findAddressingMode(opcode.getAddressingModeId()));
+						opcodeList.set(index, opcode);
 					}
+
+					/*
+					 * List<String> aliasNameList = cpuInstruction.getAlias(); if (aliasNameList !=
+					 * null) { aliasNameList.add(cpuInstruction.getId()); for (String alias :
+					 * aliasNameList) { if (!cpuInstruction.getId().equals(alias)) { CpuInstruction
+					 * aliasInstruction = new CpuInstruction(aliasNameList,
+					 * cpuInstruction.getType(), cpuInstruction.getFlags(),
+					 * cpuInstruction.getCategory(), cpuInstruction.isIllegal(),
+					 * cpuInstruction.isStable(), cpuInstruction.getOpcodeList());
+					 * aliasInstruction.setId(alias);
+					 * aliasInstruction.setDescription(cpuInstruction.getDescription());
+					 * aliasOpcodeList.add(aliasInstruction); } } }
+					 */
 				}
+				// cpuInstructionList.addAll(aliasOpcodeList);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			cpuInstructionList.addAll(aliasOpcodeList);
-		} catch (Exception e) {
-			e.printStackTrace();
+			platformOpcodeMap.put(platformData.getPlatformId(), opcodeListMap);
 		}
 	}
 

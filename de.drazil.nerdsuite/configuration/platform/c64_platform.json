@@ -1,4 +1,5 @@
 {
+  "platformId" : "c64",
   "cpuInstructionSource" : "configuration/cpu/6510_instructions.json",
   "basicInstructionSource" : "configuration/basic/cbm_basic.json",
   "graphicFormatSource" : "configuration/graphicformat/c64_graphic_formats",

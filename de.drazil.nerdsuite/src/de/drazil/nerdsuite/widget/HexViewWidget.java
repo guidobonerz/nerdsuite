@@ -8,11 +8,14 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
@@ -33,14 +36,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.TableColumn;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.HexViewContent;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
-import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
-import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
@@ -72,9 +74,9 @@ public class HexViewWidget extends Composite {
 	private Value pc;
 	private Stack<InstructionLine> jumpStack;
 
-	public HexViewWidget(Composite parent, int style) {
+	public HexViewWidget(Composite parent, int style, IPlatform platform) {
 		super(parent, style);
-		platform = new C64Platform(new KickAssemblerDialect(), false);
+		this.platform = platform;
 		rangeList = new ArrayList<Range>();
 		jumpStack = new Stack<InstructionLine>();
 		initialize();
@@ -157,9 +159,9 @@ public class HexViewWidget extends Composite {
 				textArea.redraw();
 
 				pc = platform.checkAdress(content, 0);
-				if (pc != null) {
+				if (pc.getValue() > 0) {
 					MessageBox message = new MessageBox(getParent().getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-					message.setMessage(String.format("0x%04x as StartAddress found\nApply it?", pc.getValue()));
+					message.setMessage(String.format("Found potential StartAddress 0x%04x\nApply it?", pc.getValue()));
 					message.setText("StartAddress found");
 					if (message.open() == SWT.YES) {
 						startAddress.setSelection(true);
@@ -312,19 +314,44 @@ public class HexViewWidget extends Composite {
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
 		gd.grabExcessVerticalSpace = true;
-		gd.grabExcessHorizontalSpace = false;
+		gd.grabExcessHorizontalSpace = true;
 		gd.verticalSpan = 2;
+		gd.widthHint = 400;
 		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer.getTable().setLinesVisible(true);
+		tableViewer.setCellEditors(new CellEditor[] { new TextCellEditor(tableViewer.getTable()) });
+		tableViewer.setColumnProperties(new String[] { "DISASM" });
+		tableViewer.setCellModifier(new ICellModifier() {
 
-		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.H_SCROLL | SWT.V_SCROLL);
+			@Override
+			public void modify(Object element, String property, Object value) {
+				if (element instanceof Item) {
+					element = ((Item) element).getData();
+				}
+				((InstructionLine) element).setLabelName((String) value);
+				tableViewer.refresh();
+			}
+
+			@Override
+			public Object getValue(Object element, String property) {
+				return ((InstructionLine) element).getLabelName();
+			}
+
+			@Override
+			public boolean canModify(Object element, String property) {
+				return true;
+			}
+		});
+
+		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.NONE);
 		ColumnLabelProvider labelProvider1 = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				InstructionLine il = (InstructionLine) element;
-				// String[] userObject = (String[]) il.getUserObject();
-				// return String.format("%04x> %-10s %s", il.getProgramCounter().getValue(),
-				// userObject[0], userObject[1]);
-				return (String) il.getUserObject();
+				Object[] userObject = (Object[]) il.getUserObject();
+				String s = String.format("%s: %-30s %-13s %s %-15s %s", userObject[0], userObject[1], userObject[2],
+						userObject[3], userObject[4], userObject[5]);
+				return s;
 			}
 
 			@Override
@@ -334,7 +361,7 @@ public class HexViewWidget extends Composite {
 		};
 		tableViewerColumn1.setLabelProvider(labelProvider1);
 		TableColumn codeLine = tableViewerColumn1.getColumn();
-		codeLine.setWidth(500);
+		codeLine.setWidth(1000);
 
 		tableViewer.setContentProvider(new ArrayContentProvider());
 		tableViewer.getTable().setLayoutData(gd);

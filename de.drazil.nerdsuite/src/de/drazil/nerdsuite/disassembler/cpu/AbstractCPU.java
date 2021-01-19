@@ -9,13 +9,14 @@ import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Range;
-import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.RangeType;
+import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
 
 public abstract class AbstractCPU implements ICPU {
 
+	protected int line;
 	private static ICPU cpu = null;
 	private static byte byteArray0[] = null;
 	private List<InstructionLine> instructionLineList = null;
@@ -27,6 +28,17 @@ public abstract class AbstractCPU implements ICPU {
 
 	public static ICPU getCPU() {
 		return cpu;
+	}
+
+	@Override
+	public int getLine() {
+		return line;
+	}
+
+	@Override
+	public void resetLine() {
+		line = 0;
+
 	}
 
 	public static void setByteArray(byte byteArray[]) {
@@ -43,13 +55,13 @@ public abstract class AbstractCPU implements ICPU {
 	}
 
 	@Override
-	public Opcode getOpcodeByIndex(byte byteArray[], int offset) {
-		return getOpcodeById(NumericConverter.toInt(byteArray[(int) offset]));
+	public Opcode getOpcodeByIndex(String platformId, String prefix, byte byteArray[], int offset) {
+		return getOpcodeById(platformId, prefix, NumericConverter.toInt(byteArray[(int) offset]));
 	}
 
 	@Override
-	public Opcode getOpcodeById(int opcode) {
-		return InstructionSet.getOpcodeList().get(opcode);
+	public Opcode getOpcodeById(String platformId, String prefix, int opcode) {
+		return InstructionSet.getOpcodeList(platformId, prefix).get(opcode);
 	}
 
 	@Override
@@ -60,17 +72,6 @@ public abstract class AbstractCPU implements ICPU {
 	@Override
 	public void addInstructionLine(InstructionLine instructionLine) {
 		instructionLineList.add(instructionLine);
-	}
-
-	@Override
-	public int getInstructionLength(byte[] byteArray, int offset) {
-		Opcode opcode = getOpcodeById(getByte(byteArray, offset));
-		int len = 1;
-
-		if (opcode != null) {
-			len = opcode.getAddressingMode().getLen();
-		}
-		return len;
 	}
 
 	@Override
