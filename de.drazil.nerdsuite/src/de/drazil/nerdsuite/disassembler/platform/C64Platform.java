@@ -78,7 +78,7 @@ public class C64Platform extends AbstractPlatform {
 		System.out.println("stage 2: parse instructions");
 
 		long start = System.currentTimeMillis();
-		getCPU().parseInstructions(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
+		getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
 				getPlatFormData(), new Range(range.getOffset(), range.getLen(), range.getRangeType()), 2);
 		long duration = (System.currentTimeMillis() - start);
 		System.out.printf("%d Seconds", duration);

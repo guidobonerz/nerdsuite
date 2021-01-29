@@ -88,6 +88,10 @@ public final class InstructionSet {
 				for (CpuInstruction cpuInstruction : cpuInstructionList) {
 					for (Opcode opcode : cpuInstruction.getOpcodeList()) {
 						String prefix = opcode.getPrefix();
+						if (prefix == null) {
+							prefix = "";
+							opcode.setPrefix("");
+						}
 						List<Opcode> opcodeList = opcodeListMap.get(prefix);
 						if (opcodeList == null) {
 							opcodeList = new ArrayList<Opcode>(256);

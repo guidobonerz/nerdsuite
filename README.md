@@ -14,6 +14,9 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 29-01-2021:
+- added Ultimate64 Debug Stream Viewer
+
 Last Changes 19-01-2021:
 - added z80 disassembly
 
@@ -66,14 +69,17 @@ Gfx Module Todo:
 Handle DiskImages:
 Export files partly works
 Create/Update disk images
+
 ## Disassembler Z80 Screen (in Progress)
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasmz80.png)
 ## Disassembler 6502/10 Screen (in Progress)
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm6502.png)
 ## Big PETSCII Screen
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen2.png)
-## Ultimate64 Streaming Client
+## Ultimate64 App Streaming Client
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ultimate64-streaming-windows.png)
+## Ultimate64 Debug Streaming Client
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/debugstream_view.png)
 ## New Graphic Project Dialog
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
 ## Sprite Editor

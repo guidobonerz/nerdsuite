@@ -22,7 +22,7 @@ public class CPU_Z80 extends AbstractCPU {
 	}
 
 	@Override
-	public void parseInstructions(byte[] byteArray, Value pc, InstructionLine instructionLine,
+	public void decode(byte[] byteArray, Value pc, InstructionLine instructionLine,
 			PlatformData platformData, Range discoverableRange, int stage) {
 		InstructionLine currentLine = instructionLine;
 		InstructionLine newLine = null;
@@ -41,13 +41,13 @@ public class CPU_Z80 extends AbstractCPU {
 				int addLen = 0;
 				if (prefix.equals("DDCB") || prefix.equals("DCCB")) {
 					addLen = 2;
-					opcode = getOpcodeByIndex("cpc6128", prefix, byteArray, offset + 2);
+					opcode = getOpcodeByIndex(platformData.getPlatformId(), prefix, byteArray, offset + 2);
 				} else if (prefix1.equals("CB") || prefix1.equals("ED") || prefix1.equals("DD")
 						|| prefix1.equals("FD")) {
 					addLen = 1;
-					opcode = getOpcodeByIndex("cpc6128", prefix1, byteArray, offset + 1);
+					opcode = getOpcodeByIndex(platformData.getPlatformId(), prefix1, byteArray, offset + 1);
 				} else {
-					opcode = getOpcodeByIndex("cpc6128", "", byteArray, offset);
+					opcode = getOpcodeByIndex(platformData.getPlatformId(), "", byteArray, offset);
 				}
 
 				String addressingMode = opcode.getAddressingMode().getId();
@@ -64,7 +64,7 @@ public class CPU_Z80 extends AbstractCPU {
 							String.format("%04X", value.getValue()));
 				} else if (addressingModeTemplate.contains("{BYTE}")) {
 					value = new Value(getByte(byteArray, offset + opcode.getValueStartPos()), Value.BYTE);
-					if (("BRANCH_REL").equals(instructionType)) {
+					if ("BRANCH_REL".equals(instructionType)) {
 						isAdress = true;
 						value = currentLine.getProgramCounter()
 								.add(((value.getValue() & 0x80) == 0x80 ? -(((value.getValue() ^ 0xff) & 0xff) - 1)
@@ -97,9 +97,9 @@ public class CPU_Z80 extends AbstractCPU {
 
 				currentLine.setInstructionType(InstructionType.Asm);
 
-				int v = value.getValue();
 				Address refAddress = null;
 				if (isAdress) {
+					int v = value.getValue();
 					refAddress = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
 							.findFirst().orElse(null);
 				}

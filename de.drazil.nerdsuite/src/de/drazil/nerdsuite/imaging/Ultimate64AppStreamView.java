@@ -414,7 +414,7 @@ public class Ultimate64AppStreamView {
 	private Socket openSocket() {
 		try {
 			if (tcpSocket == null) {
-				tcpSocket = new Socket(InetAddress.getByName("10.100.200.195"), 64);
+				tcpSocket = new Socket(InetAddress.getByName("10.100.200.201"), 64);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
