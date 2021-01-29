@@ -106,7 +106,7 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_HCEdcJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handledmenuitem.BitmapPerspective" label="Bitmap Perspective"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_QWEEYJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.menu.stream" label="Ultimate 64 Streams">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_Xxq6UJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.handledmenuitem.cpuDebugStream" label="CPU Debug Stream" command="_uYBcIJ21EeqplavjYfDYxA"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Xxq6UJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.handledmenuitem.debugstream" label="Debug Stream" command="_uYBcIJ21EeqplavjYfDYxA"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Xw0U0KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handledmenuitem.vicstream" label="Application Stream" command="_ggW30KdwEeqid_Z8sm-clA"/>
       </children>
     </mainMenu>
@@ -134,7 +134,7 @@
   <handlers xmi:id="_9CBz8MznEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handler.export" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ExportHandler" command="_2QmjcMznEemJh_xLPhHI6A"/>
   <handlers xmi:id="_d0CMoNvqEemXK8sgYhnEoQ" elementId="de.drazil.nerdsuite.handler.Save" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SaveHandler" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>
   <handlers xmi:id="_usDZsCQXEequStA2CiJh7Q" elementId="de.drazil.nerdsuite.handler.SVG" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SvgExport" command="_pIj78CQXEequStA2CiJh7Q"/>
-  <handlers xmi:id="_2yl0sJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.handler.debugstream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.stream.U64DebugStream" command="_uYBcIJ21EeqplavjYfDYxA"/>
+  <handlers xmi:id="_2yl0sJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.handler.debugstream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Ultimate64DebugStreamHandler" command="_uYBcIJ21EeqplavjYfDYxA"/>
   <handlers xmi:id="_lu6AUKdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handler.vicstream" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Ultimate64AppStreamHandler" command="_ggW30KdwEeqid_Z8sm-clA"/>
   <handlers xmi:id="_HpVJcLvgEeqNbb2NSJYhoA" elementId="de.drazil.nerdsuite.handler.3" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RunOnU64Handler" command="_kNzE8LvfEeqNbb2NSJYhoA"/>
   <handlers xmi:id="_uj9t4NHgEeqQR4qhoQvaeg" elementId="de.drazil.nerdsuite.handler.Disassembler" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.DisassemblerHandler" command="_nKHygNHgEeqQR4qhoQvaeg"/>
@@ -469,6 +469,7 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="_6sr7kFWoEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledtoolitem.code2" label="Code" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disasm.png" command="_jAOccNWOEemb1pFqqqXNXQ"/>
     </toolbar>
   </descriptors>
+  <descriptors xmi:id="_FsJ2cF9EEeu3m7D1g6Iucw" elementId="de.drazil.nerdsuite.partdescriptor.Ultimate64DebugStreamView" label="Ultimate64DebugStreamView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64DebugStreamView"/>
   <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.NewProject" commandName="New Project">
     <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.ProjectTypeId" name="ProjectTypeId" optional="false"/>

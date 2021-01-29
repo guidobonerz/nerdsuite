@@ -97,6 +97,7 @@ public class Constants {
 	public final static Color BRIGHT_ORANGE = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF5722"));
 
 	public final static Color RED = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF0000"));
+	public final static Color GREEN = new Color(Display.getCurrent(), SwtUtil.toRGB("#00FF00"));
 	public final static Color LIGHT_RED = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF9090"));
 
 	public final static Font DEFAULT_FONT = Display.getCurrent().getSystemFont();

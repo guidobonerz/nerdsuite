@@ -21,7 +21,7 @@ import org.osgi.framework.Bundle;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
-import de.drazil.nerdsuite.disassembler.platform.CPC6128Platform;
+import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.widget.HexViewWidget;
 
@@ -40,8 +40,8 @@ public class DisassemblerView {
 	public void postConstruct(Composite parent, EMenuService menuService) {
 
 		byte[] content = null;
-		// String file = "teleporter64.prg";
-		String file = "os464.rom";
+		String file = "teleporter64.prg";
+		// String file = "os464.rom";
 		try {
 			content = BinaryFileHandler.readFile(Path.of(Configuration.WORKSPACE_PATH.toString(), file).toFile(), 0);
 		} catch (Exception e) {
@@ -49,8 +49,8 @@ public class DisassemblerView {
 			e.printStackTrace();
 		}
 		Bundle bundle = Platform.getBundle(Constants.APP_ID);
-		// IPlatform platform = new C64Platform(new KickAssemblerDialect(), false);
-		IPlatform platform = new CPC6128Platform(new KickAssemblerDialect(), true);
+		IPlatform platform = new C64Platform(new KickAssemblerDialect(), false);
+		// IPlatform platform = new CPC6128Platform(new KickAssemblerDialect(), true);
 		// hvw = new HexViewWidget(parent, SWT.V_SCROLL, );
 		hvw = new HexViewWidget(parent, SWT.V_SCROLL, platform);
 		hvw.setContent(content);
