@@ -22,7 +22,7 @@ public class CPU_Z80 extends AbstractCPU {
 	}
 
 	@Override
-	public void parseInstructions(byte[] byteArray, Value pc, InstructionLine instructionLine,
+	public void decode(byte[] byteArray, Value pc, InstructionLine instructionLine,
 			PlatformData platformData, Range discoverableRange, int stage) {
 		InstructionLine currentLine = instructionLine;
 		InstructionLine newLine = null;

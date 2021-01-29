@@ -4,13 +4,12 @@ import java.util.List;
 
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.model.Opcode;
-import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Range;
-import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.RangeType;
+import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 
-public interface ICPU {
+public interface ICPU extends IDecoder {
 	public final static int JUMP_MODE = 1;
 	public final static int BRANCH_MODE = 2;
 	public final static int SUBROUTINE_MODE = 4;
@@ -59,9 +58,6 @@ public interface ICPU {
 	// public int getInstructionLength(byte byteArray[], int offset);
 
 	public void compressRanges();
-
-	public void parseInstructions(byte byteArray[], Value pc, InstructionLine instructionLine,
-			PlatformData platformData, Range discoverableRange, int stage);
 
 	public void packInstructionLines(InstructionLine instructionLine, int len);
 }
