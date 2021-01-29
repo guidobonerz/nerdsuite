@@ -41,7 +41,7 @@ public class Ultimate64DebugStreamView {
 	public class DebugStreamReceiver implements Runnable {
 
 		private byte[] buf = new byte[1444];
-		private int[] mem = new int[65536];
+		private int[] mem = new int[0x10000];
 		@Setter
 		@Getter
 		private boolean running = false;

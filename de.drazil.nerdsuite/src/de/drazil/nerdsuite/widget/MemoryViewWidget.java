@@ -25,6 +25,7 @@ public class MemoryViewWidget extends Canvas implements PaintListener {
 	private void prepareImage(int width, int height) {
 		image = new Image(getDisplay(), width, 960);
 		GC gc = new GC(image);
+		gc.setBackground(Constants.BLACK);
 		gc.fillRectangle(0, 0, width, 960);
 		gc.setForeground(Constants.WHITE);
 		gc.drawString("$0000-$1fff", 0, 210);
