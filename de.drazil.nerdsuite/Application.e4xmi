@@ -469,7 +469,14 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="_6sr7kFWoEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledtoolitem.code2" label="Code" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disasm.png" command="_jAOccNWOEemb1pFqqqXNXQ"/>
     </toolbar>
   </descriptors>
-  <descriptors xmi:id="_FsJ2cF9EEeu3m7D1g6Iucw" elementId="de.drazil.nerdsuite.partdescriptor.Ultimate64DebugStreamView" label="Ultimate64DebugStreamView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64DebugStreamView"/>
+  <descriptors xmi:id="_FsJ2cF9EEeu3m7D1g6Iucw" elementId="de.drazil.nerdsuite.partdescriptor.Ultimate64DebugStreamView" label="Ultimate64DebugStreamView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64DebugStreamView">
+    <handlers xmi:id="_oG-yMGKBEeulZJIeWe4F4g" elementId="de.drazil.nerdsuite.handler.5" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StartStreamHandler" command="_VlskULypEeqwJ_Ky4YAlCA"/>
+    <handlers xmi:id="_49EJEGKCEeulZJIeWe4F4g" elementId="de.drazil.nerdsuite.handler.6" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StopStreamHandler" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
+    <toolbar xmi:id="_JOKq8GKBEeulZJIeWe4F4g" elementId="de.drazil.nerdsuite.toolbar.4">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_MPaOYGKBEeulZJIeWe4F4g" elementId="de.drazil.nerdsuite.handledtoolitem.start" label="start" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" command="_VlskULypEeqwJ_Ky4YAlCA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_s-KHEGKCEeulZJIeWe4F4g" elementId="de.drazil.nerdsuite.handledtoolitem.9" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
+    </toolbar>
+  </descriptors>
   <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.NewProject" commandName="New Project">
     <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.ProjectTypeId" name="ProjectTypeId" optional="false"/>

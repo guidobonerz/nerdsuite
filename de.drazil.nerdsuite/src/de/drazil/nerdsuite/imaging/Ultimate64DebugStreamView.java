@@ -46,7 +46,6 @@ public class Ultimate64DebugStreamView {
 		@Getter
 		private boolean running = false;
 		private DatagramSocket socket;
-		private int index = 0;
 
 		public synchronized void run() {
 			try {
@@ -64,10 +63,11 @@ public class Ultimate64DebugStreamView {
 
 							for (int i = 4; i < 1444; i += 4) {
 								int adr = ((int) ((buf[i + 1] << 8) | (buf[i + 0] & 0xff)) & 0xffff);
-
 								int data = ((int) (buf[i + 2] & 0xff));
 								int flags = ((int) (buf[i + 3] & 0xff));
+
 								if (mem[adr] != data) {
+
 									mem[adr] = data;
 									imageViewer.setByte(adr, data, (flags & 1) == 1);
 								}
