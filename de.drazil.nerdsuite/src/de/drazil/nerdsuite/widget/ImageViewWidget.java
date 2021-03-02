@@ -63,9 +63,11 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 									| (imageData.data[i] & 0xF0) >> 4);
 						}
 
-						double ratio = ((double) getClientArea().width / (double) id.getImageData().width);
-						scaledWidth = getClientArea().width;
-						scaledHeight = (int) (id.getImageData().height * ratio);
+						double ratio = ((double) getClientArea().height / (double) id.getImageData().height);
+						//scaledWidth = getClientArea().width;
+						//scaledHeight = (int) (id.getImageData().height * ratio);
+						scaledWidth = (int) (id.getImageData().width * ratio);
+						scaledHeight = getClientArea().height;
 						Image image = new Image(getDisplay(), id.getImageData().scaledTo(scaledWidth, scaledHeight));
 
 						e.gc.drawImage(image, 0, 0);
@@ -107,7 +109,7 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(800, 800);
+		return new Point(scaledWidth, 800);
 	}
 
 }

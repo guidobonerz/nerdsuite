@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -133,7 +134,7 @@ public class Ultimate64DebugStreamView {
 	@Inject
 	@Optional
 	public void virtualKeyboard(@UIEventTopic("VirtualKeyboard") BrokerObject brokerObject) {
-		sendKeyboardSequence("A\n".getBytes());
+
 	}
 
 	@Inject
@@ -171,6 +172,8 @@ public class Ultimate64DebugStreamView {
 		imageViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		return imageViewer;
 	}
+
+	
 
 	private void startDebugStream() {
 		openSocket();
@@ -229,18 +232,6 @@ public class Ultimate64DebugStreamView {
 		try {
 			tcpSocket.getOutputStream()
 					.write(buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void sendKeyboardSequence(byte[] data) {
-		openSocket();
-		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x00, (byte) 0x00 }));
-			tcpSocket.getOutputStream().write(data);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

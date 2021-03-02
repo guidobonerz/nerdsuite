@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -20,6 +21,8 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
@@ -30,12 +33,14 @@ import org.eclipse.swt.widgets.Display;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.widget.IHitKeyListener;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
+import de.drazil.nerdsuite.widget.VirtualKeyboard;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ultimate64AppStreamView {
+public class Ultimate64AppStreamView implements IHitKeyListener {
 
 	private ImageViewWidget imageViewer;
 	private Socket tcpSocket = null;
@@ -44,6 +49,10 @@ public class Ultimate64AppStreamView {
 	private VideoStreamReceiver videoStreamReceiver;
 	private AudioStreamReceiver audioStreamReceiver;
 	private boolean running = false;
+	private boolean virtualKeyboardVisible = true;
+	private VirtualKeyboard vk;
+	private Composite parent;
+	private int controlType;
 
 	public Ultimate64AppStreamView() {
 
@@ -149,6 +158,19 @@ public class Ultimate64AppStreamView {
 				socket = null;
 			}
 		}
+	}
+
+	@Inject
+
+	@Optional
+	public void dumpMemory(@UIEventTopic("ReadMemory") BrokerObject brokerObject) {
+		readMemory(0x400, 200);
+	}
+
+	@Inject
+	@Optional
+	public void poke(@UIEventTopic("WriteMemory") BrokerObject brokerObject) {
+		writeMemory(0x0400, new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
 	}
 
 	@Inject
@@ -272,7 +294,10 @@ public class Ultimate64AppStreamView {
 	@Inject
 	@Optional
 	public void virtualKeyboard(@UIEventTopic("VirtualKeyboard") BrokerObject brokerObject) {
-		sendKeyboardSequence("A\n".getBytes());
+		virtualKeyboardVisible = !virtualKeyboardVisible;
+		vk.setVisible(virtualKeyboardVisible);
+		parent.pack(true);
+
 	}
 
 	@Inject
@@ -298,13 +323,39 @@ public class Ultimate64AppStreamView {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
+		this.parent = parent;
+		GridLayout layout = new GridLayout(1, true);
+		parent.setLayout(layout);
 		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
 		RGB palette[] = new RGB[colorList.size()];
 		for (int i = 0; i < palette.length; i++) {
 			palette[i] = colorList.get(i).getColor().getRGB();
 		}
 		parent.setLayout(new GridLayout());
+		parent.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				sendKeyboardSequence(new byte[] { (byte) e.character });
+				System.out.println(e.character);
+			}
+		});
+		GridData gd = new GridData();
+		gd.horizontalAlignment = GridData.FILL;
+		gd.verticalAlignment = GridData.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = false;
 		imageViewer = createImageViewer(parent, new PaletteData(palette));
+		imageViewer.setLayoutData(gd);
+		gd = new GridData();
+		gd.horizontalAlignment = GridData.FILL;
+		// gd.verticalAlignment = GridData.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = false;
+		gd.heightHint = 200;
+		vk = new VirtualKeyboard(parent, 0, null);
+		vk.addHitKeyListener(this);
+		vk.setLayoutData(gd);
+
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
 		startStream();
@@ -399,11 +450,45 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
+	private void readMemory(int address, int length) {
+		openSocket();
+		try {
+
+			tcpSocket.getOutputStream().write(buildCommand(NumericConverter.getWord(0xff74),
+					NumericConverter.getWord(length + 2), buildCommand(NumericConverter.getWord(address))));
+			InputStream is = tcpSocket.getInputStream();
+			TimeUnit.MILLISECONDS.sleep(500);
+			int dataAvailable = 0;
+			byte data[] = null;
+			is.read();
+			while ((dataAvailable = is.available()) > 0) {
+				data = new byte[dataAvailable];
+				is.read(data, 0, dataAvailable);
+			}
+			int a = 0;
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	private void writeMemory(int address, byte[] data) {
+		openSocket();
+		try {
+			tcpSocket.getOutputStream()
+					.write(buildCommand(NumericConverter.getWord(0xff06), NumericConverter.getWord(data.length + 2),
+							buildCommand(NumericConverter.getWord(address)), buildCommand(data)));
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
 	private void sendKeyboardSequence(byte[] data) {
 		openSocket();
 		try {
 			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x00, (byte) 0x00 }));
+					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x01, (byte) 0x00 }));
 			tcpSocket.getOutputStream().write(data);
 
 		} catch (IOException e) {
@@ -446,4 +531,22 @@ public class Ultimate64AppStreamView {
 		}
 		return target;
 	}
+
+	@Override
+	public void keyPressed(int controlType, int key) {
+		if (key == 0) {
+			this.controlType = controlType;
+		}
+		int k = key;
+		if (this.controlType == 2) {
+			k += 32;
+		} else if (this.controlType == 3) {
+			k += 96;
+		}
+		if (key > 0) {
+			System.out.printf("control:%d  key:%d\n", this.controlType, k);
+			sendKeyboardSequence(new byte[] { (byte) (k & 0xff) });
+		}
+	}
+
 }

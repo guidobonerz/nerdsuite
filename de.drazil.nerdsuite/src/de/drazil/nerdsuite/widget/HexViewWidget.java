@@ -60,11 +60,12 @@ public class HexViewWidget extends Composite {
 	private StyledText hexArea = null;
 	private StyledText textArea = null;
 	private Button autoDiscover;
-	private Button startAnalyse;
+	private Button startDecode;
 	private Button startAddress;
 	private Button code;
 	private Button binary;
 	private Button undefined;
+
 	private int visibleRows = 0;
 	private IPlatform platform;
 	private List<Range> rangeList;
@@ -321,7 +322,7 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = true;
 		gd.verticalSpan = 2;
-		gd.widthHint = 400;
+		// gd.widthHint = 400;
 		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.getTable().setLinesVisible(true);
 		tableViewer.setCellEditors(new CellEditor[] { new TextCellEditor(tableViewer.getTable()) });
@@ -357,6 +358,7 @@ public class HexViewWidget extends Composite {
 				return Constants.EDITOR_FONT;
 			}
 		};
+
 		ColumnLabelProvider labelProviderLabel = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -391,6 +393,7 @@ public class HexViewWidget extends Composite {
 		tableViewerColumnCode.setLabelProvider(labelProviderCode);
 		TableColumn addressLine = tableViewerColumnAddress.getColumn();
 		addressLine.setWidth(50);
+
 		TableColumn labelLine = tableViewerColumnLabel.getColumn();
 		labelLine.setWidth(200);
 		TableColumn codeLine = tableViewerColumnCode.getColumn();
@@ -411,20 +414,22 @@ public class HexViewWidget extends Composite {
 					boolean visible = false;
 					final TableItem item = tableViewer.getTable().getItem(index);
 					Rectangle rect = item.getBounds(1);
+
 					if (rect.contains(pt)) {
-						final int column = 1;
 						final Text text = new Text(tableViewer.getTable(), SWT.NONE);
+						text.setFont(Constants.C64_Pro_Mono_FONT);
+
 						Listener textListener = new Listener() {
 							public void handleEvent(final Event e) {
 								switch (e.type) {
 								case SWT.FocusOut:
-									item.setText(column, text.getText());
+									item.setText(1, text.getText());
 									text.dispose();
 									break;
 								case SWT.Traverse:
 									switch (e.detail) {
 									case SWT.TRAVERSE_RETURN:
-										item.setText(column, text.getText());
+										item.setText(1, text.getText());
 										// FALL THROUGH
 									case SWT.TRAVERSE_ESCAPE:
 										text.dispose();
@@ -456,24 +461,48 @@ public class HexViewWidget extends Composite {
 		gd.horizontalAlignment = GridData.BEGINNING;
 		gd.verticalAlignment = GridData.FILL;
 		gd.grabExcessVerticalSpace = false;
-		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessHorizontalSpace = false;
+		// gd.minimumWidth = 450;
 		gd.horizontalSpan = 3;
 
-		RowLayout rowLayout = new RowLayout();
-		rowLayout.wrap = false;
-		rowLayout.pack = false;
-		rowLayout.justify = true;
-		rowLayout.marginLeft = 5;
-		rowLayout.marginTop = 5;
-		rowLayout.marginRight = 5;
-		rowLayout.marginBottom = 5;
-		rowLayout.spacing = 0;
+		/*
+		 * RowLayout layout = new RowLayout(); rowLayout.wrap = false; rowLayout.pack =
+		 * false; rowLayout.justify = true; rowLayout.marginLeft = 5;
+		 * rowLayout.marginTop = 5; rowLayout.marginRight = 5; rowLayout.marginBottom =
+		 * 5; rowLayout.spacing = 0;
+		 */
+		GridLayout layout2 = new GridLayout(4, false);
 
 		Composite c = new Composite(this, SWT.NONE);
-		c.setLayout(rowLayout);
+		c.setLayout(layout2);
 
+		GridData gd2 = new GridData();
+		gd2.horizontalAlignment = GridData.BEGINNING;
+		gd2.horizontalSpan = 1;
+		gd2.grabExcessHorizontalSpace = false;
+		autoDiscover = new Button(c, SWT.CHECK);
+		autoDiscover.setText("AutoDiscover Mode");
+		autoDiscover.setLayoutData(gd2);
+
+		gd2 = new GridData();
+		gd2.horizontalAlignment = GridData.BEGINNING;
+		gd2.horizontalSpan = 1;
+		gd2.grabExcessHorizontalSpace = false;
+		startAddress = new Button(c, SWT.CHECK);
+		startAddress.setText("First two bytes represent StartAddress");
+		startAddress.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				prepareContent();
+			}
+		});
+
+		gd2 = new GridData();
+		gd2.horizontalAlignment = GridData.BEGINNING;
+		gd2.horizontalSpan = 4;
 		Group group = new Group(c, SWT.NONE);
 		group.setLayout(new RowLayout(SWT.HORIZONTAL));
+		group.setLayoutData(gd2);
 
 		code = new Button(group, SWT.RADIO);
 		code.setBackground(Constants.CODE_COLOR);
@@ -481,6 +510,7 @@ public class HexViewWidget extends Composite {
 		code.setText("Code");
 		code.setSelection(true);
 		code.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedRangeType = RangeType.Code;
@@ -496,6 +526,7 @@ public class HexViewWidget extends Composite {
 		binary.setBackground(Constants.BINARY_COLOR);
 		binary.setForeground(Constants.WHITE);
 		binary.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedRangeType = RangeType.Binary;
@@ -510,6 +541,7 @@ public class HexViewWidget extends Composite {
 		undefined.setText("Undefined");
 		undefined.setBackground(Constants.WHITE);
 		undefined.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedRangeType = RangeType.Unspecified;
@@ -520,14 +552,9 @@ public class HexViewWidget extends Composite {
 			}
 		});
 
-		startAddress = new Button(c, SWT.CHECK);
-		startAddress.setText("First two bytes represent StartAddress");
-		startAddress.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				prepareContent();
-			}
-		});
+		startDecode = new Button(group, SWT.PUSH);
+		startDecode.setFont(Constants.FontAwesome5ProSolid);
+		startDecode.setText("\ue059");
 
 		c.setLayoutData(gd);
 
@@ -546,7 +573,7 @@ public class HexViewWidget extends Composite {
 
 		// ==================
 		gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
+		gd.horizontalAlignment = GridData.BEGINNING;
 		gd.verticalAlignment = GridData.BEGINNING;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
@@ -602,7 +629,7 @@ public class HexViewWidget extends Composite {
 		// ==================
 
 		gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
+		gd.horizontalAlignment = GridData.BEGINNING;
 		gd.verticalAlignment = GridData.BEGINNING;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;

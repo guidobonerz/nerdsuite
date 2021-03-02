@@ -403,6 +403,7 @@
     <handlers xmi:id="_AUfbELyqEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handler.U64_Reset" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
     <handlers xmi:id="_dQS1AL4IEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.handler.virtualkeyboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.VirtualKeyboardHandler" command="_WRFnML4IEeqDiPHXuf8Njw"/>
     <handlers xmi:id="_9FkPwL5QEeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.handler.streamvideo" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.StreamVideoHandler" command="_lhIVEL5QEeq0ivRYGfAMrg"/>
+    <handlers xmi:id="_Iuy_MHj6EeuVAZ0FAvi_ng" elementId="de.drazil.nerdsuite.handler.7" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.DumpMemoryHandler" command="_OuR1YHj6EeuVAZ0FAvi_ng"/>
     <handlers xmi:id="_G0krsL5REeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.handler.screenshot" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ScreenshotHandler" command="_csf2sL5QEeq0ivRYGfAMrg"/>
     <menus xmi:id="_lDyEoKpuEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menu.streamcontrol" label="StreamControl">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_FL1boKpuEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.handledmenuitem.ratio" label="Keep AspectRatio" type="Check"/>
@@ -412,10 +413,11 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="_H7FF8KhGEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.stop" label="Stop" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control-stop-square.png" tooltip="Stop Stream" command="_ZRGfELypEeqwJ_Ky4YAlCA"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_KbFGALypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.handledtoolitem.reset" label="Reset" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/lightning.png" tooltip="Reset" command="_OrdWELypEeqwJ_Ky4YAlCA"/>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_mETdwL4HEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.toolbarseparator.7"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_k_2XIL4HEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.handledtoolitem.keyboard" label="Keyboard" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/keyboard.png" tooltip="Toggle Keyboard" command="_WRFnML4IEeqDiPHXuf8Njw"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_k_2XIL4HEeqDiPHXuf8Njw" elementId="de.drazil.nerdsuite.handledtoolitem.keyboard" label="Keyboard" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/keyboard.png" tooltip="Toggle Keyboard" type="Check" command="_WRFnML4IEeqDiPHXuf8Njw"/>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_JLRoUL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.toolbarseparator.6"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_JuUD8L3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.screenshot" label="Screenshot" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/camera.png" tooltip="Screenshot" command="_csf2sL5QEeq0ivRYGfAMrg"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_KLtKkL3YEeqA87yuTaZSYg" elementId="de.drazil.nerdsuite.handledtoolitem.video" label="Video" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/film_go.png" command="_lhIVEL5QEeq0ivRYGfAMrg"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_Ug6NQHj4EeuVAZ0FAvi_ng" elementId="de.drazil.nerdsuite.handledtoolitem.dump" label="Dump" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_down.png" command="_OuR1YHj6EeuVAZ0FAvi_ng"/>
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_NSoYkM3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.partdescriptor.SourceEditorView" label="CodeEditorView" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView">
@@ -559,6 +561,7 @@
   <commands xmi:id="_V20PgFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.command.jumpToAddress" commandName="Jump to address"/>
   <commands xmi:id="_xfrB4FY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.command.returnToOrigin" commandName="Return to origin"/>
   <commands xmi:id="_5v1hQFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.command.setLabel" commandName="Set label"/>
+  <commands xmi:id="_OuR1YHj6EeuVAZ0FAvi_ng" elementId="de.drazil.nerdsuite.command.dumpMemory" commandName="Dump Memory"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
