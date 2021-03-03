@@ -1,14 +1,1258 @@
 {
-  "rows" : [ {
-    "row" : [ {
-      "id" : 0,
-      "type" : "",
-      "size" : "",
-      "default" : 0,
-      "control1" : 0,
-      "control2" : 0,
-      "control3" : 0,
-      "linkedTo" : ""
-    } ]
-  } ]
+  "options": 4,
+  "rows": [
+    {
+      "row": [
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 2,
+          "text": "F1",
+          "option": [
+            "133",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 2,
+          "text": "F2",
+          "option": [
+            "137",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 2,
+          "text": "F3",
+          "option": [
+            "134",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 2,
+          "text": "F4",
+          "option": [
+            "138",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 2,
+          "text": "F5",
+          "option": [
+            "135",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 2,
+          "text": "F6",
+          "option": [
+            "139",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 2,
+          "text": "F7",
+          "option": [
+            "136",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 2,
+          "text": "F8",
+          "option": [
+            "140",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        }
+      ]
+    },
+    {
+      "row": [
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 0,
+          "text": "BLACK",
+          "option": [
+            "144",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 1,
+          "text": "WHITE",
+          "option": [
+            "5",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 2,
+          "text": "RED",
+          "option": [
+            "28",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 3,
+          "text": "CYAN",
+          "option": [
+            "159",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 4,
+          "text": "PURPLE",
+          "option": [
+            "156",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 5,
+          "text": "GREEN",
+          "option": [
+            "30",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 6,
+          "text": "BLUE",
+          "option": [
+            "31",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 7,
+          "text": "YELLOW",
+          "option": [
+            "158",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 8,
+          "text": "ORANGE",
+          "option": [
+            "129",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 9,
+          "text": "BROWN",
+          "option": [
+            "149",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 10,
+          "text": "LIGHT RED",
+          "option": [
+            "150",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 11,
+          "text": "DARK GRAY",
+          "option": [
+            "151",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 12,
+          "text": "GRAY",
+          "option": [
+            "152",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 13,
+          "text": "LIGHT GREEN",
+          "option": [
+            "153",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 14,
+          "text": "LIGHT BLUE",
+          "option": [
+            "154",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "color": 15,
+          "text": "LIGHT GRAY",
+          "option": [
+            "155",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        }
+      ]
+    },
+    {
+      "row": [
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "ARROW-LEFT",
+          "option": [
+            "95",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "1",
+          "option": [
+            "49",
+            "33",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "2",
+          "option": [
+            "50",
+            "34",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "3",
+          "option": [
+            "51",
+            "35",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "4",
+          "option": [
+            "52",
+            "36",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "5",
+          "option": [
+            "53",
+            "37",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "6",
+          "option": [
+            "54",
+            "38",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "7",
+          "option": [
+            "55",
+            "39",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "8",
+          "option": [
+            "56",
+            "40",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "9",
+          "option": [
+            "57",
+            "41",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "0",
+          "option": [
+            "48",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "+",
+          "option": [
+            "43",
+            "123",
+            "166",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "-",
+          "option": [
+            "45",
+            "180",
+            "124",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "POUND",
+          "option": [
+            "92",
+            "168",
+            "169",
+            null
+          ],
+          "linkedTo": null
+        }
+      ]
+    },
+    {
+      "row": [
+        {
+          "id": 0,
+          "type": "OPTION:3",
+          "size": 1,
+          "text": "CONTROL",
+          "option": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "Q",
+          "option": [
+            "81",
+            "113",
+            "171",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "W",
+          "option": [
+            "87",
+            "119",
+            "179",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "E",
+          "option": [
+            "69",
+            "",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "R",
+          "option": [
+            "82",
+            "36",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "T",
+          "option": [
+            "84",
+            "37",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "Y",
+          "option": [
+            "89",
+            "38",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "U",
+          "option": [
+            "85",
+            "39",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "I",
+          "option": [
+            "73",
+            "40",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "O",
+          "option": [
+            "79",
+            "41",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "P",
+          "option": [
+            "80",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "@",
+          "option": [
+            "64",
+            "123",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "*",
+          "option": [
+            "42",
+            "180",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "ARROW-UP",
+          "option": [
+            "94",
+            "126",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "RESTORE",
+          "option": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        }
+      ]
+    },
+    {
+      "row": [
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "RUN STOP",
+          "option": [
+            3,
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "OPTION:1",
+          "size": 1,
+          "text": "SHIFT LOCK",
+          "option": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "A",
+          "option": [
+            "65",
+            "97",
+            "176",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "S",
+          "option": [
+            "83",
+            "115",
+            "174",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "D",
+          "option": [
+            "68",
+            "163",
+            "187",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "F",
+          "option": [
+            "79",
+            "175",
+            "187",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "G",
+          "option": [
+            "71",
+            "98",
+            "116",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "H",
+          "option": [
+            "72",
+            "167",
+            "181",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "J",
+          "option": [
+            "74",
+            "106",
+            "161",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "K",
+          "option": [
+            "79",
+            "107",
+            "161",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "L",
+          "option": [
+            "76",
+            "108",
+            "102",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": ":",
+          "option": [
+            "58",
+            "40",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": ";",
+          "option": [
+            "59",
+            "41",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "=",
+          "option": [
+            "61",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "RETURN",
+          "option": [
+            13,
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        }
+      ]
+    },
+    {
+      "row": [
+        {
+          "id": 0,
+          "type": "OPTION:2",
+          "size": 1,
+          "text": "COMMODORE",
+          "option": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "OPTION:1",
+          "size": 1,
+          "text": "SHIFT",
+          "option": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "Z",
+          "option": [
+            "90",
+            "122",
+            "173",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "X",
+          "option": [
+            "88",
+            "120",
+            "189",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "C",
+          "option": [
+            "67",
+            "102",
+            "188",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "V",
+          "option": [
+            "86",
+            "118",
+            "187",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "B",
+          "option": [
+            "66",
+            "98",
+            "191",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "N",
+          "option": [
+            "78",
+            "110",
+            "104",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "M",
+          "option": [
+            "77",
+            "109",
+            "182",
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": ",",
+          "option": [
+            "44",
+            "60",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": ".",
+          "option": [
+            "46",
+            "62",
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "/",
+          "option": [
+            "47",
+            "63",
+            null,
+            null
+          ],
+          "linkedTo": null
+        }
+      ]
+    },
+    {
+      "row": [
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "REV_ON",
+          "option": [
+            "18",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "REV OFF",
+          "option": [
+            "146",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "CLR",
+          "option": [
+            "147",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "HOME",
+          "option": [
+            "19",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "INST",
+          "option": [
+            "148",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "DEL",
+          "option": [
+            "20",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "UPPER",
+          "option": [
+            "142",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "LOWER",
+          "option": [
+            "14",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 4,
+          "text": "SPACE",
+          "option": [
+            "32",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "LEFT",
+          "option": [
+            "157",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "RIGHT",
+          "option": [
+            "29",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "UP",
+          "option": [
+            "145",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        },
+        {
+          "id": 0,
+          "type": "KEY",
+          "size": 1,
+          "text": "DOWN",
+          "option": [
+            "17",
+            null,
+            null,
+            null
+          ],
+          "linkedTo": null
+        }
+      ]
+    }
+  ]
 }
