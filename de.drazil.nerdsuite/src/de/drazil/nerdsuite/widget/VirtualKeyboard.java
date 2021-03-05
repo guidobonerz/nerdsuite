@@ -100,7 +100,8 @@ public class VirtualKeyboard extends Composite implements IHitKeyListener {
 					}
 				}
 			}
-			list.forEach(k -> k.keyPressed(key));
+
 		}
+		list.forEach(k -> k.keyPressed(key));
 	}
 }

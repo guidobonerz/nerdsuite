@@ -36,7 +36,11 @@ public class KeyboardElement extends Canvas implements PaintListener {
 		this.key = key;
 		this.calculatedSize = (int) (SIZE * key.getSize());
 		backgroundColor = getDefaultBackgroundColor();
-		setFont(Constants.C64_Pro_Mono_FONT_12);
+		if (key.getType().equals("CURSOR")) {
+			setFont(Constants.FontAwesome5ProSolid_12);
+		} else {
+			setFont(Constants.C64_Pro_Mono_FONT_12);
+		}
 		addPaintListener(this);
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -67,7 +71,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 				if (key.isToggleButton() && key.isToggleState()) {
 					backgroundColor = Constants.BRIGHT_ORANGE;
 				} else {
-					backgroundColor = Constants.DARK_GREY;
+					backgroundColor = Constants.LIGHT_RED;
 				}
 				redraw();
 			}
@@ -87,17 +91,19 @@ public class KeyboardElement extends Canvas implements PaintListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		if (!key.getType().equals("FILLER")) {
+			
 			Point textBounds = e.gc.stringExtent(key.getText());
 			int xText = (calculatedSize - textBounds.x) / 2;
 			int yText = (SIZE - textBounds.y) / 2;
 			e.gc.setBackground(backgroundColor);
-			e.gc.fillRectangle(2, 2, calculatedSize - 4, SIZE - 4);
-			e.gc.setForeground(Constants.BLACK);
-			e.gc.drawRectangle(2, 2, calculatedSize - 4, SIZE - 4);
+			e.gc.fillRoundRectangle(2, 2, calculatedSize - 4, SIZE - 4, 5, 5);
+			e.gc.setForeground(Constants.WHITE);
+			// e.gc.setLineWidth(2);
+			// e.gc.drawRoundRectangle(2, 2, calculatedSize - 4, SIZE - 4, 5, 5);
 			if (!key.getType().equals("KEY") && !key.getType().equals("COLOR")) {
-				e.gc.drawString(key.getText(), xText, 10);
+				e.gc.drawString(key.getText(), xText - 2, yText - 2);
 			} else {
-				e.gc.drawString(key.getDisplay(), xText, 10);
+				e.gc.drawString(key.getDisplay(), xText, yText);
 			}
 		}
 	}
@@ -108,7 +114,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 
 	private Color getDefaultBackgroundColor() {
 		return key.getType().equals("COLOR") && key.getIndex() != null ? colorList.get(key.getIndex()).getColor()
-				: Constants.WHITE;
+				: Constants.DARK_GREY;
 	}
 
 	@Override
