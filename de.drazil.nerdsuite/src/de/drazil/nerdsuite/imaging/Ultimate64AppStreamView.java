@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.model.Key;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.IHitKeyListener;
@@ -352,7 +353,7 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 		gd.grabExcessHorizontalSpace = true;
 		gd.grabExcessVerticalSpace = false;
 		gd.heightHint = 200;
-		vk = new VirtualKeyboard(parent, 0, null);
+		vk = new VirtualKeyboard(parent, 0, colorList);
 		vk.addHitKeyListener(this);
 		vk.setLayoutData(gd);
 
@@ -533,20 +534,8 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	}
 
 	@Override
-	public void keyPressed(int controlType, int key) {
-		if (key == 0) {
-			this.controlType = controlType;
-		}
-		int k = key;
-		if (this.controlType == 2) {
-			k += 32;
-		} else if (this.controlType == 3) {
-			k += 96;
-		}
-		if (key > 0) {
-			System.out.printf("control:%d  key:%d\n", this.controlType, k);
-			sendKeyboardSequence(new byte[] { (byte) (k & 0xff) });
-		}
+	public void keyPressed(Key key) {
+		sendKeyboardSequence(new byte[] { (byte) (key.getCode() & 0xff) });
 	}
 
 }

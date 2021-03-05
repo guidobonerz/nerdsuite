@@ -15,33 +15,28 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.enums.Style;
+import de.drazil.nerdsuite.model.Key;
+import de.drazil.nerdsuite.model.PlatformColor;
 
 public class KeyboardElement extends Canvas implements PaintListener {
 
-	private final static int SIZE = 40;
-	private int id;
-	private Style s;
+	private final static int SIZE = 30;
+
+	private Key key;
 	private int calculatedSize;
 	private Color backgroundColor;
-	private boolean pressed;
-	private boolean canToggle = false;
 	private List<IHitKeyListener> list;
-	private int controlType;
 
-	public KeyboardElement(Composite parent, int style, int id, Style s) {
-		this(parent, style, id, s, false, 0);
-	}
+	private List<PlatformColor> colorList;
 
-	public KeyboardElement(Composite parent, int style, int id, Style s, boolean canToggle, int controlType) {
+	public KeyboardElement(Composite parent, int style, Key key, List<PlatformColor> colorList) {
 		super(parent, style);
+		this.colorList = colorList;
 		list = new ArrayList<IHitKeyListener>();
-		this.id = id;
-		this.s = s;
-		this.canToggle = canToggle;
-		this.controlType = controlType;
-		this.calculatedSize = (int) (40 * s.getSize());
+		this.key = key;
+		this.calculatedSize = (int) (SIZE * key.getSize());
 		backgroundColor = getDefaultBackgroundColor();
+		setFont(Constants.C64_Pro_Mono_FONT_12);
 		addPaintListener(this);
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -51,17 +46,17 @@ public class KeyboardElement extends Canvas implements PaintListener {
 
 			@Override
 			public void mouseDown(MouseEvent e) {
-				if (canToggle) {
-					pressed = !pressed;
-					if (pressed) {
+				if (key.isToggleButton()) {
+					key.setToggleState(!key.isToggleState());
+					if (key.isToggleState()) {
 						backgroundColor = Constants.BRIGHT_ORANGE;
-						fireHitKey(controlType, id);
 					} else {
 						backgroundColor = Constants.DARK_GREY;
 					}
+					fireHitKey(key);
 				} else {
 					backgroundColor = Constants.DARK_GREY;
-					fireHitKey(controlType, id);
+					fireHitKey(key);
 				}
 				redraw();
 			}
@@ -69,7 +64,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 		addMouseTrackListener(new MouseTrackAdapter() {
 			@Override
 			public void mouseEnter(MouseEvent e) {
-				if (canToggle && pressed) {
+				if (key.isToggleButton() && key.isToggleState()) {
 					backgroundColor = Constants.BRIGHT_ORANGE;
 				} else {
 					backgroundColor = Constants.DARK_GREY;
@@ -79,7 +74,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 
 			@Override
 			public void mouseExit(MouseEvent e) {
-				if (canToggle && pressed) {
+				if (key.isToggleButton() && key.isToggleState()) {
 					backgroundColor = Constants.BRIGHT_ORANGE;
 				} else {
 					backgroundColor = getDefaultBackgroundColor();
@@ -91,14 +86,20 @@ public class KeyboardElement extends Canvas implements PaintListener {
 
 	@Override
 	public void paintControl(PaintEvent e) {
-		if (!s.isFiller()) {
-
+		if (!key.getType().equals("FILLER")) {
+			Point textBounds = e.gc.stringExtent(key.getText());
+			int xText = (calculatedSize - textBounds.x) / 2;
+			int yText = (SIZE - textBounds.y) / 2;
 			e.gc.setBackground(backgroundColor);
-			e.gc.fillRectangle(0, 0, calculatedSize - 1, SIZE - 1);
+			e.gc.fillRectangle(2, 2, calculatedSize - 4, SIZE - 4);
 			e.gc.setForeground(Constants.BLACK);
-			e.gc.drawRectangle(0, 0, calculatedSize - 1, SIZE - 1);
+			e.gc.drawRectangle(2, 2, calculatedSize - 4, SIZE - 4);
+			if (!key.getType().equals("KEY") && !key.getType().equals("COLOR")) {
+				e.gc.drawString(key.getText(), xText, 10);
+			} else {
+				e.gc.drawString(key.getDisplay(), xText, 10);
+			}
 		}
-
 	}
 
 	public Point getDimension() {
@@ -106,7 +107,8 @@ public class KeyboardElement extends Canvas implements PaintListener {
 	}
 
 	private Color getDefaultBackgroundColor() {
-		return Constants.WHITE;
+		return key.getType().equals("COLOR") && key.getIndex() != null ? colorList.get(key.getIndex()).getColor()
+				: Constants.WHITE;
 	}
 
 	@Override
@@ -124,8 +126,11 @@ public class KeyboardElement extends Canvas implements PaintListener {
 		list.remove(listener);
 	}
 
-	private void fireHitKey(int controlType, int keyCode) {
-		list.forEach(k -> k.keyPressed(controlType, keyCode));
+	private void fireHitKey(Key key) {
+		list.forEach(k -> k.keyPressed(key));
 	}
 
+	public void refresh() {
+		redraw();
+	}
 }
