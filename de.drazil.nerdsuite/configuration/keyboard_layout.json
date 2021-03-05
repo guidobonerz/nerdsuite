@@ -2019,8 +2019,8 @@
 					"index": 8,
 					"text": "REV_ON_OFF",
 					"codeOptions": [
-						"18",
 						"146",
+						"18",
 						null,
 						null
 					]
@@ -2033,8 +2033,8 @@
 					"index": 4,
 					"text": "UPPER_LOWER",
 					"codeOptions": [
-						"14",
 						"142",
+						"14",
 						null,
 						null
 					]
