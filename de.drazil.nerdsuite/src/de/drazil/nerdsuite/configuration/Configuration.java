@@ -46,6 +46,7 @@ public class Configuration {
 			URL fileURL6 = bundle.getEntry("/fonts/PetMe642Y.ttf");
 			URL fileURL7 = bundle.getEntry("/fonts/PetMe64.ttf");
 			URL fileURL8 = bundle.getEntry("/fonts/fa-solid-900.ttf");
+			URL fileURL9 = bundle.getEntry("/fonts/icomoon.ttf");
 			File file = null;
 			boolean b;
 			try {
@@ -71,7 +72,9 @@ public class Configuration {
 				b = Display.getCurrent().loadFont(file.toString());
 				file = new File(FileLocator.resolve(fileURL8).toURI());
 				b = Display.getCurrent().loadFont(file.toString());
-				int a = 0;
+				file = new File(FileLocator.resolve(fileURL9).toURI());
+				b = Display.getCurrent().loadFont(file.toString());
+
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();
 			} catch (IOException e1) {

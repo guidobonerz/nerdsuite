@@ -37,7 +37,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 		this.calculatedSize = (int) (SIZE * key.getSize());
 		backgroundColor = getDefaultBackgroundColor();
 		if (key.getType().equals("CURSOR")) {
-			setFont(Constants.FontAwesome5ProSolid_12);
+			setFont(Constants.ICOMOON);
 		} else {
 			setFont(Constants.C64_Pro_Mono_FONT_12);
 		}
@@ -91,18 +91,23 @@ public class KeyboardElement extends Canvas implements PaintListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		if (!key.getType().equals("FILLER")) {
-			
-			Point textBounds = e.gc.stringExtent(key.getText());
-			int xText = (calculatedSize - textBounds.x) / 2;
-			int yText = (SIZE - textBounds.y) / 2;
+
 			e.gc.setBackground(backgroundColor);
 			e.gc.fillRoundRectangle(2, 2, calculatedSize - 4, SIZE - 4, 5, 5);
 			e.gc.setForeground(Constants.WHITE);
-			// e.gc.setLineWidth(2);
-			// e.gc.drawRoundRectangle(2, 2, calculatedSize - 4, SIZE - 4, 5, 5);
 			if (!key.getType().equals("KEY") && !key.getType().equals("COLOR")) {
-				e.gc.drawString(key.getText(), xText - 2, yText - 2);
+				Point textBounds = e.gc.stringExtent(key.getText());
+				int xText = (calculatedSize - textBounds.x) / 2;
+				int yText = (SIZE - textBounds.y) / 2;
+				e.gc.drawString(key.getText(), xText, yText);
 			} else {
+				Point textBounds = e.gc.stringExtent(key.getDisplay());
+				int xText = (calculatedSize - textBounds.x) / 2;
+				int yText = (SIZE - textBounds.y) / 2;
+				if ((key.getOptionState() & 8) == 8) {
+					e.gc.setBackground(colorList.get(12).getColor());
+					e.gc.fillRectangle(xText, yText, textBounds.x, textBounds.y);
+				}
 				e.gc.drawString(key.getDisplay(), xText, yText);
 			}
 		}

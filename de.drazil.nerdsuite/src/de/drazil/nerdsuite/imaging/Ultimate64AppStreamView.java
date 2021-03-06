@@ -535,7 +535,6 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 
 	@Override
 	public void keyPressed(Key key) {
-		System.out.println(key.getCode());
 		sendKeyboardSequence(new byte[] { (byte) (key.getCode() & 0xff) });
 	}
 

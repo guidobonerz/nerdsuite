@@ -103,6 +103,34 @@
 						"140",
 						null
 					]
+				},
+				{
+					"id": 0,
+					"type": "OPTION",
+					"toggleButton": true,
+					"size": 6,
+					"index": 8,
+					"text": "REVERSE",
+					"codeOptions": [
+						"146",
+						"18",
+						null,
+						null
+					]
+				},
+				{
+					"id": 0,
+					"type": "OPTION",
+					"toggleButton": true,
+					"size": 6,
+					"index": 4,
+					"text": "UPPER/LOWER",
+					"codeOptions": [
+						"142",
+						"14",
+						null,
+						null
+					]
 				}
 			]
 		},
@@ -318,6 +346,30 @@
 						"155",
 						"155",
 						"155",
+						null
+					]
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"size": 6,
+					"text": "CLEAR",
+					"codeOptions": [
+						"147",
+						"147",
+						"147",
+						null
+					]
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"size": 6,
+					"text": "HOME",
+					"codeOptions": [
+						"19",
+						"19",
+						"19",
 						null
 					]
 				}
@@ -777,6 +829,35 @@
 							"\ue3a8"
 						]
 					]
+				},
+				{
+					"id": 0,
+					"type": "FILLER",
+					"size": 2
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"size": 6,
+					"text": "INSERT",
+					"codeOptions": [
+						"148",
+						"148",
+						"148",
+						null
+					]
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"size": 6,
+					"text": "DELETE",
+					"codeOptions": [
+						"20",
+						"20",
+						"20",
+						null
+					]
 				}
 			]
 		},
@@ -1219,14 +1300,39 @@
 				},
 				{
 					"id": 0,
-					"type": "FUNCTION",
-					"size": 1.5,
-					"text": "RST",
+					"type": "FILLER",
+					"size":1.5
+				},
+				{
+					"id": 0,
+					"type": "KEY",
+					"size": 12,
+					"text": "\uf052",
 					"codeOptions": [
-						null,
-						null,
-						null,
+						"3",
+						"131",
+						"131 ",
 						null
+					],
+					"displayOptions": [
+						[
+							"\uf256",
+							"\uf256",
+							"\uf256",
+							"\uf256"
+						],
+						[
+							"\uf709",
+							"\uf709",
+							"\uf709",
+							"\uf709"
+						],
+						[
+							"\uf709",
+							"\uf709",
+							"\uf709",
+							"\uf709"
+						]
 					]
 				}
 			]
@@ -1235,29 +1341,8 @@
 			"keys": [
 				{
 					"id": 0,
-					"type": "CURSOR",
-					"size": 1,
-					"text": "\uf052",
-					"codeOptions": [
-						"3",
-						"131",
-						"131 ",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "OPTION",
-					"index": 1,
-					"toggleButton": true,
-					"size": 1,
-					"text": "SL",
-					"codeOptions": [
-						null,
-						null,
-						null,
-						null
-					]
+					"type": "FILLER",
+					"size": 2
 				},
 				{
 					"id": 0,
@@ -1646,7 +1731,7 @@
 				{
 					"id": 0,
 					"type": "KEY",
-					"size": 2,
+					"size": 2.3,
 					"text": "RET",
 					"codeOptions": [
 						"13",
@@ -1665,7 +1750,7 @@
 					"index": 2,
 					"toggleButton": true,
 					"size": 1,
-					"text": "C=",
+					"text": "\uf0eb",
 					"codeOptions": [
 						null,
 						null,
@@ -1679,7 +1764,7 @@
 					"index": 1,
 					"toggleButton": true,
 					"size": 1.5,
-					"text": "\uf30c",
+					"text": "\uea4f",
 					"codeOptions": [
 						null,
 						null,
@@ -2006,6 +2091,23 @@
 							"\ue33f"
 						]
 					]
+				},
+				{
+					"id": 0,
+					"type": "FILLER",
+					"size": 1.75
+				},
+				{
+					"id": 0,
+					"type": "CURSOR",
+					"size": 1,
+					"text": "\uea32",
+					"codeOptions": [
+						"145",
+						"145",
+						"145",
+						null
+					]
 				}
 			]
 		},
@@ -2013,72 +2115,13 @@
 			"keys": [
 				{
 					"id": 0,
-					"type": "OPTION",
-					"toggleButton": true,
-					"size": 1,
-					"index": 8,
-					"text": "REV_ON_OFF",
-					"codeOptions": [
-						"146",
-						"18",
-						null,
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "OPTION",
-					"toggleButton": true,
-					"size": 1,
-					"index": 4,
-					"text": "UPPER_LOWER",
-					"codeOptions": [
-						"142",
-						"14",
-						null,
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 1,
-					"text": "CLR",
-					"codeOptions": [
-						"147",
-						"147",
-						"147",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 1,
-					"text": "HOME",
-					"codeOptions": [
-						"19",
-						"19",
-						"19",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 1,
-					"text": "INST",
-					"codeOptions": [
-						"148",
-						"148",
-						"148",
-						null
-					]
+					"type": "FILLER",
+					"size": 2.66
 				},
 				{
 					"id": 0,
 					"type": "KEY",
-					"size": 6,
+					"size": 9,
 					"text": "SPACE",
 					"codeOptions": [
 						"32",
@@ -2089,21 +2132,14 @@
 				},
 				{
 					"id": 0,
-					"type": "CURSOR",
-					"size": 1,
-					"text": "\uf12d",
-					"codeOptions": [
-						"20",
-						"20",
-						"20",
-						null
-					]
+					"type": "FILLER",
+					"size": 1.6
 				},
 				{
 					"id": 0,
 					"type": "CURSOR",
 					"size": 1,
-					"text": "\uf0d9",
+					"text": "\uea38",
 					"codeOptions": [
 						"157",
 						"157",
@@ -2115,11 +2151,11 @@
 					"id": 0,
 					"type": "CURSOR",
 					"size": 1,
-					"text": "\uf0da",
+					"text": "\uea36",
 					"codeOptions": [
-						"29",
-						"29",
-						"29",
+						"17",
+						"17",
+						"17",
 						null
 					]
 				},
@@ -2127,23 +2163,11 @@
 					"id": 0,
 					"type": "CURSOR",
 					"size": 1,
-					"text": "\uf0d8",
+					"text": "\uea34",
 					"codeOptions": [
-						"145",
-						"145",
-						"145",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "CURSOR",
-					"size": 1,
-					"text": "\uf0d7",
-					"codeOptions": [
-						"17",
-						"17",
-						"17",
+						"29",
+						"29",
+						"29",
 						null
 					]
 				}

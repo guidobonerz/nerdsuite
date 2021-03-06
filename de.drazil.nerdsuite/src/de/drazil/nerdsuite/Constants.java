@@ -102,6 +102,8 @@ public class Constants {
 
 	public final static Font DEFAULT_FONT = Display.getCurrent().getSystemFont();
 	public final static Font EDITOR_FONT = JFaceResources.getFont(JFaceResources.TEXT_FONT);
+
+	public final static Font ICOMOON = new Font(Display.getCurrent(), "icomoon", 16, SWT.NORMAL);
 	public final static Font FontAwesome5ProSolid = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 20,
 			SWT.NORMAL);
 	public final static Font FontAwesome5ProSolid_12 = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 16,
