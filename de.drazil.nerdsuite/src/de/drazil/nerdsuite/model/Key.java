@@ -40,9 +40,6 @@ public class Key {
 				option = 2;
 			}
 			value = displayOptions[option][mode];
-			//if (isSymbol()) {
-			//	value = text;
-			//}
 		}
 		return value;
 	}
