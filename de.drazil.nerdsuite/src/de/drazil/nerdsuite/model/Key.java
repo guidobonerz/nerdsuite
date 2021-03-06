@@ -10,6 +10,8 @@ public class Key {
 	private String type;
 	private Integer index;
 	private boolean toggleButton;
+	private boolean symbol;
+	private String name;
 	private double size;
 	private String text;
 	private String[] codeOptions;
@@ -38,6 +40,9 @@ public class Key {
 				option = 2;
 			}
 			value = displayOptions[option][mode];
+			//if (isSymbol()) {
+			//	value = text;
+			//}
 		}
 		return value;
 	}

@@ -36,8 +36,8 @@ public class KeyboardElement extends Canvas implements PaintListener {
 		this.key = key;
 		this.calculatedSize = (int) (SIZE * key.getSize());
 		backgroundColor = getDefaultBackgroundColor();
-		if (key.getType().equals("CURSOR")) {
-			setFont(Constants.ICOMOON);
+		if (key.isSymbol()) {
+			setFont(Constants.GoogleMaterials);
 		} else {
 			setFont(Constants.C64_Pro_Mono_FONT_12);
 		}
@@ -91,11 +91,13 @@ public class KeyboardElement extends Canvas implements PaintListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		if (!key.getType().equals("FILLER")) {
-
+			if ("RUN/STOP".equals(key.getName())) {
+				int a = 0;
+			}
 			e.gc.setBackground(backgroundColor);
 			e.gc.fillRoundRectangle(2, 2, calculatedSize - 4, SIZE - 4, 5, 5);
 			e.gc.setForeground(Constants.WHITE);
-			if (!key.getType().equals("KEY") && !key.getType().equals("COLOR")) {
+			if ((!key.getType().equals("KEY") && !key.getType().equals("COLOR")) ) {
 				Point textBounds = e.gc.stringExtent(key.getText());
 				int xText = (calculatedSize - textBounds.x) / 2;
 				int yText = (SIZE - textBounds.y) / 2;

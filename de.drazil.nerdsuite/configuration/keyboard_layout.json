@@ -107,10 +107,12 @@
 				{
 					"id": 0,
 					"type": "OPTION",
+					"name": "REVERSE",
+					"symbol": true,
 					"toggleButton": true,
-					"size": 6,
+					"size": 2,
 					"index": 8,
-					"text": "REVERSE",
+					"text": "\ue891",
 					"codeOptions": [
 						"146",
 						"18",
@@ -121,10 +123,12 @@
 				{
 					"id": 0,
 					"type": "OPTION",
+					"name": "UPPER_LOWER",
+					"symbol": true,
 					"toggleButton": true,
-					"size": 6,
+					"size": 2,
 					"index": 4,
-					"text": "UPPER/LOWER",
+					"text": "\uea16",
 					"codeOptions": [
 						"142",
 						"14",
@@ -352,8 +356,10 @@
 				{
 					"id": 0,
 					"type": "FUNCTION",
-					"size": 6,
-					"text": "CLEAR",
+					"symbol": true,
+					"name": "CLEAR",
+					"size": 2,
+					"text": "\ue3c1",
 					"codeOptions": [
 						"147",
 						"147",
@@ -364,8 +370,10 @@
 				{
 					"id": 0,
 					"type": "FUNCTION",
-					"size": 6,
-					"text": "HOME",
+					"symbol": true,
+					"name": "HOME",
+					"size": 2,
+					"text": "\ue88a",
 					"codeOptions": [
 						"19",
 						"19",
@@ -838,8 +846,10 @@
 				{
 					"id": 0,
 					"type": "FUNCTION",
-					"size": 6,
-					"text": "INSERT",
+					"name": "INSERT",
+					"size": 2,
+					"symbol": true,
+					"text": "\ue892",
 					"codeOptions": [
 						"148",
 						"148",
@@ -850,8 +860,10 @@
 				{
 					"id": 0,
 					"type": "FUNCTION",
-					"size": 6,
-					"text": "DELETE",
+					"name": "DELETE",
+					"symbol": true,
+					"size": 2,
+					"text": "\ue14a",
 					"codeOptions": [
 						"20",
 						"20",
@@ -1301,13 +1313,15 @@
 				{
 					"id": 0,
 					"type": "FILLER",
-					"size":1.5
+					"size": 1.5
 				},
 				{
 					"id": 0,
 					"type": "KEY",
-					"size": 12,
-					"text": "\uf052",
+					"symbol": true,
+					"size": 4,
+					"name": "RUN/STOP",
+					"text": "\ue566",
 					"codeOptions": [
 						"3",
 						"131",
@@ -1316,22 +1330,22 @@
 					],
 					"displayOptions": [
 						[
-							"\uf256",
-							"\uf256",
-							"\uf256",
-							"\uf256"
+							"\ue047",
+							"\ue047",
+							"\ue047",
+							"\ue047"
 						],
 						[
-							"\uf709",
-							"\uf709",
-							"\uf709",
-							"\uf709"
+							"\ue566",
+							"\ue566",
+							"\ue566",
+							"\ue566"
 						],
 						[
-							"\uf709",
-							"\uf709",
-							"\uf709",
-							"\uf709"
+							"\ue047",
+							"\ue047",
+							"\ue047",
+							"\ue047"
 						]
 					]
 				}
@@ -1731,13 +1745,35 @@
 				{
 					"id": 0,
 					"type": "KEY",
+					"symbol": true,
+					"name": "RETURN",
 					"size": 2.3,
-					"text": "RET",
+					"text": "\ue31b",
 					"codeOptions": [
 						"13",
 						"141",
 						"141",
 						null
+					],
+					"displayOptions": [
+						[
+							"\ue31b",
+							"\ue31b",
+							"\ue31b",
+							"\ue31b"
+						],
+						[
+							"\ue31b",
+							"\ue31b",
+							"\ue31b",
+							"\ue31b"
+						],
+						[
+							"\ue31b",
+							"\ue31b",
+							"\ue31b",
+							"\ue31b"
+						]
 					]
 				}
 			]
@@ -1747,10 +1783,12 @@
 				{
 					"id": 0,
 					"type": "OPTION",
+					"symbol": true,
+					"name": "COMMODORE",
 					"index": 2,
 					"toggleButton": true,
 					"size": 1,
-					"text": "\uf0eb",
+					"text": "\ue7f2",
 					"codeOptions": [
 						null,
 						null,
@@ -1762,9 +1800,11 @@
 					"id": 0,
 					"type": "OPTION",
 					"index": 1,
+					"symbol": true,
+					"name": "SHIFT",
 					"toggleButton": true,
 					"size": 1.5,
-					"text": "\uea4f",
+					"text": "\ue5d8",
 					"codeOptions": [
 						null,
 						null,
@@ -2099,9 +2139,11 @@
 				},
 				{
 					"id": 0,
-					"type": "CURSOR",
+					"type": "FUNCTION",
+					"name": "UP",
+					"symbol": true,
 					"size": 1,
-					"text": "\uea32",
+					"text": "\ue316",
 					"codeOptions": [
 						"145",
 						"145",
@@ -2137,9 +2179,11 @@
 				},
 				{
 					"id": 0,
-					"type": "CURSOR",
+					"type": "FUNCTION",
+					"name": "LEFT",
+					"symbol": true,
 					"size": 1,
-					"text": "\uea38",
+					"text": "\ue314",
 					"codeOptions": [
 						"157",
 						"157",
@@ -2149,9 +2193,11 @@
 				},
 				{
 					"id": 0,
-					"type": "CURSOR",
+					"type": "FUNCTION",
+					"name": "DOWN",
+					"symbol": true,
 					"size": 1,
-					"text": "\uea36",
+					"text": "\ue313",
 					"codeOptions": [
 						"17",
 						"17",
@@ -2161,9 +2207,11 @@
 				},
 				{
 					"id": 0,
-					"type": "CURSOR",
+					"type": "FUNCTION",
+					"name": "RIGHT",
+					"symbol": true,
 					"size": 1,
-					"text": "\uea34",
+					"text": "\ue315",
 					"codeOptions": [
 						"29",
 						"29",
