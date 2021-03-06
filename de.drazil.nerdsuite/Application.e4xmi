@@ -2,6 +2,21 @@
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_POZZwKF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ide.application" bindingContexts="_POaA2KF9EeOMYoHAic2wfQ">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_POaA0KF9EeOMYoHAic2wfQ" label="Nerdsuite" width="1680" height="1024">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_xWeSMKMFEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.perspectivestack.0">
+      <children xsi:type="advanced:Perspective" xmi:id="_-mKRUH6WEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.perspective.U64AppStreamer" label="Ultimate64ApplicationStreamer">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_OSC7YH6XEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.partsashcontainer.0" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_bphA4H6ZEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.partstack.1" containerData="1000">
+            <children xsi:type="basic:Part" xmi:id="_SukKAH6XEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.part.explorer" containerData="1000" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer"/>
+          </children>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_WEXBIH6XEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.partsashcontainer.1" containerData="7000">
+            <children xsi:type="basic:PartStack" xmi:id="_eSt3wH6ZEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.partstack.2">
+              <children xsi:type="basic:Part" xmi:id="_qkHp4H6XEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.part.ultimate64applicationstreamingclient" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64AppStreamView" label="Ultimate64 Application Streaming Client"/>
+            </children>
+            <children xsi:type="basic:PartStack" xmi:id="_gRfRkH6ZEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.partstack.3">
+              <children xsi:type="basic:Part" xmi:id="_qtMwkH6bEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.part.virtualkeyboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.VirtualKeyboardView" label="Virtual Keyboard"/>
+            </children>
+          </children>
+        </children>
+      </children>
       <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.gfx" label="Nerdsuite">
         <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_UAShQL4HEemtD_mJnNBwMg" elementId="de.drazil.nerdsuite.partsashcontainer.6" containerData="1000">
@@ -38,8 +53,8 @@
           </children>
         </children>
       </children>
-      <children xsi:type="advanced:Perspective" xmi:id="_ar-CcNslEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.CodeEditor" label="Coding Perspective"/>
       <children xsi:type="advanced:Perspective" xmi:id="_AZgl0NsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.SpriteEditor" label="SpriteEditor Perspective"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_ar-CcNslEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.CodeEditor" label="Coding Perspective"/>
       <children xsi:type="advanced:Perspective" xmi:id="_IRrb8NsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.CharEditor" label="CharEditor Perspective"/>
       <children xsi:type="advanced:Perspective" xmi:id="_XmEzENsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.TileEditor" label="TileEditor Perspective"/>
       <children xsi:type="advanced:Perspective" xmi:id="_cJYmMNsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.TileMapEditor" label="TileMapEditor Perspective"/>
@@ -107,7 +122,7 @@
       </children>
       <children xsi:type="menu:Menu" xmi:id="_QWEEYJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.menu.stream" label="Ultimate 64 Streams">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Xxq6UJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.handledmenuitem.debugstream" label="Debug Stream" command="_uYBcIJ21EeqplavjYfDYxA"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_Xw0U0KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handledmenuitem.vicstream" label="Application Stream" command="_ggW30KdwEeqid_Z8sm-clA"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Xw0U0KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handledmenuitem.applicationStream" label="Application Stream" command="_ggW30KdwEeqid_Z8sm-clA"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.0">
@@ -549,7 +564,7 @@
   <commands xmi:id="_4hLnsJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.command.Unmount" commandName="Unmount"/>
   <commands xmi:id="_ZjWoIJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.command.DiskImage" commandName="DiskImage"/>
   <commands xmi:id="_uYBcIJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.command.debugstream" commandName="DebugStream"/>
-  <commands xmi:id="_ggW30KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.command.vicstream" commandName="VicStream"/>
+  <commands xmi:id="_ggW30KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.command.applicationStream" commandName="VicStream"/>
   <commands xmi:id="_kNzE8LvfEeqNbb2NSJYhoA" elementId="de.drazil.nerdsuite.command.runOnU64" commandName="Run On Ultimate64"/>
   <commands xmi:id="_OrdWELypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.command.U64_Reset" commandName="U64_Reset"/>
   <commands xmi:id="_VlskULypEeqwJ_Ky4YAlCA" elementId="de.drazil.nerdsuite.command.U64_StartStream" commandName="U64_StartStream"/>

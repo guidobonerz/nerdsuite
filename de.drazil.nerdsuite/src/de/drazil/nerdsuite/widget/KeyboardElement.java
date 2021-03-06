@@ -91,13 +91,11 @@ public class KeyboardElement extends Canvas implements PaintListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		if (!key.getType().equals("FILLER")) {
-			if ("RUN/STOP".equals(key.getName())) {
-				int a = 0;
-			}
+
 			e.gc.setBackground(backgroundColor);
 			e.gc.fillRoundRectangle(2, 2, calculatedSize - 4, SIZE - 4, 5, 5);
 			e.gc.setForeground(Constants.WHITE);
-			if ((!key.getType().equals("KEY") && !key.getType().equals("COLOR")) ) {
+			if ((!key.getType().equals("KEY") && !key.getType().equals("COLOR"))) {
 				Point textBounds = e.gc.stringExtent(key.getText());
 				int xText = (calculatedSize - textBounds.x) / 2;
 				int yText = (SIZE - textBounds.y) / 2;
@@ -106,11 +104,16 @@ public class KeyboardElement extends Canvas implements PaintListener {
 				Point textBounds = e.gc.stringExtent(key.getDisplay());
 				int xText = (calculatedSize - textBounds.x) / 2;
 				int yText = (SIZE - textBounds.y) / 2;
-				if ((key.getOptionState() & 8) == 8) {
-					e.gc.setBackground(colorList.get(12).getColor());
+				if ((key.getOptionState() & 8) == 8 && !key.isSymbol()) {
+					e.gc.setBackground(Constants.DARK_GREY);
 					e.gc.fillRectangle(xText, yText, textBounds.x, textBounds.y);
 				}
 				e.gc.drawString(key.getDisplay(), xText, yText);
+				if ((key.getOptionState() & 8) == 8 && !key.isSymbol()) {
+					e.gc.setForeground(Constants.WHITE);
+					e.gc.setLineWidth(2);
+					e.gc.drawRectangle(xText, yText, textBounds.x, textBounds.y);
+				}
 			}
 		}
 	}

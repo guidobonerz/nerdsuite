@@ -25,23 +25,23 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.model.Key;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.util.NumericConverter;
-import de.drazil.nerdsuite.widget.IHitKeyListener;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
-import de.drazil.nerdsuite.widget.VirtualKeyboard;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ultimate64AppStreamView implements IHitKeyListener {
+public class Ultimate64AppStreamView {
 
 	private ImageViewWidget imageViewer;
 	private Socket tcpSocket = null;
@@ -51,7 +51,7 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	private AudioStreamReceiver audioStreamReceiver;
 	private boolean running = false;
 	private boolean virtualKeyboardVisible = true;
-	private VirtualKeyboard vk;
+
 	private Composite parent;
 	private int controlType;
 
@@ -296,7 +296,7 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	@Optional
 	public void virtualKeyboard(@UIEventTopic("VirtualKeyboard") BrokerObject brokerObject) {
 		virtualKeyboardVisible = !virtualKeyboardVisible;
-		vk.setVisible(virtualKeyboardVisible);
+		// vk.setVisible(virtualKeyboardVisible);
 		parent.pack(true);
 
 	}
@@ -316,6 +316,12 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 		}
 	}
 
+	@Inject
+	@Optional
+	public void sendKeyboardSequence(@UIEventTopic("KeyboardSequence") BrokerObject brokerObject) {
+		sendKeyboardSequence(new byte[] { (byte) (((Key) brokerObject.getTransferObject()).getCode() & 0xff) });
+	}
+
 	@PreDestroy
 	public void preDestroy(MPart part) {
 		stopStream();
@@ -325,14 +331,13 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
-		GridLayout layout = new GridLayout(1, true);
-		parent.setLayout(layout);
+		parent.setBackground(Constants.BLACK);
 		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
 		RGB palette[] = new RGB[colorList.size()];
 		for (int i = 0; i < palette.length; i++) {
 			palette[i] = colorList.get(i).getColor().getRGB();
 		}
-		parent.setLayout(new GridLayout());
+		parent.setLayout(new GridLayout(1,true));
 		parent.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -340,33 +345,19 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 				System.out.println(e.character);
 			}
 		});
-		GridData gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
-		gd.verticalAlignment = GridData.FILL;
-		gd.grabExcessHorizontalSpace = true;
-		gd.grabExcessVerticalSpace = false;
-		imageViewer = createImageViewer(parent, new PaletteData(palette));
-		imageViewer.setLayoutData(gd);
-		gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
-		// gd.verticalAlignment = GridData.FILL;
-		gd.grabExcessHorizontalSpace = true;
-		gd.grabExcessVerticalSpace = false;
-		gd.heightHint = 200;
-		vk = new VirtualKeyboard(parent, 0, colorList);
-		vk.addHitKeyListener(this);
-		vk.setLayoutData(gd);
 
+		imageViewer = createImageViewer(parent, new PaletteData(palette));
+		imageViewer.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, true, true));
+		//imageViewer.setLayoutData(new GridData(GridData.BEGINNING,GridData.BEGINNING,false,false));
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
 		startStream();
+		
 
 	}
 
 	public ImageViewWidget createImageViewer(Composite parent, PaletteData pd) {
-		imageViewer = new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED, pd);
-		imageViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		return imageViewer;
+		return new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED, pd);
 	}
 
 	private void startVicStream() {
@@ -531,11 +522,6 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 			targetPos += source.length;
 		}
 		return target;
-	}
-
-	@Override
-	public void keyPressed(Key key) {
-		sendKeyboardSequence(new byte[] { (byte) (key.getCode() & 0xff) });
 	}
 
 }
