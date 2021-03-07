@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -21,6 +20,7 @@ import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,16 +29,21 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.HexViewContent;
@@ -55,11 +60,12 @@ public class HexViewWidget extends Composite {
 	private StyledText hexArea = null;
 	private StyledText textArea = null;
 	private Button autoDiscover;
-	private Button startAnalyse;
+	private Button startDecode;
 	private Button startAddress;
 	private Button code;
 	private Button binary;
 	private Button undefined;
+
 	private int visibleRows = 0;
 	private IPlatform platform;
 	private List<Range> rangeList;
@@ -316,41 +322,34 @@ public class HexViewWidget extends Composite {
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = true;
 		gd.verticalSpan = 2;
-		gd.widthHint = 400;
+		// gd.widthHint = 400;
 		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.getTable().setLinesVisible(true);
 		tableViewer.setCellEditors(new CellEditor[] { new TextCellEditor(tableViewer.getTable()) });
-		tableViewer.setColumnProperties(new String[] { "DISASM" });
-		tableViewer.setCellModifier(new ICellModifier() {
-
-			@Override
-			public void modify(Object element, String property, Object value) {
-				if (element instanceof Item) {
-					element = ((Item) element).getData();
-				}
-				((InstructionLine) element).setLabelName((String) value);
-				tableViewer.refresh();
-			}
-
-			@Override
-			public Object getValue(Object element, String property) {
-				return ((InstructionLine) element).getLabelName();
-			}
-
-			@Override
-			public boolean canModify(Object element, String property) {
-				return true;
-			}
-		});
-
-		TableViewerColumn tableViewerColumn1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		ColumnLabelProvider labelProvider1 = new ColumnLabelProvider() {
+		tableViewer.setColumnProperties(new String[] { "ADDRESS", "LABEL", "DISASM" });
+		/*
+		 * tableViewer.setCellModifier(new ICellModifier() {
+		 * 
+		 * @Override public void modify(Object element, String property, Object value) {
+		 * if (element instanceof Item) { element = ((Item) element).getData(); }
+		 * ((InstructionLine) element).setLabelName((String) value);
+		 * tableViewer.refresh(); }
+		 * 
+		 * @Override public Object getValue(Object element, String property) { return
+		 * ((InstructionLine) element).getLabelName(); }
+		 * 
+		 * @Override public boolean canModify(Object element, String property) { return
+		 * "LABEL".equals(property); } });
+		 */
+		TableViewerColumn tableViewerColumnAddress = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn tableViewerColumnCode = new TableViewerColumn(tableViewer, SWT.NONE);
+		ColumnLabelProvider labelProviderAddress = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				InstructionLine il = (InstructionLine) element;
 				Object[] userObject = (Object[]) il.getUserObject();
-				String s = String.format("%s: %-30s %-13s %s %-15s %s", userObject[0], userObject[1], userObject[2],
-						userObject[3], userObject[4], userObject[5]);
+				String s = String.format("%s", userObject[0]);
 				return s;
 			}
 
@@ -359,35 +358,151 @@ public class HexViewWidget extends Composite {
 				return Constants.EDITOR_FONT;
 			}
 		};
-		tableViewerColumn1.setLabelProvider(labelProvider1);
-		TableColumn codeLine = tableViewerColumn1.getColumn();
-		codeLine.setWidth(1000);
+
+		ColumnLabelProvider labelProviderLabel = new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				InstructionLine il = (InstructionLine) element;
+				Object[] userObject = (Object[]) il.getUserObject();
+				String s = String.format("%s", userObject[1]);
+				return s;
+			}
+
+			@Override
+			public Font getFont(Object element) {
+				return Constants.EDITOR_FONT;
+			}
+		};
+		ColumnLabelProvider labelProviderCode = new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				InstructionLine il = (InstructionLine) element;
+				Object[] userObject = (Object[]) il.getUserObject();
+				String s = String.format("%-13s %s %-15s %s", userObject[2], userObject[3], userObject[4],
+						userObject[5]);
+				return s;
+			}
+
+			@Override
+			public Font getFont(Object element) {
+				return Constants.EDITOR_FONT;
+			}
+		};
+		tableViewerColumnAddress.setLabelProvider(labelProviderAddress);
+		tableViewerColumnLabel.setLabelProvider(labelProviderLabel);
+		tableViewerColumnCode.setLabelProvider(labelProviderCode);
+		TableColumn addressLine = tableViewerColumnAddress.getColumn();
+		addressLine.setWidth(50);
+
+		TableColumn labelLine = tableViewerColumnLabel.getColumn();
+		labelLine.setWidth(200);
+		TableColumn codeLine = tableViewerColumnCode.getColumn();
+		codeLine.setWidth(500);
 
 		tableViewer.setContentProvider(new ArrayContentProvider());
 		tableViewer.getTable().setLayoutData(gd);
+
+		final TableEditor editor = new TableEditor(tableViewer.getTable());
+		editor.horizontalAlignment = SWT.LEFT;
+		editor.grabHorizontal = true;
+		tableViewer.getTable().addListener(SWT.MouseDown, new Listener() {
+			public void handleEvent(Event event) {
+				Rectangle clientArea = tableViewer.getTable().getClientArea();
+				Point pt = new Point(event.x, event.y);
+				int index = tableViewer.getTable().getTopIndex();
+				while (index < tableViewer.getTable().getItemCount()) {
+					boolean visible = false;
+					final TableItem item = tableViewer.getTable().getItem(index);
+					Rectangle rect = item.getBounds(1);
+
+					if (rect.contains(pt)) {
+						final Text text = new Text(tableViewer.getTable(), SWT.NONE);
+						text.setFont(Constants.C64_Pro_Mono_FONT);
+
+						Listener textListener = new Listener() {
+							public void handleEvent(final Event e) {
+								switch (e.type) {
+								case SWT.FocusOut:
+									item.setText(1, text.getText());
+									text.dispose();
+									break;
+								case SWT.Traverse:
+									switch (e.detail) {
+									case SWT.TRAVERSE_RETURN:
+										item.setText(1, text.getText());
+										// FALL THROUGH
+									case SWT.TRAVERSE_ESCAPE:
+										text.dispose();
+										e.doit = false;
+									}
+									break;
+								}
+							}
+						};
+						text.addListener(SWT.FocusOut, textListener);
+						text.addListener(SWT.Traverse, textListener);
+						editor.setEditor(text, item, 1);
+						text.setText(item.getText(1));
+						text.selectAll();
+						text.setFocus();
+						return;
+					}
+					if (!visible && rect.intersects(clientArea)) {
+						visible = true;
+					}
+					if (!visible)
+						return;
+					index++;
+				}
+			}
+		});
 
 		gd = new GridData();
 		gd.horizontalAlignment = GridData.BEGINNING;
 		gd.verticalAlignment = GridData.FILL;
 		gd.grabExcessVerticalSpace = false;
-		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessHorizontalSpace = false;
+		// gd.minimumWidth = 450;
 		gd.horizontalSpan = 3;
 
-		RowLayout rowLayout = new RowLayout();
-		rowLayout.wrap = false;
-		rowLayout.pack = false;
-		rowLayout.justify = true;
-		rowLayout.marginLeft = 5;
-		rowLayout.marginTop = 5;
-		rowLayout.marginRight = 5;
-		rowLayout.marginBottom = 5;
-		rowLayout.spacing = 0;
+		/*
+		 * RowLayout layout = new RowLayout(); rowLayout.wrap = false; rowLayout.pack =
+		 * false; rowLayout.justify = true; rowLayout.marginLeft = 5;
+		 * rowLayout.marginTop = 5; rowLayout.marginRight = 5; rowLayout.marginBottom =
+		 * 5; rowLayout.spacing = 0;
+		 */
+		GridLayout layout2 = new GridLayout(4, false);
 
 		Composite c = new Composite(this, SWT.NONE);
-		c.setLayout(rowLayout);
+		c.setLayout(layout2);
 
+		GridData gd2 = new GridData();
+		gd2.horizontalAlignment = GridData.BEGINNING;
+		gd2.horizontalSpan = 1;
+		gd2.grabExcessHorizontalSpace = false;
+		autoDiscover = new Button(c, SWT.CHECK);
+		autoDiscover.setText("AutoDiscover Mode");
+		autoDiscover.setLayoutData(gd2);
+
+		gd2 = new GridData();
+		gd2.horizontalAlignment = GridData.BEGINNING;
+		gd2.horizontalSpan = 1;
+		gd2.grabExcessHorizontalSpace = false;
+		startAddress = new Button(c, SWT.CHECK);
+		startAddress.setText("First two bytes represent StartAddress");
+		startAddress.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				prepareContent();
+			}
+		});
+
+		gd2 = new GridData();
+		gd2.horizontalAlignment = GridData.BEGINNING;
+		gd2.horizontalSpan = 4;
 		Group group = new Group(c, SWT.NONE);
 		group.setLayout(new RowLayout(SWT.HORIZONTAL));
+		group.setLayoutData(gd2);
 
 		code = new Button(group, SWT.RADIO);
 		code.setBackground(Constants.CODE_COLOR);
@@ -395,6 +510,7 @@ public class HexViewWidget extends Composite {
 		code.setText("Code");
 		code.setSelection(true);
 		code.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedRangeType = RangeType.Code;
@@ -410,6 +526,7 @@ public class HexViewWidget extends Composite {
 		binary.setBackground(Constants.BINARY_COLOR);
 		binary.setForeground(Constants.WHITE);
 		binary.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedRangeType = RangeType.Binary;
@@ -424,6 +541,7 @@ public class HexViewWidget extends Composite {
 		undefined.setText("Undefined");
 		undefined.setBackground(Constants.WHITE);
 		undefined.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectedRangeType = RangeType.Unspecified;
@@ -434,14 +552,9 @@ public class HexViewWidget extends Composite {
 			}
 		});
 
-		startAddress = new Button(c, SWT.CHECK);
-		startAddress.setText("First two bytes represent StartAddress");
-		startAddress.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				prepareContent();
-			}
-		});
+		startDecode = new Button(group, SWT.PUSH);
+		startDecode.setFont(Constants.FontAwesome5ProSolid);
+		startDecode.setText("\ue059");
 
 		c.setLayoutData(gd);
 
@@ -460,7 +573,7 @@ public class HexViewWidget extends Composite {
 
 		// ==================
 		gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
+		gd.horizontalAlignment = GridData.BEGINNING;
 		gd.verticalAlignment = GridData.BEGINNING;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;
@@ -516,7 +629,7 @@ public class HexViewWidget extends Composite {
 		// ==================
 
 		gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
+		gd.horizontalAlignment = GridData.BEGINNING;
 		gd.verticalAlignment = GridData.BEGINNING;
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = false;

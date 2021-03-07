@@ -35,7 +35,7 @@ public class MountFileHandler {
 			project.setSingleFileProject(true);
 			project.setOpen(true);
 			project.setMountpoint(true);
-			project.setMountLocation(mountFile.getAbsolutePath());
+			project.setMountLocation(String.format("file@%s", mountFile.getAbsolutePath()));
 			project.setIconName(ProjectType.getProjectTypeById("MOUNT_POINT").getIconName());
 			LocalDateTime ldt = LocalDateTime.now();
 			Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
