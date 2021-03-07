@@ -14,6 +14,10 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 07-03-2021:
+- added Ultimate64 Virtual Keyboard
+- added run programs and disk images directly from U64 internal usb devices via FTP access
+
 Last Changes 29-01-2021:
 - added Ultimate64 Debug Stream Viewer
 
