@@ -84,6 +84,12 @@ public class NumericConverter {
 		return value;
 	}
 
+	public static byte[] getLongWord(int value) {
+		byte lo[] = getWord(value >> 16, Endianness.LittleEndian);
+		byte high[] = getWord(value & 0xffff, Endianness.LittleEndian);
+		return new byte[] { high[0], high[1], lo[0], lo[1] };
+	}
+
 	public static byte[] getWord(int value) {
 		return getWord(value, Endianness.LittleEndian);
 	}

@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.storagemedia;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -104,12 +105,13 @@ public class FtpMediaContainer implements IMediaContainer {
 	}
 
 	public byte[] exportEntry(MediaEntry entry) throws Exception {
-		byte[] data = new byte[entry.getSize()];
+		byte[] data = null;
 
 		try {
-			InputStream is = client.retrieveFileStream(entry.getName());
-			int bytesRead = is.read(data, 0, data.length);
-			is.close();
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			boolean b = client.retrieveFile(entry.getName(), bos);
+			data = bos.toByteArray();
+			bos.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

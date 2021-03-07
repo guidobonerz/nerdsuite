@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.model.Key;
 import de.drazil.nerdsuite.model.PlatformColor;
@@ -308,8 +309,9 @@ public class Ultimate64AppStreamView {
 			stopStream();
 			TimeUnit.MILLISECONDS.sleep(100);
 			byte[] data = (byte[]) brokerObject.getTransferObject();
-			loadCode(data, true);
-			TimeUnit.MILLISECONDS.sleep(100);
+			// loadProgram(data, true);
+			loadImage(data, true);
+			TimeUnit.MILLISECONDS.sleep(2000);
 			startStream();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -406,31 +408,59 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
-	private void loadCode(byte[] data) {
-		loadCode(data, true, -1);
+	private void loadProgram(byte[] data) {
+		loadProgram(data, true, -1);
 	}
 
-	private void loadCode(byte[] data, boolean run) {
-		loadCode(data, run, -1);
+	private void loadProgram(byte[] data, boolean run) {
+		loadProgram(data, run, -1);
 	}
 
-	private void loadCode(byte[] data, boolean run, int adress) {
+	private void loadProgram(byte[] data, boolean run, int adress) {
 		openSocket();
 		int cmd_dma = 0xff01;
 		int cmd_dma_run = 0xff02;
 		int cmd_dma_jump = 0xff09;
 		byte[] command = null;
-		if (!run && adress == -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma), NumericConverter.getWord(data.length));
-		} else if (run && adress == -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma_run), NumericConverter.getWord(data.length));
-		} else if (run && adress != -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma_jump), NumericConverter.getWord(data.length + 4),
-					NumericConverter.getWord(1), NumericConverter.getWord(adress));
-		}
 		try {
+			if (!run && adress == -1) {
+				command = buildCommand(NumericConverter.getWord(cmd_dma), NumericConverter.getWord(data.length), data);
+			} else if (run && adress == -1) {
+				command = buildCommand(NumericConverter.getWord(cmd_dma_run), NumericConverter.getWord(data.length),
+						data);
+			} else if (run && adress != -1) {
+				command = buildCommand(NumericConverter.getWord(cmd_dma_jump),
+						NumericConverter.getWord(data.length + 4), NumericConverter.getWord(adress), data);
+			}
+
 			tcpSocket.getOutputStream().write(command);
-			tcpSocket.getOutputStream().write(data);
+			// tcpSocket.getOutputStream().write(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadImage(byte[] data, boolean run) {
+		openSocket();
+		int cmd_dma_mount_img = 0xff0a;
+		int cmd_dma_run_img = 0xff0b;
+
+		byte l[] = NumericConverter.getLongWord(data.length);
+		byte length[] = new byte[] { l[0], l[1], l[2] };
+
+		byte[] command = null;
+		try {
+			if (!run) {
+				command = buildCommand(NumericConverter.getWord(cmd_dma_mount_img), length, data);
+			} else {
+				command = buildCommand(NumericConverter.getWord(cmd_dma_run_img), length, data);
+			}
+
+			tcpSocket.getOutputStream().write(command);
+
+			tcpSocket.getOutputStream().flush();
+
+			closeSocket();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
