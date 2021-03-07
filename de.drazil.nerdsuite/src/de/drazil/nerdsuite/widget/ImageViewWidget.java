@@ -10,13 +10,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.util.ImageFactory;
 import lombok.Data;
 
@@ -91,8 +89,7 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 			} else {
 				skipCount = 20;
 				ImageData imageData = ImageFactory.createImage("images/FuBK-Testbild.png").getImageData();
-				// double ratio = ((double) getClientArea().width / (double) imageData.width);
-				double ratio = ((double) getParent().getSize().y / (double) getParent().getSize().x);
+				double ratio = ((double) getParent().getSize().y / (double) imageData.height);
 				scaledWidth = (int) (imageData.width * ratio);
 				scaledHeight = getParent().getSize().y;
 				Image image = new Image(getDisplay(), imageData.scaledTo(scaledWidth, scaledHeight));

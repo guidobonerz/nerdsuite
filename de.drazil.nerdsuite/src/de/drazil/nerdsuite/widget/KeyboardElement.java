@@ -113,14 +113,13 @@ public class KeyboardElement extends Canvas implements PaintListener {
 				e.gc.drawString(key.getDisplay(), xText, yText);
 				if ((key.getOptionState() & 8) == 8 && !key.isSymbol()) {
 					e.gc.setForeground(Constants.WHITE);
-					// e.gc.setLineWidth(2);
 					e.gc.drawRectangle(xText - 1, yText - 1, textBounds.x + 1, textBounds.y + 1);
 				}
 			}
 			if (mouseIn) {
 				e.gc.setForeground(Constants.BRIGHT_ORANGE);
 				e.gc.setLineWidth(3);
-				e.gc.drawRoundRectangle(3, 3, calculatedSize - 6, SIZE-6, 3, 3);
+				e.gc.drawRoundRectangle(3, 3, calculatedSize - 6, SIZE - 6, 3, 3);
 			}
 		}
 	}

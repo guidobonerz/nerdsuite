@@ -25,7 +25,6 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -184,8 +183,9 @@ public class Ultimate64AppStreamView {
 		if (!running) {
 
 			running = true;
-			startVicStream();
-			startSidStream();
+			String targetAdress = "10.100.200.205";
+			startVicStream(0, targetAdress);
+			startSidStream(0, targetAdress);
 			imageViewer.drawImage(false);
 
 			videoThread = new Thread(videoStreamReceiver);
@@ -337,7 +337,7 @@ public class Ultimate64AppStreamView {
 		for (int i = 0; i < palette.length; i++) {
 			palette[i] = colorList.get(i).getColor().getRGB();
 		}
-		parent.setLayout(new GridLayout(1,true));
+		parent.setLayout(new GridLayout(1, true));
 		parent.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -348,11 +348,9 @@ public class Ultimate64AppStreamView {
 
 		imageViewer = createImageViewer(parent, new PaletteData(palette));
 		imageViewer.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, true, true));
-		//imageViewer.setLayoutData(new GridData(GridData.BEGINNING,GridData.BEGINNING,false,false));
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
 		startStream();
-		
 
 	}
 
@@ -360,11 +358,14 @@ public class Ultimate64AppStreamView {
 		return new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED, pd);
 	}
 
-	private void startVicStream() {
+	private void startVicStream(int duration, String target) {
+		byte durationArray[] = NumericConverter.getWord(duration);
+		byte targetArray[] = target.getBytes();
+		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
 		openSocket();
 		try {
-			tcpSocket.getOutputStream().write(buildCommand(NumericConverter.getWord(0xff20),
-					new byte[] { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 }));
+			tcpSocket.getOutputStream()
+					.write(buildCommand(NumericConverter.getWord(0xff20), length, durationArray, targetArray));
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -382,11 +383,14 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
-	private void startSidStream() {
+	private void startSidStream(int duration, String target) {
+		byte durationArray[] = NumericConverter.getWord(duration);
+		byte targetArray[] = target.getBytes();
+		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
 		openSocket();
 		try {
-			tcpSocket.getOutputStream().write(buildCommand(NumericConverter.getWord(0xff21),
-					new byte[] { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 }));
+			tcpSocket.getOutputStream()
+					.write(buildCommand(NumericConverter.getWord(0xff21), length, durationArray, targetArray));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
