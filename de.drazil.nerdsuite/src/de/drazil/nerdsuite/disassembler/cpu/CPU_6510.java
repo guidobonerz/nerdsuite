@@ -80,31 +80,16 @@ public class CPU_6510 extends AbstractCPU {
 					} else if ("ind".equals(addressingMode)) {
 						// detect jump table
 						if (value.getValue() <= pc.getValue() + byteArray.length - 2) {
-							// detectIndirectJumpTable(byteArray, pc,
-							// currentLine, opcode,
-							// value, platformData);
+							
 						}
 					}
 
-					/*
-					 * if (doSplitLine) { InstructionLine jumpLine = getInstructionLineByPC(value);
-					 * if (jumpLine != null && !jumpLine.getProgramCounter().matches(value)) {
-					 * InstructionLine splitLine = split(jumpLine, pc, value.sub(pc));
-					 * splitLine.setReferenceType(ReferenceType.JumpMark);
-					 * splitLine.setInstructionType(InstructionType.Asm); } }
-					 */
+					
 
 				} else if ("abs".equals(addressingMode) || "absx".equals(addressingMode)
 						|| "absy".equals(addressingMode)) {
 					// direkt pointers
-					/*
-					 * InstructionLine dataLine = getInstructionLineByPC(value); if (dataLine !=
-					 * null && !dataLine.getProgramCounter().matches(value)) { InstructionLine
-					 * splitLine = split(dataLine, pc, value.sub(pc));
-					 * splitLine.setInstructionType(InstructionType.Data);
-					 * splitLine.setReferenceType(ReferenceType.DataReference);
-					 * splitLine.setPassed(true); }
-					 */
+					
 
 				}
 

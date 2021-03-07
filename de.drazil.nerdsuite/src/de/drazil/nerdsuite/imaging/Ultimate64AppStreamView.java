@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -20,6 +21,8 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
@@ -27,7 +30,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.disassembler.cpu.Endianness;
 import de.drazil.nerdsuite.handler.BrokerObject;
+import de.drazil.nerdsuite.model.Key;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
@@ -44,6 +50,10 @@ public class Ultimate64AppStreamView {
 	private VideoStreamReceiver videoStreamReceiver;
 	private AudioStreamReceiver audioStreamReceiver;
 	private boolean running = false;
+	private boolean virtualKeyboardVisible = true;
+
+	private Composite parent;
+	private int controlType;
 
 	public Ultimate64AppStreamView() {
 
@@ -152,6 +162,19 @@ public class Ultimate64AppStreamView {
 	}
 
 	@Inject
+
+	@Optional
+	public void dumpMemory(@UIEventTopic("ReadMemory") BrokerObject brokerObject) {
+		readMemory(0x400, 200);
+	}
+
+	@Inject
+	@Optional
+	public void poke(@UIEventTopic("WriteMemory") BrokerObject brokerObject) {
+		writeMemory(0x0400, new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
+	}
+
+	@Inject
 	@Optional
 	public void startStream(@UIEventTopic("StartStream") BrokerObject brokerObject) {
 		startStream();
@@ -161,8 +184,9 @@ public class Ultimate64AppStreamView {
 		if (!running) {
 
 			running = true;
-			startVicStream();
-			startSidStream();
+			String targetAdress = "10.100.200.205";
+			startVicStream(0, targetAdress);
+			startSidStream(0, targetAdress);
 			imageViewer.drawImage(false);
 
 			videoThread = new Thread(videoStreamReceiver);
@@ -272,7 +296,10 @@ public class Ultimate64AppStreamView {
 	@Inject
 	@Optional
 	public void virtualKeyboard(@UIEventTopic("VirtualKeyboard") BrokerObject brokerObject) {
-		sendKeyboardSequence("A\n".getBytes());
+		virtualKeyboardVisible = !virtualKeyboardVisible;
+		// vk.setVisible(virtualKeyboardVisible);
+		parent.pack(true);
+
 	}
 
 	@Inject
@@ -282,12 +309,19 @@ public class Ultimate64AppStreamView {
 			stopStream();
 			TimeUnit.MILLISECONDS.sleep(100);
 			byte[] data = (byte[]) brokerObject.getTransferObject();
-			loadCode(data, true);
-			TimeUnit.MILLISECONDS.sleep(100);
+			// loadProgram(data, true);
+			loadImage(data, true);
+			TimeUnit.MILLISECONDS.sleep(2000);
 			startStream();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Inject
+	@Optional
+	public void sendKeyboardSequence(@UIEventTopic("KeyboardSequence") BrokerObject brokerObject) {
+		sendKeyboardSequence(new byte[] { (byte) (((Key) brokerObject.getTransferObject()).getCode() & 0xff) });
 	}
 
 	@PreDestroy
@@ -298,13 +332,24 @@ public class Ultimate64AppStreamView {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
+		this.parent = parent;
+		parent.setBackground(Constants.BLACK);
 		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
 		RGB palette[] = new RGB[colorList.size()];
 		for (int i = 0; i < palette.length; i++) {
 			palette[i] = colorList.get(i).getColor().getRGB();
 		}
-		parent.setLayout(new GridLayout());
+		parent.setLayout(new GridLayout(1, true));
+		parent.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				sendKeyboardSequence(new byte[] { (byte) e.character });
+				System.out.println(e.character);
+			}
+		});
+
 		imageViewer = createImageViewer(parent, new PaletteData(palette));
+		imageViewer.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, true, true));
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
 		startStream();
@@ -312,16 +357,17 @@ public class Ultimate64AppStreamView {
 	}
 
 	public ImageViewWidget createImageViewer(Composite parent, PaletteData pd) {
-		imageViewer = new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED, pd);
-		imageViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		return imageViewer;
+		return new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED, pd);
 	}
 
-	private void startVicStream() {
+	private void startVicStream(int duration, String target) {
+		byte durationArray[] = NumericConverter.getWord(duration);
+		byte targetArray[] = target.getBytes();
+		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
 		openSocket();
 		try {
-			tcpSocket.getOutputStream().write(buildCommand(NumericConverter.getWord(0xff20),
-					new byte[] { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 }));
+			tcpSocket.getOutputStream()
+					.write(buildCommand(NumericConverter.getWord(0xff20), length, durationArray, targetArray));
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -339,11 +385,14 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
-	private void startSidStream() {
+	private void startSidStream(int duration, String target) {
+		byte durationArray[] = NumericConverter.getWord(duration);
+		byte targetArray[] = target.getBytes();
+		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
 		openSocket();
 		try {
-			tcpSocket.getOutputStream().write(buildCommand(NumericConverter.getWord(0xff21),
-					new byte[] { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 }));
+			tcpSocket.getOutputStream()
+					.write(buildCommand(NumericConverter.getWord(0xff21), length, durationArray, targetArray));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -359,31 +408,59 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
-	private void loadCode(byte[] data) {
-		loadCode(data, true, -1);
+	private void loadProgram(byte[] data) {
+		loadProgram(data, true, -1);
 	}
 
-	private void loadCode(byte[] data, boolean run) {
-		loadCode(data, run, -1);
+	private void loadProgram(byte[] data, boolean run) {
+		loadProgram(data, run, -1);
 	}
 
-	private void loadCode(byte[] data, boolean run, int adress) {
+	private void loadProgram(byte[] data, boolean run, int adress) {
 		openSocket();
 		int cmd_dma = 0xff01;
 		int cmd_dma_run = 0xff02;
 		int cmd_dma_jump = 0xff09;
 		byte[] command = null;
-		if (!run && adress == -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma), NumericConverter.getWord(data.length));
-		} else if (run && adress == -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma_run), NumericConverter.getWord(data.length));
-		} else if (run && adress != -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma_jump), NumericConverter.getWord(data.length + 4),
-					NumericConverter.getWord(1), NumericConverter.getWord(adress));
-		}
 		try {
+			if (!run && adress == -1) {
+				command = buildCommand(NumericConverter.getWord(cmd_dma), NumericConverter.getWord(data.length), data);
+			} else if (run && adress == -1) {
+				command = buildCommand(NumericConverter.getWord(cmd_dma_run), NumericConverter.getWord(data.length),
+						data);
+			} else if (run && adress != -1) {
+				command = buildCommand(NumericConverter.getWord(cmd_dma_jump),
+						NumericConverter.getWord(data.length + 4), NumericConverter.getWord(adress), data);
+			}
+
 			tcpSocket.getOutputStream().write(command);
-			tcpSocket.getOutputStream().write(data);
+			// tcpSocket.getOutputStream().write(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadImage(byte[] data, boolean run) {
+		openSocket();
+		int cmd_dma_mount_img = 0xff0a;
+		int cmd_dma_run_img = 0xff0b;
+
+		byte l[] = NumericConverter.getLongWord(data.length);
+		byte length[] = new byte[] { l[0], l[1], l[2] };
+
+		byte[] command = null;
+		try {
+			if (!run) {
+				command = buildCommand(NumericConverter.getWord(cmd_dma_mount_img), length, data);
+			} else {
+				command = buildCommand(NumericConverter.getWord(cmd_dma_run_img), length, data);
+			}
+
+			tcpSocket.getOutputStream().write(command);
+
+			tcpSocket.getOutputStream().flush();
+
+			closeSocket();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -399,11 +476,45 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
+	private void readMemory(int address, int length) {
+		openSocket();
+		try {
+
+			tcpSocket.getOutputStream().write(buildCommand(NumericConverter.getWord(0xff74),
+					NumericConverter.getWord(length + 2), buildCommand(NumericConverter.getWord(address))));
+			InputStream is = tcpSocket.getInputStream();
+			TimeUnit.MILLISECONDS.sleep(500);
+			int dataAvailable = 0;
+			byte data[] = null;
+			is.read();
+			while ((dataAvailable = is.available()) > 0) {
+				data = new byte[dataAvailable];
+				is.read(data, 0, dataAvailable);
+			}
+			int a = 0;
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	private void writeMemory(int address, byte[] data) {
+		openSocket();
+		try {
+			tcpSocket.getOutputStream()
+					.write(buildCommand(NumericConverter.getWord(0xff06), NumericConverter.getWord(data.length + 2),
+							buildCommand(NumericConverter.getWord(address)), buildCommand(data)));
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
 	private void sendKeyboardSequence(byte[] data) {
 		openSocket();
 		try {
 			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x00, (byte) 0x00 }));
+					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x01, (byte) 0x00 }));
 			tcpSocket.getOutputStream().write(data);
 
 		} catch (IOException e) {
@@ -446,4 +557,5 @@ public class Ultimate64AppStreamView {
 		}
 		return target;
 	}
+
 }

@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
@@ -11,8 +12,9 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
-import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.util.ImageFactory;
 import lombok.Data;
 
@@ -40,11 +42,20 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 
 	public ImageViewWidget(Composite parent, int style, PaletteData paletteData) {
 		super(parent, style);
+
 		showDummy = true;
 		this.paletteData = paletteData;
 		buffer = new ArrayList<ID>();
-		setBackground(Constants.WHITE);
 		addPaintListener(this);
+		getParent().addListener(SWT.Resize, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+
+				scaledHeight = getParent().getSize().y;
+				scaledWidth = (int) (getParent().getSize().y * 1.411);
+				getParent().layout(true, true);
+			}
+		});
 	}
 
 	public void paintControl(PaintEvent e) {
@@ -63,9 +74,10 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 									| (imageData.data[i] & 0xF0) >> 4);
 						}
 
-						double ratio = ((double) getClientArea().width / (double) id.getImageData().width);
-						scaledWidth = getClientArea().width;
-						scaledHeight = (int) (id.getImageData().height * ratio);
+						double ratio = ((double) getParent().getSize().y / (double) id.getImageData().height);
+						scaledWidth = (int) (id.getImageData().width * ratio);
+						scaledHeight = getParent().getSize().y;
+
 						Image image = new Image(getDisplay(), id.getImageData().scaledTo(scaledWidth, scaledHeight));
 
 						e.gc.drawImage(image, 0, 0);
@@ -77,9 +89,9 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 			} else {
 				skipCount = 20;
 				ImageData imageData = ImageFactory.createImage("images/FuBK-Testbild.png").getImageData();
-				double ratio = ((double) getClientArea().width / (double) imageData.width);
-				scaledWidth = getClientArea().width;
-				scaledHeight = (int) (imageData.height * ratio);
+				double ratio = ((double) getParent().getSize().y / (double) imageData.height);
+				scaledWidth = (int) (imageData.width * ratio);
+				scaledHeight = getParent().getSize().y;
 				Image image = new Image(getDisplay(), imageData.scaledTo(scaledWidth, scaledHeight));
 				e.gc.drawImage(image, 0, 0);
 				image.dispose();
@@ -107,7 +119,7 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(800, 800);
+		return new Point(scaledWidth, scaledHeight);
 	}
 
 }

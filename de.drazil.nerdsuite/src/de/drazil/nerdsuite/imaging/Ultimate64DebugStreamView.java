@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -46,7 +47,6 @@ public class Ultimate64DebugStreamView {
 		@Getter
 		private boolean running = false;
 		private DatagramSocket socket;
-		private int index = 0;
 
 		public synchronized void run() {
 			try {
@@ -64,10 +64,11 @@ public class Ultimate64DebugStreamView {
 
 							for (int i = 4; i < 1444; i += 4) {
 								int adr = ((int) ((buf[i + 1] << 8) | (buf[i + 0] & 0xff)) & 0xffff);
-
 								int data = ((int) (buf[i + 2] & 0xff));
 								int flags = ((int) (buf[i + 3] & 0xff));
+
 								if (mem[adr] != data) {
+
 									mem[adr] = data;
 									imageViewer.setByte(adr, data, (flags & 1) == 1);
 								}
@@ -133,7 +134,7 @@ public class Ultimate64DebugStreamView {
 	@Inject
 	@Optional
 	public void virtualKeyboard(@UIEventTopic("VirtualKeyboard") BrokerObject brokerObject) {
-		sendKeyboardSequence("A\n".getBytes());
+
 	}
 
 	@Inject
@@ -171,6 +172,8 @@ public class Ultimate64DebugStreamView {
 		imageViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		return imageViewer;
 	}
+
+	
 
 	private void startDebugStream() {
 		openSocket();
@@ -229,18 +232,6 @@ public class Ultimate64DebugStreamView {
 		try {
 			tcpSocket.getOutputStream()
 					.write(buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void sendKeyboardSequence(byte[] data) {
-		openSocket();
-		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x00, (byte) 0x00 }));
-			tcpSocket.getOutputStream().write(data);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
