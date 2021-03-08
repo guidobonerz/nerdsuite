@@ -88,13 +88,13 @@ public class VirtualKeyboard extends Composite implements IHitKeyListener {
 				key.setOptionState(1);
 				optionState |= key.getIndex();
 			} else {
-				optionState &= ((key.getIndex() ^ 0b11111) & 0b11111);
+				optionState &= ((key.getIndex() ^ 0b11111111) & 0b11111111);
 				key.setOptionState(0);
 			}
 
 			for (KeyRow row : matrix.getKeyRows()) {
 				for (Key k : row.getKeys()) {
-					if (k.getType().equals("KEY")) {
+					if (k.getType().equals("KEY") || k.getType().equals("COLOR")) {
 						k.setOptionState(optionState);
 						keyList.get(k.getId()).redraw();
 					}

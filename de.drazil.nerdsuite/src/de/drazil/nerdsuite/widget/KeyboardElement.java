@@ -59,7 +59,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 					}
 					fireHitKey(key);
 				} else {
-					backgroundColor = Constants.DARK_GREY;
+					//backgroundColor = Constants.DARK_GREY;
 					fireHitKey(key);
 				}
 				redraw();
