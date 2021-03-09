@@ -135,6 +135,18 @@
 						null,
 						null
 					]
+				},
+				{
+					"id": 0,
+					"type": "FILLER",
+					"size": 0.3
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"name": "RUN",
+					"size": 3,
+					"text": "RUN"
 				}
 			]
 		},
@@ -380,6 +392,18 @@
 						"19",
 						null
 					]
+				},
+				{
+					"id": 0,
+					"type": "FILLER",
+					"size": 0.3
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"name": "LIST",
+					"size": 3,
+					"text": "LIST"
 				}
 			]
 		},
@@ -870,6 +894,18 @@
 						"20",
 						null
 					]
+				},
+				{
+					"id": 0,
+					"type": "FILLER",
+					"size": 0.3
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"name": "DIR",
+					"size": 3,
+					"text": "DIR"
 				}
 			]
 		},

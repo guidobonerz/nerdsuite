@@ -331,32 +331,51 @@ public class Ultimate64AppStreamView {
 		if (key.getType().equals("KEY") || key.getType().equals("FUNCTION")
 				|| (key.getType().equals("COLOR") && key.getOptionState() < 32)) {
 			if (code == 3) {
-				byte ba[] = new byte[] {};
-
-				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
-						buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte)(255) });
-				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
-						buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte)(127) });
 				try {
+					byte ba[] = new byte[] {};
+
+					ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+							buildCommand(NumericConverter.getWord(0x0314)), new byte[] { (byte) (0x7b) });
+					ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+							buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte) (127) });
+					write(ba);
+					ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+							buildCommand(NumericConverter.getWord(0x0314)), new byte[] { (byte) (0x31) });
+					ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+							buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte) (255) });
+
 					write(ba);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				//writeMemory(0x91, new byte[] { (byte)(128) });
-				//writeMemory(0x91, new byte[] { (byte)(127) });
+
 			} else {
-				sendKeyboardSequence(new byte[] { (byte) (code & 0xff) });
+				byte codes[] = new byte[] { (byte) (code & 0xff) };
+				if (key.getName().equals("RUN")) {
+					codes = "RUN".getBytes();
+				} else if (key.getName().equals("LIST")) {
+					codes = "LIST".getBytes();
+				} else if (key.getName().equals("DIR")) {
+					codes = "LOAD\"$\",8".getBytes();
+				} else if (key.getName().equals("LOAD*")) {
+
+				} else {
+
+				}
+				sendKeyboardSequence(buildCommand(codes,new byte[] {13}));
 			}
-		} else if (key.getType().equals("COLOR")) {
+		} else if (key.getType().equals("COLOR"))
+
+		{
 			byte ba[] = new byte[] {};
 
 			if ((key.getOptionState() & 32) == 32) {
 				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
-						buildCommand(NumericConverter.getWord(0xd020)), new byte[] { key.getIndex().byteValue() });
+						NumericConverter.getWord(0xd020), new byte[] { key.getIndex().byteValue() });
 			}
 			if ((key.getOptionState() & 64) == 64) {
 				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
-						buildCommand(NumericConverter.getWord(0xd021)), new byte[] { key.getIndex().byteValue() });
+						NumericConverter.getWord(0xd021), new byte[] { key.getIndex().byteValue() });
 			}
 			try {
 				write(ba);
@@ -492,6 +511,15 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
+	private void wait(int delay) {
+		openSocket();
+		try {
+			write(buildCommand(NumericConverter.getWord(0xff05), NumericConverter.getWord(delay)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void readMemory(int address, int length) {
 		openSocket();
 		try {
@@ -528,8 +556,7 @@ public class Ultimate64AppStreamView {
 	private void sendKeyboardSequence(byte[] data) {
 		openSocket();
 		try {
-			write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x01, (byte) 0x00 }));
-			write(data);
+			write(buildCommand(NumericConverter.getWord(0xff03), NumericConverter.getWord(data.length), data));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

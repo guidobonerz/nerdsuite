@@ -71,7 +71,7 @@ public class VirtualKeyboard extends Composite implements IHitKeyListener {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(620, 7 * 30);
+		return new Point(750, 7 * 30);
 	}
 
 	public void addHitKeyListener(IHitKeyListener listener) {
