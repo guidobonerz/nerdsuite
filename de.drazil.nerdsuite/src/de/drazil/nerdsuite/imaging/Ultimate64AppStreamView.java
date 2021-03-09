@@ -352,17 +352,17 @@ public class Ultimate64AppStreamView {
 			} else {
 				byte codes[] = new byte[] { (byte) (code & 0xff) };
 				if (key.getName().equals("RUN")) {
-					codes = "RUN".getBytes();
+					codes = buildCommand("RUN".getBytes(), new byte[] { 13 });
 				} else if (key.getName().equals("LIST")) {
-					codes = "LIST".getBytes();
+					codes = buildCommand("LIST".getBytes(), new byte[] { 13 });
 				} else if (key.getName().equals("DIR")) {
-					codes = "LOAD\"$\",8".getBytes();
+					codes = buildCommand("LOAD\"$\",8".getBytes(), new byte[] { 13 });
 				} else if (key.getName().equals("LOAD*")) {
 
 				} else {
 
 				}
-				sendKeyboardSequence(buildCommand(codes,new byte[] {13}));
+				sendKeyboardSequence(codes);
 			}
 		} else if (key.getType().equals("COLOR"))
 
