@@ -330,13 +330,38 @@ public class Ultimate64AppStreamView {
 		int code = key.getCode();
 		if (key.getType().equals("KEY") || key.getType().equals("FUNCTION")
 				|| (key.getType().equals("COLOR") && key.getOptionState() < 32)) {
-			sendKeyboardSequence(new byte[] { (byte) (code & 0xff) });
+			if (code == 3) {
+				byte ba[] = new byte[] {};
+
+				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+						buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte)(255) });
+				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+						buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte)(127) });
+				try {
+					write(ba);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				//writeMemory(0x91, new byte[] { (byte)(128) });
+				//writeMemory(0x91, new byte[] { (byte)(127) });
+			} else {
+				sendKeyboardSequence(new byte[] { (byte) (code & 0xff) });
+			}
 		} else if (key.getType().equals("COLOR")) {
+			byte ba[] = new byte[] {};
+
 			if ((key.getOptionState() & 32) == 32) {
-				writeMemory(0xd020, new byte[] { key.getIndex().byteValue() });
+				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+						buildCommand(NumericConverter.getWord(0xd020)), new byte[] { key.getIndex().byteValue() });
 			}
 			if ((key.getOptionState() & 64) == 64) {
-				writeMemory(0xd021, new byte[] { key.getIndex().byteValue() });
+				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+						buildCommand(NumericConverter.getWord(0xd021)), new byte[] { key.getIndex().byteValue() });
+			}
+			try {
+				write(ba);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -361,7 +386,6 @@ public class Ultimate64AppStreamView {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				sendKeyboardSequence(new byte[] { (byte) e.character });
-				System.out.println(e.character);
 			}
 		});
 
@@ -383,8 +407,7 @@ public class Ultimate64AppStreamView {
 		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
 		openSocket();
 		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff20), length, durationArray, targetArray));
+			write(buildCommand(NumericConverter.getWord(0xff20), length, durationArray, targetArray));
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -394,8 +417,7 @@ public class Ultimate64AppStreamView {
 	private void stopVicStream() {
 		openSocket();
 		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff30), new byte[] { (byte) 0x00, (byte) 0x00 }));
+			write(buildCommand(NumericConverter.getWord(0xff30), new byte[] { (byte) 0x00, (byte) 0x00 }));
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -408,8 +430,7 @@ public class Ultimate64AppStreamView {
 		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
 		openSocket();
 		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff21), length, durationArray, targetArray));
+			write(buildCommand(NumericConverter.getWord(0xff21), length, durationArray, targetArray));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -418,8 +439,7 @@ public class Ultimate64AppStreamView {
 	private void stopSidStream() {
 		openSocket();
 		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff31), new byte[] { (byte) 0x00, (byte) 0x00 }));
+			write(buildCommand(NumericConverter.getWord(0xff31), new byte[] { (byte) 0x00, (byte) 0x00 }));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -456,8 +476,8 @@ public class Ultimate64AppStreamView {
 				}
 			}
 
-			tcpSocket.getOutputStream().write(command);
-			tcpSocket.getOutputStream().write(runObject.getPayload());
+			write(command);
+			write(runObject.getPayload());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -466,8 +486,7 @@ public class Ultimate64AppStreamView {
 	private void reset() {
 		openSocket();
 		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
+			write(buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -477,8 +496,8 @@ public class Ultimate64AppStreamView {
 		openSocket();
 		try {
 
-			tcpSocket.getOutputStream().write(buildCommand(NumericConverter.getWord(0xff74),
-					NumericConverter.getWord(length + 2), buildCommand(NumericConverter.getWord(address))));
+			write(buildCommand(NumericConverter.getWord(0xff74), NumericConverter.getWord(length + 2),
+					buildCommand(NumericConverter.getWord(address))));
 			InputStream is = tcpSocket.getInputStream();
 			TimeUnit.MILLISECONDS.sleep(500);
 			int dataAvailable = 0;
@@ -498,9 +517,8 @@ public class Ultimate64AppStreamView {
 	private void writeMemory(int address, byte[] data) {
 		openSocket();
 		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff06), NumericConverter.getWord(data.length + 2),
-							buildCommand(NumericConverter.getWord(address)), buildCommand(data)));
+			write(buildCommand(NumericConverter.getWord(0xff06), NumericConverter.getWord(data.length + 2),
+					NumericConverter.getWord(address), data));
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -510,13 +528,15 @@ public class Ultimate64AppStreamView {
 	private void sendKeyboardSequence(byte[] data) {
 		openSocket();
 		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x01, (byte) 0x00 }));
-			tcpSocket.getOutputStream().write(data);
-
+			write(buildCommand(NumericConverter.getWord(0xff03), new byte[] { (byte) 0x01, (byte) 0x00 }));
+			write(data);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void write(byte[] data) throws IOException {
+		tcpSocket.getOutputStream().write(data);
 	}
 
 	private Socket openSocket() {

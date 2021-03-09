@@ -10,46 +10,46 @@
     "value" : "#FFFFFF",
     "name" : "White"
   }, {
-    "value" : "#af2a29",
+    "value" : "#68372B",
     "name" : "Red"
   }, {
-    "value" : "#62d8cc",
+    "value" : "#70A4B2",
     "name" : "Cyan"
   }, {
-    "value" : "#b03fb6",
+    "value" : "#6F3D86",
     "name" : "Purple"
   }, {
-    "value" : "#4ac64a",
+    "value" : "#588D43",
     "name" : "Green"
   }, {
-    "value" : "#3739c4",
+    "value" : "#352879",
     "name" : "Blue"
   }, {
-    "value" : "#e4ed4e",
+    "value" : "#B8C76F",
     "name" : "Yellow"
   }, {
-    "value" : "#b6591c",
+    "value" : "#6F4F25",
     "name" : "Orange"
   }, {
-    "value" : "#683808",
+    "value" : "#433900",
     "name" : "Brown"
   }, {
-    "value" : "#ea746c",
+    "value" : "#9A6759",
     "name" : "Pink"
   }, {
-    "value" : "#4d4d4d",
+    "value" : "#444444",
     "name" : "Dark Grey"
   }, {
-    "value" : "#848484",
+    "value" : "#6C6C6C",
     "name" : "Grey"
   }, {
-    "value" : "#a6fa9e",
+    "value" : "#9AD284",
     "name" : "Light Green"
   }, {
-    "value" : "#707ce6",
+    "value" : "#6C5EB5",
     "name" : "Light Blue"
   }, {
-    "value" : "#b6b6b5",
+    "value" : "#959595",
     "name" : "Light Grey"
   } ],
   "platformPointerList" : [ {
