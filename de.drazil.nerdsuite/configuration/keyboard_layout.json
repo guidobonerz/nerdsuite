@@ -135,6 +135,18 @@
 						null,
 						null
 					]
+				},
+				{
+					"id": 0,
+					"type": "FILLER",
+					"size": 0.3
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"name": "RUN",
+					"size": 3,
+					"text": "RUN"
 				}
 			]
 		},
@@ -380,6 +392,18 @@
 						"19",
 						null
 					]
+				},
+				{
+					"id": 0,
+					"type": "FILLER",
+					"size": 0.3
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"name": "LIST",
+					"size": 3,
+					"text": "LIST"
 				}
 			]
 		},
@@ -870,6 +894,18 @@
 						"20",
 						null
 					]
+				},
+				{
+					"id": 0,
+					"type": "FILLER",
+					"size": 0.3
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"name": "DIR",
+					"size": 3,
+					"text": "DIR"
 				}
 			]
 		},
@@ -1314,40 +1350,6 @@
 					"id": 0,
 					"type": "FILLER",
 					"size": 1.5
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"symbol": true,
-					"size": 4,
-					"name": "RUN/STOP",
-					"text": "\ue566",
-					"codeOptions": [
-						"3",
-						"131",
-						"131 ",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue047",
-							"\ue047",
-							"\ue047",
-							"\ue047"
-						],
-						[
-							"\ue566",
-							"\ue566",
-							"\ue566",
-							"\ue566"
-						],
-						[
-							"\ue047",
-							"\ue047",
-							"\ue047",
-							"\ue047"
-						]
-					]
 				}
 			]
 		},
@@ -1775,6 +1777,24 @@
 							"\ue31b"
 						]
 					]
+				},
+				{
+					"id": 0,
+					"type": "OPTION",
+					"toggleButton": true,
+					"name": "FRAME_COLOR",
+					"size": 2,
+					"index": 32,
+					"text": "FC"
+				},
+				{
+					"id": 0,
+					"type": "OPTION",
+					"toggleButton": true,
+					"name": "FRAME_COLOR",
+					"size": 2,
+					"index": 64,
+					"text": "BC"
 				}
 			]
 		},
@@ -2217,6 +2237,40 @@
 						"29",
 						"29",
 						null
+					]
+				},
+				{
+					"id": 0,
+					"type": "KEY",
+					"symbol": true,
+					"size": 4,
+					"name": "RUN/STOP",
+					"text": "\ue566",
+					"codeOptions": [
+						"3",
+						"131",
+						"131 ",
+						null
+					],
+					"displayOptions": [
+						[
+							"\ue047",
+							"\ue047",
+							"\ue047",
+							"\ue047"
+						],
+						[
+							"\ue566",
+							"\ue566",
+							"\ue566",
+							"\ue566"
+						],
+						[
+							"\ue047",
+							"\ue047",
+							"\ue047",
+							"\ue047"
+						]
 					]
 				}
 			]

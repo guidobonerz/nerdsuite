@@ -45,7 +45,7 @@
                 </toolbar>
               </children>
             </children>
-            <children xsi:type="basic:PartStack" xmi:id="_fXHEcH7PEeuLApV-ry2DvA" elementId="de.drazil.nerdsuite.partstack.3">
+            <children xsi:type="basic:PartStack" xmi:id="_fXHEcH7PEeuLApV-ry2DvA" elementId="de.drazil.nerdsuite.partstack.">
               <children xsi:type="basic:Part" xmi:id="_qtMwkH6bEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.part.virtualkeyboard" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.VirtualKeyboardView" label="Virtual Keyboard"/>
             </children>
           </children>
