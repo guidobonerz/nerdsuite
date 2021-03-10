@@ -15,6 +15,10 @@ Currently I work mostly on the graphics part.
 Current state: Still buggy and incomplete :-)
 
 Last Changes 07-03-2021:
+- added some direct commands to the Ultimate64 Virtual Keyboard (RUN/LIST/DIR)
+- Set Frame and Backgroundcolor remoteley
+
+Last Changes 07-03-2021:
 - added Ultimate64 Virtual Keyboard
 - added run programs and disk images directly from U64 internal usb devices via FTP access
 
