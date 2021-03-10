@@ -47,6 +47,9 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
+import de.drazil.nerdsuite.model.RunObject;
+import de.drazil.nerdsuite.model.RunObject.Mode;
+import de.drazil.nerdsuite.model.RunObject.Source;
 import de.drazil.nerdsuite.storagemedia.IMediaContainer;
 import de.drazil.nerdsuite.storagemedia.MediaEntry;
 import de.drazil.nerdsuite.storagemedia.MediaFactory;
@@ -141,7 +144,11 @@ public class Explorer implements IDoubleClickListener {
 			try {
 				String fileName = ((Project) o).getMountLocation().split("@")[1];
 				byte[] data = BinaryFileHandler.readFile(new File(fileName), 0);
-				broker.send("LoadAndRun", new BrokerObject("", data));
+				RunObject source = new RunObject();
+				source.setPayload(data);
+				source.setMode(Mode.Run);
+				source.setSource(fileName.toLowerCase().endsWith("d64") ? Source.DiskImage : Source.Program);
+				broker.send("LoadAndRun", new BrokerObject("", source));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -150,7 +157,12 @@ public class Explorer implements IDoubleClickListener {
 			IMediaContainer mediaContainer = MediaFactory.mount((File) entry.getUserObject());
 			try {
 				byte[] data = mediaContainer.exportEntry(entry);
-				broker.send("LoadAndRun", new BrokerObject("", data));
+				RunObject source = new RunObject();
+				source.setPayload(data);
+				source.setMode(Mode.Run);
+				source.setSource(entry.getName().toLowerCase().endsWith("d64") ? Source.DiskImage : Source.Program);
+				broker.send("LoadAndRun", new BrokerObject("", source));
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
