@@ -32,6 +32,6 @@ public class BuildHandler
 		parameters2.add("/Users/drazil/LocalApplications/vice/x64sc.app");
 		parameters2.add("/Users/drazil/.nerdsuiteWorkspace/test1/bin/irq2.prg");
 		toolChain.addToolChainItem(new DefaultToolchainItem("Run", parameters2));
-		toolChain.execute();
+		toolChain.start();
 	}
 }

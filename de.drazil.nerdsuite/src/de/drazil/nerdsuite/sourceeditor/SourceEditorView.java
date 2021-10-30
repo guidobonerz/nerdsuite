@@ -58,15 +58,15 @@ public class SourceEditorView implements IDocument {
 		documentStyler.addRule(new ValueRule("$", "h", 4, new Token(Constants.T_ADRESS)));
 		documentStyler.addRule(new ValueRule("#%", "b", 8, new Token(Constants.T_BINARY)));
 		documentStyler.addRule(new ValueRule("#$", "h", 2, new Token(Constants.T_HEXADECIMAL)));
-
-		for (AssemblerDirective directive : InstructionSet.getDirectiveList()) {
-			documentStyler.addRule(new WordRule(directive.getId(), new Token(Constants.T_DIRECTIVE)));
-		}
-		for (CpuInstruction instruction : InstructionSet.getCpuInstructionList("")) {
-			documentStyler.addRule(new WordRule(instruction.getId(),
-					new Token(CPU_6510.getInstructionTokenKey(instruction.isIllegal(), !instruction.isStable()))));
-		}
-
+		/*
+		 * for (AssemblerDirective directive : InstructionSet.getDirectiveList()) {
+		 * documentStyler.addRule(new WordRule(directive.getId(), new
+		 * Token(Constants.T_DIRECTIVE))); } for (CpuInstruction instruction :
+		 * InstructionSet.getCpuInstructionList("")) { documentStyler.addRule(new
+		 * WordRule(instruction.getId(), new
+		 * Token(CPU_6510.getInstructionTokenKey(instruction.isIllegal(),
+		 * !instruction.isStable())))); }
+		 */
 		// --------------------- erstmal nicht
 		// documentStyler.addRule(new ValueRule("!", ":", new Token("LABEL")));
 		// scanner.addRule(new SingleLineRule("!", new Token("LABEL")));

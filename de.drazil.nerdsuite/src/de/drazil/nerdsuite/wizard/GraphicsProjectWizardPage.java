@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -109,10 +110,12 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 
 		List<TargetPlatform> targetPlatformList = PlatformFactory.getTargetPlatFormList();
 		userData.put(ProjectWizard.TARGET_PLATFORM, targetPlatformList.get(0).getId());
-		List<GraphicFormat> graphicFormatList = GraphicFormatFactory.getFormatByPrefix(targetPlatformList.get(0).getId());
+		List<GraphicFormat> graphicFormatList = GraphicFormatFactory
+				.getFormatByPrefix(targetPlatformList.get(0).getId());
 		gf = graphicFormatList.get(0);
 		userData.put(ProjectWizard.PROJECT_TYPE, graphicFormatList.get(0).getId());
-		List<GraphicFormatVariant> graphicFormatVariantList = GraphicFormatFactory.getFormatVariantListByPrefix(graphicFormatList.get(0).getId());
+		List<GraphicFormatVariant> graphicFormatVariantList = GraphicFormatFactory
+				.getFormatVariantListByPrefix(graphicFormatList.get(0).getId());
 		gfv = graphicFormatVariantList.get(0);
 		userData.put(ProjectWizard.PROJECT_VARIANT, graphicFormatVariantList.get(0).getId());
 		int maxItems = graphicFormatList.get(0).getMaxItems();
@@ -206,12 +209,13 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 				gfv = (GraphicFormatVariant) selection.getFirstElement();
 				userData.put(ProjectWizard.PROJECT_VARIANT, gfv.getId());
 				boolean enable = gfv.getId().equals("CUSTOM");
-				widthLabel.setEnabled(enable);
-				heightLabel.setEnabled(enable);
+				boolean isASCII = gf.getId().matches("^(.*PETSCII|.*SCREENSET)$");
+				widthLabel.setEnabled(enable && isASCII);
+				heightLabel.setEnabled(enable && isASCII);
 				rowsLabel.setEnabled(enable);
 				columnsLabel.setEnabled(enable);
-				tileWidthSpinner.setEnabled(enable);
-				tileHeightSpinner.setEnabled(enable);
+				tileWidthSpinner.setEnabled(enable && isASCII);
+				tileHeightSpinner.setEnabled(enable && isASCII);
 				tileColumnsSpinner.setEnabled(enable);
 				tileRowsSpinner.setEnabled(enable);
 				setSpinnerValues();
