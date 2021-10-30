@@ -19,9 +19,9 @@ public class Project {
 	private String name;
 	private String suffix;
 	private boolean open;
-	private String targetPlatform;
-	private String projectType;
-	private String projectVariant;
+	//private String targetPlatform;
+	//private String projectType;
+	//private String projectVariant;
 	private boolean singleFileProject;
 	private boolean isMountpoint;
 	private String iconName;

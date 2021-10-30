@@ -31,7 +31,7 @@ import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.ProjectFolder;
-import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.model.GraphicMetaData;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
 import de.drazil.nerdsuite.wizard.ProjectWizard;
@@ -85,7 +85,7 @@ public class NewProjectHandler {
 				project.setSingleFileProject(true);
 				project.setOpen(true);
 
-				ProjectMetaData metadata = new ProjectMetaData();
+				GraphicMetaData metadata = new GraphicMetaData();
 
 				metadata.setPlatform(targetPlatform);
 				metadata.setType(subType);

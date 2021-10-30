@@ -14,7 +14,7 @@ import org.eclipse.swt.graphics.Point;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
-import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.model.GraphicMetaData;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
