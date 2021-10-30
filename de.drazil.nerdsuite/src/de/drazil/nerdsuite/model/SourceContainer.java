@@ -2,9 +2,16 @@ package de.drazil.nerdsuite.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SourceContainer {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SourceContainer<SM> {
 	@JsonProperty(value = "metadata")
-	private GraphicMetaData metadata = null;
-	@JsonProperty(value = "source")
-	private String source = null;
+	private SM metadata = null;
+	@JsonProperty(value = "content")
+	private String content = null;
 }

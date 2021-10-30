@@ -27,10 +27,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.assembler.InstructionSet;
-import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
-import de.drazil.nerdsuite.model.AssemblerDirective;
-import de.drazil.nerdsuite.model.CpuInstruction;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.util.C64Font;
 import de.drazil.nerdsuite.util.IFont;
@@ -44,6 +40,7 @@ public class SourceEditorView implements IDocument {
 	private StyledText styledText = null;
 	private DocumentStyler documentStyler;
 	private Project project;
+	private String owner;
 	@Inject
 	private MPart part;
 
@@ -80,7 +77,10 @@ public class SourceEditorView implements IDocument {
 	@PostConstruct
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
 
-		project = (Project) ((Map<String, Object>) part.getObject()).get("project");
+		Map<String, Object> pm = (Map<String, Object>) part.getObject();
+		project = (Project) pm.get("project");
+		owner = (String) pm.get("repositoryOwner");
+
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);

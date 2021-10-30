@@ -6,7 +6,7 @@ import de.drazil.nerdsuite.enums.PaintMode;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.enums.TileSelectionModes;
-import de.drazil.nerdsuite.model.GraphicMetaData;
+import de.drazil.nerdsuite.model.GraphicMetadata;
 import de.drazil.nerdsuite.model.ViewSetup;
 import lombok.Data;
 
@@ -53,7 +53,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public CursorMode cursorMode = CursorMode.Point;
 	public ViewSetup viewSetup;
 
-	public ImagingWidgetConfiguration(GraphicMetaData metadata) {
+	public ImagingWidgetConfiguration(GraphicMetadata metadata) {
 		iconWidth = metadata.getWidth();
 		iconHeight = metadata.getHeight();
 		tileColumns = metadata.getColumns();

@@ -2,7 +2,7 @@
 	"stringQuote": "\"",
 	"instructionSeparator": ":",
 	"parameterSeparator": ",",
-	"defaultVersion": 10,
+	"defaultVersion": 20,
 	"basicInstructionList": [
 		{
 			"instruction": "end",

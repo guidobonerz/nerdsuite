@@ -61,7 +61,7 @@ import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.ViewSetup;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.model.GraphicMetaData;
+import de.drazil.nerdsuite.model.GraphicMetadata;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
@@ -94,7 +94,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private LayerChooser layerChooser;
 
-	private GraphicMetaData metadata = null;
+	private GraphicMetadata metadata = null;
 	private GraphicFormat graphicFormat = null;
 	private GraphicFormatVariant graphicFormatVariant = null;
 	private Point actualSize;
