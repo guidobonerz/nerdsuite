@@ -156,6 +156,7 @@ public class Constants {
 	public final static String T_C64ASCII = "C64ASCII";
 	public final static String T_COMMENT = "COMMENT";
 	public final static String T_DECIMAL = "DECIMAL";
+	public final static String T_BASIC_COMMAND = "BASIC_COMMAND";
 	public final static String T_BINARY = "BINARY";
 	public final static String T_HEXADECIMAL = "HEXADECIMAL";
 	public final static String T_LABEL = "LABEL";

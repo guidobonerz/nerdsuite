@@ -47,11 +47,12 @@ public class SingleLineRule extends BaseRule {
 			if (matchIndex != -1) {
 				System.out.println("prefix found");
 				getToken().setStart(matchIndex);
-				matchIndex = text.indexOf(getSuffix(), matchIndex + getPrefix().length());
+				String s = getSuffix() == null ? "" : getSuffix();
+				matchIndex = text.indexOf(s, matchIndex + getPrefix().length());
 				if (matchIndex != -1) {
 					System.out.println("suffix found");
 
-					offset = matchIndex + getSuffix().length();
+					offset = matchIndex + s.length();
 					getToken().setLength(offset - getToken().getStart());
 					hasMatch = true;
 				} else {

@@ -39,7 +39,7 @@ public class DocumentStyler implements LineStyleListener {
 		this.styleMap.put(Constants.T_C64_BASIC_STRING, Constants.TEXTSTYLE_C64_ASCII);
 		this.styleMap.put(Constants.T_Atari_BASIC_STRING, Constants.TEXTSTYLE_ATARI_ASCII);
 		this.styleMap.put(Constants.T_COMMENT, Constants.TEXTSTYLE_COMMENT);
-		this.styleMap.put(Constants.T_STRING, Constants.TEXTSTYLE_STRING);
+		this.styleMap.put(Constants.T_BASIC_COMMAND, Constants.TEXTSTYLE_OPCODE);
 		this.styleMap.put(Constants.T_STRING, Constants.TEXTSTYLE_STRING);
 		this.styleMap.put(Constants.T_DECIMAL, Constants.TEXTSTYLE_DECIMAL);
 		this.styleMap.put(Constants.T_HEXADECIMAL, Constants.TEXTSTYLE_HEXADECIMAL);
@@ -65,7 +65,8 @@ public class DocumentStyler implements LineStyleListener {
 		this.lineTokenList = new ArrayList<Token>();
 		this.styleRangeList = new ArrayList<>();
 		Color backgroundColor = (document.getCurrentLineIndex() == document.getLineAtOffset(event.lineOffset)
-				? Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR : Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
+				? Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR
+				: Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		Token token = isInMultiLineBlock(event.lineOffset, event.lineText.length());
 		if (token == null) {
 

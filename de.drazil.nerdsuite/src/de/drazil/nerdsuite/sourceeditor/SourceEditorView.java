@@ -27,9 +27,14 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.basic.SourceRepositoryService;
+import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.model.BasicInstruction;
+import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.util.C64Font;
 import de.drazil.nerdsuite.util.IFont;
+import de.drazil.nerdsuite.widget.PlatformFactory;
 
 public class SourceEditorView implements IDocument {
 
@@ -46,15 +51,6 @@ public class SourceEditorView implements IDocument {
 
 	public SourceEditorView() {
 
-		documentStyler = new DocumentStyler(this);
-		documentStyler.addRule(new MultiLineRule("/*", "*/", new Token(Constants.T_COMMENT)));
-		documentStyler.addRule(new SingleLineRule("//", Marker.EOL, new Token(Constants.T_COMMENT)));
-		documentStyler.addRule(new SingleLineRule("\"", "\"", new Token(Constants.T_PETME642YASCII)));
-		documentStyler.addRule(new SingleLineRule("", ":", new Token(Constants.T_LABEL)));
-		documentStyler.addRule(new ValueRule("#", "d", 5, new Token(Constants.T_DECIMAL)));
-		documentStyler.addRule(new ValueRule("$", "h", 4, new Token(Constants.T_ADRESS)));
-		documentStyler.addRule(new ValueRule("#%", "b", 8, new Token(Constants.T_BINARY)));
-		documentStyler.addRule(new ValueRule("#$", "h", 2, new Token(Constants.T_HEXADECIMAL)));
 		/*
 		 * for (AssemblerDirective directive : InstructionSet.getDirectiveList()) {
 		 * documentStyler.addRule(new WordRule(directive.getId(), new
@@ -70,6 +66,33 @@ public class SourceEditorView implements IDocument {
 		// scanner.addRule(new SingleLineRule(":", new Token("MACRO")));
 	}
 
+	private DocumentStyler getBasicStyler(BasicInstructions basicInstructions) {
+		documentStyler = new DocumentStyler(this);
+		documentStyler.addRule(new MultiLineRule(basicInstructions.getBlockComment()[0],
+				basicInstructions.getBlockComment()[1], new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
+				new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
+				basicInstructions.getStringQuote(), new Token(Constants.T_PETME642YASCII)));
+		// documentStyler.addRule(new SingleLineRule("", ":", new
+		// Token(Constants.T_LABEL)));
+		// documentStyler.addRule(new ValueRule("#", "d", 5, new
+		// Token(Constants.T_DECIMAL)));
+		// documentStyler.addRule(new ValueRule("$", "h", 4, new
+		// Token(Constants.T_ADRESS)));
+		// documentStyler.addRule(new ValueRule("#%", "b", 8, new
+		// Token(Constants.T_BINARY)));
+		// documentStyler.addRule(new ValueRule("#$", "h", 2, new
+		// Token(Constants.T_HEXADECIMAL)));
+
+		for (BasicInstruction bi : basicInstructions.getBasicInstructionList()) {
+			if (!bi.isComment()) {
+				documentStyler.addRule(new WordRule(bi, new Token(Constants.T_BASIC_COMMAND)));
+			}
+		}
+		return documentStyler;
+	}
+
 	/**
 	 * Create contents of the view part.
 	 */
@@ -81,12 +104,15 @@ public class SourceEditorView implements IDocument {
 		project = (Project) pm.get("project");
 		owner = (String) pm.get("repositoryOwner");
 
+		SourceRepositoryService srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
+		BasicInstructions basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
+
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
 		styledText.setFont(Constants.SourceCodePro_Mono);
-		styledText.addLineStyleListener(documentStyler);
+		styledText.addLineStyleListener(getBasicStyler(basicInstructions));
 
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override

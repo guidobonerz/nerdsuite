@@ -1,4 +1,9 @@
 {
+	"blockComment": [
+		"/*",
+		"*/"
+	],
+	"singleLineComment": "rem",
 	"stringQuote": "\"",
 	"instructionSeparator": ":",
 	"parameterSeparator": ",",
@@ -144,6 +149,7 @@
 			"token": "8f",
 			"description": "",
 			"includesOpenBrace": false,
+			"isComment": true,
 			"purpose": "C",
 			"minParameters": 0,
 			"maxParameters": 255
@@ -824,8 +830,7 @@
 			"purpose": "C",
 			"minParameters": 0,
 			"maxParameters": 0,
-			"minVersion": 35,
-			"maxVersion": 35
+			"minVersion": 35
 		},
 		{
 			"instruction": "joy",
