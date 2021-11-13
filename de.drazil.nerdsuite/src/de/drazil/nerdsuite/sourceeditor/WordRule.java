@@ -12,7 +12,9 @@ public class WordRule extends BaseRule {
 	}
 
 	@Override
-	public boolean hasMatch(String text) {
-		return matcher.hasMatch(text, getToken());
+	public boolean hasMatch(String text, int offset) {
+		boolean hasMatch = matcher.hasMatch(text, getToken(), offset);
+		setOffset(matcher.getOffset());
+		return hasMatch;
 	}
 }

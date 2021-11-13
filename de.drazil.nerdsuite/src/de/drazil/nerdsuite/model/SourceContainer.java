@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SourceContainer<SM> {
+public class SourceContainer {
 	@JsonProperty(value = "metadata")
-	private SM metadata = null;
+	private SourceMetadata metadata = null;
 	@JsonProperty(value = "content")
 	private String content = null;
 }

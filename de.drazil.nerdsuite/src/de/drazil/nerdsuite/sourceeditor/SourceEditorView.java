@@ -1,12 +1,20 @@
 package de.drazil.nerdsuite.sourceeditor;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.Persist;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
@@ -28,6 +36,8 @@ import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.basic.SourceRepositoryService;
+import de.drazil.nerdsuite.configuration.Initializer;
+import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
@@ -46,6 +56,7 @@ public class SourceEditorView implements IDocument {
 	private DocumentStyler documentStyler;
 	private Project project;
 	private String owner;
+	private SourceRepositoryService srs;
 	@Inject
 	private MPart part;
 
@@ -68,12 +79,14 @@ public class SourceEditorView implements IDocument {
 
 	private DocumentStyler getBasicStyler(BasicInstructions basicInstructions) {
 		documentStyler = new DocumentStyler(this);
-		documentStyler.addRule(new MultiLineRule(basicInstructions.getBlockComment()[0],
-				basicInstructions.getBlockComment()[1], new Token(Constants.T_COMMENT)));
-		documentStyler.addRule(new SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
-				new Token(Constants.T_COMMENT)));
-		documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
-				basicInstructions.getStringQuote(), new Token(Constants.T_PETME642YASCII)));
+		// documentStyler.addRule(new
+		// MultiLineRule(basicInstructions.getBlockComment()[0],
+		// basicInstructions.getBlockComment()[1], new Token(Constants.T_COMMENT)));
+		// documentStyler.addRule(new
+		// SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
+		// new Token(Constants.T_COMMENT)));
+		// documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
+		// basicInstructions.getStringQuote(), new Token(Constants.T_PETME642YASCII)));
 		// documentStyler.addRule(new SingleLineRule("", ":", new
 		// Token(Constants.T_LABEL)));
 		// documentStyler.addRule(new ValueRule("#", "d", 5, new
@@ -93,6 +106,30 @@ public class SourceEditorView implements IDocument {
 		return documentStyler;
 	}
 
+	@Inject
+	@Optional
+	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			save();
+		}
+	}
+
+	private void save() {
+		System.out.println("save source");
+		srs.setContent(styledText.getText());
+		updateWorkspace(false);
+		LocalDateTime ldt = LocalDateTime.now();
+		Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+		project.setChangedOn(d);
+		srs.save(project);
+		part.setDirty(false);
+	}
+
+	@Persist
+	private void close() {
+		save();
+	}
+
 	/**
 	 * Create contents of the view part.
 	 */
@@ -104,14 +141,26 @@ public class SourceEditorView implements IDocument {
 		project = (Project) pm.get("project");
 		owner = (String) pm.get("repositoryOwner");
 
-		SourceRepositoryService srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
+		srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
 		BasicInstructions basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
+
+		Collections.sort(basicInstructions.getBasicInstructionList(), new Comparator<BasicInstruction>() {
+			@Override
+			public int compare(BasicInstruction o1, BasicInstruction o2) {
+				return Integer.compare(o2.getInstruction().length(), o1.getInstruction().length());
+			}
+		});
+
+		part.setDirty(false);
+		part.getTransientData().put(Constants.OWNER, owner);
+		part.setTooltip("basic Source File");
 
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+		styledText.setText(srs.getContent() == null ? "" : srs.getContent());
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
-		styledText.setFont(Constants.SourceCodePro_Mono);
+		styledText.setFont(Constants.EDITOR_FONT);
 		styledText.addLineStyleListener(getBasicStyler(basicInstructions));
 
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
@@ -148,7 +197,7 @@ public class SourceEditorView implements IDocument {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				System.out.println("modify text");
+				// System.out.println("modify text");
 				// documentStyler.refreshMultilineComments(styledText.getText());
 				// styledText.redraw();
 
@@ -273,5 +322,9 @@ public class SourceEditorView implements IDocument {
 	@Focus
 	public void setFocus() {
 		// TODO Set the focus to control
+	}
+
+	private void updateWorkspace(boolean addProject) {
+		Initializer.getConfiguration().updateWorkspace(project, addProject, false);
 	}
 }

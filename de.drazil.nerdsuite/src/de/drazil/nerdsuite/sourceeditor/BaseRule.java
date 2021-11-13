@@ -28,6 +28,9 @@ public abstract class BaseRule implements IRule {
 	@Getter
 	@Setter
 	private int priority;
+	@Getter
+	@Setter
+	public int offset;
 
 	public BaseRule(SourceRules sourceRule) {
 	}
@@ -36,6 +39,7 @@ public abstract class BaseRule implements IRule {
 		setPrefix(prefix);
 		setSuffix(suffix);
 		setToken(token);
+		setMarker(marker);
 		reset();
 	}
 

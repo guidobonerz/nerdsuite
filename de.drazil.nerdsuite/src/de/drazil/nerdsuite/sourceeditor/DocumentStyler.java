@@ -26,6 +26,8 @@ public class DocumentStyler implements LineStyleListener {
 	private Map<String, TextStyle> styleMap;
 	private Map<String, List<IRule>> ruleMap;
 	private IDocument document = null;
+	private int offset = 0;
+	private int newOffset = 0;
 
 	public DocumentStyler(IDocument document) {
 
@@ -61,7 +63,7 @@ public class DocumentStyler implements LineStyleListener {
 
 	@Override
 	public void lineGetStyle(LineStyleEvent event) {
-		System.out.println("line style text");
+		// System.out.println("line style text");
 		this.lineTokenList = new ArrayList<Token>();
 		this.styleRangeList = new ArrayList<>();
 		Color backgroundColor = (document.getCurrentLineIndex() == document.getLineAtOffset(event.lineOffset)
@@ -115,6 +117,7 @@ public class DocumentStyler implements LineStyleListener {
 	}
 
 	private void processTokensById(String id, String text) {
+		offset = 0;
 		List<IRule> ruleList = ruleMap.get(id);
 		if (ruleList != null && ruleList.size() > 0) {
 			for (IRule rule : ruleList) {
@@ -125,19 +128,21 @@ public class DocumentStyler implements LineStyleListener {
 	}
 
 	private void findTokens(IRule rule, String text) {
-		while (rule.hasMatch(text)) {
+
+		if (text.equals("")) {
+			return;
+		}
+		while (rule.hasMatch(text, offset)) {
+			offset = rule.getOffset();
 			Token token = rule.getToken();
 			Token tokenCopy = Token.copy(token);
 			if (rule instanceof MultiLineRule) {
 				multiLineTokenList.add(tokenCopy);
-				// System.out.println("foundMultiLineMatch:" +
-				// token.toString());
+				System.out.println("foundMultiLineMatch:" + token.toString());
 			} else {
-				// System.out.println("foundSingleLineMatch:" +
-				// token.toString());
+				System.out.println("foundSingleLineMatch:" + token.toString());
 				lineTokenList.add(tokenCopy);
 			}
-			System.out.println(token);
 
 		}
 

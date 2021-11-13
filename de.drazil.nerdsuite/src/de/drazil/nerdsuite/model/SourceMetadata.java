@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.model;
 
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,12 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasicSourceMetadata {
+public class SourceMetadata {
 	private String id;
 	private String platform;
 	private String type;
 	private String variant;
-	private boolean labelMode;
-	private boolean mixedMode;
-	private boolean showMacros;
+
+	private Map<String, Object> additionalAttributes;
 }

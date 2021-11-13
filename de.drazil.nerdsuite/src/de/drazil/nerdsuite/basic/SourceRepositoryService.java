@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.imaging.service.IService;
-import de.drazil.nerdsuite.model.BasicSourceMetadata;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.SourceContainer;
+import de.drazil.nerdsuite.model.SourceMetadata;
 import de.drazil.nerdsuite.util.FileUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,25 +27,33 @@ public class SourceRepositoryService implements IService {
 	@Getter
 	@Setter
 	private Rectangle selection;
-	private SourceContainer<BasicSourceMetadata> container;
+	private SourceContainer container;
 
 	public SourceRepositoryService() {
-		container = new SourceContainer<BasicSourceMetadata>();
+		container = new SourceContainer();
 	}
 
-	public void setMetadata(BasicSourceMetadata metadata) {
+	public void setMetadata(SourceMetadata metadata) {
 		container.setMetadata(metadata);
 	}
 
-	public BasicSourceMetadata getMetadata() {
+	public SourceMetadata getMetadata() {
 		return container.getMetadata();
 	}
 
-	public SourceContainer<BasicSourceMetadata> load(String id) {
+	public SourceContainer load(String id) {
 		return load(id, false);
 	}
 
-	public SourceContainer<BasicSourceMetadata> load(String id, boolean isReference) {
+	public String getContent() {
+		return container.getContent();
+	}
+
+	public void setContent(String content) {
+		container.setContent(content);
+	}
+
+	public SourceContainer load(String id, boolean isReference) {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
 		try {
@@ -72,7 +80,7 @@ public class SourceRepositoryService implements IService {
 		}
 	}
 
-	private static String getHeaderText(Project project, BasicSourceMetadata metadata) {
+	private static String getHeaderText(Project project, SourceMetadata metadata) {
 		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
 				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
 				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()));

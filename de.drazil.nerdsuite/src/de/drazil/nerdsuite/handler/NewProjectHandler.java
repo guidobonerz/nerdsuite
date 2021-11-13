@@ -28,7 +28,7 @@ import de.drazil.nerdsuite.enums.WizardType;
 import de.drazil.nerdsuite.imaging.service.ImportService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
-import de.drazil.nerdsuite.model.BasicSourceMetadata;
+import de.drazil.nerdsuite.model.SourceMetadata;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.Project;
@@ -144,8 +144,8 @@ public class NewProjectHandler {
 				String projectAction = projectSetup.get("fileName") == null ? "newProjectAction"
 						: "newImportProjectAction";
 				projectSetup.put("projectAction", projectAction);
-
-				BasicSourceMetadata metadata = new BasicSourceMetadata();
+				project.setSingleFileProject(true);
+				SourceMetadata metadata = new SourceMetadata();
 				metadata.setPlatform(targetPlatform);
 				metadata.setType(subType);
 				metadata.setVariant(variant);

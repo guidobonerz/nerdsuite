@@ -25,6 +25,8 @@ public class BasicInstruction implements IWordMatcher {
 	private String outValue;
 	@JsonIgnore
 	private int currentParameter = 0;
+	@JsonIgnore
+	private int offset = 0;
 
 	@JsonIgnore
 	public void reset() {
@@ -32,12 +34,10 @@ public class BasicInstruction implements IWordMatcher {
 	}
 
 	@JsonIgnore
-	private int offset;
-
-	@JsonIgnore
 	@Override
-	public boolean hasMatch(String value, Token token) {
+	public boolean hasMatch(String value, Token token, int offset) {
 		boolean hasMatch = false;
+		this.offset = offset;
 		int matchIndex = value.indexOf(instruction, offset);
 		if (matchIndex != -1) {
 			token.setStart(matchIndex);
@@ -45,17 +45,11 @@ public class BasicInstruction implements IWordMatcher {
 			if (includesOpenBrace) {
 				length--;
 			}
-			offset = matchIndex + length + 1;
+			this.offset = matchIndex + length + 1;
 			token.setLength(length);
 			hasMatch = true;
-
-		} else {
-			hasMatch = false;
-			offset = 0;
 		}
-
 		token.setValid(hasMatch);
-
 		return hasMatch;
 	}
 }
