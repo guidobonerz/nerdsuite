@@ -20,14 +20,14 @@ public class DocumentStyler implements LineStyleListener {
 	private final static String SINGLE_LINE_RULE = "SingleLineRule";
 	private final static String WORD_RULE = "WordRule";
 	private final static String PATTERN_RULE = "PatternRule";
-	private List<StyleRange> styleRangeList;
+
 	private List<Token> lineTokenList;
 	private List<Token> multiLineTokenList;
 	private Map<String, TextStyle> styleMap;
 	private Map<String, List<IRule>> ruleMap;
 	private IDocument document = null;
 	private int offset = 0;
-	private int newOffset = 0;
+	private List<List<StyleRange>> styleRangeCache;
 
 	public DocumentStyler(IDocument document) {
 
@@ -35,6 +35,7 @@ public class DocumentStyler implements LineStyleListener {
 		System.out.println("linefeed length:" + System.getProperty("line.separator").toCharArray().length);
 		this.multiLineTokenList = new ArrayList<Token>();
 		ruleMap = new HashMap<String, List<IRule>>();
+		styleRangeCache = new ArrayList<List<StyleRange>>();
 		this.styleMap = new HashMap<>();
 		this.styleMap.put(Constants.T_PETME642YASCII, Constants.TEXTSTYLE_PetMe642Y_ASCII);
 		this.styleMap.put(Constants.T_PETME2YASCII, Constants.TEXTSTYLE_PetMe2Y_ASCII);
@@ -63,56 +64,80 @@ public class DocumentStyler implements LineStyleListener {
 
 	@Override
 	public void lineGetStyle(LineStyleEvent event) {
-		// System.out.println("line style text");
-		this.lineTokenList = new ArrayList<Token>();
-		this.styleRangeList = new ArrayList<>();
-		Color backgroundColor = (document.getCurrentLineIndex() == document.getLineAtOffset(event.lineOffset)
-				? Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR
-				: Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
-		Token token = isInMultiLineBlock(event.lineOffset, event.lineText.length());
-		if (token == null) {
+		List<StyleRange> styleRangeList = null;
+		int lineOffset = event.lineOffset;
+		int lineNo = document.getLineAtOffset(lineOffset);
 
-			for (String id : ruleMap.keySet()) {
-				if (!id.equals(MULTI_LINE_RULE)) {
-					processTokensById(id, event.lineText);
-				}
-			}
-			buildStyles(lineTokenList, styleRangeList, event.lineOffset, backgroundColor);
-		} else
-		// this is the multiline block
-		{
-
-			StyleRange styleRange = new StyleRange(styleMap.get(token.getKey()));
-			styleRange.start = token.getStart() >= event.lineOffset ? token.getStart() : event.lineOffset;
-			styleRange.length = token.getStart() > event.lineOffset
-					&& token.getStart() + token.getLength() < event.lineOffset + event.lineText.length()
-							? token.getStart() + token.getLength() - token.getStart()
-							: token.getStart() + token.getLength() - event.lineOffset;
-			styleRange.background = backgroundColor;
-
-			styleRangeList.add(styleRange);
-
+		try {
+			styleRangeList = styleRangeCache.get(lineNo);
+		} catch (Exception e) {
 		}
-		int startIndex = event.lineText.indexOf("");
-		int endIndex = event.lineText.indexOf("");
-		if (startIndex > 0 && endIndex > 0) {
-			StyleRange styleRange = new StyleRange(styleMap.get(Constants.T_PETME642YASCII));
-			styleRange.start = startIndex + 2;
-			styleRange.length = endIndex - styleRange.start;
-			styleRangeList.add(styleRange);
+
+		if (styleRangeList == null) {
+			styleRangeList = new ArrayList<>();
+			System.out.printf("line %d\n", lineNo);
+			Color backgroundColor = (document.getCurrentLineIndex() == document.getLineAtOffset(event.lineOffset)
+					? Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR
+					: Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
+
+			scanLine(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, backgroundColor);
+
+			/*
+			 * Token token = isInsideTokenRange(multiLineTokenList, event.lineOffset,
+			 * event.lineText.length()); if (token == null) {
+			 * 
+			 * for (String id : ruleMap.keySet()) { if (!id.equals(MULTI_LINE_RULE)) {
+			 * processTokensById(id, event.lineText); } } buildStyles(lineTokenList,
+			 * styleRangeList, event.lineOffset, backgroundColor); } else // this is the
+			 * multiline block {
+			 * 
+			 * StyleRange styleRange = new StyleRange(styleMap.get(token.getKey()));
+			 * styleRange.start = token.getStart() >= event.lineOffset ? token.getStart() :
+			 * event.lineOffset; styleRange.length = token.getStart() > event.lineOffset &&
+			 * token.getStart() + token.getLength() < event.lineOffset +
+			 * event.lineText.length() ? token.getStart() + token.getLength() -
+			 * token.getStart() : token.getStart() + token.getLength() - event.lineOffset;
+			 * styleRange.background = backgroundColor;
+			 * 
+			 * styleRangeList.add(styleRange);
+			 * 
+			 * } int startIndex = event.lineText.indexOf(""); int endIndex =
+			 * event.lineText.indexOf(""); if (startIndex > 0 && endIndex > 0) { StyleRange
+			 * styleRange = new StyleRange(styleMap.get(Constants.T_PETME642YASCII));
+			 * styleRange.start = startIndex + 2; styleRange.length = endIndex -
+			 * styleRange.start; styleRangeList.add(styleRange); }
+			 */
+			styleRangeCache.add(styleRangeList);
+
 		}
 		event.styles = styleRangeList.toArray(new StyleRange[styleRangeList.size()]);
 
 	}
 
-	private void buildStyles(List<Token> tokenList, List<StyleRange> styleRangeList, int lineOffset,
-			Color backgoundColor) {
-		for (Token token : tokenList) {
-			StyleRange styleRange = new StyleRange(styleMap.get(token.getKey()));
-			styleRange.start = lineOffset + token.getStart();
-			styleRange.length = token.getLength();
-			styleRange.background = backgoundColor;
-			styleRangeList.add(styleRange);
+	private void scanLine(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
+			Color backgroundColor) {
+		int lo = lineOffset;
+		int offset = 0;
+		int len = 0;
+		boolean hasMatch = false;
+		while (offset < text.length()) {
+			hasMatch = false;
+			for (IRule rule : ruleList) {
+				int matchIndex = text.indexOf(rule.getPrefix(), offset);
+				if (offset == matchIndex) {
+					len = rule.getPrefix().length();
+					StyleRange styleRange = new StyleRange(lo + offset, len,
+							styleMap.get(rule.getToken().getKey()).foreground, backgroundColor);
+					styleRangeList.add(styleRange);
+					hasMatch = true;
+					break;
+				}
+			}
+			if (hasMatch) {
+				offset += len;
+			} else {
+				offset++;
+			}
 		}
 	}
 
@@ -132,33 +157,19 @@ public class DocumentStyler implements LineStyleListener {
 		if (text.equals("")) {
 			return;
 		}
+		System.out.printf("try to find[ %s ]\n", rule.getPrefix());
 		while (rule.hasMatch(text, offset)) {
 			offset = rule.getOffset();
 			Token token = rule.getToken();
 			Token tokenCopy = Token.copy(token);
 			if (rule instanceof MultiLineRule) {
 				multiLineTokenList.add(tokenCopy);
-				System.out.println("foundMultiLineMatch:" + token.toString());
+				// System.out.println("foundMultiLineMatch:" + token.toString());
 			} else {
-				System.out.println("foundSingleLineMatch:" + token.toString());
+				// System.out.println("foundSingleLineMatch:" + token.toString());
 				lineTokenList.add(tokenCopy);
 			}
-
 		}
-
-	}
-
-	private Token isInMultiLineBlock(int lineOffset, int length) {
-		for (Token token : multiLineTokenList) {
-			if (lineOffset + length >= token.getStart() && lineOffset <= token.getStart() + token.getLength()) {
-				return token;
-			}
-		}
-		return null;
-	}
-
-	public StyleRange[] getStyleRanges() {
-		return this.styleRangeList.toArray(new StyleRange[styleRangeList.size()]);
 	}
 
 	public void addRule(IRule rule) {

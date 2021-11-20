@@ -5,7 +5,9 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -29,10 +31,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.basic.SourceRepositoryService;
@@ -42,8 +41,6 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.util.C64Font;
-import de.drazil.nerdsuite.util.IFont;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 
 public class SourceEditorView implements IDocument {
@@ -77,7 +74,7 @@ public class SourceEditorView implements IDocument {
 		// scanner.addRule(new SingleLineRule(":", new Token("MACRO")));
 	}
 
-	private DocumentStyler getBasicStyler(BasicInstructions basicInstructions) {
+	private DocumentStyler getBasicStyler(BasicInstructions basicInstructions, int version) {
 		documentStyler = new DocumentStyler(this);
 		// documentStyler.addRule(new
 		// MultiLineRule(basicInstructions.getBlockComment()[0],
@@ -97,6 +94,9 @@ public class SourceEditorView implements IDocument {
 		// Token(Constants.T_BINARY)));
 		// documentStyler.addRule(new ValueRule("#$", "h", 2, new
 		// Token(Constants.T_HEXADECIMAL)));
+
+		List<BasicInstruction> list = basicInstructions.getBasicInstructionList().stream()
+				.filter(e -> e.getMinVersion() < version).collect(Collectors.toList());
 
 		for (BasicInstruction bi : basicInstructions.getBasicInstructionList()) {
 			if (!bi.isComment()) {
@@ -144,12 +144,17 @@ public class SourceEditorView implements IDocument {
 		srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
 		BasicInstructions basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
 
-		Collections.sort(basicInstructions.getBasicInstructionList(), new Comparator<BasicInstruction>() {
-			@Override
-			public int compare(BasicInstruction o1, BasicInstruction o2) {
-				return Integer.compare(o2.getInstruction().length(), o1.getInstruction().length());
-			}
-		});
+		int version = 20;
+		String variant = srs.getMetadata().getVariant();
+		if (variant.equals("V20")) {
+			version = 20;
+		} else if (variant.equals("V35")) {
+			version = 35;
+		} else if (variant.equals("V70")) {
+			version = 70;
+		} else {
+			version = 0;
+		}
 
 		part.setDirty(false);
 		part.getTransientData().put(Constants.OWNER, owner);
@@ -161,7 +166,7 @@ public class SourceEditorView implements IDocument {
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
 		styledText.setFont(Constants.EDITOR_FONT);
-		styledText.addLineStyleListener(getBasicStyler(basicInstructions));
+		styledText.addLineStyleListener(getBasicStyler(basicInstructions, version));
 
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
@@ -179,7 +184,7 @@ public class SourceEditorView implements IDocument {
 				// ||
 				// e.keyCode == SWT.PAGE_DOWN || e.keyCode == SWT.PAGE_UP)
 				// {
-				styledText.redraw();
+				// styledText.redraw();
 				// }
 
 			}
@@ -197,28 +202,23 @@ public class SourceEditorView implements IDocument {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				// System.out.println("modify text");
 				// documentStyler.refreshMultilineComments(styledText.getText());
-				// styledText.redraw();
-
+				styledText.redraw();
 			}
 		});
-
-		Button button = new Button(parent, SWT.NONE);
-		button.addListener(SWT.Selection, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				IFont font = new C64Font();
-
-				// styledText.append(new
-				// String(Character.toChars(font.getUnicodePrefix() | ((int) 22
-				// & 0xff))));
-				// styledText.append(new String(Character.toChars(0xee57)));
-				styledText.append(new String(Character.toChars(0xe0d1)));
-
-			}
-		});
+		/*
+		 * Button button = new Button(parent, SWT.NONE);
+		 * button.addListener(SWT.Selection, new Listener() {
+		 * 
+		 * @Override public void handleEvent(Event event) { IFont font = new C64Font();
+		 * 
+		 * // styledText.append(new // String(Character.toChars(font.getUnicodePrefix()
+		 * | ((int) 22 // & 0xff)))); // styledText.append(new
+		 * String(Character.toChars(0xee57))); styledText.append(new
+		 * String(Character.toChars(0xe0d1)));
+		 * 
+		 * } });
+		 */
 		/*
 		 * FontData[] fD = styledText.getFont().getFontData(); fD[0].setHeight(12);
 		 * styledText.setFont(new Font(parent.getDisplay(), fD[0]));
@@ -243,8 +243,19 @@ public class SourceEditorView implements IDocument {
 	}
 
 	@Override
-	public int getFirstVisibleLineOffset() {
+	public int getFirstVisibleLineIndex() {
 		return this.styledText.getTopIndex();
+	}
+
+	@Override
+	public int getFirstVisibleLineOffset() {
+
+		return this.styledText.getOffsetAtLine(getFirstVisibleLineIndex());
+	}
+
+	@Override
+	public int getLineOffsetAtlineIndex(int lineIndex) {
+		return this.styledText.getOffsetAtLine(lineIndex);
 	}
 
 	@Override
@@ -255,7 +266,7 @@ public class SourceEditorView implements IDocument {
 	@Override
 	public int getVisibleLineCount() {
 		int vlc = styledText.getClientArea().height / styledText.getLineHeight();
-		return vlc < getLineCount() ? getLineCount() : vlc;
+		return vlc > getLineCount() ? getLineCount() : vlc;
 	}
 
 	@Override

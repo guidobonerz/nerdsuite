@@ -6,7 +6,7 @@ public class WordRule extends BaseRule {
 	private IWordMatcher matcher;
 
 	public WordRule(IWordMatcher matcher, Token token) {
-		super(null, null, Marker.NONE, token);
+		super(matcher.getValue(), null, Marker.NONE, token);
 		this.matcher = matcher;
 		setPriority(30);
 	}
@@ -17,4 +17,5 @@ public class WordRule extends BaseRule {
 		setOffset(matcher.getOffset());
 		return hasMatch;
 	}
+
 }

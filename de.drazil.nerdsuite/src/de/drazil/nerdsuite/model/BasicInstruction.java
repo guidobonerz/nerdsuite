@@ -38,18 +38,23 @@ public class BasicInstruction implements IWordMatcher {
 	public boolean hasMatch(String value, Token token, int offset) {
 		boolean hasMatch = false;
 		this.offset = offset;
-		int matchIndex = value.indexOf(instruction, offset);
+		int matchIndex = value.toLowerCase().indexOf(instruction.toLowerCase(), offset);
 		if (matchIndex != -1) {
 			token.setStart(matchIndex);
 			int length = instruction.length();
 			if (includesOpenBrace) {
 				length--;
 			}
-			this.offset = matchIndex + length + 1;
+			this.offset = matchIndex + length;
 			token.setLength(length);
 			hasMatch = true;
 		}
 		token.setValid(hasMatch);
 		return hasMatch;
+	}
+
+	@Override
+	public String getValue() {
+		return instruction;
 	}
 }

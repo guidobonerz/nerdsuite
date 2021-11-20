@@ -12,6 +12,7 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.BasicInstructions;
+import de.drazil.nerdsuite.model.CpuInstructions;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.TargetPlatform;
@@ -65,6 +66,24 @@ public class PlatformFactory {
 		}
 
 		return basicInstructions;
+	}
+
+	public static CpuInstructions getCpuInstructions(String id) {
+
+		CpuInstructions cpuInstruction = null;
+		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			PlatformData platformData = mapper.readValue(bundle.getEntry(getTargetPlatform(id).getSource()),
+					PlatformData.class);
+			cpuInstruction = mapper.readValue(bundle.getEntry(platformData.getCpuInstructionSource()),
+					CpuInstructions.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return cpuInstruction;
 	}
 
 	public static List<PlatformColor> getPlatformColors(String id) {

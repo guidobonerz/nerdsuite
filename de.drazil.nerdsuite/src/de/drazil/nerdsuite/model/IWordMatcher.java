@@ -6,4 +6,6 @@ public interface IWordMatcher {
 	public boolean hasMatch(String value, Token token, int offset);
 
 	public int getOffset();
+
+	public String getValue();
 }
