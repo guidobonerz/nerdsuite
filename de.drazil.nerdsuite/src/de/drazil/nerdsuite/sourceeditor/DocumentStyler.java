@@ -19,6 +19,7 @@ import de.drazil.nerdsuite.model.StyleRangeCacheEntry;
 public class DocumentStyler implements LineStyleListener {
 	private final static String MULTI_LINE_RULE = "MultiLineRule";
 	private final static String SINGLE_LINE_RULE = "SingleLineRule";
+	private final static String PARTITIONED_LINE_RULE = "PartitionedLineRule";
 	private final static String WORD_RULE = "WordRule";
 	private final static String PATTERN_RULE = "PatternRule";
 
@@ -89,13 +90,9 @@ public class DocumentStyler implements LineStyleListener {
 			styleRangeCacheEntry.setStyleRangeList(styleRangeList);
 			styleRangeCacheEntry.setLineIndex(lineNo);
 			styleRangeCacheEntry.setLineOffset(lineOffset);
-			/*
-			 * Color backgroundColor = (document.getCurrentLineIndex() ==
-			 * document.getLineAtOffset(event.lineOffset) ?
-			 * Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR :
-			 * Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
-			 */
-			scanLine(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
+			parseSingleLineRules(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(),
+					styleRangeList, null);
+			parseWords(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
 			/*
 			 * Token token = isInsideTokenRange(multiLineTokenList, event.lineOffset,
@@ -130,7 +127,50 @@ public class DocumentStyler implements LineStyleListener {
 
 	}
 
-	private void scanLine(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
+	private void parseSingleLineRules(List<IRule> ruleList, int lineOffset, String text,
+			List<StyleRange> styleRangeList, Color backgroundColor) {
+		int lo = lineOffset;
+		int offset = 0;
+		int len = 0;
+		boolean hasMatch = false;
+		while (offset < text.length()) {
+			hasMatch = false;
+			for (IRule rule : ruleList) {
+
+				int matchIndexPrefix = text.indexOf(rule.getPrefix(), offset);
+				if (matchIndexPrefix != -1) {
+					if (rule.getMarker() == Marker.EOL) {
+						len = text.length() - matchIndexPrefix;
+						StyleRange styleRange = new StyleRange(lo + matchIndexPrefix, len,
+								styleMap.get(rule.getToken().getKey()).foreground, null);
+						styleRangeList.add(styleRange);
+						hasMatch = true;
+						break;
+					} else if (rule.getMarker() == Marker.PARTITION) {
+						int matchIndexSuffix = text.indexOf(rule.getSuffix(),
+								matchIndexPrefix + rule.getPrefix().length());
+						if (matchIndexSuffix != -1) {
+							len = matchIndexPrefix + matchIndexSuffix + rule.getPrefix().length()
+									+ rule.getSuffix().length();
+							StyleRange styleRange = new StyleRange(lo + matchIndexPrefix, len,
+									styleMap.get(rule.getToken().getKey()).foreground, null);
+							styleRangeList.add(styleRange);
+							hasMatch = true;
+							break;
+						}
+					}
+				}
+			}
+			if (hasMatch) {
+				offset += len;
+			} else {
+				offset++;
+			}
+		}
+
+	}
+
+	private void parseWords(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
 			Color backgroundColor) {
 		int lo = lineOffset;
 		int offset = 0;

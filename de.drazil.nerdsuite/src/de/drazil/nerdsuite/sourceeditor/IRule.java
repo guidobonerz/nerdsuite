@@ -7,6 +7,8 @@ public interface IRule {
 
 	public Token getToken();
 
+	public Marker getMarker();
+
 	public boolean hasMatch(String text, int offset);
 
 	public int getOffset();

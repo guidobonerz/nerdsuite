@@ -83,11 +83,10 @@ public class SourceEditorView implements IDocument {
 		// documentStyler.addRule(new
 		// MultiLineRule(basicInstructions.getBlockComment()[0],
 		// basicInstructions.getBlockComment()[1], new Token(Constants.T_COMMENT)));
-		// documentStyler.addRule(new
-		// SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
-		// new Token(Constants.T_COMMENT)));
-		// documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
-		// basicInstructions.getStringQuote(), new Token(Constants.T_PETME642YASCII)));
+		//documentStyler.addRule(new SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
+		//		new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
+				basicInstructions.getStringQuote(), new Token(Constants.T_PETME642YASCII)));
 		// documentStyler.addRule(new SingleLineRule("", ":", new
 		// Token(Constants.T_LABEL)));
 		// documentStyler.addRule(new ValueRule("#", "d", 5, new
@@ -184,7 +183,7 @@ public class SourceEditorView implements IDocument {
 		styledText.addListener(SWT.Paint, new Listener() {
 			public void handleEvent(Event event) {
 
-				event.gc.setForeground(new Color(Display.getCurrent(), SwtUtil.toRGBA("#a00000ff")));
+				event.gc.setForeground(Constants.SOURCE_EDITOR_HIGHLIGHTED_FOREGROUND_COLOR);
 				int line = styledText.getOffsetAtLine(styledText.getLineAtOffset(styledText.getCaretOffset()));
 				Point topLeft = styledText.getLocationAtOffset(line);
 				event.gc.drawRectangle(topLeft.x - 1, topLeft.y, styledText.getBounds().width,

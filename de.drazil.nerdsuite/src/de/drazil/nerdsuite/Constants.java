@@ -58,7 +58,7 @@ public class Constants {
 	public final static Color SOURCE_EDITOR_BACKGROUND_COLOR = new Color(Display.getCurrent(),
 			SwtUtil.toRGB("#000000"));
 	public final static Color SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR = new Color(Display.getCurrent(),
-			SwtUtil.toRGB("#400000"));
+			SwtUtil.toRGB("#404040"));
 	public final static Color SOURCE_EDITOR_HIGHLIGHTED_FOREGROUND_COLOR = new Color(Display.getCurrent(),
 			SwtUtil.toRGB("#a00000"));
 	

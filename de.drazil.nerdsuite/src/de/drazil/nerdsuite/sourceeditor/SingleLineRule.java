@@ -13,7 +13,7 @@ public class SingleLineRule extends BaseRule {
 	}
 
 	public SingleLineRule(String prefix, String suffix, Token token) {
-		super(prefix, suffix, Marker.NONE, token);
+		super(prefix, suffix, Marker.PARTITION, token);
 		setPriority(30);
 	}
 
