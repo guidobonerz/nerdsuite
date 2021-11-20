@@ -2,8 +2,6 @@ package de.drazil.nerdsuite.sourceeditor;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +28,13 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.basic.SourceRepositoryService;
@@ -41,6 +44,7 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.util.SwtUtil;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 
 public class SourceEditorView implements IDocument {
@@ -177,6 +181,18 @@ public class SourceEditorView implements IDocument {
 			}
 		});
 
+		styledText.addListener(SWT.Paint, new Listener() {
+			public void handleEvent(Event event) {
+
+				event.gc.setForeground(new Color(Display.getCurrent(), SwtUtil.toRGBA("#a00000ff")));
+				int line = styledText.getOffsetAtLine(styledText.getLineAtOffset(styledText.getCaretOffset()));
+				Point topLeft = styledText.getLocationAtOffset(line);
+				event.gc.drawRectangle(topLeft.x - 1, topLeft.y, styledText.getBounds().width,
+						styledText.getLineHeight());
+
+			}
+		});
+
 		styledText.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -202,6 +218,7 @@ public class SourceEditorView implements IDocument {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
+				System.out.println("modify");
 				// documentStyler.refreshMultilineComments(styledText.getText());
 				styledText.redraw();
 			}

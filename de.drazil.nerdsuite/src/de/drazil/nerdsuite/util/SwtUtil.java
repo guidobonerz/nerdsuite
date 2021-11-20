@@ -14,6 +14,10 @@ public class SwtUtil {
 		return new RGBA(Integer.valueOf(hexValue.substring(1, 3), 16), Integer.valueOf(hexValue.substring(3, 5), 16),
 				Integer.valueOf(hexValue.substring(5, 7), 16), 255);
 	}
+	public final static RGBA toRGBA(String hexValue) {
+		return new RGBA(Integer.valueOf(hexValue.substring(1, 3), 16), Integer.valueOf(hexValue.substring(3, 5), 16),
+				Integer.valueOf(hexValue.substring(5, 7), 16), Integer.valueOf(hexValue.substring(7, 9), 16));
+	}
 
 	public static Font loadMonospacedFont(Display display) {
 		String jreHome = System.getProperty("java.home");

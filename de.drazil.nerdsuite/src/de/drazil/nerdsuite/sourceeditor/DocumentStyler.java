@@ -14,6 +14,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.TextStyle;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.model.StyleRangeCacheEntry;
 
 public class DocumentStyler implements LineStyleListener {
 	private final static String MULTI_LINE_RULE = "MultiLineRule";
@@ -27,7 +28,7 @@ public class DocumentStyler implements LineStyleListener {
 	private Map<String, List<IRule>> ruleMap;
 	private IDocument document = null;
 	private int offset = 0;
-	private List<List<StyleRange>> styleRangeCache;
+	private List<StyleRangeCacheEntry> styleRangeCache;
 
 	public DocumentStyler(IDocument document) {
 
@@ -35,7 +36,7 @@ public class DocumentStyler implements LineStyleListener {
 		System.out.println("linefeed length:" + System.getProperty("line.separator").toCharArray().length);
 		this.multiLineTokenList = new ArrayList<Token>();
 		ruleMap = new HashMap<String, List<IRule>>();
-		styleRangeCache = new ArrayList<List<StyleRange>>();
+		styleRangeCache = new ArrayList<StyleRangeCacheEntry>();
 		this.styleMap = new HashMap<>();
 		this.styleMap.put(Constants.T_PETME642YASCII, Constants.TEXTSTYLE_PetMe642Y_ASCII);
 		this.styleMap.put(Constants.T_PETME2YASCII, Constants.TEXTSTYLE_PetMe2Y_ASCII);
@@ -64,23 +65,37 @@ public class DocumentStyler implements LineStyleListener {
 
 	@Override
 	public void lineGetStyle(LineStyleEvent event) {
-		List<StyleRange> styleRangeList = null;
+		StyleRangeCacheEntry styleRangeCacheEntry = null;
 		int lineOffset = event.lineOffset;
 		int lineNo = document.getLineAtOffset(lineOffset);
 
 		try {
-			styleRangeList = styleRangeCache.get(lineNo);
+			styleRangeCacheEntry = styleRangeCache.get(lineNo);
 		} catch (Exception e) {
 		}
 
-		if (styleRangeList == null) {
-			styleRangeList = new ArrayList<>();
-			System.out.printf("line %d\n", lineNo);
-			Color backgroundColor = (document.getCurrentLineIndex() == document.getLineAtOffset(event.lineOffset)
-					? Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR
-					: Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
+		if (event.justify) {
+			System.out.printf("line %d was justified\n", lineNo);
+			System.out.printf("line %d was justified", lineNo);
+			while (styleRangeCache.size() > lineNo) {
 
-			scanLine(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, backgroundColor);
+				styleRangeCache.remove(styleRangeCache.size() - 1);
+			}
+		}
+
+		if (styleRangeCacheEntry == null) {
+			styleRangeCacheEntry = new StyleRangeCacheEntry();
+			List<StyleRange> styleRangeList = new ArrayList<StyleRange>();
+			styleRangeCacheEntry.setStyleRangeList(styleRangeList);
+			styleRangeCacheEntry.setLineIndex(lineNo);
+			styleRangeCacheEntry.setLineOffset(lineOffset);
+			/*
+			 * Color backgroundColor = (document.getCurrentLineIndex() ==
+			 * document.getLineAtOffset(event.lineOffset) ?
+			 * Constants.SOURCE_EDITOR_HIGHLIGHTED_BACKGROUND_COLOR :
+			 * Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
+			 */
+			scanLine(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
 			/*
 			 * Token token = isInsideTokenRange(multiLineTokenList, event.lineOffset,
@@ -107,10 +122,11 @@ public class DocumentStyler implements LineStyleListener {
 			 * styleRange.start = startIndex + 2; styleRange.length = endIndex -
 			 * styleRange.start; styleRangeList.add(styleRange); }
 			 */
-			styleRangeCache.add(styleRangeList);
+			styleRangeCache.add(lineNo, styleRangeCacheEntry);
 
 		}
-		event.styles = styleRangeList.toArray(new StyleRange[styleRangeList.size()]);
+		event.styles = styleRangeCacheEntry.getStyleRangeList()
+				.toArray(new StyleRange[styleRangeCacheEntry.getStyleRangeList().size()]);
 
 	}
 
@@ -127,7 +143,7 @@ public class DocumentStyler implements LineStyleListener {
 				if (offset == matchIndex) {
 					len = rule.getPrefix().length();
 					StyleRange styleRange = new StyleRange(lo + offset, len,
-							styleMap.get(rule.getToken().getKey()).foreground, backgroundColor);
+							styleMap.get(rule.getToken().getKey()).foreground, null);
 					styleRangeList.add(styleRange);
 					hasMatch = true;
 					break;
