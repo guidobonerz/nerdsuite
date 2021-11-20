@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import de.drazil.nerdsuite.sourceeditor.Token;
 import lombok.Data;
 
 @Data
@@ -35,26 +34,16 @@ public class BasicInstruction implements IWordMatcher {
 
 	@JsonIgnore
 	@Override
-	public boolean hasMatch(String value, Token token, int offset) {
-		boolean hasMatch = false;
-		this.offset = offset;
-		int matchIndex = value.toLowerCase().indexOf(instruction.toLowerCase(), offset);
-		if (matchIndex != -1) {
-			token.setStart(matchIndex);
-			int length = instruction.length();
+	public Range hasMatch(String text, int offset) {
+		Range range = null;
+		int matchIndex = text.indexOf(instruction, offset);
+		if (offset == matchIndex) {
+			int len = instruction.length();
 			if (includesOpenBrace) {
-				length--;
+				len--;
 			}
-			this.offset = matchIndex + length;
-			token.setLength(length);
-			hasMatch = true;
+			range = new Range(offset, len, RangeType.Unspecified);
 		}
-		token.setValid(hasMatch);
-		return hasMatch;
-	}
-
-	@Override
-	public String getValue() {
-		return instruction;
+		return range;
 	}
 }

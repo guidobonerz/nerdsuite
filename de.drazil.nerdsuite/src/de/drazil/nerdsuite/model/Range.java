@@ -12,5 +12,5 @@ import lombok.ToString;
 public class Range {
 	private int offset = 0;
 	private int len = 0;
-	private RangeType rangeType;
+	private RangeType rangeType = RangeType.Unspecified;
 }

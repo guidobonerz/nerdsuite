@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.sourceeditor;
 
+import de.drazil.nerdsuite.model.Range;
+
 public interface IRule {
 	public String getPrefix();
 
@@ -9,7 +11,7 @@ public interface IRule {
 
 	public Marker getMarker();
 
-	public boolean hasMatch(String text, int offset);
+	public Range hasMatch(String text, int offset);
 
 	public int getOffset();
 

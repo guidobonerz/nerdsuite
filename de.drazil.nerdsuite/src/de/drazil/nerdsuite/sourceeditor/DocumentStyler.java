@@ -14,6 +14,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.TextStyle;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.StyleRangeCacheEntry;
 
 public class DocumentStyler implements LineStyleListener {
@@ -61,7 +62,7 @@ public class DocumentStyler implements LineStyleListener {
 	public void refreshMultilineComments(String text) {
 		multiLineTokenList.clear();
 
-		processTokensById(MULTI_LINE_RULE, text);
+		// processTokensById(MULTI_LINE_RULE, text);
 	}
 
 	@Override
@@ -75,50 +76,22 @@ public class DocumentStyler implements LineStyleListener {
 		} catch (Exception e) {
 		}
 
-		if (event.justify) {
-			System.out.printf("line %d was justified\n", lineNo);
-			System.out.printf("line %d was justified", lineNo);
-			while (styleRangeCache.size() > lineNo) {
-
-				styleRangeCache.remove(styleRangeCache.size() - 1);
-			}
-		}
-
+		/*
+		 * if (event.justify) { System.out.printf("line %d was justified\n", lineNo);
+		 * 
+		 * while (styleRangeCache.size() > lineNo) {
+		 * 
+		 * styleRangeCache.remove(styleRangeCache.size() - 1); } }
+		 */
 		if (styleRangeCacheEntry == null) {
 			styleRangeCacheEntry = new StyleRangeCacheEntry();
 			List<StyleRange> styleRangeList = new ArrayList<StyleRange>();
 			styleRangeCacheEntry.setStyleRangeList(styleRangeList);
 			styleRangeCacheEntry.setLineIndex(lineNo);
 			styleRangeCacheEntry.setLineOffset(lineOffset);
-			parseSingleLineRules(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(),
-					styleRangeList, null);
-			parseWords(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
-			/*
-			 * Token token = isInsideTokenRange(multiLineTokenList, event.lineOffset,
-			 * event.lineText.length()); if (token == null) {
-			 * 
-			 * for (String id : ruleMap.keySet()) { if (!id.equals(MULTI_LINE_RULE)) {
-			 * processTokensById(id, event.lineText); } } buildStyles(lineTokenList,
-			 * styleRangeList, event.lineOffset, backgroundColor); } else // this is the
-			 * multiline block {
-			 * 
-			 * StyleRange styleRange = new StyleRange(styleMap.get(token.getKey()));
-			 * styleRange.start = token.getStart() >= event.lineOffset ? token.getStart() :
-			 * event.lineOffset; styleRange.length = token.getStart() > event.lineOffset &&
-			 * token.getStart() + token.getLength() < event.lineOffset +
-			 * event.lineText.length() ? token.getStart() + token.getLength() -
-			 * token.getStart() : token.getStart() + token.getLength() - event.lineOffset;
-			 * styleRange.background = backgroundColor;
-			 * 
-			 * styleRangeList.add(styleRange);
-			 * 
-			 * } int startIndex = event.lineText.indexOf(""); int endIndex =
-			 * event.lineText.indexOf(""); if (startIndex > 0 && endIndex > 0) { StyleRange
-			 * styleRange = new StyleRange(styleMap.get(Constants.T_PETME642YASCII));
-			 * styleRange.start = startIndex + 2; styleRange.length = endIndex -
-			 * styleRange.start; styleRangeList.add(styleRange); }
-			 */
+			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
+
 			styleRangeCache.add(lineNo, styleRangeCacheEntry);
 
 		}
@@ -127,50 +100,7 @@ public class DocumentStyler implements LineStyleListener {
 
 	}
 
-	private void parseSingleLineRules(List<IRule> ruleList, int lineOffset, String text,
-			List<StyleRange> styleRangeList, Color backgroundColor) {
-		int lo = lineOffset;
-		int offset = 0;
-		int len = 0;
-		boolean hasMatch = false;
-		while (offset < text.length()) {
-			hasMatch = false;
-			for (IRule rule : ruleList) {
-
-				int matchIndexPrefix = text.indexOf(rule.getPrefix(), offset);
-				if (matchIndexPrefix != -1) {
-					if (rule.getMarker() == Marker.EOL) {
-						len = text.length() - matchIndexPrefix;
-						StyleRange styleRange = new StyleRange(lo + matchIndexPrefix, len,
-								styleMap.get(rule.getToken().getKey()).foreground, null);
-						styleRangeList.add(styleRange);
-						hasMatch = true;
-						break;
-					} else if (rule.getMarker() == Marker.PARTITION) {
-						int matchIndexSuffix = text.indexOf(rule.getSuffix(),
-								matchIndexPrefix + rule.getPrefix().length());
-						if (matchIndexSuffix != -1) {
-							len = matchIndexPrefix + matchIndexSuffix + rule.getPrefix().length()
-									+ rule.getSuffix().length();
-							StyleRange styleRange = new StyleRange(lo + matchIndexPrefix, len,
-									styleMap.get(rule.getToken().getKey()).foreground, null);
-							styleRangeList.add(styleRange);
-							hasMatch = true;
-							break;
-						}
-					}
-				}
-			}
-			if (hasMatch) {
-				offset += len;
-			} else {
-				offset++;
-			}
-		}
-
-	}
-
-	private void parseWords(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
+	private void parseText(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
 			Color backgroundColor) {
 		int lo = lineOffset;
 		int offset = 0;
@@ -179,9 +109,9 @@ public class DocumentStyler implements LineStyleListener {
 		while (offset < text.length()) {
 			hasMatch = false;
 			for (IRule rule : ruleList) {
-				int matchIndex = text.indexOf(rule.getPrefix(), offset);
-				if (offset == matchIndex) {
-					len = rule.getPrefix().length();
+				Range range = rule.hasMatch(text, offset);
+				if (range != null) {
+					len = range.getLen();
 					StyleRange styleRange = new StyleRange(lo + offset, len,
 							styleMap.get(rule.getToken().getKey()).foreground, null);
 					styleRangeList.add(styleRange);
@@ -193,37 +123,6 @@ public class DocumentStyler implements LineStyleListener {
 				offset += len;
 			} else {
 				offset++;
-			}
-		}
-	}
-
-	private void processTokensById(String id, String text) {
-		offset = 0;
-		List<IRule> ruleList = ruleMap.get(id);
-		if (ruleList != null && ruleList.size() > 0) {
-			for (IRule rule : ruleList) {
-				findTokens(rule, text);
-			}
-		}
-
-	}
-
-	private void findTokens(IRule rule, String text) {
-
-		if (text.equals("")) {
-			return;
-		}
-		System.out.printf("try to find[ %s ]\n", rule.getPrefix());
-		while (rule.hasMatch(text, offset)) {
-			offset = rule.getOffset();
-			Token token = rule.getToken();
-			Token tokenCopy = Token.copy(token);
-			if (rule instanceof MultiLineRule) {
-				multiLineTokenList.add(tokenCopy);
-				// System.out.println("foundMultiLineMatch:" + token.toString());
-			} else {
-				// System.out.println("foundSingleLineMatch:" + token.toString());
-				lineTokenList.add(tokenCopy);
 			}
 		}
 	}

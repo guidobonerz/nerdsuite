@@ -1,5 +1,6 @@
 package de.drazil.nerdsuite.sourceeditor;
 
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.SourceRules;
 
 public class ValueRule extends BaseRule {
@@ -18,24 +19,8 @@ public class ValueRule extends BaseRule {
 	}
 
 	@Override
-	public boolean hasMatch(String text, int offset) {
-		boolean hasMatch = false;
-		setOffset(offset);
-		int matchIndex = text.indexOf(getPrefix(), offset);
-		if (matchIndex != -1) {
-			System.out.println("prefix found");
-			getToken().setStart(matchIndex);
-			int pos = matchIndex;
-			while (pos < text.length()) {
-				if (Character.isWhitespace(text.charAt(pos)))
-					break;
-				pos++;
-			}
-			getToken().setLength(pos - matchIndex);
-			setOffset(pos);
-			hasMatch = true;
-		}
-		getToken().setValid(hasMatch);
-		return hasMatch;
+	public Range hasMatch(String text, int offset) {
+
+		return null;
 	}
 }

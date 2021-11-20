@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.sourceeditor;
 
+import de.drazil.nerdsuite.model.Range;
+
 public class SingleLineRule extends BaseRule {
 
 	public SingleLineRule(String prefix, Token token) {
@@ -18,49 +20,7 @@ public class SingleLineRule extends BaseRule {
 	}
 
 	@Override
-	public boolean hasMatch(String text, int offset) {
-		boolean hasMatch = false;
-		setOffset(offset);
-		if (getPrefix() == null && getSuffix() != null) {
-			int matchIndex = text.indexOf(getSuffix(), offset);
-			if (matchIndex != -1) {
-				System.out.println("suffix found");
-
-				int pos = matchIndex;
-				while (pos > 0) {
-					if (Character.isWhitespace(text.charAt(pos)))
-						break;
-					pos--;
-				}
-				getToken().setStart(pos);
-				getToken().setLength(matchIndex - pos + 1);
-				setOffset(matchIndex + 1);
-				hasMatch = true;
-			}
-		} else {
-			int matchIndex = text.indexOf(getPrefix(), offset);
-			if (matchIndex != -1) {
-				System.out.println("prefix found");
-				getToken().setStart(matchIndex);
-
-				if (getMarker() == Marker.EOL) {
-					getToken().setLength(text.length());
-					setOffset(matchIndex + text.length());
-					hasMatch = true;
-				} else {
-					String s = getSuffix() == null ? "" : getSuffix();
-					matchIndex = text.indexOf(s, matchIndex + getPrefix().length());
-					if (matchIndex != -1) {
-						System.out.println("suffix found");
-						setOffset(matchIndex + s.length());
-						getToken().setLength(offset - getToken().getStart());
-						hasMatch = true;
-					}
-				}
-			}
-		}
-		getToken().setValid(hasMatch);
-		return hasMatch;
+	public Range hasMatch(String text, int offset) {
+		return null;
 	}
-
 }
