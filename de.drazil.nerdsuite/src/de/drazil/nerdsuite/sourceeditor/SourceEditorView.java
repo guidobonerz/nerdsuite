@@ -60,7 +60,7 @@ public class SourceEditorView implements IDocument {
 	private SourceRepositoryService srs;
 	@Inject
 	private MPart part;
-	int x = 0xee61;
+	int x = 0xe000;
 
 	public SourceEditorView() {
 

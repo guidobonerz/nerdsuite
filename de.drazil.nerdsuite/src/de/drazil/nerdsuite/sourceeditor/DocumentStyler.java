@@ -91,7 +91,8 @@ public class DocumentStyler implements LineStyleListener {
 		styleRangeCacheEntry.setStyleRangeList(styleRangeList);
 		styleRangeCacheEntry.setLineIndex(lineNo);
 		styleRangeCacheEntry.setLineOffset(lineOffset);
-		//parseText(ruleMap.get(MULTI_LINE_RULE), lineOffset, document.getText(), styleRangeList, null);
+		// parseText(ruleMap.get(MULTI_LINE_RULE), lineOffset, document.getText(),
+		// styleRangeList, null);
 		parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 		parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
@@ -132,6 +133,7 @@ public class DocumentStyler implements LineStyleListener {
 						styleRangeList.add(styleRange);
 						hasMatch = true;
 					}
+
 					break;
 				}
 			}
