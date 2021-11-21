@@ -80,6 +80,9 @@ public class Constants {
 	// public final static Color DEFAULT_STRING_COLOR = new
 	// Color(Display.getCurrent(), SwtUtil.toRGB("#485CCB"));
 
+	public final static Color FUNCTION_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#00a0d0"));
+	public final static Color COMMAND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#30b090"));
+	public final static Color OPERATOR_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#20ff90"));
 	public final static Color TRANSPARENT_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#010101"));
 	public final static Color DEFAULT_STRING_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#48FCCB"));
 	public final static Color DEFAULT_DECIMAL_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#6476CB"));

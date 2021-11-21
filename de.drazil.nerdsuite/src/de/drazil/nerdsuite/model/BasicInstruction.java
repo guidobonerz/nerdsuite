@@ -33,7 +33,6 @@ public class BasicInstruction implements IWordMatcher {
 	}
 
 	@JsonIgnore
-	@Override
 	public Range hasMatch(String text, int offset) {
 		Range range = null;
 		int matchIndex = text.indexOf(instruction, offset);
@@ -45,5 +44,17 @@ public class BasicInstruction implements IWordMatcher {
 			range = new Range(offset, len);
 		}
 		return range;
+	}
+
+	@JsonIgnore
+	public int getTokenControl() {
+		if (purpose.equals("C")) {
+			return 0;
+		} else if (purpose.equals("F")) {
+			return 1;
+		} else if (purpose.equals("O")) {
+			return 2;
+		}
+		return 0;
 	}
 }

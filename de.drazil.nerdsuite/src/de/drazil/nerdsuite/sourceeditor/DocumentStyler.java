@@ -124,8 +124,17 @@ public class DocumentStyler implements LineStyleListener {
 					if (!isInExistingStyleRange(lo, range, styleRangeList)) {
 						len = range.getLen();
 						offset = range.getOffset();
-						StyleRange styleRange = new StyleRange(lo + range.getOffset(), len,
-								styleMap.get(rule.getToken().getKey()).foreground, null);
+						Color c = null;
+						if (rule.getTokenControl() == 0) {
+							c = Constants.COMMAND_COLOR;
+						} else if (rule.getTokenControl() == 1) {
+							c = Constants.FUNCTION_COLOR;
+						} else if (rule.getTokenControl() == 2) {
+							c = Constants.OPERATOR_COLOR;
+						} else {
+							c = styleMap.get(rule.getToken().getKey()).foreground;
+						}
+						StyleRange styleRange = new StyleRange(lo + range.getOffset(), len, c, null);
 						styleRange.font = styleMap.get(rule.getToken().getKey()).font;
 						styleRangeList.add(styleRange);
 						hasMatch = true;

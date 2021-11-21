@@ -20,4 +20,6 @@ public interface IRule {
 	public int getPriority();
 
 	public boolean skipSurroundings();
+
+	public int getTokenControl();
 }

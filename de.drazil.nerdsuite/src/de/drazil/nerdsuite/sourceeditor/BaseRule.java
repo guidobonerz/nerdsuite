@@ -80,4 +80,9 @@ public abstract class BaseRule implements IRule {
 	public boolean skipSurroundings() {
 		return skipSurroundings;
 	}
+
+	@Override
+	public int getTokenControl() {
+		return -1;
+	}
 }

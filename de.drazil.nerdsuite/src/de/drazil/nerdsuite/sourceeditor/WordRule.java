@@ -16,4 +16,9 @@ public class WordRule extends BaseRule {
 	public Range hasMatch(String text, int offset) {
 		return wordMatcher.hasMatch(text, offset);
 	}
+
+	@Override
+	public int getTokenControl() {
+		return wordMatcher.getTokenControl();
+	}
 }
