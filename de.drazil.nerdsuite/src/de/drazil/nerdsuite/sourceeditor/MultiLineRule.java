@@ -5,7 +5,7 @@ import de.drazil.nerdsuite.model.Range;
 public class MultiLineRule extends BaseRule {
 
 	public MultiLineRule(String prefix, String suffix, Token token) {
-		super(prefix, suffix, Marker.NONE, token);
+		super(prefix, suffix, Marker.NONE, token, false);
 		setPriority(0);
 	}
 

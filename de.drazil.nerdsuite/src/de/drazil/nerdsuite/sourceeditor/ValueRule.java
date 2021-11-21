@@ -12,7 +12,7 @@ public class ValueRule extends BaseRule {
 	}
 
 	public ValueRule(String prefix, String type, int length, Token token) {
-		super(prefix, null, Marker.NONE, token);
+		super(prefix, null, Marker.NONE, token,false);
 		String prefixItems[] = getPrefix().split(";");
 		matchPattern = prefixItems[0];
 		// valueLength = Integer.parseInt(prefixItems[1]);
