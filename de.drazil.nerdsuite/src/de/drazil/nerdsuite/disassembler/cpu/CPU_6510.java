@@ -11,7 +11,7 @@ import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Pointer;
-import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -47,13 +47,13 @@ public class CPU_6510 extends AbstractCPU {
 
 	@Override
 	public void decode(byte[] byteArray, Value pc, InstructionLine instructionLine,
-			PlatformData platformData, Range discoverableRange, int stage) {
+			PlatformData platformData, DisassemblingRange discoverableRange, int stage) {
 		InstructionLine currentLine = instructionLine;
 		InstructionLine newLine = null;
 		Value value = null;
 		while (currentLine != null) {
 			if (!currentLine.isPassed()) {
-				Range range = currentLine.getRange();
+				DisassemblingRange range = currentLine.getRange();
 				int offset = range.getOffset();
 				String so = String.format("%04X", offset);
 				Opcode opcode = getOpcodeByIndex(platformData.getPlatformId(), "", byteArray, offset);
@@ -67,7 +67,7 @@ public class CPU_6510 extends AbstractCPU {
 					break;
 				}
 
-				value = getInstructionValue(byteArray, new Range(offset, len, RangeType.Code));
+				value = getInstructionValue(byteArray, new DisassemblingRange(offset, len, RangeType.Code));
 				currentLine.setInstructionType(InstructionType.Asm);
 
 				if ("branch".equals(instructionType)) {
@@ -364,7 +364,7 @@ public class CPU_6510 extends AbstractCPU {
 					if (nextLine.getReferenceType() == ReferenceType.DataReference
 							|| nextLine.getInstructionType() == InstructionType.Asm)
 						break;
-					Range range = currentLine.getRange();
+					DisassemblingRange range = currentLine.getRange();
 					range.setLen(range.getLen() + nextLine.getRange().getLen());
 					getInstructionLineList().remove(nextLine);
 				}

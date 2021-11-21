@@ -5,7 +5,7 @@ import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
-import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
@@ -23,7 +23,7 @@ public class CPU_Z80 extends AbstractCPU {
 
 	@Override
 	public void decode(byte[] byteArray, Value pc, InstructionLine instructionLine,
-			PlatformData platformData, Range discoverableRange, int stage) {
+			PlatformData platformData, DisassemblingRange discoverableRange, int stage) {
 		InstructionLine currentLine = instructionLine;
 		InstructionLine newLine = null;
 		Value value = null;
@@ -31,7 +31,7 @@ public class CPU_Z80 extends AbstractCPU {
 		line = 1;
 		while (currentLine != null) {
 			if (!currentLine.isPassed()) {
-				Range range = currentLine.getRange();
+				DisassemblingRange range = currentLine.getRange();
 				int offset = range.getOffset();
 				String so = String.format("%04X", offset);
 				String prefix1 = String.format("%02X", NumericConverter.toInt(byteArray[(int) offset]));
@@ -207,7 +207,7 @@ public class CPU_Z80 extends AbstractCPU {
 					if (nextLine.getReferenceType() == ReferenceType.DataReference
 							|| nextLine.getInstructionType() == InstructionType.Asm)
 						break;
-					Range range = currentLine.getRange();
+					DisassemblingRange range = currentLine.getRange();
 					range.setLen(range.getLen() + nextLine.getRange().getLen());
 					getInstructionLineList().remove(nextLine);
 				}

@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.sourceeditor;
 
 import de.drazil.nerdsuite.model.Range;
-import de.drazil.nerdsuite.model.RangeType;
 
 public class MultiLineRule extends BaseRule {
 
@@ -22,7 +21,7 @@ public class MultiLineRule extends BaseRule {
 			} else {
 				len = text.length() - matchPrefixIndex;
 			}
-			range = new Range(matchPrefixIndex, len, RangeType.Unspecified);
+			range = new Range(matchPrefixIndex, len);
 		}
 		return range;
 	}

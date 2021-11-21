@@ -18,4 +18,6 @@ public interface IRule {
 	public void reset();
 
 	public int getPriority();
+
+	public boolean skipSurroundings();
 }

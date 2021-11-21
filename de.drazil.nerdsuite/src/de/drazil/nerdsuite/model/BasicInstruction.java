@@ -42,7 +42,7 @@ public class BasicInstruction implements IWordMatcher {
 			if (includesOpenBrace) {
 				len--;
 			}
-			range = new Range(offset, len, RangeType.Unspecified);
+			range = new Range(offset, len);
 		}
 		return range;
 	}

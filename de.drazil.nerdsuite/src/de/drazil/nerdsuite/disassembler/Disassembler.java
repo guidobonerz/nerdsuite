@@ -11,7 +11,7 @@ import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.ConversionType;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
-import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.util.NumericConverter;
 
@@ -56,7 +56,7 @@ public class Disassembler {
 	}
 
 	private void printDiasassembly(InstructionLine instructionLine, Map<String, ConversionType> conversionMap) {
-		Range range = instructionLine.getRange();
+		DisassemblingRange range = instructionLine.getRange();
 		Opcode opcode = platform.getCPU().getOpcodeByIndex("", "", byteArray, range.getOffset());
 		String pc = NumericConverter.toHexString(instructionLine.getProgramCounter().getValue(), 4);
 

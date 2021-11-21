@@ -20,17 +20,14 @@ import de.drazil.nerdsuite.model.StyleRangeCacheEntry;
 public class DocumentStyler implements LineStyleListener {
 	private final static String MULTI_LINE_RULE = "MultiLineRule";
 	private final static String SINGLE_LINE_RULE = "SingleLineRule";
-	private final static String PARTITIONED_LINE_RULE = "PartitionedLineRule";
 	private final static String WORD_RULE = "WordRule";
 	private final static String PATTERN_RULE = "PatternRule";
 
-	private List<Token> lineTokenList;
 	private List<Token> multiLineTokenList;
+	private List<StyleRangeCacheEntry> styleRangeCache;
 	private Map<String, TextStyle> styleMap;
 	private Map<String, List<IRule>> ruleMap;
 	private IDocument document = null;
-	private int offset = 0;
-	private List<StyleRangeCacheEntry> styleRangeCache;
 
 	public DocumentStyler(IDocument document) {
 

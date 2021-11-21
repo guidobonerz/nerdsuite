@@ -30,7 +30,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -43,8 +42,6 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.util.C64Font;
-import de.drazil.nerdsuite.util.IFont;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 
 public class SourceEditorView implements IDocument {
@@ -87,7 +84,7 @@ public class SourceEditorView implements IDocument {
 				new Token(Constants.T_COMMENT)));
 		documentStyler.addRule(new SingleLineRule("//", Marker.EOL, new Token(Constants.T_COMMENT)));
 		documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
-				basicInstructions.getStringQuote(), new Token(Constants.T_C64_BASIC_STRING)));
+				basicInstructions.getStringQuote(), new Token(Constants.T_C64_BASIC_STRING), true));
 		// documentStyler.addRule(new SingleLineRule("", ":", new
 		// Token(Constants.T_LABEL)));
 		// documentStyler.addRule(new ValueRule("#", "d", 5, new
@@ -222,19 +219,14 @@ public class SourceEditorView implements IDocument {
 				styledText.redraw();
 			}
 		});
-/*
-		Button button = new Button(parent, SWT.NONE);
-		button.addListener(SWT.Selection, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				IFont font = new C64Font();
-				// int cursorPos = styledText.getCaretOffset();
-				styledText.insert(new String(Character.toChars(x)));
-				x++;
-			}
-		});
-*/
+		/*
+		 * Button button = new Button(parent, SWT.NONE);
+		 * button.addListener(SWT.Selection, new Listener() {
+		 * 
+		 * @Override public void handleEvent(Event event) { IFont font = new C64Font();
+		 * // int cursorPos = styledText.getCaretOffset(); styledText.insert(new
+		 * String(Character.toChars(x))); x++; } });
+		 */
 		/*
 		 * FontData[] fD = styledText.getFont().getFontData(); fD[0].setHeight(12);
 		 * styledText.setFont(new Font(parent.getDisplay(), fD[0]));
@@ -325,23 +317,6 @@ public class SourceEditorView implements IDocument {
 		styledText.redraw();
 	}
 
-	/*
-	 * private Bounds getWordBounds(String text, int caretOffset) { int startOffset
-	 * = caretOffset; int endOffset = caretOffset; int start = 0; int end = 0;
-	 * Bounds bounds = new Bounds(); char c;
-	 * 
-	 * boolean whiteSpace = false; while (startOffset > 0) {
-	 * 
-	 * if (startOffset < text.length() && (whiteSpace =
-	 * Character.isWhitespace(text.charAt(startOffset)))) { if (whiteSpace) {
-	 * startOffset += 1; } break; } startOffset--; } start = startOffset;
-	 * 
-	 * whiteSpace = false; while (endOffset < text.length()) { if (endOffset > 0 &&
-	 * (whiteSpace = Character.isWhitespace(text.charAt(endOffset)))) { if
-	 * (whiteSpace) { endOffset -= 1; } break; } endOffset++; } end = endOffset;
-	 * 
-	 * bounds.setStart(start); bounds.setEnd(end); return bounds; }
-	 */
 	@PreDestroy
 	public void dispose() {
 	}
