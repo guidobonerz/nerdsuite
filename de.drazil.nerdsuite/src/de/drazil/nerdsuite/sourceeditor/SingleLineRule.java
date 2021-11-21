@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.sourceeditor;
 
 import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.RangeType;
 
 public class SingleLineRule extends BaseRule {
 
@@ -21,6 +22,28 @@ public class SingleLineRule extends BaseRule {
 
 	@Override
 	public Range hasMatch(String text, int offset) {
-		return null;
+		Range range = null;
+		if (getMarker() == Marker.EOL) {
+			int matchIndex = text.indexOf(getPrefix(), offset);
+			if (offset == matchIndex) {
+				int len = text.length() - matchIndex;
+				range = new Range(offset, len, RangeType.Unspecified);
+			}
+		} else if (getMarker() == Marker.PARTITION) {
+			int matchPrefixIndex = text.indexOf(getPrefix(), offset);
+			if (matchPrefixIndex != -1) {
+				int len = getPrefix().length();
+				int matchSuffixIndex = text.indexOf(getSuffix(), matchPrefixIndex + len);
+				if (matchSuffixIndex != -1) {
+					len = matchSuffixIndex + getSuffix().length() - matchPrefixIndex;
+				} else {
+					len = text.length() - matchPrefixIndex;
+				}
+				range = new Range(matchPrefixIndex, len, RangeType.Unspecified);
+			}
+		} else {
+		}
+
+		return range;
 	}
 }

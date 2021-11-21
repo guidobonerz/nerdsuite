@@ -90,8 +90,15 @@ public class DocumentStyler implements LineStyleListener {
 			styleRangeCacheEntry.setLineIndex(lineNo);
 			styleRangeCacheEntry.setLineOffset(lineOffset);
 
+			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
+			styleRangeList.sort(new Comparator<StyleRange>() {
+				@Override
+				public int compare(StyleRange o1, StyleRange o2) {
+					return Integer.compare(o1.start, o2.start);
+				}
+			});
 			styleRangeCache.add(lineNo, styleRangeCacheEntry);
 
 		}
@@ -102,6 +109,9 @@ public class DocumentStyler implements LineStyleListener {
 
 	private void parseText(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
 			Color backgroundColor) {
+		if (ruleList == null) {
+			return;
+		}
 		int lo = lineOffset;
 		int offset = 0;
 		int len = 0;
@@ -111,11 +121,15 @@ public class DocumentStyler implements LineStyleListener {
 			for (IRule rule : ruleList) {
 				Range range = rule.hasMatch(text, offset);
 				if (range != null) {
-					len = range.getLen();
-					StyleRange styleRange = new StyleRange(lo + offset, len,
-							styleMap.get(rule.getToken().getKey()).foreground, null);
-					styleRangeList.add(styleRange);
-					hasMatch = true;
+					if (!isInExistingStyleRange(lo, range, styleRangeList)) {
+						len = range.getLen();
+						offset = range.getOffset();
+						StyleRange styleRange = new StyleRange(lo + range.getOffset(), len,
+								styleMap.get(rule.getToken().getKey()).foreground, null);
+						styleRange.font = styleMap.get(rule.getToken().getKey()).font;
+						styleRangeList.add(styleRange);
+						hasMatch = true;
+					}
 					break;
 				}
 			}
@@ -125,6 +139,16 @@ public class DocumentStyler implements LineStyleListener {
 				offset++;
 			}
 		}
+	}
+
+	private boolean isInExistingStyleRange(int offset, Range range, List<StyleRange> styleRangeList) {
+		for (StyleRange sr : styleRangeList) {
+			if (offset + range.getOffset() >= sr.start
+					&& offset + range.getOffset() + range.getLen() <= sr.start + sr.length) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void addRule(IRule rule) {

@@ -83,10 +83,10 @@ public class SourceEditorView implements IDocument {
 		// documentStyler.addRule(new
 		// MultiLineRule(basicInstructions.getBlockComment()[0],
 		// basicInstructions.getBlockComment()[1], new Token(Constants.T_COMMENT)));
-		//documentStyler.addRule(new SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
-		//		new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
+				new Token(Constants.T_COMMENT)));
 		documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
-				basicInstructions.getStringQuote(), new Token(Constants.T_PETME642YASCII)));
+				basicInstructions.getStringQuote(), new Token(Constants.T_C64_BASIC_STRING)));
 		// documentStyler.addRule(new SingleLineRule("", ":", new
 		// Token(Constants.T_LABEL)));
 		// documentStyler.addRule(new ValueRule("#", "d", 5, new
@@ -106,6 +106,7 @@ public class SourceEditorView implements IDocument {
 				documentStyler.addRule(new WordRule(bi, new Token(Constants.T_BASIC_COMMAND)));
 			}
 		}
+
 		return documentStyler;
 	}
 
