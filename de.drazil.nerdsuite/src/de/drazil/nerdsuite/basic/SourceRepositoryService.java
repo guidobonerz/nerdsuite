@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.basic;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 
 import org.eclipse.swt.graphics.Rectangle;
@@ -69,7 +70,7 @@ public class SourceRepositoryService implements IService {
 	public void save(Project project) {
 		try {
 			File file = FileUtil.getFileFromProject(project);
-			FileWriter fw = new FileWriter(file);
+			FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8);
 			fw.write(getHeaderText(project, container.getMetadata()));
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);

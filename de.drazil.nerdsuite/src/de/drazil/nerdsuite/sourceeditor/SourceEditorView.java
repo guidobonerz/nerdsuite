@@ -28,11 +28,10 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
@@ -44,7 +43,8 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.util.SwtUtil;
+import de.drazil.nerdsuite.util.C64Font;
+import de.drazil.nerdsuite.util.IFont;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 
 public class SourceEditorView implements IDocument {
@@ -60,6 +60,7 @@ public class SourceEditorView implements IDocument {
 	private SourceRepositoryService srs;
 	@Inject
 	private MPart part;
+	int x = 0xee61;
 
 	public SourceEditorView() {
 
@@ -80,11 +81,11 @@ public class SourceEditorView implements IDocument {
 
 	private DocumentStyler getBasicStyler(BasicInstructions basicInstructions, int version) {
 		documentStyler = new DocumentStyler(this);
-		// documentStyler.addRule(new
-		// MultiLineRule(basicInstructions.getBlockComment()[0],
-		// basicInstructions.getBlockComment()[1], new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new MultiLineRule(basicInstructions.getBlockComment()[0],
+				basicInstructions.getBlockComment()[1], new Token(Constants.T_COMMENT_BLOCK)));
 		documentStyler.addRule(new SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
 				new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new SingleLineRule("//", Marker.EOL, new Token(Constants.T_COMMENT)));
 		documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
 				basicInstructions.getStringQuote(), new Token(Constants.T_C64_BASIC_STRING)));
 		// documentStyler.addRule(new SingleLineRule("", ":", new
@@ -103,7 +104,7 @@ public class SourceEditorView implements IDocument {
 
 		for (BasicInstruction bi : basicInstructions.getBasicInstructionList()) {
 			if (!bi.isComment()) {
-				documentStyler.addRule(new WordRule(bi, new Token(Constants.T_BASIC_COMMAND)));
+				documentStyler.addRule(new WordRule(bi, new Token(Constants.T_COMMAND)));
 			}
 		}
 
@@ -169,9 +170,8 @@ public class SourceEditorView implements IDocument {
 		styledText.setText(srs.getContent() == null ? "" : srs.getContent());
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
-		styledText.setFont(Constants.EDITOR_FONT);
+		styledText.setFont(Constants.RobotoMonoBold_FONT);
 		styledText.addLineStyleListener(getBasicStyler(basicInstructions, version));
-
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
 			public void lineGetBackground(LineBackgroundEvent event) {
@@ -183,7 +183,6 @@ public class SourceEditorView implements IDocument {
 
 		styledText.addListener(SWT.Paint, new Listener() {
 			public void handleEvent(Event event) {
-
 				event.gc.setForeground(Constants.SOURCE_EDITOR_HIGHLIGHTED_FOREGROUND_COLOR);
 				int line = styledText.getOffsetAtLine(styledText.getLineAtOffset(styledText.getCaretOffset()));
 				Point topLeft = styledText.getLocationAtOffset(line);
@@ -223,19 +222,19 @@ public class SourceEditorView implements IDocument {
 				styledText.redraw();
 			}
 		});
-		/*
-		 * Button button = new Button(parent, SWT.NONE);
-		 * button.addListener(SWT.Selection, new Listener() {
-		 * 
-		 * @Override public void handleEvent(Event event) { IFont font = new C64Font();
-		 * 
-		 * // styledText.append(new // String(Character.toChars(font.getUnicodePrefix()
-		 * | ((int) 22 // & 0xff)))); // styledText.append(new
-		 * String(Character.toChars(0xee57))); styledText.append(new
-		 * String(Character.toChars(0xe0d1)));
-		 * 
-		 * } });
-		 */
+/*
+		Button button = new Button(parent, SWT.NONE);
+		button.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				IFont font = new C64Font();
+				// int cursorPos = styledText.getCaretOffset();
+				styledText.insert(new String(Character.toChars(x)));
+				x++;
+			}
+		});
+*/
 		/*
 		 * FontData[] fD = styledText.getFont().getFontData(); fD[0].setHeight(12);
 		 * styledText.setFont(new Font(parent.getDisplay(), fD[0]));

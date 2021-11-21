@@ -61,7 +61,7 @@ public class Constants {
 			SwtUtil.toRGB("#404040"));
 	public final static Color SOURCE_EDITOR_HIGHLIGHTED_FOREGROUND_COLOR = new Color(Display.getCurrent(),
 			SwtUtil.toRGB("#a00000"));
-	
+
 	public final static Color GREY3 = new Color(Display.getCurrent(), SwtUtil.toRGB("#D9C69A"));
 	public final static Color PIXEL_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#686868"));
 	public final static Color LINE_GRID_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#383838"));
@@ -114,28 +114,32 @@ public class Constants {
 	public final static Font FontAwesome5ProSolid_12 = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 16,
 			SWT.NORMAL);
 	public final static Font Ubuntu_Mono = new Font(Display.getCurrent(), "Ubuntu Mono", 20, SWT.NORMAL);
-	public final static Font DroidSans_Mono = new Font(Display.getCurrent(), "Droid Sans Mono", 10, SWT.NORMAL);
+	public final static Font DroidSans_Mono = new Font(Display.getCurrent(), "Droid Sans Mono", 20, SWT.NORMAL);
 	public final static Font PT_Mono = new Font(Display.getCurrent(), "PT Mono", 10, SWT.NORMAL);
 	public final static Font SourceCodePro_Mono = new Font(Display.getCurrent(), "Source Code Pro", 10, SWT.NORMAL);
-	public final static Font C64_Pro_Mono_FONT = new Font(Display.getCurrent(), "C64 Pro", 6, SWT.NORMAL);
-	public final static Font C64_Pro_Mono_FONT_10 = new Font(Display.getCurrent(), "C64 Pro", 10, SWT.NORMAL);
-	public final static Font C64_Pro_Mono_FONT_8 = new Font(Display.getCurrent(), "C64 Pro", 8, SWT.NORMAL);
-	public final static Font C64_Pro_Mono_FONT_12 = new Font(Display.getCurrent(), "C64 Pro", 12, SWT.NORMAL);
+	public final static Font C64_Pro_Mono_FONT = new Font(Display.getCurrent(), "C64 Pro Mono", 6, SWT.NORMAL);
+	public final static Font C64_Pro_Mono_FONT_10 = new Font(Display.getCurrent(), "C64 Pro Mono", 10, SWT.NORMAL);
+	public final static Font C64_Pro_Mono_FONT_8 = new Font(Display.getCurrent(), "C64 Pro Mono", 8, SWT.NORMAL);
+	public final static Font C64_Pro_Mono_FONT_12 = new Font(Display.getCurrent(), "C64 Pro Mono", 12, SWT.NORMAL);
 	public final static Font Atari_Classic_FONT = new Font(Display.getCurrent(), "Atari Classic", 10, SWT.NORMAL);
 	public final static Font CPC_FONT = new Font(Display.getCurrent(), "Amstrad CPC correcy", 11, SWT.NORMAL);
 
 	public final static Font PetMe2Y_FONT = new Font(Display.getCurrent(), "Pet Me 2Y", 12, SWT.NORMAL);
 	public final static Font PetMe642Y_FONT = new Font(Display.getCurrent(), "Pet Me 64 2Y", 12, SWT.NORMAL);
 	public final static Font PetMe64_FONT = new Font(Display.getCurrent(), "Pet Me 64", 6, SWT.NORMAL);
+	public final static Font SpaceMono_FONT = new Font(Display.getCurrent(), "Space Mono", 10, SWT.NORMAL);
+	public final static Font RobotoMonoBold_FONT = new Font(Display.getCurrent(), "Roboto Mono", 10, SWT.NORMAL);
 
 	public final static TextStyle TEXTSTYLE_PetMe642Y_ASCII = new TextStyle(PetMe642Y_FONT, DEFAULT_COMMENT_COLOR,
 			BLACK);
+	public final static TextStyle TEXTSTYLE_PetMe64_ASCII = new TextStyle(PetMe64_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_PetMe2Y_ASCII = new TextStyle(PetMe2Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_C64_ASCII = new TextStyle(C64_Pro_Mono_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_ATARI_ASCII = new TextStyle(Atari_Classic_FONT, DEFAULT_COMMENT_COLOR,
 			BLACK);
 	public final static TextStyle TEXTSTYLE_STRING = new TextStyle(EDITOR_FONT, DEFAULT_STRING_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_COMMENT = new TextStyle(EDITOR_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_COMMENT = new TextStyle(RobotoMonoBold_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_COMMENT_BLOCK = new TextStyle(RobotoMonoBold_FONT, DEFAULT_LABEL_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_DECIMAL = new TextStyle(EDITOR_FONT, DEFAULT_DECIMAL_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_HEXADECIMAL = new TextStyle(EDITOR_FONT, DEFAULT_HEXADECIMAL_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_BINARY = new TextStyle(EDITOR_FONT, DEFAULT_BINARY_COLOR, BLACK);
@@ -148,7 +152,8 @@ public class Constants {
 			DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_CURLY_BRACES = new TextStyle(EDITOR_FONT, DEFAULT_CURLY_BRACES_COLOR,
 			BLACK);
-	public final static TextStyle TEXTSTYLE_CODE = new TextStyle(EDITOR_FONT, CODE_COLOR, WHITE);
+	public final static TextStyle TEXTSTYLE_COMMAND = new TextStyle(RobotoMonoBold_FONT, DEFAULT_OPCODE_COLOR, WHITE);
+	public final static TextStyle TEXTSTYLE_CODE = new TextStyle(RobotoMonoBold_FONT, CODE_COLOR, WHITE);
 	public final static TextStyle TEXTSTYLE_DATA = new TextStyle(EDITOR_FONT, BINARY_COLOR, WHITE);
 	public final static TextStyle TEXTSTYLE_UNDEFINED = new TextStyle(EDITOR_FONT, WHITE, BLACK);
 
@@ -158,6 +163,7 @@ public class Constants {
 	public final static String T_PETME2YASCII = "PETME2YASCII";
 	public final static String T_C64ASCII = "C64ASCII";
 	public final static String T_COMMENT = "COMMENT";
+	public final static String T_COMMENT_BLOCK = "COMMENT_BLOCK";
 	public final static String T_DECIMAL = "DECIMAL";
 	public final static String T_BASIC_COMMAND = "BASIC_COMMAND";
 	public final static String T_BINARY = "BINARY";
@@ -167,6 +173,7 @@ public class Constants {
 	public final static String T_STRING = "STRING";
 	public final static String T_DIRECTIVE = "DIRECTIVE";
 	public final static String T_OPCODE = "OPCODE";
+	public final static String T_COMMAND = "COMMAND";
 	public final static String T_ILLEGAL_OPCODE = "ILLEGAL_OPCODE";
 	public final static String T_UNSTABLE_ILLEGAL_OPCODE = "UNSTABLE_ILLEGAL_OPCODE";
 

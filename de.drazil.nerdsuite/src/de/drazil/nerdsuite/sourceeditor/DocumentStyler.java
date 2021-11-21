@@ -45,7 +45,8 @@ public class DocumentStyler implements LineStyleListener {
 		this.styleMap.put(Constants.T_C64_BASIC_STRING, Constants.TEXTSTYLE_C64_ASCII);
 		this.styleMap.put(Constants.T_Atari_BASIC_STRING, Constants.TEXTSTYLE_ATARI_ASCII);
 		this.styleMap.put(Constants.T_COMMENT, Constants.TEXTSTYLE_COMMENT);
-		this.styleMap.put(Constants.T_BASIC_COMMAND, Constants.TEXTSTYLE_OPCODE);
+		this.styleMap.put(Constants.T_COMMENT_BLOCK, Constants.TEXTSTYLE_ILLEGAL_OPCODE);
+		this.styleMap.put(Constants.T_COMMAND, Constants.TEXTSTYLE_COMMAND);
 		this.styleMap.put(Constants.T_STRING, Constants.TEXTSTYLE_STRING);
 		this.styleMap.put(Constants.T_DECIMAL, Constants.TEXTSTYLE_DECIMAL);
 		this.styleMap.put(Constants.T_HEXADECIMAL, Constants.TEXTSTYLE_HEXADECIMAL);
@@ -83,25 +84,26 @@ public class DocumentStyler implements LineStyleListener {
 		 * 
 		 * styleRangeCache.remove(styleRangeCache.size() - 1); } }
 		 */
-		if (styleRangeCacheEntry == null) {
-			styleRangeCacheEntry = new StyleRangeCacheEntry();
-			List<StyleRange> styleRangeList = new ArrayList<StyleRange>();
-			styleRangeCacheEntry.setStyleRangeList(styleRangeList);
-			styleRangeCacheEntry.setLineIndex(lineNo);
-			styleRangeCacheEntry.setLineOffset(lineOffset);
 
-			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
-			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
+//		if (styleRangeCacheEntry == null) {
+		styleRangeCacheEntry = new StyleRangeCacheEntry();
+		List<StyleRange> styleRangeList = new ArrayList<StyleRange>();
+		styleRangeCacheEntry.setStyleRangeList(styleRangeList);
+		styleRangeCacheEntry.setLineIndex(lineNo);
+		styleRangeCacheEntry.setLineOffset(lineOffset);
+		//parseText(ruleMap.get(MULTI_LINE_RULE), lineOffset, document.getText(), styleRangeList, null);
+		parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
+		parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
-			styleRangeList.sort(new Comparator<StyleRange>() {
-				@Override
-				public int compare(StyleRange o1, StyleRange o2) {
-					return Integer.compare(o1.start, o2.start);
-				}
-			});
-			styleRangeCache.add(lineNo, styleRangeCacheEntry);
+		styleRangeList.sort(new Comparator<StyleRange>() {
+			@Override
+			public int compare(StyleRange o1, StyleRange o2) {
+				return Integer.compare(o1.start, o2.start);
+			}
+		});
+		styleRangeCache.add(lineNo, styleRangeCacheEntry);
 
-		}
+//		}
 		event.styles = styleRangeCacheEntry.getStyleRangeList()
 				.toArray(new StyleRange[styleRangeCacheEntry.getStyleRangeList().size()]);
 
