@@ -1,9 +1,16 @@
 package de.drazil.nerdsuite.util;
 
 public class ArrayUtil {
+
+	public final static byte[] update(byte[] target, byte[] source, int offset) {
+		for (int i = 0; i < source.length; i++) {
+			target[offset + i] = source[i];
+		}
+		return target;
+	}
+
 	public final static byte[] grow(byte[] target, byte source) {
 		return grow(target, new byte[] { source });
-
 	}
 
 	public final static byte[] grow(byte[] target, byte[] source) {
