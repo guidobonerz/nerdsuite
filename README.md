@@ -14,6 +14,9 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 22-11-2021:
+- added Basic Code Editor
+
 Last Changes 07-03-2021:
 - added some direct commands to the Ultimate64 Virtual Keyboard (RUN/LIST/DIR)
 - Set Frame and Backgroundcolor remoteley
@@ -78,6 +81,8 @@ Handle DiskImages:
 Export files partly works
 Create/Update disk images
 
+## Basic Code Editor
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/basic_editor.png)
 ## Disassembler Z80 Screen (in Progress)
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasmz80.png)
 ## Disassembler 6502/10 Screen (in Progress)
