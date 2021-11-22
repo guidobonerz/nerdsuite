@@ -214,7 +214,7 @@ public class SourceEditorView implements IDocument {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				System.out.println("modify");
+				documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
 				// documentStyler.refreshMultilineComments(styledText.getText());
 				styledText.redraw();
 			}

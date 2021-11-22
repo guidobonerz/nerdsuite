@@ -63,45 +63,48 @@ public class DocumentStyler implements LineStyleListener {
 		// processTokensById(MULTI_LINE_RULE, text);
 	}
 
+	public void cleanupLines(int lineNo) {
+		while (styleRangeCache.size() > lineNo) {
+			styleRangeCache.remove(styleRangeCache.size() - 1);
+		}
+	}
+
 	@Override
 	public void lineGetStyle(LineStyleEvent event) {
 		StyleRangeCacheEntry styleRangeCacheEntry = null;
 		int lineOffset = event.lineOffset;
 		int lineNo = document.getLineAtOffset(lineOffset);
 
-		try {
+		if (lineNo < styleRangeCache.size()) {
 			styleRangeCacheEntry = styleRangeCache.get(lineNo);
-		} catch (Exception e) {
 		}
 
-		/*
-		 * if (event.justify) { System.out.printf("line %d was justified\n", lineNo);
-		 * 
-		 * while (styleRangeCache.size() > lineNo) {
-		 * 
-		 * styleRangeCache.remove(styleRangeCache.size() - 1); } }
-		 */
+		if (styleRangeCacheEntry == null) {
+			styleRangeCacheEntry = new StyleRangeCacheEntry();
+			List<StyleRange> styleRangeList = new ArrayList<StyleRange>();
+			styleRangeCacheEntry.setStyleRangeList(styleRangeList);
+			styleRangeCacheEntry.setLineIndex(lineNo);
+			styleRangeCacheEntry.setLineOffset(lineOffset);
+			// parseText(ruleMap.get(MULTI_LINE_RULE), lineOffset, document.getText(),
+			// styleRangeList, null);
+			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
+			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
-//		if (styleRangeCacheEntry == null) {
-		styleRangeCacheEntry = new StyleRangeCacheEntry();
-		List<StyleRange> styleRangeList = new ArrayList<StyleRange>();
-		styleRangeCacheEntry.setStyleRangeList(styleRangeList);
-		styleRangeCacheEntry.setLineIndex(lineNo);
-		styleRangeCacheEntry.setLineOffset(lineOffset);
-		// parseText(ruleMap.get(MULTI_LINE_RULE), lineOffset, document.getText(),
-		// styleRangeList, null);
-		parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
-		parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
-
-		styleRangeList.sort(new Comparator<StyleRange>() {
-			@Override
-			public int compare(StyleRange o1, StyleRange o2) {
-				return Integer.compare(o1.start, o2.start);
+			styleRangeList.sort(new Comparator<StyleRange>() {
+				@Override
+				public int compare(StyleRange o1, StyleRange o2) {
+					return Integer.compare(o1.start, o2.start);
+				}
+			});
+			if (lineNo < styleRangeCache.size()) {
+				styleRangeCache.add(lineNo, styleRangeCacheEntry);
 			}
-		});
-		styleRangeCache.add(lineNo, styleRangeCacheEntry);
+			else
+			{
+				styleRangeCache.add(styleRangeCacheEntry);	
+			}
 
-//		}
+		}
 		event.styles = styleRangeCacheEntry.getStyleRangeList()
 				.toArray(new StyleRange[styleRangeCacheEntry.getStyleRangeList().size()]);
 

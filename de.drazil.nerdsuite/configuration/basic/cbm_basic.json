@@ -1303,9 +1303,9 @@
 			"minVersion": 35
 		},
 		{
-			"instruction": "π",
+			"instruction": "\\uee5e",
 			"token": "ff",
-			"description": "",
+			"description": "PI",
 			"includesOpenBrace": false,
 			"purpose": "C",
 			"minParameters": 0,

@@ -84,7 +84,8 @@ public class Constants {
 	public final static Color COMMAND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#30b090"));
 	public final static Color OPERATOR_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#20ff90"));
 	public final static Color TRANSPARENT_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#010101"));
-	public final static Color DEFAULT_STRING_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#48FCCB"));
+	//public final static Color DEFAULT_STRING_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#CBFC48"));
+	public final static Color DEFAULT_STRING_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#a0a0ff"));
 	public final static Color DEFAULT_DECIMAL_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#6476CB"));
 	public final static Color DEFAULT_HEXADECIMAL_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#94769B"));
 	public final static Color DEFAULT_BINARY_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A4765B"));
@@ -137,7 +138,7 @@ public class Constants {
 			BLACK);
 	public final static TextStyle TEXTSTYLE_PetMe64_ASCII = new TextStyle(PetMe64_FONT, DEFAULT_COMMENT_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_PetMe2Y_ASCII = new TextStyle(PetMe2Y_FONT, DEFAULT_COMMENT_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_C64_ASCII = new TextStyle(C64_Pro_Mono_FONT, DEFAULT_COMMENT_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_C64_ASCII = new TextStyle(C64_Pro_Mono_FONT, DEFAULT_STRING_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_ATARI_ASCII = new TextStyle(Atari_Classic_FONT, DEFAULT_COMMENT_COLOR,
 			BLACK);
 	public final static TextStyle TEXTSTYLE_STRING = new TextStyle(EDITOR_FONT, DEFAULT_STRING_COLOR, BLACK);
