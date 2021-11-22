@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.sourceeditor;
 
 import de.drazil.nerdsuite.model.IWordMatcher;
-import de.drazil.nerdsuite.model.Range;
 
 public class WordRule extends BaseRule {
 	private IWordMatcher wordMatcher = null;
@@ -13,7 +12,7 @@ public class WordRule extends BaseRule {
 	}
 
 	@Override
-	public Range hasMatch(String text, int offset) {
+	public DocumentPartition hasMatch(String text, int offset) {
 		return wordMatcher.hasMatch(text, offset);
 	}
 

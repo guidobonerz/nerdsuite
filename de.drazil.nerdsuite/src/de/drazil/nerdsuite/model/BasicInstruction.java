@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import de.drazil.nerdsuite.sourceeditor.DocumentPartition;
 import lombok.Data;
 
 @Data
@@ -33,17 +34,17 @@ public class BasicInstruction implements IWordMatcher {
 	}
 
 	@JsonIgnore
-	public Range hasMatch(String text, int offset) {
-		Range range = null;
+	public DocumentPartition hasMatch(String text, int offset) {
+		DocumentPartition partition = null;
 		int matchIndex = text.indexOf(instruction, offset);
 		if (offset == matchIndex) {
 			int len = instruction.length();
 			if (includesOpenBrace) {
 				len--;
 			}
-			range = new Range(offset, len);
+			partition = new DocumentPartition(offset, len);
 		}
-		return range;
+		return partition;
 	}
 
 	@JsonIgnore

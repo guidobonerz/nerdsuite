@@ -2,9 +2,12 @@ package de.drazil.nerdsuite.basic;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.List;
 
-import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
-import de.drazil.nerdsuite.disassembler.cpu.ICPU;
+import de.drazil.nerdsuite.model.BasicInstruction;
+import de.drazil.nerdsuite.model.BasicInstructions;
+import de.drazil.nerdsuite.util.ArrayUtil;
+import de.drazil.nerdsuite.util.NumericConverter;
 
 public class BasicTokenizer {
 
@@ -16,22 +19,17 @@ public class BasicTokenizer {
 		NUMERIC, ALPHANUMERIC, WHITESPACE, NONE;
 	}
 
-	private StringBuilder sb = null;
-	private ICPU cpu = null;
-	private Mode readMode = Mode.READ_LINENUMBER;
-	private LastRead lastRead = LastRead.NONE;
+	private static Mode readMode = Mode.READ_LINENUMBER;
+	private static LastRead lastRead = LastRead.NONE;
 
 	public BasicTokenizer() {
-		cpu = new CPU_6510();
-		sb = new StringBuilder();
-		sb.append("10 for i=1to200\n");
-		sb.append("20 printi\n");
-		sb.append("30 next\n");
 
 	}
 
-	public void tokenize() {
-		CharacterIterator ci = new StringCharacterIterator(sb.toString());
+	public static byte[] tokenize(String content, BasicInstructions basicInstructions) {
+		boolean basicCommentFound = false;
+		byte[] result = new byte[] {};
+		CharacterIterator ci = new StringCharacterIterator(content);
 		StringBuilder buffer = new StringBuilder();
 		for (char ch = ci.first(); ch != CharacterIterator.DONE; ch = ci.next()) {
 			switch (readMode) {
@@ -42,6 +40,9 @@ public class BasicTokenizer {
 					lastRead = LastRead.WHITESPACE;
 					readMode = Mode.READ_INSTRUCTION;
 					System.out.println(buffer);
+					byte[] ba = NumericConverter.getWord(Integer.valueOf(buffer.toString()));
+					result = ArrayUtil.grow(result, ba);
+					result = ArrayUtil.grow(result, new byte[] { 0, 0 });
 					buffer = new StringBuilder();
 					if (!Character.isWhitespace(ch)) {
 						buffer.append(ch);
@@ -63,23 +64,12 @@ public class BasicTokenizer {
 					lastRead = LastRead.WHITESPACE;
 				} else if (!Character.isDigit(ch) && !Character.isWhitespace(ch)) {
 					buffer.append(ch);
-					if (buffer.toString().equals("print")) {
-						System.out.println(buffer);
+					BasicInstruction bi = findToken(buffer.toString(), basicInstructions.getBasicInstructionList());
+					if (bi != null) {
+						basicCommentFound = bi.isComment();
+						byte b = (byte) (Integer.parseInt(bi.getToken(), 16) & 0xff);
+						result = ArrayUtil.grow(result, b);
 						buffer = new StringBuilder();
-					} else if (buffer.toString().equals("goto")) {
-						System.out.println(buffer);
-						buffer = new StringBuilder();
-					} else if (buffer.toString().equals("for")) {
-						System.out.println(buffer);
-						buffer = new StringBuilder();
-					} else if (buffer.toString().equals("to")) {
-						System.out.println(buffer);
-						buffer = new StringBuilder();
-					} else if (buffer.toString().equals("next")) {
-						System.out.println(buffer);
-						buffer = new StringBuilder();
-					}else {
-						System.out.println(ch);
 					}
 				} else {
 					System.out.println(ch);
@@ -93,13 +83,14 @@ public class BasicTokenizer {
 				}
 				break;
 			}
+
 			}
 		}
+		return null;
 	}
 
-	public static void main(String args[]) {
-		BasicTokenizer bt = new BasicTokenizer();
-		bt.tokenize();
+	private static BasicInstruction findToken(String command, List<BasicInstruction> basicInructionList) {
+		return basicInructionList.stream().filter(i -> i.getInstruction().equalsIgnoreCase(command)).findFirst()
+				.orElse(null);
 	}
-
 }

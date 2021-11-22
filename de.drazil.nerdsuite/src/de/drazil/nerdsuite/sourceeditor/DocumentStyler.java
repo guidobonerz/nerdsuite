@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.TextStyle;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.StyleRangeCacheEntry;
 
 public class DocumentStyler implements LineStyleListener {
@@ -98,10 +97,8 @@ public class DocumentStyler implements LineStyleListener {
 			});
 			if (lineNo < styleRangeCache.size()) {
 				styleRangeCache.add(lineNo, styleRangeCacheEntry);
-			}
-			else
-			{
-				styleRangeCache.add(styleRangeCacheEntry);	
+			} else {
+				styleRangeCache.add(styleRangeCacheEntry);
 			}
 
 		}
@@ -122,11 +119,11 @@ public class DocumentStyler implements LineStyleListener {
 		while (offset < text.length()) {
 			hasMatch = false;
 			for (IRule rule : ruleList) {
-				Range range = rule.hasMatch(text, offset);
-				if (range != null) {
-					if (!isInExistingStyleRange(lo, range, styleRangeList)) {
-						len = range.getLen();
-						offset = range.getOffset();
+				DocumentPartition partition = rule.hasMatch(text, offset);
+				if (partition != null) {
+					if (!isInExistingStyleRange(lo, partition, styleRangeList)) {
+						len = partition.getLen();
+						offset = partition.getOffset();
 						Color c = null;
 						if (rule.getTokenControl() == 0) {
 							c = Constants.COMMAND_COLOR;
@@ -137,7 +134,7 @@ public class DocumentStyler implements LineStyleListener {
 						} else {
 							c = styleMap.get(rule.getToken().getKey()).foreground;
 						}
-						StyleRange styleRange = new StyleRange(lo + range.getOffset(), len, c, null);
+						StyleRange styleRange = new StyleRange(lo + partition.getOffset(), len, c, null);
 						styleRange.font = styleMap.get(rule.getToken().getKey()).font;
 						styleRangeList.add(styleRange);
 						hasMatch = true;
@@ -154,10 +151,10 @@ public class DocumentStyler implements LineStyleListener {
 		}
 	}
 
-	private boolean isInExistingStyleRange(int offset, Range range, List<StyleRange> styleRangeList) {
+	private boolean isInExistingStyleRange(int offset, DocumentPartition partition, List<StyleRange> styleRangeList) {
 		for (StyleRange sr : styleRangeList) {
-			if (offset + range.getOffset() >= sr.start
-					&& offset + range.getOffset() + range.getLen() <= sr.start + sr.length) {
+			if (offset + partition.getOffset() >= sr.start
+					&& offset + partition.getOffset() + partition.getLen() <= sr.start + sr.length) {
 				return true;
 			}
 		}

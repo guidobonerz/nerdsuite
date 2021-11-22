@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.basic.BasicTokenizer;
 import de.drazil.nerdsuite.basic.SourceRepositoryService;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.handler.BrokerObject;
@@ -55,9 +56,9 @@ public class SourceEditorView implements IDocument {
 	private Project project;
 	private String owner;
 	private SourceRepositoryService srs;
+	private BasicInstructions basicInstructions;
 	@Inject
 	private MPart part;
-	int x = 0xe000;
 
 	public SourceEditorView() {
 
@@ -110,10 +111,22 @@ public class SourceEditorView implements IDocument {
 
 	@Inject
 	@Optional
+	public void build(@UIEventTopic("Build") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			tokenize();
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			save();
 		}
+	}
+
+	private void tokenize() {
+		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText(), basicInstructions);
 	}
 
 	private void save() {
@@ -144,7 +157,7 @@ public class SourceEditorView implements IDocument {
 		owner = (String) pm.get("repositoryOwner");
 
 		srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
-		BasicInstructions basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
+		basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
 
 		int version = 20;
 		String variant = srs.getMetadata().getVariant();
