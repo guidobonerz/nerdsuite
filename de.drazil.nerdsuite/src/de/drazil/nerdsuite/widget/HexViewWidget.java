@@ -49,7 +49,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.HexViewContent;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
-import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 
@@ -68,7 +68,7 @@ public class HexViewWidget extends Composite {
 
 	private int visibleRows = 0;
 	private IPlatform platform;
-	private List<Range> rangeList;
+	private List<DisassemblingRange> rangeList;
 	private int selStart;
 	private int selLength;
 	private int contentOffset = 0;
@@ -83,7 +83,7 @@ public class HexViewWidget extends Composite {
 	public HexViewWidget(Composite parent, int style, IPlatform platform) {
 		super(parent, style);
 		this.platform = platform;
-		rangeList = new ArrayList<Range>();
+		rangeList = new ArrayList<DisassemblingRange>();
 		jumpStack = new Stack<InstructionLine>();
 		initialize();
 	}
@@ -138,8 +138,8 @@ public class HexViewWidget extends Composite {
 
 	public void setContent(byte[] content) {
 		this.content = content;
-		rangeList = new ArrayList<Range>();
-		rangeList.add(new Range(0, content.length, RangeType.Unspecified));
+		rangeList = new ArrayList<DisassemblingRange>();
+		rangeList.add(new DisassemblingRange(0, content.length, RangeType.Unspecified));
 		prepareContent();
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -180,13 +180,13 @@ public class HexViewWidget extends Composite {
 	}
 
 	private void handleDataRange(int start, int length, RangeType rangeType) {
-		List<Range> result = findRanges(start, length);
-		for (Range range : result) {
+		List<DisassemblingRange> result = findRanges(start, length);
+		for (DisassemblingRange range : result) {
 			splitRange(range, rangeType, start, length);
 		}
-		Range lastRange = null;
+		DisassemblingRange lastRange = null;
 		for (int i = 0; i < rangeList.size(); i++) {
-			Range r = rangeList.get(i);
+			DisassemblingRange r = rangeList.get(i);
 			if (lastRange != null && lastRange.getRangeType() == r.getRangeType()) {
 				int l = lastRange.getLen() + r.getLen();
 				lastRange.setLen(l);
@@ -195,16 +195,16 @@ public class HexViewWidget extends Composite {
 			lastRange = r;
 		}
 		if (rangeList.isEmpty()) {
-			rangeList.add(new Range(0, content.length, RangeType.Unspecified));
+			rangeList.add(new DisassemblingRange(0, content.length, RangeType.Unspecified));
 		}
 	}
 
-	private List<Range> findRanges(int start, int length) {
+	private List<DisassemblingRange> findRanges(int start, int length) {
 
-		List<Range> resultList = rangeList.stream()
+		List<DisassemblingRange> resultList = rangeList.stream()
 				.filter(r -> start <= r.getOffset() && start + length >= r.getOffset() + r.getLen() /* OVER ALL */)
 				.collect(Collectors.toList());
-		for (Range r : resultList) {
+		for (DisassemblingRange r : resultList) {
 			rangeList.remove(r);
 		}
 
@@ -213,9 +213,9 @@ public class HexViewWidget extends Composite {
 						|| start > r.getOffset() && start < r.getOffset() + r.getLen()
 								&& start + length >= r.getOffset() + r.getLen() /* OVERLAP START */
 				).collect(Collectors.toList());
-		Collections.sort(resultList, new Comparator<Range>() {
+		Collections.sort(resultList, new Comparator<DisassemblingRange>() {
 			@Override
-			public int compare(Range o1, Range o2) {
+			public int compare(DisassemblingRange o1, DisassemblingRange o2) {
 				return Integer.compare(o1.getOffset(), o2.getOffset());
 			}
 		});
@@ -223,29 +223,29 @@ public class HexViewWidget extends Composite {
 		return resultList;
 	}
 
-	private void splitRange(Range r, RangeType rangeType, int start, int length) {
+	private void splitRange(DisassemblingRange r, RangeType rangeType, int start, int length) {
 		int rangeIndex = rangeList.indexOf(r);
 		int oldStart = r.getOffset();
 		int oldEnd = r.getLen();
 		if (start >= r.getOffset() && start + length <= r.getOffset() + r.getLen()
 				&& r.getRangeType() != rangeType) /* IN */ {
 			r.setLen(start - oldStart);
-			Range newRange1 = new Range(start, length, rangeType);
-			Range newRange2 = new Range(start + length, oldStart + oldEnd - (start + length), r.getRangeType());
+			DisassemblingRange newRange1 = new DisassemblingRange(start, length, rangeType);
+			DisassemblingRange newRange2 = new DisassemblingRange(start + length, oldStart + oldEnd - (start + length), r.getRangeType());
 			rangeList.add(rangeIndex + 1, newRange1);
 			rangeList.add(rangeIndex + 2, newRange2);
 		} else if (start > r.getOffset() && start < r.getOffset() + r.getLen()
 				&& start + length >= r.getOffset() + r.getLen()) /* OVERLAP START */ {
 			r.setLen(start - oldStart);
-			Range nextRange = rangeList.get(rangeIndex + 1);
+			DisassemblingRange nextRange = rangeList.get(rangeIndex + 1);
 			nextRange.setOffset(start + length);
 			nextRange.setLen(nextRange.getOffset() + nextRange.getLen() - ((start + length)));
-			rangeList.add(rangeIndex + 1, new Range(start, length, rangeType));
+			rangeList.add(rangeIndex + 1, new DisassemblingRange(start, length, rangeType));
 		}
 	}
 
 	private void shiftRange(int offset) {
-		for (Range r : rangeList) {
+		for (DisassemblingRange r : rangeList) {
 			int start = r.getOffset() + offset;
 			r.setOffset(start);
 		}
@@ -602,7 +602,7 @@ public class HexViewWidget extends Composite {
 						hexArea.redraw();
 						textArea.redraw();
 						platform.setProgrammCounter(new Value(pc.getValue()));
-						platform.parseBinary(content, new Range(selStart + contentOffset, selLength, RangeType.Code));
+						platform.parseBinary(content, new DisassemblingRange(selStart + contentOffset, selLength, RangeType.Code));
 						tableViewer.setInput(platform.getCPU().getInstructionLineList());
 					}
 				}
@@ -659,7 +659,7 @@ public class HexViewWidget extends Composite {
 
 	private StyleRange[] getStyleRanges(int width) {
 		List<StyleRange> list = new ArrayList<StyleRange>();
-		for (Range range : rangeList) {
+		for (DisassemblingRange range : rangeList) {
 
 			Color fgc = Constants.BLACK;
 			Color bgc = null;

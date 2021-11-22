@@ -1,30 +1,24 @@
 package de.drazil.nerdsuite.sourceeditor;
 
-public class WordRule extends BaseRule {
-	private int offset;
+import de.drazil.nerdsuite.model.IWordMatcher;
+import de.drazil.nerdsuite.model.Range;
 
-	public WordRule(String word, Token token) {
-		super(word, null, Marker.NONE, token);
+public class WordRule extends BaseRule {
+	private IWordMatcher wordMatcher = null;
+
+	public WordRule(IWordMatcher matcher, Token token) {
+		super(null, null, Marker.NONE, token, false);
+		wordMatcher = matcher;
 		setPriority(30);
 	}
 
 	@Override
-	public boolean hasMatch(String text) {
-		int matchIndex = text.indexOf(getPrefix(), offset);
-		if (matchIndex != -1) {
-			getToken().setStart(matchIndex);
-			int length = getPrefix().length();
-			offset = matchIndex + length + 1;
-			getToken().setLength(length);
-			hasMatch = true;
+	public Range hasMatch(String text, int offset) {
+		return wordMatcher.hasMatch(text, offset);
+	}
 
-		} else {
-			hasMatch = false;
-			offset = 0;
-		}
-
-		getToken().setValid(hasMatch);
-
-		return hasMatch;
+	@Override
+	public int getTokenControl() {
+		return wordMatcher.getTokenControl();
 	}
 }

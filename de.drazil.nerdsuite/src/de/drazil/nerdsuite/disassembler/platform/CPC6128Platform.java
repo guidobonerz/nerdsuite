@@ -13,7 +13,7 @@ import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.InstructionType;
-import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -68,7 +68,7 @@ public class CPC6128Platform extends AbstractPlatform {
 	}
 
 	@Override
-	public byte[] parseBinary(byte[] byteArray, Range range) {
+	public byte[] parseBinary(byte[] byteArray, DisassemblingRange range) {
 
 		System.out.println("init   : build memory map");
 		setProgrammCounter(getProgrammCounter().add(range.getOffset()));
@@ -80,7 +80,7 @@ public class CPC6128Platform extends AbstractPlatform {
 		long start = System.currentTimeMillis();
 		try {
 			getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-					getPlatFormData(), new Range(range.getOffset(), range.getLen(), range.getRangeType()), 2);
+					getPlatFormData(), new DisassemblingRange(range.getOffset(), range.getLen(), range.getRangeType()), 2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

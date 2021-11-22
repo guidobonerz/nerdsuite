@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GraphicMetaData {
+public class GraphicMetadata {
 	private String id;
 	private String platform;
 	private String type;

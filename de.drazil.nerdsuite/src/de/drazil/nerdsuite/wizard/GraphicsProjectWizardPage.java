@@ -167,9 +167,6 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		gfxFormatCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				// if (element instanceof GraphicFormat) {
-				// return ((GraphicFormat) element).getName();
-				// }
 				return ((GraphicFormat) element).getName();
 			}
 		});
@@ -195,9 +192,6 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		gfxFormatVariantCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				// if (element instanceof GraphicFormatVariant) {
-				// ((GraphicFormatVariant) element).getName();
-				// }
 				return ((GraphicFormatVariant) element).getName();
 			}
 		});

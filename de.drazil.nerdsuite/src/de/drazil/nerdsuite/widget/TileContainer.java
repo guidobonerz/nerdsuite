@@ -10,7 +10,7 @@ import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ITileManagementListener;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
-import de.drazil.nerdsuite.model.GraphicMetaData;
+import de.drazil.nerdsuite.model.GraphicMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -18,7 +18,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class TileContainer {
 	@JsonProperty(value = "metadata")
-	private GraphicMetaData metadata = null;
+	private GraphicMetadata metadata = null;
 	@JsonProperty(value = "tiles")
 	private List<Tile> tileList = null;
 	@JsonProperty(value = "tileIndexOrder")
@@ -37,7 +37,7 @@ public class TileContainer {
 		tileUpdateListener = new ArrayList<>();
 	}
 
-	public void setMetadata(GraphicMetaData metadata) {
+	public void setMetadata(GraphicMetadata metadata) {
 		this.metadata = metadata;
 		this.tileSize = metadata.getWidth() * metadata.getHeight() * metadata.getColumns() * metadata.getRows();
 	}

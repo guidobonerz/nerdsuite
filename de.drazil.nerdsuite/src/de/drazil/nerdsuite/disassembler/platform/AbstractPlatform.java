@@ -16,7 +16,7 @@ import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.PlatformData;
-import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -60,7 +60,7 @@ public abstract class AbstractPlatform implements IPlatform {
 		this.cpu = cpu;
 	}
 
-	public void init(byte byteArray[], Range range) {
+	public void init(byte byteArray[], DisassemblingRange range) {
 		getCPU().addInstructionLine(new InstructionLine(getProgrammCounter(), range,
 				range.getRangeType() == RangeType.Code ? InstructionType.Asm : InstructionType.Data,
 				ReferenceType.NoReference));

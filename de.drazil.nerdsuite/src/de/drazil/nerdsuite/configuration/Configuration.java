@@ -48,6 +48,8 @@ public class Configuration {
 			URL fileURL8 = bundle.getEntry("/fonts/fa-solid-900.ttf");
 			URL fileURL9 = bundle.getEntry("/fonts/icomoon.ttf");
 			URL fileURL10 = bundle.getEntry("/fonts/MaterialIcons-Regular.ttf");
+			URL fileURL11 = bundle.getEntry("/fonts/SpaceMono-Regular.ttf");
+			URL fileURL12 = bundle.getEntry("/fonts/RobotoMono-Bold.ttf");
 			File file = null;
 			boolean b;
 			try {
@@ -76,6 +78,10 @@ public class Configuration {
 				file = new File(FileLocator.resolve(fileURL9).toURI());
 				b = Display.getCurrent().loadFont(file.toString());
 				file = new File(FileLocator.resolve(fileURL10).toURI());
+				b = Display.getCurrent().loadFont(file.toString());
+				file = new File(FileLocator.resolve(fileURL11).toURI());
+				b = Display.getCurrent().loadFont(file.toString());
+				file = new File(FileLocator.resolve(fileURL12).toURI());
 				b = Display.getCurrent().loadFont(file.toString());
 
 			} catch (URISyntaxException e1) {

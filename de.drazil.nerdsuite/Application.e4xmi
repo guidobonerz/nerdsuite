@@ -144,7 +144,7 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Xw0U0KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handledmenuitem.applicationStream" label="Application Stream" command="_ggW30KdwEeqid_Z8sm-clA"/>
       </children>
     </mainMenu>
-    <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.0">
+    <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.xxx">
       <children xsi:type="menu:ToolBar" xmi:id="_k8wHAKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.toolbar.0">
         <children xsi:type="menu:HandledToolItem" xmi:id="_ll05MKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledtoolitem.0" label="Save" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk.png" tooltip="Write content to disk" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_n_9ZUKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledtoolitem.1" label="Save All..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk_multiple.png" tooltip="Write all contents to disk"/>
@@ -494,6 +494,10 @@
     </toolbar>
   </descriptors>
   <menuContributions xmi:id="_5cKvgKptEeqqBJ1FRh0u8w" elementId="de.drazil.nerdsuite.menucontribution.0" parentId="de.drazil.nerdsuite.menu.stream"/>
+  <toolBarContributions xmi:id="_X21UIErWEeyqAKaljaynng" elementId="de.drazil.nerdsuite.toolbarcontribution.0" accessibilityPhrase="SourceCodeToolbar" parentId="de.drazil.nerdsuite.toolbar.0">
+    <children xsi:type="menu:HandledToolItem" xmi:id="_Bj7SwErWEeyqAKaljaynng" elementId="de.drazil.nerdsuite.handledtoolitem.10" label="Run" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png"/>
+    <children xsi:type="menu:HandledToolItem" xmi:id="_OYS9IErWEeyqAKaljaynng" elementId="de.drazil.nerdsuite.handledtoolitem.build" label="Build" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/bricks.png"/>
+  </toolBarContributions>
   <commands xmi:id="_ATMWMKaVEeOsl7k25iZUBw" elementId="de.drazil.nerdsuite.command.NewProject" commandName="New Project">
     <parameters xmi:id="_xPb44LrOEemJjsW9nkcNsg" elementId="de.drazil.nerdsuite.commandparameter.ProjectTypeId" name="ProjectTypeId" optional="false"/>
     <parameters xmi:id="_xRlHcA9QEeq5B9yImax9_w" elementId="de.drazil.nerdsuite.commandparameter.WizardType" name="WizardType"/>

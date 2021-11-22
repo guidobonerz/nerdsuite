@@ -2,13 +2,14 @@ package de.drazil.nerdsuite.sourceeditor;
 
 import org.eclipse.swt.custom.StyleRange;
 
-public interface IDocument
-{
+public interface IDocument {
 	public String getText();
 
 	public int getCurrentCharOffset();
 
 	public int getVisibleLineCount();
+
+	public int getFirstVisibleLineIndex();
 
 	public int getFirstVisibleLineOffset();
 
@@ -22,6 +23,8 @@ public interface IDocument
 
 	public int getCharOffsetAtLine(int line);
 
+	public int getLineOffsetAtlineIndex(int lineIndex);
+
 	public int getCharOffsetAtCurrentLine();
 
 	public void setStyleRanges(StyleRange styleRanges[]);
@@ -29,7 +32,5 @@ public interface IDocument
 	public void addOrReplaceStyleRanges(int start, int length, StyleRange styleRanges[]);
 
 	public void redraw();
-	
-	
 
 }

@@ -1,36 +1,29 @@
 package de.drazil.nerdsuite.sourceeditor;
 
+import de.drazil.nerdsuite.model.Range;
+
 public class MultiLineRule extends BaseRule {
-	private int offset = 0;
 
 	public MultiLineRule(String prefix, String suffix, Token token) {
-		super(prefix, suffix, Marker.NONE, token);
+		super(prefix, suffix, Marker.NONE, token, false);
 		setPriority(0);
 	}
 
 	@Override
-	public boolean hasMatch(String text) {
-		int matchIndex = text.indexOf(getPrefix(), offset);
-		if (matchIndex != -1) {
-			System.out.println("prefix found");
-			getToken().setStart(matchIndex);
-			matchIndex = text.indexOf(getSuffix(), matchIndex + getPrefix().length());
-			if (matchIndex != -1) {
-				System.out.println("suffix found");
-
-				offset = matchIndex + getSuffix().length();
-				getToken().setLength(offset - getToken().getStart());
-				hasMatch = true;
+	public Range hasMatch(String text, int offset) {
+		Range range = null;
+		int matchPrefixIndex = text.indexOf(getPrefix(), offset);
+		if (matchPrefixIndex != -1) {
+			int len = getPrefix().length();
+			int matchSuffixIndex = text.indexOf(getSuffix(), matchPrefixIndex + len);
+			if (matchSuffixIndex != -1) {
+				len = matchSuffixIndex + getSuffix().length() - matchPrefixIndex;
 			} else {
-				hasMatch = false;
-				offset = 0;
+				len = text.length() - matchPrefixIndex;
 			}
-		} else {
-			hasMatch = false;
-			offset = 0;
+			range = new Range(matchPrefixIndex, len);
 		}
-		getToken().setValid(hasMatch);
-		return hasMatch;
+		return range;
 	}
 
 	@Override
