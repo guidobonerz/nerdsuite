@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
+import de.drazil.nerdsuite.basic.SourceRepositoryService;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
@@ -363,19 +364,36 @@ public class Explorer implements IDoubleClickListener {
 			String owner = project.getId();
 			MUIElement editor = modelService.find(owner, app);
 			if (editor == null) {
-				System.out.println("load tiles");
-				File file = FileUtil.getFileFromProject(project);
-				TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
-				repository.load(owner);
-				projectSetup.put("repositoryOwner", owner);
-				projectSetup.put("file", file);
+				if (project.getSuffix().startsWith("ns_")) {
+					System.out.println("load tiles");
+					File file = FileUtil.getFileFromProject(project);
+					TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
+					repository.load(owner);
+					projectSetup.put("repositoryOwner", owner);
+					projectSetup.put("file", file);
 
-				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
-						project.getName(), projectSetup);
+					MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
+							"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+							project.getName(), projectSetup);
 
-				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
-						part, true);
+					E4Utils.addPart2PartStack(app, modelService, partService,
+							"de.drazil.nerdsuite.partstack.editorStack", part, true);
+				} else if (project.getSuffix().equals("bas")) {
+					System.out.println("load source");
+					File file = FileUtil.getFileFromProject(project);
+					SourceRepositoryService repository = ServiceFactory.getService(owner,
+							SourceRepositoryService.class);
+					repository.load(owner);
+					projectSetup.put("repositoryOwner", owner);
+					projectSetup.put("file", file);
+
+					MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
+							"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView",
+							owner, project.getName(), projectSetup);
+
+					E4Utils.addPart2PartStack(app, modelService, partService,
+							"de.drazil.nerdsuite.partstack.editorStack", part, true);
+				}
 			} else {
 				editor.getParent().setSelectedElement(editor);
 			}

@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.model.Opcode;
-import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -53,7 +53,7 @@ public interface ICPU extends IDecoder {
 
 	public InstructionLine getInstructionLineByRef(int reference);
 
-	public Value getInstructionValue(byte byteArray[], Range range);
+	public Value getInstructionValue(byte byteArray[], DisassemblingRange range);
 
 	// public int getInstructionLength(byte byteArray[], int offset);
 

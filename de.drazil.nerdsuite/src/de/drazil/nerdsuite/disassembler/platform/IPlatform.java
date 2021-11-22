@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.disassembler.platform;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.PlatformData;
-import de.drazil.nerdsuite.model.Range;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.Value;
 
 public interface IPlatform {
@@ -29,9 +29,9 @@ public interface IPlatform {
 
 	public void handlePlatformSpecific(byte byteArray[], int offset);
 
-	public void init(byte byteArray[], Range range);
+	public void init(byte byteArray[], DisassemblingRange range);
 
-	public byte[] parseBinary(byte byteArray[], Range range);
+	public byte[] parseBinary(byte byteArray[], DisassemblingRange range);
 
 	public PlatformData getPlatFormData();
 

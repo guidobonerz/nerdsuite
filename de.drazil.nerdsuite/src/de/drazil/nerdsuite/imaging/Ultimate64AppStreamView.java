@@ -5,9 +5,6 @@ import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +37,7 @@ import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.model.RunObject;
 import de.drazil.nerdsuite.model.RunObject.Mode;
 import de.drazil.nerdsuite.model.RunObject.Source;
+import de.drazil.nerdsuite.network.TcpHandler;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
@@ -49,21 +47,27 @@ import lombok.Setter;
 public class Ultimate64AppStreamView {
 
 	private ImageViewWidget imageViewer;
-	private Socket tcpSocket = null;
+
 	private Thread videoThread;
 	private Thread audioThread;
 	private VideoStreamReceiver videoStreamReceiver;
 	private AudioStreamReceiver audioStreamReceiver;
 	private boolean running = false;
 	private boolean virtualKeyboardVisible = true;
-	private boolean connectionError = false;
 
 	private Composite parent;
 	private int controlType;
+	private TcpHandler tcpHandler;
 
 	public Ultimate64AppStreamView() {
 
 	}
+
+	/*
+	 * } catch (Exception e) { connectionError = true; showErrorDialog(
+	 * String.format("Connection to Ultimate64@%s could not be established",
+	 * socketAddress.toString())); }
+	 */
 
 	public class VideoStreamReceiver implements Runnable {
 
@@ -331,34 +335,29 @@ public class Ultimate64AppStreamView {
 		if (key.getType().equals("KEY") || key.getType().equals("FUNCTION")
 				|| (key.getType().equals("COLOR") && key.getOptionState() < 32)) {
 			if (code == 3) {
-				try {
-					byte ba[] = new byte[] {};
 
-					ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
-							buildCommand(NumericConverter.getWord(0x0314)), new byte[] { (byte) (0x7b) });
-					ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
-							buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte) (127) });
-					write(ba);
-					ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
-							buildCommand(NumericConverter.getWord(0x0314)), new byte[] { (byte) (0x31) });
-					ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
-							buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte) (255) });
+				byte ba[] = new byte[] {};
 
-					write(ba);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
+				ba = tcpHandler.buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+						tcpHandler.buildCommand(NumericConverter.getWord(0x0314)), new byte[] { (byte) (0x7b) });
+				ba = tcpHandler.buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+						tcpHandler.buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte) (127) });
+				tcpHandler.write(ba);
+				ba = tcpHandler.buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+						tcpHandler.buildCommand(NumericConverter.getWord(0x0314)), new byte[] { (byte) (0x31) });
+				ba = tcpHandler.buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+						tcpHandler.buildCommand(NumericConverter.getWord(0x0091)), new byte[] { (byte) (255) });
+				tcpHandler.write(ba);
 			} else {
 				byte codes[] = new byte[] { (byte) (code & 0xff) };
 				if (key.getName().equals("RUN")) {
-					codes = buildCommand("RUN".getBytes(), new byte[] { 13 });
+					codes = tcpHandler.buildCommand("RUN".getBytes(), new byte[] { 13 });
 				} else if (key.getName().equals("LIST")) {
-					codes = buildCommand("LIST".getBytes(), new byte[] { 13 });
+					codes = tcpHandler.buildCommand("LIST".getBytes(), new byte[] { 13 });
 				} else if (key.getName().equals("DIR")) {
-					codes = buildCommand("LOAD\"$\",8".getBytes(), new byte[] { 13 });
+					codes = tcpHandler.buildCommand("LOAD\"$\",8".getBytes(), new byte[] { 13 });
 				} else if (key.getName().equals("LOAD*")) {
-
+					codes = tcpHandler.buildCommand("LOAD\"*\",8".getBytes(), new byte[] { 13 });
 				} else {
 
 				}
@@ -370,30 +369,27 @@ public class Ultimate64AppStreamView {
 			byte ba[] = new byte[] {};
 
 			if ((key.getOptionState() & 32) == 32) {
-				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+				ba = tcpHandler.buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
 						NumericConverter.getWord(0xd020), new byte[] { key.getIndex().byteValue() });
 			}
 			if ((key.getOptionState() & 64) == 64) {
-				ba = buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
+				ba = tcpHandler.buildCommand(ba, NumericConverter.getWord(0xff06), NumericConverter.getWord(3),
 						NumericConverter.getWord(0xd021), new byte[] { key.getIndex().byteValue() });
 			}
-			try {
-				write(ba);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			tcpHandler.write(ba);
 		}
 	}
 
 	@PreDestroy
 	public void preDestroy(MPart part) {
 		stopStream();
-		closeSocket();
+		tcpHandler.closeSocket();
 	}
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
+		tcpHandler = new TcpHandler("10.100.200.201", 64);
 		parent.setBackground(Constants.BLACK);
 		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
 		RGB palette[] = new RGB[colorList.size()];
@@ -424,64 +420,55 @@ public class Ultimate64AppStreamView {
 		byte durationArray[] = NumericConverter.getWord(duration);
 		byte targetArray[] = target.getBytes();
 		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
-		openSocket();
-		try {
-			write(buildCommand(NumericConverter.getWord(0xff20), length, durationArray, targetArray));
-		} catch (IOException e) {
-
-			e.printStackTrace();
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(
+					tcpHandler.buildCommand(NumericConverter.getWord(0xff20), length, durationArray, targetArray));
 		}
 	}
 
 	private void stopVicStream() {
-		openSocket();
-		try {
-			write(buildCommand(NumericConverter.getWord(0xff30), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		} catch (IOException e) {
-
-			e.printStackTrace();
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(
+					tcpHandler.buildCommand(NumericConverter.getWord(0xff30), new byte[] { (byte) 0x00, (byte) 0x00 }));
 		}
+
 	}
 
 	private void startSidStream(int duration, String target) {
 		byte durationArray[] = NumericConverter.getWord(duration);
 		byte targetArray[] = target.getBytes();
 		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
-		openSocket();
-		try {
-			write(buildCommand(NumericConverter.getWord(0xff21), length, durationArray, targetArray));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(
+					tcpHandler.buildCommand(NumericConverter.getWord(0xff21), length, durationArray, targetArray));
 		}
+
 	}
 
 	private void stopSidStream() {
-		openSocket();
-		try {
-			write(buildCommand(NumericConverter.getWord(0xff31), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(
+					tcpHandler.buildCommand(NumericConverter.getWord(0xff31), new byte[] { (byte) 0x00, (byte) 0x00 }));
 		}
 	}
 
 	private void handleObject(RunObject runObject) {
-		openSocket();
-		int cmd_dma = 0xff01;
-		int cmd_dma_run = 0xff02;
-		int cmd_dma_jump = 0xff09;
-		int cmd_dma_mount_img = 0xff0a;
-		int cmd_dma_run_img = 0xff0b;
-		byte[] command = null;
-		try {
+		if (tcpHandler.openSocket() != -1) {
+			int cmd_dma = 0xff01;
+			int cmd_dma_run = 0xff02;
+			int cmd_dma_jump = 0xff09;
+			int cmd_dma_mount_img = 0xff0a;
+			int cmd_dma_run_img = 0xff0b;
+			byte[] command = null;
 			if (runObject.getSource() == Source.Program) {
 				if (runObject.getMode() == Mode.None && runObject.getStartAdress() == -1) {
-					command = buildCommand(NumericConverter.getWord(cmd_dma),
+					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma),
 							NumericConverter.getWord(runObject.getPayload().length));
 				} else if (runObject.getMode() == Mode.Run && runObject.getStartAdress() == -1) {
-					command = buildCommand(NumericConverter.getWord(cmd_dma_run),
+					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma_run),
 							NumericConverter.getWord(runObject.getPayload().length));
 				} else if (runObject.getMode() == Mode.Run && runObject.getStartAdress() != -1) {
-					command = buildCommand(NumericConverter.getWord(cmd_dma_jump),
+					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma_jump),
 							NumericConverter.getWord(runObject.getPayload().length + 4),
 							NumericConverter.getWord(runObject.getStartAdress()));
 				}
@@ -489,123 +476,69 @@ public class Ultimate64AppStreamView {
 				byte l[] = NumericConverter.getLongWord(runObject.getPayload().length);
 				byte length[] = new byte[] { l[0], l[1], l[2] };
 				if (runObject.getMode() == Mode.Run) {
-					command = buildCommand(NumericConverter.getWord(cmd_dma_run_img), length);
+					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma_run_img), length);
 				} else {
-					command = buildCommand(NumericConverter.getWord(cmd_dma_mount_img), length);
+					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma_mount_img), length);
 				}
 			}
 
-			write(command);
-			write(runObject.getPayload());
-		} catch (IOException e) {
-			e.printStackTrace();
+			tcpHandler.write(command);
+			tcpHandler.write(runObject.getPayload());
+
 		}
 	}
 
 	private void reset() {
-		openSocket();
-		try {
-			write(buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(
+					tcpHandler.buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
 		}
 	}
 
 	private void wait(int delay) {
-		openSocket();
-		try {
-			write(buildCommand(NumericConverter.getWord(0xff05), NumericConverter.getWord(delay)));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler
+					.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff05), NumericConverter.getWord(delay)));
 		}
 	}
 
 	private void readMemory(int address, int length) {
-		openSocket();
-		try {
+		if (tcpHandler.openSocket() != -1) {
 
-			write(buildCommand(NumericConverter.getWord(0xff74), NumericConverter.getWord(length + 2),
-					buildCommand(NumericConverter.getWord(address))));
-			InputStream is = tcpSocket.getInputStream();
-			TimeUnit.MILLISECONDS.sleep(500);
-			int dataAvailable = 0;
-			byte data[] = null;
-			is.read();
-			while ((dataAvailable = is.available()) > 0) {
-				data = new byte[dataAvailable];
-				is.read(data, 0, dataAvailable);
+			tcpHandler.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff74),
+					NumericConverter.getWord(length + 2), tcpHandler.buildCommand(NumericConverter.getWord(address))));
+			try {
+				InputStream is = tcpHandler.getInputStream();
+				TimeUnit.MILLISECONDS.sleep(500);
+				int dataAvailable = 0;
+				byte data[] = null;
+				is.read();
+				while ((dataAvailable = is.available()) > 0) {
+					data = new byte[dataAvailable];
+					is.read(data, 0, dataAvailable);
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
 		}
 	}
 
 	private void writeMemory(int address, byte[] data) {
-		openSocket();
-		try {
-			write(buildCommand(NumericConverter.getWord(0xff06), NumericConverter.getWord(data.length + 2),
-					NumericConverter.getWord(address), data));
-		} catch (Exception e) {
-
-			e.printStackTrace();
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff06),
+					NumericConverter.getWord(data.length + 2), NumericConverter.getWord(address), data));
 		}
 	}
 
 	private void sendKeyboardSequence(byte[] data) {
-		openSocket();
-		try {
-			write(buildCommand(NumericConverter.getWord(0xff03), NumericConverter.getWord(data.length), data));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff03),
+					NumericConverter.getWord(data.length), data));
 		}
-	}
-
-	private void write(byte[] data) throws IOException {
-		tcpSocket.getOutputStream().write(data);
-	}
-
-	private Socket openSocket() {
-		SocketAddress socketAddress = new InetSocketAddress("10.100.200.201", 64);
-		try {
-			if (tcpSocket == null) {
-				tcpSocket = new Socket();
-				tcpSocket.connect(socketAddress, 2000);
-				connectionError = false;
-			}
-		} catch (Exception e) {
-			connectionError = true;
-			showErrorDialog(
-					String.format("Connection to Ultimate64@%s could not be established", socketAddress.toString()));
-		}
-		return tcpSocket;
-	}
-
-	private void closeSocket() {
-		try {
-			if (!connectionError && tcpSocket != null && tcpSocket.isConnected()) {
-				tcpSocket.close();
-				tcpSocket = null;
-				connectionError = false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private byte[] buildCommand(byte[]... data) {
-		int targetLength = 0;
-		for (byte[] source : data) {
-			targetLength += source.length;
-		}
-		byte[] target = new byte[targetLength];
-		int targetPos = 0;
-		for (byte[] source : data) {
-			System.arraycopy(source, 0, target, targetPos, source.length);
-			targetPos += source.length;
-		}
-		return target;
 	}
 
 	private void showErrorDialog(String message) {

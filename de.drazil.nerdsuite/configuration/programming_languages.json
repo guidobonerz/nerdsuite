@@ -1,8 +1,14 @@
 [
 	{
-		"id": "C64_BASIC",
+		"id": "C64_BASIC_V20",
 		"name": "Basic V2.0",
 		"version": 20,
+		"supportsExampleFile": true
+	},
+	{
+		"id": "C64_BASIC_SIMONSBASIC",
+		"name": "Simons Basic",
+		"version": 1,
 		"supportsExampleFile": true
 	},
 	{
@@ -21,7 +27,7 @@
 		]
 	},
 	{
-		"id": "C16_BASIC",
+		"id": "C16_BASIC_V35",
 		"name": "Basic V3.5",
 		"version": 35
 	},
@@ -31,7 +37,7 @@
 		"version": 0
 	},
 	{
-		"id": "C116_BASIC",
+		"id": "C116_BASIC_V35",
 		"name": "Basic V3.5",
 		"version": 35
 	},
@@ -41,7 +47,7 @@
 		"version": 0
 	},
 	{
-		"id": "PLUS4_BASIC",
+		"id": "PLUS4_BASIC_V35",
 		"name": "Basic V3.5",
 		"version": 35
 	},
@@ -51,7 +57,7 @@
 		"version": 0
 	},
 	{
-		"id": "C128_BASIC",
+		"id": "C128_BASIC_V70",
 		"name": "Basic V7.0",
 		"version": 70
 	},
@@ -66,7 +72,7 @@
 		"version": 0
 	},
 	{
-		"id": "VC20_BASIC",
+		"id": "VC20_BASIC_V20",
 		"name": "Basic V2.0",
 		"version": 20
 	},
@@ -74,6 +80,11 @@
 		"id": "VC20_ASSEMBLER",
 		"name": "6502 Assembler",
 		"version": 0
+	},
+	{
+		"id": "MEGA65_BASIC_V10",
+		"name": "Basic V10.0",
+		"version": 100
 	},
 	{
 		"id": "ATARI800XL_BASIC",

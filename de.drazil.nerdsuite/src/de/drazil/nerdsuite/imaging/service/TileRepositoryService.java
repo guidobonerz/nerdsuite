@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.model.GraphicMetadata;
 import de.drazil.nerdsuite.util.FileUtil;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -55,11 +55,11 @@ public class TileRepositoryService implements IService {
 		return container.getTileList();
 	}
 
-	public void setMetadata(ProjectMetaData metadata) {
+	public void setMetadata(GraphicMetadata metadata) {
 		container.setMetadata(metadata);
 	}
 
-	public ProjectMetaData getMetadata() {
+	public GraphicMetadata getMetadata() {
 		return container.getMetadata();
 	}
 
@@ -195,7 +195,7 @@ public class TileRepositoryService implements IService {
 		}
 	}
 
-	private static String getHeaderText(Project project, ProjectMetaData metadata) {
+	private static String getHeaderText(Project project, GraphicMetadata metadata) {
 		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(), DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
 				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()));
 		return s;

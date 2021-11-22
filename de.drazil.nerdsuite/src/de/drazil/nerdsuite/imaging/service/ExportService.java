@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Map;
 
 import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
-import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.model.GraphicMetadata;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class ExportService extends IOBaseService {

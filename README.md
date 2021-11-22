@@ -14,6 +14,9 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 22-11-2021:
+- added Basic Code Editor
+
 Last Changes 07-03-2021:
 - added some direct commands to the Ultimate64 Virtual Keyboard (RUN/LIST/DIR)
 - Set Frame and Backgroundcolor remoteley
@@ -78,37 +81,39 @@ Handle DiskImages:
 Export files partly works
 Create/Update disk images
 
+## Basic Code Editor
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/basic_editor.png)
 ## Disassembler Z80 Screen (in Progress)
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasmz80.png)
 ## Disassembler 6502/10 Screen (in Progress)
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm6502.png)
+![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm6502.png)
 ## Big PETSCII Screen
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen2.png)
+![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen2.png)
 ## Ultimate64 App Streaming Client
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ultimate64-streaming-windows.png)
+![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ultimate64-streaming-windows.png)
 ## Ultimate64 Debug Streaming Client
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/debugstream_view.png)
+![screenshot5](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/debugstream_view.png)
 ## New Graphic Project Dialog
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
+![screenshot6](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen1.png)
 ## Sprite Editor
-![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen2.png)
+![screenshot7](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen2.png)
 ## CharSet Double Height
-![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen4.png)
+![screenshot8](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen4.png)
 ## Popup menu
-![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
+![screenshot9](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
 ## Colorchooser
-![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ColorChooser.png)
+![screenshot10](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ColorChooser.png)
 ## Sprite Animation Example
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/drops_animation.gif)
+![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/drops_animation.gif)
 ## Sprite Animation Example - GI-Joe Firefly Walking left / Imported Hires
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/gi-joe-firefly-walk-left.gif)
+![screenshot12](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/gi-joe-firefly-walk-left.gif)
 ## Reordering Tile Example
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_reordering.gif)
+![screenshot13](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_reordering.gif)
 ## Tile Bulk Modification Example
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_bulk_modification.gif)
+![screenshot14](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_bulk_modification.gif)
 ## Tile Range Modification on 2x2 Char Example
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_range_modification.gif)
+![screenshot15](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_range_modification.gif)
 ## Simple BitmapViewer
 Image by Almighty God
-![screenshot11](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/koala.png)
+![screenshot16](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/koala.png)
 

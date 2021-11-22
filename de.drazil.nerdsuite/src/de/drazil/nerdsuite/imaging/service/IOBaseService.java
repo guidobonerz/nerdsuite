@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.imaging.service;
 
-import de.drazil.nerdsuite.model.ProjectMetaData;
+import de.drazil.nerdsuite.model.GraphicMetadata;
 import de.drazil.nerdsuite.widget.Layer;
 import lombok.Setter;
 
@@ -15,7 +15,7 @@ public class IOBaseService implements IService {
 
 	protected static void convert(byte[] bitplane, int bytesToSkip, TileRepositoryService service, ConversionMode conversionMode) {
 
-		ProjectMetaData metadata = service.getMetadata();
+		GraphicMetadata metadata = service.getMetadata();
 		String id = metadata.getPlatform() + "_" + metadata.getType();
 		int width = metadata.getWidth();
 		int height = metadata.getHeight();

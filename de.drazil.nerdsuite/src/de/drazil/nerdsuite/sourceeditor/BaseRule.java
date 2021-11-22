@@ -28,14 +28,23 @@ public abstract class BaseRule implements IRule {
 	@Getter
 	@Setter
 	private int priority;
+	@Getter
+	@Setter
+	public int offset;
+
+	@Getter
+	@Setter
+	public boolean skipSurroundings;
 
 	public BaseRule(SourceRules sourceRule) {
 	}
 
-	public BaseRule(String prefix, String suffix, Marker marker, Token token) {
+	public BaseRule(String prefix, String suffix, Marker marker, Token token, boolean skipSurroundings) {
 		setPrefix(prefix);
 		setSuffix(suffix);
 		setToken(token);
+		setMarker(marker);
+		this.skipSurroundings = skipSurroundings;
 		reset();
 	}
 
@@ -65,5 +74,15 @@ public abstract class BaseRule implements IRule {
 		if (pattern == null)
 			return new char[] {};
 		return new char[pattern.length()];
+	}
+
+	@Override
+	public boolean skipSurroundings() {
+		return skipSurroundings;
+	}
+
+	@Override
+	public int getTokenControl() {
+		return -1;
 	}
 }
