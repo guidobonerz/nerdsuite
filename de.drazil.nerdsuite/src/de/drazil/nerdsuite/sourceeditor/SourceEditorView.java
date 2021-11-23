@@ -1,5 +1,8 @@
 package de.drazil.nerdsuite.sourceeditor;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -43,6 +46,8 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.util.ArrayUtil;
+import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 
 public class SourceEditorView implements IDocument {
@@ -127,6 +132,15 @@ public class SourceEditorView implements IDocument {
 
 	private void tokenize() {
 		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText(), basicInstructions);
+		byte[] payload = new byte[] {};
+		payload = ArrayUtil.grow(payload, NumericConverter.getWord(2049));
+		payload = ArrayUtil.grow(payload, bytecode);
+		try {
+			Files.write(new File("c:\\Users\\drazil\\tokenizedfile.prg").toPath(), payload);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void save() {

@@ -13,11 +13,11 @@ import de.drazil.nerdsuite.util.NumericConverter;
 public class BasicTokenizer {
 
 	enum Mode {
-		READ_LINENUMBER, READ_INSTRUCTION, READ_STRING;
+		READ_LINENUMBER, READ_INSTRUCTIONS, READ_STRING, READ_BLOCK_COMMENT, READ_COMMENT;
 	};
 
 	enum LastRead {
-		NUMERIC, ALPHANUMERIC, WHITESPACE, NONE;
+		NUMERIC, ALPHANUMERIC, LETTER, WHITESPACE, NONE;
 	}
 
 	private static Mode readMode = Mode.READ_LINENUMBER;
@@ -28,8 +28,10 @@ public class BasicTokenizer {
 	}
 
 	public static byte[] tokenize(String content, BasicInstructions basicInstructions) {
-		boolean basicCommentFound = false;
+		long startTime = System.currentTimeMillis();
+		boolean doNotScan = false;
 		byte[] result = new byte[] {};
+		int offset = 0;
 
 		CharacterIterator ci = new StringCharacterIterator(content);
 		StringBuilder buffer = new StringBuilder();
@@ -40,8 +42,8 @@ public class BasicTokenizer {
 					lastRead = LastRead.WHITESPACE;
 				} else if ((Character.isWhitespace(ch) || Character.isAlphabetic(ch)) && lastRead == LastRead.NUMERIC) {
 					lastRead = LastRead.WHITESPACE;
-					readMode = Mode.READ_INSTRUCTION;
-					System.out.println(buffer);
+					readMode = Mode.READ_INSTRUCTIONS;
+
 					byte[] ba = NumericConverter.getWord(Integer.valueOf(buffer.toString()));
 					result = ArrayUtil.grow(result, new byte[] { 0, 0 });
 					result = ArrayUtil.grow(result, ba);
@@ -55,45 +57,56 @@ public class BasicTokenizer {
 				}
 				break;
 			}
-			case READ_INSTRUCTION: {
-				if (ch == '\n') {
-					basicCommentFound = false;
-					result = ArrayUtil.grow(result, buffer.toString().getBytes());
-					result = ArrayUtil.grow(result, (byte) 0);
-					result = ArrayUtil.update(result, NumericConverter.getWord(result.length + 1), 0);
-					buffer = new StringBuilder();
-					readMode = Mode.READ_LINENUMBER;
-					break;
-				} else if (ch == '\"') {
-					readMode = Mode.READ_STRING;
-					System.out.println(ch);
-					break;
-				} else if (Character.isWhitespace(ch)
-						&& (lastRead == LastRead.NONE || lastRead == LastRead.WHITESPACE)) {
-					lastRead = LastRead.WHITESPACE;
-				} else if (!Character.isWhitespace(ch)) {
-					buffer.append(ch);
-					if (!basicCommentFound) {
-						List<BasicInstruction> list = findToken(buffer.toString(),
-								basicInstructions.getBasicInstructionList());
-
-						if (list.size() == 1 && list.get(0).getInstruction().equalsIgnoreCase(buffer.toString())) {
-							BasicInstruction firstMatch = list.get(0);
-							basicCommentFound = firstMatch.isComment();
-							byte b = (byte) (Integer.parseInt(firstMatch.getToken(), 16) & 0xff);
+			case READ_INSTRUCTIONS: {
+				boolean found = false;
+				if (!doNotScan) {
+					int start = ci.getIndex();
+					for (BasicInstruction instruction : basicInstructions.getBasicInstructionList()) {
+						if (content.indexOf(instruction.getInstruction().toUpperCase(), ci.getIndex()) == ci
+								.getIndex()) {
+							doNotScan = instruction.isComment();
+							result = ArrayUtil.grow(result, buffer.toString().toUpperCase().getBytes());
+							byte b = (byte) (Integer.parseInt(instruction.getToken(), 16) & 0xff);
 							result = ArrayUtil.grow(result, b);
+							ci.setIndex(start + (instruction.getInstruction().length() - 1));
 							buffer = new StringBuilder();
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						if (ch != '\r' && ch != '\n') {
+							buffer.append(ch);
 						}
 					}
 				} else {
-					System.out.println(ch);
+					if (ch != '\r' && ch != '\n') {
+						buffer.append(ch);
+					}
 				}
+
+				if (ch == '\"') {
+					readMode = Mode.READ_STRING;
+
+					break;
+				} else if (ch == '\n') {
+					doNotScan = false;
+					result = ArrayUtil.grow(result, buffer.toString().toUpperCase().getBytes());
+					result = ArrayUtil.grow(result, (byte) 0);
+					int len = result.length;
+					result = ArrayUtil.update(result, NumericConverter.getWord(2049 + len), offset);
+					offset = len;
+					buffer = new StringBuilder();
+					readMode = Mode.READ_LINENUMBER;
+					break;
+				}
+				// System.out.println(buffer);
 				break;
 			}
 			case READ_STRING: {
-				System.out.println(ch);
+				buffer.append(ch);
 				if (ch == '\"') {
-					readMode = Mode.READ_INSTRUCTION;
+					readMode = Mode.READ_INSTRUCTIONS;
 				}
 				break;
 			}
@@ -101,13 +114,9 @@ public class BasicTokenizer {
 			}
 		}
 		result = ArrayUtil.grow(result, new byte[] { 0, 0 });
+		long diff = (System.currentTimeMillis() - startTime) / 1000;
+		System.out.printf("time to build:%d seconds", diff);
 		return result;
 	}
 
-	private static List<BasicInstruction> findToken(String command, List<BasicInstruction> basicInructionList) {
-		return basicInructionList.stream()
-				.filter(i -> i.getInstruction().toLowerCase().startsWith(command.toLowerCase()))
-				.collect(Collectors.toList());
-
-	}
 }

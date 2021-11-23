@@ -121,7 +121,7 @@ public class Constants {
 	public final static Font DroidSans_Mono = new Font(Display.getCurrent(), "Droid Sans Mono", 20, SWT.NORMAL);
 	public final static Font PT_Mono = new Font(Display.getCurrent(), "PT Mono", 10, SWT.NORMAL);
 	public final static Font SourceCodePro_Mono = new Font(Display.getCurrent(), "Source Code Pro", 10, SWT.NORMAL);
-	public final static Font C64_Pro_Mono_FONT = new Font(Display.getCurrent(), "C64 Pro Mono", 6, SWT.NORMAL);
+	public final static Font C64_Pro_Mono_FONT = new Font(Display.getCurrent(), "C64 Pro Mono", 12, SWT.NORMAL);
 	public final static Font C64_Pro_Mono_FONT_10 = new Font(Display.getCurrent(), "C64 Pro Mono", 10, SWT.NORMAL);
 	public final static Font C64_Pro_Mono_FONT_8 = new Font(Display.getCurrent(), "C64 Pro Mono", 8, SWT.NORMAL);
 	public final static Font C64_Pro_Mono_FONT_12 = new Font(Display.getCurrent(), "C64 Pro Mono", 12, SWT.NORMAL);
