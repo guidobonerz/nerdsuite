@@ -1,7 +1,5 @@
 package de.drazil.nerdsuite.sourceeditor;
 
-import de.drazil.nerdsuite.model.Range;
-
 public class SingleLineRule extends BaseRule {
 
 	public SingleLineRule(String prefix, Token token) {
@@ -20,13 +18,13 @@ public class SingleLineRule extends BaseRule {
 	}
 
 	@Override
-	public Range hasMatch(String text, int offset) {
-		Range range = null;
+	public DocumentPartition hasMatch(String text, int offset) {
+		DocumentPartition range = null;
 		if (getMarker() == Marker.EOL) {
 			int matchIndex = text.indexOf(getPrefix(), offset);
 			if (offset == matchIndex) {
 				int len = text.length() - matchIndex;
-				range = new Range(offset, len);
+				range = new DocumentPartition(offset, len);
 			}
 		} else if (getMarker() == Marker.PARTITION) {
 			int matchPrefixIndex = text.indexOf(getPrefix(), offset);
@@ -38,7 +36,7 @@ public class SingleLineRule extends BaseRule {
 				} else {
 					len = text.length() - matchPrefixIndex;
 				}
-				range = new Range(matchPrefixIndex, len);
+				range = new DocumentPartition(matchPrefixIndex, len);
 			}
 		} else {
 		}

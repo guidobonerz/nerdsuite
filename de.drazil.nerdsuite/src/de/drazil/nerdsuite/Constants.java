@@ -83,8 +83,10 @@ public class Constants {
 	public final static Color FUNCTION_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#00a0d0"));
 	public final static Color COMMAND_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#30b090"));
 	public final static Color OPERATOR_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#20ff90"));
+	public final static Color CONSTANT_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#ffff00"));
 	public final static Color TRANSPARENT_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#010101"));
-	//public final static Color DEFAULT_STRING_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#CBFC48"));
+	// public final static Color DEFAULT_STRING_COLOR = new
+	// Color(Display.getCurrent(), SwtUtil.toRGB("#CBFC48"));
 	public final static Color DEFAULT_STRING_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#a0a0ff"));
 	public final static Color DEFAULT_DECIMAL_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#6476CB"));
 	public final static Color DEFAULT_HEXADECIMAL_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#94769B"));
@@ -143,7 +145,8 @@ public class Constants {
 			BLACK);
 	public final static TextStyle TEXTSTYLE_STRING = new TextStyle(EDITOR_FONT, DEFAULT_STRING_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_COMMENT = new TextStyle(RobotoMonoBold_FONT, DEFAULT_COMMENT_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_COMMENT_BLOCK = new TextStyle(RobotoMonoBold_FONT, DEFAULT_LABEL_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_COMMENT_BLOCK = new TextStyle(RobotoMonoBold_FONT, DEFAULT_LABEL_COLOR,
+			BLACK);
 	public final static TextStyle TEXTSTYLE_DECIMAL = new TextStyle(EDITOR_FONT, DEFAULT_DECIMAL_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_HEXADECIMAL = new TextStyle(EDITOR_FONT, DEFAULT_HEXADECIMAL_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_BINARY = new TextStyle(EDITOR_FONT, DEFAULT_BINARY_COLOR, BLACK);
