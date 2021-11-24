@@ -38,8 +38,7 @@ public class BasicInstruction implements IWordMatcher {
 	@JsonIgnore
 	public DocumentPartition hasMatch(String text, int offset) {
 		DocumentPartition partition = null;
-		if (StringEscapeUtils.unescapeJson(text).charAt(offset) == StringEscapeUtils.unescapeJson(instruction).charAt(0)
-				&& purpose.equals("C")) {
+		if (text.charAt(offset) == instruction.charAt(0) && purpose.equals("C")) {
 			partition = new DocumentPartition(offset, 1);
 		} else {
 			int matchIndex = text.indexOf(instruction, offset);
