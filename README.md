@@ -15,6 +15,10 @@ Currently I work mostly on the graphics part.
 Current state: Still buggy and incomplete :-)
 
 Last Changes 22-11-2021:
+- added Basic Code Tokenizer
+- added Brace Depth Highlighting
+
+Last Changes 22-11-2021:
 - added Basic Code Editor
 
 Last Changes 07-03-2021:

@@ -1,7 +1,5 @@
 package de.drazil.nerdsuite.sourceeditor;
 
-import de.drazil.nerdsuite.model.Range;
-
 public class MultiLineRule extends BaseRule {
 
 	public MultiLineRule(String prefix, String suffix, Token token) {
@@ -10,8 +8,8 @@ public class MultiLineRule extends BaseRule {
 	}
 
 	@Override
-	public Range hasMatch(String text, int offset) {
-		Range range = null;
+	public DocumentPartition hasMatch(String text, int offset) {
+		DocumentPartition range = null;
 		int matchPrefixIndex = text.indexOf(getPrefix(), offset);
 		if (matchPrefixIndex != -1) {
 			int len = getPrefix().length();
@@ -21,7 +19,7 @@ public class MultiLineRule extends BaseRule {
 			} else {
 				len = text.length() - matchPrefixIndex;
 			}
-			range = new Range(matchPrefixIndex, len);
+			range = new DocumentPartition(matchPrefixIndex, len);
 		}
 		return range;
 	}

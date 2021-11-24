@@ -1,5 +1,8 @@
 package de.drazil.nerdsuite.sourceeditor;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -31,17 +34,22 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.basic.BasicTokenizer;
 import de.drazil.nerdsuite.basic.SourceRepositoryService;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
+import de.drazil.nerdsuite.model.CharMap;
 import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.util.ArrayUtil;
+import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 
 public class SourceEditorView implements IDocument {
@@ -55,9 +63,9 @@ public class SourceEditorView implements IDocument {
 	private Project project;
 	private String owner;
 	private SourceRepositoryService srs;
+	private BasicInstructions basicInstructions;
 	@Inject
 	private MPart part;
-	int x = 0xe000;
 
 	public SourceEditorView() {
 
@@ -110,9 +118,36 @@ public class SourceEditorView implements IDocument {
 
 	@Inject
 	@Optional
+	public void build(@UIEventTopic("Build") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			Display.getCurrent().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					tokenize();
+				}
+			});
+		}
+	}
+
+	@Inject
+	@Optional
 	public void manageSave(@UIEventTopic("Save") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			save();
+		}
+	}
+
+	private void tokenize() {
+		List<CharMap> charMap = PlatformFactory.getCharMap(srs.getMetadata().getPlatform());
+		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText().toUpperCase(), basicInstructions, charMap);
+		byte[] payload = new byte[] {};
+		payload = ArrayUtil.grow(payload, NumericConverter.getWord(2049));
+		payload = ArrayUtil.grow(payload, bytecode);
+		try {
+			Files.write(new File("c:\\Users\\drazil\\tokenizedfile.prg").toPath(), payload);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -144,7 +179,7 @@ public class SourceEditorView implements IDocument {
 		owner = (String) pm.get("repositoryOwner");
 
 		srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
-		BasicInstructions basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
+		basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
 
 		int version = 20;
 		String variant = srs.getMetadata().getVariant();
@@ -214,6 +249,7 @@ public class SourceEditorView implements IDocument {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
+				part.setDirty(true);
 				documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
 				// documentStyler.refreshMultilineComments(styledText.getText());
 				styledText.redraw();
@@ -224,8 +260,10 @@ public class SourceEditorView implements IDocument {
 		 * button.addListener(SWT.Selection, new Listener() {
 		 * 
 		 * @Override public void handleEvent(Event event) { IFont font = new C64Font();
-		 * // int cursorPos = styledText.getCaretOffset(); styledText.insert(new
-		 * String(Character.toChars(x))); x++; } });
+		 * int cursorPos = styledText.getCaretOffset(); styledText.insert(new
+		 * String(Character.toChars(0xee9d)));
+		 * 
+		 * } });
 		 */
 		/*
 		 * FontData[] fD = styledText.getFont().getFontData(); fD[0].setHeight(12);

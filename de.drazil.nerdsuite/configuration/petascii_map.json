@@ -2,1537 +2,1793 @@
 	{
 		"id": 0,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE80",
+		"name": ""
 	},
 	{
 		"id": 1,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE81",
+		"name": ""
 	},
 	{
 		"id": 2,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE82",
+		"name": ""
 	},
 	{
 		"id": 3,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE83",
+		"name": "stop"
 	},
 	{
 		"id": 4,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE84",
+		"name": ""
 	},
 	{
 		"id": 5,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE85",
+		"name": "white"
 	},
 	{
 		"id": 6,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE86",
+		"name": ""
 	},
 	{
 		"id": 7,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE87",
+		"name": "enable shift+c"
 	},
 	{
 		"id": 8,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE88",
+		"name": "disable shift+c"
 	},
 	{
 		"id": 9,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE89",
+		"name": ""
 	},
 	{
 		"id": 10,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE8A",
+		"name": ""
 	},
 	{
 		"id": 11,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE8B",
+		"name": ""
 	},
 	{
 		"id": 12,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE8C",
+		"name": ""
 	},
 	{
 		"id": 13,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE8D",
+		"name": "return"
 	},
 	{
 		"id": 14,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE8E",
+		"name": "lower case"
 	},
 	{
 		"id": 15,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE8F",
+		"name": ""
 	},
 	{
 		"id": 16,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE90",
+		"name": "cursor down"
 	},
 	{
 		"id": 17,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE91",
+		"name": "reverse on"
 	},
 	{
 		"id": 18,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE92",
+		"name": "home"
 	},
 	{
 		"id": 19,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE93",
+		"name": "delete"
 	},
 	{
 		"id": 20,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE94",
+		"name": ""
 	},
 	{
 		"id": 21,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE95",
+		"name": ""
 	},
 	{
 		"id": 22,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE96",
+		"name": ""
 	},
 	{
 		"id": 23,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE97",
+		"name": ""
 	},
 	{
 		"id": 24,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE98",
+		"name": ""
 	},
 	{
 		"id": 25,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE99",
+		"name": ""
 	},
 	{
 		"id": 26,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE9A",
+		"name": ""
 	},
 	{
 		"id": 27,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE9B",
+		"name": ""
 	},
 	{
 		"id": 28,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE9C",
+		"name": "red"
 	},
 	{
 		"id": 29,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE9D",
+		"name": "cursor right"
 	},
 	{
 		"id": 30,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE9E",
+		"name": "green"
 	},
 	{
 		"id": 31,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE9F",
+		"name": "blue"
 	},
 	{
 		"id": 32,
 		"ascii": 32,
-		"screenCode": 32,
-		"unicode": 0
+		"screencode": 32,
+		"unicode": "\\uEE20",
+		"name": ""
 	},
 	{
 		"id": 33,
 		"ascii": 33,
-		"screenCode": 33,
-		"unicode": 0
+		"screencode": 33,
+		"unicode": "\\uEE21",
+		"name": ""
 	},
 	{
 		"id": 34,
 		"ascii": 34,
-		"screenCode": 34,
-		"unicode": 0
+		"screencode": 34,
+		"unicode": "\\uEE22",
+		"name": ""
 	},
 	{
 		"id": 35,
 		"ascii": 35,
-		"screenCode": 35,
-		"unicode": 0
+		"screencode": 35,
+		"unicode": "\\uEE23",
+		"name": ""
 	},
 	{
 		"id": 36,
 		"ascii": 36,
-		"screenCode": 36,
-		"unicode": 0
+		"screencode": 36,
+		"unicode": "\\uEE24",
+		"name": ""
 	},
 	{
 		"id": 37,
 		"ascii": 37,
-		"screenCode": 37,
-		"unicode": 0
+		"screencode": 37,
+		"unicode": "\\uEE25",
+		"name": ""
 	},
 	{
 		"id": 38,
 		"ascii": 38,
-		"screenCode": 38,
-		"unicode": 0
+		"screencode": 38,
+		"unicode": "\\uEE26",
+		"name": ""
 	},
 	{
 		"id": 39,
 		"ascii": 39,
-		"screenCode": 39,
-		"unicode": 0
+		"screencode": 39,
+		"unicode": "\\uEE27",
+		"name": ""
 	},
 	{
 		"id": 40,
 		"ascii": 40,
-		"screenCode": 40,
-		"unicode": 0
+		"screencode": 40,
+		"unicode": "\\uEE28",
+		"name": ""
 	},
 	{
 		"id": 41,
 		"ascii": 41,
-		"screenCode": 41,
-		"unicode": 0
+		"screencode": 41,
+		"unicode": "\\uEE29",
+		"name": ""
 	},
 	{
 		"id": 42,
 		"ascii": 42,
-		"screenCode": 42,
-		"unicode": 0
+		"screencode": 42,
+		"unicode": "\\uEE2A",
+		"name": ""
 	},
 	{
 		"id": 43,
 		"ascii": 43,
-		"screenCode": 43,
-		"unicode": 0
+		"screencode": 43,
+		"unicode": "\\uEE2B",
+		"name": ""
 	},
 	{
 		"id": 44,
 		"ascii": 44,
-		"screenCode": 44,
-		"unicode": 0
+		"screencode": 44,
+		"unicode": "\\uEE2C",
+		"name": ""
 	},
 	{
 		"id": 45,
 		"ascii": 45,
-		"screenCode": 45,
-		"unicode": 0
+		"screencode": 45,
+		"unicode": "\\uEE2D",
+		"name": ""
 	},
 	{
 		"id": 46,
 		"ascii": 46,
-		"screenCode": 46,
-		"unicode": 0
+		"screencode": 46,
+		"unicode": "\\uEE2E",
+		"name": ""
 	},
 	{
 		"id": 47,
 		"ascii": 47,
-		"screenCode": 47,
-		"unicode": 0
+		"screencode": 47,
+		"unicode": "\\uEE2F",
+		"name": ""
 	},
 	{
 		"id": 48,
 		"ascii": 48,
-		"screenCode": 48,
-		"unicode": 0
+		"screencode": 48,
+		"unicode": "\\uEE30",
+		"name": ""
 	},
 	{
 		"id": 49,
 		"ascii": 49,
-		"screenCode": 49,
-		"unicode": 0
+		"screencode": 49,
+		"unicode": "\\uEE31",
+		"name": ""
 	},
 	{
 		"id": 50,
 		"ascii": 50,
-		"screenCode": 50,
-		"unicode": 0
+		"screencode": 50,
+		"unicode": "\\uEE32",
+		"name": ""
 	},
 	{
 		"id": 51,
 		"ascii": 51,
-		"screenCode": 51,
-		"unicode": 0
+		"screencode": 51,
+		"unicode": "\\uEE33",
+		"name": ""
 	},
 	{
 		"id": 52,
 		"ascii": 52,
-		"screenCode": 52,
-		"unicode": 0
+		"screencode": 52,
+		"unicode": "\\uEE34",
+		"name": ""
 	},
 	{
 		"id": 53,
 		"ascii": 53,
-		"screenCode": 53,
-		"unicode": 0
+		"screencode": 53,
+		"unicode": "\\uEE35",
+		"name": ""
 	},
 	{
 		"id": 54,
 		"ascii": 54,
-		"screenCode": 54,
-		"unicode": 0
+		"screencode": 54,
+		"unicode": "\\uEE36",
+		"name": ""
 	},
 	{
 		"id": 55,
 		"ascii": 55,
-		"screenCode": 55,
-		"unicode": 0
+		"screencode": 55,
+		"unicode": "\\uEE37",
+		"name": ""
 	},
 	{
 		"id": 56,
 		"ascii": 56,
-		"screenCode": 56,
-		"unicode": 0
+		"screencode": 56,
+		"unicode": "\\uEE38",
+		"name": ""
 	},
 	{
 		"id": 57,
 		"ascii": 57,
-		"screenCode": 57,
-		"unicode": 0
+		"screencode": 57,
+		"unicode": "\\uEE39",
+		"name": ""
 	},
 	{
 		"id": 58,
 		"ascii": 58,
-		"screenCode": 58,
-		"unicode": 0
+		"screencode": 58,
+		"unicode": "\\uEE3A",
+		"name": ""
 	},
 	{
 		"id": 59,
 		"ascii": 59,
-		"screenCode": 59,
-		"unicode": 0
+		"screencode": 59,
+		"unicode": "\\uEE3B",
+		"name": ""
 	},
 	{
 		"id": 60,
 		"ascii": 60,
-		"screenCode": 60,
-		"unicode": 0
+		"screencode": 60,
+		"unicode": "\\uEE3C",
+		"name": ""
 	},
 	{
 		"id": 61,
 		"ascii": 61,
-		"screenCode": 61,
-		"unicode": 0
+		"screencode": 61,
+		"unicode": "\\uEE3D",
+		"name": ""
 	},
 	{
 		"id": 62,
 		"ascii": 62,
-		"screenCode": 62,
-		"unicode": 0
+		"screencode": 62,
+		"unicode": "\\uEE3E",
+		"name": ""
 	},
 	{
 		"id": 63,
 		"ascii": 63,
-		"screenCode": 63,
-		"unicode": 0
+		"screencode": 63,
+		"unicode": "\\uEE3F",
+		"name": ""
 	},
 	{
 		"id": 64,
 		"ascii": 64,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE00",
+		"name": ""
 	},
 	{
 		"id": 65,
 		"ascii": 65,
-		"screenCode": 1,
-		"unicode": 0
+		"screencode": 1,
+		"unicode": "\\uEE01",
+		"name": ""
 	},
 	{
 		"id": 66,
 		"ascii": 66,
-		"screenCode": 2,
-		"unicode": 0
+		"screencode": 2,
+		"unicode": "\\uEE02",
+		"name": ""
 	},
 	{
 		"id": 67,
 		"ascii": 67,
-		"screenCode": 3,
-		"unicode": 0
+		"screencode": 3,
+		"unicode": "\\uEE03",
+		"name": ""
 	},
 	{
 		"id": 68,
 		"ascii": 68,
-		"screenCode": 4,
-		"unicode": 0
+		"screencode": 4,
+		"unicode": "\\uEE04",
+		"name": ""
 	},
 	{
 		"id": 69,
 		"ascii": 69,
-		"screenCode": 5,
-		"unicode": 0
+		"screencode": 5,
+		"unicode": "\\uEE05",
+		"name": ""
 	},
 	{
 		"id": 70,
 		"ascii": 70,
-		"screenCode": 6,
-		"unicode": 0
+		"screencode": 6,
+		"unicode": "\\uEE06",
+		"name": ""
 	},
 	{
 		"id": 71,
 		"ascii": 71,
-		"screenCode": 7,
-		"unicode": 0
+		"screencode": 7,
+		"unicode": "\\uEE07",
+		"name": ""
 	},
 	{
 		"id": 72,
 		"ascii": 72,
-		"screenCode": 8,
-		"unicode": 0
+		"screencode": 8,
+		"unicode": "\\uEE08",
+		"name": ""
 	},
 	{
 		"id": 73,
 		"ascii": 73,
-		"screenCode": 9,
-		"unicode": 0
+		"screencode": 9,
+		"unicode": "\\uEE09",
+		"name": ""
 	},
 	{
 		"id": 74,
 		"ascii": 74,
-		"screenCode": 10,
-		"unicode": 0
+		"screencode": 10,
+		"unicode": "\\uEE0A",
+		"name": ""
 	},
 	{
 		"id": 75,
 		"ascii": 75,
-		"screenCode": 11,
-		"unicode": 0
+		"screencode": 11,
+		"unicode": "\\uEE0B",
+		"name": ""
 	},
 	{
 		"id": 76,
 		"ascii": 76,
-		"screenCode": 12,
-		"unicode": 0
+		"screencode": 12,
+		"unicode": "\\uEE0C",
+		"name": ""
 	},
 	{
 		"id": 77,
 		"ascii": 77,
-		"screenCode": 13,
-		"unicode": 0
+		"screencode": 13,
+		"unicode": "\\uEE0D",
+		"name": ""
 	},
 	{
 		"id": 78,
 		"ascii": 78,
-		"screenCode": 14,
-		"unicode": 0
+		"screencode": 14,
+		"unicode": "\\uEE0E",
+		"name": ""
 	},
 	{
 		"id": 79,
 		"ascii": 79,
-		"screenCode": 15,
-		"unicode": 0
+		"screencode": 15,
+		"unicode": "\\uEE0F",
+		"name": ""
 	},
 	{
 		"id": 80,
 		"ascii": 80,
-		"screenCode": 16,
-		"unicode": 0
+		"screencode": 16,
+		"unicode": "\\uEE10",
+		"name": ""
 	},
 	{
 		"id": 81,
 		"ascii": 81,
-		"screenCode": 17,
-		"unicode": 0
+		"screencode": 17,
+		"unicode": "\\uEE11",
+		"name": ""
 	},
 	{
 		"id": 82,
 		"ascii": 82,
-		"screenCode": 18,
-		"unicode": 0
+		"screencode": 18,
+		"unicode": "\\uEE12",
+		"name": ""
 	},
 	{
 		"id": 83,
 		"ascii": 83,
-		"screenCode": 19,
-		"unicode": 0
+		"screencode": 19,
+		"unicode": "\\uEE13",
+		"name": ""
 	},
 	{
 		"id": 84,
 		"ascii": 84,
-		"screenCode": 20,
-		"unicode": 0
+		"screencode": 20,
+		"unicode": "\\uEE14",
+		"name": ""
 	},
 	{
 		"id": 85,
 		"ascii": 85,
-		"screenCode": 21,
-		"unicode": 0
+		"screencode": 21,
+		"unicode": "\\uEE15",
+		"name": ""
 	},
 	{
 		"id": 86,
 		"ascii": 86,
-		"screenCode": 22,
-		"unicode": 0
+		"screencode": 22,
+		"unicode": "\\uEE16",
+		"name": ""
 	},
 	{
 		"id": 87,
 		"ascii": 87,
-		"screenCode": 23,
-		"unicode": 0
+		"screencode": 23,
+		"unicode": "\\uEE17",
+		"name": ""
 	},
 	{
 		"id": 88,
 		"ascii": 88,
-		"screenCode": 24,
-		"unicode": 0
+		"screencode": 24,
+		"unicode": "\\uEE18",
+		"name": ""
 	},
 	{
 		"id": 89,
 		"ascii": 89,
-		"screenCode": 25,
-		"unicode": 0
+		"screencode": 25,
+		"unicode": "\\uEE19",
+		"name": ""
 	},
 	{
 		"id": 90,
 		"ascii": 90,
-		"screenCode": 26,
-		"unicode": 0
+		"screencode": 26,
+		"unicode": "\\uEE1A",
+		"name": ""
 	},
 	{
 		"id": 91,
 		"ascii": 91,
-		"screenCode": 27,
-		"unicode": 0
+		"screencode": 27,
+		"unicode": "\\uEE1B",
+		"name": ""
 	},
 	{
 		"id": 92,
 		"ascii": 92,
-		"screenCode": 28,
-		"unicode": 0
+		"screencode": 28,
+		"unicode": "\\uEE1C",
+		"name": ""
 	},
 	{
 		"id": 93,
 		"ascii": 93,
-		"screenCode": 29,
-		"unicode": 0
+		"screencode": 29,
+		"unicode": "\\uEE1D",
+		"name": ""
 	},
 	{
 		"id": 94,
-		"ascii": 0,
-		"screenCode": 30,
-		"unicode": 0
+		"ascii": 94,
+		"screencode": 30,
+		"unicode": "\\uEE1E",
+		"name": ""
 	},
 	{
 		"id": 95,
 		"ascii": 95,
-		"screenCode": 31,
-		"unicode": 0
+		"screencode": 31,
+		"unicode": "\\uEE1F",
+		"name": ""
 	},
 	{
 		"id": 96,
 		"ascii": 0,
-		"screenCode": 64,
-		"unicode": 0
+		"screencode": 32,
+		"unicode": "\\uEE40",
+		"name": ""
 	},
 	{
 		"id": 97,
 		"ascii": 0,
-		"screenCode": 65,
-		"unicode": 0
+		"screencode": 33,
+		"unicode": "\\uEE41",
+		"name": ""
 	},
 	{
 		"id": 98,
 		"ascii": 0,
-		"screenCode": 66,
-		"unicode": 0
+		"screencode": 34,
+		"unicode": "\\uEE42",
+		"name": ""
 	},
 	{
 		"id": 99,
 		"ascii": 0,
-		"screenCode": 67,
-		"unicode": 0
+		"screencode": 35,
+		"unicode": "\\uEE43",
+		"name": ""
 	},
 	{
 		"id": 100,
 		"ascii": 0,
-		"screenCode": 68,
-		"unicode": 0
+		"screencode": 36,
+		"unicode": "\\uEE44",
+		"name": ""
 	},
 	{
 		"id": 101,
 		"ascii": 0,
-		"screenCode": 69,
-		"unicode": 0
+		"screencode": 37,
+		"unicode": "\\uEE45",
+		"name": ""
 	},
 	{
 		"id": 102,
 		"ascii": 0,
-		"screenCode": 70,
-		"unicode": 0
+		"screencode": 38,
+		"unicode": "\\uEE46",
+		"name": ""
 	},
 	{
 		"id": 103,
 		"ascii": 0,
-		"screenCode": 71,
-		"unicode": 0
+		"screencode": 39,
+		"unicode": "\\uEE47",
+		"name": ""
 	},
 	{
 		"id": 104,
 		"ascii": 0,
-		"screenCode": 72,
-		"unicode": 0
+		"screencode": 40,
+		"unicode": "\\uEE48",
+		"name": ""
 	},
 	{
 		"id": 105,
 		"ascii": 0,
-		"screenCode": 73,
-		"unicode": 0
+		"screencode": 41,
+		"unicode": "\\uEE49",
+		"name": ""
 	},
 	{
 		"id": 106,
 		"ascii": 0,
-		"screenCode": 74,
-		"unicode": 0
+		"screencode": 42,
+		"unicode": "\\uEE4A",
+		"name": ""
 	},
 	{
 		"id": 107,
 		"ascii": 0,
-		"screenCode": 75,
-		"unicode": 0
+		"screencode": 43,
+		"unicode": "\\uEE4B",
+		"name": ""
 	},
 	{
 		"id": 108,
 		"ascii": 0,
-		"screenCode": 76,
-		"unicode": 0
+		"screencode": 44,
+		"unicode": "\\uEE4C",
+		"name": ""
 	},
 	{
 		"id": 109,
 		"ascii": 0,
-		"screenCode": 77,
-		"unicode": 0
+		"screencode": 45,
+		"unicode": "\\uEE4D",
+		"name": ""
 	},
 	{
 		"id": 110,
 		"ascii": 0,
-		"screenCode": 78,
-		"unicode": 0
+		"screencode": 46,
+		"unicode": "\\uEE4E",
+		"name": ""
 	},
 	{
 		"id": 111,
 		"ascii": 0,
-		"screenCode": 79,
-		"unicode": 0
+		"screencode": 47,
+		"unicode": "\\uEE4F",
+		"name": ""
 	},
 	{
 		"id": 112,
 		"ascii": 0,
-		"screenCode": 80,
-		"unicode": 0
+		"screencode": 48,
+		"unicode": "\\uEE50",
+		"name": ""
 	},
 	{
 		"id": 113,
 		"ascii": 0,
-		"screenCode": 81,
-		"unicode": 0
+		"screencode": 49,
+		"unicode": "\\uEE51",
+		"name": ""
 	},
 	{
 		"id": 114,
 		"ascii": 0,
-		"screenCode": 82,
-		"unicode": 0
+		"screencode": 50,
+		"unicode": "\\uEE52",
+		"name": ""
 	},
 	{
 		"id": 115,
 		"ascii": 0,
-		"screenCode": 83,
-		"unicode": 0
+		"screencode": 51,
+		"unicode": "\\uEE53",
+		"name": ""
 	},
 	{
 		"id": 116,
 		"ascii": 0,
-		"screenCode": 84,
-		"unicode": 0
+		"screencode": 52,
+		"unicode": "\\uEE54",
+		"name": ""
 	},
 	{
 		"id": 117,
 		"ascii": 0,
-		"screenCode": 85,
-		"unicode": 0
+		"screencode": 53,
+		"unicode": "\\uEE55",
+		"name": ""
 	},
 	{
 		"id": 118,
 		"ascii": 0,
-		"screenCode": 85,
-		"unicode": 0
+		"screencode": 54,
+		"unicode": "\\uEE56",
+		"name": ""
 	},
 	{
 		"id": 119,
 		"ascii": 0,
-		"screenCode": 87,
-		"unicode": 0
+		"screencode": 55,
+		"unicode": "\\uEE57",
+		"name": ""
 	},
 	{
 		"id": 120,
 		"ascii": 0,
-		"screenCode": 88,
-		"unicode": 0
+		"screencode": 56,
+		"unicode": "\\uEE58",
+		"name": ""
 	},
 	{
 		"id": 121,
 		"ascii": 0,
-		"screenCode": 89,
-		"unicode": 0
+		"screencode": 57,
+		"unicode": "\\uEE59",
+		"name": ""
 	},
 	{
 		"id": 122,
 		"ascii": 0,
-		"screenCode": 90,
-		"unicode": 0
+		"screencode": 58,
+		"unicode": "\\uEE5A",
+		"name": ""
 	},
 	{
 		"id": 123,
 		"ascii": 0,
-		"screenCode": 91,
-		"unicode": 0
+		"screencode": 59,
+		"unicode": "\\uEE5B",
+		"name": ""
 	},
 	{
 		"id": 124,
 		"ascii": 0,
-		"screenCode": 92,
-		"unicode": 0
+		"screencode": 60,
+		"unicode": "\\uEE5C",
+		"name": ""
 	},
 	{
 		"id": 125,
 		"ascii": 0,
-		"screenCode": 93,
-		"unicode": 0
+		"screencode": 61,
+		"unicode": "\\uEE5D",
+		"name": ""
 	},
 	{
 		"id": 126,
 		"ascii": 0,
-		"screenCode": 94,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE5E",
+		"name": ""
 	},
 	{
 		"id": 127,
 		"ascii": 0,
-		"screenCode": 95,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEE5F",
+		"name": ""
 	},
 	{
 		"id": 128,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC0",
+		"name": ""
 	},
 	{
 		"id": 129,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC1",
+		"name": "orange"
 	},
 	{
 		"id": 130,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC2",
+		"name": ""
 	},
 	{
 		"id": 131,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC3",
+		"name": "run"
 	},
 	{
 		"id": 132,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC4",
+		"name": ""
 	},
 	{
 		"id": 133,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC5",
+		"name": "f1"
 	},
 	{
 		"id": 134,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC6",
+		"name": "f2"
 	},
 	{
 		"id": 135,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC7",
+		"name": "f3"
 	},
 	{
 		"id": 136,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC8",
+		"name": "f4"
 	},
 	{
 		"id": 137,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEC9",
+		"name": "f5"
 	},
 	{
 		"id": 138,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEECA",
+		"name": "f6"
 	},
 	{
 		"id": 139,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEECB",
+		"name": "f7"
 	},
 	{
 		"id": 140,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEECC",
+		"name": "f8"
 	},
 	{
 		"id": 141,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEECD",
+		"name": "shift/return"
 	},
 	{
 		"id": 142,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEECE",
+		"name": "upper case"
 	},
 	{
 		"id": 143,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEECF",
+		"name": ""
 	},
 	{
 		"id": 144,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED0",
+		"name": "black"
 	},
 	{
 		"id": 145,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED1",
+		"name": "cursor up"
 	},
 	{
 		"id": 146,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED2",
+		"name": "reverse off"
 	},
 	{
 		"id": 147,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED3",
+		"name": "clear"
 	},
 	{
 		"id": 148,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED4",
+		"name": "insert"
 	},
 	{
 		"id": 149,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED5",
+		"name": "brown"
 	},
 	{
 		"id": 150,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED6",
+		"name": "light red"
 	},
 	{
 		"id": 151,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED7",
+		"name": "dark grey"
 	},
 	{
 		"id": 152,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED8",
+		"name": "mid grey"
 	},
 	{
 		"id": 153,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEED9",
+		"name": "light green"
 	},
 	{
 		"id": 154,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEDA",
+		"name": "light blue"
 	},
 	{
 		"id": 155,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEDB",
+		"name": "light grey"
 	},
 	{
 		"id": 156,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEDC",
+		"name": "purple"
 	},
 	{
 		"id": 157,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEDD",
+		"name": "cursor left"
 	},
 	{
 		"id": 158,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEDE",
+		"name": "yellow"
 	},
 	{
 		"id": 159,
 		"ascii": 0,
-		"screenCode": 0,
-		"unicode": 0
+		"screencode": 0,
+		"unicode": "\\uEEDF",
+		"name": "cyan"
 	},
 	{
 		"id": 160,
-		"ascii": 32,
-		"screenCode": 96,
-		"unicode": 0
+		"ascii": 0,
+		"screencode": 96,
+		"unicode": "\\uEE60",
+		"name": ""
 	},
 	{
 		"id": 161,
 		"ascii": 0,
-		"screenCode": 97,
-		"unicode": 0
+		"screencode": 97,
+		"unicode": "\\uEE61",
+		"name": ""
 	},
 	{
 		"id": 162,
 		"ascii": 0,
-		"screenCode": 98,
-		"unicode": 0
+		"screencode": 98,
+		"unicode": "\\uEE62",
+		"name": ""
 	},
 	{
 		"id": 163,
 		"ascii": 0,
-		"screenCode": 99,
-		"unicode": 0
+		"screencode": 99,
+		"unicode": "\\uEE63",
+		"name": ""
 	},
 	{
 		"id": 164,
 		"ascii": 0,
-		"screenCode": 100,
-		"unicode": 0
+		"screencode": 100,
+		"unicode": "\\uEE64",
+		"name": ""
 	},
 	{
 		"id": 165,
 		"ascii": 0,
-		"screenCode": 101,
-		"unicode": 0
+		"screencode": 101,
+		"unicode": "\\uEE65",
+		"name": ""
 	},
 	{
 		"id": 166,
 		"ascii": 0,
-		"screenCode": 102,
-		"unicode": 0
+		"screencode": 102,
+		"unicode": "\\uEE66",
+		"name": ""
 	},
 	{
 		"id": 167,
 		"ascii": 0,
-		"screenCode": 103,
-		"unicode": 0
+		"screencode": 103,
+		"unicode": "\\uEE67",
+		"name": ""
 	},
 	{
 		"id": 168,
 		"ascii": 0,
-		"screenCode": 104,
-		"unicode": 0
+		"screencode": 104,
+		"unicode": "\\uEE68",
+		"name": ""
 	},
 	{
 		"id": 169,
 		"ascii": 0,
-		"screenCode": 105,
-		"unicode": 0
+		"screencode": 105,
+		"unicode": "\\uEE69",
+		"name": ""
 	},
 	{
 		"id": 170,
 		"ascii": 0,
-		"screenCode": 106,
-		"unicode": 0
+		"screencode": 106,
+		"unicode": "\\uEE6A",
+		"name": ""
 	},
 	{
 		"id": 171,
 		"ascii": 0,
-		"screenCode": 107,
-		"unicode": 0
+		"screencode": 107,
+		"unicode": "\\uEE6B",
+		"name": ""
 	},
 	{
 		"id": 172,
 		"ascii": 0,
-		"screenCode": 108,
-		"unicode": 0
+		"screencode": 108,
+		"unicode": "\\uEE6C",
+		"name": ""
 	},
 	{
 		"id": 173,
 		"ascii": 0,
-		"screenCode": 109,
-		"unicode": 0
+		"screencode": 109,
+		"unicode": "\\uEE6D",
+		"name": ""
 	},
 	{
 		"id": 174,
 		"ascii": 0,
-		"screenCode": 110,
-		"unicode": 0
+		"screencode": 110,
+		"unicode": "\\uEE6E",
+		"name": ""
 	},
 	{
 		"id": 175,
 		"ascii": 0,
-		"screenCode": 111,
-		"unicode": 0
+		"screencode": 111,
+		"unicode": "\\uEE6F",
+		"name": ""
 	},
 	{
 		"id": 176,
 		"ascii": 0,
-		"screenCode": 112,
-		"unicode": 0
+		"screencode": 112,
+		"unicode": "\\uEE70",
+		"name": ""
 	},
 	{
 		"id": 177,
 		"ascii": 0,
-		"screenCode": 113,
-		"unicode": 0
+		"screencode": 113,
+		"unicode": "\\uEE71",
+		"name": ""
 	},
 	{
 		"id": 178,
 		"ascii": 0,
-		"screenCode": 114,
-		"unicode": 0
+		"screencode": 114,
+		"unicode": "\\uEE72",
+		"name": ""
 	},
 	{
 		"id": 179,
 		"ascii": 0,
-		"screenCode": 115,
-		"unicode": 0
+		"screencode": 115,
+		"unicode": "\\uEE73",
+		"name": ""
 	},
 	{
 		"id": 180,
 		"ascii": 0,
-		"screenCode": 116,
-		"unicode": 0
+		"screencode": 116,
+		"unicode": "\\uEE74",
+		"name": ""
 	},
 	{
 		"id": 181,
 		"ascii": 0,
-		"screenCode": 117,
-		"unicode": 0
+		"screencode": 117,
+		"unicode": "\\uEE75",
+		"name": ""
 	},
 	{
 		"id": 182,
 		"ascii": 0,
-		"screenCode": 118,
-		"unicode": 0
+		"screencode": 118,
+		"unicode": "\\uEE76",
+		"name": ""
 	},
 	{
 		"id": 183,
 		"ascii": 0,
-		"screenCode": 119,
-		"unicode": 0
+		"screencode": 119,
+		"unicode": "\\uEE77",
+		"name": ""
 	},
 	{
 		"id": 184,
 		"ascii": 0,
-		"screenCode": 120,
-		"unicode": 0
+		"screencode": 120,
+		"unicode": "\\uEE78",
+		"name": ""
 	},
 	{
 		"id": 185,
 		"ascii": 0,
-		"screenCode": 121,
-		"unicode": 0
+		"screencode": 121,
+		"unicode": "\\uEE79",
+		"name": ""
 	},
 	{
 		"id": 186,
 		"ascii": 0,
-		"screenCode": 122,
-		"unicode": 0
+		"screencode": 122,
+		"unicode": "\\uEE7A",
+		"name": ""
 	},
 	{
 		"id": 187,
 		"ascii": 0,
-		"screenCode": 123,
-		"unicode": 0
+		"screencode": 123,
+		"unicode": "\\uEE7B",
+		"name": ""
 	},
 	{
 		"id": 188,
 		"ascii": 0,
-		"screenCode": 124,
-		"unicode": 0
+		"screencode": 124,
+		"unicode": "\\uEE7C",
+		"name": ""
 	},
 	{
 		"id": 189,
 		"ascii": 0,
-		"screenCode": 125,
-		"unicode": 0
+		"screencode": 125,
+		"unicode": "\\uEE7D",
+		"name": ""
 	},
 	{
 		"id": 190,
 		"ascii": 0,
-		"screenCode": 126,
-		"unicode": 0
+		"screencode": 126,
+		"unicode": "\\uEE7E",
+		"name": ""
 	},
 	{
 		"id": 191,
 		"ascii": 0,
-		"screenCode": 127,
-		"unicode": 0
+		"screencode": 127,
+		"unicode": "\\uEE7F",
+		"name": ""
 	},
 	{
 		"id": 192,
 		"ascii": 0,
-		"screenCode": 64,
-		"unicode": 0
+		"screencode": 64,
+		"unicode": "\\uEEA0",
+		"name": ""
 	},
 	{
 		"id": 193,
 		"ascii": 0,
-		"screenCode": 65,
-		"unicode": 0
+		"screencode": 65,
+		"unicode": "\\uEE41",
+		"name": ""
 	},
 	{
 		"id": 194,
 		"ascii": 0,
-		"screenCode": 66,
-		"unicode": 0
+		"screencode": 66,
+		"unicode": "\\uEE42",
+		"name": ""
 	},
 	{
 		"id": 195,
 		"ascii": 0,
-		"screenCode": 67,
-		"unicode": 0
+		"screencode": 67,
+		"unicode": "\\uEE43",
+		"name": ""
 	},
 	{
 		"id": 196,
 		"ascii": 0,
-		"screenCode": 68,
-		"unicode": 0
+		"screencode": 68,
+		"unicode": "\\uEE44",
+		"name": ""
 	},
 	{
 		"id": 197,
 		"ascii": 0,
-		"screenCode": 69,
-		"unicode": 0
+		"screencode": 69,
+		"unicode": "\\uEE45",
+		"name": ""
 	},
 	{
 		"id": 198,
 		"ascii": 0,
-		"screenCode": 70,
-		"unicode": 0
+		"screencode": 70,
+		"unicode": "\\uEE46",
+		"name": ""
 	},
 	{
 		"id": 199,
 		"ascii": 0,
-		"screenCode": 71,
-		"unicode": 0
+		"screencode": 71,
+		"unicode": "\\uEE47",
+		"name": ""
 	},
 	{
 		"id": 200,
 		"ascii": 0,
-		"screenCode": 72,
-		"unicode": 0
+		"screencode": 72,
+		"unicode": "\\uEE48",
+		"name": ""
 	},
 	{
 		"id": 201,
 		"ascii": 0,
-		"screenCode": 73,
-		"unicode": 0
+		"screencode": 73,
+		"unicode": "\\uEE49",
+		"name": ""
 	},
 	{
 		"id": 202,
 		"ascii": 0,
-		"screenCode": 74,
-		"unicode": 0
+		"screencode": 74,
+		"unicode": "\\uEE4A",
+		"name": ""
 	},
 	{
 		"id": 203,
 		"ascii": 0,
-		"screenCode": 75,
-		"unicode": 0
+		"screencode": 75,
+		"unicode": "\\uEE4B",
+		"name": ""
 	},
 	{
 		"id": 204,
 		"ascii": 0,
-		"screenCode": 76,
-		"unicode": 0
+		"screencode": 76,
+		"unicode": "\\uEE4C",
+		"name": ""
 	},
 	{
 		"id": 205,
 		"ascii": 0,
-		"screenCode": 77,
-		"unicode": 0
+		"screencode": 77,
+		"unicode": "\\uEE4D",
+		"name": ""
 	},
 	{
 		"id": 206,
 		"ascii": 0,
-		"screenCode": 78,
-		"unicode": 0
+		"screencode": 78,
+		"unicode": "\\uEE4E",
+		"name": ""
 	},
 	{
 		"id": 207,
 		"ascii": 0,
-		"screenCode": 79,
-		"unicode": 0
+		"screencode": 79,
+		"unicode": "\\uEE4F",
+		"name": ""
 	},
 	{
 		"id": 208,
 		"ascii": 0,
-		"screenCode": 80,
-		"unicode": 0
+		"screencode": 80,
+		"unicode": "\\uEE50",
+		"name": ""
 	},
 	{
 		"id": 209,
 		"ascii": 0,
-		"screenCode": 81,
-		"unicode": 0
+		"screencode": 81,
+		"unicode": "\\uEE51",
+		"name": ""
 	},
 	{
 		"id": 210,
 		"ascii": 0,
-		"screenCode": 82,
-		"unicode": 0
+		"screencode": 82,
+		"unicode": "\\uEE52",
+		"name": ""
 	},
 	{
 		"id": 211,
 		"ascii": 0,
-		"screenCode": 83,
-		"unicode": 0
+		"screencode": 83,
+		"unicode": "\\uEE53",
+		"name": ""
 	},
 	{
 		"id": 212,
 		"ascii": 0,
-		"screenCode": 84,
-		"unicode": 0
+		"screencode": 84,
+		"unicode": "\\uEE54",
+		"name": ""
 	},
 	{
 		"id": 213,
 		"ascii": 0,
-		"screenCode": 85,
-		"unicode": 0
+		"screencode": 85,
+		"unicode": "\\uEE55",
+		"name": ""
 	},
 	{
 		"id": 214,
 		"ascii": 0,
-		"screenCode": 86,
-		"unicode": 0
+		"screencode": 86,
+		"unicode": "\\uEE56",
+		"name": ""
 	},
 	{
 		"id": 215,
 		"ascii": 0,
-		"screenCode": 87,
-		"unicode": 0
+		"screencode": 87,
+		"unicode": "\\uEE57",
+		"name": ""
 	},
 	{
 		"id": 216,
 		"ascii": 0,
-		"screenCode": 88,
-		"unicode": 0
+		"screencode": 88,
+		"unicode": "\\uEE58",
+		"name": ""
 	},
 	{
 		"id": 217,
 		"ascii": 0,
-		"screenCode": 89,
-		"unicode": 0
+		"screencode": 89,
+		"unicode": "\\uEE59",
+		"name": ""
 	},
 	{
 		"id": 218,
 		"ascii": 0,
-		"screenCode": 90,
-		"unicode": 0
+		"screencode": 90,
+		"unicode": "\\uEE5A",
+		"name": ""
 	},
 	{
 		"id": 219,
 		"ascii": 0,
-		"screenCode": 91,
-		"unicode": 0
+		"screencode": 91,
+		"unicode": "\\uEE5B",
+		"name": ""
 	},
 	{
 		"id": 220,
 		"ascii": 0,
-		"screenCode": 92,
-		"unicode": 0
+		"screencode": 92,
+		"unicode": "\\uEE5C",
+		"name": ""
 	},
 	{
 		"id": 221,
 		"ascii": 0,
-		"screenCode": 93,
-		"unicode": 0
+		"screencode": 93,
+		"unicode": "\\uEE5D",
+		"name": ""
 	},
 	{
 		"id": 222,
 		"ascii": 0,
-		"screenCode": 94,
-		"unicode": 0
+		"screencode": 94,
+		"unicode": "\\uEE5E",
+		"name": ""
 	},
 	{
 		"id": 223,
 		"ascii": 0,
-		"screenCode": 95,
-		"unicode": 0
+		"screencode": 95,
+		"unicode": "\\uEE5F",
+		"name": ""
 	},
 	{
 		"id": 224,
-		"ascii": 32,
-		"screenCode": 96,
-		"unicode": 0
+		"ascii": 0,
+		"screencode": 96,
+		"unicode": "\\uEE60",
+		"name": ""
 	},
 	{
 		"id": 225,
 		"ascii": 0,
-		"screenCode": 97,
-		"unicode": 0
+		"screencode": 97,
+		"unicode": "\\uEE61",
+		"name": ""
 	},
 	{
 		"id": 226,
 		"ascii": 0,
-		"screenCode": 98,
-		"unicode": 0
+		"screencode": 98,
+		"unicode": "\\uEE62",
+		"name": ""
 	},
 	{
 		"id": 227,
 		"ascii": 0,
-		"screenCode": 99,
-		"unicode": 0
+		"screencode": 99,
+		"unicode": "\\uEE63",
+		"name": ""
 	},
 	{
 		"id": 228,
 		"ascii": 0,
-		"screenCode": 100,
-		"unicode": 0
+		"screencode": 100,
+		"unicode": "\\uEE64",
+		"name": ""
 	},
 	{
 		"id": 229,
 		"ascii": 0,
-		"screenCode": 101,
-		"unicode": 0
+		"screencode": 101,
+		"unicode": "\\uEE65",
+		"name": ""
 	},
 	{
 		"id": 230,
 		"ascii": 0,
-		"screenCode": 102,
-		"unicode": 0
+		"screencode": 102,
+		"unicode": "\\uEE66",
+		"name": ""
 	},
 	{
 		"id": 231,
 		"ascii": 0,
-		"screenCode": 103,
-		"unicode": 0
+		"screencode": 103,
+		"unicode": "\\uEE67",
+		"name": ""
 	},
 	{
 		"id": 232,
 		"ascii": 0,
-		"screenCode": 104,
-		"unicode": 0
+		"screencode": 104,
+		"unicode": "\\uEE68",
+		"name": ""
 	},
 	{
 		"id": 233,
 		"ascii": 0,
-		"screenCode": 105,
-		"unicode": 0
+		"screencode": 105,
+		"unicode": "\\uEE69",
+		"name": ""
 	},
 	{
 		"id": 234,
 		"ascii": 0,
-		"screenCode": 106,
-		"unicode": 0
+		"screencode": 106,
+		"unicode": "\\uEE6A",
+		"name": ""
 	},
 	{
 		"id": 235,
 		"ascii": 0,
-		"screenCode": 107,
-		"unicode": 0
+		"screencode": 107,
+		"unicode": "\\uEE6B",
+		"name": ""
 	},
 	{
 		"id": 236,
 		"ascii": 0,
-		"screenCode": 108,
-		"unicode": 0
+		"screencode": 108,
+		"unicode": "\\uEE6C",
+		"name": ""
 	},
 	{
 		"id": 237,
 		"ascii": 0,
-		"screenCode": 109,
-		"unicode": 0
+		"screencode": 109,
+		"unicode": "\\uEE6D",
+		"name": ""
 	},
 	{
 		"id": 238,
 		"ascii": 0,
-		"screenCode": 110,
-		"unicode": 0
+		"screencode": 110,
+		"unicode": "\\uEE6E",
+		"name": ""
 	},
 	{
 		"id": 239,
 		"ascii": 0,
-		"screenCode": 111,
-		"unicode": 0
+		"screencode": 111,
+		"unicode": "\\uEE6F",
+		"name": ""
 	},
 	{
 		"id": 240,
 		"ascii": 0,
-		"screenCode": 112,
-		"unicode": 0
+		"screencode": 112,
+		"unicode": "\\uEE70",
+		"name": ""
 	},
 	{
 		"id": 241,
 		"ascii": 0,
-		"screenCode": 113,
-		"unicode": 0
+		"screencode": 113,
+		"unicode": "\\uEE71",
+		"name": ""
 	},
 	{
 		"id": 242,
 		"ascii": 0,
-		"screenCode": 114,
-		"unicode": 0
+		"screencode": 114,
+		"unicode": "\\uEE72",
+		"name": ""
 	},
 	{
 		"id": 243,
 		"ascii": 0,
-		"screenCode": 115,
-		"unicode": 0
+		"screencode": 115,
+		"unicode": "\\uEE73",
+		"name": ""
 	},
 	{
 		"id": 244,
 		"ascii": 0,
-		"screenCode": 116,
-		"unicode": 0
+		"screencode": 116,
+		"unicode": "\\uEE74",
+		"name": ""
 	},
 	{
 		"id": 245,
 		"ascii": 0,
-		"screenCode": 117,
-		"unicode": 0
+		"screencode": 117,
+		"unicode": "\\uEE75",
+		"name": ""
 	},
 	{
 		"id": 246,
 		"ascii": 0,
-		"screenCode": 118,
-		"unicode": 0
+		"screencode": 118,
+		"unicode": "\\uEE76",
+		"name": ""
 	},
 	{
 		"id": 247,
 		"ascii": 0,
-		"screenCode": 119,
-		"unicode": 0
+		"screencode": 119,
+		"unicode": "\\uEE77",
+		"name": ""
 	},
 	{
 		"id": 248,
 		"ascii": 0,
-		"screenCode": 120,
-		"unicode": 0
+		"screencode": 120,
+		"unicode": "\\uEE78",
+		"name": ""
 	},
 	{
 		"id": 249,
 		"ascii": 0,
-		"screenCode": 121,
-		"unicode": 0
+		"screencode": 121,
+		"unicode": "\\uEE79",
+		"name": ""
 	},
 	{
 		"id": 250,
 		"ascii": 0,
-		"screenCode": 122,
-		"unicode": 0
+		"screencode": 122,
+		"unicode": "\\uEE7A",
+		"name": ""
 	},
 	{
 		"id": 251,
 		"ascii": 0,
-		"screenCode": 123,
-		"unicode": 0
+		"screencode": 123,
+		"unicode": "\\uEE7B",
+		"name": ""
 	},
 	{
 		"id": 252,
 		"ascii": 0,
-		"screenCode": 124,
-		"unicode": 0
+		"screencode": 124,
+		"unicode": "\\uEE7C",
+		"name": ""
 	},
 	{
 		"id": 253,
 		"ascii": 0,
-		"screenCode": 125,
-		"unicode": 0
+		"screencode": 125,
+		"unicode": "\\uEE7D",
+		"name": ""
 	},
 	{
 		"id": 254,
 		"ascii": 0,
-		"screenCode": 126,
-		"unicode": 0
+		"screencode": 126,
+		"unicode": "\\uEE7E",
+		"name": ""
 	},
 	{
 		"id": 255,
 		"ascii": 0,
-		"screenCode": 127,
-		"unicode": 0
+		"screencode": 127,
+		"unicode": "\\uEEFF",
+		"name": ""
 	}
 ]

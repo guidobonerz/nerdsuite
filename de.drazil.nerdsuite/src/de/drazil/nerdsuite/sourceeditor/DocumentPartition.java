@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Bounds
-{
-	private int start;
-	private int end;
+public class DocumentPartition {
+	private int offset;
+	private int len;
 }
