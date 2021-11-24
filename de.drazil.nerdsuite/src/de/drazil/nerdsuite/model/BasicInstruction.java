@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.model;
 
 import java.util.List;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -36,25 +38,32 @@ public class BasicInstruction implements IWordMatcher {
 	@JsonIgnore
 	public DocumentPartition hasMatch(String text, int offset) {
 		DocumentPartition partition = null;
-		int matchIndex = text.indexOf(instruction, offset);
-		if (offset == matchIndex) {
-			int len = instruction.length();
-			if (includesOpenBrace) {
-				len--;
+		if (StringEscapeUtils.unescapeJson(text).charAt(offset) == StringEscapeUtils.unescapeJson(instruction).charAt(0)
+				&& purpose.equals("C")) {
+			partition = new DocumentPartition(offset, 1);
+		} else {
+			int matchIndex = text.indexOf(instruction, offset);
+			if (offset == matchIndex) {
+				int len = instruction.length();
+				if (includesOpenBrace) {
+					len--;
+				}
+				partition = new DocumentPartition(offset, len);
 			}
-			partition = new DocumentPartition(offset, len);
 		}
 		return partition;
 	}
 
 	@JsonIgnore
 	public int getTokenControl() {
-		if (purpose.equals("C")) {
+		if (purpose.equals("I")) {
 			return 0;
 		} else if (purpose.equals("F")) {
 			return 1;
 		} else if (purpose.equals("O")) {
 			return 2;
+		} else if (purpose.equals("C")) {
+			return 3;
 		}
 		return 0;
 	}

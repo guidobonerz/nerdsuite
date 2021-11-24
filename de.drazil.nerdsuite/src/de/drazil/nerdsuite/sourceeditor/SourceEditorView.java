@@ -33,7 +33,9 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
@@ -45,8 +47,11 @@ import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
+import de.drazil.nerdsuite.model.CharMap;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.util.ArrayUtil;
+import de.drazil.nerdsuite.util.C64Font;
+import de.drazil.nerdsuite.util.IFont;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 
@@ -118,7 +123,12 @@ public class SourceEditorView implements IDocument {
 	@Optional
 	public void build(@UIEventTopic("Build") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
-			tokenize();
+			Display.getCurrent().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					tokenize();
+				}
+			});
 		}
 	}
 
@@ -131,7 +141,8 @@ public class SourceEditorView implements IDocument {
 	}
 
 	private void tokenize() {
-		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText(), basicInstructions);
+		List<CharMap> charMap = PlatformFactory.getCharMap(srs.getMetadata().getPlatform());
+		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText().toUpperCase(), basicInstructions, charMap);
 		byte[] payload = new byte[] {};
 		payload = ArrayUtil.grow(payload, NumericConverter.getWord(2049));
 		payload = ArrayUtil.grow(payload, bytecode);
@@ -251,8 +262,10 @@ public class SourceEditorView implements IDocument {
 		 * button.addListener(SWT.Selection, new Listener() {
 		 * 
 		 * @Override public void handleEvent(Event event) { IFont font = new C64Font();
-		 * // int cursorPos = styledText.getCaretOffset(); styledText.insert(new
-		 * String(Character.toChars(x))); x++; } });
+		 * int cursorPos = styledText.getCaretOffset(); styledText.insert(new
+		 * String(Character.toChars(0xee9d)));
+		 * 
+		 * } });
 		 */
 		/*
 		 * FontData[] fD = styledText.getFont().getFontData(); fD[0].setHeight(12);

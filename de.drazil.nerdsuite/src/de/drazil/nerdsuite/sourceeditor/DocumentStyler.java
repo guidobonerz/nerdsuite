@@ -119,6 +119,7 @@ public class DocumentStyler implements LineStyleListener {
 		while (offset < text.length()) {
 			hasMatch = false;
 			for (IRule rule : ruleList) {
+
 				DocumentPartition partition = rule.hasMatch(text, offset);
 				if (partition != null) {
 					if (!isInExistingStyleRange(lo, partition, styleRangeList)) {
@@ -131,6 +132,8 @@ public class DocumentStyler implements LineStyleListener {
 							c = Constants.FUNCTION_COLOR;
 						} else if (rule.getTokenControl() == 2) {
 							c = Constants.OPERATOR_COLOR;
+						} else if (rule.getTokenControl() == 3) {
+							c = Constants.CONSTANT_COLOR;
 						} else {
 							c = styleMap.get(rule.getToken().getKey()).foreground;
 						}
