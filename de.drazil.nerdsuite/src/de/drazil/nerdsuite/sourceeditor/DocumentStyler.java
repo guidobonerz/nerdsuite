@@ -12,9 +12,11 @@ import org.eclipse.swt.custom.LineStyleListener;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.TextStyle;
+import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.StyleRangeCacheEntry;
+import de.drazil.nerdsuite.util.SwtUtil;
 
 public class DocumentStyler implements LineStyleListener {
 	private final static String MULTI_LINE_RULE = "MultiLineRule";
@@ -27,6 +29,16 @@ public class DocumentStyler implements LineStyleListener {
 	private Map<String, TextStyle> styleMap;
 	private Map<String, List<IRule>> ruleMap;
 	private IDocument document = null;
+	private static Color[] braceDepthColors = new Color[] { new Color(Display.getCurrent(), SwtUtil.toRGB("#C0392B")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#F5B7B1")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#9B59B6")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#1ABC9C")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#3498DB")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#AAB7B8")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#E74C3C")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#F1C40F")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#F39C12")),
+			new Color(Display.getCurrent(), SwtUtil.toRGB("#129CF3")) };
 
 	public DocumentStyler(IDocument document) {
 
@@ -88,6 +100,7 @@ public class DocumentStyler implements LineStyleListener {
 			// styleRangeList, null);
 			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
+			parseBraces(lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
 			styleRangeList.sort(new Comparator<StyleRange>() {
 				@Override
@@ -100,11 +113,38 @@ public class DocumentStyler implements LineStyleListener {
 			} else {
 				styleRangeCache.add(styleRangeCacheEntry);
 			}
-
 		}
 		event.styles = styleRangeCacheEntry.getStyleRangeList()
 				.toArray(new StyleRange[styleRangeCacheEntry.getStyleRangeList().size()]);
 
+	}
+
+	private void parseBraces(int lineOffset, String text, List<StyleRange> styleRangeList, Color backgroundColor) {
+		int openBracesCount = 0;
+		int closedBracesCount = 0;
+		int braceDepth = 0;
+		for (int i = 0; i < text.length(); i++) {
+			if (text.charAt(i) == '(') {
+				if (!isInExistingStyleRange(lineOffset, i, 1, styleRangeList)) {
+					StyleRange styleRange = new StyleRange(lineOffset + i, 1, braceDepthColors[braceDepth], null);
+					styleRangeList.add(styleRange);
+					openBracesCount++;
+					braceDepth++;
+					System.out.println(braceDepth);
+				}
+			}
+			if (text.charAt(i) == ')') {
+				if (!isInExistingStyleRange(lineOffset, i, 1, styleRangeList)) {
+					braceDepth--;
+					StyleRange styleRange = new StyleRange(lineOffset + i, 1, braceDepthColors[braceDepth], null);
+					styleRangeList.add(styleRange);
+					closedBracesCount++;
+
+				}
+			}
+			// System.out.printf("%s braces\n", (openBracesCount + closedBracesCount) % 2 ==
+			// 0 ? "balanced" : "unbalanced");
+		}
 	}
 
 	private void parseText(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
@@ -112,19 +152,22 @@ public class DocumentStyler implements LineStyleListener {
 		if (ruleList == null) {
 			return;
 		}
+
 		int lo = lineOffset;
 		int offset = 0;
 		int len = 0;
 		boolean hasMatch = false;
+
 		while (offset < text.length()) {
 			hasMatch = false;
 			for (IRule rule : ruleList) {
 
 				DocumentPartition partition = rule.hasMatch(text, offset);
 				if (partition != null) {
-					if (!isInExistingStyleRange(lo, partition, styleRangeList)) {
+					if (!isInExistingStyleRange(lo, partition.getOffset(), partition.getLen(), styleRangeList)) {
 						len = partition.getLen();
 						offset = partition.getOffset();
+
 						Color c = null;
 						if (rule.getTokenControl() == 0) {
 							c = Constants.COMMAND_COLOR;
@@ -154,10 +197,9 @@ public class DocumentStyler implements LineStyleListener {
 		}
 	}
 
-	private boolean isInExistingStyleRange(int offset, DocumentPartition partition, List<StyleRange> styleRangeList) {
+	private boolean isInExistingStyleRange(int offset, int po, int plen, List<StyleRange> styleRangeList) {
 		for (StyleRange sr : styleRangeList) {
-			if (offset + partition.getOffset() >= sr.start
-					&& offset + partition.getOffset() + partition.getLen() <= sr.start + sr.length) {
+			if (offset + po >= sr.start && offset + po + plen <= sr.start + sr.length) {
 				return true;
 			}
 		}

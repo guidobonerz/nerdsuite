@@ -2,8 +2,6 @@ package de.drazil.nerdsuite.model;
 
 import java.util.List;
 
-import org.apache.commons.text.StringEscapeUtils;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

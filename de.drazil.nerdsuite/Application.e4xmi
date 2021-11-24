@@ -124,6 +124,9 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_DR28AJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.unmount" label="Unmount" command="_4hLnsJVVEeqVGMXe4sKvrA"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_-oKP4KLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.edit" label="Edit">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_-U6j0E1sEeyObf56B56tVQ" elementId="de.drazil.nerdsuite.handledmenuitem.undo" label="Undo" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_undo.png" command="_Kqtb0E1tEeyObf56B56tVQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6jGfEE1sEeyObf56B56tVQ" elementId="de.drazil.nerdsuite.handledmenuitem.redo" label="Redo" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow_redo.png" command="_PesIME1tEeyObf56B56tVQ"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_AVn3UE1tEeyObf56B56tVQ" elementId="de.drazil.nerdsuite.menuseparator.7"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_B7WCcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.10" label="Cut" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cut.png" command="_9-9o8B4KEeqfzqzHNB-ilQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_CXi2QKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.11" label="Copy" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/page_white_copy.png" command="__xevcB4KEeqfzqzHNB-ilQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Ct3rkKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.12" label="Paste" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/paste_plain.png" command="_BDRugB4LEeqfzqzHNB-ilQ"/>
@@ -576,6 +579,8 @@
   <commands xmi:id="_xfrB4FY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.command.returnToOrigin" commandName="Return to origin"/>
   <commands xmi:id="_5v1hQFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.command.setLabel" commandName="Set label"/>
   <commands xmi:id="_OuR1YHj6EeuVAZ0FAvi_ng" elementId="de.drazil.nerdsuite.command.dumpMemory" commandName="Dump Memory"/>
+  <commands xmi:id="_Kqtb0E1tEeyObf56B56tVQ" elementId="org.eclipse.ui.edit.undo" commandName="Undo"/>
+  <commands xmi:id="_PesIME1tEeyObf56B56tVQ" elementId="org.eclipse.ui.edit.redo" commandName="Redo"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
