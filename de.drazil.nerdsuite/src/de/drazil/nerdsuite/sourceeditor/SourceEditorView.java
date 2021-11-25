@@ -33,6 +33,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -49,12 +51,17 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharMap;
+import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
 import de.drazil.nerdsuite.util.ArrayUtil;
 import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.widget.CustomPopupDialog;
+import de.drazil.nerdsuite.widget.ICharSelectionListener;
 import de.drazil.nerdsuite.widget.PlatformFactory;
+import de.drazil.nerdsuite.widget.SymbolPaletteChooser;
 
-public class SourceEditorView implements IDocument {
+public class SourceEditorView implements IDocument, ICharSelectionListener {
 
 	enum WordBounds {
 		Begin, End
@@ -66,6 +73,8 @@ public class SourceEditorView implements IDocument {
 	private String owner;
 	private SourceRepositoryService srs;
 	private BasicInstructions basicInstructions;
+	private CustomPopupDialog popupDialog;
+	private SymbolPaletteChooser symbolChooser;
 	@Inject
 	private MPart part;
 
@@ -182,6 +191,7 @@ public class SourceEditorView implements IDocument {
 
 		srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
 		basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
+		List<PlatformColor> colors = PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform());
 
 		int version = 20;
 		String variant = srs.getMetadata().getVariant();
@@ -207,6 +217,23 @@ public class SourceEditorView implements IDocument {
 		documentStyler = getBasicStyler(basicInstructions, version);
 		documentStyler.refreshMultilineComments(srs.getContent());
 		styledText.addLineStyleListener(documentStyler);
+		styledText.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT) {
+					// computeCursorPosition(e.x, e.y);
+					closePupup();
+
+					symbolChooser = new SymbolPaletteChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
+							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()));
+					symbolChooser.setSelectedColor(1);
+					symbolChooser.addCharSelectionListener(SourceEditorView.this);
+					popupDialog = new CustomPopupDialog(parent.getShell(), symbolChooser);
+					popupDialog.open();
+
+				}
+			}
+		});
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
 			public void lineGetBackground(LineBackgroundEvent event) {
@@ -250,6 +277,15 @@ public class SourceEditorView implements IDocument {
 				styledText.redraw();
 			}
 		});
+	}
+
+	@Override
+	public void charSelected(int charIndex, char unicodeChar) {
+		styledText.insert(String.valueOf(unicodeChar));
+		documentStyler.refreshMultilineComments(styledText.getText());
+		documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
+		styledText.redraw();
+
 	}
 
 	@Override
@@ -341,4 +377,16 @@ public class SourceEditorView implements IDocument {
 	private void updateWorkspace(boolean addProject) {
 		Initializer.getConfiguration().updateWorkspace(project, addProject, false);
 	}
+
+	private void closePupup() {
+		if (symbolChooser != null) {
+			symbolChooser.removeCharSelectionListener(null);
+			popupDialog.close();
+		}
+	}
+	/*
+	 * private void computeCursorPosition(int x, int y) { colorIndex = y /
+	 * COLOR_TILE_SIZE; if (colorIndex > maxColorsTemp) { colorIndex =
+	 * maxColorsTemp; } }
+	 */
 }
