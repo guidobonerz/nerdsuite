@@ -23,6 +23,8 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ExtendedModifyEvent;
+import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.LineBackgroundEvent;
 import org.eclipse.swt.custom.LineBackgroundListener;
 import org.eclipse.swt.custom.StyleRange;
@@ -196,14 +198,15 @@ public class SourceEditorView implements IDocument {
 		part.setDirty(false);
 		part.getTransientData().put(Constants.OWNER, owner);
 		part.setTooltip("basic Source File");
-
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		styledText.setText(srs.getContent() == null ? "" : srs.getContent());
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
 		styledText.setFont(Constants.RobotoMonoBold_FONT);
-		styledText.addLineStyleListener(getBasicStyler(basicInstructions, version));
+		documentStyler = getBasicStyler(basicInstructions, version);
+		documentStyler.refreshMultilineComments(srs.getContent());
+		styledText.addLineStyleListener(documentStyler);
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
 			public void lineGetBackground(LineBackgroundEvent event) {
@@ -220,62 +223,33 @@ public class SourceEditorView implements IDocument {
 				Point topLeft = styledText.getLocationAtOffset(line);
 				event.gc.drawRectangle(topLeft.x - 1, topLeft.y, styledText.getBounds().width,
 						styledText.getLineHeight());
-
 			}
 		});
 
 		styledText.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// if (e.keyCode == SWT.ARROW_UP || e.keyCode == SWT.ARROW_DOWN
-				// ||
-				// e.keyCode == SWT.PAGE_DOWN || e.keyCode == SWT.PAGE_UP)
-				// {
-				// styledText.redraw();
-				// }
-
 			}
 		});
 
-		/*
-		 * styledText.addExtendedModifyListener(new ExtendedModifyListener() {
-		 * 
-		 * @Override public void modifyText(ExtendedModifyEvent event) {
-		 * System.out.println("Ext Modify Text"); // TODO Auto-generated method stub }
-		 * });
-		 */
-
-		styledText.addModifyListener(new ModifyListener() {
-
+		styledText.addExtendedModifyListener(new ExtendedModifyListener() {
 			@Override
-			public void modifyText(ModifyEvent e) {
-				part.setDirty(true);
+			public void modifyText(ExtendedModifyEvent event) {
+				documentStyler.refreshMultilineComments(styledText.getText());
 				documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
-				// documentStyler.refreshMultilineComments(styledText.getText());
 				styledText.redraw();
 			}
 		});
-		/*
-		 * Button button = new Button(parent, SWT.NONE);
-		 * button.addListener(SWT.Selection, new Listener() {
-		 * 
-		 * @Override public void handleEvent(Event event) { IFont font = new C64Font();
-		 * int cursorPos = styledText.getCaretOffset(); styledText.insert(new
-		 * String(Character.toChars(0xee9d)));
-		 * 
-		 * } });
-		 */
-		/*
-		 * FontData[] fD = styledText.getFont().getFontData(); fD[0].setHeight(12);
-		 * styledText.setFont(new Font(parent.getDisplay(), fD[0]));
-		 */
-		/*
-		 * styledText.getVerticalBar().addListener(SWT.Selection, new Listener() { int
-		 * lastIndex = styledText.getTopIndex();
-		 * 
-		 * public void handleEvent(Event e) { int index = styledText.getTopIndex(); if
-		 * (index != lastIndex) { lastIndex = index; styledText.redraw(); } } });
-		 */
+
+		styledText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				part.setDirty(true);
+				documentStyler.refreshMultilineComments(styledText.getText());
+				documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
+				styledText.redraw();
+			}
+		});
 	}
 
 	@Override

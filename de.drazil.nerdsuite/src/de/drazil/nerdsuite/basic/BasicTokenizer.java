@@ -13,7 +13,7 @@ import de.drazil.nerdsuite.util.NumericConverter;
 public class BasicTokenizer {
 
 	enum Mode {
-		READ_LINENUMBER, READ_INSTRUCTIONS, READ_STRING, READ_BLOCK_COMMENT, READ_COMMENT;
+		READ_LINENUMBER, READ_INSTRUCTIONS, READ_STRING, READ_BLOCK_COMMENT, READ_LINE_COMMENT;
 	};
 
 	enum LastRead {
@@ -21,6 +21,7 @@ public class BasicTokenizer {
 	}
 
 	private static Mode readMode = Mode.READ_LINENUMBER;
+	private static Mode lastReadMode = readMode;
 	private static LastRead lastRead = LastRead.NONE;
 
 	public BasicTokenizer() {
@@ -36,9 +37,40 @@ public class BasicTokenizer {
 		CharacterIterator ci = new StringCharacterIterator(content);
 		StringBuilder buffer = new StringBuilder();
 		for (char ch = ci.first(); ch != CharacterIterator.DONE; ch = ci.next()) {
+			// System.out.printf("index at %s\n", ci.getIndex());
+			if (content.indexOf("/*", ci.getIndex()) == ci.getIndex()) {
+				System.out.printf("block start index at %s\n", ci.getIndex());
+				ci.setIndex(ci.getIndex() + 2);
+				lastReadMode = readMode;
+				readMode = Mode.READ_BLOCK_COMMENT;
+
+			}
+			if (content.indexOf("//", ci.getIndex()) == ci.getIndex() && readMode != Mode.READ_BLOCK_COMMENT) {
+				// System.out.printf("single start index at %s\n", ci.getIndex());
+				lastReadMode = readMode;
+				readMode = Mode.READ_LINE_COMMENT;
+			}
+			// System.out.printf("index at %s\n", ci.getIndex());
 			switch (readMode) {
+			case READ_BLOCK_COMMENT: {
+				int match = 0;
+				if ((match = content.indexOf("*/", ci.getIndex())) != -1) {
+					// System.out.printf("block end index at %s\n", match);
+					ci.setIndex(match + 2);
+					readMode = lastReadMode;
+				}
+				break;
+			}
+			case READ_LINE_COMMENT: {
+				if (content.indexOf("\n", ci.getIndex()) == ci.getIndex()) {
+					readMode = lastReadMode;
+					// System.out.printf("single end index at %s\n", ci.getIndex());
+				}
+				break;
+			}
 			case READ_LINENUMBER: {
-				if ((Character.isWhitespace(ch) || Character.isAlphabetic(ch)) && lastRead == LastRead.NUMERIC) {
+				if ((ch != '\n' && Character.isWhitespace(ch) || Character.isAlphabetic(ch))
+						&& lastRead == LastRead.NUMERIC) {
 					readMode = Mode.READ_INSTRUCTIONS;
 					byte[] ba = NumericConverter.getWord(Integer.valueOf(buffer.toString()));
 					result = ArrayUtil.grow(result, new byte[] { 0, 0 });

@@ -24,7 +24,7 @@ public class DocumentStyler implements LineStyleListener {
 	private final static String WORD_RULE = "WordRule";
 	private final static String PATTERN_RULE = "PatternRule";
 
-	private List<Token> multiLineTokenList;
+	private List<StyleRange> styleRangeMultiline;
 	private List<StyleRangeCacheEntry> styleRangeCache;
 	private Map<String, TextStyle> styleMap;
 	private Map<String, List<IRule>> ruleMap;
@@ -44,7 +44,6 @@ public class DocumentStyler implements LineStyleListener {
 
 		this.document = document;
 		System.out.println("linefeed length:" + System.getProperty("line.separator").toCharArray().length);
-		this.multiLineTokenList = new ArrayList<Token>();
 		ruleMap = new HashMap<String, List<IRule>>();
 		styleRangeCache = new ArrayList<StyleRangeCacheEntry>();
 		this.styleMap = new HashMap<>();
@@ -69,9 +68,23 @@ public class DocumentStyler implements LineStyleListener {
 	}
 
 	public void refreshMultilineComments(String text) {
-		multiLineTokenList.clear();
-
-		// processTokensById(MULTI_LINE_RULE, text);
+		styleRangeMultiline = new ArrayList<StyleRange>();
+		int matchIndexPrefix = 0;
+		int offset = 0;
+		while ((matchIndexPrefix = text.indexOf("/*", offset)) != -1) {
+			offset += (matchIndexPrefix + 2);
+			int matchIndexSuffix = text.indexOf("*/", offset);
+			if (matchIndexSuffix != -1) {
+				StyleRange styleRange = new StyleRange(matchIndexPrefix, (matchIndexSuffix + 2) - matchIndexPrefix,
+						Constants.DEFAULT_COMMENT_COLOR, null);
+				styleRangeMultiline.add(styleRange);
+				offset += (matchIndexSuffix + 2);
+			} else {
+				StyleRange styleRange = new StyleRange(matchIndexPrefix, text.length(), Constants.DEFAULT_COMMENT_COLOR,
+						null);
+				styleRangeMultiline.add(styleRange);
+			}
+		}
 	}
 
 	public void cleanupLines(int lineNo) {
@@ -96,8 +109,10 @@ public class DocumentStyler implements LineStyleListener {
 			styleRangeCacheEntry.setStyleRangeList(styleRangeList);
 			styleRangeCacheEntry.setLineIndex(lineNo);
 			styleRangeCacheEntry.setLineOffset(lineOffset);
-			// parseText(ruleMap.get(MULTI_LINE_RULE), lineOffset, document.getText(),
-			// styleRangeList, null);
+
+			for (StyleRange sr : styleRangeMultiline) {
+				styleRangeList.add(sr);
+			}
 			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 			parseBraces(lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
@@ -123,6 +138,7 @@ public class DocumentStyler implements LineStyleListener {
 		int openBracesCount = 0;
 		int closedBracesCount = 0;
 		int braceDepth = 0;
+		boolean hasBalancedBraces = false;
 		for (int i = 0; i < text.length(); i++) {
 			if (text.charAt(i) == '(') {
 				if (!isInExistingStyleRange(lineOffset, i, 1, styleRangeList)) {
@@ -130,7 +146,6 @@ public class DocumentStyler implements LineStyleListener {
 					styleRangeList.add(styleRange);
 					openBracesCount++;
 					braceDepth++;
-					System.out.println(braceDepth);
 				}
 			}
 			if (text.charAt(i) == ')') {
@@ -139,11 +154,9 @@ public class DocumentStyler implements LineStyleListener {
 					StyleRange styleRange = new StyleRange(lineOffset + i, 1, braceDepthColors[braceDepth], null);
 					styleRangeList.add(styleRange);
 					closedBracesCount++;
-
 				}
 			}
-			// System.out.printf("%s braces\n", (openBracesCount + closedBracesCount) % 2 ==
-			// 0 ? "balanced" : "unbalanced");
+			hasBalancedBraces = (openBracesCount + closedBracesCount) % 2 == 0;
 		}
 	}
 
@@ -161,13 +174,11 @@ public class DocumentStyler implements LineStyleListener {
 		while (offset < text.length()) {
 			hasMatch = false;
 			for (IRule rule : ruleList) {
-
 				DocumentPartition partition = rule.hasMatch(text, offset);
 				if (partition != null) {
 					if (!isInExistingStyleRange(lo, partition.getOffset(), partition.getLen(), styleRangeList)) {
 						len = partition.getLen();
 						offset = partition.getOffset();
-
 						Color c = null;
 						if (rule.getTokenControl() == 0) {
 							c = Constants.COMMAND_COLOR;
@@ -185,7 +196,6 @@ public class DocumentStyler implements LineStyleListener {
 						styleRangeList.add(styleRange);
 						hasMatch = true;
 					}
-
 					break;
 				}
 			}
@@ -197,9 +207,9 @@ public class DocumentStyler implements LineStyleListener {
 		}
 	}
 
-	private boolean isInExistingStyleRange(int offset, int po, int plen, List<StyleRange> styleRangeList) {
+	private boolean isInExistingStyleRange(int offset, int start, int len, List<StyleRange> styleRangeList) {
 		for (StyleRange sr : styleRangeList) {
-			if (offset + po >= sr.start && offset + po + plen <= sr.start + sr.length) {
+			if (offset + start >= sr.start && offset + start + len <= sr.start + sr.length) {
 				return true;
 			}
 		}
