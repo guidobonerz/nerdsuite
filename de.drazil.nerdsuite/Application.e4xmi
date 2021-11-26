@@ -35,6 +35,13 @@
             <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.editorStack">
               <tags>NoAutoCollapse</tags>
             </children>
+            <children xsi:type="basic:PartStack" xmi:id="_kDh5kE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.partstack.3">
+              <children xsi:type="basic:Part" xmi:id="_krSdIE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.part.console" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.log.Console" label="Console">
+                <toolbar xmi:id="_1v8Q8E7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.toolbar.6">
+                  <children xsi:type="menu:DirectToolItem" xmi:id="_3CXiIE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.directtoolitem.0" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png"/>
+                </toolbar>
+              </children>
+            </children>
           </children>
         </children>
       </children>

@@ -1,8 +1,5 @@
 package de.drazil.nerdsuite.sourceeditor;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -43,20 +40,17 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.basic.BasicTokenizer;
 import de.drazil.nerdsuite.basic.SourceRepositoryService;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
-import de.drazil.nerdsuite.model.CharMap;
-import de.drazil.nerdsuite.model.CharObject;
-import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
-import de.drazil.nerdsuite.util.ArrayUtil;
-import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.toolchain.BasicTokenizerStage;
+import de.drazil.nerdsuite.toolchain.ExternalRunnerToolchainStage;
+import de.drazil.nerdsuite.toolchain.Toolchain;
 import de.drazil.nerdsuite.widget.CustomPopupDialog;
 import de.drazil.nerdsuite.widget.ICharSelectionListener;
 import de.drazil.nerdsuite.widget.PlatformFactory;
@@ -151,19 +145,15 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 	}
 
 	private void tokenize() {
-		CharMap charMap = PlatformFactory.getCharMap(srs.getMetadata().getPlatform());
-		List<CharObject> charMapList = charMap.getCharMap().stream().filter(e -> e.isUpper() == true)
-				.collect(Collectors.toList());
-		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText().toUpperCase(), basicInstructions, charMapList);
-		byte[] payload = new byte[] {};
-		payload = ArrayUtil.grow(payload, NumericConverter.getWord(2049));
-		payload = ArrayUtil.grow(payload, bytecode);
-		try {
-			Files.write(new File("c:\\Users\\drazil\\tokenizedfile.prg").toPath(), payload);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		String fileName = "c:\\Users\\drazil\\tokenizedfile.prg";
+		Toolchain toolChain = new Toolchain();
+		toolChain.addToolchainStage(new BasicTokenizerStage("Run Basic Tokenizer", srs.getMetadata().getPlatform(),
+				styledText.getText(), basicInstructions, fileName));
+		toolChain.addToolchainStage(new ExternalRunnerToolchainStage("Run Vice",
+				"\"C:\\Users\\drazil\\applications\\WinVICE-2.4-x86\\x64sc.exe\"", fileName));
+		toolChain.start();
+
 	}
 
 	private void save() {
@@ -195,7 +185,6 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 
 		srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
 		basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
-		List<PlatformColor> colors = PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform());
 
 		int version = 20;
 		String variant = srs.getMetadata().getVariant();

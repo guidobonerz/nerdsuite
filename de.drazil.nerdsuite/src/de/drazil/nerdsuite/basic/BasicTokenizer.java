@@ -6,7 +6,6 @@ import java.util.List;
 
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
-import de.drazil.nerdsuite.model.CharMap;
 import de.drazil.nerdsuite.model.CharObject;
 import de.drazil.nerdsuite.util.ArrayUtil;
 import de.drazil.nerdsuite.util.NumericConverter;

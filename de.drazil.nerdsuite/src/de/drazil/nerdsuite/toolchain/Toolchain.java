@@ -4,20 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Toolchain {
-	private List<IToolchainItem<?>> toolChainItemList = null;
+	private List<IToolchainStage<?>> toolChainStageList = null;
 
 	public Toolchain() {
-		toolChainItemList = new ArrayList<>();
+		toolChainStageList = new ArrayList<>();
 	}
 
-	public <RESULT> void addToolChainItem(IToolchainItem<RESULT> toolChainItem) {
-		toolChainItemList.add(toolChainItem);
+	public <RESULT> void addToolchainStage(IToolchainStage<RESULT> toolChainItem) {
+		toolChainStageList.add(toolChainItem);
 	}
+	
+	
 
 	public void start() {
-		for (IToolchainItem<?> toolChainItem : toolChainItemList) {
-			toolChainItem.start();
-			while (toolChainItem.isRunning()) {
+		for (IToolchainStage<?> toolChainStage : toolChainStageList) {
+			toolChainStage.start();
+			while (toolChainStage.isRunning()) {
 			}
 		}
 	}
