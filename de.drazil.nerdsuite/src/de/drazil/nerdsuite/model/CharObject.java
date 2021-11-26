@@ -15,6 +15,8 @@ public class CharObject {
 	private int screencode;
 	@JsonDeserialize(converter = StringToUnicode.class)
 	private char unicode;
+	@JsonDeserialize(converter = StringToUnicode.class)
+	private char altUnicode;
 	private String name;
 	private boolean isColor;
 	private boolean isControl;

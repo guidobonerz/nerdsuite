@@ -7,7 +7,6 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.Bundle;
 
@@ -27,7 +26,6 @@ public class Configuration {
 			Constants.USER_HOME + Constants.FILE_SEPARATOR + Constants.DEFAULT_WORKSPACE_NAME);
 
 	private Workspace workspace;
-	private Font font = null;
 
 	public final Workspace getWorkspace() {
 		return createOrReadWorkspace();
@@ -38,51 +36,21 @@ public class Configuration {
 
 			workspace = getWorkspace();
 			Bundle bundle = Platform.getBundle(Constants.APP_ID);
-			URL fileURL1 = bundle.getEntry("/fonts/C64_Pro_Mono-STYLE.ttf");
-			URL fileURL2 = bundle.getEntry("/fonts/DroidSansMono.ttf");
-			URL fileURL3 = bundle.getEntry("/fonts/PTm55F.ttf");
-			URL fileURL4 = bundle.getEntry("/fonts/SourceCodePro-Regular.ttf");
-			URL fileURL5 = bundle.getEntry("/fonts/PetMe2Y.ttf");
-			URL fileURL6 = bundle.getEntry("/fonts/PetMe642Y.ttf");
-			URL fileURL7 = bundle.getEntry("/fonts/PetMe64.ttf");
-			URL fileURL8 = bundle.getEntry("/fonts/fa-solid-900.ttf");
-			URL fileURL9 = bundle.getEntry("/fonts/icomoon.ttf");
-			URL fileURL10 = bundle.getEntry("/fonts/MaterialIcons-Regular.ttf");
-			URL fileURL11 = bundle.getEntry("/fonts/SpaceMono-Regular.ttf");
-			URL fileURL12 = bundle.getEntry("/fonts/RobotoMono-Bold.ttf");
+			URL fileURL1 = bundle.getEntry("/fonts/ttf/C64_Pro_Mono-STYLE.ttf");
+			URL fileURL2 = bundle.getEntry("/fonts/ttf/MaterialIcons-Regular.ttf");
+			URL fileURL3 = bundle.getEntry("/fonts/ttf/RobotoMono-Bold.ttf");
+
 			File file = null;
-			boolean b;
+
 			try {
 				file = new File(FileLocator.resolve(fileURL1).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				// b = Display.getCurrent().loadFont(file.toString());
-				// b = Display.getCurrent().loadFont( new
-				// URL("platform:/plugin/de.drazil.nerdsuite/fonts/C64_Pro_Mono-STYLE.ttf").toString());
+				Display.getCurrent().loadFont(file.toString());
 
 				file = new File(FileLocator.resolve(fileURL2).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
+				Display.getCurrent().loadFont(file.toString());
 
 				file = new File(FileLocator.resolve(fileURL3).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-
-				file = new File(FileLocator.resolve(fileURL4).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				file = new File(FileLocator.resolve(fileURL5).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				file = new File(FileLocator.resolve(fileURL6).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				file = new File(FileLocator.resolve(fileURL7).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				file = new File(FileLocator.resolve(fileURL8).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				file = new File(FileLocator.resolve(fileURL9).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				file = new File(FileLocator.resolve(fileURL10).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				file = new File(FileLocator.resolve(fileURL11).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
-				file = new File(FileLocator.resolve(fileURL12).toURI());
-				b = Display.getCurrent().loadFont(file.toString());
+				Display.getCurrent().loadFont(file.toString());
 
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();

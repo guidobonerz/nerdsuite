@@ -64,6 +64,9 @@ import de.drazil.nerdsuite.widget.SymbolPaletteChooser;
 
 public class SourceEditorView implements IDocument, ICharSelectionListener {
 
+	@Inject
+	private MPart part;
+
 	enum WordBounds {
 		Begin, End
 	};
@@ -76,8 +79,6 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 	private BasicInstructions basicInstructions;
 	private CustomPopupDialog popupDialog;
 	private SymbolPaletteChooser symbolChooser;
-	@Inject
-	private MPart part;
 
 	public SourceEditorView() {
 
@@ -224,9 +225,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT) {
-					// computeCursorPosition(e.x, e.y);
 					closePupup();
-
 					symbolChooser = new SymbolPaletteChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
 							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),
 							PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform()));
@@ -388,9 +387,5 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 			popupDialog.close();
 		}
 	}
-	/*
-	 * private void computeCursorPosition(int x, int y) { colorIndex = y /
-	 * COLOR_TILE_SIZE; if (colorIndex > maxColorsTemp) { colorIndex =
-	 * maxColorsTemp; } }
-	 */
+
 }

@@ -63,8 +63,6 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 	public void paintControl(PaintEvent e) {
 		int thickness = 2;
 		e.gc.setLineWidth(thickness);
-
-		int w = (int) e.gc.getFontMetrics().getAverageCharacterWidth();
 		e.gc.setBackground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, 0, height, width);
 		for (int r = 0; r < columns; r++) {
@@ -73,25 +71,23 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 				e.gc.setFont(Constants.C64_Pro_Mono_FONT_12);
 				e.gc.setForeground(Constants.WHITE);
 
-				if (i < charMap.getUpperIndexOrderList().size()) {
-					CharObject cm = charList.get(charMap.getUpperIndexOrderList().get(i));
-					if (!cm.isColor() && !cm.isControl()) {
-						e.gc.drawString(String.valueOf(cm.getUnicode()), c * CHAR_TILE_SIZE, r * CHAR_TILE_SIZE);
-					} else if (cm.isColor()) {
-						e.gc.setBackground(colorList.get(Integer.valueOf(cm.getCustomValue())).getColor());
-						e.gc.fillRectangle(1 + c * CHAR_TILE_SIZE, 1 + r * CHAR_TILE_SIZE, CHAR_TILE_SIZE - thickness,
-								CHAR_TILE_SIZE - thickness);
-					} else if (cm.isControl()) {
-						e.gc.setFont(Constants.GoogleMaterials_12);
-						e.gc.drawString(String.valueOf(cm.getUnicode()), c * CHAR_TILE_SIZE, r * CHAR_TILE_SIZE);
-					}
+				CharObject cm = charList.get(charMap.getUpperIndexOrderList().get(i));
+				if (!cm.isColor() && !cm.isControl()) {
+					e.gc.drawString(String.valueOf(cm.getUnicode()), c * CHAR_TILE_SIZE, r * CHAR_TILE_SIZE);
+				} else if (cm.isColor()) {
+					e.gc.setBackground(colorList.get(Integer.valueOf(cm.getCustomValue())).getColor());
+					e.gc.fillRectangle(1 + c * CHAR_TILE_SIZE, 1 + r * CHAR_TILE_SIZE, CHAR_TILE_SIZE - thickness,
+							CHAR_TILE_SIZE - thickness);
+				} else if (cm.isControl()) {
+					e.gc.setFont(Constants.GoogleMaterials_12);
+					e.gc.drawString(String.valueOf(cm.getAltUnicode()), c * CHAR_TILE_SIZE, r * CHAR_TILE_SIZE);
 				}
+
 				e.gc.setBackground(Constants.DARK_GREY);
 				if (c == cx && r == cy) {
 					e.gc.setForeground(Constants.BRIGHT_ORANGE);
 					e.gc.drawRectangle(1 + cx * CHAR_TILE_SIZE, 1 + cy * CHAR_TILE_SIZE, CHAR_TILE_SIZE - thickness,
 							CHAR_TILE_SIZE - thickness);
-
 				}
 			}
 		}
@@ -100,8 +96,7 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 		e.gc.setFont(Constants.RobotoMonoBold_FONT);
 		e.gc.setForeground(Constants.WHITE);
 		CharObject cm = charList.get(charMap.getUpperIndexOrderList().get(charIndex));
-		e.gc.drawString(String.format("$%02X(%03d) %s - %s", charIndex, charIndex, cm.getUnicode(), cm.getName()), 5,
-				height);
+		e.gc.drawString(String.format("$%02X(%03d) - %s", cm.getId(), cm.getId(), cm.getName()), 5, height);
 	}
 
 	@Override
