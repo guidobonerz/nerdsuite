@@ -225,7 +225,8 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 					closePupup();
 
 					symbolChooser = new SymbolPaletteChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
-							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()));
+							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),
+							PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform()));
 					symbolChooser.setSelectedColor(1);
 					symbolChooser.addCharSelectionListener(SourceEditorView.this);
 					popupDialog = new CustomPopupDialog(parent.getShell(), symbolChooser);

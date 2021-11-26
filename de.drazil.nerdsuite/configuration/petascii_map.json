@@ -4,1791 +4,2559 @@
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE80",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 1,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE81",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 2,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE82",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 3,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE83",
-		"name": "stop"
+		"name": "stop",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 4,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE84",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 5,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE85",
-		"name": "white"
+		"name": "white",
+		"color": true,
+		"control": false,
+		"customValue": "1"
 	},
 	{
 		"id": 6,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE86",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 7,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE87",
-		"name": "enable shift+c"
+		"name": "enable shift+c",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 8,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE88",
-		"name": "disable shift+c"
+		"name": "disable shift+c",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 9,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE89",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 10,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE8A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 11,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE8B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 12,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE8C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 13,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE8D",
-		"name": "return"
+		"name": "return",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 14,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE8E",
-		"name": "lower case"
+		"name": "lower case",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 15,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE8F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 16,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE90",
-		"name": "cursor down"
+		"name": "cursor down",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 17,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE91",
-		"name": "reverse on"
+		"name": "reverse on",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 18,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE92",
-		"name": "home"
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 19,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE93",
-		"name": "delete"
+		"name": "home",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 20,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE94",
-		"name": ""
+		"name": "delete",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 21,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE95",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 22,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE96",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 23,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE97",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 24,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE98",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 25,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE99",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 26,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE9A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 27,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE9B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 28,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE9C",
-		"name": "red"
+		"name": "red",
+		"color": true,
+		"control": false,
+		"customValue": "2"
 	},
 	{
 		"id": 29,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE9D",
-		"name": "cursor right"
+		"name": "cursor right",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 30,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE9E",
-		"name": "green"
+		"name": "green",
+		"color": true,
+		"control": false,
+		"customValue": "5"
 	},
 	{
 		"id": 31,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE9F",
-		"name": "blue"
+		"name": "blue",
+		"color": true,
+		"control": false,
+		"customValue": "6"
 	},
 	{
 		"id": 32,
 		"ascii": 32,
 		"screencode": 32,
 		"unicode": "\\uEE20",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 33,
 		"ascii": 33,
 		"screencode": 33,
 		"unicode": "\\uEE21",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 34,
 		"ascii": 34,
 		"screencode": 34,
 		"unicode": "\\uEE22",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 35,
 		"ascii": 35,
 		"screencode": 35,
 		"unicode": "\\uEE23",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 36,
 		"ascii": 36,
 		"screencode": 36,
 		"unicode": "\\uEE24",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 37,
 		"ascii": 37,
 		"screencode": 37,
 		"unicode": "\\uEE25",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 38,
 		"ascii": 38,
 		"screencode": 38,
 		"unicode": "\\uEE26",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 39,
 		"ascii": 39,
 		"screencode": 39,
 		"unicode": "\\uEE27",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 40,
 		"ascii": 40,
 		"screencode": 40,
 		"unicode": "\\uEE28",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 41,
 		"ascii": 41,
 		"screencode": 41,
 		"unicode": "\\uEE29",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 42,
 		"ascii": 42,
 		"screencode": 42,
 		"unicode": "\\uEE2A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 43,
 		"ascii": 43,
 		"screencode": 43,
 		"unicode": "\\uEE2B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 44,
 		"ascii": 44,
 		"screencode": 44,
 		"unicode": "\\uEE2C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 45,
 		"ascii": 45,
 		"screencode": 45,
 		"unicode": "\\uEE2D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 46,
 		"ascii": 46,
 		"screencode": 46,
 		"unicode": "\\uEE2E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 47,
 		"ascii": 47,
 		"screencode": 47,
 		"unicode": "\\uEE2F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 48,
 		"ascii": 48,
 		"screencode": 48,
 		"unicode": "\\uEE30",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 49,
 		"ascii": 49,
 		"screencode": 49,
 		"unicode": "\\uEE31",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 50,
 		"ascii": 50,
 		"screencode": 50,
 		"unicode": "\\uEE32",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 51,
 		"ascii": 51,
 		"screencode": 51,
 		"unicode": "\\uEE33",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 52,
 		"ascii": 52,
 		"screencode": 52,
 		"unicode": "\\uEE34",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 53,
 		"ascii": 53,
 		"screencode": 53,
 		"unicode": "\\uEE35",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 54,
 		"ascii": 54,
 		"screencode": 54,
 		"unicode": "\\uEE36",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 55,
 		"ascii": 55,
 		"screencode": 55,
 		"unicode": "\\uEE37",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 56,
 		"ascii": 56,
 		"screencode": 56,
 		"unicode": "\\uEE38",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 57,
 		"ascii": 57,
 		"screencode": 57,
 		"unicode": "\\uEE39",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 58,
 		"ascii": 58,
 		"screencode": 58,
 		"unicode": "\\uEE3A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 59,
 		"ascii": 59,
 		"screencode": 59,
 		"unicode": "\\uEE3B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 60,
 		"ascii": 60,
 		"screencode": 60,
 		"unicode": "\\uEE3C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 61,
 		"ascii": 61,
 		"screencode": 61,
 		"unicode": "\\uEE3D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 62,
 		"ascii": 62,
 		"screencode": 62,
 		"unicode": "\\uEE3E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 63,
 		"ascii": 63,
 		"screencode": 63,
 		"unicode": "\\uEE3F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 64,
 		"ascii": 64,
 		"screencode": 0,
 		"unicode": "\\uEE00",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 65,
 		"ascii": 65,
 		"screencode": 1,
 		"unicode": "\\uEE01",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 66,
 		"ascii": 66,
 		"screencode": 2,
 		"unicode": "\\uEE02",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 67,
 		"ascii": 67,
 		"screencode": 3,
 		"unicode": "\\uEE03",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 68,
 		"ascii": 68,
 		"screencode": 4,
 		"unicode": "\\uEE04",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 69,
 		"ascii": 69,
 		"screencode": 5,
 		"unicode": "\\uEE05",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 70,
 		"ascii": 70,
 		"screencode": 6,
 		"unicode": "\\uEE06",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 71,
 		"ascii": 71,
 		"screencode": 7,
 		"unicode": "\\uEE07",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 72,
 		"ascii": 72,
 		"screencode": 8,
 		"unicode": "\\uEE08",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 73,
 		"ascii": 73,
 		"screencode": 9,
 		"unicode": "\\uEE09",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 74,
 		"ascii": 74,
 		"screencode": 10,
 		"unicode": "\\uEE0A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 75,
 		"ascii": 75,
 		"screencode": 11,
 		"unicode": "\\uEE0B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 76,
 		"ascii": 76,
 		"screencode": 12,
 		"unicode": "\\uEE0C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 77,
 		"ascii": 77,
 		"screencode": 13,
 		"unicode": "\\uEE0D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 78,
 		"ascii": 78,
 		"screencode": 14,
 		"unicode": "\\uEE0E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 79,
 		"ascii": 79,
 		"screencode": 15,
 		"unicode": "\\uEE0F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 80,
 		"ascii": 80,
 		"screencode": 16,
 		"unicode": "\\uEE10",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 81,
 		"ascii": 81,
 		"screencode": 17,
 		"unicode": "\\uEE11",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 82,
 		"ascii": 82,
 		"screencode": 18,
 		"unicode": "\\uEE12",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 83,
 		"ascii": 83,
 		"screencode": 19,
 		"unicode": "\\uEE13",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 84,
 		"ascii": 84,
 		"screencode": 20,
 		"unicode": "\\uEE14",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 85,
 		"ascii": 85,
 		"screencode": 21,
 		"unicode": "\\uEE15",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 86,
 		"ascii": 86,
 		"screencode": 22,
 		"unicode": "\\uEE16",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 87,
 		"ascii": 87,
 		"screencode": 23,
 		"unicode": "\\uEE17",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 88,
 		"ascii": 88,
 		"screencode": 24,
 		"unicode": "\\uEE18",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 89,
 		"ascii": 89,
 		"screencode": 25,
 		"unicode": "\\uEE19",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 90,
 		"ascii": 90,
 		"screencode": 26,
 		"unicode": "\\uEE1A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 91,
 		"ascii": 91,
 		"screencode": 27,
 		"unicode": "\\uEE1B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 92,
 		"ascii": 92,
 		"screencode": 28,
 		"unicode": "\\uEE1C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 93,
 		"ascii": 93,
 		"screencode": 29,
 		"unicode": "\\uEE1D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 94,
 		"ascii": 94,
 		"screencode": 30,
 		"unicode": "\\uEE1E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 95,
 		"ascii": 95,
 		"screencode": 31,
 		"unicode": "\\uEE1F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 96,
 		"ascii": 0,
 		"screencode": 32,
 		"unicode": "\\uEE40",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 97,
 		"ascii": 0,
 		"screencode": 33,
 		"unicode": "\\uEE41",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 98,
 		"ascii": 0,
 		"screencode": 34,
 		"unicode": "\\uEE42",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 99,
 		"ascii": 0,
 		"screencode": 35,
 		"unicode": "\\uEE43",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 100,
 		"ascii": 0,
 		"screencode": 36,
 		"unicode": "\\uEE44",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 101,
 		"ascii": 0,
 		"screencode": 37,
 		"unicode": "\\uEE45",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 102,
 		"ascii": 0,
 		"screencode": 38,
 		"unicode": "\\uEE46",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 103,
 		"ascii": 0,
 		"screencode": 39,
 		"unicode": "\\uEE47",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 104,
 		"ascii": 0,
 		"screencode": 40,
 		"unicode": "\\uEE48",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 105,
 		"ascii": 0,
 		"screencode": 41,
 		"unicode": "\\uEE49",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 106,
 		"ascii": 0,
 		"screencode": 42,
 		"unicode": "\\uEE4A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 107,
 		"ascii": 0,
 		"screencode": 43,
 		"unicode": "\\uEE4B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 108,
 		"ascii": 0,
 		"screencode": 44,
 		"unicode": "\\uEE4C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 109,
 		"ascii": 0,
 		"screencode": 45,
 		"unicode": "\\uEE4D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 110,
 		"ascii": 0,
 		"screencode": 46,
 		"unicode": "\\uEE4E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 111,
 		"ascii": 0,
 		"screencode": 47,
 		"unicode": "\\uEE4F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 112,
 		"ascii": 0,
 		"screencode": 48,
 		"unicode": "\\uEE50",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 113,
 		"ascii": 0,
 		"screencode": 49,
 		"unicode": "\\uEE51",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 114,
 		"ascii": 0,
 		"screencode": 50,
 		"unicode": "\\uEE52",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 115,
 		"ascii": 0,
 		"screencode": 51,
 		"unicode": "\\uEE53",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 116,
 		"ascii": 0,
 		"screencode": 52,
 		"unicode": "\\uEE54",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 117,
 		"ascii": 0,
 		"screencode": 53,
 		"unicode": "\\uEE55",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 118,
 		"ascii": 0,
 		"screencode": 54,
 		"unicode": "\\uEE56",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 119,
 		"ascii": 0,
 		"screencode": 55,
 		"unicode": "\\uEE57",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 120,
 		"ascii": 0,
 		"screencode": 56,
 		"unicode": "\\uEE58",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 121,
 		"ascii": 0,
 		"screencode": 57,
 		"unicode": "\\uEE59",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 122,
 		"ascii": 0,
 		"screencode": 58,
 		"unicode": "\\uEE5A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 123,
 		"ascii": 0,
 		"screencode": 59,
 		"unicode": "\\uEE5B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 124,
 		"ascii": 0,
 		"screencode": 60,
 		"unicode": "\\uEE5C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 125,
 		"ascii": 0,
 		"screencode": 61,
 		"unicode": "\\uEE5D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 126,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE5E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 127,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEE5F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 128,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC0",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 129,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC1",
-		"name": "orange"
+		"name": "orange",
+		"color": true,
+		"control": false,
+		"customValue": "8"
 	},
 	{
 		"id": 130,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC2",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 131,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC3",
-		"name": "run"
+		"name": "run",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 132,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC4",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 133,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC5",
-		"name": "f1"
+		"name": "f1",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 134,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC6",
-		"name": "f2"
+		"name": "f2",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 135,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC7",
-		"name": "f3"
+		"name": "f3",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 136,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC8",
-		"name": "f4"
+		"name": "f4",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 137,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEC9",
-		"name": "f5"
+		"name": "f5",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 138,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEECA",
-		"name": "f6"
+		"name": "f6",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 139,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEECB",
-		"name": "f7"
+		"name": "f7",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 140,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEECC",
-		"name": "f8"
+		"name": "f8",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 141,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEECD",
-		"name": "shift/return"
+		"name": "shift/return",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 142,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEECE",
-		"name": "upper case"
+		"name": "upper case",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 143,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEECF",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 144,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED0",
-		"name": "black"
+		"name": "black",
+		"color": true,
+		"control": false,
+		"customValue": "0"
 	},
 	{
 		"id": 145,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED1",
-		"name": "cursor up"
+		"name": "cursor up",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 146,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED2",
-		"name": "reverse off"
+		"name": "reverse off",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 147,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED3",
-		"name": "clear"
+		"name": "clear",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 148,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED4",
-		"name": "insert"
+		"name": "insert",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 149,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED5",
-		"name": "brown"
+		"name": "brown",
+		"color": true,
+		"control": false,
+		"customValue": "9"
 	},
 	{
 		"id": 150,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED6",
-		"name": "light red"
+		"name": "light red",
+		"color": true,
+		"control": false,
+		"customValue": "10"
 	},
 	{
 		"id": 151,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED7",
-		"name": "dark grey"
+		"name": "dark grey",
+		"color": true,
+		"control": false,
+		"customValue": "11"
 	},
 	{
 		"id": 152,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED8",
-		"name": "mid grey"
+		"name": "mid grey",
+		"color": true,
+		"control": false,
+		"customValue": "12"
 	},
 	{
 		"id": 153,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEED9",
-		"name": "light green"
+		"name": "light green",
+		"color": true,
+		"control": false,
+		"customValue": "13"
 	},
 	{
 		"id": 154,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEDA",
-		"name": "light blue"
+		"name": "light blue",
+		"color": true,
+		"control": false,
+		"customValue": "14"
 	},
 	{
 		"id": 155,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEDB",
-		"name": "light grey"
+		"name": "light grey",
+		"color": true,
+		"control": false,
+		"customValue": "15"
 	},
 	{
 		"id": 156,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEDC",
-		"name": "purple"
+		"name": "purple",
+		"color": true,
+		"control": false,
+		"customValue": "4"
 	},
 	{
 		"id": 157,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEDD",
-		"name": "cursor left"
+		"name": "cursor left",
+		"color": false,
+		"control": true,
+		"customValue": ""
 	},
 	{
 		"id": 158,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEDE",
-		"name": "yellow"
+		"name": "yellow",
+		"color": true,
+		"control": false,
+		"customValue": "7"
 	},
 	{
 		"id": 159,
 		"ascii": 0,
 		"screencode": 0,
 		"unicode": "\\uEEDF",
-		"name": "cyan"
+		"name": "cyan",
+		"color": true,
+		"control": false,
+		"customValue": "3"
 	},
 	{
 		"id": 160,
 		"ascii": 0,
 		"screencode": 96,
 		"unicode": "\\uEE60",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 161,
 		"ascii": 0,
 		"screencode": 97,
 		"unicode": "\\uEE61",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 162,
 		"ascii": 0,
 		"screencode": 98,
 		"unicode": "\\uEE62",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 163,
 		"ascii": 0,
 		"screencode": 99,
 		"unicode": "\\uEE63",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 164,
 		"ascii": 0,
 		"screencode": 100,
 		"unicode": "\\uEE64",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 165,
 		"ascii": 0,
 		"screencode": 101,
 		"unicode": "\\uEE65",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 166,
 		"ascii": 0,
 		"screencode": 102,
 		"unicode": "\\uEE66",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 167,
 		"ascii": 0,
 		"screencode": 103,
 		"unicode": "\\uEE67",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 168,
 		"ascii": 0,
 		"screencode": 104,
 		"unicode": "\\uEE68",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 169,
 		"ascii": 0,
 		"screencode": 105,
 		"unicode": "\\uEE69",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 170,
 		"ascii": 0,
 		"screencode": 106,
 		"unicode": "\\uEE6A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 171,
 		"ascii": 0,
 		"screencode": 107,
 		"unicode": "\\uEE6B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 172,
 		"ascii": 0,
 		"screencode": 108,
 		"unicode": "\\uEE6C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 173,
 		"ascii": 0,
 		"screencode": 109,
 		"unicode": "\\uEE6D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 174,
 		"ascii": 0,
 		"screencode": 110,
 		"unicode": "\\uEE6E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 175,
 		"ascii": 0,
 		"screencode": 111,
 		"unicode": "\\uEE6F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 176,
 		"ascii": 0,
 		"screencode": 112,
 		"unicode": "\\uEE70",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 177,
 		"ascii": 0,
 		"screencode": 113,
 		"unicode": "\\uEE71",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 178,
 		"ascii": 0,
 		"screencode": 114,
 		"unicode": "\\uEE72",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 179,
 		"ascii": 0,
 		"screencode": 115,
 		"unicode": "\\uEE73",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 180,
 		"ascii": 0,
 		"screencode": 116,
 		"unicode": "\\uEE74",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 181,
 		"ascii": 0,
 		"screencode": 117,
 		"unicode": "\\uEE75",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 182,
 		"ascii": 0,
 		"screencode": 118,
 		"unicode": "\\uEE76",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 183,
 		"ascii": 0,
 		"screencode": 119,
 		"unicode": "\\uEE77",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 184,
 		"ascii": 0,
 		"screencode": 120,
 		"unicode": "\\uEE78",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 185,
 		"ascii": 0,
 		"screencode": 121,
 		"unicode": "\\uEE79",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 186,
 		"ascii": 0,
 		"screencode": 122,
 		"unicode": "\\uEE7A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 187,
 		"ascii": 0,
 		"screencode": 123,
 		"unicode": "\\uEE7B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 188,
 		"ascii": 0,
 		"screencode": 124,
 		"unicode": "\\uEE7C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 189,
 		"ascii": 0,
 		"screencode": 125,
 		"unicode": "\\uEE7D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 190,
 		"ascii": 0,
 		"screencode": 126,
 		"unicode": "\\uEE7E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 191,
 		"ascii": 0,
 		"screencode": 127,
 		"unicode": "\\uEE7F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 192,
 		"ascii": 0,
 		"screencode": 64,
 		"unicode": "\\uEEA0",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 193,
 		"ascii": 0,
 		"screencode": 65,
 		"unicode": "\\uEE41",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 194,
 		"ascii": 0,
 		"screencode": 66,
 		"unicode": "\\uEE42",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 195,
 		"ascii": 0,
 		"screencode": 67,
 		"unicode": "\\uEE43",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 196,
 		"ascii": 0,
 		"screencode": 68,
 		"unicode": "\\uEE44",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 197,
 		"ascii": 0,
 		"screencode": 69,
 		"unicode": "\\uEE45",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 198,
 		"ascii": 0,
 		"screencode": 70,
 		"unicode": "\\uEE46",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 199,
 		"ascii": 0,
 		"screencode": 71,
 		"unicode": "\\uEE47",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 200,
 		"ascii": 0,
 		"screencode": 72,
 		"unicode": "\\uEE48",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 201,
 		"ascii": 0,
 		"screencode": 73,
 		"unicode": "\\uEE49",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 202,
 		"ascii": 0,
 		"screencode": 74,
 		"unicode": "\\uEE4A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 203,
 		"ascii": 0,
 		"screencode": 75,
 		"unicode": "\\uEE4B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 204,
 		"ascii": 0,
 		"screencode": 76,
 		"unicode": "\\uEE4C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 205,
 		"ascii": 0,
 		"screencode": 77,
 		"unicode": "\\uEE4D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 206,
 		"ascii": 0,
 		"screencode": 78,
 		"unicode": "\\uEE4E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 207,
 		"ascii": 0,
 		"screencode": 79,
 		"unicode": "\\uEE4F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 208,
 		"ascii": 0,
 		"screencode": 80,
 		"unicode": "\\uEE50",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 209,
 		"ascii": 0,
 		"screencode": 81,
 		"unicode": "\\uEE51",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 210,
 		"ascii": 0,
 		"screencode": 82,
 		"unicode": "\\uEE52",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 211,
 		"ascii": 0,
 		"screencode": 83,
 		"unicode": "\\uEE53",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 212,
 		"ascii": 0,
 		"screencode": 84,
 		"unicode": "\\uEE54",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 213,
 		"ascii": 0,
 		"screencode": 85,
 		"unicode": "\\uEE55",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 214,
 		"ascii": 0,
 		"screencode": 86,
 		"unicode": "\\uEE56",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 215,
 		"ascii": 0,
 		"screencode": 87,
 		"unicode": "\\uEE57",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 216,
 		"ascii": 0,
 		"screencode": 88,
 		"unicode": "\\uEE58",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 217,
 		"ascii": 0,
 		"screencode": 89,
 		"unicode": "\\uEE59",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 218,
 		"ascii": 0,
 		"screencode": 90,
 		"unicode": "\\uEE5A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 219,
 		"ascii": 0,
 		"screencode": 91,
 		"unicode": "\\uEE5B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 220,
 		"ascii": 0,
 		"screencode": 92,
 		"unicode": "\\uEE5C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 221,
 		"ascii": 0,
 		"screencode": 93,
 		"unicode": "\\uEE5D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 222,
 		"ascii": 0,
 		"screencode": 94,
 		"unicode": "\\uEE5E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 223,
 		"ascii": 0,
 		"screencode": 95,
 		"unicode": "\\uEE5F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 224,
 		"ascii": 0,
 		"screencode": 96,
 		"unicode": "\\uEE60",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 225,
 		"ascii": 0,
 		"screencode": 97,
 		"unicode": "\\uEE61",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 226,
 		"ascii": 0,
 		"screencode": 98,
 		"unicode": "\\uEE62",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 227,
 		"ascii": 0,
 		"screencode": 99,
 		"unicode": "\\uEE63",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 228,
 		"ascii": 0,
 		"screencode": 100,
 		"unicode": "\\uEE64",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 229,
 		"ascii": 0,
 		"screencode": 101,
 		"unicode": "\\uEE65",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 230,
 		"ascii": 0,
 		"screencode": 102,
 		"unicode": "\\uEE66",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 231,
 		"ascii": 0,
 		"screencode": 103,
 		"unicode": "\\uEE67",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 232,
 		"ascii": 0,
 		"screencode": 104,
 		"unicode": "\\uEE68",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 233,
 		"ascii": 0,
 		"screencode": 105,
 		"unicode": "\\uEE69",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 234,
 		"ascii": 0,
 		"screencode": 106,
 		"unicode": "\\uEE6A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 235,
 		"ascii": 0,
 		"screencode": 107,
 		"unicode": "\\uEE6B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 236,
 		"ascii": 0,
 		"screencode": 108,
 		"unicode": "\\uEE6C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 237,
 		"ascii": 0,
 		"screencode": 109,
 		"unicode": "\\uEE6D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 238,
 		"ascii": 0,
 		"screencode": 110,
 		"unicode": "\\uEE6E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 239,
 		"ascii": 0,
 		"screencode": 111,
 		"unicode": "\\uEE6F",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 240,
 		"ascii": 0,
 		"screencode": 112,
 		"unicode": "\\uEE70",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 241,
 		"ascii": 0,
 		"screencode": 113,
 		"unicode": "\\uEE71",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 242,
 		"ascii": 0,
 		"screencode": 114,
 		"unicode": "\\uEE72",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 243,
 		"ascii": 0,
 		"screencode": 115,
 		"unicode": "\\uEE73",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 244,
 		"ascii": 0,
 		"screencode": 116,
 		"unicode": "\\uEE74",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 245,
 		"ascii": 0,
 		"screencode": 117,
 		"unicode": "\\uEE75",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 246,
 		"ascii": 0,
 		"screencode": 118,
 		"unicode": "\\uEE76",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 247,
 		"ascii": 0,
 		"screencode": 119,
 		"unicode": "\\uEE77",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 248,
 		"ascii": 0,
 		"screencode": 120,
 		"unicode": "\\uEE78",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 249,
 		"ascii": 0,
 		"screencode": 121,
 		"unicode": "\\uEE79",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 250,
 		"ascii": 0,
 		"screencode": 122,
 		"unicode": "\\uEE7A",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 251,
 		"ascii": 0,
 		"screencode": 123,
 		"unicode": "\\uEE7B",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 252,
 		"ascii": 0,
 		"screencode": 124,
 		"unicode": "\\uEE7C",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 253,
 		"ascii": 0,
 		"screencode": 125,
 		"unicode": "\\uEE7D",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 254,
 		"ascii": 0,
 		"screencode": 126,
 		"unicode": "\\uEE7E",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	},
 	{
 		"id": 255,
 		"ascii": 0,
 		"screencode": 127,
 		"unicode": "\\uEEFF",
-		"name": ""
+		"name": "",
+		"color": false,
+		"control": false,
+		"customValue": ""
 	}
 ]

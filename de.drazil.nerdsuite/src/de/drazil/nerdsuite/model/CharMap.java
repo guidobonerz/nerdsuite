@@ -17,5 +17,8 @@ public class CharMap {
 	@JsonDeserialize(converter = StringToUnicode.class)
 	private char unicode;
 	private String name;
+	private boolean isColor;
+	private boolean isControl;
+	private String customValue;
 
 }

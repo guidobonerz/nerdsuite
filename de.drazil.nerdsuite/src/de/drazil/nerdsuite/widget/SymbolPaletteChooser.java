@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.CharMap;
+import de.drazil.nerdsuite.model.PlatformColor;
 
 public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 
@@ -25,15 +26,16 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 	private boolean mouseIn = false;
 	private List<CharMap> charMap;
 	private List<ICharSelectionListener> charSelectionListener;
+	private List<PlatformColor> colorList;
 
-	private static final int CHAR_TILE_SIZE = 24;
+	private static final int CHAR_TILE_SIZE = 18;
 
-	public SymbolPaletteChooser(Composite parent, int style, List<CharMap> charMap) {
+	public SymbolPaletteChooser(Composite parent, int style, List<CharMap> charMap, List<PlatformColor> colorList) {
 		super(parent, style);
 		setSymbolMap(charMap);
 		charSelectionListener = new ArrayList<ICharSelectionListener>();
 		addPaintListener(this);
-
+		this.colorList = colorList;
 	}
 
 	public void setSymbolMap(List<CharMap> charMap) {
@@ -55,30 +57,41 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 
 	@Override
 	public void paintControl(PaintEvent e) {
-		e.gc.setLineWidth(3);
-		e.gc.setFont(Constants.C64_Pro_Mono_FONT_16);
+		int thickness = 2;
+		e.gc.setLineWidth(thickness);
+		e.gc.setFont(Constants.C64_Pro_Mono_FONT_12);
+		int w = (int) e.gc.getFontMetrics().getAverageCharacterWidth();
 		e.gc.setBackground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, 0, height, width);
 		for (int r = 0; r < columns; r++) {
 			for (int c = 0; c < rows; c++) {
 				int i = (c + (r * columns));
 				e.gc.setForeground(Constants.WHITE);
-				// e.gc.fillRectangle(c * CHAR_TILE_SIZE, r * CHAR_TILE_SIZE, CHAR_TILE_SIZE,
-				// CHAR_TILE_SIZE);
-				e.gc.drawString(String.valueOf(charMap.get(i).getUnicode()), c * CHAR_TILE_SIZE,
-						r * CHAR_TILE_SIZE + 1);
+
+				CharMap cm = charMap.get(i);
+				if (!cm.isColor() && !cm.isControl()) {
+					e.gc.drawString(String.valueOf(cm.getUnicode()), c * CHAR_TILE_SIZE, r * CHAR_TILE_SIZE);
+				} else if (cm.isColor()) {
+					e.gc.setBackground(colorList.get(Integer.valueOf(cm.getCustomValue())).getColor());
+					e.gc.fillRectangle(1 + c * CHAR_TILE_SIZE, 1 + r * CHAR_TILE_SIZE, CHAR_TILE_SIZE - thickness,
+							CHAR_TILE_SIZE - thickness);
+				}
+				e.gc.setBackground(Constants.DARK_GREY);
 				if (c == cx && r == cy) {
 					e.gc.setForeground(Constants.BRIGHT_ORANGE);
-					e.gc.drawRectangle(1 + cx * CHAR_TILE_SIZE, 1 + cy * CHAR_TILE_SIZE, CHAR_TILE_SIZE - 3,
-							CHAR_TILE_SIZE - 3);
+					e.gc.drawRectangle(1 + cx * CHAR_TILE_SIZE, 1 + cy * CHAR_TILE_SIZE, CHAR_TILE_SIZE - thickness,
+							CHAR_TILE_SIZE - thickness);
+
 				}
 			}
 		}
 		e.gc.setForeground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, height, width, 20);
-		// e.gc.setForeground(Constants.WHITE);
-		// e.gc.drawString(String.format("%02X : %s", colorIndex,
-		// platformColorList.get(colorIndex).getName()), 5, height);
+		e.gc.setFont(Constants.RobotoMonoBold_FONT);
+		e.gc.setForeground(Constants.WHITE);
+		CharMap cm = charMap.get(charIndex);
+		e.gc.drawString(String.format("$%02X(%03d) %s - %s", charIndex, charIndex, cm.getUnicode(), cm.getName()), 5,
+				height);
 	}
 
 	@Override
