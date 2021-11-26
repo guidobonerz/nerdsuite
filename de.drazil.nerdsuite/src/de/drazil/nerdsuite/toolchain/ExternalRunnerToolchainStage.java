@@ -5,11 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.exec.OS;
 
-public class DefaultToolchainItem implements IToolchainItem<Object> {
+import de.drazil.nerdsuite.log.Console;
+
+public class ExternalRunnerToolchainStage implements IToolchainStage<Object> {
 	private String name;
 	private boolean isRunning = false;
 	private Thread thread;
@@ -19,17 +20,15 @@ public class DefaultToolchainItem implements IToolchainItem<Object> {
 	public class ToolchainProcess implements Runnable {
 		@Override
 		public synchronized void run() {
+
 			try {
 				process = processbuilder.start();
-			
-/*
+
 				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				String line = null;
-				System.out.println("----------------------------------------------------");
-				System.out.println("Running ToolChainItem: " + name);
 				while (null != (line = br.readLine())) {
-					System.out.println(line);
-					System.out.flush();
+					Console.println(line);
+					// System.out.flush();
 				}
 				br.close();
 
@@ -37,46 +36,47 @@ public class DefaultToolchainItem implements IToolchainItem<Object> {
 				if (errorCode == 1) {
 					line = null;
 					br = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-					System.out.println("Error on ToolChainItem: " + name);
 					while (null != (line = br.readLine())) {
-						System.out.println(line);
-						System.out.flush();
+						Console.println(line);
+						// System.out.flush();
 					}
 					br.close();
-				}*/
+				}
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			//} catch (InterruptedException e) {
-			//	e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+
 		}
 	}
 
-	public DefaultToolchainItem(String name, String... parameters) {
+	public ExternalRunnerToolchainStage(String name, String... parameters) {
 		this(name, Arrays.asList(parameters));
 	}
 
-	public DefaultToolchainItem(String name, List<String> parameters) {
+	public ExternalRunnerToolchainStage(String name, List<String> parameters) {
 		this.name = name;
 		this.processbuilder = new ProcessBuilder(patchStartCommand(parameters));
 	}
 
 	@Override
 	public void start() {
-		//thread = new Thread(new ToolchainProcess());
-		//thread.start();
-		try {
-			process = processbuilder.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Console.println(name);
+		for (String command : processbuilder.command()) {
+			Console.print(command);
 		}
+		Console.println();
+		thread = new Thread(new ToolchainProcess());
+		thread.start();
 	}
 
 	@Override
 	public void stop() {
 		process.destroy();
-		//thread = null;
+		thread = null;
 	}
 
 	@Override

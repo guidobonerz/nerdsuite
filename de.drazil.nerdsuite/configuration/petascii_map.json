@@ -1,1794 +1,1030 @@
-[
-	{
-		"id": 0,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE80",
-		"name": ""
-	},
-	{
-		"id": 1,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE81",
-		"name": ""
-	},
-	{
-		"id": 2,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE82",
-		"name": ""
-	},
-	{
-		"id": 3,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE83",
-		"name": "stop"
-	},
-	{
-		"id": 4,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE84",
-		"name": ""
-	},
-	{
-		"id": 5,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE85",
-		"name": "white"
-	},
-	{
-		"id": 6,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE86",
-		"name": ""
-	},
-	{
-		"id": 7,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE87",
-		"name": "enable shift+c"
-	},
-	{
-		"id": 8,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE88",
-		"name": "disable shift+c"
-	},
-	{
-		"id": 9,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE89",
-		"name": ""
-	},
-	{
-		"id": 10,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE8A",
-		"name": ""
-	},
-	{
-		"id": 11,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE8B",
-		"name": ""
-	},
-	{
-		"id": 12,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE8C",
-		"name": ""
-	},
-	{
-		"id": 13,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE8D",
-		"name": "return"
-	},
-	{
-		"id": 14,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE8E",
-		"name": "lower case"
-	},
-	{
-		"id": 15,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE8F",
-		"name": ""
-	},
-	{
-		"id": 16,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE90",
-		"name": "cursor down"
-	},
-	{
-		"id": 17,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE91",
-		"name": "reverse on"
-	},
-	{
-		"id": 18,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE92",
-		"name": "home"
-	},
-	{
-		"id": 19,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE93",
-		"name": "delete"
-	},
-	{
-		"id": 20,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE94",
-		"name": ""
-	},
-	{
-		"id": 21,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE95",
-		"name": ""
-	},
-	{
-		"id": 22,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE96",
-		"name": ""
-	},
-	{
-		"id": 23,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE97",
-		"name": ""
-	},
-	{
-		"id": 24,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE98",
-		"name": ""
-	},
-	{
-		"id": 25,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE99",
-		"name": ""
-	},
-	{
-		"id": 26,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE9A",
-		"name": ""
-	},
-	{
-		"id": 27,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE9B",
-		"name": ""
-	},
-	{
-		"id": 28,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE9C",
-		"name": "red"
-	},
-	{
-		"id": 29,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE9D",
-		"name": "cursor right"
-	},
-	{
-		"id": 30,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE9E",
-		"name": "green"
-	},
-	{
-		"id": 31,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE9F",
-		"name": "blue"
-	},
-	{
-		"id": 32,
-		"ascii": 32,
-		"screencode": 32,
-		"unicode": "\\uEE20",
-		"name": ""
-	},
-	{
-		"id": 33,
-		"ascii": 33,
-		"screencode": 33,
-		"unicode": "\\uEE21",
-		"name": ""
-	},
-	{
-		"id": 34,
-		"ascii": 34,
-		"screencode": 34,
-		"unicode": "\\uEE22",
-		"name": ""
-	},
-	{
-		"id": 35,
-		"ascii": 35,
-		"screencode": 35,
-		"unicode": "\\uEE23",
-		"name": ""
-	},
-	{
-		"id": 36,
-		"ascii": 36,
-		"screencode": 36,
-		"unicode": "\\uEE24",
-		"name": ""
-	},
-	{
-		"id": 37,
-		"ascii": 37,
-		"screencode": 37,
-		"unicode": "\\uEE25",
-		"name": ""
-	},
-	{
-		"id": 38,
-		"ascii": 38,
-		"screencode": 38,
-		"unicode": "\\uEE26",
-		"name": ""
-	},
-	{
-		"id": 39,
-		"ascii": 39,
-		"screencode": 39,
-		"unicode": "\\uEE27",
-		"name": ""
-	},
-	{
-		"id": 40,
-		"ascii": 40,
-		"screencode": 40,
-		"unicode": "\\uEE28",
-		"name": ""
-	},
-	{
-		"id": 41,
-		"ascii": 41,
-		"screencode": 41,
-		"unicode": "\\uEE29",
-		"name": ""
-	},
-	{
-		"id": 42,
-		"ascii": 42,
-		"screencode": 42,
-		"unicode": "\\uEE2A",
-		"name": ""
-	},
-	{
-		"id": 43,
-		"ascii": 43,
-		"screencode": 43,
-		"unicode": "\\uEE2B",
-		"name": ""
-	},
-	{
-		"id": 44,
-		"ascii": 44,
-		"screencode": 44,
-		"unicode": "\\uEE2C",
-		"name": ""
-	},
-	{
-		"id": 45,
-		"ascii": 45,
-		"screencode": 45,
-		"unicode": "\\uEE2D",
-		"name": ""
-	},
-	{
-		"id": 46,
-		"ascii": 46,
-		"screencode": 46,
-		"unicode": "\\uEE2E",
-		"name": ""
-	},
-	{
-		"id": 47,
-		"ascii": 47,
-		"screencode": 47,
-		"unicode": "\\uEE2F",
-		"name": ""
-	},
-	{
-		"id": 48,
-		"ascii": 48,
-		"screencode": 48,
-		"unicode": "\\uEE30",
-		"name": ""
-	},
-	{
-		"id": 49,
-		"ascii": 49,
-		"screencode": 49,
-		"unicode": "\\uEE31",
-		"name": ""
-	},
-	{
-		"id": 50,
-		"ascii": 50,
-		"screencode": 50,
-		"unicode": "\\uEE32",
-		"name": ""
-	},
-	{
-		"id": 51,
-		"ascii": 51,
-		"screencode": 51,
-		"unicode": "\\uEE33",
-		"name": ""
-	},
-	{
-		"id": 52,
-		"ascii": 52,
-		"screencode": 52,
-		"unicode": "\\uEE34",
-		"name": ""
-	},
-	{
-		"id": 53,
-		"ascii": 53,
-		"screencode": 53,
-		"unicode": "\\uEE35",
-		"name": ""
-	},
-	{
-		"id": 54,
-		"ascii": 54,
-		"screencode": 54,
-		"unicode": "\\uEE36",
-		"name": ""
-	},
-	{
-		"id": 55,
-		"ascii": 55,
-		"screencode": 55,
-		"unicode": "\\uEE37",
-		"name": ""
-	},
-	{
-		"id": 56,
-		"ascii": 56,
-		"screencode": 56,
-		"unicode": "\\uEE38",
-		"name": ""
-	},
-	{
-		"id": 57,
-		"ascii": 57,
-		"screencode": 57,
-		"unicode": "\\uEE39",
-		"name": ""
-	},
-	{
-		"id": 58,
-		"ascii": 58,
-		"screencode": 58,
-		"unicode": "\\uEE3A",
-		"name": ""
-	},
-	{
-		"id": 59,
-		"ascii": 59,
-		"screencode": 59,
-		"unicode": "\\uEE3B",
-		"name": ""
-	},
-	{
-		"id": 60,
-		"ascii": 60,
-		"screencode": 60,
-		"unicode": "\\uEE3C",
-		"name": ""
-	},
-	{
-		"id": 61,
-		"ascii": 61,
-		"screencode": 61,
-		"unicode": "\\uEE3D",
-		"name": ""
-	},
-	{
-		"id": 62,
-		"ascii": 62,
-		"screencode": 62,
-		"unicode": "\\uEE3E",
-		"name": ""
-	},
-	{
-		"id": 63,
-		"ascii": 63,
-		"screencode": 63,
-		"unicode": "\\uEE3F",
-		"name": ""
-	},
-	{
-		"id": 64,
-		"ascii": 64,
-		"screencode": 0,
-		"unicode": "\\uEE00",
-		"name": ""
-	},
-	{
-		"id": 65,
-		"ascii": 65,
-		"screencode": 1,
-		"unicode": "\\uEE01",
-		"name": ""
-	},
-	{
-		"id": 66,
-		"ascii": 66,
-		"screencode": 2,
-		"unicode": "\\uEE02",
-		"name": ""
-	},
-	{
-		"id": 67,
-		"ascii": 67,
-		"screencode": 3,
-		"unicode": "\\uEE03",
-		"name": ""
-	},
-	{
-		"id": 68,
-		"ascii": 68,
-		"screencode": 4,
-		"unicode": "\\uEE04",
-		"name": ""
-	},
-	{
-		"id": 69,
-		"ascii": 69,
-		"screencode": 5,
-		"unicode": "\\uEE05",
-		"name": ""
-	},
-	{
-		"id": 70,
-		"ascii": 70,
-		"screencode": 6,
-		"unicode": "\\uEE06",
-		"name": ""
-	},
-	{
-		"id": 71,
-		"ascii": 71,
-		"screencode": 7,
-		"unicode": "\\uEE07",
-		"name": ""
-	},
-	{
-		"id": 72,
-		"ascii": 72,
-		"screencode": 8,
-		"unicode": "\\uEE08",
-		"name": ""
-	},
-	{
-		"id": 73,
-		"ascii": 73,
-		"screencode": 9,
-		"unicode": "\\uEE09",
-		"name": ""
-	},
-	{
-		"id": 74,
-		"ascii": 74,
-		"screencode": 10,
-		"unicode": "\\uEE0A",
-		"name": ""
-	},
-	{
-		"id": 75,
-		"ascii": 75,
-		"screencode": 11,
-		"unicode": "\\uEE0B",
-		"name": ""
-	},
-	{
-		"id": 76,
-		"ascii": 76,
-		"screencode": 12,
-		"unicode": "\\uEE0C",
-		"name": ""
-	},
-	{
-		"id": 77,
-		"ascii": 77,
-		"screencode": 13,
-		"unicode": "\\uEE0D",
-		"name": ""
-	},
-	{
-		"id": 78,
-		"ascii": 78,
-		"screencode": 14,
-		"unicode": "\\uEE0E",
-		"name": ""
-	},
-	{
-		"id": 79,
-		"ascii": 79,
-		"screencode": 15,
-		"unicode": "\\uEE0F",
-		"name": ""
-	},
-	{
-		"id": 80,
-		"ascii": 80,
-		"screencode": 16,
-		"unicode": "\\uEE10",
-		"name": ""
-	},
-	{
-		"id": 81,
-		"ascii": 81,
-		"screencode": 17,
-		"unicode": "\\uEE11",
-		"name": ""
-	},
-	{
-		"id": 82,
-		"ascii": 82,
-		"screencode": 18,
-		"unicode": "\\uEE12",
-		"name": ""
-	},
-	{
-		"id": 83,
-		"ascii": 83,
-		"screencode": 19,
-		"unicode": "\\uEE13",
-		"name": ""
-	},
-	{
-		"id": 84,
-		"ascii": 84,
-		"screencode": 20,
-		"unicode": "\\uEE14",
-		"name": ""
-	},
-	{
-		"id": 85,
-		"ascii": 85,
-		"screencode": 21,
-		"unicode": "\\uEE15",
-		"name": ""
-	},
-	{
-		"id": 86,
-		"ascii": 86,
-		"screencode": 22,
-		"unicode": "\\uEE16",
-		"name": ""
-	},
-	{
-		"id": 87,
-		"ascii": 87,
-		"screencode": 23,
-		"unicode": "\\uEE17",
-		"name": ""
-	},
-	{
-		"id": 88,
-		"ascii": 88,
-		"screencode": 24,
-		"unicode": "\\uEE18",
-		"name": ""
-	},
-	{
-		"id": 89,
-		"ascii": 89,
-		"screencode": 25,
-		"unicode": "\\uEE19",
-		"name": ""
-	},
-	{
-		"id": 90,
-		"ascii": 90,
-		"screencode": 26,
-		"unicode": "\\uEE1A",
-		"name": ""
-	},
-	{
-		"id": 91,
-		"ascii": 91,
-		"screencode": 27,
-		"unicode": "\\uEE1B",
-		"name": ""
-	},
-	{
-		"id": 92,
-		"ascii": 92,
-		"screencode": 28,
-		"unicode": "\\uEE1C",
-		"name": ""
-	},
-	{
-		"id": 93,
-		"ascii": 93,
-		"screencode": 29,
-		"unicode": "\\uEE1D",
-		"name": ""
-	},
-	{
-		"id": 94,
-		"ascii": 94,
-		"screencode": 30,
-		"unicode": "\\uEE1E",
-		"name": ""
-	},
-	{
-		"id": 95,
-		"ascii": 95,
-		"screencode": 31,
-		"unicode": "\\uEE1F",
-		"name": ""
-	},
-	{
-		"id": 96,
-		"ascii": 0,
-		"screencode": 32,
-		"unicode": "\\uEE40",
-		"name": ""
-	},
-	{
-		"id": 97,
-		"ascii": 0,
-		"screencode": 33,
-		"unicode": "\\uEE41",
-		"name": ""
-	},
-	{
-		"id": 98,
-		"ascii": 0,
-		"screencode": 34,
-		"unicode": "\\uEE42",
-		"name": ""
-	},
-	{
-		"id": 99,
-		"ascii": 0,
-		"screencode": 35,
-		"unicode": "\\uEE43",
-		"name": ""
-	},
-	{
-		"id": 100,
-		"ascii": 0,
-		"screencode": 36,
-		"unicode": "\\uEE44",
-		"name": ""
-	},
-	{
-		"id": 101,
-		"ascii": 0,
-		"screencode": 37,
-		"unicode": "\\uEE45",
-		"name": ""
-	},
-	{
-		"id": 102,
-		"ascii": 0,
-		"screencode": 38,
-		"unicode": "\\uEE46",
-		"name": ""
-	},
-	{
-		"id": 103,
-		"ascii": 0,
-		"screencode": 39,
-		"unicode": "\\uEE47",
-		"name": ""
-	},
-	{
-		"id": 104,
-		"ascii": 0,
-		"screencode": 40,
-		"unicode": "\\uEE48",
-		"name": ""
-	},
-	{
-		"id": 105,
-		"ascii": 0,
-		"screencode": 41,
-		"unicode": "\\uEE49",
-		"name": ""
-	},
-	{
-		"id": 106,
-		"ascii": 0,
-		"screencode": 42,
-		"unicode": "\\uEE4A",
-		"name": ""
-	},
-	{
-		"id": 107,
-		"ascii": 0,
-		"screencode": 43,
-		"unicode": "\\uEE4B",
-		"name": ""
-	},
-	{
-		"id": 108,
-		"ascii": 0,
-		"screencode": 44,
-		"unicode": "\\uEE4C",
-		"name": ""
-	},
-	{
-		"id": 109,
-		"ascii": 0,
-		"screencode": 45,
-		"unicode": "\\uEE4D",
-		"name": ""
-	},
-	{
-		"id": 110,
-		"ascii": 0,
-		"screencode": 46,
-		"unicode": "\\uEE4E",
-		"name": ""
-	},
-	{
-		"id": 111,
-		"ascii": 0,
-		"screencode": 47,
-		"unicode": "\\uEE4F",
-		"name": ""
-	},
-	{
-		"id": 112,
-		"ascii": 0,
-		"screencode": 48,
-		"unicode": "\\uEE50",
-		"name": ""
-	},
-	{
-		"id": 113,
-		"ascii": 0,
-		"screencode": 49,
-		"unicode": "\\uEE51",
-		"name": ""
-	},
-	{
-		"id": 114,
-		"ascii": 0,
-		"screencode": 50,
-		"unicode": "\\uEE52",
-		"name": ""
-	},
-	{
-		"id": 115,
-		"ascii": 0,
-		"screencode": 51,
-		"unicode": "\\uEE53",
-		"name": ""
-	},
-	{
-		"id": 116,
-		"ascii": 0,
-		"screencode": 52,
-		"unicode": "\\uEE54",
-		"name": ""
-	},
-	{
-		"id": 117,
-		"ascii": 0,
-		"screencode": 53,
-		"unicode": "\\uEE55",
-		"name": ""
-	},
-	{
-		"id": 118,
-		"ascii": 0,
-		"screencode": 54,
-		"unicode": "\\uEE56",
-		"name": ""
-	},
-	{
-		"id": 119,
-		"ascii": 0,
-		"screencode": 55,
-		"unicode": "\\uEE57",
-		"name": ""
-	},
-	{
-		"id": 120,
-		"ascii": 0,
-		"screencode": 56,
-		"unicode": "\\uEE58",
-		"name": ""
-	},
-	{
-		"id": 121,
-		"ascii": 0,
-		"screencode": 57,
-		"unicode": "\\uEE59",
-		"name": ""
-	},
-	{
-		"id": 122,
-		"ascii": 0,
-		"screencode": 58,
-		"unicode": "\\uEE5A",
-		"name": ""
-	},
-	{
-		"id": 123,
-		"ascii": 0,
-		"screencode": 59,
-		"unicode": "\\uEE5B",
-		"name": ""
-	},
-	{
-		"id": 124,
-		"ascii": 0,
-		"screencode": 60,
-		"unicode": "\\uEE5C",
-		"name": ""
-	},
-	{
-		"id": 125,
-		"ascii": 0,
-		"screencode": 61,
-		"unicode": "\\uEE5D",
-		"name": ""
-	},
-	{
-		"id": 126,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE5E",
-		"name": ""
-	},
-	{
-		"id": 127,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEE5F",
-		"name": ""
-	},
-	{
-		"id": 128,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC0",
-		"name": ""
-	},
-	{
-		"id": 129,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC1",
-		"name": "orange"
-	},
-	{
-		"id": 130,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC2",
-		"name": ""
-	},
-	{
-		"id": 131,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC3",
-		"name": "run"
-	},
-	{
-		"id": 132,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC4",
-		"name": ""
-	},
-	{
-		"id": 133,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC5",
-		"name": "f1"
-	},
-	{
-		"id": 134,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC6",
-		"name": "f2"
-	},
-	{
-		"id": 135,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC7",
-		"name": "f3"
-	},
-	{
-		"id": 136,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC8",
-		"name": "f4"
-	},
-	{
-		"id": 137,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEC9",
-		"name": "f5"
-	},
-	{
-		"id": 138,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEECA",
-		"name": "f6"
-	},
-	{
-		"id": 139,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEECB",
-		"name": "f7"
-	},
-	{
-		"id": 140,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEECC",
-		"name": "f8"
-	},
-	{
-		"id": 141,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEECD",
-		"name": "shift/return"
-	},
-	{
-		"id": 142,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEECE",
-		"name": "upper case"
-	},
-	{
-		"id": 143,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEECF",
-		"name": ""
-	},
-	{
-		"id": 144,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED0",
-		"name": "black"
-	},
-	{
-		"id": 145,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED1",
-		"name": "cursor up"
-	},
-	{
-		"id": 146,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED2",
-		"name": "reverse off"
-	},
-	{
-		"id": 147,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED3",
-		"name": "clear"
-	},
-	{
-		"id": 148,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED4",
-		"name": "insert"
-	},
-	{
-		"id": 149,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED5",
-		"name": "brown"
-	},
-	{
-		"id": 150,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED6",
-		"name": "light red"
-	},
-	{
-		"id": 151,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED7",
-		"name": "dark grey"
-	},
-	{
-		"id": 152,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED8",
-		"name": "mid grey"
-	},
-	{
-		"id": 153,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEED9",
-		"name": "light green"
-	},
-	{
-		"id": 154,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEDA",
-		"name": "light blue"
-	},
-	{
-		"id": 155,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEDB",
-		"name": "light grey"
-	},
-	{
-		"id": 156,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEDC",
-		"name": "purple"
-	},
-	{
-		"id": 157,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEDD",
-		"name": "cursor left"
-	},
-	{
-		"id": 158,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEDE",
-		"name": "yellow"
-	},
-	{
-		"id": 159,
-		"ascii": 0,
-		"screencode": 0,
-		"unicode": "\\uEEDF",
-		"name": "cyan"
-	},
-	{
-		"id": 160,
-		"ascii": 0,
-		"screencode": 96,
-		"unicode": "\\uEE60",
-		"name": ""
-	},
-	{
-		"id": 161,
-		"ascii": 0,
-		"screencode": 97,
-		"unicode": "\\uEE61",
-		"name": ""
-	},
-	{
-		"id": 162,
-		"ascii": 0,
-		"screencode": 98,
-		"unicode": "\\uEE62",
-		"name": ""
-	},
-	{
-		"id": 163,
-		"ascii": 0,
-		"screencode": 99,
-		"unicode": "\\uEE63",
-		"name": ""
-	},
-	{
-		"id": 164,
-		"ascii": 0,
-		"screencode": 100,
-		"unicode": "\\uEE64",
-		"name": ""
-	},
-	{
-		"id": 165,
-		"ascii": 0,
-		"screencode": 101,
-		"unicode": "\\uEE65",
-		"name": ""
-	},
-	{
-		"id": 166,
-		"ascii": 0,
-		"screencode": 102,
-		"unicode": "\\uEE66",
-		"name": ""
-	},
-	{
-		"id": 167,
-		"ascii": 0,
-		"screencode": 103,
-		"unicode": "\\uEE67",
-		"name": ""
-	},
-	{
-		"id": 168,
-		"ascii": 0,
-		"screencode": 104,
-		"unicode": "\\uEE68",
-		"name": ""
-	},
-	{
-		"id": 169,
-		"ascii": 0,
-		"screencode": 105,
-		"unicode": "\\uEE69",
-		"name": ""
-	},
-	{
-		"id": 170,
-		"ascii": 0,
-		"screencode": 106,
-		"unicode": "\\uEE6A",
-		"name": ""
-	},
-	{
-		"id": 171,
-		"ascii": 0,
-		"screencode": 107,
-		"unicode": "\\uEE6B",
-		"name": ""
-	},
-	{
-		"id": 172,
-		"ascii": 0,
-		"screencode": 108,
-		"unicode": "\\uEE6C",
-		"name": ""
-	},
-	{
-		"id": 173,
-		"ascii": 0,
-		"screencode": 109,
-		"unicode": "\\uEE6D",
-		"name": ""
-	},
-	{
-		"id": 174,
-		"ascii": 0,
-		"screencode": 110,
-		"unicode": "\\uEE6E",
-		"name": ""
-	},
-	{
-		"id": 175,
-		"ascii": 0,
-		"screencode": 111,
-		"unicode": "\\uEE6F",
-		"name": ""
-	},
-	{
-		"id": 176,
-		"ascii": 0,
-		"screencode": 112,
-		"unicode": "\\uEE70",
-		"name": ""
-	},
-	{
-		"id": 177,
-		"ascii": 0,
-		"screencode": 113,
-		"unicode": "\\uEE71",
-		"name": ""
-	},
-	{
-		"id": 178,
-		"ascii": 0,
-		"screencode": 114,
-		"unicode": "\\uEE72",
-		"name": ""
-	},
-	{
-		"id": 179,
-		"ascii": 0,
-		"screencode": 115,
-		"unicode": "\\uEE73",
-		"name": ""
-	},
-	{
-		"id": 180,
-		"ascii": 0,
-		"screencode": 116,
-		"unicode": "\\uEE74",
-		"name": ""
-	},
-	{
-		"id": 181,
-		"ascii": 0,
-		"screencode": 117,
-		"unicode": "\\uEE75",
-		"name": ""
-	},
-	{
-		"id": 182,
-		"ascii": 0,
-		"screencode": 118,
-		"unicode": "\\uEE76",
-		"name": ""
-	},
-	{
-		"id": 183,
-		"ascii": 0,
-		"screencode": 119,
-		"unicode": "\\uEE77",
-		"name": ""
-	},
-	{
-		"id": 184,
-		"ascii": 0,
-		"screencode": 120,
-		"unicode": "\\uEE78",
-		"name": ""
-	},
-	{
-		"id": 185,
-		"ascii": 0,
-		"screencode": 121,
-		"unicode": "\\uEE79",
-		"name": ""
-	},
-	{
-		"id": 186,
-		"ascii": 0,
-		"screencode": 122,
-		"unicode": "\\uEE7A",
-		"name": ""
-	},
-	{
-		"id": 187,
-		"ascii": 0,
-		"screencode": 123,
-		"unicode": "\\uEE7B",
-		"name": ""
-	},
-	{
-		"id": 188,
-		"ascii": 0,
-		"screencode": 124,
-		"unicode": "\\uEE7C",
-		"name": ""
-	},
-	{
-		"id": 189,
-		"ascii": 0,
-		"screencode": 125,
-		"unicode": "\\uEE7D",
-		"name": ""
-	},
-	{
-		"id": 190,
-		"ascii": 0,
-		"screencode": 126,
-		"unicode": "\\uEE7E",
-		"name": ""
-	},
-	{
-		"id": 191,
-		"ascii": 0,
-		"screencode": 127,
-		"unicode": "\\uEE7F",
-		"name": ""
-	},
-	{
-		"id": 192,
-		"ascii": 0,
-		"screencode": 64,
-		"unicode": "\\uEEA0",
-		"name": ""
-	},
-	{
-		"id": 193,
-		"ascii": 0,
-		"screencode": 65,
-		"unicode": "\\uEE41",
-		"name": ""
-	},
-	{
-		"id": 194,
-		"ascii": 0,
-		"screencode": 66,
-		"unicode": "\\uEE42",
-		"name": ""
-	},
-	{
-		"id": 195,
-		"ascii": 0,
-		"screencode": 67,
-		"unicode": "\\uEE43",
-		"name": ""
-	},
-	{
-		"id": 196,
-		"ascii": 0,
-		"screencode": 68,
-		"unicode": "\\uEE44",
-		"name": ""
-	},
-	{
-		"id": 197,
-		"ascii": 0,
-		"screencode": 69,
-		"unicode": "\\uEE45",
-		"name": ""
-	},
-	{
-		"id": 198,
-		"ascii": 0,
-		"screencode": 70,
-		"unicode": "\\uEE46",
-		"name": ""
-	},
-	{
-		"id": 199,
-		"ascii": 0,
-		"screencode": 71,
-		"unicode": "\\uEE47",
-		"name": ""
-	},
-	{
-		"id": 200,
-		"ascii": 0,
-		"screencode": 72,
-		"unicode": "\\uEE48",
-		"name": ""
-	},
-	{
-		"id": 201,
-		"ascii": 0,
-		"screencode": 73,
-		"unicode": "\\uEE49",
-		"name": ""
-	},
-	{
-		"id": 202,
-		"ascii": 0,
-		"screencode": 74,
-		"unicode": "\\uEE4A",
-		"name": ""
-	},
-	{
-		"id": 203,
-		"ascii": 0,
-		"screencode": 75,
-		"unicode": "\\uEE4B",
-		"name": ""
-	},
-	{
-		"id": 204,
-		"ascii": 0,
-		"screencode": 76,
-		"unicode": "\\uEE4C",
-		"name": ""
-	},
-	{
-		"id": 205,
-		"ascii": 0,
-		"screencode": 77,
-		"unicode": "\\uEE4D",
-		"name": ""
-	},
-	{
-		"id": 206,
-		"ascii": 0,
-		"screencode": 78,
-		"unicode": "\\uEE4E",
-		"name": ""
-	},
-	{
-		"id": 207,
-		"ascii": 0,
-		"screencode": 79,
-		"unicode": "\\uEE4F",
-		"name": ""
-	},
-	{
-		"id": 208,
-		"ascii": 0,
-		"screencode": 80,
-		"unicode": "\\uEE50",
-		"name": ""
-	},
-	{
-		"id": 209,
-		"ascii": 0,
-		"screencode": 81,
-		"unicode": "\\uEE51",
-		"name": ""
-	},
-	{
-		"id": 210,
-		"ascii": 0,
-		"screencode": 82,
-		"unicode": "\\uEE52",
-		"name": ""
-	},
-	{
-		"id": 211,
-		"ascii": 0,
-		"screencode": 83,
-		"unicode": "\\uEE53",
-		"name": ""
-	},
-	{
-		"id": 212,
-		"ascii": 0,
-		"screencode": 84,
-		"unicode": "\\uEE54",
-		"name": ""
-	},
-	{
-		"id": 213,
-		"ascii": 0,
-		"screencode": 85,
-		"unicode": "\\uEE55",
-		"name": ""
-	},
-	{
-		"id": 214,
-		"ascii": 0,
-		"screencode": 86,
-		"unicode": "\\uEE56",
-		"name": ""
-	},
-	{
-		"id": 215,
-		"ascii": 0,
-		"screencode": 87,
-		"unicode": "\\uEE57",
-		"name": ""
-	},
-	{
-		"id": 216,
-		"ascii": 0,
-		"screencode": 88,
-		"unicode": "\\uEE58",
-		"name": ""
-	},
-	{
-		"id": 217,
-		"ascii": 0,
-		"screencode": 89,
-		"unicode": "\\uEE59",
-		"name": ""
-	},
-	{
-		"id": 218,
-		"ascii": 0,
-		"screencode": 90,
-		"unicode": "\\uEE5A",
-		"name": ""
-	},
-	{
-		"id": 219,
-		"ascii": 0,
-		"screencode": 91,
-		"unicode": "\\uEE5B",
-		"name": ""
-	},
-	{
-		"id": 220,
-		"ascii": 0,
-		"screencode": 92,
-		"unicode": "\\uEE5C",
-		"name": ""
-	},
-	{
-		"id": 221,
-		"ascii": 0,
-		"screencode": 93,
-		"unicode": "\\uEE5D",
-		"name": ""
-	},
-	{
-		"id": 222,
-		"ascii": 0,
-		"screencode": 94,
-		"unicode": "\\uEE5E",
-		"name": ""
-	},
-	{
-		"id": 223,
-		"ascii": 0,
-		"screencode": 95,
-		"unicode": "\\uEE5F",
-		"name": ""
-	},
-	{
-		"id": 224,
-		"ascii": 0,
-		"screencode": 96,
-		"unicode": "\\uEE60",
-		"name": ""
-	},
-	{
-		"id": 225,
-		"ascii": 0,
-		"screencode": 97,
-		"unicode": "\\uEE61",
-		"name": ""
-	},
-	{
-		"id": 226,
-		"ascii": 0,
-		"screencode": 98,
-		"unicode": "\\uEE62",
-		"name": ""
-	},
-	{
-		"id": 227,
-		"ascii": 0,
-		"screencode": 99,
-		"unicode": "\\uEE63",
-		"name": ""
-	},
-	{
-		"id": 228,
-		"ascii": 0,
-		"screencode": 100,
-		"unicode": "\\uEE64",
-		"name": ""
-	},
-	{
-		"id": 229,
-		"ascii": 0,
-		"screencode": 101,
-		"unicode": "\\uEE65",
-		"name": ""
-	},
-	{
-		"id": 230,
-		"ascii": 0,
-		"screencode": 102,
-		"unicode": "\\uEE66",
-		"name": ""
-	},
-	{
-		"id": 231,
-		"ascii": 0,
-		"screencode": 103,
-		"unicode": "\\uEE67",
-		"name": ""
-	},
-	{
-		"id": 232,
-		"ascii": 0,
-		"screencode": 104,
-		"unicode": "\\uEE68",
-		"name": ""
-	},
-	{
-		"id": 233,
-		"ascii": 0,
-		"screencode": 105,
-		"unicode": "\\uEE69",
-		"name": ""
-	},
-	{
-		"id": 234,
-		"ascii": 0,
-		"screencode": 106,
-		"unicode": "\\uEE6A",
-		"name": ""
-	},
-	{
-		"id": 235,
-		"ascii": 0,
-		"screencode": 107,
-		"unicode": "\\uEE6B",
-		"name": ""
-	},
-	{
-		"id": 236,
-		"ascii": 0,
-		"screencode": 108,
-		"unicode": "\\uEE6C",
-		"name": ""
-	},
-	{
-		"id": 237,
-		"ascii": 0,
-		"screencode": 109,
-		"unicode": "\\uEE6D",
-		"name": ""
-	},
-	{
-		"id": 238,
-		"ascii": 0,
-		"screencode": 110,
-		"unicode": "\\uEE6E",
-		"name": ""
-	},
-	{
-		"id": 239,
-		"ascii": 0,
-		"screencode": 111,
-		"unicode": "\\uEE6F",
-		"name": ""
-	},
-	{
-		"id": 240,
-		"ascii": 0,
-		"screencode": 112,
-		"unicode": "\\uEE70",
-		"name": ""
-	},
-	{
-		"id": 241,
-		"ascii": 0,
-		"screencode": 113,
-		"unicode": "\\uEE71",
-		"name": ""
-	},
-	{
-		"id": 242,
-		"ascii": 0,
-		"screencode": 114,
-		"unicode": "\\uEE72",
-		"name": ""
-	},
-	{
-		"id": 243,
-		"ascii": 0,
-		"screencode": 115,
-		"unicode": "\\uEE73",
-		"name": ""
-	},
-	{
-		"id": 244,
-		"ascii": 0,
-		"screencode": 116,
-		"unicode": "\\uEE74",
-		"name": ""
-	},
-	{
-		"id": 245,
-		"ascii": 0,
-		"screencode": 117,
-		"unicode": "\\uEE75",
-		"name": ""
-	},
-	{
-		"id": 246,
-		"ascii": 0,
-		"screencode": 118,
-		"unicode": "\\uEE76",
-		"name": ""
-	},
-	{
-		"id": 247,
-		"ascii": 0,
-		"screencode": 119,
-		"unicode": "\\uEE77",
-		"name": ""
-	},
-	{
-		"id": 248,
-		"ascii": 0,
-		"screencode": 120,
-		"unicode": "\\uEE78",
-		"name": ""
-	},
-	{
-		"id": 249,
-		"ascii": 0,
-		"screencode": 121,
-		"unicode": "\\uEE79",
-		"name": ""
-	},
-	{
-		"id": 250,
-		"ascii": 0,
-		"screencode": 122,
-		"unicode": "\\uEE7A",
-		"name": ""
-	},
-	{
-		"id": 251,
-		"ascii": 0,
-		"screencode": 123,
-		"unicode": "\\uEE7B",
-		"name": ""
-	},
-	{
-		"id": 252,
-		"ascii": 0,
-		"screencode": 124,
-		"unicode": "\\uEE7C",
-		"name": ""
-	},
-	{
-		"id": 253,
-		"ascii": 0,
-		"screencode": 125,
-		"unicode": "\\uEE7D",
-		"name": ""
-	},
-	{
-		"id": 254,
-		"ascii": 0,
-		"screencode": 126,
-		"unicode": "\\uEE7E",
-		"name": ""
-	},
-	{
-		"id": 255,
-		"ascii": 0,
-		"screencode": 127,
-		"unicode": "\\uEEFF",
-		"name": ""
-	}
-]
+{
+	"defaultCaseState": true, "upperCharIndexOrder": [144, 5, 28, 159, 156, 30, 31, 158, 129, 149, 150, 151, 152, 153, 154, 155, 147, 19, 148, 20, 13, 32, 32, 142, 14, 17, 146, 32, 145, 16, 157, 29, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 176, 178, 174, 114, 102, 96, 99, 100, 101, 117, 105, 119, 113, 111, 183, 112, 171, 123, 179, 110, 109, 118, 185, 184, 166, 106, 107, 172, 187, 180, 160, 167, 173, 177, 189, 127, 169, 182, 181, 168, 124, 126, 161, 188, 190, 108, 175, 186, 180, 116, 103, 98, 125, 104, 121, 167, 163, 164, 191, 162, 122, 97, 115, 120, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32
+	], "lowerCharIndexOrder": [
+	], "characterMap": [{
+			"id": 0, "screencode": 0, "unicode": "\uEE80", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 1, "screencode": 0, "unicode": "\uEE81", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 2, "screencode": 0, "unicode": "\uEE82", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 3, "screencode": 0, "unicode": "\uEE83", "altUnicode": "", "name": "stop", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 4, "screencode": 0, "unicode": "\uEE84", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 5, "screencode": 0, "unicode": "\uEE85", "altUnicode": "", "name": "white", "color": true, "control": false, "customValue": "1", "upper": true
+		}, {
+			"id": 6, "screencode": 0, "unicode": "\uEE86", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 7, "screencode": 0, "unicode": "\uEE87", "altUnicode": "", "name": "enable shift+c", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 8, "screencode": 0, "unicode": "\uEE88", "altUnicode": "", "name": "disable shift+c", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 9, "screencode": 0, "unicode": "\uEE89", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 10, "screencode": 0, "unicode": "\uEE8A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 11, "screencode": 0, "unicode": "\uEE8B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 12, "screencode": 0, "unicode": "\uEE8C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 13, "screencode": 0, "unicode": "\uEE8D", "altUnicode": "\ue31b", "name": "return", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 14, "screencode": 0, "unicode": "\uEE8E", "altUnicode": "\uead0", "name": "lower case", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 15, "screencode": 0, "unicode": "\uEE8F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 16, "screencode": 0, "unicode": "\uEE90", "altUnicode": "\ue313", "name": "cursor down", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 17, "screencode": 0, "unicode": "\uEE91", "altUnicode": "\ue891", "name": "reverse on", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 18, "screencode": 0, "unicode": "\uEE92", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 19, "screencode": 0, "unicode": "\uEE93", "altUnicode": "\ue88a", "name": "home", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 20, "screencode": 0, "unicode": "\uEE94", "altUnicode": "\ue317", "name": "delete", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 21, "screencode": 0, "unicode": "\uEE95", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 22, "screencode": 0, "unicode": "\uEE96", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 23, "screencode": 0, "unicode": "\uEE97", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 24, "screencode": 0, "unicode": "\uEE98", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 25, "screencode": 0, "unicode": "\uEE99", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 26, "screencode": 0, "unicode": "\uEE9A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 27, "screencode": 0, "unicode": "\uEE9B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 28, "screencode": 0, "unicode": "\uEE9C", "altUnicode": "", "name": "red", "color": true, "control": false, "customValue": "2", "upper": true
+		}, {
+			"id": 29, "screencode": 0, "unicode": "\uEE9D", "altUnicode": "\ue315", "name": "cursor right", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 30, "screencode": 0, "unicode": "\uEE9E", "altUnicode": "", "name": "green", "color": true, "control": false, "customValue": "5", "upper": true
+		}, {
+			"id": 31, "screencode": 0, "unicode": "\uEE9F", "altUnicode": "", "name": "blue", "color": true, "control": false, "customValue": "6", "upper": true
+		}, {
+			"id": 32, "screencode": 32, "unicode": "\uEE20", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 33, "screencode": 33, "unicode": "\uEE21", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 34, "screencode": 34, "unicode": "\uEE22", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 35, "screencode": 35, "unicode": "\uEE23", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 36, "screencode": 36, "unicode": "\uEE24", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 37, "screencode": 37, "unicode": "\uEE25", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 38, "screencode": 38, "unicode": "\uEE26", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 39, "screencode": 39, "unicode": "\uEE27", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 40, "screencode": 40, "unicode": "\uEE28", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 41, "screencode": 41, "unicode": "\uEE29", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 42, "screencode": 42, "unicode": "\uEE2A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 43, "screencode": 43, "unicode": "\uEE2B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 44, "screencode": 44, "unicode": "\uEE2C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 45, "screencode": 45, "unicode": "\uEE2D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 46, "screencode": 46, "unicode": "\uEE2E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 47, "screencode": 47, "unicode": "\uEE2F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 48, "screencode": 48, "unicode": "\uEE30", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 49, "screencode": 49, "unicode": "\uEE31", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 50, "screencode": 50, "unicode": "\uEE32", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 51, "screencode": 51, "unicode": "\uEE33", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 52, "screencode": 52, "unicode": "\uEE34", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 53, "screencode": 53, "unicode": "\uEE35", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 54, "screencode": 54, "unicode": "\uEE36", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 55, "screencode": 55, "unicode": "\uEE37", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 56, "screencode": 56, "unicode": "\uEE38", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 57, "screencode": 57, "unicode": "\uEE39", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 58, "screencode": 58, "unicode": "\uEE3A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 59, "screencode": 59, "unicode": "\uEE3B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 60, "screencode": 60, "unicode": "\uEE3C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 61, "screencode": 61, "unicode": "\uEE3D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 62, "screencode": 62, "unicode": "\uEE3E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 63, "screencode": 63, "unicode": "\uEE3F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 64, "screencode": 0, "unicode": "\uEE00", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 65, "screencode": 1, "unicode": "\uEE01", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 66, "screencode": 2, "unicode": "\uEE02", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 67, "screencode": 3, "unicode": "\uEE03", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 68, "screencode": 4, "unicode": "\uEE04", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 69, "screencode": 5, "unicode": "\uEE05", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 70, "screencode": 6, "unicode": "\uEE06", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 71, "screencode": 7, "unicode": "\uEE07", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 72, "screencode": 8, "unicode": "\uEE08", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 73, "screencode": 9, "unicode": "\uEE09", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 74, "screencode": 10, "unicode": "\uEE0A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 75, "screencode": 11, "unicode": "\uEE0B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 76, "screencode": 12, "unicode": "\uEE0C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 77, "screencode": 13, "unicode": "\uEE0D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 78, "screencode": 14, "unicode": "\uEE0E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 79, "screencode": 15, "unicode": "\uEE0F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 80, "screencode": 16, "unicode": "\uEE10", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 81, "screencode": 17, "unicode": "\uEE11", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 82, "screencode": 18, "unicode": "\uEE12", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 83, "screencode": 19, "unicode": "\uEE13", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 84, "screencode": 20, "unicode": "\uEE14", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 85, "screencode": 21, "unicode": "\uEE15", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 86, "screencode": 22, "unicode": "\uEE16", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 87, "screencode": 23, "unicode": "\uEE17", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 88, "screencode": 24, "unicode": "\uEE18", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 89, "screencode": 25, "unicode": "\uEE19", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 90, "screencode": 26, "unicode": "\uEE1A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 91, "screencode": 27, "unicode": "\uEE1B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 92, "screencode": 28, "unicode": "\uEE1C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 93, "screencode": 29, "unicode": "\uEE1D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 94, "screencode": 30, "unicode": "\uEE1E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 95, "screencode": 31, "unicode": "\uEE1F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 96, "screencode": 32, "unicode": "\uEE40", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 97, "screencode": 33, "unicode": "\uEE41", "altUnicode": "", "name": "Shift+A", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 98, "screencode": 34, "unicode": "\uEE42", "altUnicode": "", "name": "Shift+B", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 99, "screencode": 35, "unicode": "\uEE43", "altUnicode": "", "name": "Shift+C", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 100, "screencode": 36, "unicode": "\uEE44", "altUnicode": "", "name": "Shift+D", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 101, "screencode": 37, "unicode": "\uEE45", "altUnicode": "", "name": "Shift+E", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 102, "screencode": 38, "unicode": "\uEE46", "altUnicode": "", "name": "Shift+F", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 103, "screencode": 39, "unicode": "\uEE47", "altUnicode": "", "name": "Shift+G", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 104, "screencode": 40, "unicode": "\uEE48", "altUnicode": "", "name": "Shift+H", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 105, "screencode": 41, "unicode": "\uEE49", "altUnicode": "", "name": "Shift+I", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 106, "screencode": 42, "unicode": "\uEE4A", "altUnicode": "", "name": "Shift+J", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 107, "screencode": 43, "unicode": "\uEE4B", "altUnicode": "", "name": "Shift+K", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 108, "screencode": 44, "unicode": "\uEE4C", "altUnicode": "", "name": "Shift+L", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 109, "screencode": 45, "unicode": "\uEE4D", "altUnicode": "", "name": "Shift+M", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 110, "screencode": 46, "unicode": "\uEE4E", "altUnicode": "", "name": "Shift+N", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 111, "screencode": 47, "unicode": "\uEE4F", "altUnicode": "", "name": "Shift+O", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 112, "screencode": 48, "unicode": "\uEE50", "altUnicode": "", "name": "Shift+P", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 113, "screencode": 49, "unicode": "\uEE51", "altUnicode": "", "name": "Shift+Q", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 114, "screencode": 50, "unicode": "\uEE52", "altUnicode": "", "name": "Shift+R", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 115, "screencode": 51, "unicode": "\uEE53", "altUnicode": "", "name": "Shift+S", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 116, "screencode": 52, "unicode": "\uEE54", "altUnicode": "", "name": "Shift+T", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 117, "screencode": 53, "unicode": "\uEE55", "altUnicode": "", "name": "Shift+U", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 118, "screencode": 54, "unicode": "\uEE56", "altUnicode": "", "name": "Shift+V", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 119, "screencode": 55, "unicode": "\uEE57", "altUnicode": "", "name": "Shift+W", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 120, "screencode": 56, "unicode": "\uEE58", "altUnicode": "", "name": "Shift+X", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 121, "screencode": 57, "unicode": "\uEE59", "altUnicode": "", "name": "Shift+Y", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 122, "screencode": 58, "unicode": "\uEE5A", "altUnicode": "", "name": "Shift+Z", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 123, "screencode": 59, "unicode": "\uEE5B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 124, "screencode": 60, "unicode": "\uEE5C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 125, "screencode": 61, "unicode": "\uEE5D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 126, "screencode": 0, "unicode": "\uEE5E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 127, "screencode": 0, "unicode": "\uEE5F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 128, "screencode": 0, "unicode": "\uEEC0", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 129, "screencode": 0, "unicode": "\uEEC1", "altUnicode": "", "name": "orange", "color": true, "control": false, "customValue": "8", "upper": true
+		}, {
+			"id": 130, "screencode": 0, "unicode": "\uEEC2", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 131, "screencode": 0, "unicode": "\uEEC3", "altUnicode": "", "name": "run", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 132, "screencode": 0, "unicode": "\uEEC4", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 133, "screencode": 0, "unicode": "\uEEC5", "altUnicode": "", "name": "f1", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 134, "screencode": 0, "unicode": "\uEEC6", "altUnicode": "", "name": "f2", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 135, "screencode": 0, "unicode": "\uEEC7", "altUnicode": "", "name": "f3", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 136, "screencode": 0, "unicode": "\uEEC8", "altUnicode": "", "name": "f4", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 137, "screencode": 0, "unicode": "\uEEC9", "altUnicode": "", "name": "f5", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 138, "screencode": 0, "unicode": "\uEECA", "altUnicode": "", "name": "f6", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 139, "screencode": 0, "unicode": "\uEECB", "altUnicode": "", "name": "f7", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 140, "screencode": 0, "unicode": "\uEECC", "altUnicode": "", "name": "f8", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 141, "screencode": 0, "unicode": "\uEECD", "altUnicode": "", "name": "shift/return", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 142, "screencode": 0, "unicode": "\uEECE", "altUnicode": "\ueacf", "name": "upper case", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 143, "screencode": 0, "unicode": "\uEECF", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 144, "screencode": 0, "unicode": "\uEED0", "altUnicode": "", "name": "black", "color": true, "control": false, "customValue": "0", "upper": true
+		}, {
+			"id": 145, "screencode": 0, "unicode": "\uEED1", "altUnicode": "\ue316", "name": "cursor up", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 146, "screencode": 0, "unicode": "\uEED2", "altUnicode": "\ue891", "name": "reverse off", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 147, "screencode": 0, "unicode": "\uEED3", "altUnicode": "\ue3c1", "name": "clear", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 148, "screencode": 0, "unicode": "\uEED4", "altUnicode": "\ue93f", "name": "insert", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 149, "screencode": 0, "unicode": "\uEED5", "altUnicode": "", "name": "brown", "color": true, "control": false, "customValue": "9", "upper": true
+		}, {
+			"id": 150, "screencode": 0, "unicode": "\uEED6", "altUnicode": "", "name": "light red", "color": true, "control": false, "customValue": "10", "upper": true
+		}, {
+			"id": 151, "screencode": 0, "unicode": "\uEED7", "altUnicode": "", "name": "dark grey", "color": true, "control": false, "customValue": "11", "upper": true
+		}, {
+			"id": 152, "screencode": 0, "unicode": "\uEED8", "altUnicode": "", "name": "mid grey", "color": true, "control": false, "customValue": "12", "upper": true
+		}, {
+			"id": 153, "screencode": 0, "unicode": "\uEED9", "altUnicode": "", "name": "light green", "color": true, "control": false, "customValue": "13", "upper": true
+		}, {
+			"id": 154, "screencode": 0, "unicode": "\uEEDA", "altUnicode": "", "name": "light blue", "color": true, "control": false, "customValue": "14", "upper": true
+		}, {
+			"id": 155, "screencode": 0, "unicode": "\uEEDB", "altUnicode": "", "name": "light grey", "color": true, "control": false, "customValue": "15", "upper": true
+		}, {
+			"id": 156, "screencode": 0, "unicode": "\uEEDC", "altUnicode": "", "name": "purple", "color": true, "control": false, "customValue": "4", "upper": true
+		}, {
+			"id": 157, "screencode": 0, "unicode": "\uEEDD", "altUnicode": "\ue314", "name": "cursor left", "color": false, "control": true, "customValue": "", "upper": true
+		}, {
+			"id": 158, "screencode": 0, "unicode": "\uEEDE", "altUnicode": "", "name": "yellow", "color": true, "control": false, "customValue": "7", "upper": true
+		}, {
+			"id": 159, "screencode": 0, "unicode": "\uEEDF", "altUnicode": "", "name": "cyan", "color": true, "control": false, "customValue": "3", "upper": true
+		}, {
+			"id": 160, "screencode": 96, "unicode": "\uEE60", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 161, "screencode": 97, "unicode": "\uEE61", "altUnicode": "", "name": "CBM+A", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 162, "screencode": 98, "unicode": "\uEE62", "altUnicode": "", "name": "CBM+B", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 163, "screencode": 99, "unicode": "\uEE63", "altUnicode": "", "name": "CBM+C", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 164, "screencode": 100, "unicode": "\uEE64", "altUnicode": "", "name": "CBM+D", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 165, "screencode": 101, "unicode": "\uEE65", "altUnicode": "", "name": "CBM+E", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 166, "screencode": 102, "unicode": "\uEE66", "altUnicode": "", "name": "CBM+F", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 167, "screencode": 103, "unicode": "\uEE67", "altUnicode": "", "name": "CBM+G", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 168, "screencode": 104, "unicode": "\uEE68", "altUnicode": "", "name": "CBM+H", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 169, "screencode": 105, "unicode": "\uEE69", "altUnicode": "", "name": "CBM+I", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 170, "screencode": 106, "unicode": "\uEE6A", "altUnicode": "", "name": "CBM+J", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 171, "screencode": 107, "unicode": "\uEE6B", "altUnicode": "", "name": "CBM+K", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 172, "screencode": 108, "unicode": "\uEE6C", "altUnicode": "", "name": "CBM+L", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 173, "screencode": 109, "unicode": "\uEE6D", "altUnicode": "", "name": "CBM+M", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 174, "screencode": 110, "unicode": "\uEE6E", "altUnicode": "", "name": "CBM+N", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 175, "screencode": 111, "unicode": "\uEE6F", "altUnicode": "", "name": "CBM+O", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 176, "screencode": 112, "unicode": "\uEE70", "altUnicode": "", "name": "CBM+P", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 177, "screencode": 113, "unicode": "\uEE71", "altUnicode": "", "name": "CBM+Q", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 178, "screencode": 114, "unicode": "\uEE72", "altUnicode": "", "name": "CBM+R", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 179, "screencode": 115, "unicode": "\uEE73", "altUnicode": "", "name": "CBM+S", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 180, "screencode": 116, "unicode": "\uEE74", "altUnicode": "", "name": "CBM+T", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 181, "screencode": 117, "unicode": "\uEE75", "altUnicode": "", "name": "CBM+U", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 182, "screencode": 118, "unicode": "\uEE76", "altUnicode": "", "name": "CBM+V", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 183, "screencode": 119, "unicode": "\uEE77", "altUnicode": "", "name": "CBM+W", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 184, "screencode": 120, "unicode": "\uEE78", "altUnicode": "", "name": "CBM+X", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 185, "screencode": 121, "unicode": "\uEE79", "altUnicode": "", "name": "CBM+Y", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 186, "screencode": 122, "unicode": "\uEE7A", "altUnicode": "", "name": "CBM+Z", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 187, "screencode": 123, "unicode": "\uEE7B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 188, "screencode": 124, "unicode": "\uEE7C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 189, "screencode": 125, "unicode": "\uEE7D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 190, "screencode": 126, "unicode": "\uEE7E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 191, "screencode": 127, "unicode": "\uEE7F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 192, "screencode": 64, "unicode": "\uEEA0", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 193, "screencode": 65, "unicode": "\uEE41", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 194, "screencode": 66, "unicode": "\uEE42", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 195, "screencode": 67, "unicode": "\uEE43", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 196, "screencode": 68, "unicode": "\uEE44", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 197, "screencode": 69, "unicode": "\uEE45", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 198, "screencode": 70, "unicode": "\uEE46", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 199, "screencode": 71, "unicode": "\uEE47", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 200, "screencode": 72, "unicode": "\uEE48", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 201, "screencode": 73, "unicode": "\uEE49", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 202, "screencode": 74, "unicode": "\uEE4A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 203, "screencode": 75, "unicode": "\uEE4B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 204, "screencode": 76, "unicode": "\uEE4C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 205, "screencode": 77, "unicode": "\uEE4D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 206, "screencode": 78, "unicode": "\uEE4E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 207, "screencode": 79, "unicode": "\uEE4F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 208, "screencode": 80, "unicode": "\uEE50", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 209, "screencode": 81, "unicode": "\uEE51", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 210, "screencode": 82, "unicode": "\uEE52", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 211, "screencode": 83, "unicode": "\uEE53", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 212, "screencode": 84, "unicode": "\uEE54", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 213, "screencode": 85, "unicode": "\uEE55", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 214, "screencode": 86, "unicode": "\uEE56", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 215, "screencode": 87, "unicode": "\uEE57", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 216, "screencode": 88, "unicode": "\uEE58", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 217, "screencode": 89, "unicode": "\uEE59", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 218, "screencode": 90, "unicode": "\uEE5A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 219, "screencode": 91, "unicode": "\uEE5B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 220, "screencode": 92, "unicode": "\uEE5C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 221, "screencode": 93, "unicode": "\uEE5D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 222, "screencode": 94, "unicode": "\uEE5E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 223, "screencode": 95, "unicode": "\uEE5F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 224, "screencode": 96, "unicode": "\uEE60", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 225, "screencode": 97, "unicode": "\uEE61", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 226, "screencode": 98, "unicode": "\uEE62", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 227, "screencode": 99, "unicode": "\uEE63", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 228, "screencode": 100, "unicode": "\uEE64", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 229, "screencode": 101, "unicode": "\uEE65", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 230, "screencode": 102, "unicode": "\uEE66", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 231, "screencode": 103, "unicode": "\uEE67", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 232, "screencode": 104, "unicode": "\uEE68", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 233, "screencode": 105, "unicode": "\uEE69", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 234, "screencode": 106, "unicode": "\uEE6A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 235, "screencode": 107, "unicode": "\uEE6B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 236, "screencode": 108, "unicode": "\uEE6C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 237, "screencode": 109, "unicode": "\uEE6D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 238, "screencode": 110, "unicode": "\uEE6E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 239, "screencode": 111, "unicode": "\uEE6F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 240, "screencode": 112, "unicode": "\uEE70", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 241, "screencode": 113, "unicode": "\uEE71", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 242, "screencode": 114, "unicode": "\uEE72", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 243, "screencode": 115, "unicode": "\uEE73", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 244, "screencode": 116, "unicode": "\uEE74", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 245, "screencode": 117, "unicode": "\uEE75", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 246, "screencode": 118, "unicode": "\uEE76", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 247, "screencode": 119, "unicode": "\uEE77", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 248, "screencode": 120, "unicode": "\uEE78", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 249, "screencode": 121, "unicode": "\uEE79", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 250, "screencode": 122, "unicode": "\uEE7A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 251, "screencode": 123, "unicode": "\uEE7B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 252, "screencode": 124, "unicode": "\uEE7C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 253, "screencode": 125, "unicode": "\uEE7D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 254, "screencode": 126, "unicode": "\uEE7E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 255, "screencode": 127, "unicode": "\uEE5E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
+		}, {
+			"id": 0, "screencode": 0, "unicode": "\uEE80", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 1, "screencode": 0, "unicode": "\uEE81", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 2, "screencode": 0, "unicode": "\uEE82", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 3, "screencode": 0, "unicode": "\uEE83", "altUnicode": "", "name": "stop", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 4, "screencode": 0, "unicode": "\uEE84", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 5, "screencode": 0, "unicode": "\uEE85", "altUnicode": "", "name": "white", "color": true, "control": false, "customValue": "1", "upper": false
+		}, {
+			"id": 6, "screencode": 0, "unicode": "\uEE86", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 7, "screencode": 0, "unicode": "\uEE87", "altUnicode": "", "name": "enable shift+c", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 8, "screencode": 0, "unicode": "\uEE88", "altUnicode": "", "name": "disable shift+c", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 9, "screencode": 0, "unicode": "\uEE89", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 10, "screencode": 0, "unicode": "\uEE8A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 11, "screencode": 0, "unicode": "\uEE8B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 12, "screencode": 0, "unicode": "\uEE8C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 13, "screencode": 0, "unicode": "\uEE8D", "altUnicode": "", "name": "return", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 14, "screencode": 0, "unicode": "\uEE8E", "altUnicode": "", "name": "lower case", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 15, "screencode": 0, "unicode": "\uEE8F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 16, "screencode": 0, "unicode": "\uEE90", "altUnicode": "", "name": "cursor down", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 17, "screencode": 0, "unicode": "\uEE91", "altUnicode": "", "name": "reverse on", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 18, "screencode": 0, "unicode": "\uEE92", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 19, "screencode": 0, "unicode": "\uEE93", "altUnicode": "", "name": "home", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 20, "screencode": 0, "unicode": "\uEE94", "altUnicode": "", "name": "delete", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 21, "screencode": 0, "unicode": "\uEE95", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 22, "screencode": 0, "unicode": "\uEE96", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 23, "screencode": 0, "unicode": "\uEE97", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 24, "screencode": 0, "unicode": "\uEE98", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 25, "screencode": 0, "unicode": "\uEE99", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 26, "screencode": 0, "unicode": "\uEE9A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 27, "screencode": 0, "unicode": "\uEE9B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 28, "screencode": 0, "unicode": "\uEE9C", "altUnicode": "", "name": "red", "color": true, "control": false, "customValue": "2", "upper": false
+		}, {
+			"id": 29, "screencode": 0, "unicode": "\uEE9D", "altUnicode": "", "name": "cursor right", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 30, "screencode": 0, "unicode": "\uEE9E", "altUnicode": "", "name": "green", "color": true, "control": false, "customValue": "5", "upper": false
+		}, {
+			"id": 31, "screencode": 0, "unicode": "\uEE9F", "altUnicode": "", "name": "blue", "color": true, "control": false, "customValue": "6", "upper": false
+		}, {
+			"id": 32, "screencode": 32, "unicode": "\uEE20", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 33, "screencode": 33, "unicode": "\uEE21", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 34, "screencode": 34, "unicode": "\uEE22", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 35, "screencode": 35, "unicode": "\uEE23", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 36, "screencode": 36, "unicode": "\uEE24", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 37, "screencode": 37, "unicode": "\uEE25", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 38, "screencode": 38, "unicode": "\uEE26", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 39, "screencode": 39, "unicode": "\uEE27", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 40, "screencode": 40, "unicode": "\uEE28", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 41, "screencode": 41, "unicode": "\uEE29", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 42, "screencode": 42, "unicode": "\uEE2A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 43, "screencode": 43, "unicode": "\uEE2B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 44, "screencode": 44, "unicode": "\uEE2C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 45, "screencode": 45, "unicode": "\uEE2D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 46, "screencode": 46, "unicode": "\uEE2E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 47, "screencode": 47, "unicode": "\uEE2F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 48, "screencode": 48, "unicode": "\uEE30", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 49, "screencode": 49, "unicode": "\uEE31", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 50, "screencode": 50, "unicode": "\uEE32", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 51, "screencode": 51, "unicode": "\uEE33", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 52, "screencode": 52, "unicode": "\uEE34", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 53, "screencode": 53, "unicode": "\uEE35", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 54, "screencode": 54, "unicode": "\uEE36", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 55, "screencode": 55, "unicode": "\uEE37", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 56, "screencode": 56, "unicode": "\uEE38", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 57, "screencode": 57, "unicode": "\uEE39", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 58, "screencode": 58, "unicode": "\uEE3A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 59, "screencode": 59, "unicode": "\uEE3B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 60, "screencode": 60, "unicode": "\uEE3C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 61, "screencode": 61, "unicode": "\uEE3D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 62, "screencode": 62, "unicode": "\uEE3E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 63, "screencode": 63, "unicode": "\uEE3F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 64, "screencode": 0, "unicode": "\uEE00", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 65, "screencode": 1, "unicode": "\uEE01", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 66, "screencode": 2, "unicode": "\uEE02", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 67, "screencode": 3, "unicode": "\uEE03", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 68, "screencode": 4, "unicode": "\uEE04", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 69, "screencode": 5, "unicode": "\uEE05", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 70, "screencode": 6, "unicode": "\uEE06", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 71, "screencode": 7, "unicode": "\uEE07", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 72, "screencode": 8, "unicode": "\uEE08", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 73, "screencode": 9, "unicode": "\uEE09", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 74, "screencode": 10, "unicode": "\uEE0A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 75, "screencode": 11, "unicode": "\uEE0B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 76, "screencode": 12, "unicode": "\uEE0C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 77, "screencode": 13, "unicode": "\uEE0D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 78, "screencode": 14, "unicode": "\uEE0E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 79, "screencode": 15, "unicode": "\uEE0F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 80, "screencode": 16, "unicode": "\uEE10", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 81, "screencode": 17, "unicode": "\uEE11", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 82, "screencode": 18, "unicode": "\uEE12", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 83, "screencode": 19, "unicode": "\uEE13", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 84, "screencode": 20, "unicode": "\uEE14", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 85, "screencode": 21, "unicode": "\uEE15", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 86, "screencode": 22, "unicode": "\uEE16", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 87, "screencode": 23, "unicode": "\uEE17", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 88, "screencode": 24, "unicode": "\uEE18", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 89, "screencode": 25, "unicode": "\uEE19", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 90, "screencode": 26, "unicode": "\uEE1A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 91, "screencode": 27, "unicode": "\uEE1B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 92, "screencode": 28, "unicode": "\uEE1C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 93, "screencode": 29, "unicode": "\uEE1D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 94, "screencode": 30, "unicode": "\uEE1E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 95, "screencode": 31, "unicode": "\uEE1F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 96, "screencode": 32, "unicode": "\uEE40", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 97, "screencode": 33, "unicode": "\uEE41", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 98, "screencode": 34, "unicode": "\uEE42", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 99, "screencode": 35, "unicode": "\uEE43", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 100, "screencode": 36, "unicode": "\uEE44", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 101, "screencode": 37, "unicode": "\uEE45", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 102, "screencode": 38, "unicode": "\uEE46", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 103, "screencode": 39, "unicode": "\uEE47", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 104, "screencode": 40, "unicode": "\uEE48", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 105, "screencode": 41, "unicode": "\uEE49", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 106, "screencode": 42, "unicode": "\uEE4A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 107, "screencode": 43, "unicode": "\uEE4B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 108, "screencode": 44, "unicode": "\uEE4C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 109, "screencode": 45, "unicode": "\uEE4D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 110, "screencode": 46, "unicode": "\uEE4E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 111, "screencode": 47, "unicode": "\uEE4F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 112, "screencode": 48, "unicode": "\uEE50", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 113, "screencode": 49, "unicode": "\uEE51", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 114, "screencode": 50, "unicode": "\uEE52", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 115, "screencode": 51, "unicode": "\uEE53", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 116, "screencode": 52, "unicode": "\uEE54", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 117, "screencode": 53, "unicode": "\uEE55", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 118, "screencode": 54, "unicode": "\uEE56", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 119, "screencode": 55, "unicode": "\uEE57", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 120, "screencode": 56, "unicode": "\uEE58", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 121, "screencode": 57, "unicode": "\uEE59", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 122, "screencode": 58, "unicode": "\uEE5A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 123, "screencode": 59, "unicode": "\uEE5B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 124, "screencode": 60, "unicode": "\uEE5C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 125, "screencode": 61, "unicode": "\uEE5D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 126, "screencode": 0, "unicode": "\uEE5E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 127, "screencode": 0, "unicode": "\uEE5F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 128, "screencode": 0, "unicode": "\uEEC0", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 129, "screencode": 0, "unicode": "\uEEC1", "altUnicode": "", "name": "orange", "color": true, "control": false, "customValue": "8", "upper": false
+		}, {
+			"id": 130, "screencode": 0, "unicode": "\uEEC2", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 131, "screencode": 0, "unicode": "\uEEC3", "altUnicode": "", "name": "run", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 132, "screencode": 0, "unicode": "\uEEC4", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 133, "screencode": 0, "unicode": "\uEEC5", "altUnicode": "", "name": "f1", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 134, "screencode": 0, "unicode": "\uEEC6", "altUnicode": "", "name": "f2", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 135, "screencode": 0, "unicode": "\uEEC7", "altUnicode": "", "name": "f3", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 136, "screencode": 0, "unicode": "\uEEC8", "altUnicode": "", "name": "f4", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 137, "screencode": 0, "unicode": "\uEEC9", "altUnicode": "", "name": "f5", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 138, "screencode": 0, "unicode": "\uEECA", "altUnicode": "", "name": "f6", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 139, "screencode": 0, "unicode": "\uEECB", "altUnicode": "", "name": "f7", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 140, "screencode": 0, "unicode": "\uEECC", "altUnicode": "", "name": "f8", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 141, "screencode": 0, "unicode": "\uEECD", "altUnicode": "", "name": "shift/return", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 142, "screencode": 0, "unicode": "\uEECE", "altUnicode": "", "name": "upper case", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 143, "screencode": 0, "unicode": "\uEECF", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 144, "screencode": 0, "unicode": "\uEED0", "altUnicode": "", "name": "black", "color": true, "control": false, "customValue": "0", "upper": false
+		}, {
+			"id": 145, "screencode": 0, "unicode": "\uEED1", "altUnicode": "", "name": "cursor up", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 146, "screencode": 0, "unicode": "\uEED2", "altUnicode": "", "name": "reverse off", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 147, "screencode": 0, "unicode": "\uEED3", "altUnicode": "", "name": "clear", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 148, "screencode": 0, "unicode": "\uEED4", "altUnicode": "", "name": "insert", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 149, "screencode": 0, "unicode": "\uEED5", "altUnicode": "", "name": "brown", "color": true, "control": false, "customValue": "9", "upper": false
+		}, {
+			"id": 150, "screencode": 0, "unicode": "\uEED6", "altUnicode": "", "name": "light red", "color": true, "control": false, "customValue": "10", "upper": false
+		}, {
+			"id": 151, "screencode": 0, "unicode": "\uEED7", "altUnicode": "", "name": "dark grey", "color": true, "control": false, "customValue": "11", "upper": false
+		}, {
+			"id": 152, "screencode": 0, "unicode": "\uEED8", "altUnicode": "", "name": "mid grey", "color": true, "control": false, "customValue": "12", "upper": false
+		}, {
+			"id": 153, "screencode": 0, "unicode": "\uEED9", "altUnicode": "", "name": "light green", "color": true, "control": false, "customValue": "13", "upper": false
+		}, {
+			"id": 154, "screencode": 0, "unicode": "\uEEDA", "altUnicode": "", "name": "light blue", "color": true, "control": false, "customValue": "14", "upper": false
+		}, {
+			"id": 155, "screencode": 0, "unicode": "\uEEDB", "altUnicode": "", "name": "light grey", "color": true, "control": false, "customValue": "15", "upper": false
+		}, {
+			"id": 156, "screencode": 0, "unicode": "\uEEDC", "altUnicode": "", "name": "purple", "color": true, "control": false, "customValue": "4", "upper": false
+		}, {
+			"id": 157, "screencode": 0, "unicode": "\uEEDD", "altUnicode": "", "name": "cursor left", "color": false, "control": true, "customValue": "", "upper": false
+		}, {
+			"id": 158, "screencode": 0, "unicode": "\uEEDE", "altUnicode": "", "name": "yellow", "color": true, "control": false, "customValue": "7", "upper": false
+		}, {
+			"id": 159, "screencode": 0, "unicode": "\uEEDF", "altUnicode": "", "name": "cyan", "color": true, "control": false, "customValue": "3", "upper": false
+		}, {
+			"id": 160, "screencode": 96, "unicode": "\uEE60", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 161, "screencode": 97, "unicode": "\uEE61", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 162, "screencode": 98, "unicode": "\uEE62", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 163, "screencode": 99, "unicode": "\uEE63", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 164, "screencode": 100, "unicode": "\uEE64", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 165, "screencode": 101, "unicode": "\uEE65", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 166, "screencode": 102, "unicode": "\uEE66", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 167, "screencode": 103, "unicode": "\uEE67", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 168, "screencode": 104, "unicode": "\uEE68", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 169, "screencode": 105, "unicode": "\uEE69", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 170, "screencode": 106, "unicode": "\uEE6A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 171, "screencode": 107, "unicode": "\uEE6B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 172, "screencode": 108, "unicode": "\uEE6C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 173, "screencode": 109, "unicode": "\uEE6D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 174, "screencode": 110, "unicode": "\uEE6E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 175, "screencode": 111, "unicode": "\uEE6F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 176, "screencode": 112, "unicode": "\uEE70", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 177, "screencode": 113, "unicode": "\uEE71", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 178, "screencode": 114, "unicode": "\uEE72", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 179, "screencode": 115, "unicode": "\uEE73", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 180, "screencode": 116, "unicode": "\uEE74", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 181, "screencode": 117, "unicode": "\uEE75", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 182, "screencode": 118, "unicode": "\uEE76", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 183, "screencode": 119, "unicode": "\uEE77", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 184, "screencode": 120, "unicode": "\uEE78", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 185, "screencode": 121, "unicode": "\uEE79", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 186, "screencode": 122, "unicode": "\uEE7A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 187, "screencode": 123, "unicode": "\uEE7B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 188, "screencode": 124, "unicode": "\uEE7C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 189, "screencode": 125, "unicode": "\uEE7D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 190, "screencode": 126, "unicode": "\uEE7E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 191, "screencode": 127, "unicode": "\uEE7F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 192, "screencode": 64, "unicode": "\uEEA0", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 193, "screencode": 65, "unicode": "\uEE41", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 194, "screencode": 66, "unicode": "\uEE42", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 195, "screencode": 67, "unicode": "\uEE43", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 196, "screencode": 68, "unicode": "\uEE44", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 197, "screencode": 69, "unicode": "\uEE45", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 198, "screencode": 70, "unicode": "\uEE46", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 199, "screencode": 71, "unicode": "\uEE47", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 200, "screencode": 72, "unicode": "\uEE48", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 201, "screencode": 73, "unicode": "\uEE49", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 202, "screencode": 74, "unicode": "\uEE4A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 203, "screencode": 75, "unicode": "\uEE4B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 204, "screencode": 76, "unicode": "\uEE4C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 205, "screencode": 77, "unicode": "\uEE4D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 206, "screencode": 78, "unicode": "\uEE4E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 207, "screencode": 79, "unicode": "\uEE4F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 208, "screencode": 80, "unicode": "\uEE50", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 209, "screencode": 81, "unicode": "\uEE51", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 210, "screencode": 82, "unicode": "\uEE52", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 211, "screencode": 83, "unicode": "\uEE53", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 212, "screencode": 84, "unicode": "\uEE54", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 213, "screencode": 85, "unicode": "\uEE55", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 214, "screencode": 86, "unicode": "\uEE56", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 215, "screencode": 87, "unicode": "\uEE57", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 216, "screencode": 88, "unicode": "\uEE58", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 217, "screencode": 89, "unicode": "\uEE59", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 218, "screencode": 90, "unicode": "\uEE5A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 219, "screencode": 91, "unicode": "\uEE5B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 220, "screencode": 92, "unicode": "\uEE5C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 221, "screencode": 93, "unicode": "\uEE5D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 222, "screencode": 94, "unicode": "\uEE5E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 223, "screencode": 95, "unicode": "\uEE5F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 224, "screencode": 96, "unicode": "\uEE60", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 225, "screencode": 97, "unicode": "\uEE61", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 226, "screencode": 98, "unicode": "\uEE62", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 227, "screencode": 99, "unicode": "\uEE63", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 228, "screencode": 100, "unicode": "\uEE64", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 229, "screencode": 101, "unicode": "\uEE65", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 230, "screencode": 102, "unicode": "\uEE66", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 231, "screencode": 103, "unicode": "\uEE67", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 232, "screencode": 104, "unicode": "\uEE68", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 233, "screencode": 105, "unicode": "\uEE69", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 234, "screencode": 106, "unicode": "\uEE6A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 235, "screencode": 107, "unicode": "\uEE6B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 236, "screencode": 108, "unicode": "\uEE6C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 237, "screencode": 109, "unicode": "\uEE6D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 238, "screencode": 110, "unicode": "\uEE6E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 239, "screencode": 111, "unicode": "\uEE6F", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 240, "screencode": 112, "unicode": "\uEE70", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 241, "screencode": 113, "unicode": "\uEE71", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 242, "screencode": 114, "unicode": "\uEE72", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 243, "screencode": 115, "unicode": "\uEE73", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 244, "screencode": 116, "unicode": "\uEE74", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 245, "screencode": 117, "unicode": "\uEE75", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 246, "screencode": 118, "unicode": "\uEE76", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 247, "screencode": 119, "unicode": "\uEE77", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 248, "screencode": 120, "unicode": "\uEE78", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 249, "screencode": 121, "unicode": "\uEE79", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 250, "screencode": 122, "unicode": "\uEE7A", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 251, "screencode": 123, "unicode": "\uEE7B", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 252, "screencode": 124, "unicode": "\uEE7C", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 253, "screencode": 125, "unicode": "\uEE7D", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 254, "screencode": 126, "unicode": "\uEE7E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}, {
+			"id": 255, "screencode": 127, "unicode": "\uEE5E", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": false
+		}
+	]
+}
