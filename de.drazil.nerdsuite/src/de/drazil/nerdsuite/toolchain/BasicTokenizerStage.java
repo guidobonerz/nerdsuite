@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.drazil.nerdsuite.basic.BasicTokenizer;
+import de.drazil.nerdsuite.basic.CbmBasicTokenizer;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharMap;
@@ -52,7 +52,7 @@ public class BasicTokenizerStage implements IToolchainStage<Object> {
 
 		List<CharObject> charMapList = charMap.getCharMap().stream().filter(e -> e.isUpper() == true)
 				.collect(Collectors.toList());
-		byte[] bytecode = BasicTokenizer.tokenize(content.toUpperCase(), basicInstructions, charMapList);
+		byte[] bytecode = CbmBasicTokenizer.tokenize(content.toUpperCase(), basicInstructions, charMapList);
 		byte[] payload = new byte[] {};
 		payload = ArrayUtil.grow(payload, NumericConverter.getWord(2049));
 		payload = ArrayUtil.grow(payload, bytecode);
