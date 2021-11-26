@@ -51,6 +51,7 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharMap;
+import de.drazil.nerdsuite.model.CharObject;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
@@ -149,8 +150,10 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 	}
 
 	private void tokenize() {
-		List<CharMap> charMap = PlatformFactory.getCharMap(srs.getMetadata().getPlatform());
-		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText().toUpperCase(), basicInstructions, charMap);
+		CharMap charMap = PlatformFactory.getCharMap(srs.getMetadata().getPlatform());
+		List<CharObject> charMapList = charMap.getCharMap().stream().filter(e -> e.isUpper() == true)
+				.collect(Collectors.toList());
+		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText().toUpperCase(), basicInstructions, charMapList);
 		byte[] payload = new byte[] {};
 		payload = ArrayUtil.grow(payload, NumericConverter.getWord(2049));
 		payload = ArrayUtil.grow(payload, bytecode);

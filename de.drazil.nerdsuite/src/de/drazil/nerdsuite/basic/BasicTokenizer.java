@@ -7,6 +7,7 @@ import java.util.List;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharMap;
+import de.drazil.nerdsuite.model.CharObject;
 import de.drazil.nerdsuite.util.ArrayUtil;
 import de.drazil.nerdsuite.util.NumericConverter;
 
@@ -28,7 +29,7 @@ public class BasicTokenizer {
 
 	}
 
-	public static byte[] tokenize(String content, BasicInstructions basicInstructions, List<CharMap> charMap) {
+	public static byte[] tokenize(String content, BasicInstructions basicInstructions, List<CharObject> charMap) {
 		long startTime = System.currentTimeMillis();
 		boolean doNotScan = false;
 		byte[] result = new byte[] {};
@@ -144,13 +145,13 @@ public class BasicTokenizer {
 		return result;
 	}
 
-	private static byte[] mapUniCodeCharacters(StringBuilder sb, List<CharMap> charMap) {
+	private static byte[] mapUniCodeCharacters(StringBuilder sb, List<CharObject> charMap) {
 
 		byte[] ba = new byte[sb.length()];
 		CharacterIterator ci = new StringCharacterIterator(sb.toString());
 		for (char ch = ci.first(); ch != CharacterIterator.DONE; ch = ci.next()) {
 			boolean found = false;
-			for (CharMap cm : charMap) {
+			for (CharObject cm : charMap) {
 				int i = Character.getType(ch);
 				if (ch == cm.getUnicode() && i == Character.PRIVATE_USE) {
 					ba[ci.getIndex()] = (byte) cm.getId();
