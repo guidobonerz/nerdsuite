@@ -32,6 +32,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -44,6 +45,7 @@ import de.drazil.nerdsuite.basic.SourceRepositoryService;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
@@ -73,6 +75,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 	private BasicInstructions basicInstructions;
 	private CustomPopupDialog popupDialog;
 	private SymbolPaletteChooser symbolChooser;
+	private boolean isOnString = false;
 
 	public SourceEditorView() {
 
@@ -125,12 +128,13 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 
 	@Inject
 	@Optional
-	public void build(@UIEventTopic("Build") BrokerObject brokerObject) {
+	public void build(@UIEventTopic("BuildAndRun") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			Display.getCurrent().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					tokenize();
+					String[] buildProcess = (String[]) brokerObject.getTransferObject();
+					runToolchain(buildProcess);
 				}
 			});
 		}
@@ -144,14 +148,18 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		}
 	}
 
-	private void tokenize() {
+	private void runToolchain(String[] buildProcess) {
 
-		String fileName = "c:\\Users\\drazil\\tokenizedfile.prg";
+		Console.clear();
+		String fileName = String.format("c:/Users/drazil/data/builds/%s.prg", project.getName());
 		Toolchain toolChain = new Toolchain();
+
 		toolChain.addToolchainStage(new BasicTokenizerStage("Run Basic Tokenizer", srs.getMetadata().getPlatform(),
-				styledText.getText(), basicInstructions, fileName));
-		toolChain.addToolchainStage(new ExternalRunnerToolchainStage("Run Vice",
-				"\"C:\\Users\\drazil\\applications\\WinVICE-2.4-x86\\x64sc.exe\"", fileName));
+				styledText.getText(), basicInstructions, fileName, "1".equals(buildProcess[0])));
+		if ("1".equals(buildProcess[1])) {
+			toolChain.addToolchainStage(new ExternalRunnerToolchainStage("Run Vice",
+					"\"C:\\Users\\drazil\\applications\\WinVICE-2.4-x86\\x64sc.exe\"", fileName));
+		}
 		toolChain.start();
 
 	}
@@ -210,10 +218,16 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		documentStyler = getBasicStyler(basicInstructions, version);
 		documentStyler.refreshMultilineComments(srs.getContent());
 		styledText.addLineStyleListener(documentStyler);
+		styledText.addMouseMoveListener(new MouseMoveListener() {
+			@Override
+			public void mouseMove(MouseEvent e) {
+
+			}
+		});
 		styledText.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT) {
+				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT && isOnString) {
 					closePupup();
 					symbolChooser = new SymbolPaletteChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
 							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),
@@ -225,6 +239,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 
 				}
 			}
+
 		});
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override

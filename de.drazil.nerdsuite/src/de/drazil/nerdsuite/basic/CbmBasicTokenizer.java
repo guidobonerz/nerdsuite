@@ -10,7 +10,7 @@ import de.drazil.nerdsuite.model.CharObject;
 import de.drazil.nerdsuite.util.ArrayUtil;
 import de.drazil.nerdsuite.util.NumericConverter;
 
-public class BasicTokenizer {
+public class CbmBasicTokenizer {
 
 	enum Mode {
 		READ_LINENUMBER, READ_INSTRUCTIONS, READ_STRING, READ_BLOCK_COMMENT, READ_LINE_COMMENT;
@@ -24,12 +24,12 @@ public class BasicTokenizer {
 	private static Mode lastReadMode = readMode;
 	private static LastRead lastRead = LastRead.NONE;
 
-	public BasicTokenizer() {
+	public CbmBasicTokenizer() {
 
 	}
 
 	public static byte[] tokenize(String content, BasicInstructions basicInstructions, List<CharObject> charMap) {
-		long startTime = System.currentTimeMillis();
+
 		boolean doNotScan = false;
 		byte[] result = new byte[] {};
 		int offset = 0;
@@ -139,8 +139,7 @@ public class BasicTokenizer {
 			}
 		}
 		result = ArrayUtil.grow(result, new byte[] { 0, 0 });
-		float diff = (System.currentTimeMillis() - startTime) / 1000f;
-		System.out.printf("time to build:%f seconds\n", diff);
+
 		return result;
 	}
 

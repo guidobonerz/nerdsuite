@@ -98,6 +98,7 @@ public class Constants {
 	public final static Color DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR = new Color(Display.getCurrent(),
 			SwtUtil.toRGB("#A64425"));
 	public final static Color DEFAULT_CURLY_BRACES_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A3A3A3"));
+	public final static Color DEFAULT_COLOR_DEBUG = new Color(Display.getCurrent(), SwtUtil.toRGB("#D4AC0D"));
 	public final static Color WHITE = new Color(Display.getCurrent(), SwtUtil.toRGB("#FFFFFF"));
 	public final static Color BLACK = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
 	public final static Color LIGHT_BLUE = new Color(Display.getCurrent(), SwtUtil.toRGB("#EFEFFF"));
@@ -184,7 +185,7 @@ public class Constants {
 	public final static String T_COMMAND = "COMMAND";
 	public final static String T_ILLEGAL_OPCODE = "ILLEGAL_OPCODE";
 	public final static String T_UNSTABLE_ILLEGAL_OPCODE = "UNSTABLE_ILLEGAL_OPCODE";
-
+	
 	public final static String PROJECT_FILE_INFO_HEADER = "// Nerdsuite Project by drazil 2017-2020\n"
 			+ "// Projectname_____: %s\n" + "// Created on______: %s\n" + "// Changed on______: %s\n";
 
