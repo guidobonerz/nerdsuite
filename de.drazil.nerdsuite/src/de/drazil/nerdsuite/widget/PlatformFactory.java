@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharMap;
+import de.drazil.nerdsuite.model.CharObject;
 import de.drazil.nerdsuite.model.CpuInstructions;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.model.PlatformData;
@@ -88,19 +88,18 @@ public class PlatformFactory {
 		return cpuInstruction;
 	}
 
-	public static List<CharMap> getCharMap(String id) {
+	public static CharMap getCharMap(String id) {
 
-		List<CharMap> charMap = null;
+		CharMap charMap = null;
 		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
 			PlatformData platformData = mapper.readValue(bundle.getEntry(getTargetPlatform(id).getSource()),
 					PlatformData.class);
+//new TypeReference<List<CharObject>>() {
+			charMap = charMap = mapper.readValue(bundle.getEntry(platformData.getCharMapSource()), CharMap.class);
 
-			charMap = mapper.readValue(bundle.getEntry(platformData.getCharMapSource()),
-					new TypeReference<List<CharMap>>() {
-					});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,8 +1,5 @@
 package de.drazil.nerdsuite.sourceeditor;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -23,6 +20,8 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ExtendedModifyEvent;
+import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.LineBackgroundEvent;
 import org.eclipse.swt.custom.LineBackgroundListener;
 import org.eclipse.swt.custom.StyleRange;
@@ -31,6 +30,9 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -39,20 +41,27 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.basic.BasicTokenizer;
 import de.drazil.nerdsuite.basic.SourceRepositoryService;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
+import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
-import de.drazil.nerdsuite.model.CharMap;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.util.ArrayUtil;
-import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
+import de.drazil.nerdsuite.toolchain.BasicTokenizerStage;
+import de.drazil.nerdsuite.toolchain.ExternalRunnerToolchainStage;
+import de.drazil.nerdsuite.toolchain.Toolchain;
+import de.drazil.nerdsuite.widget.CustomPopupDialog;
+import de.drazil.nerdsuite.widget.ICharSelectionListener;
 import de.drazil.nerdsuite.widget.PlatformFactory;
+import de.drazil.nerdsuite.widget.SymbolPaletteChooser;
 
-public class SourceEditorView implements IDocument {
+public class SourceEditorView implements IDocument, ICharSelectionListener {
+
+	@Inject
+	private MPart part;
 
 	enum WordBounds {
 		Begin, End
@@ -64,8 +73,9 @@ public class SourceEditorView implements IDocument {
 	private String owner;
 	private SourceRepositoryService srs;
 	private BasicInstructions basicInstructions;
-	@Inject
-	private MPart part;
+	private CustomPopupDialog popupDialog;
+	private SymbolPaletteChooser symbolChooser;
+	private boolean isOnString = false;
 
 	public SourceEditorView() {
 
@@ -118,12 +128,13 @@ public class SourceEditorView implements IDocument {
 
 	@Inject
 	@Optional
-	public void build(@UIEventTopic("Build") BrokerObject brokerObject) {
+	public void build(@UIEventTopic("BuildAndRun") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			Display.getCurrent().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					tokenize();
+					String[] buildProcess = (String[]) brokerObject.getTransferObject();
+					runToolchain(buildProcess);
 				}
 			});
 		}
@@ -137,18 +148,20 @@ public class SourceEditorView implements IDocument {
 		}
 	}
 
-	private void tokenize() {
-		List<CharMap> charMap = PlatformFactory.getCharMap(srs.getMetadata().getPlatform());
-		byte[] bytecode = BasicTokenizer.tokenize(styledText.getText().toUpperCase(), basicInstructions, charMap);
-		byte[] payload = new byte[] {};
-		payload = ArrayUtil.grow(payload, NumericConverter.getWord(2049));
-		payload = ArrayUtil.grow(payload, bytecode);
-		try {
-			Files.write(new File("c:\\Users\\drazil\\tokenizedfile.prg").toPath(), payload);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private void runToolchain(String[] buildProcess) {
+
+		Console.clear();
+		String fileName = String.format("c:/Users/drazil/data/builds/%s.prg", project.getName());
+		Toolchain toolChain = new Toolchain();
+
+		toolChain.addToolchainStage(new BasicTokenizerStage("Run Basic Tokenizer", srs.getMetadata().getPlatform(),
+				styledText.getText(), basicInstructions, fileName, "1".equals(buildProcess[0])));
+		if ("1".equals(buildProcess[1])) {
+			toolChain.addToolchainStage(new ExternalRunnerToolchainStage("Run Vice",
+					"\"C:\\Users\\drazil\\applications\\WinVICE-2.4-x86\\x64sc.exe\"", fileName));
 		}
+		toolChain.start();
+
 	}
 
 	private void save() {
@@ -196,14 +209,38 @@ public class SourceEditorView implements IDocument {
 		part.setDirty(false);
 		part.getTransientData().put(Constants.OWNER, owner);
 		part.setTooltip("basic Source File");
-
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		styledText.setText(srs.getContent() == null ? "" : srs.getContent());
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
 		styledText.setFont(Constants.RobotoMonoBold_FONT);
-		styledText.addLineStyleListener(getBasicStyler(basicInstructions, version));
+		documentStyler = getBasicStyler(basicInstructions, version);
+		documentStyler.refreshMultilineComments(srs.getContent());
+		styledText.addLineStyleListener(documentStyler);
+		styledText.addMouseMoveListener(new MouseMoveListener() {
+			@Override
+			public void mouseMove(MouseEvent e) {
+
+			}
+		});
+		styledText.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT && isOnString) {
+					closePupup();
+					symbolChooser = new SymbolPaletteChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
+							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),
+							PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform()));
+					symbolChooser.setSelectedColor(1);
+					symbolChooser.addCharSelectionListener(SourceEditorView.this);
+					popupDialog = new CustomPopupDialog(parent.getShell(), symbolChooser);
+					popupDialog.open();
+
+				}
+			}
+
+		});
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
 			public void lineGetBackground(LineBackgroundEvent event) {
@@ -220,62 +257,42 @@ public class SourceEditorView implements IDocument {
 				Point topLeft = styledText.getLocationAtOffset(line);
 				event.gc.drawRectangle(topLeft.x - 1, topLeft.y, styledText.getBounds().width,
 						styledText.getLineHeight());
-
 			}
 		});
 
 		styledText.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// if (e.keyCode == SWT.ARROW_UP || e.keyCode == SWT.ARROW_DOWN
-				// ||
-				// e.keyCode == SWT.PAGE_DOWN || e.keyCode == SWT.PAGE_UP)
-				// {
-				// styledText.redraw();
-				// }
-
 			}
 		});
 
-		/*
-		 * styledText.addExtendedModifyListener(new ExtendedModifyListener() {
-		 * 
-		 * @Override public void modifyText(ExtendedModifyEvent event) {
-		 * System.out.println("Ext Modify Text"); // TODO Auto-generated method stub }
-		 * });
-		 */
-
-		styledText.addModifyListener(new ModifyListener() {
-
+		styledText.addExtendedModifyListener(new ExtendedModifyListener() {
 			@Override
-			public void modifyText(ModifyEvent e) {
-				part.setDirty(true);
+			public void modifyText(ExtendedModifyEvent event) {
+				documentStyler.refreshMultilineComments(styledText.getText());
 				documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
-				// documentStyler.refreshMultilineComments(styledText.getText());
 				styledText.redraw();
 			}
 		});
-		/*
-		 * Button button = new Button(parent, SWT.NONE);
-		 * button.addListener(SWT.Selection, new Listener() {
-		 * 
-		 * @Override public void handleEvent(Event event) { IFont font = new C64Font();
-		 * int cursorPos = styledText.getCaretOffset(); styledText.insert(new
-		 * String(Character.toChars(0xee9d)));
-		 * 
-		 * } });
-		 */
-		/*
-		 * FontData[] fD = styledText.getFont().getFontData(); fD[0].setHeight(12);
-		 * styledText.setFont(new Font(parent.getDisplay(), fD[0]));
-		 */
-		/*
-		 * styledText.getVerticalBar().addListener(SWT.Selection, new Listener() { int
-		 * lastIndex = styledText.getTopIndex();
-		 * 
-		 * public void handleEvent(Event e) { int index = styledText.getTopIndex(); if
-		 * (index != lastIndex) { lastIndex = index; styledText.redraw(); } } });
-		 */
+
+		styledText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				part.setDirty(true);
+				documentStyler.refreshMultilineComments(styledText.getText());
+				documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
+				styledText.redraw();
+			}
+		});
+	}
+
+	@Override
+	public void charSelected(int charIndex, char unicodeChar) {
+		styledText.insert(String.valueOf(unicodeChar));
+		documentStyler.refreshMultilineComments(styledText.getText());
+		documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
+		styledText.redraw();
+
 	}
 
 	@Override
@@ -367,4 +384,12 @@ public class SourceEditorView implements IDocument {
 	private void updateWorkspace(boolean addProject) {
 		Initializer.getConfiguration().updateWorkspace(project, addProject, false);
 	}
+
+	private void closePupup() {
+		if (symbolChooser != null) {
+			symbolChooser.removeCharSelectionListener(null);
+			popupDialog.close();
+		}
+	}
+
 }

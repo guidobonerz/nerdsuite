@@ -98,6 +98,7 @@ public class Constants {
 	public final static Color DEFAULT_UNSTABLE_ILLEGAL_OPCODE_COLOR = new Color(Display.getCurrent(),
 			SwtUtil.toRGB("#A64425"));
 	public final static Color DEFAULT_CURLY_BRACES_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A3A3A3"));
+	public final static Color DEFAULT_COLOR_DEBUG = new Color(Display.getCurrent(), SwtUtil.toRGB("#D4AC0D"));
 	public final static Color WHITE = new Color(Display.getCurrent(), SwtUtil.toRGB("#FFFFFF"));
 	public final static Color BLACK = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
 	public final static Color LIGHT_BLUE = new Color(Display.getCurrent(), SwtUtil.toRGB("#EFEFFF"));
@@ -114,10 +115,11 @@ public class Constants {
 	public final static Font EDITOR_FONT = JFaceResources.getFont(JFaceResources.TEXT_FONT);
 
 	public final static Font GoogleMaterials = new Font(Display.getCurrent(), "Material Icons", 16, SWT.NORMAL);
+	public final static Font GoogleMaterials_12 = new Font(Display.getCurrent(), "Material Icons", 12, SWT.NORMAL);
 	public final static Font ICOMOON = new Font(Display.getCurrent(), "icomoon", 16, SWT.NORMAL);
 	public final static Font FontAwesome5ProSolid = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 20,
 			SWT.NORMAL);
-	public final static Font FontAwesome5ProSolid_12 = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 16,
+	public final static Font FontAwesome5ProSolid_12 = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 12,
 			SWT.NORMAL);
 	public final static Font Ubuntu_Mono = new Font(Display.getCurrent(), "Ubuntu Mono", 20, SWT.NORMAL);
 	public final static Font DroidSans_Mono = new Font(Display.getCurrent(), "Droid Sans Mono", 20, SWT.NORMAL);
@@ -125,8 +127,8 @@ public class Constants {
 	public final static Font SourceCodePro_Mono = new Font(Display.getCurrent(), "Source Code Pro", 10, SWT.NORMAL);
 	public final static Font C64_Pro_Mono_FONT = new Font(Display.getCurrent(), "C64 Pro Mono", 6, SWT.NORMAL);
 	public final static Font C64_Pro_Mono_FONT_10 = new Font(Display.getCurrent(), "C64 Pro Mono", 10, SWT.NORMAL);
-	public final static Font C64_Pro_Mono_FONT_8 = new Font(Display.getCurrent(), "C64 Pro Mono", 8, SWT.NORMAL);
 	public final static Font C64_Pro_Mono_FONT_12 = new Font(Display.getCurrent(), "C64 Pro Mono", 12, SWT.NORMAL);
+	public final static Font C64_Pro_Mono_FONT_16 = new Font(Display.getCurrent(), "C64 Pro Mono", 16, SWT.NORMAL);
 	public final static Font Atari_Classic_FONT = new Font(Display.getCurrent(), "Atari Classic", 10, SWT.NORMAL);
 	public final static Font CPC_FONT = new Font(Display.getCurrent(), "Amstrad CPC correcy", 11, SWT.NORMAL);
 
@@ -183,7 +185,7 @@ public class Constants {
 	public final static String T_COMMAND = "COMMAND";
 	public final static String T_ILLEGAL_OPCODE = "ILLEGAL_OPCODE";
 	public final static String T_UNSTABLE_ILLEGAL_OPCODE = "UNSTABLE_ILLEGAL_OPCODE";
-
+	
 	public final static String PROJECT_FILE_INFO_HEADER = "// Nerdsuite Project by drazil 2017-2020\n"
 			+ "// Projectname_____: %s\n" + "// Created on______: %s\n" + "// Changed on______: %s\n";
 

@@ -16,18 +16,18 @@ import lombok.Setter;
 
 public class AdvancedMouseAdaper {
 
-	private final static int MOUSE_BUTTON_LEFT = 1;
-	private final static int MOUSE_BUTTON_MIDDLE = 2;
-	private final static int MOUSE_BUTTON_RIGHT = 3;
-	private final static int SET_LEFT_BUTTON_PRESSED = 1;
-	private final static int SET_LEFT_BUTTON_RELEASED = 2;
-	private final static int SET_MIDDLE_BUTTON_PRESSED = 4;
-	private final static int SET_MIDDLE_BUTTON_RELEASED = 8;
-	private final static int SET_RIGHT_BUTTON_PRESSED = 16;
-	private final static int SET_RIGHT_BUTTON_RELEASED = 32;
-	private final static int SET_MOUSE_MOVE = 64;
-	private final static int SET_MOUSE_DRAGGED = 128;
-	private final static int SET_MOUSE_DROPPED = 256;
+	public final static int MOUSE_BUTTON_LEFT = 1;
+	public final static int MOUSE_BUTTON_MIDDLE = 2;
+	public final static int MOUSE_BUTTON_RIGHT = 3;
+	public final static int SET_LEFT_BUTTON_PRESSED = 1;
+	public final static int SET_LEFT_BUTTON_RELEASED = 2;
+	public final static int SET_MIDDLE_BUTTON_PRESSED = 4;
+	public final static int SET_MIDDLE_BUTTON_RELEASED = 8;
+	public final static int SET_RIGHT_BUTTON_PRESSED = 16;
+	public final static int SET_RIGHT_BUTTON_RELEASED = 32;
+	public final static int SET_MOUSE_MOVE = 64;
+	public final static int SET_MOUSE_DRAGGED = 128;
+	public final static int SET_MOUSE_DROPPED = 256;
 
 	private int mouseState = SET_LEFT_BUTTON_RELEASED + SET_RIGHT_BUTTON_RELEASED;
 
