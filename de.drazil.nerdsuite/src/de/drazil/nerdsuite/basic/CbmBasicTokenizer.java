@@ -29,7 +29,7 @@ public class CbmBasicTokenizer {
 	}
 
 	public static byte[] tokenize(String content, BasicInstructions basicInstructions, List<CharObject> charMap) {
-		long startTime = System.currentTimeMillis();
+
 		boolean doNotScan = false;
 		byte[] result = new byte[] {};
 		int offset = 0;
@@ -139,8 +139,7 @@ public class CbmBasicTokenizer {
 			}
 		}
 		result = ArrayUtil.grow(result, new byte[] { 0, 0 });
-		float diff = (System.currentTimeMillis() - startTime) / 1000f;
-		System.out.printf("time to build:%f seconds\n", diff);
+
 		return result;
 	}
 

@@ -23,13 +23,15 @@ public class BasicTokenizerStage implements IToolchainStage<Object> {
 	private BasicInstructions basicInstructions;
 	private List<CharObject> charMap;
 	private String name;
+	private boolean debug;
 
 	public BasicTokenizerStage(String name, String platform, String content, BasicInstructions basicInstructions,
-			String fileName) {
+			String fileName, boolean debug) {
 		this.platform = platform;
 		this.content = content;
 		this.fileName = fileName;
 		this.name = name;
+		this.debug = debug;
 		this.basicInstructions = basicInstructions;
 	}
 
@@ -47,7 +49,9 @@ public class BasicTokenizerStage implements IToolchainStage<Object> {
 
 	@Override
 	public void start() {
-		Console.println(name);
+		long startTime = System.currentTimeMillis();
+		Console.println(name + (debug ? " in Debug Mode" : ""));
+
 		CharMap charMap = PlatformFactory.getCharMap(platform);
 
 		List<CharObject> charMapList = charMap.getCharMap().stream().filter(e -> e.isUpper() == true)
@@ -59,17 +63,13 @@ public class BasicTokenizerStage implements IToolchainStage<Object> {
 
 		try {
 			Files.write(new File(fileName).toPath(), payload);
-			Console.printf("%s (%d bytes) written\n", fileName, payload.length);
+			float diff = (System.currentTimeMillis() - startTime) / 1000f;
+			Console.printf("%s (%d bytes) written in %f seconds\n", fileName, payload.length, diff);
 		} catch (IOException e1) {
 			Console.printf("write file %s failed", fileName);
 			e1.printStackTrace();
+		} finally {
+
 		}
-
-	}
-
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-
 	}
 }

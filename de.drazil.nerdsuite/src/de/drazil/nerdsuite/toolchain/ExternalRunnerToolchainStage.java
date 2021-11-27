@@ -13,45 +13,8 @@ import de.drazil.nerdsuite.log.Console;
 public class ExternalRunnerToolchainStage implements IToolchainStage<Object> {
 	private String name;
 	private boolean isRunning = false;
-	private Thread thread;
 	private ProcessBuilder processbuilder;
 	private Process process;
-
-	public class ToolchainProcess implements Runnable {
-		@Override
-		public synchronized void run() {
-
-			try {
-				process = processbuilder.start();
-
-				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				String line = null;
-				while (null != (line = br.readLine())) {
-					Console.println(line);
-					// System.out.flush();
-				}
-				br.close();
-
-				int errorCode = process.waitFor();
-				if (errorCode == 1) {
-					line = null;
-					br = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-					while (null != (line = br.readLine())) {
-						Console.println(line);
-						// System.out.flush();
-					}
-					br.close();
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-	}
 
 	public ExternalRunnerToolchainStage(String name, String... parameters) {
 		this(name, Arrays.asList(parameters));
@@ -69,14 +32,41 @@ public class ExternalRunnerToolchainStage implements IToolchainStage<Object> {
 			Console.print(command);
 		}
 		Console.println();
-		thread = new Thread(new ToolchainProcess());
-		thread.start();
-	}
 
-	@Override
-	public void stop() {
-		process.destroy();
-		thread = null;
+		try {
+			process = processbuilder.start();
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+			String line = null;
+			while (null != (line = br.readLine())) {
+				Console.println(line);
+			}
+			br.close();
+
+			int errorCode = process.waitFor();
+			if (errorCode == 1) {
+				line = null;
+				br = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				while (null != (line = br.readLine())) {
+					Console.println(line);
+				}
+				br.close();
+				Console.println("External Process stopped with errors");
+			} else if (errorCode == 0) {
+				Console.println("External Process stopped normally");
+			}
+
+			process.destroy();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+		}
 	}
 
 	@Override

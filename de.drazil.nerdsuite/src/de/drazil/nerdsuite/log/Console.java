@@ -56,14 +56,20 @@ public class Console {
 	}
 
 	public static void print(String message) {
+
 		textWidget.append(message);
+
 	}
 
 	public static void printf(String message, Object... values) {
+
 		textWidget.append(String.format(message, values));
+
 	}
 
 	public static void clear() {
+
 		textWidget.setText("");
+
 	}
 }
