@@ -476,7 +476,9 @@
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_NSoYkM3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.partdescriptor.SourceEditorView" label="SourceEditorView" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView">
-    <toolbar xmi:id="_NSoYmc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.toolbar.2"/>
+    <toolbar xmi:id="_NSoYmc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.toolbar.2">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_kpo9cE-mEey34_NTBuvgqQ" elementId="de.drazil.nerdsuite.handledtoolitem.10" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/edit-list-order.png" tooltip="Renumber"/>
+    </toolbar>
   </descriptors>
   <descriptors xmi:id="_tBX6wNHVEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.partdescriptor.DisassemblerView" label="DisassemblerView" bindingContexts="__j6EwFZOEeuJj-MnBSw8MA" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView">
     <handlers xmi:id="_fWufgFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.4" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.JumpToAddressHandler" command="_V20PgFY2Eeu6p9lPyfXaSg"/>

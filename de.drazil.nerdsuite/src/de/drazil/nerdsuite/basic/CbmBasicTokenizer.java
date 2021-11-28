@@ -13,32 +13,35 @@ import de.drazil.nerdsuite.util.NumericConverter;
 public class CbmBasicTokenizer {
 
 	enum Mode {
-		READ_LINENUMBER, READ_INSTRUCTIONS, READ_STRING, READ_BLOCK_COMMENT, READ_LINE_COMMENT;
+		READ_LINENUMBER, READ_INSTRUCTIONS, READ_STRING, READ_BLOCK_COMMENT, READ_LINE_COMMENT, READ_DEBUG_BLOCK;
 	};
 
 	enum LastRead {
 		NUMERIC, ALPHANUMERIC, LETTER, WHITESPACE, NONE;
 	}
 
-	private static Mode readMode = Mode.READ_LINENUMBER;
-	private static Mode lastReadMode = readMode;
-	private static LastRead lastRead = LastRead.NONE;
-
 	public CbmBasicTokenizer() {
 
 	}
 
-	public static byte[] tokenize(String content, BasicInstructions basicInstructions, List<CharObject> charMap) {
+	public static byte[] tokenize(String content, BasicInstructions basicInstructions, List<CharObject> charMap,
+			boolean debug) {
 
+		boolean isInDataLine = false;
+		boolean isInDebugBlock = false;
 		boolean doNotScan = false;
 		byte[] result = new byte[] {};
+
 		int offset = 0;
 		char quote = basicInstructions.getStringQuote().charAt(0);
-
 		CharacterIterator ci = new StringCharacterIterator(content);
 		StringBuilder buffer = new StringBuilder();
-		for (char ch = ci.first(); ch != CharacterIterator.DONE; ch = ci.next()) {
-
+		char ch = 0;
+		Mode readMode = Mode.READ_LINENUMBER;
+		Mode lastReadMode = readMode;
+		LastRead lastRead = LastRead.NONE;
+		ch = ci.first();
+		while (ch != CharacterIterator.DONE) {
 			if (content.indexOf(basicInstructions.getBlockComment()[0], ci.getIndex()) == ci.getIndex()) {
 				System.out.printf("block start index at %s\n", ci.getIndex());
 				ci.setIndex(ci.getIndex() + 1);
@@ -50,14 +53,27 @@ public class CbmBasicTokenizer {
 				lastReadMode = readMode;
 				readMode = Mode.READ_LINE_COMMENT;
 			}
+			if (content.indexOf("[debug]", ci.getIndex()) == ci.getIndex() && readMode != Mode.READ_BLOCK_COMMENT
+					&& readMode == Mode.READ_LINE_COMMENT) {
+				lastReadMode = readMode;
+				readMode = Mode.READ_DEBUG_BLOCK;
+				isInDebugBlock = true;
+			}
+			if (content.indexOf("[debug/]", ci.getIndex()) == ci.getIndex() && readMode != Mode.READ_BLOCK_COMMENT
+					&& readMode == Mode.READ_LINE_COMMENT) {
+				lastReadMode = readMode;
+				readMode = Mode.READ_DEBUG_BLOCK;
+				isInDebugBlock = false;
+			}
 
 			switch (readMode) {
 			case READ_BLOCK_COMMENT: {
 				int match = 0;
-				if ((match = content.indexOf(basicInstructions.getBlockComment()[1], ci.getIndex())) != -1) {
-					ci.setIndex(match + 1);
-					readMode = lastReadMode;
+				while ((match = content.indexOf(basicInstructions.getBlockComment()[1], ci.getIndex())) != -1) {
+					ch = ci.next();
 				}
+				ch = ci.next();
+				readMode = lastReadMode;
 				break;
 			}
 			case READ_LINE_COMMENT: {
@@ -67,19 +83,20 @@ public class CbmBasicTokenizer {
 				break;
 			}
 			case READ_LINENUMBER: {
-				if ((ch != '\n' && ch != '\r' && Character.isWhitespace(ch) || Character.isAlphabetic(ch))
-						&& lastRead == LastRead.NUMERIC) {
+				if (Character.isLetter(ch)) {
+					isInDataLine = false;
 					readMode = Mode.READ_INSTRUCTIONS;
 					byte[] ba = NumericConverter.getWord(Integer.valueOf(buffer.toString()));
 					result = ArrayUtil.grow(result, new byte[] { 0, 0 });
 					result = ArrayUtil.grow(result, ba);
 					buffer = new StringBuilder();
-					if (!Character.isWhitespace(ch)) {
-						buffer.append(ch);
-					}
-				} else if (Character.isDigit(ch)) {
-					lastRead = LastRead.NUMERIC;
+				}
+				while (Character.isWhitespace(ch)) {
+					ch = ci.next();
+				}
+				while (Character.isDigit(ch)) {
 					buffer.append(ch);
+					ch = ci.next();
 				}
 				break;
 			}
@@ -89,30 +106,40 @@ public class CbmBasicTokenizer {
 					int start = ci.getIndex();
 					for (BasicInstruction instruction : basicInstructions.getBasicInstructionList()) {
 						if (content.indexOf(instruction.getInstruction().toUpperCase(), start) == start) {
+							if (instruction.getInstruction().equalsIgnoreCase("data") && !isInDataLine) {
+								isInDataLine = true;
+							}
+
 							doNotScan = instruction.isComment();
 							result = ArrayUtil.grow(result, buffer.toString().getBytes());
 							byte b = (byte) (Integer.parseInt(instruction.getToken(), 16) & 0xff);
+							if (isInDataLine) {
+								if (instruction.getInstruction().equals("-")) {
+									b = 0x2d;
+								}
+							}
 							result = ArrayUtil.grow(result, b);
 							ci.setIndex(start + (instruction.getInstruction().length() - 1));
+							// ch = ci.current();
 							buffer = new StringBuilder();
+							// buffer.append(ch);
 							found = true;
 							break;
 						}
 					}
 					if (!found) {
-						if (ch != '\r' && ch != '\n') {
+						if (!Character.isWhitespace(ch)) {
 							buffer.append(ch);
 						}
 					}
 				} else {
-					if (ch != '\r' && ch != '\n') {
+					if (!Character.isWhitespace(ch)) {
 						buffer.append(ch);
 					}
 				}
 
 				if (ch == quote) {
 					readMode = Mode.READ_STRING;
-					break;
 				} else if (ch == '\n') {
 					doNotScan = false;
 					result = ArrayUtil.grow(result, buffer.toString().getBytes());
@@ -122,8 +149,8 @@ public class CbmBasicTokenizer {
 					offset = len;
 					buffer = new StringBuilder();
 					readMode = Mode.READ_LINENUMBER;
-					break;
 				}
+				ch = ci.next();
 				break;
 			}
 			case READ_STRING: {
@@ -134,14 +161,75 @@ public class CbmBasicTokenizer {
 					buffer = new StringBuilder();
 					readMode = Mode.READ_INSTRUCTIONS;
 				}
+				ch = ci.next();
 				break;
 			}
 			}
 		}
+
 		result = ArrayUtil.grow(result, new byte[] { 0, 0 });
 
 		return result;
 	}
+
+	/*
+	 * 
+	 * public static byte[] tokenize(String content, BasicInstructions
+	 * basicInstructions, List<CharObject> charMap) {
+	 * 
+	 * boolean doNotScan = false; byte[] result = new byte[] {}; int offset = 0;
+	 * char quote = basicInstructions.getStringQuote().charAt(0);
+	 * 
+	 * CharacterIterator ci = new StringCharacterIterator(content); StringBuilder
+	 * buffer = new StringBuilder(); for (char ch = ci.first(); ch !=
+	 * CharacterIterator.DONE; ch = ci.next()) {
+	 * 
+	 * if (content.indexOf(basicInstructions.getBlockComment()[0], ci.getIndex()) ==
+	 * ci.getIndex()) { System.out.printf("block start index at %s\n",
+	 * ci.getIndex()); ci.setIndex(ci.getIndex() + 1); lastReadMode = readMode;
+	 * readMode = Mode.READ_BLOCK_COMMENT; } if
+	 * (content.indexOf(basicInstructions.getSingleLineComment(), ci.getIndex()) ==
+	 * ci.getIndex() && readMode != Mode.READ_BLOCK_COMMENT) { lastReadMode =
+	 * readMode; readMode = Mode.READ_LINE_COMMENT; }
+	 * 
+	 * switch (readMode) { case READ_BLOCK_COMMENT: { int match = 0; if ((match =
+	 * content.indexOf(basicInstructions.getBlockComment()[1], ci.getIndex())) !=
+	 * -1) { ci.setIndex(match + 1); readMode = lastReadMode; } break; } case
+	 * READ_LINE_COMMENT: { if (content.indexOf("\n", ci.getIndex()) ==
+	 * ci.getIndex()) { readMode = lastReadMode; } break; } case READ_LINENUMBER: {
+	 * if ((ch != '\n' && ch != '\r' && Character.isWhitespace(ch) ||
+	 * Character.isAlphabetic(ch)) && lastRead == LastRead.NUMERIC) { readMode =
+	 * Mode.READ_INSTRUCTIONS; byte[] ba =
+	 * NumericConverter.getWord(Integer.valueOf(buffer.toString())); result =
+	 * ArrayUtil.grow(result, new byte[] { 0, 0 }); result = ArrayUtil.grow(result,
+	 * ba); buffer = new StringBuilder(); if (!Character.isWhitespace(ch)) {
+	 * buffer.append(ch); } } else if (Character.isDigit(ch)) { lastRead =
+	 * LastRead.NUMERIC; buffer.append(ch); } break; } case READ_INSTRUCTIONS: {
+	 * boolean found = false; if (!doNotScan) { int start = ci.getIndex(); for
+	 * (BasicInstruction instruction : basicInstructions.getBasicInstructionList())
+	 * { if (content.indexOf(instruction.getInstruction().toUpperCase(), start) ==
+	 * start) { doNotScan = instruction.isComment(); result = ArrayUtil.grow(result,
+	 * buffer.toString().getBytes()); byte b = (byte)
+	 * (Integer.parseInt(instruction.getToken(), 16) & 0xff); result =
+	 * ArrayUtil.grow(result, b); ci.setIndex(start +
+	 * (instruction.getInstruction().length() - 1)); buffer = new StringBuilder();
+	 * found = true; break; } } if (!found) { if (ch != '\r' && ch != '\n') {
+	 * buffer.append(ch); } } } else { if (ch != '\r' && ch != '\n') {
+	 * buffer.append(ch); } }
+	 * 
+	 * if (ch == quote) { readMode = Mode.READ_STRING; break; } else if (ch == '\n')
+	 * { doNotScan = false; result = ArrayUtil.grow(result,
+	 * buffer.toString().getBytes()); result = ArrayUtil.grow(result, (byte) 0); int
+	 * len = result.length; result = ArrayUtil.update(result,
+	 * NumericConverter.getWord(2049 + len), offset); offset = len; buffer = new
+	 * StringBuilder(); readMode = Mode.READ_LINENUMBER; break; } break; } case
+	 * READ_STRING: { buffer.append(ch); if (ch == quote) { byte[] ba =
+	 * mapUniCodeCharacters(buffer, charMap); result = ArrayUtil.grow(result, ba);
+	 * buffer = new StringBuilder(); readMode = Mode.READ_INSTRUCTIONS; } break; } }
+	 * } result = ArrayUtil.grow(result, new byte[] { 0, 0 });
+	 * 
+	 * return result; }
+	 */
 
 	private static byte[] mapUniCodeCharacters(StringBuilder sb, List<CharObject> charMap) {
 

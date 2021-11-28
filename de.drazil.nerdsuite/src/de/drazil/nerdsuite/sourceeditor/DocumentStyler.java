@@ -188,6 +188,8 @@ public class DocumentStyler implements LineStyleListener {
 							c = Constants.OPERATOR_COLOR;
 						} else if (rule.getTokenControl() == 3) {
 							c = Constants.CONSTANT_COLOR;
+						} else if (rule.getTokenControl() == 4) {
+							c = Constants.BRIGHT_ORANGE;
 						} else {
 							c = styleMap.get(rule.getToken().getKey()).foreground;
 						}
