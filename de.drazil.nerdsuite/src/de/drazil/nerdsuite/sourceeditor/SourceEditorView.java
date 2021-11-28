@@ -46,7 +46,6 @@ import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.log.Console;
-import de.drazil.nerdsuite.model.BasicDirective;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
@@ -102,6 +101,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		documentStyler.addRule(new SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
 				new Token(Constants.T_COMMENT)));
 		documentStyler.addRule(new SingleLineRule("//", Marker.EOL, new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new SingleLineRule("@", Marker.LINE, new Token(Constants.T_DIRECTIVE)));
 		documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
 				basicInstructions.getStringQuote(), new Token(Constants.T_C64_BASIC_STRING), true));
 		// documentStyler.addRule(new SingleLineRule("", ":", new
@@ -123,10 +123,6 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 				documentStyler.addRule(new WordRule(bi, new Token(Constants.T_COMMAND)));
 			}
 		}
-		documentStyler.addRule(new WordRule(new BasicDirective("[debug]"), new Token(Constants.T_DIRECTIVE)));
-		documentStyler.addRule(new WordRule(new BasicDirective("[debug/]"), new Token(Constants.T_DIRECTIVE)));
-
-		documentStyler.addRule(new WordRule(new BasicDirective("[import]"), new Token(Constants.T_DIRECTIVE)));
 
 		return documentStyler;
 	}

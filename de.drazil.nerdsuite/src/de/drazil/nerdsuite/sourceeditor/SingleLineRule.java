@@ -20,7 +20,13 @@ public class SingleLineRule extends BaseRule {
 	@Override
 	public DocumentPartition hasMatch(String text, int offset) {
 		DocumentPartition range = null;
-		if (getMarker() == Marker.EOL) {
+		if (getMarker() == Marker.LINE) {
+			int matchIndex = text.indexOf(getPrefix(), 0);
+			if (offset == matchIndex) {
+				int len = text.length() - matchIndex;
+				range = new DocumentPartition(offset, len);
+			}
+		} else if (getMarker() == Marker.EOL) {
 			int matchIndex = text.indexOf(getPrefix(), offset);
 			if (offset == matchIndex) {
 				int len = text.length() - matchIndex;

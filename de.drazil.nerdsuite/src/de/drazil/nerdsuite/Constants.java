@@ -153,7 +153,7 @@ public class Constants {
 	public final static TextStyle TEXTSTYLE_HEXADECIMAL = new TextStyle(EDITOR_FONT, DEFAULT_HEXADECIMAL_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_BINARY = new TextStyle(EDITOR_FONT, DEFAULT_BINARY_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_LABEL = new TextStyle(EDITOR_FONT, DEFAULT_LABEL_COLOR, BLACK);
-	public final static TextStyle TEXTSTYLE_DIRECTIVE = new TextStyle(RobotoMonoBold_FONT, DEFAULT_DIRCETIVE_COLOR, BLACK);
+	public final static TextStyle TEXTSTYLE_DIRECTIVE = new TextStyle(RobotoMonoBold_FONT, BRIGHT_ORANGE, BLACK);
 	public final static TextStyle TEXTSTYLE_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_OPCODE_COLOR, BLACK);
 	public final static TextStyle TEXTSTYLE_ILLEGAL_OPCODE = new TextStyle(EDITOR_FONT, DEFAULT_ILLEGAL_OPCODE_COLOR,
 			BLACK);

@@ -3,7 +3,11 @@ package de.drazil.nerdsuite.basic;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharObject;
@@ -20,21 +24,26 @@ public class CbmBasicTokenizer {
 		NUMERIC, ALPHANUMERIC, LETTER, WHITESPACE, NONE;
 	}
 
+	private static Pattern directivePattern = Pattern.compile("(@[a-zA-Z]*)\s*([a-zA-Z]*)?");
+	private static CharacterIterator ci;
+	private static boolean isInDataLine = false;
+	private static boolean isInDebugMode = false;
+	private static boolean isInIfBlock = false;
+	private static boolean isInElseBlock = false;
+
 	public CbmBasicTokenizer() {
 
 	}
 
 	public static byte[] tokenize(String content, BasicInstructions basicInstructions, List<CharObject> charMap,
 			boolean debug) {
-
-		boolean isInDataLine = false;
-		boolean isInDebugBlock = false;
+		isInDebugMode = debug;
 		boolean doNotScan = false;
 		byte[] result = new byte[] {};
 
 		int offset = 0;
 		char quote = basicInstructions.getStringQuote().charAt(0);
-		CharacterIterator ci = new StringCharacterIterator(content);
+		ci = new StringCharacterIterator(content);
 		StringBuilder buffer = new StringBuilder();
 		char ch = 0;
 		Mode readMode = Mode.READ_LINENUMBER;
@@ -53,18 +62,9 @@ public class CbmBasicTokenizer {
 				lastReadMode = readMode;
 				readMode = Mode.READ_LINE_COMMENT;
 			}
-			if (content.indexOf("[debug]", ci.getIndex()) == ci.getIndex() && readMode != Mode.READ_BLOCK_COMMENT
-					&& readMode == Mode.READ_LINE_COMMENT) {
-				lastReadMode = readMode;
-				readMode = Mode.READ_DEBUG_BLOCK;
-				isInDebugBlock = true;
-			}
-			if (content.indexOf("[debug/]", ci.getIndex()) == ci.getIndex() && readMode != Mode.READ_BLOCK_COMMENT
-					&& readMode == Mode.READ_LINE_COMMENT) {
-				lastReadMode = readMode;
-				readMode = Mode.READ_DEBUG_BLOCK;
-				isInDebugBlock = false;
-			}
+
+			processDirective(content, ci.getIndex(), true);
+			ch = ci.current();
 
 			switch (readMode) {
 			case READ_BLOCK_COMMENT: {
@@ -120,9 +120,7 @@ public class CbmBasicTokenizer {
 							}
 							result = ArrayUtil.grow(result, b);
 							ci.setIndex(start + (instruction.getInstruction().length() - 1));
-							// ch = ci.current();
 							buffer = new StringBuilder();
-							// buffer.append(ch);
 							found = true;
 							break;
 						}
@@ -172,65 +170,6 @@ public class CbmBasicTokenizer {
 		return result;
 	}
 
-	/*
-	 * 
-	 * public static byte[] tokenize(String content, BasicInstructions
-	 * basicInstructions, List<CharObject> charMap) {
-	 * 
-	 * boolean doNotScan = false; byte[] result = new byte[] {}; int offset = 0;
-	 * char quote = basicInstructions.getStringQuote().charAt(0);
-	 * 
-	 * CharacterIterator ci = new StringCharacterIterator(content); StringBuilder
-	 * buffer = new StringBuilder(); for (char ch = ci.first(); ch !=
-	 * CharacterIterator.DONE; ch = ci.next()) {
-	 * 
-	 * if (content.indexOf(basicInstructions.getBlockComment()[0], ci.getIndex()) ==
-	 * ci.getIndex()) { System.out.printf("block start index at %s\n",
-	 * ci.getIndex()); ci.setIndex(ci.getIndex() + 1); lastReadMode = readMode;
-	 * readMode = Mode.READ_BLOCK_COMMENT; } if
-	 * (content.indexOf(basicInstructions.getSingleLineComment(), ci.getIndex()) ==
-	 * ci.getIndex() && readMode != Mode.READ_BLOCK_COMMENT) { lastReadMode =
-	 * readMode; readMode = Mode.READ_LINE_COMMENT; }
-	 * 
-	 * switch (readMode) { case READ_BLOCK_COMMENT: { int match = 0; if ((match =
-	 * content.indexOf(basicInstructions.getBlockComment()[1], ci.getIndex())) !=
-	 * -1) { ci.setIndex(match + 1); readMode = lastReadMode; } break; } case
-	 * READ_LINE_COMMENT: { if (content.indexOf("\n", ci.getIndex()) ==
-	 * ci.getIndex()) { readMode = lastReadMode; } break; } case READ_LINENUMBER: {
-	 * if ((ch != '\n' && ch != '\r' && Character.isWhitespace(ch) ||
-	 * Character.isAlphabetic(ch)) && lastRead == LastRead.NUMERIC) { readMode =
-	 * Mode.READ_INSTRUCTIONS; byte[] ba =
-	 * NumericConverter.getWord(Integer.valueOf(buffer.toString())); result =
-	 * ArrayUtil.grow(result, new byte[] { 0, 0 }); result = ArrayUtil.grow(result,
-	 * ba); buffer = new StringBuilder(); if (!Character.isWhitespace(ch)) {
-	 * buffer.append(ch); } } else if (Character.isDigit(ch)) { lastRead =
-	 * LastRead.NUMERIC; buffer.append(ch); } break; } case READ_INSTRUCTIONS: {
-	 * boolean found = false; if (!doNotScan) { int start = ci.getIndex(); for
-	 * (BasicInstruction instruction : basicInstructions.getBasicInstructionList())
-	 * { if (content.indexOf(instruction.getInstruction().toUpperCase(), start) ==
-	 * start) { doNotScan = instruction.isComment(); result = ArrayUtil.grow(result,
-	 * buffer.toString().getBytes()); byte b = (byte)
-	 * (Integer.parseInt(instruction.getToken(), 16) & 0xff); result =
-	 * ArrayUtil.grow(result, b); ci.setIndex(start +
-	 * (instruction.getInstruction().length() - 1)); buffer = new StringBuilder();
-	 * found = true; break; } } if (!found) { if (ch != '\r' && ch != '\n') {
-	 * buffer.append(ch); } } } else { if (ch != '\r' && ch != '\n') {
-	 * buffer.append(ch); } }
-	 * 
-	 * if (ch == quote) { readMode = Mode.READ_STRING; break; } else if (ch == '\n')
-	 * { doNotScan = false; result = ArrayUtil.grow(result,
-	 * buffer.toString().getBytes()); result = ArrayUtil.grow(result, (byte) 0); int
-	 * len = result.length; result = ArrayUtil.update(result,
-	 * NumericConverter.getWord(2049 + len), offset); offset = len; buffer = new
-	 * StringBuilder(); readMode = Mode.READ_LINENUMBER; break; } break; } case
-	 * READ_STRING: { buffer.append(ch); if (ch == quote) { byte[] ba =
-	 * mapUniCodeCharacters(buffer, charMap); result = ArrayUtil.grow(result, ba);
-	 * buffer = new StringBuilder(); readMode = Mode.READ_INSTRUCTIONS; } break; } }
-	 * } result = ArrayUtil.grow(result, new byte[] { 0, 0 });
-	 * 
-	 * return result; }
-	 */
-
 	private static byte[] mapUniCodeCharacters(StringBuilder sb, List<CharObject> charMap) {
 
 		byte[] ba = new byte[sb.length()];
@@ -252,4 +191,52 @@ public class CbmBasicTokenizer {
 		return ba;
 	}
 
+	private static void processDirective(String content, int startIndex, boolean lineOnly) {
+
+		Matcher matcher = directivePattern.matcher(content);
+		if (lineOnly) {
+			int end = content.indexOf('\r', startIndex);
+			matcher.region(startIndex, end != -1 ? end : content.length() - 1);
+		} else {
+			matcher.region(startIndex, content.length());
+		}
+		if (matcher.find()) {
+			int count = matcher.groupCount();
+			String m1 = matcher.group(1);
+			String m2 = matcher.group(2);
+			if (count == 2 && m2.equals("")) {
+				if (matcher.group(1).equalsIgnoreCase("@end")) {
+					ci.setIndex(matcher.start() + matcher.group(1).length() + 1);
+					if (!isInIfBlock) {
+						Console.println("@END without @IF");
+						return;
+					} else {
+						isInIfBlock = false;
+						isInElseBlock = false;
+					}
+				}
+				if (matcher.group(1).equalsIgnoreCase("@else")) {
+					ci.setIndex(matcher.start() + matcher.group(1).length() + 1);
+					if (!isInIfBlock) {
+						Console.println("@ELSE without @IF");
+						return;
+					} else {
+						isInElseBlock = true;
+						if (isInDebugMode) {
+							processDirective(content, ci.getIndex(), false);
+						}
+					}
+				}
+			} else if (count == 2 && !m1.equals(matcher) && !m2.equals(matcher)) {
+				if (matcher.group(1).equalsIgnoreCase("@if") && matcher.group(2).equalsIgnoreCase("debug")) {
+					isInIfBlock = true;
+					ci.setIndex(startIndex + matcher.group().length() + 1);
+					if (!isInDebugMode) {
+						processDirective(content, ci.getIndex(), false);
+					}
+				}
+			}
+		}
+
+	}
 }
