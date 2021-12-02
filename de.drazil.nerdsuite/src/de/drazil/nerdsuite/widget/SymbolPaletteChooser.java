@@ -94,15 +94,21 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 		if (charIndex != -1) {
 			CharObject cm = charList.get(charMap.getUpperIndexOrderList().get(charIndex));
 			e.gc.drawString(String.format("$%02X(%03d) - %s", cm.getId(), cm.getId(), cm.getName()), 5, height);
+			e.gc.drawString("symbol:", 200, height);
+			e.gc.setBackground(Constants.BLACK);
+			e.gc.fillRectangle(width - 18, height + 2, 16, 16);
+			e.gc.setFont(Constants.C64_Pro_Mono_FONT_12);
+			e.gc.drawString(String.format("%s", String.valueOf(cm.getUnicode())), width - 18, height + 2);
+			
 		} else {
 			e.gc.setFont(Constants.GoogleMaterials_12);
-			e.gc.drawString("\ue5de", 30, height);
+			e.gc.drawString("\ueaa7", 30, height);
 			e.gc.setFont(Constants.RobotoMonoBold_FONT);
 			String s = String.format("%02d", repeatitionCount);
 			Point p = e.gc.textExtent(s);
 			e.gc.drawString(s, width / 2 - p.x / 2, height);
 			e.gc.setFont(Constants.GoogleMaterials_12);
-			e.gc.drawString("\ue5df", width - 30, height);
+			e.gc.drawString("\ueaaa", width - 50, height);
 		}
 	}
 

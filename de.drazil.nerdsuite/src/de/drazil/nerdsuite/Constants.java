@@ -117,10 +117,9 @@ public class Constants {
 	public final static Font GoogleMaterials = new Font(Display.getCurrent(), "Material Icons", 16, SWT.NORMAL);
 	public final static Font GoogleMaterials_12 = new Font(Display.getCurrent(), "Material Icons", 12, SWT.NORMAL);
 	public final static Font ICOMOON = new Font(Display.getCurrent(), "icomoon", 16, SWT.NORMAL);
-	public final static Font FontAwesome5ProSolid = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 20,
+	public final static Font FontAwesome5ProSolid = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 16,
 			SWT.NORMAL);
-	public final static Font FontAwesome5ProSolid_12 = new Font(Display.getCurrent(), "Font Awesome 5 Pro Solid", 12,
-			SWT.NORMAL);
+
 	public final static Font Ubuntu_Mono = new Font(Display.getCurrent(), "Ubuntu Mono", 20, SWT.NORMAL);
 	public final static Font DroidSans_Mono = new Font(Display.getCurrent(), "Droid Sans Mono", 20, SWT.NORMAL);
 	public final static Font PT_Mono = new Font(Display.getCurrent(), "PT Mono", 10, SWT.NORMAL);
@@ -185,7 +184,7 @@ public class Constants {
 	public final static String T_COMMAND = "COMMAND";
 	public final static String T_ILLEGAL_OPCODE = "ILLEGAL_OPCODE";
 	public final static String T_UNSTABLE_ILLEGAL_OPCODE = "UNSTABLE_ILLEGAL_OPCODE";
-	
+
 	public final static String PROJECT_FILE_INFO_HEADER = "// Nerdsuite Project by drazil 2017-2020\n"
 			+ "// Projectname_____: %s\n" + "// Created on______: %s\n" + "// Changed on______: %s\n";
 

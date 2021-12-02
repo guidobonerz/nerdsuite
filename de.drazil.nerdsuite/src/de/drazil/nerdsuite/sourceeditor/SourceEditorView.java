@@ -212,10 +212,12 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		part.setTooltip("basic Source File");
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+
 		styledText.setText(srs.getContent() == null ? "" : srs.getContent());
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
 		styledText.setFont(Constants.RobotoMonoBold_FONT);
+
 		documentStyler = getBasicStyler(basicInstructions, version);
 		documentStyler.refreshMultilineComments(srs.getContent());
 		styledText.addLineStyleListener(documentStyler);
@@ -228,19 +230,22 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		styledText.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+
+				int offset = styledText.getOffsetAtPoint(new Point(e.x, e.y));
+				// char c = styledText.getText().charAt(offset);
+				// boolean b = PlatformFactory.containsCodePoint("C64", c);
+				styledText.setCaretOffset(offset);
+				closePupup();
 				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT) {
-					closePupup();
-					symbolChooser = new SymbolPaletteChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
+					symbolChooser = new SymbolPaletteChooser(parent.getShell(),
+							SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
 							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),
 							PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform()));
-					// symbolChooser.setSelectedColor(1);
 					symbolChooser.addCharSelectionListener(SourceEditorView.this);
 					popupDialog = new CustomPopupDialog(parent.getShell(), symbolChooser);
 					popupDialog.open();
-
 				}
 			}
-
 		});
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
@@ -285,6 +290,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 				styledText.redraw();
 			}
 		});
+
 	}
 
 	@Override

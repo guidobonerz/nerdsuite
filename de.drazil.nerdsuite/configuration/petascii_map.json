@@ -36,13 +36,13 @@
 		}, {
 			"id": 16, "screencode": 0, "unicode": "\uEE90", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
 		}, {
-			"id": 17, "screencode": 0, "unicode": "\uEE91", "altUnicode": "\ue313", "name": "cursor down", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 17, "screencode": 0, "unicode": "\uEE91", "altUnicode": "\ue5db", "name": "cursor down", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
 			"id": 18, "screencode": 0, "unicode": "\uEE92", "altUnicode": "\ue891", "name": "reverse on", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
 			"id": 19, "screencode": 0, "unicode": "\uEE93", "altUnicode": "\ue88a", "name": "home", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 20, "screencode": 0, "unicode": "\uEE94", "altUnicode": "\ue14a", "name": "delete", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 20, "screencode": 0, "unicode": "\uEE94", "altUnicode": "\ue14a ", "name": "delete", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
 			"id": 21, "screencode": 0, "unicode": "\uEE95", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
 		}, {
@@ -60,7 +60,7 @@
 		}, {
 			"id": 28, "screencode": 0, "unicode": "\uEE9C", "altUnicode": "", "name": "red", "color": true, "control": false, "customValue": "2", "upper": true
 		}, {
-			"id": 29, "screencode": 0, "unicode": "\uEE9D", "altUnicode": "\ue315", "name": "cursor right", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 29, "screencode": 0, "unicode": "\uEE9D", "altUnicode": "\ue5c8", "name": "cursor right", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
 			"id": 30, "screencode": 0, "unicode": "\uEE9E", "altUnicode": "", "name": "green", "color": true, "control": false, "customValue": "5", "upper": true
 		}, {
@@ -268,21 +268,21 @@
 		}, {
 			"id": 132, "screencode": 0, "unicode": "\uEEC4", "altUnicode": "", "name": "", "color": false, "control": false, "customValue": "", "upper": true
 		}, {
-			"id": 133, "screencode": 0, "unicode": "\uEEC5", "altUnicode": "", "name": "f1", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 133, "screencode": 0, "unicode": "\uEEC5", "altUnicode": "\uE3D0", "name": "f1", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 134, "screencode": 0, "unicode": "\uEEC6", "altUnicode": "", "name": "f2", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 134, "screencode": 0, "unicode": "\uEEC6", "altUnicode": "\uE3D1", "name": "f2", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 135, "screencode": 0, "unicode": "\uEEC7", "altUnicode": "", "name": "f3", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 135, "screencode": 0, "unicode": "\uEEC7", "altUnicode": "\uE3D2", "name": "f3", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 136, "screencode": 0, "unicode": "\uEEC8", "altUnicode": "", "name": "f4", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 136, "screencode": 0, "unicode": "\uEEC8", "altUnicode": "\uE3D4", "name": "f4", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 137, "screencode": 0, "unicode": "\uEEC9", "altUnicode": "", "name": "f5", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 137, "screencode": 0, "unicode": "\uEEC9", "altUnicode": "\uE3D5", "name": "f5", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 138, "screencode": 0, "unicode": "\uEECA", "altUnicode": "", "name": "f6", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 138, "screencode": 0, "unicode": "\uEECA", "altUnicode": "\uE3D6", "name": "f6", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 139, "screencode": 0, "unicode": "\uEECB", "altUnicode": "", "name": "f7", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 139, "screencode": 0, "unicode": "\uEECB", "altUnicode": "\uE3D7", "name": "f7", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 140, "screencode": 0, "unicode": "\uEECC", "altUnicode": "", "name": "f8", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 140, "screencode": 0, "unicode": "\uEECC", "altUnicode": "\uE3D8", "name": "f8", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
 			"id": 141, "screencode": 0, "unicode": "\uEECD", "altUnicode": "", "name": "shift/return", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
@@ -292,15 +292,15 @@
 		}, {
 			"id": 144, "screencode": 0, "unicode": "\uEED0", "altUnicode": "", "name": "black", "color": true, "control": false, "customValue": "0", "upper": true
 		}, {
-			"id": 145, "screencode": 0, "unicode": "\uEED1", "altUnicode": "\ue316", "name": "cursor up", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 145, "screencode": 0, "unicode": "\uEED1", "altUnicode": "\ue5d8", "name": "cursor up", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 146, "screencode": 0, "unicode": "\uEED2", "altUnicode": "\ue891", "name": "reverse off", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 146, "screencode": 0, "unicode": "\uEED2", "altUnicode": "\ue0c4", "name": "reverse off", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
 			"id": 147, "screencode": 0, "unicode": "\uEED3", "altUnicode": "\ue3c1", "name": "clear", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 148, "screencode": 0, "unicode": "\uEED4", "altUnicode": "\ue93f", "name": "insert", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 148, "screencode": 0, "unicode": "\uEED4", "altUnicode": "\ue163", "name": "insert", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
-			"id": 149, "screencode": 0, "unicode": "\uEED5", "altUnicode": "", "name": "brown", "color": true, "control": false, "customValue": "9", "upper": true
+			"id": 149, "screencode": 0, "unicode": "\uEED5", "altUnicode": "S", "name": "brown", "color": true, "control": false, "customValue": "9", "upper": true
 		}, {
 			"id": 150, "screencode": 0, "unicode": "\uEED6", "altUnicode": "", "name": "light red", "color": true, "control": false, "customValue": "10", "upper": true
 		}, {
@@ -316,7 +316,7 @@
 		}, {
 			"id": 156, "screencode": 0, "unicode": "\uEEDC", "altUnicode": "", "name": "purple", "color": true, "control": false, "customValue": "4", "upper": true
 		}, {
-			"id": 157, "screencode": 0, "unicode": "\uEEDD", "altUnicode": "\ue314", "name": "cursor left", "color": false, "control": true, "customValue": "", "upper": true
+			"id": 157, "screencode": 0, "unicode": "\uEEDD", "altUnicode": "\ue5c4", "name": "cursor left", "color": false, "control": true, "customValue": "", "upper": true
 		}, {
 			"id": 158, "screencode": 0, "unicode": "\uEEDE", "altUnicode": "", "name": "yellow", "color": true, "control": false, "customValue": "7", "upper": true
 		}, {
