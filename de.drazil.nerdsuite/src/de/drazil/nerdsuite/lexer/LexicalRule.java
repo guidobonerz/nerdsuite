@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LexicalRule implements IElement {
+public class LexicalRule {
 
 	public final static LexicalRule IDENTIFIER = new LexicalRule("[a-zA-Z_][a-zA-Z_0-9]*");
 	public final static LexicalRule INTEGER = new LexicalRule("[0-9]*");
