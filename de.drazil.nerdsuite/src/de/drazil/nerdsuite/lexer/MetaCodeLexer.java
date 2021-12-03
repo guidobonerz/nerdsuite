@@ -11,8 +11,8 @@ public class MetaCodeLexer {
 
 	}
 
-	private static String content = "    10 print\"hallo\":a=1\n" + "@if ${debug}\n" + "poke 53280,1:poke53281,0\n"
-			+ "20 print\"das ist ein test\"\n" + "@end\n" + "30 a=1:b=2:c=3\n " + "@asm name='test'\n" + "lda $#01\n"
+	private static String content = "    10 print\"hallo\":a=1\n" + "@if ${debug}\n" + "20 poke 53280,1:poke53281,0\n"
+			+ "30 print\"das ist ein test\"\n" + "@end\n" + "40 a=1:b=2:c=3\n " + "@asm name='test'\n" + "lda $#01\n"
 			+ "sta $d020\n" + "  @end   ";
 
 	public static String getAtom(String s, int i) {
@@ -53,18 +53,16 @@ public class MetaCodeLexer {
 			case '@': {
 				int index = ci.getIndex();
 				String s = getLineToEOL(input, ci.getIndex());
-				result.add(new Token(Type.META_CODE, s));
+				result.add(new Token(Type.CODE, s));
 				ci.setIndex(index + s.length());
 				break;
 			}
 			default: {
-				if (Character.isWhitespace(ch)) {
-					// ch = ci.next();
-				} else {
+				if (!Character.isWhitespace(ch)) {
 					int index = ci.getIndex();
 					String atom = getLineToEOL(input, index);
 					ci.setIndex(index + atom.length());
-					result.add(new Token(Type.CODE, atom));
+					result.add(new Token(Type.CONTENT_BLOCK, atom));
 				}
 				break;
 			}
