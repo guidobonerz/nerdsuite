@@ -2,8 +2,6 @@ package de.drazil.nerdsuite.util;
 
 import java.io.File;
 
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
-
 public class DataBuilder {
 
 	public DataBuilder() {

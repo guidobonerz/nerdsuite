@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.disassembler;
 
 import java.io.File;
 
+import de.drazil.nerdsuite.util.BinaryFileHandler;
 import de.drazil.nerdsuite.util.NumericConverter;
 
 public class Binary2SourceConverter {

@@ -21,7 +21,6 @@ public class BasicTokenizerStage implements IToolchainStage<Object> {
 	private String content;
 	private String fileName;
 	private BasicInstructions basicInstructions;
-	private List<CharObject> charMap;
 	private String name;
 	private boolean debug;
 
@@ -56,7 +55,7 @@ public class BasicTokenizerStage implements IToolchainStage<Object> {
 
 		List<CharObject> charMapList = charMap.getCharMap().stream().filter(e -> e.isUpper() == true)
 				.collect(Collectors.toList());
-		byte[] bytecode = CbmBasicTokenizer.tokenize(content.toUpperCase(), basicInstructions, charMapList);
+		byte[] bytecode = CbmBasicTokenizer.tokenize(content.toUpperCase(), basicInstructions, charMapList, debug);
 		byte[] payload = new byte[] {};
 		payload = ArrayUtil.grow(payload, NumericConverter.getWord(2049));
 		payload = ArrayUtil.grow(payload, bytecode);
@@ -64,7 +63,7 @@ public class BasicTokenizerStage implements IToolchainStage<Object> {
 		try {
 			Files.write(new File(fileName).toPath(), payload);
 			float diff = (System.currentTimeMillis() - startTime) / 1000f;
-			Console.printf("%s (%d bytes) written in %f seconds\n", fileName, payload.length, diff);
+			Console.printf("%s (%d bytes) written in %.2f seconds\n", fileName, payload.length, diff);
 		} catch (IOException e1) {
 			Console.printf("write file %s failed", fileName);
 			e1.printStackTrace();

@@ -3,8 +3,8 @@ package de.drazil.nerdsuite.imaging.service;
 import java.io.File;
 import java.util.Map;
 
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.model.GraphicMetadata;
+import de.drazil.nerdsuite.util.BinaryFileHandler;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 
 public class ExportService extends IOBaseService {

@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.configuration;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -36,21 +35,16 @@ public class Configuration {
 
 			workspace = getWorkspace();
 			Bundle bundle = Platform.getBundle(Constants.APP_ID);
-			URL fileURL1 = bundle.getEntry("/fonts/ttf/C64_Pro_Mono-STYLE.ttf");
-			URL fileURL2 = bundle.getEntry("/fonts/ttf/MaterialIcons-Regular.ttf");
-			URL fileURL3 = bundle.getEntry("/fonts/ttf/RobotoMono-Bold.ttf");
-
-			File file = null;
-
 			try {
-				file = new File(FileLocator.resolve(fileURL1).toURI());
-				Display.getCurrent().loadFont(file.toString());
-
-				file = new File(FileLocator.resolve(fileURL2).toURI());
-				Display.getCurrent().loadFont(file.toString());
-
-				file = new File(FileLocator.resolve(fileURL3).toURI());
-				Display.getCurrent().loadFont(file.toString());
+				Display.getCurrent().loadFont(
+						new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/C64_Pro_Mono-STYLE.ttf")).toURI())
+								.toString());
+				Display.getCurrent().loadFont(
+						new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/MaterialIcons-Regular.ttf")).toURI())
+								.toString());
+				Display.getCurrent().loadFont(
+						new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/RobotoMono-Bold.ttf")).toURI())
+								.toString());
 
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();

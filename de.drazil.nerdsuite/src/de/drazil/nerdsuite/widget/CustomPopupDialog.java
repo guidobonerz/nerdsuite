@@ -13,8 +13,9 @@ public class CustomPopupDialog extends PopupDialog {
 	private Composite child;
 
 	public CustomPopupDialog(Shell parent, Composite child) {
-		super(parent, PopupDialog.INFOPOPUP_SHELLSTYLE | SWT.MODELESS, true, false, false, false, false, null, null);
+		super(parent, PopupDialog.INFOPOPUP_SHELLSTYLE | SWT.MODELESS, false, true, false, false, false, null, null);
 		this.child = child;
+		
 	}
 
 	protected Control createDialogArea(Composite parent) {
