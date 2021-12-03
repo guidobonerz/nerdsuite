@@ -14,6 +14,10 @@ Currently I work mostly on the graphics part.
 
 Current state: Still buggy and incomplete :-)
 
+Last Changes 01-12-2021:
+- added preprocessor code to control build
+- added CharMap Selector
+
 Last Changes 22-11-2021:
 - added Basic Code Tokenizer
 - added Brace Depth Highlighting
@@ -86,7 +90,8 @@ Export files partly works
 Create/Update disk images
 
 ## Basic Code Editor
-![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/basic_editor.png)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/basic_editor1.png)
+![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/basic_editor2.png)
 ## Disassembler Z80 Screen (in Progress)
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasmz80.png)
 ## Disassembler 6502/10 Screen (in Progress)

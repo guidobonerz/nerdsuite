@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharMap;
-import de.drazil.nerdsuite.model.CharObject;
 import de.drazil.nerdsuite.model.CpuInstructions;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.model.PlatformData;
@@ -24,6 +23,7 @@ public class PlatformFactory {
 	private static List<TargetPlatform> targetPlatformList;
 	private static Map<String, TargetPlatform> platformCache = new HashMap<>();
 	private static Map<String, List<PlatformColor>> platformColorCache = new HashMap<>();
+	private static Map<String, CharMap> charMapCache = new HashMap<>();
 
 	public static List<TargetPlatform> getTargetPlatFormList() {
 
@@ -90,21 +90,27 @@ public class PlatformFactory {
 
 	public static CharMap getCharMap(String id) {
 
-		CharMap charMap = null;
-		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
-		ObjectMapper mapper = new ObjectMapper();
+		CharMap charMap = charMapCache.get(id);
+		if (charMap == null) {
+			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			ObjectMapper mapper = new ObjectMapper();
 
-		try {
-			PlatformData platformData = mapper.readValue(bundle.getEntry(getTargetPlatform(id).getSource()),
-					PlatformData.class);
+			try {
+				PlatformData platformData = mapper.readValue(bundle.getEntry(getTargetPlatform(id).getSource()),
+						PlatformData.class);
 //new TypeReference<List<CharObject>>() {
-			charMap = charMap = mapper.readValue(bundle.getEntry(platformData.getCharMapSource()), CharMap.class);
+				charMap = mapper.readValue(bundle.getEntry(platformData.getCharMapSource()), CharMap.class);
 
-		} catch (Exception e) {
-			e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 		return charMap;
+	}
+
+	public static boolean containsCodePoint(String id, char chr) {
+		CharMap cm = getCharMap(id);
+		return !cm.getCharMap().stream().filter(c -> c.getUnicode() == chr).findFirst().isEmpty();
 	}
 
 	public static List<PlatformColor> getPlatformColors(String id) {

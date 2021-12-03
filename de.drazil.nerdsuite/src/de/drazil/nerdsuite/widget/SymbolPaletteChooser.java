@@ -24,7 +24,9 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 	private int cx;
 	private int cy;
 	private int charIndex;
+	private int repeatitionCount = 1;
 	private int maxChars;
+	private boolean isInFooter;
 	private boolean mouseIn = false;
 	private CharMap charMap;
 	private List<CharObject> charList;
@@ -52,15 +54,9 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 		maxChars = charList.size() - 1;
 	}
 
-	public void setSelectedColor(int index) {
-		cx = index % columns;
-		cy = index / columns;
-		charIndex = index;
-		redraw();
-	}
-
 	@Override
 	public void paintControl(PaintEvent e) {
+
 		int thickness = 2;
 		e.gc.setLineWidth(thickness);
 		e.gc.setBackground(Constants.DARK_GREY);
@@ -84,7 +80,7 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 				}
 
 				e.gc.setBackground(Constants.DARK_GREY);
-				if (c == cx && r == cy) {
+				if (c == cx && r == cy && !isInFooter) {
 					e.gc.setForeground(Constants.BRIGHT_ORANGE);
 					e.gc.drawRectangle(1 + cx * CHAR_TILE_SIZE, 1 + cy * CHAR_TILE_SIZE, CHAR_TILE_SIZE - thickness,
 							CHAR_TILE_SIZE - thickness);
@@ -95,16 +91,35 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 		e.gc.fillRectangle(0, height, width, 20);
 		e.gc.setFont(Constants.RobotoMonoBold_FONT);
 		e.gc.setForeground(Constants.WHITE);
-		CharObject cm = charList.get(charMap.getUpperIndexOrderList().get(charIndex));
-		e.gc.drawString(String.format("$%02X(%03d) - %s", cm.getId(), cm.getId(), cm.getName()), 5, height);
+		if (charIndex != -1) {
+			CharObject cm = charList.get(charMap.getUpperIndexOrderList().get(charIndex));
+			e.gc.drawString(String.format("$%02X(%03d) - %s", cm.getId(), cm.getId(), cm.getName()), 5, height);
+			e.gc.drawString("symbol:", 200, height);
+			e.gc.setBackground(Constants.BLACK);
+			e.gc.fillRectangle(width - 18, height + 2, 16, 16);
+			e.gc.setFont(Constants.C64_Pro_Mono_FONT_12);
+			e.gc.drawString(String.format("%s", String.valueOf(cm.getUnicode())), width - 18, height + 2);
+			
+		} else {
+			e.gc.setFont(Constants.GoogleMaterials_12);
+			e.gc.drawString("\ueaa7", 30, height);
+			e.gc.setFont(Constants.RobotoMonoBold_FONT);
+			String s = String.format("%02d", repeatitionCount);
+			Point p = e.gc.textExtent(s);
+			e.gc.drawString(s, width / 2 - p.x / 2, height);
+			e.gc.setFont(Constants.GoogleMaterials_12);
+			e.gc.drawString("\ueaaa", width - 50, height);
+		}
 	}
 
 	@Override
 	protected void leftMouseButtonClickedInternal(int modifierMask, int x, int y) {
 		computeCursorPosition(x, y);
-		close();
-		fireCharSelected(charIndex);
-		charSelectionListener.clear();
+		if (charIndex != -1) {
+			close();
+			fireCharSelected(charIndex);
+			charSelectionListener.clear();
+		}
 	}
 
 	@Override
@@ -130,6 +145,23 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 		redraw();
 	}
 
+	@Override
+	protected void leftMouseButtonReleasedInternal(int modifierMask, int x, int y) {
+		if (x > 0 && x < 50 && y > height) {
+			if (repeatitionCount > 1) {
+				repeatitionCount--;
+			}
+			redraw();
+		}
+		if (x > width - 50 && x < width && y > height) {
+			if (repeatitionCount < 40) {
+				repeatitionCount++;
+			}
+			redraw();
+		}
+
+	}
+
 	private void close() {
 		Object o = getParent().getParent();
 		if (o instanceof Shell) {
@@ -147,13 +179,16 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 
 	private void fireCharSelected(int charIndex) {
 		int index = charMap.getUpperIndexOrderList().get(charIndex);
-		charSelectionListener.forEach(l -> l.charSelected(charIndex, charList.get(index).getUnicode()));
+		charSelectionListener
+				.forEach(l -> l.charSelected(charIndex, charList.get(index).getUnicode(), repeatitionCount));
 	}
 
 	private void computeCursorPosition(int x, int y) {
 		int icx = x / CHAR_TILE_SIZE;
 		int icy = y / CHAR_TILE_SIZE;
 		int idx = (icx + (icy * columns));
+		charIndex = -1;
+		isInFooter = y > height;
 		if (idx <= maxChars) {
 			charIndex = idx;
 			cx = icx;

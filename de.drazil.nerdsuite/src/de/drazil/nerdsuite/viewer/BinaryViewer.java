@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.osgi.framework.Bundle;
 
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
+import de.drazil.nerdsuite.util.BinaryFileHandler;
 import de.drazil.nerdsuite.util.C64Font;
 import de.drazil.nerdsuite.util.IFont;
 

@@ -101,6 +101,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		documentStyler.addRule(new SingleLineRule(basicInstructions.getSingleLineComment(), Marker.EOL,
 				new Token(Constants.T_COMMENT)));
 		documentStyler.addRule(new SingleLineRule("//", Marker.EOL, new Token(Constants.T_COMMENT)));
+		documentStyler.addRule(new SingleLineRule("@", Marker.LINE, new Token(Constants.T_DIRECTIVE)));
 		documentStyler.addRule(new SingleLineRule(basicInstructions.getStringQuote(),
 				basicInstructions.getStringQuote(), new Token(Constants.T_C64_BASIC_STRING), true));
 		// documentStyler.addRule(new SingleLineRule("", ":", new
@@ -211,10 +212,12 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		part.setTooltip("basic Source File");
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+
 		styledText.setText(srs.getContent() == null ? "" : srs.getContent());
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
 		styledText.setFont(Constants.RobotoMonoBold_FONT);
+
 		documentStyler = getBasicStyler(basicInstructions, version);
 		documentStyler.refreshMultilineComments(srs.getContent());
 		styledText.addLineStyleListener(documentStyler);
@@ -227,19 +230,22 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		styledText.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT && isOnString) {
-					closePupup();
-					symbolChooser = new SymbolPaletteChooser(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
+
+				int offset = styledText.getOffsetAtPoint(new Point(e.x, e.y));
+				// char c = styledText.getText().charAt(offset);
+				// boolean b = PlatformFactory.containsCodePoint("C64", c);
+				styledText.setCaretOffset(offset);
+				closePupup();
+				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT) {
+					symbolChooser = new SymbolPaletteChooser(parent.getShell(),
+							SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
 							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),
 							PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform()));
-					symbolChooser.setSelectedColor(1);
 					symbolChooser.addCharSelectionListener(SourceEditorView.this);
 					popupDialog = new CustomPopupDialog(parent.getShell(), symbolChooser);
 					popupDialog.open();
-
 				}
 			}
-
 		});
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
@@ -284,15 +290,17 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 				styledText.redraw();
 			}
 		});
+
 	}
 
 	@Override
-	public void charSelected(int charIndex, char unicodeChar) {
-		styledText.insert(String.valueOf(unicodeChar));
+	public void charSelected(int charIndex, char unicodeChar, int repeatitionCount) {
+		for (int i = 0; i < repeatitionCount; i++) {
+			styledText.insert(String.valueOf(unicodeChar));
+		}
 		documentStyler.refreshMultilineComments(styledText.getText());
 		documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
 		styledText.redraw();
-
 	}
 
 	@Override

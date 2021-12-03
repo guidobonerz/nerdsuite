@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.imaging.service;
 import java.io.File;
 import java.util.Map;
 
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
+import de.drazil.nerdsuite.util.BinaryFileHandler;
 
 public class ImportService extends IOBaseService {
 

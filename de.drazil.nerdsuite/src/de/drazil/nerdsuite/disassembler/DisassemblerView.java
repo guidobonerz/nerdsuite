@@ -23,6 +23,7 @@ import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
 import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
+import de.drazil.nerdsuite.util.BinaryFileHandler;
 import de.drazil.nerdsuite.widget.HexViewWidget;
 
 public class DisassemblerView {

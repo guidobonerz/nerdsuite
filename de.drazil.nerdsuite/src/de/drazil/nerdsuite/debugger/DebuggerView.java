@@ -21,13 +21,13 @@ import org.osgi.framework.Bundle;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Configuration;
-import de.drazil.nerdsuite.disassembler.BinaryFileHandler;
 import de.drazil.nerdsuite.disassembler.dialect.KickAssemblerDialect;
 import de.drazil.nerdsuite.disassembler.platform.C64Platform;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.network.TcpHandler;
 import de.drazil.nerdsuite.network.TcpHandler.Response;
 import de.drazil.nerdsuite.toolchain.Toolchain;
+import de.drazil.nerdsuite.util.BinaryFileHandler;
 import de.drazil.nerdsuite.widget.HexViewWidget;
 
 public class DebuggerView {

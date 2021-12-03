@@ -32,10 +32,10 @@
             </children>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_EyKI8AUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partsashcontainer.5" containerData="20000 " selectedElement="_nmA8gATwEemsC5geQwPptA">
-            <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.editorStack">
+            <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.editorStack" containerData="10000">
               <tags>NoAutoCollapse</tags>
             </children>
-            <children xsi:type="basic:PartStack" xmi:id="_kDh5kE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.partstack.3">
+            <children xsi:type="basic:PartStack" xmi:id="_kDh5kE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.partstack.3" containerData="2000">
               <children xsi:type="basic:Part" xmi:id="_krSdIE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.part.console" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.log.Console" label="Console">
                 <toolbar xmi:id="_1v8Q8E7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.toolbar.6">
                   <children xsi:type="menu:DirectToolItem" xmi:id="_3CXiIE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.directtoolitem.0" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png"/>
@@ -476,7 +476,9 @@
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_NSoYkM3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.partdescriptor.SourceEditorView" label="SourceEditorView" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView">
-    <toolbar xmi:id="_NSoYmc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.toolbar.2"/>
+    <toolbar xmi:id="_NSoYmc3ZEeqtWorDk5KrpA" elementId="de.drazil.nerdsuite.toolbar.2">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_kpo9cE-mEey34_NTBuvgqQ" elementId="de.drazil.nerdsuite.handledtoolitem.10" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/edit-list-order.png" tooltip="Renumber"/>
+    </toolbar>
   </descriptors>
   <descriptors xmi:id="_tBX6wNHVEeqyQa7PtCUZQQ" elementId="de.drazil.nerdsuite.partdescriptor.DisassemblerView" label="DisassemblerView" bindingContexts="__j6EwFZOEeuJj-MnBSw8MA" allowMultiple="true" closeable="true" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView">
     <handlers xmi:id="_fWufgFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.4" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.JumpToAddressHandler" command="_V20PgFY2Eeu6p9lPyfXaSg"/>
