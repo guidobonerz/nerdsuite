@@ -13,9 +13,13 @@
 	},
 	{
 		"id": "C64_ASSEMBLER",
-		"name": "6510 Assembler",
+		"name": "Assembler",
 		"version": 0,
 		"builder": [
+			{
+				"id": "BUILTIN",
+				"name": "NerdAss (Builtin)"
+			},
 			{
 				"id": "KICKASS",
 				"name": "KickAssembler"
@@ -93,12 +97,12 @@
 	},
 	{
 		"id": "ATARI800XL_ASSEMBLER",
-		"name": "6502 Assembler",
+		"name": "Assembler",
 		"version": 0
 	},
 	{
 		"id": "ATARI2600_ASSEMBLER",
-		"name": "6502 Assembler",
+		"name": "Assembler",
 		"version": 0
 	},
 	{
@@ -108,7 +112,7 @@
 	},
 	{
 		"id": "CPC6128_ASSEMBLER",
-		"name": "Z80 Assembler",
+		"name": "Assembler",
 		"version": 0
 	}
 ]

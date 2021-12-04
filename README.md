@@ -21,15 +21,11 @@ Last Changes 01-12-2021:
 Last Changes 22-11-2021:
 - added Basic Code Tokenizer
 - added Brace Depth Highlighting
-
-Last Changes 22-11-2021:
 - added Basic Code Editor
 
 Last Changes 07-03-2021:
 - added some direct commands to the Ultimate64 Virtual Keyboard (RUN/LIST/DIR)
 - Set Frame and Backgroundcolor remoteley
-
-Last Changes 07-03-2021:
 - added Ultimate64 Virtual Keyboard
 - added run programs and disk images directly from U64 internal usb devices via FTP access
 
