@@ -289,49 +289,49 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 
 		formData = new FormData();
 		formData.top = new FormAttachment(projectNameLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		projectNameText.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(targetPlatformLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		targetPlatformCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(gfxFormatLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		gfxFormatCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(gfxFormatVariantLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		gfxFormatVariantCombo.getControl().setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(widthLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		tileWidthSpinner.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(heightLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		tileHeightSpinner.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(columnsLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		tileColumnsSpinner.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(rowsLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		tileRowsSpinner.setLayoutData(formData);
 
@@ -348,7 +348,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 
 		formData = new FormData();
 		formData.top = new FormAttachment(maxItemsLabel, 0, SWT.TOP);
-		formData.left = new FormAttachment(container, 100, SWT.RIGHT);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
 		formData.right = new FormAttachment(container, 300);
 		maxItemsSpinner.setLayoutData(formData);
 

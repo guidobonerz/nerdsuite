@@ -27,7 +27,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 	private int start;
 	private int end;
 
-	public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+	public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
+			boolean autowrap) {
 		super(parent, style, owner, colorPaletteProvider, autowrap);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
@@ -35,8 +36,20 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	@Override
+	protected void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+		tileDragActive = true;
+		computeTileSelection(tileX, tileY, 0);
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+			}
+		});
+	}
+
+	@Override
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
-		mc.stop();
+		// mc.stop();
 		if (!tileDragActive) {
 			selectedTileIndexX = tileX;
 			selectedTileIndexY = tileY;
@@ -58,7 +71,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
 		if (tileSelectionStarted) {
-			mc.stop();
+			// mc.stop();
 		}
 		computeTileSelection(tileX, tileY, 1);
 		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
@@ -66,7 +79,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
-		mc.stop();
+		// mc.stop();
 		if (tileDragActive) {
 			tileDragActive = false;
 			tileRepositoryService.moveTile(tileSelectionRange.getFrom(), tileSelectionRange.getTo());
@@ -80,7 +93,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-		mc.start();
+		// mc.start(-1);
 		computeTileSelection(tileX, tileY, 0);
 	}
 
@@ -148,11 +161,13 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled, conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
+		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled,
+				conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
 	}
 
-	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
-			boolean paintTileCursor, boolean paintTelevisionMode) {
+	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
+			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
+			boolean paintTelevisionMode) {
 		/*
 		 * for (int i = (drawAll ? 0 : start); i < (drawAll ?
 		 * tileRepositoryService.getSize() : end); i++) { int index = drawAll ? i :
@@ -179,12 +194,14 @@ public class RepositoryWidget extends BaseImagingWidget {
 		gc.setLineWidth(1);
 		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
 		gc.setAlpha(150);
-		gc.fillRectangle(xfrom * conf.tileWidthPixel, yfrom * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
+		gc.fillRectangle(xfrom * conf.tileWidthPixel, yfrom * conf.tileHeightPixel, conf.tileWidthPixel,
+				conf.tileHeightPixel);
 		gc.setAlpha(255);
 		gc.setForeground(Constants.BRIGHT_ORANGE);
 		gc.setLineWidth(4);
 		if (abs(to - from) > 0)
-			gc.drawLine(xto * conf.tileWidthPixel, yto * conf.tileHeightPixel, xto * conf.tileWidthPixel, yto * conf.tileHeightPixel + conf.tileHeightPixel);
+			gc.drawLine(xto * conf.tileWidthPixel, yto * conf.tileHeightPixel, xto * conf.tileWidthPixel,
+					yto * conf.tileHeightPixel + conf.tileHeightPixel);
 	}
 
 	private void paintSelection(GC gc) {
@@ -193,11 +210,13 @@ public class RepositoryWidget extends BaseImagingWidget {
 		selectedTileIndexList.forEach(i -> {
 			int y = i / conf.columns;
 			int x = i % conf.columns;
-			gc.fillRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.fillRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel,
+					conf.tileHeightPixel);
 			if (i == temporaryIndex) {
 				gc.setLineWidth(3);
 				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
-				gc.drawRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
+				gc.drawRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel,
+						conf.tileHeightPixel);
 			}
 		});
 	}
@@ -206,7 +225,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
-			gc.fillRectangle(tileX * conf.tileWidthPixel, tileY * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.fillRectangle(tileX * conf.tileWidthPixel, tileY * conf.tileHeightPixel, conf.tileWidthPixel,
+					conf.tileHeightPixel);
 		}
 	}
 
@@ -216,7 +236,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 		gc.setForeground(Constants.TILE_GRID_COLOR);
 		for (int x = 0; x < conf.columns; x++) {
 			for (int y = 0; y < conf.rows; y++) {
-				gc.drawRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel, conf.tileHeightPixel);
+				gc.drawRectangle(x * conf.tileWidthPixel, y * conf.tileHeightPixel, conf.tileWidthPixel,
+						conf.tileHeightPixel);
 			}
 		}
 	}
@@ -229,7 +250,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 		doRedraw(redrawMode, action);
 	}
 
-	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf, IColorPaletteProvider colorPaletteProvider, int update) {
+	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
+			IColorPaletteProvider colorPaletteProvider, int update) {
 		/*
 		 * Image image = tileRepositoryService.getImagePainterFactory().getImage(
 		 * tileRepositoryService, tileRepositoryService.getTileIndex(index), 0, 0,
@@ -256,7 +278,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 				y++;
 			}
 			gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i]));
-			gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth, conf.pixelPaintHeight);
+			gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth,
+					conf.pixelPaintHeight);
 			x++;
 		}
 		gcLayer.dispose();
@@ -275,29 +298,19 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	@Override
-	public void onTriggerTimeReached(long triggerTime) {
-		tileDragActive = true;
-		computeTileSelection(tileX, tileY, 0);
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-			}
-		});
-	}
-
-	@Override
 	public void tileReordered() {
 		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 	}
 
 	@Override
 	public void redrawCalculatedArea() {
-		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawPixel) {
+		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile
+				|| redrawMode == RedrawMode.DrawPixel) {
 			drawAll = false;
 
 			start = tileRepositoryService.getSelectedTileIndexList().get(0);
-			end = tileRepositoryService.getSelectedTileIndexList().get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
+			end = tileRepositoryService.getSelectedTileIndexList()
+					.get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
 			int iys = start / conf.columns;
 			int ys = iys * conf.tileHeightPixel;

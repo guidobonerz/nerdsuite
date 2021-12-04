@@ -5,6 +5,11 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -211,7 +216,14 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		part.getTransientData().put(Constants.OWNER, owner);
 		part.setTooltip("basic Source File");
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
-		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL) {
+			@Override
+			public void paste() {
+				// TODO Auto-generated method stub
+				super.paste();
+				redraw();
+			}
+		};
 
 		styledText.setText(srs.getContent() == null ? "" : srs.getContent());
 		styledText.setBackground(Constants.SOURCE_EDITOR_BACKGROUND_COLOR);
@@ -236,7 +248,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 				// boolean b = PlatformFactory.containsCodePoint("C64", c);
 				styledText.setCaretOffset(offset);
 				closePupup();
-				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_RIGHT) {
+				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_LEFT) {
 					symbolChooser = new SymbolPaletteChooser(parent.getShell(),
 							SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
 							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),

@@ -10,6 +10,8 @@ public class MeasuringController {
 	private volatile Thread thread;
 	private Measure measure;
 	private volatile boolean running = false;
+	private int timerId = -1;
+	private Object payload;
 
 	public MeasuringController() {
 		list = new ArrayList<>();
@@ -19,8 +21,10 @@ public class MeasuringController {
 		this.triggerMillis = triggerMillis;
 	}
 
-	public void start() {
+	public void start(int id, Object payload) {
 		if (triggerMillis != null) {
+			timerId = id;
+			this.payload = payload;
 			running = true;
 			measure = new Measure(System.currentTimeMillis(), triggerMillis);
 			thread = new Thread(measure);
@@ -42,7 +46,7 @@ public class MeasuringController {
 	}
 
 	private void fireTimeReached(long triggerMillis) {
-		list.forEach(l -> l.onTriggerTimeReached(triggerMillis));
+		list.forEach(l -> l.onTriggerTimeReached(triggerMillis, timerId, payload));
 	}
 
 	private class Measure implements Runnable {

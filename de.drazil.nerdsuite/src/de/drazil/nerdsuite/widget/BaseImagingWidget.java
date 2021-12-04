@@ -26,12 +26,11 @@ import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
-import de.drazil.nerdsuite.mouse.IMeasuringListener;
-import de.drazil.nerdsuite.mouse.MeasuringController;
 import lombok.Getter;
 
-public abstract class BaseImagingWidget extends BaseWidget implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener, ITileListener,
-		ITileBulkModificationListener, IMeasuringListener, IColorSelectionListener, TileSelectionModes {
+public abstract class BaseImagingWidget extends BaseWidget
+		implements IDrawListener, PaintListener, IServiceCallback, ITileUpdateListener, ITileManagementListener,
+		ITileListener, ITileBulkModificationListener, IColorSelectionListener, TileSelectionModes {
 
 	protected int selectedTileIndexX = 0;
 	protected int selectedTileIndexY = 0;
@@ -80,15 +79,14 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 
 	protected Tile tile = null;
 	protected Image image = null;
-	protected MeasuringController mc;
 	protected IColorPaletteProvider colorPaletteProvider;
 	@Getter
 	protected ImagingWidgetConfiguration conf;
 
-	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, final boolean autowrap) {
+	public BaseImagingWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
+			final boolean autowrap) {
 		super(parent, style);
-		mc = new MeasuringController();
-		mc.addMeasuringListener(this);
+
 		this.colorPaletteProvider = colorPaletteProvider;
 		drawListenerList = new ArrayList<>();
 		tileRepositoryService = ServiceFactory.getService(owner, TileRepositoryService.class);
@@ -96,7 +94,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		conf = new ImagingWidgetConfiguration(tileRepositoryService.getMetadata());
 
 		if (tileRepositoryService.getMetadata().getReferenceId() != null) {
-			tileRepositoryReferenceService = ServiceFactory.getService(tileRepositoryService.getMetadata().getReferenceId(), TileRepositoryService.class);
+			tileRepositoryReferenceService = ServiceFactory
+					.getService(tileRepositoryService.getMetadata().getReferenceId(), TileRepositoryService.class);
 		}
 
 		imagePainterFactory = new ImagePainterFactory(owner, colorPaletteProvider, conf);
@@ -107,7 +106,8 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 				if (autowrap) {
 					int c = (int) getCalculatedColumns();
 					conf.columns = (c == 0 ? 1 : c);
-					conf.rows = (tileRepositoryService.getSize() / conf.columns + (tileRepositoryService.getSize() % conf.columns == 0 ? 0 : 1));
+					conf.rows = (tileRepositoryService.getSize() / conf.columns
+							+ (tileRepositoryService.getSize() % conf.columns == 0 ? 0 : 1));
 					doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
 				}
 			}
@@ -119,12 +119,7 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	public void setTriggerMillis(long... triggerMillis) {
-		mc.setTriggerMillis(triggerMillis);
-	}
-
-	@Override
-	public void onTriggerTimeReached(long triggerTime) {
-
+		ama.setTriggerTimeMillis(triggerMillis[0]);
 	}
 
 	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
@@ -172,6 +167,15 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		mouseDragged(modifierMask, x, y);
 	}
 
+	protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
+	}
+
+	@Override
+	protected void mouseDraggedDelayedInternal(int modifierMask, int x, int y) {
+		computeCursorPosition(x, y);
+		mouseDraggedDelayed(modifierMask, x, y);
+	}
+
 	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
 	}
 
@@ -199,8 +203,19 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 		mouseScrolled(modifierMask, x, y, count);
 	}
 
+	@Override
+	protected void leftMouseButtonPressedDelayedInternal(int modifierMask, int x, int y) {
+		computeCursorPosition(x, y);
+		leftMouseButtonPressedDelayed(modifierMask, x, y);
+	}
+
+	protected void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+
+	}
+
 	protected void computeCursorPosition(int x, int y) {
-		cursorX = x / (conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * conf.getZoomFactor());
+		cursorX = x / (conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)
+				* conf.getZoomFactor());
 		cursorY = y / (conf.pixelPaintHeight * conf.getZoomFactor());
 		if (oldCursorX != cursorX || oldCursorY != cursorY || takePosition) {
 			lastCursorX = oldCursorX;
@@ -249,11 +264,13 @@ public abstract class BaseImagingWidget extends BaseWidget implements IDrawListe
 	}
 
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled, conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
+		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled,
+				conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
 	}
 
-	protected abstract void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
-			boolean paintTileCursor, boolean paintTelevisionMode);
+	protected abstract void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
+			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
+			boolean paintTelevisionMode);
 
 	protected void paintTelevisionRaster(GC gc) {
 		int height = conf.fullHeightPixel;

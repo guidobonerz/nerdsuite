@@ -34,32 +34,18 @@ public class ImportFormatWizardPage extends AbstractBoundWizardPage {
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 		setControl(container);
-		FormLayout layout = new FormLayout();
-		layout.marginHeight = 5;
-		layout.marginWidth = 5;
-		container.setLayout(layout);
+		container.setLayout(new FormLayout());
+
+		FormData formData;
 
 		importFormatLabel = new Label(container, SWT.NONE);
 		importFormatLabel.setText("Format");
-		FormData formData = null;
-		formData = new FormData();
-		formData.top = new FormAttachment(container, 0);
-		formData.left = new FormAttachment(container, 0);
-		importFormatLabel.setLayoutData(formData);
-
-		importFormatCombo = new ComboViewer(container, SWT.NONE);
-		importFormatCombo.setContentProvider(ArrayContentProvider.getInstance());
-		formData = new FormData();
-		formData.top = new FormAttachment(container, 0);
-		formData.left = new FormAttachment(importFormatLabel, 5);
-		importFormatCombo.getControl().setLayoutData(formData);
 
 		bytesToSkipLabel = new Label(container, SWT.NONE);
 		bytesToSkipLabel.setText("Bytes To Skip");
-		formData = new FormData();
-		formData.top = new FormAttachment(importFormatLabel, 5);
-		formData.left = new FormAttachment(container, 5);
-		bytesToSkipLabel.setLayoutData(formData);
+
+		importFormatCombo = new ComboViewer(container, SWT.NONE);
+		importFormatCombo.setContentProvider(ArrayContentProvider.getInstance());
 
 		bytesToSkipSpinner = new Spinner(container, SWT.NONE);
 		bytesToSkipSpinner.setMinimum(0);
@@ -71,10 +57,29 @@ public class ImportFormatWizardPage extends AbstractBoundWizardPage {
 				setData(bytesToSkipSpinner.getSelection());
 			}
 		});
+
 		formData = new FormData();
-		formData.top = new FormAttachment(importFormatCombo.getControl(), 5);
-		formData.left = new FormAttachment(bytesToSkipLabel, 5);
+		formData.top = new FormAttachment(container, 0);
+		formData.left = new FormAttachment(container, 0);
+		importFormatLabel.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(importFormatLabel, 15, SWT.BOTTOM);
+		formData.left = new FormAttachment(importFormatLabel, 0, SWT.LEFT);
+		bytesToSkipLabel.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(importFormatLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		importFormatCombo.getControl().setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(bytesToSkipLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
 		bytesToSkipSpinner.setLayoutData(formData);
+
 	}
 
 	private void setData(int value) {
