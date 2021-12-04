@@ -60,18 +60,17 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
-		System.out.println("triggered");
 
 	}
 
 	@Override
 	protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
-		System.out.println("dragged delayed");
+
 	}
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-		System.out.println("dragged");
+
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(cursorX, cursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
