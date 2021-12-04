@@ -3,6 +3,9 @@ package de.drazil.nerdsuite.wizard;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -31,7 +34,9 @@ public class FileSelectionWizardPage extends AbstractBoundWizardPage {
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 		setControl(container);
-		container.setLayout(new RowLayout());
+		container.setLayout(new FormLayout());
+
+		FormData formData;
 
 		fileNameLabel = new Label(container, SWT.NONE);
 		fileNameLabel.setText("Filename");
@@ -53,6 +58,23 @@ public class FileSelectionWizardPage extends AbstractBoundWizardPage {
 				setText(fileName);
 			}
 		});
+
+		formData = new FormData();
+		formData.top = new FormAttachment(container, 0);
+		formData.left = new FormAttachment(container, 0);
+		fileNameLabel.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(fileNameLabel, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 140, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 300);
+		fileNameText.setLayoutData(formData);
+		
+		formData = new FormData();
+		formData.top = new FormAttachment(fileNameText, 0, SWT.TOP);
+		formData.left = new FormAttachment(container, 310, SWT.RIGHT);
+		formData.right = new FormAttachment(container, 400);
+		button.setLayoutData(formData);
 	}
 
 	private void setText(String fileName) {

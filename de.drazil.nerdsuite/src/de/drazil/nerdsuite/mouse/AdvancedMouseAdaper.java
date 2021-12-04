@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import lombok.Getter;
 import lombok.Setter;
 
-public class AdvancedMouseAdaper {
+public class AdvancedMouseAdaper implements IMeasuringListener {
 
 	public final static int MOUSE_BUTTON_LEFT = 1;
 	public final static int MOUSE_BUTTON_MIDDLE = 2;
@@ -28,10 +28,13 @@ public class AdvancedMouseAdaper {
 	public final static int SET_MOUSE_MOVE = 64;
 	public final static int SET_MOUSE_DRAGGED = 128;
 	public final static int SET_MOUSE_DROPPED = 256;
+	private MeasuringController mcLeft = null;
+	private MeasuringController mcMiddle = null;
+	private MeasuringController mcRight = null;
 
 	private int mouseState = SET_LEFT_BUTTON_RELEASED + SET_RIGHT_BUTTON_RELEASED;
 
-	private enum MouseButton {
+	public static enum MouseButton {
 		Left, Middle, Right
 	}
 
@@ -40,7 +43,7 @@ public class AdvancedMouseAdaper {
 	}
 
 	private enum MouseMove {
-		Drag, Drop, Move
+		Drag, DragDelayed, Drop, Move
 	}
 
 	private InternalMouseAdapter lma = null;
@@ -65,16 +68,20 @@ public class AdvancedMouseAdaper {
 	@Getter
 	@Setter
 	private int rightTimesClickTimeMillis = 1200;
+
 	@Getter
 	@Setter
 	private boolean mouseActionEnabled = true;
+	private boolean canDragDelayed = false;
+	private boolean isAlreadyDragging = false;
 
 	private List<IAdvancedMouseListener> mouseListenerList = null;
 	private List<IAdvancedMouseMoveListener> mouseMoveListenerList = null;
 	private List<IAdvancedMouseTrackListener> mouseTrackListenerList = null;
 	private List<IAdvancedMouseWheelListener> mouseWheelListenerList = null;
 
-	private final class InternalMouseAdapter implements MouseMoveListener, MouseTrackListener, MouseWheelListener, MouseListener {
+	private final class InternalMouseAdapter
+			implements MouseMoveListener, MouseTrackListener, MouseWheelListener, MouseListener {
 
 		public InternalMouseAdapter(Composite composite, AdvancedMouseAdaper advancedMouseAdapter) {
 			composite.addMouseListener(this);
@@ -221,6 +228,18 @@ public class AdvancedMouseAdaper {
 		mouseMoveListenerList = new ArrayList<>();
 		mouseTrackListenerList = new ArrayList<>();
 		mouseWheelListenerList = new ArrayList<>();
+		mcLeft = new MeasuringController();
+		mcLeft.addMeasuringListener(this);
+		mcMiddle = new MeasuringController();
+		mcMiddle.addMeasuringListener(this);
+		mcRight = new MeasuringController();
+		mcRight.addMeasuringListener(this);
+	}
+
+	public void setTriggerTimeMillis(long delay) {
+		mcLeft.setTriggerMillis(delay);
+		mcMiddle.setTriggerMillis(delay);
+		mcRight.setTriggerMillis(delay);
 	}
 
 	public void addMouseListener(IAdvancedMouseListener l) {
@@ -255,14 +274,24 @@ public class AdvancedMouseAdaper {
 		mouseWheelListenerList.remove(l);
 	}
 
+	@Override
+	public void onTriggerTimeReached(long triggerTime, int timerId, Object payload) {
+		canDragDelayed = true;
+		AdvancedMouseAdapterEvent amae = (AdvancedMouseAdapterEvent) payload;
+		fireMouseButtonPressedDelayed(amae.getButton(), amae.getModifierMask(), amae.getX(), amae.getY());
+	}
+
 	public void fireMouseButtonPressed(MouseButton button, int modifierMask, int x, int y) {
 		if (isMouseActionEnabled()) {
 			mouseListenerList.forEach(ml -> {
 				if (button == MouseButton.Left) {
+					mcLeft.start(1, new AdvancedMouseAdapterEvent(button, modifierMask, x, y));
 					ml.leftMouseButtonPressed(modifierMask, x, y);
 				} else if (button == MouseButton.Middle) {
+					mcMiddle.start(2, new AdvancedMouseAdapterEvent(button, modifierMask, x, y));
 					ml.middleMouseButtonPressed(modifierMask, x, y);
 				} else if (button == MouseButton.Right) {
+					mcRight.start(3, new AdvancedMouseAdapterEvent(button, modifierMask, x, y));
 					ml.rightMouseButtonPressed(modifierMask, x, y);
 				}
 			});
@@ -271,12 +300,17 @@ public class AdvancedMouseAdaper {
 
 	public void fireMouseButtonReleased(MouseButton button, int modifierMask, int x, int y) {
 		if (isMouseActionEnabled()) {
+			canDragDelayed = false;
+			isAlreadyDragging = false;
 			mouseListenerList.forEach(ml -> {
 				if (button == MouseButton.Left) {
+					mcLeft.stop();
 					ml.leftMouseButtonReleased(modifierMask, x, y);
 				} else if (button == MouseButton.Middle) {
+					mcMiddle.stop();
 					ml.middleMouseButtonReleased(modifierMask, x, y);
 				} else if (button == MouseButton.Right) {
+					mcRight.stop();
 					ml.rightMouseButtonReleased(modifierMask, x, y);
 				}
 			});
@@ -292,6 +326,20 @@ public class AdvancedMouseAdaper {
 
 				} else if (button == MouseButton.Right) {
 					ml.rightMouseButtonTimesClicked(modifierMask, x, y, count);
+				}
+			});
+		}
+	}
+
+	public void fireMouseButtonPressedDelayed(MouseButton button, int modifierMask, int x, int y) {
+		if (isMouseActionEnabled()) {
+			mouseListenerList.forEach(ml -> {
+				if (button == MouseButton.Left) {
+					ml.leftMouseButtonPressedDelayed(modifierMask, x, y);
+				} else if (button == MouseButton.Middle) {
+					ml.middleMouseButtonPressedDelayed(modifierMask, x, y);
+				} else if (button == MouseButton.Right) {
+					ml.rightMouseButtonPressedDelayed(modifierMask, x, y);
 				}
 			});
 		}
@@ -343,7 +391,13 @@ public class AdvancedMouseAdaper {
 				if (move == MouseMove.Move) {
 					ml.mouseMove(modifierMask, x, y);
 				} else if (move == MouseMove.Drag) {
-					ml.mouseDragged(modifierMask, x, y);
+					if (canDragDelayed && !isAlreadyDragging) {
+						ml.mouseDraggedDelayed(modifierMask, x, y);
+					} else {
+						canDragDelayed = false;
+						isAlreadyDragging = true;
+						ml.mouseDragged(modifierMask, x, y);
+					}
 				} else if (move == MouseMove.Drop) {
 					ml.mouseDropped(modifierMask, x, y);
 				}

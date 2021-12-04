@@ -90,6 +90,26 @@ public abstract class BaseWidget extends Canvas {
 				BaseWidget.this.modifierMask = modifierMask;
 				leftMouseButtonClickedInternal(modifierMask, x, y);
 			}
+
+			@Override
+			public void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+				BaseWidget.this.modifierMask = modifierMask;
+				leftMouseButtonPressedDelayedInternal(modifierMask, x, y);
+
+			}
+
+			@Override
+			public void middleMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+				BaseWidget.this.modifierMask = modifierMask;
+				middleMouseButtonPressedDelayedInternal(modifierMask, x, y);
+
+			}
+
+			@Override
+			public void rightMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+				BaseWidget.this.modifierMask = modifierMask;
+				rightMouseButtonPressedDelayedInternal(modifierMask, x, y);
+			}
 		});
 		ama.addMouseMoveListener(new IAdvancedMouseMoveListener() {
 
@@ -109,6 +129,12 @@ public abstract class BaseWidget extends Canvas {
 			public void mouseDragged(int modifierMask, int x, int y) {
 				BaseWidget.this.modifierMask = modifierMask;
 				mouseDraggedInternal(modifierMask, x, y);
+			}
+
+			@Override
+			public void mouseDraggedDelayed(int modifierMask, int x, int y) {
+				BaseWidget.this.modifierMask = modifierMask;
+				mouseDraggedDelayedInternal(modifierMask, x, y);
 			}
 		});
 		ama.addMouseTrackListener(new IAdvancedMouseTrackListener() {
@@ -183,6 +209,10 @@ public abstract class BaseWidget extends Canvas {
 
 	}
 
+	protected void mouseDraggedDelayedInternal(int modifierMask, int x, int y) {
+
+	}
+
 	protected void middleMouseButtonReleasedInternal(int modifierMask, int x, int y) {
 
 	}
@@ -208,5 +238,15 @@ public abstract class BaseWidget extends Canvas {
 	}
 
 	protected void mouseScrolledInternal(int modifierMask, int x, int y, int count) {
-	};
+	}
+
+	protected void leftMouseButtonPressedDelayedInternal(int modifierMask, int x, int y) {
+
+	}
+
+	protected void middleMouseButtonPressedDelayedInternal(int modifierMask, int x, int y) {
+	}
+
+	protected void rightMouseButtonPressedDelayedInternal(int modifierMask, int x, int y) {
+	}
 }

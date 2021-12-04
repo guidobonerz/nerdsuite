@@ -67,10 +67,12 @@ public class ColorPaletteChooser extends BaseWidget implements PaintListener {
 				}
 			}
 		}
+		e.gc.setFont(Constants.RobotoMonoBold_FONT);
 		e.gc.setBackground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, height, width, 20);
 		e.gc.setForeground(Constants.WHITE);
-		e.gc.drawString(String.format("%02X : %s", colorIndex, platformColorList.get(colorIndex).getName()), 5, height);
+		e.gc.drawString(String.format("$%02X - %s", colorIndex, platformColorList.get(colorIndex).getName()), 5,
+				height);
 	}
 
 	@Override

@@ -31,9 +31,10 @@ public class PainterWidget extends BaseImagingWidget {
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
 
-	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
+			boolean autowrap) {
 		super(parent, style, owner, colorPaletteProvider, autowrap);
-
+		setTriggerMillis(1000);
 		this.parent = (ScrolledComposite) parent;
 		this.parent.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -58,11 +59,24 @@ public class PainterWidget extends BaseImagingWidget {
 	}
 
 	@Override
+	protected void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+		System.out.println("triggered");
+
+	}
+
+	@Override
+	protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
+		System.out.println("dragged delayed");
+	}
+
+	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
+		System.out.println("dragged");
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(cursorX, cursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
-		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point && (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
+		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point
+				&& (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			int xoff = x - startPos.x;
 			int yoff = y - startPos.y;
 
@@ -86,7 +100,8 @@ public class PainterWidget extends BaseImagingWidget {
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(cursorX, cursorY, 0, false);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
-		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point && (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
+		} else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point
+				&& (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
 			startPos = new Point(x, y);
 		}
 	}
@@ -162,8 +177,12 @@ public class PainterWidget extends BaseImagingWidget {
 				selectedPixelRangeY = y;
 				rangeSelectionStarted = true;
 			} else {
-				selectedPixelRangeX2 = enabledSquareSelection && y - selectedPixelRangeY > x - selectedPixelRangeX ? selectedPixelRangeX + (selectedPixelRangeY2 - selectedPixelRangeY) : x;
-				selectedPixelRangeY2 = enabledSquareSelection && x - selectedPixelRangeX > y - selectedPixelRangeY ? selectedPixelRangeY + (selectedPixelRangeX2 - selectedPixelRangeX) : y;
+				selectedPixelRangeX2 = enabledSquareSelection && y - selectedPixelRangeY > x - selectedPixelRangeX
+						? selectedPixelRangeX + (selectedPixelRangeY2 - selectedPixelRangeY)
+						: x;
+				selectedPixelRangeY2 = enabledSquareSelection && x - selectedPixelRangeX > y - selectedPixelRangeY
+						? selectedPixelRangeY + (selectedPixelRangeX2 - selectedPixelRangeX)
+						: y;
 			}
 		} else if (mode == 2) {
 			int x1 = selectedPixelRangeX;
@@ -194,12 +213,14 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 	}
 
-	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
-			boolean paintTileCursor, boolean paintTelevisionMode) {
+	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
+			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
+			boolean paintTelevisionMode) {
 
 		Tile t = tileRepositoryService.getSelectedTile();
 
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("PAINTER", colorPaletteProvider.getColorByIndex(0)).getImage(), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("PAINTER", colorPaletteProvider.getColorByIndex(0))
+				.getImage(), 0, 0);
 
 		String id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
 		if (redrawMode == RedrawMode.DrawPixel) {
@@ -249,9 +270,11 @@ public class PainterWidget extends BaseImagingWidget {
 	 * pixelWidth, conf.scaledTileHeight); } }
 	 */
 	private void paintPixelCursor(GC gc) {
-		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize / (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)) {
+		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize
+				/ (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)) {
 
-			int pixelWidth = conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * conf.getZoomFactor();
+			int pixelWidth = conf.pixelPaintWidth
+					* (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * conf.getZoomFactor();
 			int pixelHeight = conf.pixelPaintHeight * conf.getZoomFactor();
 
 			if (conf.pencilMode == PencilMode.Draw) {
@@ -260,18 +283,21 @@ public class PainterWidget extends BaseImagingWidget {
 					Tile tile = tileRepositoryService.getSelectedTile();
 					int brushIndex = tileRepositoryReferenceService.getSelectedTileIndex(true);
 					Tile refTile = tileRepositoryReferenceService.getTile(brushIndex, true);
-					ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
+					ImagePainterFactory ipf = ImagePainterFactory
+							.getImageFactory(tileRepositoryReferenceService.getMetadata().getId());
 					gc.setBackground(Constants.BLACK);
 					gc.fillRectangle(cursorX * pixelWidth, cursorY * pixelHeight, pixelWidth, pixelHeight);
 					int colorIndex = imagePainterFactory.getForegroundColorIndex();
 					ipf.setForegroundColorIndex(colorIndex);
-					String id = String.format(ImagePainterFactory.IMAGE_ID, refTile.getId(), refTile.getActiveLayer().getId(), colorIndex);
+					String id = String.format(ImagePainterFactory.IMAGE_ID, refTile.getId(),
+							refTile.getActiveLayer().getId(), colorIndex);
 					ipf.createOrUpdateLayer(id, refTile.getActiveLayer(), false);
 					ipf.drawScaledImage(gc, refTile, id, -1, cursorX * pixelWidth, cursorY * pixelHeight);
 
 				} else {
 
-					gc.setBackground(colorPaletteProvider.getColorByIndex(imagePainterFactory.getForegroundColorIndex()));
+					gc.setBackground(
+							colorPaletteProvider.getColorByIndex(imagePainterFactory.getForegroundColorIndex()));
 					gc.fillRectangle((cursorX * pixelWidth), (cursorY * pixelHeight), pixelWidth, pixelHeight);
 				}
 			} else if (conf.pencilMode == PencilMode.Erase) {
@@ -313,7 +339,8 @@ public class PainterWidget extends BaseImagingWidget {
 				y2 = v;
 			}
 
-			gc.drawRectangle(x1 * conf.pixelPaintWidth * width, y1 * conf.pixelPaintHeight * zoomFactor, ((x2 - x1) * conf.pixelPaintWidth + conf.pixelPaintWidth) * width,
+			gc.drawRectangle(x1 * conf.pixelPaintWidth * width, y1 * conf.pixelPaintHeight * zoomFactor,
+					((x2 - x1) * conf.pixelPaintWidth + conf.pixelPaintWidth) * width,
 					((y2 - y1) * conf.pixelPaintHeight + conf.pixelPaintHeight) * zoomFactor);
 		}
 	}
@@ -492,7 +519,8 @@ public class PainterWidget extends BaseImagingWidget {
 				colorId = tileRepositoryService.getSelectedTile().getColorIndex(0);
 			}
 
-			int offset = y * conf.tileWidth + x * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1);
+			int offset = y * conf.tileWidth
+					+ x * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1);
 
 			if (tileRepositoryService.getMetadata().getType().equals("PETSCII")) {
 				layer.getContent()[offset] = colorId;
@@ -508,7 +536,8 @@ public class PainterWidget extends BaseImagingWidget {
 				if (brush == null) {
 					layer.resetBrush(layer.getContent().length, tileRepositoryService.getMetadata().getBlankValue());
 				}
-				int i = conf.pencilMode == PencilMode.Draw ? tileRepositoryReferenceService.getSelectedTileIndex(true) : tileRepositoryService.getMetadata().getBlankValue();
+				int i = conf.pencilMode == PencilMode.Draw ? tileRepositoryReferenceService.getSelectedTileIndex(true)
+						: tileRepositoryService.getMetadata().getBlankValue();
 				layer.getBrush()[offset] = i;
 
 			}

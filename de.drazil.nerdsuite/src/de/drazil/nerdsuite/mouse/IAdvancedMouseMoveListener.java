@@ -5,5 +5,7 @@ public interface IAdvancedMouseMoveListener {
 
 	public void mouseDragged(int modifierMask, int x, int y);
 
+	public void mouseDraggedDelayed(int modifierMask, int x, int y);
+
 	public void mouseDropped(int modifierMask, int x, int y);
 }
