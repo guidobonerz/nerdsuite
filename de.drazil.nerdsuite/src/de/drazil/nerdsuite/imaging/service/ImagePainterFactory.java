@@ -299,9 +299,9 @@ public class ImagePainterFactory {
 		String repositoryName = repository.getOwner();
 		Image2 mapImageInternal = imagePool.get(repositoryName);
 		if (mapImageInternal == null) {
-			mapImageInternal = new Image2(
-					createLayer(conf.tileWidthPixel * conf.columns + ((conf.columns - 1) * conf.tileGap),
-							conf.tileHeightPixel * conf.rows + ((conf.rows - 1) * conf.tileGap)).getImage(),
+			mapImageInternal = new Image2(createLayer(
+					conf.tileWidthPixel * conf.zoomFactor * conf.columns + ((conf.columns - 1) * conf.tileGap),
+					conf.tileHeightPixel * conf.zoomFactor * conf.rows + ((conf.rows - 1) * conf.tileGap)).getImage(),
 					false);
 			GC gc = new GC(mapImageInternal.getImage());
 			for (int i = 0; i < repository.getSize(); i++) {
@@ -319,9 +319,15 @@ public class ImagePainterFactory {
 					imageInternal.setDirty(isDirty);
 					tile.putImage(id, imageInternal);
 				}
-				int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
-				int x = (i % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
-				gc.drawImage(imageInternal.getImage(), x, y);
+				int y = (i / conf.columns) * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap);
+				int x = (i % conf.columns) * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap);
+				ImageData original = imageInternal.getImage().getImageData();
+				ImageData scaled = original.scaledTo(original.width * conf.zoomFactor,
+						original.height * conf.zoomFactor);
+
+				Image scaledImage = new Image(Display.getCurrent(), scaled);
+				gc.drawImage(scaledImage, x, y);
+				scaledImage.dispose();
 			}
 			gc.dispose();
 

@@ -8,7 +8,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.PlatformColor;
@@ -21,7 +20,7 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	private int maxColors;
 	private int maxColorsTemp;
 	private boolean isMulticolorEnabled;
-	private int colorIndex;
+	private int colorIndex=1;
 	private List<PlatformColor> platformColorList;
 	private int[] platformPaletteIndexList;
 	private ColorPaletteChooser colorChooser;
@@ -95,12 +94,12 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	@Override
 	public void colorSelected(int colorIndex, int paletteIndex) {
 		platformPaletteIndexList[this.colorIndex] = paletteIndex;
-		//Display.getCurrent().asyncExec(new Runnable() {
-		//	@Override
-		//	public void run() {
-				fireColorSelected(paletteIndex);
-		//	}
-		//});
+		// Display.getCurrent().asyncExec(new Runnable() {
+		// @Override
+		// public void run() {
+		fireColorSelected(paletteIndex);
+		// }
+		// });
 		redraw();
 	}
 
@@ -109,11 +108,11 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 		computeCursorPosition(x, y);
 		closePupup();
 		if (colorIndex < maxColorsTemp) {
-		//	Display.getCurrent().asyncExec(new Runnable() {
-		//		@Override
-		//		public void run() {
+			// Display.getCurrent().asyncExec(new Runnable() {
+			// @Override
+			// public void run() {
 
-					fireColorSelected(platformPaletteIndexList[colorIndex]);
+			fireColorSelected(platformPaletteIndexList[colorIndex]);
 
 //				}
 //			});

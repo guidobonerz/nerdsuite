@@ -7,7 +7,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.RedrawMode;
@@ -136,7 +135,9 @@ public class ReferenceWidget extends BaseImagingWidget {
 		gc.setForeground(Constants.WHITE);
 		int index = tileRepositoryService.getTileList().indexOf(tileRepositoryService.getSelectedTile());
 		int index2 = tileRepositoryService.getSelectedTileIndex();
-		gc.drawString(String.format("Natural %03X / %03d Ordered %03X / %03d", index, index, index2, index2), 0, 305);
+		gc.setFont(Constants.RobotoMonoBold_FONT);
+		gc.drawString(String.format("Natural %03X / %03d Ordered %03X / %03d", index, index, index2, index2), 0,
+				(conf.tileHeightPixel * 2 + conf.tileGap) * 16);
 		action = ImagePainterFactory.NONE;
 
 		redrawMode = RedrawMode.DrawNothing;
@@ -148,8 +149,9 @@ public class ReferenceWidget extends BaseImagingWidget {
 		selectedTileIndexList.forEach(i -> {
 			int y = i / conf.columns;
 			int x = i % conf.columns;
-			gc.fillRectangle(x * (conf.tileWidthPixel + conf.tileGap), y * (conf.tileHeightPixel + conf.tileGap),
-					conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.fillRectangle(x * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap),
+					y * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap), conf.tileWidthPixel * conf.zoomFactor,
+					conf.tileHeightPixel * conf.zoomFactor);
 			if (i == temporaryIndex) {
 				gc.setLineWidth(3);
 				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
@@ -163,8 +165,9 @@ public class ReferenceWidget extends BaseImagingWidget {
 		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
-			gc.fillRectangle(tileX * (conf.tileWidthPixel + conf.tileGap),
-					tileY * (conf.tileHeightPixel + conf.tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.fillRectangle(tileX * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap),
+					tileY * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap),
+					conf.tileWidthPixel * conf.zoomFactor, conf.tileHeightPixel * conf.zoomFactor);
 		}
 	}
 
@@ -228,7 +231,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(conf.fullWidthPixel, conf.fullHeightPixel + 20);
+		return new Point(conf.fullWidthPixel * 2, conf.fullHeightPixel * 2 + 20);
 	}
 
 }
