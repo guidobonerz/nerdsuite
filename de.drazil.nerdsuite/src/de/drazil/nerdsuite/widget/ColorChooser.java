@@ -8,6 +8,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.PlatformColor;
@@ -50,12 +51,14 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 			e.gc.fillRectangle(0, y * COLOR_TILE_SIZE, COLOR_OFFSET, COLOR_TILE_SIZE);
 			e.gc.setForeground(Constants.WHITE);
 			e.gc.drawString(colorNames[y], 5, y * COLOR_TILE_SIZE + 10);
-			e.gc.drawString(":" + platformColorList.get(platformPaletteIndexList[y]).getName(), 80, y * COLOR_TILE_SIZE + 10);
+			e.gc.drawString(":" + platformColorList.get(platformPaletteIndexList[y]).getName(), 80,
+					y * COLOR_TILE_SIZE + 10);
 			e.gc.setBackground(platformColorList.get(platformPaletteIndexList[y]).getColor());
 			e.gc.fillRectangle(COLOR_OFFSET, y * COLOR_TILE_SIZE, COLOR_TILE_SIZE, COLOR_TILE_SIZE);
 			if (y < maxColors - 1) {
 				e.gc.setForeground(Constants.BLACK);
-				e.gc.drawLine(0, y * COLOR_TILE_SIZE + COLOR_TILE_SIZE, WIDGET_WIDTH, y * COLOR_TILE_SIZE + COLOR_TILE_SIZE);
+				e.gc.drawLine(0, y * COLOR_TILE_SIZE + COLOR_TILE_SIZE, WIDGET_WIDTH,
+						y * COLOR_TILE_SIZE + COLOR_TILE_SIZE);
 			}
 
 			if (y >= maxColorsTemp) {
@@ -92,7 +95,12 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	@Override
 	public void colorSelected(int colorIndex, int paletteIndex) {
 		platformPaletteIndexList[this.colorIndex] = paletteIndex;
-		fireColorSelected(paletteIndex);
+		//Display.getCurrent().asyncExec(new Runnable() {
+		//	@Override
+		//	public void run() {
+				fireColorSelected(paletteIndex);
+		//	}
+		//});
 		redraw();
 	}
 
@@ -101,7 +109,14 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 		computeCursorPosition(x, y);
 		closePupup();
 		if (colorIndex < maxColorsTemp) {
-			fireColorSelected(platformPaletteIndexList[colorIndex]);
+		//	Display.getCurrent().asyncExec(new Runnable() {
+		//		@Override
+		//		public void run() {
+
+					fireColorSelected(platformPaletteIndexList[colorIndex]);
+
+//				}
+//			});
 			redraw();
 		}
 	}
@@ -111,7 +126,8 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 		computeCursorPosition(x, y);
 		closePupup();
 		if (colorIndex < maxColorsTemp) {
-			colorChooser = new ColorPaletteChooser(getParent(), SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, platformColorList);
+			colorChooser = new ColorPaletteChooser(getParent(), SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
+					platformColorList);
 			colorChooser.setSelectedColor(platformPaletteIndexList[colorIndex]);
 			colorChooser.addColorSelectionListener(this);
 			popupDialog = new CustomPopupDialog(getParent().getShell(), colorChooser);

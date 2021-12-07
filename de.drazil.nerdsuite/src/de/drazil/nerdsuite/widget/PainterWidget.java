@@ -48,6 +48,7 @@ public class PainterWidget extends BaseImagingWidget {
 				scrollWorkArea(e.x, e.y);
 			}
 		});
+		ama.setEnableDelayedClicks(false);
 	}
 
 	@Override
@@ -141,6 +142,7 @@ public class PainterWidget extends BaseImagingWidget {
 		scrollStep += count;
 
 		if (Math.abs(scrollStep) % 3 == 0) {
+			System.out.println("wheel");
 			boolean direction = oldScrollStep < scrollStep;
 			int step = direction ? 2 : -2;
 			if (conf.pixelWidth + step >= 8 && conf.pixelWidth + step <= 32) {
@@ -552,6 +554,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int paletteIndex) {
+
 		System.out.printf("colorNo:%d  palette:%d\n", colorNo, paletteIndex);
 		Tile tile = tileRepositoryService.getSelectedTile();
 		tileRepositoryService.setDirty(true);

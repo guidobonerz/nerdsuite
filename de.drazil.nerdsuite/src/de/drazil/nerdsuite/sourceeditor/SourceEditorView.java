@@ -30,9 +30,6 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -77,6 +74,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 	private CustomPopupDialog popupDialog;
 	private SymbolPaletteChooser symbolChooser;
 	private boolean isOnString = false;
+	private boolean isInDragMode = false;
 	private AdvancedMouseAdaper ama;
 
 	public SourceEditorView() {
@@ -216,7 +214,6 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL) {
 			@Override
 			public void paste() {
-				// TODO Auto-generated method stub
 				super.paste();
 				redraw();
 			}
@@ -231,11 +228,11 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		ama.setTriggerTimeMillis(500);
 		ama.addMouseListener(new AdvancedMouseListenerAdapter() {
 			@Override
-			public void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+			public void rightMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+
 				Display.getDefault().syncExec(new Runnable() {
 					@Override
 					public void run() {
-
 						int offset = styledText.getOffsetAtPoint(new Point(x, y));
 						// char c = styledText.getText().charAt(offset);
 						// boolean b = PlatformFactory.containsCodePoint("C64", c);

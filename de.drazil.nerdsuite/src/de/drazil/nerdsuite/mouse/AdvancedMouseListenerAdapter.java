@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.mouse;
 
-public abstract class AdvancedMouseListenerAdapter implements IAdvancedMouseListener {
+public abstract class AdvancedMouseListenerAdapter implements IAdvancedMouseListener, IAdvancedMouseMoveListener {
 	@Override
 	public void leftMouseButtonClicked(int modifierMask, int x, int y) {
 		// TODO Auto-generated method stub
@@ -87,6 +87,30 @@ public abstract class AdvancedMouseListenerAdapter implements IAdvancedMouseList
 
 	@Override
 	public void rightMouseButtonTimesClicked(int modifierMask, int x, int y, int count) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseDragged(int modifierMask, int x, int y) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseDraggedDelayed(int modifierMask, int x, int y) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseDropped(int modifierMask, int x, int y) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseMove(int modifierMask, int x, int y) {
 		// TODO Auto-generated method stub
 
 	}
