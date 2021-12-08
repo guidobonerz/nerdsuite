@@ -20,7 +20,7 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	private int maxColors;
 	private int maxColorsTemp;
 	private boolean isMulticolorEnabled;
-	private int colorIndex=1;
+	private int colorIndex = 1;
 	private List<PlatformColor> platformColorList;
 	private int[] platformPaletteIndexList;
 	private ColorPaletteChooser colorChooser;
@@ -73,7 +73,12 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 
 	public void setMulticolorEnabled(boolean multicolorEnabled) {
 		isMulticolorEnabled = multicolorEnabled;
-		maxColorsTemp = !isMulticolorEnabled ? 2 : maxColors;
+		maxColorsTemp = maxColors;
+		if (!multicolorEnabled) {
+			maxColorsTemp = 2;
+			colorIndex = 1;
+			fireColorSelected(platformPaletteIndexList[colorIndex]);
+		}
 		redraw();
 	}
 
@@ -94,12 +99,7 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 	@Override
 	public void colorSelected(int colorIndex, int paletteIndex) {
 		platformPaletteIndexList[this.colorIndex] = paletteIndex;
-		// Display.getCurrent().asyncExec(new Runnable() {
-		// @Override
-		// public void run() {
 		fireColorSelected(paletteIndex);
-		// }
-		// });
 		redraw();
 	}
 
@@ -108,14 +108,7 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 		computeCursorPosition(x, y);
 		closePupup();
 		if (colorIndex < maxColorsTemp) {
-			// Display.getCurrent().asyncExec(new Runnable() {
-			// @Override
-			// public void run() {
-
 			fireColorSelected(platformPaletteIndexList[colorIndex]);
-
-//				}
-//			});
 			redraw();
 		}
 	}

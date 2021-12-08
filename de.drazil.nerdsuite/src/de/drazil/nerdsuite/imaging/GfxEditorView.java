@@ -584,9 +584,9 @@ public class GfxEditorView implements ITileUpdateListener {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			boolean multicolor = tile.isMulticolorEnabled();
 			E4Utils.setToolItemSelected(part, modelService, tags1, multicolor);
-			if (multiColorChooser != null) {
-				multiColorChooser.setMulticolorEnabled(multicolor);
-			}
+			//if (multiColorChooser != null) {
+			//	multiColorChooser.setMulticolorEnabled(multicolor);
+			//}
 		}
 	}
 
