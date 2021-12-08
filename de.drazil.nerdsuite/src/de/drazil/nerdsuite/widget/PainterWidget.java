@@ -348,6 +348,11 @@ public class PainterWidget extends BaseImagingWidget {
 
 	public void setCursorMode(CursorMode cursorMode) {
 		conf.cursorMode = cursorMode;
+		Cursor cursor = getCursor();
+		if (cursor != null) {
+			cursor.dispose();
+		}
+
 		if (cursorMode == CursorMode.SelectRectangle) {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_CROSS));
 		} else if (cursorMode == CursorMode.Move) {
