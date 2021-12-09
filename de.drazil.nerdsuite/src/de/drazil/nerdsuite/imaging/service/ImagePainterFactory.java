@@ -82,7 +82,7 @@ public class ImagePainterFactory {
 		return backgroundColorIndex;
 	}
 
-	public void drawScaledImage(GC gc, Tile tile, String imageId, int maxWidth, int x, int y) {
+	public void drawScaledImage(GC gc, Tile tile, String imageId, int x, int y) {
 		Image2 i2 = tile.getActiveLayer().getImage(imageId);
 		Image i = i2.getImage();
 		if (conf.getZoomFactor() > 1) {
@@ -151,15 +151,17 @@ public class ImagePainterFactory {
 	}
 
 	public Image2 createLayer(int width, int height) {
-		Image2 imageInternal = new Image2(new Image(Display.getDefault(), width, height), true);
+		Image image = new Image(Display.getDefault(), width, height);
+		Image2 imageInternal = new Image2(image, true);
 		GC gc = new GC(imageInternal.getImage());
 		gc.setBackground(Constants.TRANSPARENT_COLOR);
 		gc.fillRectangle(0, 0, width, height);
 		gc.dispose();
 		ImageData imageData = imageInternal.getImage().getImageData();
-		imageInternal.getImage().dispose();
 		imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
+		imageInternal.dispose();
 		imageInternal.setImage(new Image(Display.getDefault(), imageData));
+		//image.dispose();
 		return imageInternal;
 	}
 

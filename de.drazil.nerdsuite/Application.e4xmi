@@ -2,53 +2,20 @@
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_POZZwKF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ide.application" bindingContexts="_POaA2KF9EeOMYoHAic2wfQ">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_POaA0KF9EeOMYoHAic2wfQ" label="Nerdsuite" width="1680" height="1024">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_xWeSMKMFEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.perspectivestack.0">
-      <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.gfx" label="Nerdsuite">
+      <children xsi:type="advanced:Perspective" xmi:id="_-ke9gJXNEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.perspective.default" label="Default">
         <children xsi:type="basic:PartSashContainer" xmi:id="_o_HHwAR_EemY64Lb858Vjg" elementId="de.drazil.nerdsuite.partsashcontainer.3" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_UAShQL4HEemtD_mJnNBwMg" elementId="de.drazil.nerdsuite.partsashcontainer.6" containerData="1000">
             <children xsi:type="basic:PartStack" xmi:id="_J9KyYNNDEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.partstack.0">
-              <children xsi:type="basic:Part" xmi:id="_5hZjgNNCEemCquj2k7DFaA" elementId="de.drazil.nerdsuite.part.Explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer">
-                <menus xsi:type="menu:PopupMenu" xmi:id="_DSGRsNUpEem7aKaccBqojA" elementId="de.drazil.nerdsuite.popupmenu.Explorer">
-                  <children xsi:type="menu:Menu" xmi:id="_rpkFkMziEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menu.openwith" label="Open with...">
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_SKmw4OxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.binaryViewer" label="Binary Inspector"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_V2RKUOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.imageViewer" label="Graphic Editor"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_bBq4MOxAEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.charsetViewer" label="Code Editor"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_Zx9K4M6PEem6S-8Nx2mqeA" elementId="de.drazil.nerdsuite.handledmenuitem.emulator" label="Emulator"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_bzdeoM9KEemWzpmgM2RcRA" elementId="de.drazil.nerdsuite.handledmenuitem.disassembler" label="Disassembler" mnemonics="" command="_nKHygNHgEeqQR4qhoQvaeg"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_yzAHcJVWEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.diskimageviewer" label="Disk Image Viewer"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_b9ro4LvfEeqNbb2NSJYhoA" elementId="de.drazil.nerdsuite.handledmenuitem.u64" label="Ultimate64" command="_kNzE8LvfEeqNbb2NSJYhoA"/>
-                  </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_OikQsJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.copy" label="Copy" command="__xevcB4KEeqfzqzHNB-ilQ"/>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_hHEtsJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.paste" label="Paste" command="_BDRugB4LEeqfzqzHNB-ilQ"/>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_amTIUJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.cut" label="Cut" command="_9-9o8B4KEeqfzqzHNB-ilQ"/>
-                  <children xsi:type="menu:MenuSeparator" xmi:id="_9mSpgMzlEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.menuseparator.4"/>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_0_NPwNcpEemxxMV8vbeGyg" elementId="de.drazil.nerdsuite.handledmenuitem.delete" label="Delete" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png"/>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_5bVhcMzkEemJh_xLPhHI6A" elementId="de.drazil.nerdsuite.handledmenuitem.export" label="Export..." iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk--arrow.png" command="_2QmjcMznEemJh_xLPhHI6A">
-                    <parameters xmi:id="_EZgWEAloEeqGDptjZacYgw" elementId="de.drazil.nerdsuite.parameter.49" name="de.drazil.nerdsuite.commandparameter.Export" value="Export"/>
-                  </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_GUy-AJVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.mount" label="Mount" command="_tHUIUCHZEeqei6yq5Fa4mw"/>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_1Cky0JVVEeqVGMXe4sKvrA" elementId="de.drazil.nerdsuite.handledmenuitem.unmount" label="Unmount" command="_4hLnsJVVEeqVGMXe4sKvrA"/>
-                </menus>
-              </children>
+              <children xsi:type="advanced:Placeholder" xmi:id="_ZY1GgFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.placeholder.1" ref="_QcU7AFh3EeyjAf-8Yrdmxg"/>
             </children>
           </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_EyKI8AUlEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partsashcontainer.5" containerData="20000 " selectedElement="_nmA8gATwEemsC5geQwPptA">
-            <children xsi:type="basic:PartStack" xmi:id="_nmA8gATwEemsC5geQwPptA" elementId="de.drazil.nerdsuite.partstack.editorStack" containerData="10000">
-              <tags>NoAutoCollapse</tags>
-            </children>
-            <children xsi:type="basic:PartStack" xmi:id="_kDh5kE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.partstack.3" containerData="2000">
-              <children xsi:type="basic:Part" xmi:id="_krSdIE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.part.console" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.log.Console" label="Console">
-                <toolbar xmi:id="_1v8Q8E7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.toolbar.6">
-                  <children xsi:type="menu:DirectToolItem" xmi:id="_3CXiIE7_EeyK8OZQDReDZg" elementId="de.drazil.nerdsuite.directtoolitem.0" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png"/>
-                </toolbar>
-              </children>
-            </children>
-          </children>
+          <children xsi:type="basic:Part" xmi:id="_h06skFh5EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.part.0"/>
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_-mKRUH6WEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.perspective.U64AppStreamer" label="Ultimate64ApplicationStreamer">
         <children xsi:type="basic:PartSashContainer" xmi:id="_OSC7YH6XEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.partsashcontainer.0" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_bphA4H6ZEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.partstack.1" containerData="1000">
-            <children xsi:type="basic:Part" xmi:id="_6zH4MH7QEeuLApV-ry2DvA" elementId="de.drazil.nerdsuite.part.explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_ctGToFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.placeholder.2" ref="_QcU7AFh3EeyjAf-8Yrdmxg"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_cnI3MH7PEeuLApV-ry2DvA" elementId="de.drazil.nerdsuite.partsashcontainer.1">
             <children xsi:type="basic:PartStack" xmi:id="_e6qZAH7PEeuLApV-ry2DvA" elementId="de.drazil.nerdsuite.partstack.2">
@@ -79,12 +46,27 @@
         <handlers xmi:id="_Iuy_MHj6EeuVAZ0FAvi_ng" elementId="de.drazil.nerdsuite.handler.7" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.DumpMemoryHandler" command="_OuR1YHj6EeuVAZ0FAvi_ng"/>
         <handlers xmi:id="_G0krsL5REeq0ivRYGfAMrg" elementId="de.drazil.nerdsuite.handler.screenshot" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ScreenshotHandler" command="_csf2sL5QEeq0ivRYGfAMrg"/>
       </children>
-      <children xsi:type="advanced:Perspective" xmi:id="_AZgl0NsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.SpriteEditor" label="SpriteEditor Perspective"/>
-      <children xsi:type="advanced:Perspective" xmi:id="_ar-CcNslEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.CodeEditor" label="Coding Perspective"/>
-      <children xsi:type="advanced:Perspective" xmi:id="_IRrb8NsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.CharEditor" label="CharEditor Perspective"/>
-      <children xsi:type="advanced:Perspective" xmi:id="_XmEzENsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.TileEditor" label="TileEditor Perspective"/>
-      <children xsi:type="advanced:Perspective" xmi:id="_cJYmMNsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.TileMapEditor" label="TileMapEditor Perspective"/>
-      <children xsi:type="advanced:Perspective" xmi:id="_NRXpENsmEeq1AfBpIoflUA" elementId="de.drazil.nerdsuite.perspective.Disassembler" label="Disassembler Perspective"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_GA2QEFh2EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.perspective.GfxPerspective" label="GraphicsPerspective">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_MLje0Fh2EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.2" horizontal="true">
+          <children xsi:type="basic:PartSashContainer" xmi:id="_OmLuMFh2EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.4" containerData="2500">
+            <children xsi:type="basic:PartStack" xmi:id="_QoJl8Fh2EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partstack.4">
+              <children xsi:type="advanced:Placeholder" xmi:id="_UUZjUFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.placeholder.0" ref="_QcU7AFh3EeyjAf-8Yrdmxg"/>
+            </children>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_bCQNUFh2EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partstack.gfxEditorStack" containerData="10000"/>
+        </children>
+      </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_xjmBYFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.perspective.CodingPerspective" label="Coding Perspective">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_4u5KcFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.7" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_6bSa0Fh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partstack.5">
+            <children xsi:type="advanced:Placeholder" xmi:id="_6zccIFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.placeholder.3" ref="_QcU7AFh3EeyjAf-8Yrdmxg"/>
+          </children>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_84DYMFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.8">
+            <children xsi:type="basic:PartStack" xmi:id="_9lno0Fh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partstack.codingEditorStack"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_O5SwEFh5EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.placeholder.4" ref="_HdiwMFh5EeyjAf-8Yrdmxg"/>
+          </children>
+        </children>
+      </children>
     </children>
     <handlers xmi:id="_0DEZgCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.handler.2" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MountFileHandler" command="_tHUIUCHZEeqei6yq5Fa4mw"/>
     <mainMenu xmi:id="_1r1OEKLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.0">
@@ -156,6 +138,8 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Xw0U0KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handledmenuitem.applicationStream" label="Application Stream" command="_ggW30KdwEeqid_Z8sm-clA"/>
       </children>
     </mainMenu>
+    <sharedElements xsi:type="basic:Part" xmi:id="_QcU7AFh3EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.part.Explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer"/>
+    <sharedElements xsi:type="basic:Part" xmi:id="_HdiwMFh5EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.part.console" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.log.Console" label="Console"/>
     <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.xxx">
       <children xsi:type="menu:ToolBar" xmi:id="_k8wHAKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.toolbar.0">
         <children xsi:type="menu:HandledToolItem" xmi:id="_ll05MKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledtoolitem.0" label="Save" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk.png" tooltip="Write content to disk" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>

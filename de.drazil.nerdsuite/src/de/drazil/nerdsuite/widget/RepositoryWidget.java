@@ -33,6 +33,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
 		setTriggerMillis(1000);
+		setBackground(Constants.BLACK);
 	}
 
 	@Override
@@ -168,17 +169,23 @@ public class RepositoryWidget extends BaseImagingWidget {
 	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
 			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
 			boolean paintTelevisionMode) {
-		/*
-		 * for (int i = (drawAll ? 0 : start); i < (drawAll ?
-		 * tileRepositoryService.getSize() : end); i++) { int index = drawAll ? i :
-		 * tileRepositoryService.getTileIndex(i); paintTile(gc, i, action); }
-		 */
-		/*
-		 * if (paintTileGrid) { paintTileGrid(gc); }
-		 * 
-		 * if (tileDragActive) { paintDragMarker(gc); } else { paintSelection(gc);
-		 * paintTileMarker(gc); }
-		 */
+
+		for (int i = (drawAll ? 0 : start); i < (drawAll ? tileRepositoryService.getSize() : end); i++) {
+			int index = drawAll ? i : tileRepositoryService.getTileIndex(i);
+			paintTile(gc, i, action);
+		}
+
+		if (paintTileGrid) {
+			paintTileGrid(gc);
+		}
+
+		if (tileDragActive) {
+			paintDragMarker(gc);
+		} else {
+			paintSelection(gc);
+			paintTileMarker(gc);
+		}
+
 		action = ImagePainterFactory.NONE;
 		drawAll = true;
 		redrawMode = RedrawMode.DrawNothing;
@@ -265,25 +272,30 @@ public class RepositoryWidget extends BaseImagingWidget {
 	}
 
 	private void paintTile(GC gc, int index, int action) {
-		Tile tile = tileRepositoryService.getSelectedTile();
+		Tile tile = tileRepositoryService.getTile(index);
 		Layer layer = tile.getActiveLayer();
 		String name = String.format("%s_%s", tile.getName(), layer.getName());
 		Image2 imageInternal = imagePainterFactory.createLayer();
+
 		GC gcLayer = new GC(imageInternal.getImage());
 		int x = 0;
 		int y = 0;
+		// gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name,
+		// Constants.BLACK).getImage(), x, y);
 		for (int i = 0; i < conf.getTileSize(); i++) {
 			if (i % conf.tileWidth == 0 && i > 0) {
 				x = 0;
 				y++;
 			}
-			gcLayer.setBackground(colorPaletteProvider.getColorByIndex(layer.getContent()[i]));
-			gcLayer.fillRectangle(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight, conf.pixelPaintWidth,
-					conf.pixelPaintHeight);
+			gcLayer.setForeground(layer.getContent()[i] == 1 ? Constants.WHITE : Constants.BLACK);
+			gcLayer.drawPoint(x * conf.pixelPaintWidth, y * conf.pixelPaintHeight);
 			x++;
 		}
 		gcLayer.dispose();
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, Constants.BLACK).getImage(), 0, 0);
+		y = (index / conf.columns) * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap);
+		x = (index % conf.columns) * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap);
+		gc.drawImage(imageInternal.getImage(), x, y);
+		imageInternal.dispose();
 
 	}
 

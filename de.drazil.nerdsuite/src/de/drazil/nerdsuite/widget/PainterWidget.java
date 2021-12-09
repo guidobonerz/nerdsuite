@@ -232,7 +232,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 			imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), t.isDirty());
 		}
-		imagePainterFactory.drawScaledImage(gc, t, id, -1, 0, 0);
+		imagePainterFactory.drawScaledImage(gc, t, id, 0, 0);
 		t.setDirty(false);
 		if (paintPixelGrid) {
 			gc.drawImage(imagePainterFactory.getGridLayer().getImage(), 0, 0);
@@ -293,7 +293,7 @@ public class PainterWidget extends BaseImagingWidget {
 					String id = String.format(ImagePainterFactory.IMAGE_ID, refTile.getId(),
 							refTile.getActiveLayer().getId(), colorIndex);
 					ipf.createOrUpdateLayer(id, refTile.getActiveLayer(), false);
-					ipf.drawScaledImage(gc, refTile, id, -1, cursorX * pixelWidth, cursorY * pixelHeight);
+					ipf.drawScaledImage(gc, refTile, id, cursorX * pixelWidth, cursorY * pixelHeight);
 
 				} else {
 
