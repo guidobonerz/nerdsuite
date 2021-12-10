@@ -13,6 +13,9 @@ Currently I work mostly on the graphics part.
 | Mac (2 GHz Core2Duo / 8GB) | MacOS 10.11.6 El Capitan | yes | very slow | 1.8.0_25
 
 Current state: Still buggy and incomplete :-)
+Last Changes 10-12-2021:
+- updated graphics editor
+- added new screenshot
 
 Last Changes 01-12-2021:
 - added preprocessor code to control build
@@ -93,7 +96,7 @@ Create/Update disk images
 ## Disassembler 6502/10 Screen (in Progress)
 ![screenshot2](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/disasm6502.png)
 ## Big PETSCII Screen
-![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/BigScreen2.png)
+![screenshot3](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/WideScreen.png)
 ## Ultimate64 App Streaming Client
 ![screenshot4](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ultimate64-streaming-windows.png)
 ## Ultimate64 Debug Streaming Client
