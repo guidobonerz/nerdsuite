@@ -104,7 +104,18 @@ public class CodingProjectWizardPage extends AbstractBoundWizardPage {
 		List<TargetPlatform> targetPlatformList = PlatformFactory.getTargetPlatFormList();
 		userData.put(ProjectWizard.TARGET_PLATFORM, targetPlatformList.get(0).getId());
 		List<ProgrammingLanguage> programmingLanguageList = getProgrammingLanguageList(targetPlatformList.get(0));
-		userData.put(ProjectWizard.PROJECT_TYPE, programmingLanguageList.get(0).getId());
+		String[] s = programmingLanguageList.get(0).getId().split("_");
+		String type = "";
+		if (s.length == 3) {
+			type = s[1];
+			userData.put(ProjectWizard.PROJECT_TYPE, s[1]);
+			userData.put(ProjectWizard.PROJECT_VARIANT, s[2]);
+		} else if (s.length == 2) {
+
+		} else {
+
+		}
+
 		List<SimpleEntity> builderList = programmingLanguageList.get(0).getBuilder();
 		if (null != builderList) {
 			userData.put(ProjectWizard.PROJECT_VARIANT, builderList.get(0).getId());

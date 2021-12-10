@@ -82,12 +82,13 @@ public class ImagePainterFactory {
 		return backgroundColorIndex;
 	}
 
-	public void drawScaledImage(GC gc, Tile tile, String imageId, int maxWidth, int x, int y) {
+	public void drawScaledImage(GC gc, Tile tile, String imageId, int x, int y) {
 		Image2 i2 = tile.getActiveLayer().getImage(imageId);
 		Image i = i2.getImage();
 		if (conf.getZoomFactor() > 1) {
 			ImageData original = i.getImageData();
-			ImageData scaled = original.scaledTo(original.width * conf.getZoomFactor(), original.height * conf.getZoomFactor());
+			ImageData scaled = original.scaledTo(original.width * conf.getZoomFactor(),
+					original.height * conf.getZoomFactor());
 			// scaled.transparentPixel =
 			// original.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
 			Image scaledImage = new Image(Display.getCurrent(), scaled);
@@ -108,10 +109,15 @@ public class ImagePainterFactory {
 			for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x++) {
 				for (int y = 0; y <= conf.iconHeight * conf.tileRows; y++) {
 					if (conf.gridStyle == GridType.Line) {
-						gc.drawLine(x * conf.pixelPaintWidth * conf.getZoomFactor(), 0, x * conf.pixelPaintWidth * conf.getZoomFactor(), conf.tileHeightPixel * conf.getZoomFactor());
-						gc.drawLine(0, y * conf.pixelPaintHeight * conf.getZoomFactor(), conf.tileWidthPixel * conf.getZoomFactor(), y * conf.pixelPaintHeight * conf.getZoomFactor());
+						gc.drawLine(x * conf.pixelPaintWidth * conf.getZoomFactor(), 0,
+								x * conf.pixelPaintWidth * conf.getZoomFactor(),
+								conf.tileHeightPixel * conf.getZoomFactor());
+						gc.drawLine(0, y * conf.pixelPaintHeight * conf.getZoomFactor(),
+								conf.tileWidthPixel * conf.getZoomFactor(),
+								y * conf.pixelPaintHeight * conf.getZoomFactor());
 					} else {
-						gc.drawPoint(x * conf.pixelPaintWidth * conf.getZoomFactor(), y * conf.pixelPaintHeight * conf.getZoomFactor());
+						gc.drawPoint(x * conf.pixelPaintWidth * conf.getZoomFactor(),
+								y * conf.pixelPaintHeight * conf.getZoomFactor());
 					}
 				}
 			}
@@ -122,7 +128,8 @@ public class ImagePainterFactory {
 	}
 
 	public Image2 createOrUpdateBaseImage(String name, Color color) {
-		return createOrUpdateBaseImage(name, color, conf.tileWidthPixel * conf.getZoomFactor(), conf.tileHeightPixel * conf.getZoomFactor());
+		return createOrUpdateBaseImage(name, color, conf.tileWidthPixel * conf.getZoomFactor(),
+				conf.tileHeightPixel * conf.getZoomFactor());
 	}
 
 	public Image2 createOrUpdateBaseImage(String name, Color color, int width, int height) {
@@ -144,15 +151,17 @@ public class ImagePainterFactory {
 	}
 
 	public Image2 createLayer(int width, int height) {
-		Image2 imageInternal = new Image2(new Image(Display.getDefault(), width, height), true);
+		Image image = new Image(Display.getDefault(), width, height);
+		Image2 imageInternal = new Image2(image, true);
 		GC gc = new GC(imageInternal.getImage());
 		gc.setBackground(Constants.TRANSPARENT_COLOR);
 		gc.fillRectangle(0, 0, width, height);
 		gc.dispose();
 		ImageData imageData = imageInternal.getImage().getImageData();
-		imageInternal.getImage().dispose();
 		imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
+		imageInternal.dispose();
 		imageInternal.setImage(new Image(Display.getDefault(), imageData));
+		//image.dispose();
 		return imageInternal;
 	}
 
@@ -201,15 +210,18 @@ public class ImagePainterFactory {
 
 	public Image2 createOrUpdateLayer(String id, Layer layer, boolean isDirty) {
 		Image2 image = null;
+
 		if (repository.hasReference()) {
 			image = _createOrUpdateLayerFromReference(id, layer, isDirty);
 		} else {
 			image = _createOrUpdateLayer(id, layer, isDirty);
 		}
+
 		return image;
 	}
 
 	private Image2 _createOrUpdateLayer(String id, Layer layer, boolean isDirty) {
+
 		Image2 imageInternal = layer.getImage(id);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -241,12 +253,12 @@ public class ImagePainterFactory {
 			gc.dispose();
 			layer.putImage(id, imageInternal);
 		}
+
 		return imageInternal;
 	}
 
 	private Image2 _createOrUpdateLayerFromReference(String id, Layer layer, boolean isDirty) {
 
-		// String id = String.format(IMAGE_ID, tile.getId(), layer.getId(), colorIndex);
 		Image2 imageInternal = layer.getImage(id);
 		if (imageInternal == null || isDirty) {
 			if (isDirty && imageInternal != null) {
@@ -258,6 +270,7 @@ public class ImagePainterFactory {
 			int x = 0;
 			int y = 0;
 			for (int i = 0; i < conf.getTileSize(); i++) {
+
 				if (i % conf.tileWidth == 0 && i > 0) {
 					x = 0;
 					y++;
@@ -267,25 +280,31 @@ public class ImagePainterFactory {
 
 				Tile pixelTile = referenceRepository.getTile(bi, true);
 				Layer pixelLayer = pixelTile.getActiveLayer();
-				ImagePainterFactory ipf = ImagePainterFactory.getImageFactory(referenceRepository.getMetadata().getId());
+				ImagePainterFactory ipf = ImagePainterFactory
+						.getImageFactory(referenceRepository.getMetadata().getId());
 				ImagingWidgetConfiguration conf = ipf.getConfiguration();
 				String pixelId = String.format(IMAGE_ID, String.format("T%03X", bi), layer.getId(), ci);
 				ipf.setForegroundColorIndex(ci);
-				gc.drawImage(ipf.createOrUpdateLayer(pixelId, pixelLayer, isDirty).getImage(), x * conf.tileWidthPixel, y * conf.tileHeightPixel);
+				gc.drawImage(ipf.createOrUpdateLayer(pixelId, pixelLayer, false).getImage(), x * conf.tileWidthPixel,
+						y * conf.tileHeightPixel);
 				x++;
 			}
 			gc.dispose();
 			layer.putImage(id, imageInternal);
 		}
+
 		return imageInternal;
 	}
 
 	public Image2 createOrUpdateTileMap(boolean isDirty) {
+
 		String repositoryName = repository.getOwner();
 		Image2 mapImageInternal = imagePool.get(repositoryName);
 		if (mapImageInternal == null) {
-			mapImageInternal = new Image2(
-					createLayer(conf.tileWidthPixel * conf.columns + ((conf.columns - 1) * conf.tileGap), conf.tileHeightPixel * conf.rows + ((conf.rows - 1) * conf.tileGap)).getImage(), false);
+			mapImageInternal = new Image2(createLayer(
+					conf.tileWidthPixel * conf.zoomFactor * conf.columns + ((conf.columns - 1) * conf.tileGap),
+					conf.tileHeightPixel * conf.zoomFactor * conf.rows + ((conf.rows - 1) * conf.tileGap)).getImage(),
+					false);
 			GC gc = new GC(mapImageInternal.getImage());
 			for (int i = 0; i < repository.getSize(); i++) {
 				Tile tile = repository.getTile(i);
@@ -302,9 +321,15 @@ public class ImagePainterFactory {
 					imageInternal.setDirty(isDirty);
 					tile.putImage(id, imageInternal);
 				}
-				int y = (i / conf.columns) * (conf.tileHeightPixel + conf.tileGap);
-				int x = (i % conf.columns) * (conf.tileWidthPixel + conf.tileGap);
-				gc.drawImage(imageInternal.getImage(), x, y);
+				int y = (i / conf.columns) * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap);
+				int x = (i % conf.columns) * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap);
+				ImageData original = imageInternal.getImage().getImageData();
+				ImageData scaled = original.scaledTo(original.width * conf.zoomFactor,
+						original.height * conf.zoomFactor);
+
+				Image scaledImage = new Image(Display.getCurrent(), scaled);
+				gc.drawImage(scaledImage, x, y);
+				scaledImage.dispose();
 			}
 			gc.dispose();
 

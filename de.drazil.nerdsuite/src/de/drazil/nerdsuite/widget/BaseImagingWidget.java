@@ -231,8 +231,8 @@ public abstract class BaseImagingWidget extends BaseWidget
 		} else {
 			cursorChanged = false;
 		}
-		tileX = x / (conf.tileWidthPixel + conf.tileGap);
-		tileY = y / (conf.tileHeightPixel + conf.tileGap);
+		tileX = x / (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap);
+		tileY = y / (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap);
 
 		if (oldTileX != tileX || oldTileY != tileY || takePosition) {
 			tileDiffX = tileX - oldTileX;
@@ -261,6 +261,9 @@ public abstract class BaseImagingWidget extends BaseWidget
 		} else {
 			tileCursorChanged = false;
 		}
+		//System.out.printf("x:%s y:%s tx: %d ty:%d tcx:%d tcy:%d width:%d pixelSize:%d zoom:%d gap:%d\n", x, y, tileX,
+		//		tileY, tileCursorX, tileCursorY, conf.tileWidthPixel, conf.pixelPaintWidth, conf.zoomFactor,
+		//		conf.tileGap);
 	}
 
 	public void paintControl(PaintEvent e) {

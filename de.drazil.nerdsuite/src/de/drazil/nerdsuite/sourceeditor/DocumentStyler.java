@@ -95,6 +95,7 @@ public class DocumentStyler implements LineStyleListener {
 
 	@Override
 	public void lineGetStyle(LineStyleEvent event) {
+
 		StyleRangeCacheEntry styleRangeCacheEntry = null;
 		int lineOffset = event.lineOffset;
 		int lineNo = document.getLineAtOffset(lineOffset);
@@ -102,6 +103,8 @@ public class DocumentStyler implements LineStyleListener {
 		if (lineNo < styleRangeCache.size()) {
 			styleRangeCacheEntry = styleRangeCache.get(lineNo);
 		}
+
+		System.out.printf("%d  %d\n", lineOffset, lineNo);
 
 		if (styleRangeCacheEntry == null) {
 			styleRangeCacheEntry = new StyleRangeCacheEntry();

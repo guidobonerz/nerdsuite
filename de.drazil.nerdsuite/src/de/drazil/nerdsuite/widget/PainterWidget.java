@@ -48,6 +48,7 @@ public class PainterWidget extends BaseImagingWidget {
 				scrollWorkArea(e.x, e.y);
 			}
 		});
+		ama.setEnableDelayedClicks(false);
 	}
 
 	@Override
@@ -60,18 +61,17 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	protected void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
-		System.out.println("triggered");
 
 	}
 
 	@Override
 	protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
-		System.out.println("dragged delayed");
+
 	}
 
 	@Override
 	protected void mouseDragged(int modifierMask, int x, int y) {
-		System.out.println("dragged");
+
 		if (conf.cursorMode == CursorMode.SelectRectangle) {
 			computeRangeSelection(cursorX, cursorY, 1, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
 			doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
@@ -142,6 +142,7 @@ public class PainterWidget extends BaseImagingWidget {
 		scrollStep += count;
 
 		if (Math.abs(scrollStep) % 3 == 0) {
+			System.out.println("wheel");
 			boolean direction = oldScrollStep < scrollStep;
 			int step = direction ? 2 : -2;
 			if (conf.pixelWidth + step >= 8 && conf.pixelWidth + step <= 32) {
@@ -231,7 +232,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 			imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), t.isDirty());
 		}
-		imagePainterFactory.drawScaledImage(gc, t, id, -1, 0, 0);
+		imagePainterFactory.drawScaledImage(gc, t, id, 0, 0);
 		t.setDirty(false);
 		if (paintPixelGrid) {
 			gc.drawImage(imagePainterFactory.getGridLayer().getImage(), 0, 0);
@@ -292,7 +293,7 @@ public class PainterWidget extends BaseImagingWidget {
 					String id = String.format(ImagePainterFactory.IMAGE_ID, refTile.getId(),
 							refTile.getActiveLayer().getId(), colorIndex);
 					ipf.createOrUpdateLayer(id, refTile.getActiveLayer(), false);
-					ipf.drawScaledImage(gc, refTile, id, -1, cursorX * pixelWidth, cursorY * pixelHeight);
+					ipf.drawScaledImage(gc, refTile, id, cursorX * pixelWidth, cursorY * pixelHeight);
 
 				} else {
 
@@ -347,6 +348,11 @@ public class PainterWidget extends BaseImagingWidget {
 
 	public void setCursorMode(CursorMode cursorMode) {
 		conf.cursorMode = cursorMode;
+		Cursor cursor = getCursor();
+		if (cursor != null) {
+			cursor.dispose();
+		}
+
 		if (cursorMode == CursorMode.SelectRectangle) {
 			setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_CROSS));
 		} else if (cursorMode == CursorMode.Move) {
@@ -553,6 +559,7 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void colorSelected(int colorNo, int paletteIndex) {
+
 		System.out.printf("colorNo:%d  palette:%d\n", colorNo, paletteIndex);
 		Tile tile = tileRepositoryService.getSelectedTile();
 		tileRepositoryService.setDirty(true);

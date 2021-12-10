@@ -68,6 +68,9 @@ public class AdvancedMouseAdaper implements IMeasuringListener {
 	@Getter
 	@Setter
 	private int rightTimesClickTimeMillis = 1200;
+	@Getter
+	@Setter
+	private boolean enableDelayedClicks = false;
 
 	@Getter
 	@Setter
@@ -229,11 +232,13 @@ public class AdvancedMouseAdaper implements IMeasuringListener {
 		mouseTrackListenerList = new ArrayList<>();
 		mouseWheelListenerList = new ArrayList<>();
 		mcLeft = new MeasuringController();
-		mcLeft.addMeasuringListener(this);
 		mcMiddle = new MeasuringController();
-		mcMiddle.addMeasuringListener(this);
 		mcRight = new MeasuringController();
-		mcRight.addMeasuringListener(this);
+		if (enableDelayedClicks) {
+			mcLeft.addMeasuringListener(this);
+			mcMiddle.addMeasuringListener(this);
+			mcRight.addMeasuringListener(this);
+		}
 	}
 
 	public void setTriggerTimeMillis(long delay) {

@@ -12,4 +12,11 @@ import lombok.NoArgsConstructor;
 public class Image2 {
 	private Image image;
 	private boolean dirty = true;
+
+	public void dispose() {
+		if (image != null) {
+			image.dispose();
+			image = null;
+		}
+	}
 }

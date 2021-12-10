@@ -112,7 +112,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 		List<GraphicFormat> graphicFormatList = GraphicFormatFactory
 				.getFormatByPrefix(targetPlatformList.get(0).getId());
 		gf = graphicFormatList.get(0);
-		userData.put(ProjectWizard.PROJECT_TYPE, graphicFormatList.get(0).getId());
+		userData.put(ProjectWizard.PROJECT_TYPE, graphicFormatList.get(0).getId().split("_")[1]);
 		List<GraphicFormatVariant> graphicFormatVariantList = GraphicFormatFactory
 				.getFormatVariantListByPrefix(graphicFormatList.get(0).getId());
 		gfv = graphicFormatVariantList.get(0);
@@ -175,7 +175,7 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 			public void selectionChanged(SelectionChangedEvent event) {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				gf = (GraphicFormat) selection.getFirstElement();
-				userData.put(ProjectWizard.PROJECT_TYPE, gf.getId());
+				userData.put(ProjectWizard.PROJECT_TYPE, gf.getId().split("_")[1]);
 				List<GraphicFormatVariant> l = GraphicFormatFactory.getFormatVariantListByPrefix(gf.getId());
 				gfxFormatVariantCombo.setInput(l);
 				gfxFormatVariantCombo.setSelection(new StructuredSelection(l.get(0)));
