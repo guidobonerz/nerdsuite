@@ -34,6 +34,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Initializer;
@@ -417,6 +418,12 @@ public class GfxEditorView implements ITileUpdateListener {
 		rightSash.setLayoutData(rightGridData);
 		paintSash = new SashForm(rightSash, SWT.HORIZONTAL);
 		paintSash.setSashWidth(4);
+		paintSash.addListener(SWT.Resize, new Listener() {
+			@Override
+			public void handleEvent(final Event event) {
+				getRepositoryWidget().redraw();
+			}
+		});
 
 		painter = getPainterWidget();
 		// painter.addDrawListener(repository);
