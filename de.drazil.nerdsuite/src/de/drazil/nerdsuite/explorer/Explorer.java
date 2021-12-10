@@ -13,6 +13,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
@@ -371,13 +372,15 @@ public class Explorer implements IDoubleClickListener {
 					repository.load(owner);
 					projectSetup.put("repositoryOwner", owner);
 					projectSetup.put("file", file);
-
+					MPerspective perspective = (MPerspective) modelService
+							.find("de.drazil.nerdsuite.perspective.GfxPerspective", app);
+					partService.switchPerspective(perspective);
 					MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
 							"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
 							project.getName(), projectSetup);
 
 					E4Utils.addPart2PartStack(app, modelService, partService,
-							"de.drazil.nerdsuite.partstack.editorStack", part, true);
+							"de.drazil.nerdsuite.partstack.gfxEditorStack", part, true);
 				} else if (project.getSuffix().equals("bas")) {
 					System.out.println("load source");
 					File file = FileUtil.getFileFromProject(project);
@@ -386,13 +389,14 @@ public class Explorer implements IDoubleClickListener {
 					repository.load(owner);
 					projectSetup.put("repositoryOwner", owner);
 					projectSetup.put("file", file);
-
+					MPerspective perspective = (MPerspective) modelService.find("de.drazil.nerdsuite.perspective.CodingPerspective", app);
+					partService.switchPerspective(perspective);
 					MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
 							"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView",
 							owner, project.getName(), projectSetup);
 
 					E4Utils.addPart2PartStack(app, modelService, partService,
-							"de.drazil.nerdsuite.partstack.editorStack", part, true);
+							"de.drazil.nerdsuite.partstack.codingEditorStack", part, true);
 				}
 			} else {
 				editor.getParent().setSelectedElement(editor);

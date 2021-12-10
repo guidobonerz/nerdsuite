@@ -83,7 +83,7 @@ public class Layer {
 
 	@JsonIgnore
 	public void removeImage(String id) {
-		imagePool.get(id).getImage().dispose();
+		imagePool.get(id).dispose();;
 		imagePool.remove(id);
 	}
 

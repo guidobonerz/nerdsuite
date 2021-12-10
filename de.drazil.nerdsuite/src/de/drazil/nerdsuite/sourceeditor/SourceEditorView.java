@@ -5,11 +5,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -35,9 +30,6 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -55,6 +47,7 @@ import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
+import de.drazil.nerdsuite.mouse.AdvancedMouseListenerAdapter;
 import de.drazil.nerdsuite.toolchain.BasicTokenizerStage;
 import de.drazil.nerdsuite.toolchain.ExternalRunnerToolchainStage;
 import de.drazil.nerdsuite.toolchain.Toolchain;
@@ -81,6 +74,8 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 	private CustomPopupDialog popupDialog;
 	private SymbolPaletteChooser symbolChooser;
 	private boolean isOnString = false;
+	private boolean isInDragMode = false;
+	private AdvancedMouseAdaper ama;
 
 	public SourceEditorView() {
 
@@ -219,7 +214,6 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		styledText = new StyledText(parent, SWT.V_SCROLL | SWT.H_SCROLL) {
 			@Override
 			public void paste() {
-				// TODO Auto-generated method stub
 				super.paste();
 				redraw();
 			}
@@ -230,35 +224,36 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		styledText.setForeground(Constants.SOURCE_EDITOR_FOREGROUND_COLOR);
 		styledText.setFont(Constants.RobotoMonoBold_FONT);
 
+		ama = new AdvancedMouseAdaper(styledText);
+		ama.setTriggerTimeMillis(500);
+		ama.addMouseListener(new AdvancedMouseListenerAdapter() {
+			@Override
+			public void rightMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+
+				Display.getDefault().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						int offset = styledText.getOffsetAtPoint(new Point(x, y));
+						// char c = styledText.getText().charAt(offset);
+						// boolean b = PlatformFactory.containsCodePoint("C64", c);
+						styledText.setCaretOffset(offset);
+						closePupup();
+						symbolChooser = new SymbolPaletteChooser(parent.getShell(),
+								SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
+								PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),
+								PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform()));
+						symbolChooser.addCharSelectionListener(SourceEditorView.this);
+						popupDialog = new CustomPopupDialog(parent.getShell(), symbolChooser);
+						popupDialog.open();
+					}
+				});
+			}
+		});
+
 		documentStyler = getBasicStyler(basicInstructions, version);
 		documentStyler.refreshMultilineComments(srs.getContent());
 		styledText.addLineStyleListener(documentStyler);
-		styledText.addMouseMoveListener(new MouseMoveListener() {
-			@Override
-			public void mouseMove(MouseEvent e) {
 
-			}
-		});
-		styledText.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-
-				int offset = styledText.getOffsetAtPoint(new Point(e.x, e.y));
-				// char c = styledText.getText().charAt(offset);
-				// boolean b = PlatformFactory.containsCodePoint("C64", c);
-				styledText.setCaretOffset(offset);
-				closePupup();
-				if (e.button == AdvancedMouseAdaper.MOUSE_BUTTON_LEFT) {
-					symbolChooser = new SymbolPaletteChooser(parent.getShell(),
-							SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
-							PlatformFactory.getCharMap(srs.getMetadata().getPlatform()),
-							PlatformFactory.getPlatformColors(srs.getMetadata().getPlatform()));
-					symbolChooser.addCharSelectionListener(SourceEditorView.this);
-					popupDialog = new CustomPopupDialog(parent.getShell(), symbolChooser);
-					popupDialog.open();
-				}
-			}
-		});
 		styledText.addLineBackgroundListener(new LineBackgroundListener() {
 			@Override
 			public void lineGetBackground(LineBackgroundEvent event) {
@@ -302,7 +297,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 				styledText.redraw();
 			}
 		});
-
+		menuService.registerContextMenu(styledText, "de.drazil.nerdsuite.popupmenu.SourceEditor");
 	}
 
 	@Override

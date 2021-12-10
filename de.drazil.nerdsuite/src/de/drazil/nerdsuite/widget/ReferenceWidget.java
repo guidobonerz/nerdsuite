@@ -21,7 +21,8 @@ public class ReferenceWidget extends BaseImagingWidget {
 	private int start;
 	private int end;
 
-	public ReferenceWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider, boolean autowrap) {
+	public ReferenceWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
+			boolean autowrap) {
 		super(parent, style, owner, colorPaletteProvider, autowrap);
 		tileSelectionRange = new SelectionRange();
 		selectedTileIndexList = new ArrayList<>();
@@ -119,11 +120,13 @@ public class ReferenceWidget extends BaseImagingWidget {
 	}
 
 	public void paintControl(PaintEvent e) {
-		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled, conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
+		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled,
+				conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
 	}
 
-	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator, boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection,
-			boolean paintTileCursor, boolean paintTelevisionMode) {
+	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
+			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
+			boolean paintTelevisionMode) {
 		paintTileMap(gc);
 		paintSelection(gc);
 		paintTileMarker(gc);
@@ -132,7 +135,9 @@ public class ReferenceWidget extends BaseImagingWidget {
 		gc.setForeground(Constants.WHITE);
 		int index = tileRepositoryService.getTileList().indexOf(tileRepositoryService.getSelectedTile());
 		int index2 = tileRepositoryService.getSelectedTileIndex();
-		gc.drawString(String.format("Natural %03X / %03d Ordered %03X / %03d", index, index, index2, index2), 0, 305);
+		gc.setFont(Constants.RobotoMonoBold_FONT);
+		gc.drawString(String.format("Natural %03X / %03d Ordered %03X / %03d", index, index, index2, index2), 0,
+				(conf.tileHeightPixel * 2 + conf.tileGap) * 16);
 		action = ImagePainterFactory.NONE;
 
 		redrawMode = RedrawMode.DrawNothing;
@@ -144,11 +149,14 @@ public class ReferenceWidget extends BaseImagingWidget {
 		selectedTileIndexList.forEach(i -> {
 			int y = i / conf.columns;
 			int x = i % conf.columns;
-			gc.fillRectangle(x * (conf.tileWidthPixel + conf.tileGap), y * (conf.tileHeightPixel + conf.tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.fillRectangle(x * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap),
+					y * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap), conf.tileWidthPixel * conf.zoomFactor,
+					conf.tileHeightPixel * conf.zoomFactor);
 			if (i == temporaryIndex) {
 				gc.setLineWidth(3);
 				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
-				gc.drawRectangle(x * (conf.tileWidthPixel + conf.tileGap), y * (conf.tileHeightPixel + conf.tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
+				gc.drawRectangle(x * (conf.tileWidthPixel + conf.tileGap), y * (conf.tileHeightPixel + conf.tileGap),
+						conf.tileWidthPixel, conf.tileHeightPixel);
 			}
 		});
 	}
@@ -157,7 +165,9 @@ public class ReferenceWidget extends BaseImagingWidget {
 		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
-			gc.fillRectangle(tileX * (conf.tileWidthPixel + conf.tileGap), tileY * (conf.tileHeightPixel + conf.tileGap), conf.tileWidthPixel, conf.tileHeightPixel);
+			gc.fillRectangle(tileX * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap),
+					tileY * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap),
+					conf.tileWidthPixel * conf.zoomFactor, conf.tileHeightPixel * conf.zoomFactor);
 		}
 	}
 
@@ -171,8 +181,11 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	private void paintTileMap(GC gc) {
 		imagePainterFactory.setForegroundColorIndex(1);
-		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", Constants.BLACK, 301, 301).getImage(), 0, 0);
+		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("REPOSITORY", Constants.BLACK, 301, 301).getImage(), 0,
+				0);
+
 		gc.drawImage(imagePainterFactory.createOrUpdateTileMap(false).getImage(), 0, 0);
+
 	}
 
 	@Override
@@ -192,9 +205,11 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawCalculatedArea() {
-		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawPixel) {
+		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile
+				|| redrawMode == RedrawMode.DrawPixel) {
 			start = tileRepositoryService.getSelectedTileIndexList().get(0);
-			end = tileRepositoryService.getSelectedTileIndexList().get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
+			end = tileRepositoryService.getSelectedTileIndexList()
+					.get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
 			int iys = start / conf.columns;
 			int ys = iys * conf.tileHeightPixel;
@@ -216,7 +231,7 @@ public class ReferenceWidget extends BaseImagingWidget {
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(conf.fullWidthPixel, conf.fullHeightPixel + 20);
+		return new Point(conf.fullWidthPixel * 2, conf.fullHeightPixel * 2 + 20);
 	}
 
 }

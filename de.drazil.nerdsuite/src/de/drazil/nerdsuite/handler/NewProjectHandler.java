@@ -58,15 +58,13 @@ public class NewProjectHandler {
 			String projectId = (String) userData.get(ProjectWizard.PROJECT_ID);
 			String projectName = (String) userData.get(ProjectWizard.PROJECT_NAME);
 			String targetPlatform = (String) userData.get(ProjectWizard.TARGET_PLATFORM);
-			String[] typeString = ((String) userData.get(ProjectWizard.PROJECT_TYPE)).split("_");
-			String type = typeString[0];
-			String subType = typeString[1];
-			String variant = typeString[2];
+			String type = ((String) userData.get(ProjectWizard.PROJECT_TYPE));
+			String variant = (String) userData.get(ProjectWizard.PROJECT_VARIANT);
 			Project project = new Project();
 			project.setId(projectId);
 			project.setName(projectName);
 
-			String owner = String.format("%s_%s_%s", type, variant, projectId);
+			String owner = String.format("%s_%s_%s_%s", targetPlatform, type, variant, projectId);
 
 			Map<String, Object> projectSetup = new HashMap<String, Object>();
 			projectSetup.put("project", project);
@@ -75,7 +73,7 @@ public class NewProjectHandler {
 			Date d = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 			project.setCreatedOn(d);
 			project.setChangedOn(d);
-			ProjectType projectType = ProjectType.getProjectTypeById(subType);
+			ProjectType projectType = ProjectType.getProjectTypeById(type);
 			project.setIconName(projectType.getIconName());
 			project.setSuffix(projectType.getSuffix());
 
@@ -87,15 +85,16 @@ public class NewProjectHandler {
 						: "newImportProjectAction";
 				projectSetup.put("projectAction", projectAction);
 
-				GraphicFormat gf = GraphicFormatFactory.getFormatById(type);
-				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(type, variant);
+				GraphicFormat gf = GraphicFormatFactory.getFormatById(targetPlatform + "_" + type);
+				GraphicFormatVariant gfv = GraphicFormatFactory.getFormatVariantById(targetPlatform + "_" + type,
+						variant);
 				project.setSingleFileProject(true);
 				project.setOpen(true);
 
 				GraphicMetadata metadata = new GraphicMetadata();
 
 				metadata.setPlatform(targetPlatform);
-				metadata.setType(subType);
+				metadata.setType(type);
 				metadata.setVariant(variant);
 				metadata.init((Integer) userData.get("width"), (Integer) userData.get("height"),
 						(Integer) userData.get("columns"), (Integer) userData.get("rows"), gf.getStorageSize());
@@ -131,14 +130,28 @@ public class NewProjectHandler {
 				}
 
 				// File file = createProjectStructure(project, projectType.getSuffix());
+				/*
+				 * String editorView =
+				 * "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
+				 * 
+				 * MPart part = E4Utils.createPart(partService,
+				 * "de.drazil.nerdsuite.partdescriptor.GfxEditorView", editorView, owner,
+				 * project.getName(), projectSetup);
+				 * 
+				 * E4Utils.addPart2PartStack(app, modelService, partService,
+				 * "de.drazil.nerdsuite.partstack.editorStack", part, true);
+				 */
 
-				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
-
+				MPerspective perspective = (MPerspective) modelService
+						.find("de.drazil.nerdsuite.perspective.GfxPerspective", app);
+				partService.switchPerspective(perspective);
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
-						editorView, owner, project.getName(), projectSetup);
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
+						project.getName(), projectSetup);
 
-				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
-						part, true);
+				E4Utils.addPart2PartStack(app, modelService, partService,
+						"de.drazil.nerdsuite.partstack.gfxEditorStack", part, true);
+
 			} else if (projectTypeId.equals("CODING_PROJECT")) {
 
 				String projectAction = projectSetup.get("fileName") == null ? "newProjectAction"
@@ -147,7 +160,7 @@ public class NewProjectHandler {
 				project.setSingleFileProject(true);
 				SourceMetadata metadata = new SourceMetadata();
 				metadata.setPlatform(targetPlatform);
-				metadata.setType(subType);
+				metadata.setType(type);
 				metadata.setVariant(variant);
 
 				if (projectAction.startsWith("new")) {
@@ -162,13 +175,25 @@ public class NewProjectHandler {
 					throw new IllegalArgumentException("No such project action.");
 				}
 
-				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView";
+//				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView";
 
+				// MPart part = E4Utils.createPart(partService,
+				// "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
+				// editorView, owner, project.getName(), projectSetup);
+
+//				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
+//						part, true);
+
+				MPerspective perspective = (MPerspective) modelService
+						.find("de.drazil.nerdsuite.perspective.CodingPerspective", app);
+				partService.switchPerspective(perspective);
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
-						editorView, owner, project.getName(), projectSetup);
+						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView", owner,
+						project.getName(), projectSetup);
 
-				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
-						part, true);
+				E4Utils.addPart2PartStack(app, modelService, partService,
+						"de.drazil.nerdsuite.partstack.codingEditorStack", part, true);
+
 			}
 
 			broker.send("explorer/refresh", null);

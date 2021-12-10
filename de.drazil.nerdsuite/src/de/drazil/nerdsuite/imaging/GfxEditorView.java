@@ -13,6 +13,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -23,14 +24,17 @@ import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Initializer;
@@ -58,10 +62,10 @@ import de.drazil.nerdsuite.imaging.service.ShiftService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
-import de.drazil.nerdsuite.model.GridState;
-import de.drazil.nerdsuite.model.ViewSetup;
-import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.GraphicMetadata;
+import de.drazil.nerdsuite.model.GridState;
+import de.drazil.nerdsuite.model.Project;
+import de.drazil.nerdsuite.model.ViewSetup;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
@@ -103,10 +107,17 @@ public class GfxEditorView implements ITileUpdateListener {
 	private String owner;
 
 	@Inject
+	IEventBroker eventBroker;
+
+	@Inject
 	private MPart part;
 
 	@Inject
 	private EModelService modelService;
+
+	private Composite toolPanel;
+	private SashForm rightSash;
+	private SashForm paintSash;
 
 	private static List<ViewSetup> pixelMap = new ArrayList<ViewSetup>();
 	static {
@@ -386,33 +397,55 @@ public class GfxEditorView implements ITileUpdateListener {
 		part.setTooltip(graphicFormat.getName() + " " + graphicFormatVariant.getName());
 		part.setIconURI("platform:/plugin/de.drazil.nerdsuite/" + project.getIconName());
 
-		GridLayout layout = new GridLayout(tileRepositoryService.hasReference() ? 3 : 2, false);
-		parent.setLayout(layout);
+		GridLayout mainGridLayout = new GridLayout(2, false);
+		mainGridLayout.horizontalSpacing = 0;
+		mainGridLayout.verticalSpacing = 0;
+		parent.setLayout(mainGridLayout);
+		GridData toolGridData = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+
+		toolPanel = new Composite(parent, SWT.NONE);
+		toolPanel.setLayoutData(toolGridData);
+
+		GridLayout toolGridLayout = new GridLayout(1, true);
+		toolGridLayout.horizontalSpacing = 0;
+		toolGridLayout.verticalSpacing = 0;
+		toolPanel.setLayout(toolGridLayout);
+
+		rightSash = new SashForm(parent, SWT.VERTICAL);
+		GridData rightGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		rightSash.setLayout(new FillLayout());
+		rightSash.setSashWidth(4);
+		rightSash.setLayoutData(rightGridData);
+		paintSash = new SashForm(rightSash, SWT.HORIZONTAL);
+		paintSash.setSashWidth(4);
+		paintSash.addListener(SWT.Resize, new Listener() {
+			@Override
+			public void handleEvent(final Event event) {
+				getRepositoryWidget().redraw();
+			}
+		});
 
 		painter = getPainterWidget();
 		// painter.addDrawListener(repository);
 
-		multiColorChooser = new ColorChooser(parent, SWT.DOUBLE_BUFFERED,
+		multiColorChooser = new ColorChooser(toolPanel, SWT.DOUBLE_BUFFERED,
 				graphicFormat.getId().endsWith("PETSCII") ? 2 : 4,
 				PlatformFactory.getPlatformColors(tileRepositoryService.getMetadata().getPlatform()));
+		GridData colorChooserData = new GridData(GridData.FILL, GridData.VERTICAL_ALIGN_BEGINNING, true, true);
+		multiColorChooser.setLayoutData(colorChooserData);
 
 		if (tileRepositoryService.hasReference()) {
 			referenceRepository = getReferenceRepositoryWidget();
 		}
 
 		layerChooser = createLayerChooser();
+		GridData layerChooserData = new GridData(GridData.FILL, GridData.VERTICAL_ALIGN_BEGINNING, true, true);
+		layerChooser.setLayoutData(layerChooserData);
 
 		repository = getRepositoryWidget();
 
 		tileRepositoryService.addTileUpdateListener(painter, repository, layerChooser, this);
 		tileRepositoryService.addTileManagementListener(painter, repository);
-
-		if (tileRepositoryService.hasReference()) {
-			// referenceRepository.init();
-		}
-
-		// painter.init();
-		// repository.init();
 
 		multiColorChooser.addColorSelectionListener(painter);
 		multiColorChooser.addColorSelectionListener(repository);
@@ -422,46 +455,6 @@ public class GfxEditorView implements ITileUpdateListener {
 		actualSize = new Point(painter.getConf().getTileWidthPixel() * painter.getConf().getZoomFactor(),
 				painter.getConf().getTileHeightPixel() * painter.getConf().getZoomFactor());
 		scrollablePainter.setMinSize(actualSize);
-		int worksheetWidth = 640;
-		int worksheetHeight = 400;
-		/*
-		 * if (actualSize.x >= worksheetWidth) { worksheetWidth += 25; } if
-		 * (actualSize.y >= worksheetHeight) { worksheetHeight += 25; }
-		 */
-		GridData gridData = null;
-
-		if (metadata.getType().equals("PETSCII") || metadata.getType().equals("SCREENSET")) {
-			gridData = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 2);
-			gridData.widthHint = actualSize.x >= worksheetWidth ? worksheetWidth : actualSize.x;
-			gridData.heightHint = actualSize.y >= worksheetHeight ? worksheetHeight : actualSize.y;
-			scrollablePainter.setLayoutData(gridData);
-
-			gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-			multiColorChooser.setLayoutData(gridData);
-
-			gridData = new GridData(SWT.FILL, SWT.BEGINNING, false, true, 1, 3);
-			referenceRepository.setLayoutData(gridData);
-
-			gridData = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
-			scrollableLayerChooser.setLayoutData(gridData);
-
-			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
-			scrollableRepository.setLayoutData(gridData);
-		} else {
-			gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 2);
-			gridData.widthHint = actualSize.x > worksheetWidth ? worksheetWidth : actualSize.x;
-			gridData.heightHint = actualSize.y > worksheetHeight ? worksheetHeight : actualSize.y;
-			scrollablePainter.setLayoutData(gridData);
-
-			gridData = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-			multiColorChooser.setLayoutData(gridData);
-
-			gridData = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
-			scrollableLayerChooser.setLayoutData(gridData);
-
-			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-			scrollableRepository.setLayoutData(gridData);
-		}
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -486,7 +479,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	}
 
 	public LayerChooser createLayerChooser() {
-		scrollableLayerChooser = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
+		scrollableLayerChooser = new ScrolledComposite(toolPanel, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED) {
 			@Override
 			public Point computeSize(int wHint, int hHint, boolean changed) {
 				return new Point(180, 300);
@@ -500,7 +493,9 @@ public class GfxEditorView implements ITileUpdateListener {
 	public PainterWidget getPainterWidget() {
 
 		if (scrollablePainter == null) {
-			scrollablePainter = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
+			scrollablePainter = new ScrolledComposite(paintSash,
+					SWT.V_SCROLL | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED | SWT.BORDER);
+
 			scrollablePainter.addListener(SWT.Resize, event -> {
 
 				// scrollablePainter.setMinSize(painter.computeSize(pain, height));
@@ -524,7 +519,7 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private RepositoryWidget getRepositoryWidget() {
 		if (scrollableRepository == null) {
-			scrollableRepository = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.DOUBLE_BUFFERED);
+			scrollableRepository = new ScrolledComposite(rightSash, SWT.V_SCROLL | SWT.DOUBLE_BUFFERED | SWT.BORDER);
 			repository = new RepositoryWidget(scrollableRepository, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner,
 					colorPaletteProvider, true);
 			repository.getConf().setPixelGridEnabled(false);
@@ -545,8 +540,9 @@ public class GfxEditorView implements ITileUpdateListener {
 
 	private ReferenceWidget getReferenceRepositoryWidget() {
 		if (referenceRepository == null) {
-			referenceRepository = new ReferenceWidget(parent, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED,
-					tileRepositoryReferenceService.getOwner(), colorPaletteProvider, false);
+			referenceRepository = new ReferenceWidget(paintSash,
+					SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.BORDER, tileRepositoryReferenceService.getOwner(),
+					colorPaletteProvider, false);
 			referenceRepository.getConf().setRows(16);
 			referenceRepository.getConf().setColumns(16);
 			referenceRepository.getConf().setTileGap(3);
@@ -584,9 +580,9 @@ public class GfxEditorView implements ITileUpdateListener {
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			boolean multicolor = tile.isMulticolorEnabled();
 			E4Utils.setToolItemSelected(part, modelService, tags1, multicolor);
-			if (multiColorChooser != null) {
-				multiColorChooser.setMulticolorEnabled(multicolor);
-			}
+			// if (multiColorChooser != null) {
+			// multiColorChooser.setMulticolorEnabled(multicolor);
+			// }
 		}
 	}
 
