@@ -389,14 +389,14 @@ public class Explorer implements IDoubleClickListener {
 					repository.load(owner);
 					projectSetup.put("repositoryOwner", owner);
 					projectSetup.put("file", file);
-					MPerspective perspective = (MPerspective) modelService.find("de.drazil.nerdsuite.partstack.codingEditorStack", app);
+					MPerspective perspective = (MPerspective) modelService.find("de.drazil.nerdsuite.perspective.CodingPerspective", app);
 					partService.switchPerspective(perspective);
 					MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
 							"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView",
 							owner, project.getName(), projectSetup);
 
 					E4Utils.addPart2PartStack(app, modelService, partService,
-							"de.drazil.nerdsuite.partstack.editorStack", part, true);
+							"de.drazil.nerdsuite.partstack.codingEditorStack", part, true);
 				}
 			} else {
 				editor.getParent().setSelectedElement(editor);
