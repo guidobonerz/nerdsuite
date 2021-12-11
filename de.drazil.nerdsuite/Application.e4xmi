@@ -71,8 +71,8 @@
     <handlers xmi:id="_0DEZgCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.handler.2" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MountFileHandler" command="_tHUIUCHZEeqei6yq5Fa4mw"/>
     <mainMenu xmi:id="_1r1OEKLzEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.0">
       <children xsi:type="menu:Menu" xmi:id="_HDg6wOwLEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.menu.application" label="Application">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_TIRtIOwLEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.settings" label="Settings" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/wrench.png"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_VnT7YOwLEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.about" label="About" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/lightbulb.png"/>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_i9I0kFoIEeynCf1-uisveg" elementId="de.drazil.nerdsuite.directmenuitem.preferences" label="Preferences" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/wrench.png" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.preferences.Preferences"/>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_hevj8FoIEeynCf1-uisveg" elementId="de.drazil.nerdsuite.directmenuitem.about" label="About" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/lightbulb.png" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.widget.About"/>
         <children xsi:type="menu:MenuSeparator" xmi:id="_hhlJcOwVEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.menuseparator.1"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_WuPuQOwLEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.handledmenuitem.quit" label="Quit"/>
       </children>
@@ -122,23 +122,29 @@
         <children xsi:type="menu:MenuSeparator" xmi:id="_OpCpQFUmEey9GJa8rJip2A" elementId="de.drazil.nerdsuite.menuseparator.7"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_OBtjgFUmEey9GJa8rJip2A" elementId="de.drazil.nerdsuite.handledmenuitem.SelectAll" label="Select All" command="_Ll63wNdHEemIEoLjroS7Zw"/>
       </children>
-      <children xsi:type="menu:Menu" xmi:id="_D0zT4KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.run" label="Run">
+      <children xsi:type="menu:Menu" xmi:id="_D0zT4KL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.run" label="Toolchain">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_KIY8YKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.13" label="Build"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_KjQTcKL1EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledmenuitem.14" label="Build &amp; Run" command="_yWlqYMyREeOnSbGKqjX4ww"/>
         <children xsi:type="menu:Menu" xmi:id="_6CYlwOwVEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.menu.runToolchain" label="Run Toolchain"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_FUN4MKL0EeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.menu.disassemble" label="Disassemble"/>
-      <children xsi:type="menu:Menu" xmi:id="_r7g4cL62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.menu.perspective" toBeRendered="false" visible="false" label="Perspective">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6UAA8L62Eeaij7VdtYSbPw" elementId="de.drazil.nerdsuite.handledmenuitem.CodingPerspective" label="Coding Perspective"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_iT-AIJXLEeiXIq2xmOFdHg" elementId="de.drazil.nerdsuite.handledmenuitem.IconPerspective" label="Icon Perspective"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_HCEdcJdFEeiWU4p0leyFHA" elementId="de.drazil.nerdsuite.handledmenuitem.BitmapPerspective" label="Bitmap Perspective"/>
-      </children>
       <children xsi:type="menu:Menu" xmi:id="_QWEEYJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.menu.stream" label="Ultimate 64 Streams">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Xxq6UJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.handledmenuitem.debugstream" label="Debug Stream" command="_uYBcIJ21EeqplavjYfDYxA"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_Xw0U0KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handledmenuitem.applicationStream" label="Application Stream" command="_ggW30KdwEeqid_Z8sm-clA"/>
       </children>
+      <children xsi:type="menu:DynamicMenuContribution" xmi:id="_qAS6kFqSEeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.dynamicmenucontribution.0" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.widget.Test"/>
     </mainMenu>
-    <sharedElements xsi:type="basic:Part" xmi:id="_QcU7AFh3EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.part.Explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer"/>
+    <sharedElements xsi:type="basic:Part" xmi:id="_QcU7AFh3EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.part.Explorer" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.explorer.Explorer" label="Explorer">
+      <menus xsi:type="menu:PopupMenu" xmi:id="_7y9LQFqPEeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.popupmenu.fileexplorer" label="FileExplorer">
+        <children xsi:type="menu:Menu" xmi:id="_4jw18FqQEeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.menu.openwith" label="Open with...">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_-uUTsFqQEeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.handledmenuitem.ultimate64" label="Ultimate64" command="_kNzE8LvfEeqNbb2NSJYhoA"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_GdsaMFqREeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.handledmenuitem.dissasembler" label="Dissasembler"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_I6pk0FqREeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.handledmenuitem.emulator" label="Emulator"/>
+        </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_sw0zYFqQEeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.handledmenuitem.delete" label="Delete" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_gTc3QFqREeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.handledmenuitem.unmount" label="Unmount"/>
+      </menus>
+    </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_HdiwMFh5EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.part.console" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.log.Console" label="Console"/>
     <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.xxx">
       <children xsi:type="menu:ToolBar" xmi:id="_k8wHAKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.toolbar.0">

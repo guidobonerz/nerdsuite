@@ -105,7 +105,7 @@ public class Explorer implements IDoubleClickListener {
 		treeViewer.setContentProvider(new ProjectStructureProvider());
 		treeViewer.setLabelProvider(new ProjectStructureLabelProvider());
 		treeViewer.addDoubleClickListener(this);
-		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.Explorer");
+		menuService.registerContextMenu(treeViewer.getTree(), "de.drazil.nerdsuite.popupmenu.fileexplorer");
 
 		listFiles();
 	}
