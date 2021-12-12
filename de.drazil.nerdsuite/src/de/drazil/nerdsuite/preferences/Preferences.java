@@ -29,9 +29,18 @@ public class Preferences {
 				return null;
 			}
 		});
+		PreferenceNode emulatorNode = new PreferenceNode("Emulators", new PreferencePage("Emulators") {
+
+			@Override
+			protected Control createContents(Composite parent) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		});
 		PreferenceManager pm = new PreferenceManager();
 		pm.addToRoot(ultimateNode);
 		pm.addToRoot(toolchainNode);
+		pm.addToRoot(emulatorNode);
 		PreferenceDialog dp = new PreferenceDialog(null, pm);
 
 		dp.open();

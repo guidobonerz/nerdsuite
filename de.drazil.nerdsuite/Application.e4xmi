@@ -58,14 +58,17 @@
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_xjmBYFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.perspective.CodingPerspective" label="Coding Perspective">
         <children xsi:type="basic:PartSashContainer" xmi:id="_4u5KcFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.7" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_6bSa0Fh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partstack.5">
+          <children xsi:type="basic:PartStack" xmi:id="_6bSa0Fh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partstack.5" containerData="2500">
             <children xsi:type="advanced:Placeholder" xmi:id="_6zccIFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.placeholder.3" ref="_QcU7AFh3EeyjAf-8Yrdmxg"/>
           </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_84DYMFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.8">
-            <children xsi:type="basic:PartStack" xmi:id="_9lno0Fh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partstack.codingEditorStack"/>
-            <children xsi:type="advanced:Placeholder" xmi:id="_O5SwEFh5EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.placeholder.4" ref="_HdiwMFh5EeyjAf-8Yrdmxg"/>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_84DYMFh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.8" containerData="10000">
+            <children xsi:type="basic:PartStack" xmi:id="_9lno0Fh4EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partstack.codingEditorStack" containerData="10000"/>
+            <children xsi:type="basic:PartStack" xmi:id="_8I7V0FtAEeyptawgjrNDSA" elementId="de.drazil.nerdsuite.partstack.3" containerData="2500">
+              <children xsi:type="advanced:Placeholder" xmi:id="_O5SwEFh5EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.placeholder.4" ref="_HdiwMFh5EeyjAf-8Yrdmxg"/>
+            </children>
           </children>
         </children>
+        <handlers xmi:id="_JiJkQFtCEeyptawgjrNDSA" elementId="de.drazil.nerdsuite.handler.8" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ClearConsoleHandler" command="_87b7YFtBEeyptawgjrNDSA"/>
       </children>
     </children>
     <handlers xmi:id="_0DEZgCHZEeqei6yq5Fa4mw" elementId="de.drazil.nerdsuite.handler.2" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MountFileHandler" command="_tHUIUCHZEeqei6yq5Fa4mw"/>
@@ -145,7 +148,11 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_gTc3QFqREeycZNaGY7Zl7A" elementId="de.drazil.nerdsuite.handledmenuitem.unmount" label="Unmount"/>
       </menus>
     </sharedElements>
-    <sharedElements xsi:type="basic:Part" xmi:id="_HdiwMFh5EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.part.console" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.log.Console" label="Console"/>
+    <sharedElements xsi:type="basic:Part" xmi:id="_HdiwMFh5EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.part.console" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.log.Console" label="Console">
+      <toolbar xmi:id="_eZqbIFtBEeyptawgjrNDSA" elementId="de.drazil.nerdsuite.toolbar.6">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_0Za3AFtBEeyptawgjrNDSA" elementId="de.drazil.nerdsuite.handledtoolitem.clearconsole" label="ClearConsole" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/cross.png" command="_87b7YFtBEeyptawgjrNDSA"/>
+      </toolbar>
+    </sharedElements>
     <trimBars xmi:id="_fBzLgKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.trimbar.xxx">
       <children xsi:type="menu:ToolBar" xmi:id="_k8wHAKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.toolbar.0">
         <children xsi:type="menu:HandledToolItem" xmi:id="_ll05MKMGEeONLeXxNqVLFQ" elementId="de.drazil.nerdsuite.handledtoolitem.0" label="Save" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disk.png" tooltip="Write content to disk" command="_Zw8xsNvqEemXK8sgYhnEoQ"/>
@@ -608,6 +615,7 @@
   <commands xmi:id="_OuR1YHj6EeuVAZ0FAvi_ng" elementId="de.drazil.nerdsuite.command.dumpMemory" commandName="Dump Memory"/>
   <commands xmi:id="_Kqtb0E1tEeyObf56B56tVQ" elementId="org.eclipse.ui.edit.undo" commandName="Undo"/>
   <commands xmi:id="_PesIME1tEeyObf56B56tVQ" elementId="org.eclipse.ui.edit.redo" commandName="Redo"/>
+  <commands xmi:id="_87b7YFtBEeyptawgjrNDSA" elementId="de.drazil.nerdsuite.command.clearconsole" commandName="ClearConsole"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
