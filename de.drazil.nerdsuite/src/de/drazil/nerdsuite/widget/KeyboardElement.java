@@ -39,7 +39,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 		if (key.isSymbol()) {
 			setFont(Constants.GoogleMaterials);
 		} else {
-			setFont(Constants.C64_Pro_Mono_FONT_12);
+			setFont(Constants.PetMe642Y_FONT);
 		}
 		addPaintListener(this);
 		addMouseListener(new MouseAdapter() {
@@ -59,7 +59,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 					}
 					fireHitKey(key);
 				} else {
-					//backgroundColor = Constants.DARK_GREY;
+					// backgroundColor = Constants.DARK_GREY;
 					fireHitKey(key);
 				}
 				redraw();
@@ -93,7 +93,9 @@ public class KeyboardElement extends Canvas implements PaintListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		if (!key.getType().equals("FILLER")) {
-
+			if (key.getText().equals("1")) {
+				int a = 0;
+			}
 			e.gc.setBackground(backgroundColor);
 			e.gc.fillRoundRectangle(2, 2, calculatedSize - 4, SIZE - 4, 5, 5);
 			e.gc.setForeground(Constants.WHITE);

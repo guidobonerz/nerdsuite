@@ -363,25 +363,35 @@ public class Explorer implements IDoubleClickListener {
 			projectSetup.put("project", project);
 
 			String owner = project.getId();
-			MUIElement editor = modelService.find(owner, app);
-			if (editor == null) {
-				if (project.getSuffix().startsWith("ns_")) {
+
+			if (project.getSuffix().startsWith("ns_")) {
+				MPerspective perspective = (MPerspective) modelService
+						.find("de.drazil.nerdsuite.perspective.GfxPerspective", app);
+				partService.switchPerspective(perspective);
+				MUIElement editor = modelService.find(owner, app);
+				if (editor == null) {
 					System.out.println("load tiles");
 					File file = FileUtil.getFileFromProject(project);
 					TileRepositoryService repository = ServiceFactory.getService(owner, TileRepositoryService.class);
 					repository.load(owner);
 					projectSetup.put("repositoryOwner", owner);
 					projectSetup.put("file", file);
-					MPerspective perspective = (MPerspective) modelService
-							.find("de.drazil.nerdsuite.perspective.GfxPerspective", app);
-					partService.switchPerspective(perspective);
+
 					MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
 							"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
 							project.getName(), projectSetup);
 
 					E4Utils.addPart2PartStack(app, modelService, partService,
 							"de.drazil.nerdsuite.partstack.gfxEditorStack", part, true);
-				} else if (project.getSuffix().equals("bas")) {
+				} else {
+					editor.getParent().setSelectedElement(editor);
+				}
+			} else if (project.getSuffix().equals("bas")) {
+				MPerspective perspective = (MPerspective) modelService
+						.find("de.drazil.nerdsuite.perspective.CodingPerspective", app);
+				partService.switchPerspective(perspective);
+				MUIElement editor = modelService.find(owner, app);
+				if (editor == null) {
 					System.out.println("load source");
 					File file = FileUtil.getFileFromProject(project);
 					SourceRepositoryService repository = ServiceFactory.getService(owner,
@@ -389,17 +399,16 @@ public class Explorer implements IDoubleClickListener {
 					repository.load(owner);
 					projectSetup.put("repositoryOwner", owner);
 					projectSetup.put("file", file);
-					MPerspective perspective = (MPerspective) modelService.find("de.drazil.nerdsuite.perspective.CodingPerspective", app);
-					partService.switchPerspective(perspective);
+
 					MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
 							"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView",
 							owner, project.getName(), projectSetup);
 
 					E4Utils.addPart2PartStack(app, modelService, partService,
 							"de.drazil.nerdsuite.partstack.codingEditorStack", part, true);
+				} else {
+					editor.getParent().setSelectedElement(editor);
 				}
-			} else {
-				editor.getParent().setSelectedElement(editor);
 			}
 		}
 	}
