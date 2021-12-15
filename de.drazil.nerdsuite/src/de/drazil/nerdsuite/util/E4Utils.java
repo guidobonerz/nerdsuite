@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.menu.MHandledItem;
@@ -63,5 +64,11 @@ public class E4Utils {
 		@SuppressWarnings("unchecked")
 		O o = (O) part.getObject();
 		return o;
+	}
+
+	public static void switchPerspective(String perspectiveName, MApplication app, EModelService modelService,
+			EPartService partService) {
+		MPerspective perspective = (MPerspective) modelService.find(perspectiveName, app);
+		partService.switchPerspective(perspective);
 	}
 }

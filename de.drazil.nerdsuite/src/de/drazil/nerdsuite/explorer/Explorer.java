@@ -179,7 +179,7 @@ public class Explorer implements IDoubleClickListener {
 
 		List<Project> projectList = Initializer.getConfiguration().getWorkspace().getProjects();
 
-		File[] files = Configuration.WORKSPACE_PATH.listFiles(new FileFilter() {
+		Configuration.WORKSPACE_PATH.listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
 				return !pathname.getName().startsWith(".");
@@ -250,15 +250,14 @@ public class Explorer implements IDoubleClickListener {
 
 		@Override
 		public Object[] getElements(Object inputElement) {
-
 			Object[] array = null;
 			if (inputElement instanceof List) {
+				@SuppressWarnings("unchecked")
 				List<Object> list = (List<Object>) inputElement;
 				array = list.toArray(new Object[list.size()]);
 			} else {
 				array = (Object[]) inputElement;
 			}
-
 			return array;
 		}
 
