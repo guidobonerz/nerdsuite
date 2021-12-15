@@ -21,6 +21,7 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.PaletteData;
@@ -39,35 +40,40 @@ import de.drazil.nerdsuite.model.RunObject.Mode;
 import de.drazil.nerdsuite.model.RunObject.Source;
 import de.drazil.nerdsuite.network.TcpHandler;
 import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.widget.IHitKeyListener;
 import de.drazil.nerdsuite.widget.ImageViewWidget;
+import de.drazil.nerdsuite.widget.MemoryViewWidget;
 import de.drazil.nerdsuite.widget.PlatformFactory;
+import de.drazil.nerdsuite.widget.VirtualKeyboard;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ultimate64AppStreamView {
+public class Ultimate64AppStreamView implements IHitKeyListener {
 
 	private ImageViewWidget imageViewer;
+	private MemoryViewWidget memoryViewer;
+	private VirtualKeyboard virtualKeyboard;
 
 	private Thread videoThread;
 	private Thread audioThread;
+	private Thread debugThread;
 	private VideoStreamReceiver videoStreamReceiver;
 	private AudioStreamReceiver audioStreamReceiver;
+	private DebugStreamReceiver debugStreamReceiver;
+	private boolean lifeViewMode = true;
 	private boolean running = false;
-	private boolean virtualKeyboardVisible = true;
+	private boolean virtualKeyboardVisible = false;
 
 	private Composite parent;
-	private int controlType;
 	private TcpHandler tcpHandler;
+	private SashForm verticalSash;
+	private Composite top;
+
+	private Composite bottom;
 
 	public Ultimate64AppStreamView() {
 
 	}
-
-	/*
-	 * } catch (Exception e) { connectionError = true; showErrorDialog(
-	 * String.format("Connection to Ultimate64@%s could not be established",
-	 * socketAddress.toString())); }
-	 */
 
 	public class VideoStreamReceiver implements Runnable {
 
@@ -171,8 +177,57 @@ public class Ultimate64AppStreamView {
 		}
 	}
 
-	@Inject
+	public class DebugStreamReceiver implements Runnable {
 
+		private byte[] buf = new byte[1444];
+		private int[] mem = new int[0x10000];
+		@Setter
+		@Getter
+		private boolean running = false;
+		private DatagramSocket socket;
+
+		public synchronized void run() {
+			try {
+				socket = new DatagramSocket(11002);
+				while (socket != null && running) {
+					DatagramPacket packet = new DatagramPacket(buf, buf.length);
+					socket.receive(packet);
+					InetAddress address = packet.getAddress();
+					int port = packet.getPort();
+					packet = new DatagramPacket(buf, buf.length, address, port);
+
+					Display.getDefault().syncExec(new Runnable() {
+						@Override
+						public void run() {
+
+							for (int i = 4; i < 1444; i += 4) {
+								int adr = ((int) ((buf[i + 1] << 8) | (buf[i + 0] & 0xff)) & 0xffff);
+								int data = ((int) (buf[i + 2] & 0xff));
+								int flags = ((int) (buf[i + 3] & 0xff));
+
+								if (mem[adr] != data) {
+
+									mem[adr] = data;
+									memoryViewer.setByte(adr, data, (flags & 1) == 1);
+								}
+							}
+						}
+					});
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				socket.close();
+				socket = null;
+			}
+		}
+	}
+
+	public void keyPressed(Key key) {
+		sendKeyboardSequence(key);
+	}
+
+	@Inject
 	@Optional
 	public void dumpMemory(@UIEventTopic("ReadMemory") BrokerObject brokerObject) {
 		readMemory(0x400, 200);
@@ -192,19 +247,24 @@ public class Ultimate64AppStreamView {
 
 	private void startStream() {
 		if (!running) {
-
 			running = true;
 			String targetAdress = "10.100.200.205";
-			startVicStream(0, targetAdress);
-			startSidStream(0, targetAdress);
-			imageViewer.drawImage(false);
-
-			videoThread = new Thread(videoStreamReceiver);
-			audioThread = new Thread(audioStreamReceiver);
-			videoThread.start();
-			audioThread.start();
-			videoStreamReceiver.setRunning(true);
-			audioStreamReceiver.setRunning(true);
+			if (lifeViewMode) {
+				startVicStream(0, targetAdress);
+				startSidStream(0, targetAdress);
+				imageViewer.drawImage(false);
+				videoThread = new Thread(videoStreamReceiver);
+				audioThread = new Thread(audioStreamReceiver);
+				videoThread.start();
+				audioThread.start();
+				videoStreamReceiver.setRunning(true);
+				audioStreamReceiver.setRunning(true);
+			} else {
+				startDebugStream();
+				debugThread = new Thread(debugStreamReceiver);
+				debugThread.start();
+				debugStreamReceiver.setRunning(true);
+			}
 		}
 	}
 
@@ -216,15 +276,20 @@ public class Ultimate64AppStreamView {
 
 	private void stopStream() {
 		if (running) {
-
 			running = false;
-			videoStreamReceiver.setRunning(false);
-			audioStreamReceiver.setRunning(false);
-			stopVicStream();
-			stopSidStream();
-			videoThread = null;
-			audioThread = null;
-			imageViewer.drawImage(true);
+			if (lifeViewMode) {
+				videoStreamReceiver.setRunning(false);
+				audioStreamReceiver.setRunning(false);
+				stopVicStream();
+				stopSidStream();
+				videoThread = null;
+				audioThread = null;
+				imageViewer.drawImage(true);
+			} else {
+				debugStreamReceiver.setRunning(false);
+				stopDebugStream();
+				debugThread = null;
+			}
 		}
 	}
 
@@ -307,9 +372,14 @@ public class Ultimate64AppStreamView {
 	@Optional
 	public void virtualKeyboard(@UIEventTopic("VirtualKeyboard") BrokerObject brokerObject) {
 		virtualKeyboardVisible = !virtualKeyboardVisible;
-		// vk.setVisible(virtualKeyboardVisible);
-		parent.pack(true);
-
+		virtualKeyboard.getParent().setVisible(virtualKeyboardVisible);
+		if (!virtualKeyboardVisible) {
+			showWithKeyboard(false);
+			verticalSash.layout(true);
+		} else {
+			showWithKeyboard(true);
+			verticalSash.layout(true);
+		}
 	}
 
 	@Inject
@@ -329,8 +399,8 @@ public class Ultimate64AppStreamView {
 
 	@Inject
 	@Optional
-	public void sendKeyboardSequence(@UIEventTopic("KeyboardSequence") BrokerObject brokerObject) {
-		Key key = (Key) brokerObject.getTransferObject();
+	public void sendKeyboardSequence(Key key) {
+
 		int code = key.getCode();
 		if (key.getType().equals("KEY") || key.getType().equals("FUNCTION")
 				|| (key.getType().equals("COLOR") && key.getOptionState() < 32)) {
@@ -389,14 +459,15 @@ public class Ultimate64AppStreamView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
+
 		tcpHandler = new TcpHandler("10.100.200.201", 64);
-		parent.setBackground(Constants.BLACK);
 		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
 		RGB palette[] = new RGB[colorList.size()];
 		for (int i = 0; i < palette.length; i++) {
 			palette[i] = colorList.get(i).getColor().getRGB();
 		}
-		parent.setLayout(new GridLayout(1, true));
+
+		// parent.setLayout(new GridLayout(1, true));
 		parent.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -404,16 +475,48 @@ public class Ultimate64AppStreamView {
 			}
 		});
 
-		imageViewer = createImageViewer(parent, new PaletteData(palette));
-		imageViewer.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, true, true));
+		verticalSash = new SashForm(parent, SWT.VERTICAL);
+		verticalSash.setSashWidth(4);
+
+		top = new Composite(verticalSash, SWT.NONE);
+		bottom = new Composite(verticalSash, SWT.NONE);
+		top.setLayout(new GridLayout(1, true));
+		top.setBackground(Constants.BLACK);
+		bottom.setLayout(new GridLayout(1, true));
+		bottom.setBackground(Constants.GREY3);
+		imageViewer = createImageViewer(top, new PaletteData(palette));
+		imageViewer.setLayoutData(new GridData(GridData.CENTER, GridData.FILL_VERTICAL, true, true));
+
+		virtualKeyboard = new VirtualKeyboard(bottom, 0, colorList);
+		virtualKeyboard.addHitKeyListener(this);
+		virtualKeyboard.setLayoutData(new GridData(GridData.CENTER, GridData.FILL_VERTICAL, true, true));
+		showWithKeyboard(false);
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
 		startStream();
 
 	}
 
+	private void showWithKeyboard(boolean keyboardEnabled) {
+		verticalSash.setWeights(1000, keyboardEnabled ? 350 : 0);
+	}
+
 	public ImageViewWidget createImageViewer(Composite parent, PaletteData pd) {
 		return new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED, pd);
+	}
+
+	private void startDebugStream() {
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff22),
+					new byte[] { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 }));
+		}
+	}
+
+	private void stopDebugStream() {
+		if (tcpHandler.openSocket() != -1) {
+			tcpHandler.write(
+					tcpHandler.buildCommand(NumericConverter.getWord(0xff32), new byte[] { (byte) 0x00, (byte) 0x00 }));
+		}
 	}
 
 	private void startVicStream(int duration, String target) {
@@ -544,4 +647,5 @@ public class Ultimate64AppStreamView {
 	private void showErrorDialog(String message) {
 		MessageDialog.openError(parent.getShell(), "Connection error", message);
 	}
+
 }
