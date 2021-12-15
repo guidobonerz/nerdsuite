@@ -65,11 +65,11 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	private boolean virtualKeyboardVisible = false;
 
 	private Composite parent;
+	private Composite top;
+	private Composite bottom;
+
 	private TcpHandler tcpHandler;
 	private SashForm verticalSash;
-	private Composite top;
-
-	private Composite bottom;
 
 	public Ultimate64AppStreamView() {
 

@@ -18,6 +18,9 @@ public class RunOnU64Handler {
 	public void execute(MPart part, MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
 			EPartService partService, EModelService modelService, IEventBroker broker) {
 
+		MPerspective perspective = (MPerspective) modelService.find("de.drazil.nerdsuite.perspective.U64AppStreamer",
+				app);
+		partService.switchPerspective(perspective);
 		String owner = (String) part.getTransientData().get(Constants.OWNER);
 
 		broker.send("U64_LoadAndRun", new BrokerObject("", "RunOnU64"));
