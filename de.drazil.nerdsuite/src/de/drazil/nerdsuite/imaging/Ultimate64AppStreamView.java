@@ -61,8 +61,8 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	private AudioStreamReceiver audioStreamReceiver;
 	private DebugStreamReceiver debugStreamReceiver;
 	private boolean lifeViewMode = true;
-	private boolean running = false;
 	private boolean virtualKeyboardVisible = false;
+	private boolean isMute = false;
 
 	private Composite parent;
 	private Composite top;
@@ -70,6 +70,11 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 
 	private TcpHandler tcpHandler;
 	private SashForm verticalSash;
+
+	private static final int VIDEO_STREAM = 1;
+	private static final int DEBUG_STREAM = 2;
+	private static final int AUDIO_STREAM = 4;
+	private int streamingMode = VIDEO_STREAM + AUDIO_STREAM;
 
 	public Ultimate64AppStreamView() {
 
@@ -229,6 +234,28 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 
 	@Inject
 	@Optional
+	public void debugStream(@UIEventTopic("U64Debug") BrokerObject brokerObject) {
+		lifeViewMode = !lifeViewMode;
+		controlStream();
+	}
+
+	@Inject
+	@Optional
+	public void muteStream(@UIEventTopic("U64Mute") BrokerObject brokerObject) {
+		isMute = !isMute;
+		controlStream();
+	}
+
+	private void controlStream() {
+		if (lifeViewMode) {
+			streamingMode = VIDEO_STREAM + (!isMute ? AUDIO_STREAM : 0);
+		} else {
+			streamingMode = DEBUG_STREAM + (!isMute ? AUDIO_STREAM : 0);
+		}
+	}
+
+	@Inject
+	@Optional
 	public void dumpMemory(@UIEventTopic("ReadMemory") BrokerObject brokerObject) {
 		readMemory(0x400, 200);
 	}
@@ -246,25 +273,25 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	}
 
 	private void startStream() {
-		if (!running) {
-			running = true;
-			String targetAdress = "10.100.200.205";
-			if (lifeViewMode) {
-				startVicStream(0, targetAdress);
-				startSidStream(0, targetAdress);
-				imageViewer.drawImage(false);
-				videoThread = new Thread(videoStreamReceiver);
-				audioThread = new Thread(audioStreamReceiver);
-				videoThread.start();
-				audioThread.start();
-				videoStreamReceiver.setRunning(true);
-				audioStreamReceiver.setRunning(true);
-			} else {
-				startDebugStream();
-				debugThread = new Thread(debugStreamReceiver);
-				debugThread.start();
-				debugStreamReceiver.setRunning(true);
-			}
+		String targetAdress = "10.100.200.205";
+		if ((streamingMode & VIDEO_STREAM) == VIDEO_STREAM && !videoStreamReceiver.isRunning()) {
+			startVicStream(0, targetAdress);
+			imageViewer.drawImage(false);
+			videoThread = new Thread(videoStreamReceiver);
+			videoThread.start();
+			videoStreamReceiver.setRunning(true);
+		}
+		if ((streamingMode & AUDIO_STREAM) == AUDIO_STREAM && !audioStreamReceiver.isRunning()) {
+			startSidStream(0, targetAdress);
+			audioThread = new Thread(audioStreamReceiver);
+			audioThread.start();
+			audioStreamReceiver.setRunning(true);
+		}
+		if ((streamingMode & DEBUG_STREAM) == DEBUG_STREAM && !debugStreamReceiver.isRunning()) {
+			startDebugStream();
+			debugThread = new Thread(debugStreamReceiver);
+			debugThread.start();
+			debugStreamReceiver.setRunning(true);
 		}
 	}
 
@@ -275,88 +302,28 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	}
 
 	private void stopStream() {
-		if (running) {
-			running = false;
-			if (lifeViewMode) {
-				videoStreamReceiver.setRunning(false);
-				audioStreamReceiver.setRunning(false);
-				stopVicStream();
-				stopSidStream();
-				videoThread = null;
-				audioThread = null;
-				imageViewer.drawImage(true);
-			} else {
-				debugStreamReceiver.setRunning(false);
-				stopDebugStream();
-				debugThread = null;
-			}
+
+		if ((streamingMode & VIDEO_STREAM) == VIDEO_STREAM && videoStreamReceiver.isRunning()) {
+			videoStreamReceiver.setRunning(false);
+			stopVicStream();
+			videoThread = null;
+			imageViewer.drawImage(true);
+		}
+		if ((streamingMode & AUDIO_STREAM) == AUDIO_STREAM && audioStreamReceiver.isRunning()) {
+			audioStreamReceiver.setRunning(false);
+			stopSidStream();
+			audioThread = null;
+		}
+		if ((streamingMode & DEBUG_STREAM) == DEBUG_STREAM && debugStreamReceiver.isRunning()) {
+			debugStreamReceiver.setRunning(false);
+			stopDebugStream();
+			debugThread = null;
 		}
 	}
 
 	@Inject
 	@Optional
-	public void streamVideo(@UIEventTopic("StreamVideo") BrokerObject brokerObject) {
-		System.out.println("Stream Video");
-		/*
-		 * int snapsPerSecond = 10; int duration = 100; String formatName = ""; String
-		 * fileName = ""; String codecName = ""; final Rational framerate =
-		 * Rational.make(1, snapsPerSecond);
-		 * 
-		 * final Muxer muxer = Muxer.make(fileName, null, formatName);
-		 * 
-		 * final MuxerFormat format = muxer.getFormat(); final Codec codec; if
-		 * (codecName != null) { codec = Codec.findEncodingCodecByName(codecName); }
-		 * else { codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId()); }
-		 * 
-		 * Encoder encoder = Encoder.make(codec);
-		 * 
-		 * encoder.setWidth(320); encoder.setHeight(200);
-		 * 
-		 * final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
-		 * encoder.setPixelFormat(pixelformat); encoder.setTimeBase(framerate);
-		 * 
-		 * if (format.getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
-		 * encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
-		 * 
-		 * encoder.open(null, null);
-		 * 
-		 * muxer.addNewStream(encoder);
-		 * 
-		 * muxer.open(null, null);
-		 * 
-		 * MediaPictureConverter converter = null; final MediaPicture picture =
-		 * MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
-		 * picture.setTimeBase(framerate);
-		 * 
-		 * final MediaPacket packet = MediaPacket.make(); for (int i = 0; i < duration /
-		 * framerate.getDouble(); i++) {
-		 * 
-		 * 
-		 * 
-		 * 
-		 * final BufferedImage screen =
-		 * convertToType(robot.createScreenCapture(screenbounds),
-		 * BufferedImage.TYPE_3BYTE_BGR);
-		 * 
-		 * if (converter == null) converter =
-		 * MediaPictureConverterFactory.createConverter(screen, picture);
-		 * converter.toPicture(picture, screen, i);
-		 * 
-		 * do { encoder.encode(packet, picture); if (packet.isComplete())
-		 * muxer.write(packet, false); } while (packet.isComplete());
-		 * 
-		 * Thread.sleep((long) (1000 * framerate.getDouble())); }
-		 * 
-		 * do { encoder.encode(packet, null); if (packet.isComplete())
-		 * muxer.write(packet, false); } while (packet.isComplete());
-		 * 
-		 * muxer.close();
-		 */
-	}
-
-	@Inject
-	@Optional
-	public void reset(@UIEventTopic("Reset") BrokerObject brokerObject) {
+	public void reset(@UIEventTopic("ResetU64") BrokerObject brokerObject) {
 		try {
 			stopStream();
 			TimeUnit.MILLISECONDS.sleep(100);
@@ -493,6 +460,7 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 		showWithKeyboard(false);
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
+		debugStreamReceiver = new DebugStreamReceiver();
 		startStream();
 
 	}

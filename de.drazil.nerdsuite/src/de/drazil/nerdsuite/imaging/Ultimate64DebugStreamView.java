@@ -91,6 +91,12 @@ public class Ultimate64DebugStreamView {
 		startStream();
 	}
 
+	@Inject
+	@Optional
+	public void enableDebugStream(@UIEventTopic("DebugStream") BrokerObject brokerObject) {
+		startStream();
+	}
+
 	private void startStream() {
 		if (!running) {
 			running = true;
@@ -172,8 +178,6 @@ public class Ultimate64DebugStreamView {
 		imageViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		return imageViewer;
 	}
-
-	
 
 	private void startDebugStream() {
 		openSocket();
