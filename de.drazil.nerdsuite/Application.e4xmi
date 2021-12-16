@@ -47,6 +47,18 @@
         <handlers xmi:id="_rziNAF23Eeyl5pDyeZjUzA" elementId="de.drazil.nerdsuite.handler.9" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.MuteHandler" command="_nYpWEF23Eeyl5pDyeZjUzA"/>
         <handlers xmi:id="_nKnOYF3pEeyNBbukDTeSkw" elementId="de.drazil.nerdsuite.handler.11" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.DebugHandler" command="_8_YXsF3oEeyNBbukDTeSkw"/>
       </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_Pw95EF6GEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.perspective.ultimate64debug" label="Ultimate64Debug">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_kYy4sF6GEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.partsashcontainer.10" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_l_wPcF6GEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.partstack.7" containerData="2500">
+            <children xsi:type="advanced:Placeholder" xmi:id="_nalOsF6GEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.placeholder.7" ref="_QcU7AFh3EeyjAf-8Yrdmxg"/>
+          </children>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_mpAAwF6GEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.partsashcontainer.11" containerData="10000">
+            <children xsi:type="basic:PartStack" xmi:id="_qQtuUF6GEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.partstack.9">
+              <children xsi:type="basic:Part" xmi:id="_rFA5EF6GEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.part.ultimate64debugstreamingclient" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64DebugStreamView" label="Ultimate64 DebugStreaming Client"/>
+            </children>
+          </children>
+        </children>
+      </children>
       <children xsi:type="advanced:Perspective" xmi:id="_GA2QEFh2EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.perspective.GfxPerspective" label="GraphicsPerspective">
         <children xsi:type="basic:PartSashContainer" xmi:id="_MLje0Fh2EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.2" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_OmLuMFh2EeyjAf-8Yrdmxg" elementId="de.drazil.nerdsuite.partsashcontainer.4" containerData="2500">
@@ -145,8 +157,11 @@
         <children xsi:type="menu:Menu" xmi:id="_6CYlwOwVEeSYVemvddr_Tw" elementId="de.drazil.nerdsuite.menu.runToolchain" label="Run Toolchain"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_QWEEYJ21EeqplavjYfDYxA" elementId="de.drazil.nerdsuite.menu.stream" label="Perspectives">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_Xw0U0KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handledmenuitem.u64" label="Ultimate64 Streams" command="_8xUbAF4_EeyWzqdQVjj-ng">
-          <parameters xmi:id="_Qhn4kF5HEey96pk_Q-srEQ" elementId="de.drazil.nerdsuite.parameter.49" name="de.drazil.nerdsuite.commandparameter.perspectiveId" value="u64"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Xw0U0KdwEeqid_Z8sm-clA" elementId="de.drazil.nerdsuite.handledmenuitem.u64" label="Ultimate64 Lifestream" command="_8xUbAF4_EeyWzqdQVjj-ng">
+          <parameters xmi:id="_Qhn4kF5HEey96pk_Q-srEQ" elementId="de.drazil.nerdsuite.parameter.49" name="de.drazil.nerdsuite.commandparameter.perspectiveId" value="u64life"/>
+        </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_iqxkkF5uEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.handledmenuitem.ultimate64debugstream" label="Ultimate64 Debugstream" command="_8xUbAF4_EeyWzqdQVjj-ng">
+          <parameters xmi:id="_7U24sF5uEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.parameter.63" name="de.drazil.nerdsuite.commandparameter.perspectiveId" value="u64debug"/>
         </children>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_vMNQMF4_EeyWzqdQVjj-ng" elementId="de.drazil.nerdsuite.handledmenuitem.graphiceditor" label="GraphicEditor" command="_8xUbAF4_EeyWzqdQVjj-ng">
           <parameters xmi:id="_SUJmIF5HEey96pk_Q-srEQ" elementId="de.drazil.nerdsuite.parameter.60" name="de.drazil.nerdsuite.commandparameter.perspectiveId" value="gfx"/>
@@ -631,6 +646,7 @@
   <commands xmi:id="_8_YXsF3oEeyNBbukDTeSkw" elementId="de.drazil.nerdsuite.command.u64_debug" commandName="U64_Debug"/>
   <commands xmi:id="_8xUbAF4_EeyWzqdQVjj-ng" elementId="de.drazil.nerdsuite.command.perspective" commandName="Perspective">
     <parameters xmi:id="_IE-cYF5HEey96pk_Q-srEQ" elementId="de.drazil.nerdsuite.commandparameter.perspectiveId" name="PerspectiveId"/>
+    <parameters xmi:id="_0TjZIF5uEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.commandparameter.options" name="Options"/>
   </commands>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>

@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -36,8 +35,6 @@ import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.model.Key;
 import de.drazil.nerdsuite.model.PlatformColor;
 import de.drazil.nerdsuite.model.RunObject;
-import de.drazil.nerdsuite.model.RunObject.Mode;
-import de.drazil.nerdsuite.model.RunObject.Source;
 import de.drazil.nerdsuite.network.TcpHandler;
 import de.drazil.nerdsuite.util.NumericConverter;
 import de.drazil.nerdsuite.widget.IHitKeyListener;
@@ -48,7 +45,7 @@ import de.drazil.nerdsuite.widget.VirtualKeyboard;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ultimate64AppStreamView implements IHitKeyListener {
+public class Ultimate64AppStreamView extends AbstractStreamView implements IHitKeyListener {
 
 	private ImageViewWidget imageViewer;
 	private MemoryViewWidget memoryViewer;
@@ -56,11 +53,11 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 
 	private Thread videoThread;
 	private Thread audioThread;
-	private Thread debugThread;
+
 	private VideoStreamReceiver videoStreamReceiver;
 	private AudioStreamReceiver audioStreamReceiver;
-	private DebugStreamReceiver debugStreamReceiver;
-	private boolean lifeViewMode = true;
+
+	private boolean lifeViewMode = false;
 	private boolean virtualKeyboardVisible = false;
 	private boolean isMute = false;
 
@@ -68,12 +65,8 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	private Composite top;
 	private Composite bottom;
 
-	private TcpHandler tcpHandler;
 	private SashForm verticalSash;
 
-	private static final int VIDEO_STREAM = 1;
-	private static final int DEBUG_STREAM = 2;
-	private static final int AUDIO_STREAM = 4;
 	private int streamingMode = VIDEO_STREAM + AUDIO_STREAM;
 
 	public Ultimate64AppStreamView() {
@@ -115,7 +108,7 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 						System.arraycopy(dataBuffer, 12, data, offset, dataBuffer.length - 12);
 						offset += (dataBuffer.length - 12);
 					}
-					// System.out.printf("line: %04x\n", line);
+
 					// System.out.printf("seq: %04d\n", seq);
 					if ((line & 0x8000) == 0x8000) {
 
@@ -182,52 +175,6 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 		}
 	}
 
-	public class DebugStreamReceiver implements Runnable {
-
-		private byte[] buf = new byte[1444];
-		private int[] mem = new int[0x10000];
-		@Setter
-		@Getter
-		private boolean running = false;
-		private DatagramSocket socket;
-
-		public synchronized void run() {
-			try {
-				socket = new DatagramSocket(11002);
-				while (socket != null && running) {
-					DatagramPacket packet = new DatagramPacket(buf, buf.length);
-					socket.receive(packet);
-					InetAddress address = packet.getAddress();
-					int port = packet.getPort();
-					packet = new DatagramPacket(buf, buf.length, address, port);
-
-					Display.getDefault().syncExec(new Runnable() {
-						@Override
-						public void run() {
-
-							for (int i = 4; i < 1444; i += 4) {
-								int adr = ((int) ((buf[i + 1] << 8) | (buf[i + 0] & 0xff)) & 0xffff);
-								int data = ((int) (buf[i + 2] & 0xff));
-								int flags = ((int) (buf[i + 3] & 0xff));
-
-								if (mem[adr] != data) {
-
-									mem[adr] = data;
-									memoryViewer.setByte(adr, data, (flags & 1) == 1);
-								}
-							}
-						}
-					});
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				socket.close();
-				socket = null;
-			}
-		}
-	}
-
 	public void keyPressed(Key key) {
 		sendKeyboardSequence(key);
 	}
@@ -269,67 +216,58 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	@Inject
 	@Optional
 	public void startStream(@UIEventTopic("StartStream") BrokerObject brokerObject) {
-		startStream();
+		startStream(VIDEO_STREAM + AUDIO_STREAM);
 	}
 
-	private void startStream() {
+	private void startStream(int streamingMode) {
 		String targetAdress = "10.100.200.205";
 		if ((streamingMode & VIDEO_STREAM) == VIDEO_STREAM && !videoStreamReceiver.isRunning()) {
-			startVicStream(0, targetAdress);
+			startStreamByCommand(VIC_STREAM_START_COMMAND, 0, targetAdress);
 			imageViewer.drawImage(false);
 			videoThread = new Thread(videoStreamReceiver);
 			videoThread.start();
 			videoStreamReceiver.setRunning(true);
 		}
 		if ((streamingMode & AUDIO_STREAM) == AUDIO_STREAM && !audioStreamReceiver.isRunning()) {
-			startSidStream(0, targetAdress);
+			startStreamByCommand(SID_STREAM_START_COMMAND, 0, targetAdress);
 			audioThread = new Thread(audioStreamReceiver);
 			audioThread.start();
 			audioStreamReceiver.setRunning(true);
 		}
-		if ((streamingMode & DEBUG_STREAM) == DEBUG_STREAM && !debugStreamReceiver.isRunning()) {
-			startDebugStream();
-			debugThread = new Thread(debugStreamReceiver);
-			debugThread.start();
-			debugStreamReceiver.setRunning(true);
-		}
+
 	}
 
 	@Inject
 	@Optional
 	public void stopStream(@UIEventTopic("StopStream") BrokerObject brokerObject) {
-		stopStream();
+		stopStream(VIDEO_STREAM + AUDIO_STREAM);
 	}
 
-	private void stopStream() {
+	private void stopStream(int streamingMode) {
 
 		if ((streamingMode & VIDEO_STREAM) == VIDEO_STREAM && videoStreamReceiver.isRunning()) {
 			videoStreamReceiver.setRunning(false);
-			stopVicStream();
+			stopStreamByCommand(VIC_STREAM_STOP_COMMAND);
 			videoThread = null;
 			imageViewer.drawImage(true);
 		}
 		if ((streamingMode & AUDIO_STREAM) == AUDIO_STREAM && audioStreamReceiver.isRunning()) {
 			audioStreamReceiver.setRunning(false);
-			stopSidStream();
+			stopStreamByCommand(SID_STREAM_STOP_COMMAND);
 			audioThread = null;
 		}
-		if ((streamingMode & DEBUG_STREAM) == DEBUG_STREAM && debugStreamReceiver.isRunning()) {
-			debugStreamReceiver.setRunning(false);
-			stopDebugStream();
-			debugThread = null;
-		}
+
 	}
 
 	@Inject
 	@Optional
 	public void reset(@UIEventTopic("ResetU64") BrokerObject brokerObject) {
 		try {
-			stopStream();
+			stopStream(VIDEO_STREAM + AUDIO_STREAM);
 			TimeUnit.MILLISECONDS.sleep(100);
 			reset();
 			TimeUnit.MILLISECONDS.sleep(100);
-			startStream();
+			startStream(VIDEO_STREAM + AUDIO_STREAM);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -353,12 +291,12 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 	@Optional
 	public void loadAndRunObject(@UIEventTopic("LoadAndRun") BrokerObject brokerObject) {
 		try {
-			stopStream();
+			stopStream(VIDEO_STREAM + AUDIO_STREAM);
 			TimeUnit.MILLISECONDS.sleep(100);
 			RunObject runObject = (RunObject) brokerObject.getTransferObject();
 			handleObject(runObject);
 			TimeUnit.MILLISECONDS.sleep(2000);
-			startStream();
+			startStream(VIDEO_STREAM + AUDIO_STREAM);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -419,7 +357,7 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 
 	@PreDestroy
 	public void preDestroy(MPart part) {
-		stopStream();
+		stopStream(VIDEO_STREAM + AUDIO_STREAM);
 		tcpHandler.closeSocket();
 	}
 
@@ -451,17 +389,16 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 		top.setBackground(Constants.BLACK);
 		bottom.setLayout(new GridLayout(1, true));
 		bottom.setBackground(Constants.GREY3);
+
 		imageViewer = createImageViewer(top, new PaletteData(palette));
 		imageViewer.setLayoutData(new GridData(GridData.CENTER, GridData.FILL_VERTICAL, true, true));
-
 		virtualKeyboard = new VirtualKeyboard(bottom, 0, colorList);
 		virtualKeyboard.addHitKeyListener(this);
 		virtualKeyboard.setLayoutData(new GridData(GridData.CENTER, GridData.FILL_VERTICAL, true, true));
 		showWithKeyboard(false);
 		videoStreamReceiver = new VideoStreamReceiver();
 		audioStreamReceiver = new AudioStreamReceiver();
-		debugStreamReceiver = new DebugStreamReceiver();
-		startStream();
+		startStream(VIDEO_STREAM + AUDIO_STREAM);
 
 	}
 
@@ -473,136 +410,10 @@ public class Ultimate64AppStreamView implements IHitKeyListener {
 		return new ImageViewWidget(parent, SWT.DOUBLE_BUFFERED, pd);
 	}
 
-	private void startDebugStream() {
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff22),
-					new byte[] { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 }));
-		}
-	}
-
-	private void stopDebugStream() {
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler.write(
-					tcpHandler.buildCommand(NumericConverter.getWord(0xff32), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		}
-	}
-
-	private void startVicStream(int duration, String target) {
-		byte durationArray[] = NumericConverter.getWord(duration);
-		byte targetArray[] = target.getBytes();
-		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler.write(
-					tcpHandler.buildCommand(NumericConverter.getWord(0xff20), length, durationArray, targetArray));
-		}
-	}
-
-	private void stopVicStream() {
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler.write(
-					tcpHandler.buildCommand(NumericConverter.getWord(0xff30), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		}
-
-	}
-
-	private void startSidStream(int duration, String target) {
-		byte durationArray[] = NumericConverter.getWord(duration);
-		byte targetArray[] = target.getBytes();
-		byte length[] = NumericConverter.getWord(durationArray.length + targetArray.length);
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler.write(
-					tcpHandler.buildCommand(NumericConverter.getWord(0xff21), length, durationArray, targetArray));
-		}
-
-	}
-
-	private void stopSidStream() {
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler.write(
-					tcpHandler.buildCommand(NumericConverter.getWord(0xff31), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		}
-	}
-
-	private void handleObject(RunObject runObject) {
-		if (tcpHandler.openSocket() != -1) {
-			int cmd_dma = 0xff01;
-			int cmd_dma_run = 0xff02;
-			int cmd_dma_jump = 0xff09;
-			int cmd_dma_mount_img = 0xff0a;
-			int cmd_dma_run_img = 0xff0b;
-			byte[] command = null;
-			if (runObject.getSource() == Source.Program) {
-				if (runObject.getMode() == Mode.None && runObject.getStartAdress() == -1) {
-					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma),
-							NumericConverter.getWord(runObject.getPayload().length));
-				} else if (runObject.getMode() == Mode.Run && runObject.getStartAdress() == -1) {
-					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma_run),
-							NumericConverter.getWord(runObject.getPayload().length));
-				} else if (runObject.getMode() == Mode.Run && runObject.getStartAdress() != -1) {
-					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma_jump),
-							NumericConverter.getWord(runObject.getPayload().length + 4),
-							NumericConverter.getWord(runObject.getStartAdress()));
-				}
-			} else {
-				byte l[] = NumericConverter.getLongWord(runObject.getPayload().length);
-				byte length[] = new byte[] { l[0], l[1], l[2] };
-				if (runObject.getMode() == Mode.Run) {
-					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma_run_img), length);
-				} else {
-					command = tcpHandler.buildCommand(NumericConverter.getWord(cmd_dma_mount_img), length);
-				}
-			}
-
-			tcpHandler.write(command);
-			tcpHandler.write(runObject.getPayload());
-
-		}
-	}
-
-	private void reset() {
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler.write(
-					tcpHandler.buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		}
-	}
-
-	private void wait(int delay) {
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler
-					.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff05), NumericConverter.getWord(delay)));
-		}
-	}
-
-	private void readMemory(int address, int length) {
-		if (tcpHandler.openSocket() != -1) {
-
-			tcpHandler.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff74),
-					NumericConverter.getWord(length + 2), tcpHandler.buildCommand(NumericConverter.getWord(address))));
-			try {
-				InputStream is = tcpHandler.getInputStream();
-				TimeUnit.MILLISECONDS.sleep(500);
-				int dataAvailable = 0;
-				byte data[] = null;
-				is.read();
-				while ((dataAvailable = is.available()) > 0) {
-					data = new byte[dataAvailable];
-					is.read(data, 0, dataAvailable);
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private void writeMemory(int address, byte[] data) {
-		if (tcpHandler.openSocket() != -1) {
-			tcpHandler.write(tcpHandler.buildCommand(NumericConverter.getWord(0xff06),
-					NumericConverter.getWord(data.length + 2), NumericConverter.getWord(address), data));
-		}
+	public MemoryViewWidget createMemoryImageViewer(Composite parent) {
+		memoryViewer = new MemoryViewWidget(parent, SWT.DOUBLE_BUFFERED);
+		memoryViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		return memoryViewer;
 	}
 
 	private void sendKeyboardSequence(byte[] data) {

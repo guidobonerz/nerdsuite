@@ -39,7 +39,7 @@ public class KeyboardElement extends Canvas implements PaintListener {
 		if (key.isSymbol()) {
 			setFont(Constants.GoogleMaterials);
 		} else {
-			setFont(Constants.PetMe642Y_FONT);
+			setFont(Constants.PetMe64_FONT);
 		}
 		addPaintListener(this);
 		addMouseListener(new MouseAdapter() {

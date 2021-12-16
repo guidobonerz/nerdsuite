@@ -1,7 +1,6 @@
 package de.drazil.nerdsuite.imaging;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -22,18 +21,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.handler.BrokerObject;
-import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.model.RunObject;
+import de.drazil.nerdsuite.network.TcpHandler;
 import de.drazil.nerdsuite.widget.MemoryViewWidget;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ultimate64DebugStreamView {
+public class Ultimate64DebugStreamView extends AbstractStreamView {
 
 	private MemoryViewWidget imageViewer;
 	private Socket tcpSocket = null;
 	private Thread debugThread;
 	private DebugStreamReceiver debugStreamReceiver;
 	private boolean running = false;
+	private int streamingMode = DEBUG_STREAM;// VIDEO_STREAM + AUDIO_STREAM;
 
 	public Ultimate64DebugStreamView() {
 
@@ -88,24 +89,8 @@ public class Ultimate64DebugStreamView {
 	@Inject
 	@Optional
 	public void startStream(@UIEventTopic("StartStream") BrokerObject brokerObject) {
-		startStream();
-	}
+		startStream(0);
 
-	@Inject
-	@Optional
-	public void enableDebugStream(@UIEventTopic("DebugStream") BrokerObject brokerObject) {
-		startStream();
-	}
-
-	private void startStream() {
-		if (!running) {
-			running = true;
-			startDebugStream();
-
-			debugThread = new Thread(debugStreamReceiver);
-			debugThread.start();
-			debugStreamReceiver.setRunning(true);
-		}
 	}
 
 	@Inject
@@ -115,12 +100,10 @@ public class Ultimate64DebugStreamView {
 	}
 
 	private void stopStream() {
-		if (running) {
-			running = false;
-			debugStreamReceiver.setRunning(false);
-			stopDebugStream();
-			debugThread = null;
-		}
+
+		debugStreamReceiver.setRunning(false);
+		stopStreamByCommand(DEBUG_STREAM_STOP_COMMAND);
+		debugThread = null;
 	}
 
 	@Inject
@@ -131,28 +114,42 @@ public class Ultimate64DebugStreamView {
 			TimeUnit.MILLISECONDS.sleep(100);
 			reset();
 			TimeUnit.MILLISECONDS.sleep(100);
-			startStream();
+			startStream(0);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Inject
-	@Optional
-	public void virtualKeyboard(@UIEventTopic("VirtualKeyboard") BrokerObject brokerObject) {
+	private void startStream(int streamingMode) {
+		String targetAdress = "10.100.200.205";
+		if (!running) {
+			startStreamByCommand(DEBUG_STREAM_START_COMMAND, 0, targetAdress);
+			debugThread = new Thread(debugStreamReceiver);
+			debugThread.start();
+			debugStreamReceiver.setRunning(true);
+		}
 
+	}
+
+	private void stopStream(int streamingMode) {
+
+		if ((streamingMode & DEBUG_STREAM) == DEBUG_STREAM && debugStreamReceiver.isRunning()) {
+			debugStreamReceiver.setRunning(false);
+			stopStreamByCommand(DEBUG_STREAM_STOP_COMMAND);
+			debugThread = null;
+		}
 	}
 
 	@Inject
 	@Optional
-	public void loadAndRunProgram(@UIEventTopic("LoadAndRun") BrokerObject brokerObject) {
+	public void loadAndRunObject(@UIEventTopic("LoadAndRun") BrokerObject brokerObject) {
 		try {
-			stopStream();
+			stopStream(DEBUG_STREAM_STOP_COMMAND);
 			TimeUnit.MILLISECONDS.sleep(100);
-			byte[] data = (byte[]) brokerObject.getTransferObject();
-			loadCode(data, true);
-			TimeUnit.MILLISECONDS.sleep(100);
-			startStream();
+			RunObject runObject = (RunObject) brokerObject.getTransferObject();
+			handleObject(runObject);
+			TimeUnit.MILLISECONDS.sleep(2000);
+			startStream(DEBUG_STREAM_START_COMMAND);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -161,15 +158,16 @@ public class Ultimate64DebugStreamView {
 	@PreDestroy
 	public void preDestroy(MPart part) {
 		stopStream();
-		closeSocket();
+		tcpHandler.closeSocket();
 	}
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		parent.setLayout(new GridLayout());
+		tcpHandler = new TcpHandler("10.100.200.201", 64);
 		imageViewer = createImageViewer(parent);
 		debugStreamReceiver = new DebugStreamReceiver();
-		startStream();
+		startStream(DEBUG_STREAM_START_COMMAND);
 
 	}
 
@@ -179,101 +177,4 @@ public class Ultimate64DebugStreamView {
 		return imageViewer;
 	}
 
-	private void startDebugStream() {
-		openSocket();
-		try {
-			tcpSocket.getOutputStream().write(buildCommand(NumericConverter.getWord(0xff22),
-					new byte[] { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 }));
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-	}
-
-	private void stopDebugStream() {
-		openSocket();
-		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff32), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-	}
-
-	private void loadCode(byte[] data) {
-		loadCode(data, true, -1);
-	}
-
-	private void loadCode(byte[] data, boolean run) {
-		loadCode(data, run, -1);
-	}
-
-	private void loadCode(byte[] data, boolean run, int adress) {
-		openSocket();
-		int cmd_dma = 0xff01;
-		int cmd_dma_run = 0xff02;
-		int cmd_dma_jump = 0xff09;
-		byte[] command = null;
-		if (!run && adress == -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma), NumericConverter.getWord(data.length));
-		} else if (run && adress == -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma_run), NumericConverter.getWord(data.length));
-		} else if (run && adress != -1) {
-			command = buildCommand(NumericConverter.getWord(cmd_dma_jump), NumericConverter.getWord(data.length + 4),
-					NumericConverter.getWord(1), NumericConverter.getWord(adress));
-		}
-		try {
-			tcpSocket.getOutputStream().write(command);
-			tcpSocket.getOutputStream().write(data);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void reset() {
-		openSocket();
-		try {
-			tcpSocket.getOutputStream()
-					.write(buildCommand(NumericConverter.getWord(0xff04), new byte[] { (byte) 0x00, (byte) 0x00 }));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private Socket openSocket() {
-		try {
-			if (tcpSocket == null) {
-				tcpSocket = new Socket(InetAddress.getByName("10.100.200.201"), 64);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return tcpSocket;
-	}
-
-	private void closeSocket() {
-		try {
-			if (tcpSocket != null && tcpSocket.isConnected()) {
-				tcpSocket.close();
-				tcpSocket = null;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private byte[] buildCommand(byte[]... data) {
-		int targetLength = 0;
-		for (byte[] source : data) {
-			targetLength += source.length;
-		}
-		byte[] target = new byte[targetLength];
-		int targetPos = 0;
-		for (byte[] source : data) {
-			System.arraycopy(source, 0, target, targetPos, source.length);
-			targetPos += source.length;
-		}
-		return target;
-	}
 }
