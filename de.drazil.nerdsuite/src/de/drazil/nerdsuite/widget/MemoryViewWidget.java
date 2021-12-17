@@ -93,6 +93,7 @@ public class MemoryViewWidget extends Canvas implements PaintListener {
 		gc.drawImage(imageCache[value + (rw ? 0 : 256)], x, y);
 		gc.dispose();
 		redraw(x, y, 8, 1, false);
+
 	}
 
 	@Override
