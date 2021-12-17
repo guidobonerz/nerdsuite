@@ -1,0 +1,12 @@
+{
+	"node": {
+		"name": "Fonts", "attributes": [{
+				"name": "", "type": "boolean", "values": ["true"
+				]
+			}, {
+				"name": "", "type": "boolean", "values": ["true"
+				]
+			}
+		]
+	}
+}

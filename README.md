@@ -1,7 +1,5 @@
 # nerdsuite
 Nerdsuite is an IDE (based on eclipse 4.18.0/2020-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
-Once finished, it will contain a SourceCode Editor (Assembler/Basic), Visual Disassembler, GfxEditor (for CharSets, SpriteSets, TileSets, TileMaps, Screens and Bitmaps)  
-Currently I work mostly on the graphics part.  
 
 | System | OS | Works | Performance | Java Version
 | -- | -- | -- | -- | -- |
@@ -13,80 +11,7 @@ Currently I work mostly on the graphics part.
 | Mac (2 GHz Core2Duo / 8GB) | MacOS 10.11.6 El Capitan | yes | very slow | 1.8.0_25
 
 Current state: Still buggy and incomplete :-)
-Last Changes 10-12-2021:
-- updated graphics editor
-- added new screenshot
 
-Last Changes 01-12-2021:
-- added preprocessor code to control build
-- added CharMap Selector
-
-Last Changes 22-11-2021:
-- added Basic Code Tokenizer
-- added Brace Depth Highlighting
-- added Basic Code Editor
-
-Last Changes 07-03-2021:
-- added some direct commands to the Ultimate64 Virtual Keyboard (RUN/LIST/DIR)
-- Set Frame and Backgroundcolor remoteley
-- added Ultimate64 Virtual Keyboard
-- added run programs and disk images directly from U64 internal usb devices via FTP access
-
-Last Changes 29-01-2021:
-- added Ultimate64 Debug Stream Viewer
-
-Last Changes 19-01-2021:
-- added z80 disassembly
-
-Last Changes 11-01-2021:
-- start to implement interactive(visual) disassembler
-
-Last Changes 26-11-2020:
-- pixel paint performance/gapless painting
-
-Last Changes 25-11-2020:
-- PETASCII Painter
-- Performance tuning
-- Code cleanup
-- Scroll drawing area
-
-Last Changes 04-07-2020:
-- select/run programs from D64 image
-
-Last Changes 02-07-2020:
-- add start/stop/reset/remote load&start function to streaming client
-
-Last Changes 09-06-2020:
-- add ultimate64 streaming client
-
-Last Changes:
-- Range selection modification for Shift, Flip, Mirror, Rotate, Invert and Purge
-- Bulk tile modifications
-- Tile animation finished
-- Tile drag movement/reordering
-- Sprite import
-- Copy/Paste
-- Mount disk images to project-browser
-- Bitmap Exporter for CharSets and Sprites
-
-Gfx Module Todo:
-- Proper Multicolor handling
-- Undo/Redo
-- Zoom option in all views
-- Layer Preview/Selector
-- Layer drag reordering
-- TileMap reference tile selector
-- TileSet reference char selector
-- Binary Import
-- Export to BIN/BAS/ASM/PNG/GIF/SVG/TTF
-- Layer content compression
-- Performance tuning
-- Code cleanup
-
-
-Handle DiskImages:
-Export files partly works
-Create/Update disk images
 
 ## Basic Code Editor
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/basic_editor1.png)
@@ -121,7 +46,4 @@ Create/Update disk images
 ![screenshot14](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_bulk_modification.gif)
 ## Tile Range Modification on 2x2 Char Example
 ![screenshot15](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_range_modification.gif)
-## Simple BitmapViewer
-Image by Almighty God
-![screenshot16](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/koala.png)
 

@@ -11,17 +11,15 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
-import de.drazil.nerdsuite.Constants;
+import de.drazil.nerdsuite.util.E4Utils;
 
 public class RunOnU64Handler {
 	@Execute
 	public void execute(MPart part, MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
 			EPartService partService, EModelService modelService, IEventBroker broker) {
 
-		String owner = (String) part.getTransientData().get(Constants.OWNER);
+		E4Utils.switchPerspective("de.drazil.nerdsuite.perspective.U64AppStreamer", app, modelService, partService);
 
 		broker.send("U64_LoadAndRun", new BrokerObject("", "RunOnU64"));
-
 	}
-
 }

@@ -45,6 +45,9 @@ public class Configuration {
 				Display.getCurrent().loadFont(
 						new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/RobotoMono-Bold.ttf")).toURI())
 								.toString());
+				boolean b = Display.getCurrent()
+						.loadFont(new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/fa-solid-900.ttf")).toURI())
+								.toString());
 
 			} catch (URISyntaxException e1) {
 				e1.printStackTrace();
