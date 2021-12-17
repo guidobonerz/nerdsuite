@@ -130,21 +130,10 @@ public class NewProjectHandler {
 				}
 
 				// File file = createProjectStructure(project, projectType.getSuffix());
-				/*
-				 * String editorView =
-				 * "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView";
-				 * 
-				 * MPart part = E4Utils.createPart(partService,
-				 * "de.drazil.nerdsuite.partdescriptor.GfxEditorView", editorView, owner,
-				 * project.getName(), projectSetup);
-				 * 
-				 * E4Utils.addPart2PartStack(app, modelService, partService,
-				 * "de.drazil.nerdsuite.partstack.editorStack", part, true);
-				 */
 
-				MPerspective perspective = (MPerspective) modelService
-						.find("de.drazil.nerdsuite.perspective.GfxPerspective", app);
-				partService.switchPerspective(perspective);
+				E4Utils.switchPerspective("de.drazil.nerdsuite.perspective.GfxPerspective", app, modelService,
+						partService);
+
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.GfxEditorView",
 						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.GfxEditorView", owner,
 						project.getName(), projectSetup);
@@ -175,18 +164,9 @@ public class NewProjectHandler {
 					throw new IllegalArgumentException("No such project action.");
 				}
 
-//				String editorView = "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView";
+				E4Utils.switchPerspective("de.drazil.nerdsuite.perspective.CodingPerspective", app, modelService,
+						partService);
 
-				// MPart part = E4Utils.createPart(partService,
-				// "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
-				// editorView, owner, project.getName(), projectSetup);
-
-//				E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack",
-//						part, true);
-
-				MPerspective perspective = (MPerspective) modelService
-						.find("de.drazil.nerdsuite.perspective.CodingPerspective", app);
-				partService.switchPerspective(perspective);
 				MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.SourceEditorView",
 						"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.sourceeditor.SourceEditorView", owner,
 						project.getName(), projectSetup);

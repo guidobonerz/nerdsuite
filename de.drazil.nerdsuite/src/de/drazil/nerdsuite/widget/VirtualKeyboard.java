@@ -36,7 +36,7 @@ public class VirtualKeyboard extends Composite implements IHitKeyListener {
 
 	public void initLayout() {
 
-		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+		Bundle bundle = Platform.getBundle(Constants.APP_ID);
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			matrix = mapper.readValue(bundle.getEntry("configuration/keyboard_layout.json"), KeyMatrix.class);

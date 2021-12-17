@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
@@ -83,7 +82,7 @@ public class CbmBasicTokenizer {
 				break;
 			}
 			case READ_LINENUMBER: {
-				if (Character.isLetter(ch)) {
+				if (Character.isLetter(ch) || ch == ':') {
 					isInDataLine = false;
 					readMode = Mode.READ_INSTRUCTIONS;
 					byte[] ba = NumericConverter.getWord(Integer.valueOf(buffer.toString()));
@@ -138,7 +137,7 @@ public class CbmBasicTokenizer {
 
 				if (ch == quote) {
 					readMode = Mode.READ_STRING;
-				} else if (ch == '\n') {
+				} else if (ch == '\n' || ci.getIndex() == content.length()-1) {
 					doNotScan = false;
 					result = ArrayUtil.grow(result, buffer.toString().getBytes());
 					result = ArrayUtil.grow(result, (byte) 0);

@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.configuration.Initializer;
-import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.model.GraphicMetadata;
+import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.util.FileUtil;
 import de.drazil.nerdsuite.widget.Layer;
 import de.drazil.nerdsuite.widget.Tile;
@@ -107,11 +107,10 @@ public class TileRepositoryService implements IService {
 		container.moveTile(from, to);
 	}
 
-	public void setDirty(boolean dirty)
-	{
+	public void setDirty(boolean dirty) {
 		container.setDirty(dirty);
 	}
-	
+
 	public int getSize() {
 		return container.getSize();
 	}
@@ -155,24 +154,12 @@ public class TileRepositoryService implements IService {
 			Project project = Initializer.getConfiguration().getWorkspace().getProjectById(id);
 			File file = FileUtil.getFileFromProject(project);
 			container = mapper.readValue(file, TileContainer.class);
-			/*
-			 * Pattern tilePattern = Pattern.compile("^tile_(\\d+)$"); Pattern layerPattern
-			 * = Pattern.compile("^layer_(\\d+)$"); for (int ti = 0; ti <
-			 * container.getTileList().size(); ti++) { Tile tile =
-			 * container.getTileList().get(ti); String tileName = tile.getName(); Matcher
-			 * tileMatcher = tilePattern.matcher(tileName); if (tileMatcher.matches()) { int
-			 * value = Integer.parseInt(tileMatcher.group(1));
-			 * tile.setId(String.format("T%03X", value)); } for (int li = 0; li <
-			 * tile.getSize(); li++) { Layer layer = tile.getLayer(li); String layerName =
-			 * layer.getName(); Matcher layerMatcher = layerPattern.matcher(layerName); if
-			 * (layerMatcher.matches()) { int value =
-			 * Integer.parseInt(layerMatcher.group(1)); layer.setId(String.format("L%03X",
-			 * value)); } } }
-			 */
+
 			String referenceId = container.getMetadata().getReferenceId();
 			if (null != referenceId) {
 				Project referenceProject = Initializer.getConfiguration().getWorkspace().getProjectById(referenceId);
-				TileRepositoryService referenceRepository = ServiceFactory.getService(referenceId, TileRepositoryService.class);
+				TileRepositoryService referenceRepository = ServiceFactory.getService(referenceId,
+						TileRepositoryService.class);
 				referenceRepository.load(referenceProject.getId(), true);
 			}
 		} catch (Exception e) {
@@ -183,12 +170,19 @@ public class TileRepositoryService implements IService {
 
 	public void save(Project project) {
 		try {
+			/*
+			 * FileOutputStream fos = new
+			 * FileOutputStream("c:/Users/drazil/compressed_file.ns_file"); GZIPOutputStream
+			 * gzipout = new GZIPOutputStream(fos); gzipout.write(getHeaderText(project,
+			 * container.getMetadata()).getBytes()); ObjectMapper mapper1 = new
+			 * ObjectMapper(); mapper1.writeValue(gzipout, container);
+			 */
 			File file = FileUtil.getFileFromProject(project);
 			FileWriter fw = new FileWriter(file);
 			fw.write(getHeaderText(project, container.getMetadata()));
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			mapper.writeValue(fw, container);
+			ObjectMapper mapper2 = new ObjectMapper();
+			mapper2.enable(SerializationFeature.INDENT_OUTPUT);
+			mapper2.writeValue(fw, container);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -196,7 +190,8 @@ public class TileRepositoryService implements IService {
 	}
 
 	private static String getHeaderText(Project project, GraphicMetadata metadata) {
-		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(), DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
+		String s = String.format(Constants.PROJECT_FILE_INFO_HEADER, project.getName(),
+				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getCreatedOn()),
 				DateFormat.getDateInstance(DateFormat.SHORT).format(project.getChangedOn()));
 		return s;
 	}

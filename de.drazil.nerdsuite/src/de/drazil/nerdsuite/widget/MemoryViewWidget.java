@@ -1,8 +1,5 @@
 package de.drazil.nerdsuite.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -96,6 +93,7 @@ public class MemoryViewWidget extends Canvas implements PaintListener {
 		gc.drawImage(imageCache[value + (rw ? 0 : 256)], x, y);
 		gc.dispose();
 		redraw(x, y, 8, 1, false);
+
 	}
 
 	@Override

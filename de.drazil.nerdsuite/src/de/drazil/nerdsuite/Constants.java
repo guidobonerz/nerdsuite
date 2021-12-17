@@ -133,9 +133,11 @@ public class Constants {
 
 	public final static Font PetMe2Y_FONT = new Font(Display.getCurrent(), "Pet Me 2Y", 12, SWT.NORMAL);
 	public final static Font PetMe642Y_FONT = new Font(Display.getCurrent(), "Pet Me 64 2Y", 12, SWT.NORMAL);
-	public final static Font PetMe64_FONT = new Font(Display.getCurrent(), "Pet Me 64", 6, SWT.NORMAL);
+	public final static Font PetMe64_FONT = new Font(Display.getCurrent(), "Pet Me 64", 12, SWT.NORMAL);
 	public final static Font SpaceMono_FONT = new Font(Display.getCurrent(), "Space Mono", 10, SWT.NORMAL);
 	public final static Font RobotoMonoBold_FONT = new Font(Display.getCurrent(), "Roboto Mono", 10, SWT.NORMAL);
+	public final static Font FontAwesome6Solid_FONT = new Font(Display.getCurrent(), "Font Awesome 6 Free Solid", 16,
+			SWT.NORMAL);
 
 	public final static TextStyle TEXTSTYLE_PetMe642Y_ASCII = new TextStyle(PetMe642Y_FONT, DEFAULT_COMMENT_COLOR,
 			BLACK);
