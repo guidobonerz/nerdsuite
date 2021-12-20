@@ -37,6 +37,8 @@ public class Tile {
 	private int originX;
 	@JsonProperty(value = "originY")
 	private int originY;
+	@JsonProperty(value = "deleted")
+	private boolean deleted = false;
 	@JsonProperty(value = "layers")
 	private List<Layer> layerList = new ArrayList<Layer>();
 	@JsonProperty(value = "layerIndexOrder")

@@ -42,13 +42,7 @@ public class AnimationService extends AbstractImagingService {
 			pos += (forward ? 1 : -1);
 			animationIndex.set(0, index);
 			service.redrawTileViewer(animationIndex, ImagePainterFactory.READ, true);
-			System.out.println("animate");
-			/*
-			 * callback.onRunService(imagingWidgetConfiguration.computeTileOffset(tl.x,
-			 * tl.y, navigationOffset), tl.x, tl.y, true);
-			 */
 			composite.getDisplay().timerExec(delay, this);
-
 		}
 	}
 

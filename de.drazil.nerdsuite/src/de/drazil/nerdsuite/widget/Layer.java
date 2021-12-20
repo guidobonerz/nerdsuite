@@ -6,14 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.graphics.Color;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.json.IntArrayToStringConverter;
 import de.drazil.nerdsuite.json.StringToIntArrayConverter;
 import de.drazil.nerdsuite.model.Image2;
@@ -40,6 +37,8 @@ public class Layer {
 	private boolean locked = false;
 	@JsonProperty(value = "visible")
 	private boolean visible = true;
+	@JsonProperty(value = "deleted")
+	private boolean deleted = false;
 	@JsonProperty(value = "selectedColorIndex")
 	private int selectedColorIndex = 1;
 	@JsonProperty(value = "colorPalette")
@@ -83,7 +82,8 @@ public class Layer {
 
 	@JsonIgnore
 	public void removeImage(String id) {
-		imagePool.get(id).dispose();;
+		imagePool.get(id).dispose();
+		;
 		imagePool.remove(id);
 	}
 
