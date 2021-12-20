@@ -32,6 +32,7 @@ public class PainterWidget extends BaseImagingWidget {
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
 	private GridType gridType = GridType.None;
+	private boolean multiColor = false;
 
 	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
 			boolean autowrap) {
@@ -236,12 +237,14 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 		imagePainterFactory.drawScaledImage(gc, t, id, 0, 0);
 		t.setDirty(false);
-		boolean forceRepaintGrid = gridType != conf.getGridType();
+		boolean forceRepaintGrid = gridType != conf.getGridType()
+				|| multiColor != tileRepositoryService.getSelectedTile().isMulticolorEnabled();
 		if (forceRepaintGrid) {
 			gridType = conf.getGridType();
+			multiColor = tileRepositoryService.getSelectedTile().isMulticolorEnabled();
 		}
 		if (paintPixelGrid) {
-			gc.drawImage(imagePainterFactory.getGridLayer(forceRepaintGrid).getImage(), 0, 0);
+			gc.drawImage(imagePainterFactory.getGridLayer(forceRepaintGrid, t).getImage(), 0, 0);
 			if (paintSeparator) {
 				paintSeparator(gc);
 			}

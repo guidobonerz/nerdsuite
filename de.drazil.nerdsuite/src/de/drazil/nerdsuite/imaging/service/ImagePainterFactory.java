@@ -110,7 +110,7 @@ public class ImagePainterFactory {
 		return new Point(w, h);
 	}
 
-	public Image2 getGridLayer(boolean forceRepaint) {
+	public Image2 getGridLayer(boolean forceRepaint, Tile tile) {
 		String name = conf.gridType.toString();
 		Image2 imageInternal = imagePool.get(name);
 		if (null == imageInternal || forceRepaint) {
@@ -118,7 +118,7 @@ public class ImagePainterFactory {
 			GC gc = new GC(imageInternal.getImage());
 			gc.setForeground(conf.gridType == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
 			if (conf.gridType == GridType.Line) {
-				for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x++) {
+				for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x += tile.isMulticolorEnabled() ? 2 : 1) {
 					gc.drawLine(x * conf.pixelPaintWidth * conf.getScaleFactor(), 0,
 							x * conf.pixelPaintWidth * conf.getScaleFactor(),
 							conf.tileHeightPixel * conf.getScaleFactor());
@@ -129,7 +129,7 @@ public class ImagePainterFactory {
 							y * conf.pixelPaintHeight * conf.getScaleFactor());
 				}
 			} else {
-				for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x++) {
+				for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x += tile.isMulticolorEnabled() ? 2 : 1) {
 					for (int y = 0; y <= conf.iconHeight * conf.tileRows; y++) {
 						gc.drawPoint(x * conf.pixelPaintWidth * conf.getScaleFactor(),
 								y * conf.pixelPaintHeight * conf.getScaleFactor());
