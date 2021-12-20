@@ -356,7 +356,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	@Override
 	public void onRunService(int offset, int x, int y, boolean updateCursorLocation) {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

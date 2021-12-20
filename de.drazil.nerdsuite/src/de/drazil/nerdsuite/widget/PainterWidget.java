@@ -18,7 +18,6 @@ import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
-import de.drazil.nerdsuite.model.GridState;
 
 public class PainterWidget extends BaseImagingWidget {
 
@@ -226,13 +225,13 @@ public class PainterWidget extends BaseImagingWidget {
 		gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("PAINTER", colorPaletteProvider.getColorByIndex(0))
 				.getImage(), 0, 0);
 
-		String id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
+		String id = "";
 		if (redrawMode == RedrawMode.DrawPixel) {
-//			imagePainterFactory.drawScaledImage(gc, t, id, -1, 0, 0);
+			id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
 		} else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
-			// paintTile(gc, temporaryIndex, conf, colorPaletteProvider, action);
+			t = tileRepositoryService.getTile(temporaryIndex);
+			id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
 		} else {
-
 			imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), t.isDirty());
 		}
 		imagePainterFactory.drawScaledImage(gc, t, id, 0, 0);
@@ -374,7 +373,9 @@ public class PainterWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
+
 		if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
+			System.out.println("animate redraw");
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			if (this.tile != null) {
 				this.tile.removeTileListener(this);

@@ -475,8 +475,6 @@ public class GfxEditorView implements ITileUpdateListener {
 			painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
 			painter.getConf().setPixelSize(graphicFormatVariant.getPixelSize());
 			painter.getConf().setScaleFactor(graphicFormatVariant.getScaleFactor());
-			// painter.getConf().setViewSetup(getViewSetup(metadata.getType(),
-			// metadata.getVariant(), "PAINTER"));
 			painter.getConf().computeDimensions();
 			scrollablePainter.setContent(painter);
 			scrollablePainter.setExpandVertical(true);
@@ -500,8 +498,6 @@ public class GfxEditorView implements ITileUpdateListener {
 			repository.getConf().setPixelSize(
 					graphicFormat.getId().endsWith("PETSCII") || graphicFormat.getId().endsWith("SCREENSET") ? 8 : 1);
 			repository.getConf().setScaleFactor(-1);
-			// repository.getConf().setViewSetup(getViewSetup(metadata.getType(),
-			// metadata.getVariant(), "REPOSITORY"));
 			repository.getConf().computeDimensions();
 			scrollableRepository.setContent(repository);
 			scrollableRepository.setExpandVertical(true);
@@ -527,21 +523,11 @@ public class GfxEditorView implements ITileUpdateListener {
 			referenceRepository.getConf().setPixelSize(1);
 			referenceRepository.getConf().setScaleFactor(2);
 			referenceRepository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE);
-
-			// referenceRepository.getConf().setViewSetup(getViewSetup(metadata.getType(),
-			// metadata.getVariant(), "REFERENCE"));
 			referenceRepository.getConf().computeDimensions();
 		}
 		return referenceRepository;
 	}
 
-	/*
-	 * private ViewSetup getViewSetup(String type, String variant, String widget) {
-	 * 
-	 * ViewSetup vs = pixelMap.stream() .filter(v -> v.getType().equals(type) &&
-	 * v.getVariant().equals(variant) && v.getWidget().equals(widget))
-	 * .findFirst().orElse(new ViewSetup(null, null, null, 1, 1)); return vs; }
-	 */
 	@Override
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 		boolean enableAnimationControls = (redrawMode == RedrawMode.DrawSelectedTiles
