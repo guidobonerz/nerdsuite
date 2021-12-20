@@ -280,20 +280,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 		doRedraw(redrawMode, action);
 	}
 
-	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, int update) {
-		/*
-		 * Image image = tileRepositoryService.getImagePainterFactory().getImage(
-		 * tileRepositoryService, tileRepositoryService.getTileIndex(index), 0, 0,
-		 * update, conf, colorPaletteProvider, tileRepositoryService.getMetadata()); int
-		 * imageWidth = image.getBounds().width; int imageHeight =
-		 * image.getBounds().height; int columns = conf.getColumns(); int y = (index /
-		 * columns) * imageHeight; int x = (index % columns) * imageWidth;
-		 * gc.drawImage(image, x, y);
-		 */
-
-	}
-
 	private void paintTiles(GC gc, int action, int maxX, int maxY) {
 		int max = maxX * maxY;
 		for (int i = 0; i < max; i++) {
@@ -378,19 +364,19 @@ public class RepositoryWidget extends BaseImagingWidget {
 			end = tileRepositoryService.getSelectedTileIndexList()
 					.get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
-			int iys = start / conf.columns;
-			int ys = iys * conf.tileHeightPixel;
+			int iys = start / maxColumns;
+			int ys = iys * conf.repositoryScaledTileHeight;
 
-			int iye = end / conf.columns;
-			int ye = iye * conf.tileHeightPixel;
+			int iye = end / maxColumns;
+			int ye = iye * conf.repositoryScaledTileHeight;
 
 			start = computeTileIndex(0, iys);
-			end = computeTileIndex(conf.columns, iye);
+			end = computeTileIndex(maxColumns, iye);
 			if (end > tileRepositoryService.getSize()) {
 				end = tileRepositoryService.getSize();
 			}
-			int height = (1 + iye - iys) * conf.tileHeightPixel;
-			redraw(0, ys, conf.tileWidthPixel * conf.columns, height, false);
+			int height = (1 + iye - iys) * conf.repositoryScaledTileHeight;
+			redraw(0, ys, conf.repositoryScaledTileWith * maxColumns, height, false);
 		} else {
 			drawAll = true;
 			redraw();

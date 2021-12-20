@@ -90,7 +90,7 @@ public class ImagePainterFactory {
 
 	public Point drawScaledImage(GC gc, Tile tile, String imageId, int x, int y, boolean thumbnail) {
 		Image2 i2 = tile.getActiveLayer().getImage(imageId);
-		if (i2 == null) {
+		if (i2 == null || i2.isDirty()) {
 			i2 = createOrUpdateLayer(imageId, tile.getActiveLayer(), true);
 		}
 		Image i = i2.getImage();
