@@ -119,46 +119,6 @@ public class GfxEditorView implements ITileUpdateListener {
 	private SashForm rightSash;
 	private SashForm paintSash;
 
-	private static List<ViewSetup> pixelMap = new ArrayList<ViewSetup>();
-	static {
-		pixelMap.add(new ViewSetup("CHARSET", "STANDARD", "PAINTER", 1, 32));
-		pixelMap.add(new ViewSetup("CHARSET", "DX", "PAINTER", 1, 32));
-		pixelMap.add(new ViewSetup("CHARSET", "DY", "PAINTER", 1, 32));
-		pixelMap.add(new ViewSetup("CHARSET", "DXY", "PAINTER", 1, 32));
-		pixelMap.add(new ViewSetup("CHARSET", "CUSTOM", "PAINTER", 1, 32));
-
-		pixelMap.add(new ViewSetup("SPRITESET", "STANDARD", "PAINTER", 1, 16));
-		pixelMap.add(new ViewSetup("SPRITESET", "DX", "PAINTER", 1, 16));
-		pixelMap.add(new ViewSetup("SPRITESET", "DY", "PAINTER", 1, 16));
-		pixelMap.add(new ViewSetup("SPRITESET", "DXY", "PAINTER", 1, 16));
-		pixelMap.add(new ViewSetup("SPRITESET", "CUSTOM", "PAINTER", 1, 16));
-
-		pixelMap.add(new ViewSetup("SCREENSET", "STANDARD", "PAINTER", 8, 2));
-		pixelMap.add(new ViewSetup("SCREENSET", "DX", "PAINTER", 8, 2));
-		pixelMap.add(new ViewSetup("SCREENSET", "DY", "PAINTER", 8, 2));
-		pixelMap.add(new ViewSetup("SCREENSET", "DXY", "PAINTER", 8, 2));
-		pixelMap.add(new ViewSetup("SCREENSET", "CUSTOM", "PAINTER", 8, 2));
-
-		pixelMap.add(new ViewSetup("SCREENSET", "STANDARD", "REFERENCE", 1, 2));
-		pixelMap.add(new ViewSetup("SCREENSET", "DX", "REFERENCE", 1, 2));
-		pixelMap.add(new ViewSetup("SCREENSET", "DY", "REFERENCE", 1, 2));
-		pixelMap.add(new ViewSetup("SCREENSET", "DXY", "REFERENCE", 1, 2));
-		pixelMap.add(new ViewSetup("SCREENSET", "CUSTOM", "REFERENCE", 1, 2));
-
-		pixelMap.add(new ViewSetup("PETSCII", "STANDARD", "PAINTER", 8, 2));
-		pixelMap.add(new ViewSetup("PETSCII", "DX", "PAINTER", 8, 2));
-		pixelMap.add(new ViewSetup("PETSCII", "DY", "PAINTER", 8, 2));
-		pixelMap.add(new ViewSetup("PETSCII", "DXY", "PAINTER", 8, 2));
-		pixelMap.add(new ViewSetup("PETSCII", "CUSTOM", "PAINTER", 8, 2));
-
-		pixelMap.add(new ViewSetup("PETSCII", "STANDARD", "REFERENCE", 1, 2));
-		pixelMap.add(new ViewSetup("PETSCII", "DX", "REFERENCE", 1, 2));
-		pixelMap.add(new ViewSetup("PETSCII", "DY", "REFERENCE", 1, 2));
-		pixelMap.add(new ViewSetup("PETSCII", "DXY", "REFERENCE", 1, 2));
-		pixelMap.add(new ViewSetup("PETSCII", "CUSTOM", "REFERENCE", 1, 2));
-
-	}
-
 	public GfxEditorView() {
 
 		colorPaletteProvider = new IColorPaletteProvider() {
@@ -285,7 +245,7 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageGridState(@UIEventTopic("GridType") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			GridState gridState = (GridState) brokerObject.getTransferObject();
-			painter.getConf().setGridStyle(gridState.getGridStyle());
+			painter.getConf().setGridType(gridState.getGridType());
 			painter.getConf().setPixelGridEnabled(gridState.isEnabled());
 			// painter.recalc();
 			painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
@@ -452,8 +412,8 @@ public class GfxEditorView implements ITileUpdateListener {
 
 		menuService.registerContextMenu(painter, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
 		menuService.registerContextMenu(repository, "de.drazil.nerdsuite.popupmenu.GfxToolbox");
-		actualSize = new Point(painter.getConf().getTileWidthPixel() * painter.getConf().getZoomFactor(),
-				painter.getConf().getTileHeightPixel() * painter.getConf().getZoomFactor());
+		actualSize = new Point(painter.getConf().getTileWidthPixel() * painter.getConf().getScaleFactor(),
+				painter.getConf().getTileHeightPixel() * painter.getConf().getScaleFactor());
 		scrollablePainter.setMinSize(actualSize);
 
 		Display.getDefault().asyncExec(new Runnable() {
@@ -503,12 +463,18 @@ public class GfxEditorView implements ITileUpdateListener {
 			painter = new PainterWidget(scrollablePainter, SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED, owner,
 					colorPaletteProvider, false);
 			painter.getConf().setPixelGridEnabled(true);
-			painter.getConf().setGridStyle(GridType.Dot);
+			painter.getConf().setGridType(GridType.Dot);
 			painter.getConf().setTileGridEnabled(false);
 			painter.getConf().setTileCursorEnabled(false);
-			painter.getConf().setSeparatorEnabled(graphicFormat.getId().endsWith("SCREENSET") ? false : true);
+			painter.getConf().setTileSubGridEnabled(
+					graphicFormat.getId().endsWith("SCREENSET") || graphicFormat.getId().endsWith("PETSCII") ? false
+							: true);
+			painter.getConf().setSeparatorEnabled(
+					graphicFormat.getId().endsWith("SCREENSET") || graphicFormat.getId().endsWith("PETSCII") ? false
+							: true);
 			painter.getConf().setTileSelectionModes(TileSelectionModes.RANGE);
-			painter.getConf().setViewSetup(getViewSetup(metadata.getType(), metadata.getVariant(), "PAINTER"));
+			painter.getConf().setPixelSize(graphicFormatVariant.getPixelSize());
+			painter.getConf().setScaleFactor(graphicFormatVariant.getScaleFactor());
 			painter.getConf().computeDimensions();
 			scrollablePainter.setContent(painter);
 			scrollablePainter.setExpandVertical(true);
@@ -527,8 +493,11 @@ public class GfxEditorView implements ITileUpdateListener {
 			repository.getConf().setTileSubGridEnabled(false);
 			repository.getConf().setTileCursorEnabled(true);
 			repository.getConf().setSeparatorEnabled(false);
+			repository.getConf().setTileGap(3);
 			repository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE | TileSelectionModes.MULTI);
-			repository.getConf().setViewSetup(getViewSetup(metadata.getType(), metadata.getVariant(), "REPOSITORY"));
+			repository.getConf().setPixelSize(
+					graphicFormat.getId().endsWith("PETSCII") || graphicFormat.getId().endsWith("SCREENSET") ? 8 : 1);
+			repository.getConf().setScaleFactor(-1);
 			repository.getConf().computeDimensions();
 			scrollableRepository.setContent(repository);
 			scrollableRepository.setExpandVertical(true);
@@ -551,20 +520,12 @@ public class GfxEditorView implements ITileUpdateListener {
 			referenceRepository.getConf().setTileSubGridEnabled(false);
 			referenceRepository.getConf().setTileCursorEnabled(true);
 			referenceRepository.getConf().setSeparatorEnabled(false);
+			referenceRepository.getConf().setPixelSize(1);
+			referenceRepository.getConf().setScaleFactor(2);
 			referenceRepository.getConf().setTileSelectionModes(TileSelectionModes.SINGLE);
-			referenceRepository.getConf()
-					.setViewSetup(getViewSetup(metadata.getType(), metadata.getVariant(), "REFERENCE"));
 			referenceRepository.getConf().computeDimensions();
 		}
 		return referenceRepository;
-	}
-
-	private ViewSetup getViewSetup(String type, String variant, String widget) {
-
-		ViewSetup vs = pixelMap.stream()
-				.filter(v -> v.getType().equals(type) && v.getVariant().equals(variant) && v.getWidget().equals(widget))
-				.findFirst().orElse(new ViewSetup(null, null, null, 1, 1));
-		return vs;
 	}
 
 	@Override

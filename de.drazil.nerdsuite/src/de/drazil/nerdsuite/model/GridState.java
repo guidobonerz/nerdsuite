@@ -8,5 +8,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class GridState {
 	public boolean enabled;
-	public GridType gridStyle;
+	public GridType gridType;
 }

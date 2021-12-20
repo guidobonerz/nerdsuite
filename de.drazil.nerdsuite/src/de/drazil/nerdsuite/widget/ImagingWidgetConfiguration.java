@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.widget;
 
+import org.eclipse.swt.graphics.Point;
+
 import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
@@ -36,8 +38,12 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public int pixelSize = 1;
 	public int pixelPaintWidth = 1;
 	public int pixelPaintHeight = 1;
+	public int painterScaledTileWith = 1;
+	public int painterScaledTileHeight = 1;
+	public int repositoryScaledTileWith = 1;
+	public int repositoryScaledTileHeight = 1;
 	public int cursorLineWidth = 1;
-	public int zoomFactor = 1;
+	public int scaleFactor = 1;
 	public int tileSelectionModes = NONE;
 	public boolean pixelGridEnabled = true;
 	public boolean tileGridEnabled = true;
@@ -49,7 +55,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
-	public GridType gridStyle = GridType.Line;
+	public GridType gridType = GridType.Line;
 	public CursorMode cursorMode = CursorMode.Point;
 	public ViewSetup viewSetup;
 
@@ -59,11 +65,6 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 		tileColumns = metadata.getColumns();
 		tileRows = metadata.getRows();
 		storageSize = metadata.getStorageEntity();
-	}
-
-	public void setViewSetup(ViewSetup vs) {
-		pixelSize = vs.getPixelSize();
-		zoomFactor = vs.getZoomFactor();
 	}
 
 	public void computeDimensions() {
@@ -87,5 +88,24 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 			fullWidthPixel = tileWidthPixel * columns + (columns * tileGap) - tileGap;
 			fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
 		}
+		double thumbnailScaleFactor = 1;
+		if (tileWidthPixel >= 100) {
+			thumbnailScaleFactor = (100f / tileWidthPixel);
+		} else {
+			if (tileWidthPixel <= 48) {
+				thumbnailScaleFactor = 1;
+			}
+			if (tileWidthPixel <= 24) {
+				thumbnailScaleFactor = 2;
+			}
+			if (tileWidthPixel <= 16) {
+				thumbnailScaleFactor = 3;
+			}
+		}
+
+		painterScaledTileWith = (int) (tileWidthPixel * scaleFactor);
+		painterScaledTileHeight = (int) (tileHeightPixel * scaleFactor);
+		repositoryScaledTileWith = (int) (tileWidthPixel * thumbnailScaleFactor);
+		repositoryScaledTileHeight = (int) (tileHeightPixel * thumbnailScaleFactor);
 	}
 }
