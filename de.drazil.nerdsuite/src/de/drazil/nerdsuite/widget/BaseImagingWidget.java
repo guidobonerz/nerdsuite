@@ -57,7 +57,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 	protected int oldTileCursorY = -1;
 	protected int tileCursorX = 0;
 	protected int tileCursorY = 0;
-	protected int temporaryIndex;
+	protected int temporaryIndex=-1;
 	protected int action;
 
 	protected boolean takePosition;
@@ -99,6 +99,7 @@ public abstract class BaseImagingWidget extends BaseWidget
 		}
 
 		imagePainterFactory = new ImagePainterFactory(owner, colorPaletteProvider, conf);
+
 		addPaintListener(this);
 		getParent().getDisplay().getActiveShell().addListener(SWT.Resize, new Listener() {
 			@Override
@@ -215,8 +216,8 @@ public abstract class BaseImagingWidget extends BaseWidget
 
 	protected void computeCursorPosition(int x, int y) {
 		cursorX = x / (conf.pixelPaintWidth * (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)
-				* conf.getZoomFactor());
-		cursorY = y / (conf.pixelPaintHeight * conf.getZoomFactor());
+				* conf.getScaleFactor());
+		cursorY = y / (conf.pixelPaintHeight * conf.getScaleFactor());
 		if (oldCursorX != cursorX || oldCursorY != cursorY || takePosition) {
 			lastCursorX = oldCursorX;
 			lastCursorY = oldCursorY;
@@ -231,8 +232,15 @@ public abstract class BaseImagingWidget extends BaseWidget
 		} else {
 			cursorChanged = false;
 		}
-		tileX = x / (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap);
-		tileY = y / (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap);
+		tileX = 0;
+		tileY = 0;
+		if (conf.scaleFactor == -1) {
+			tileX = x / (conf.repositoryScaledTileWith + conf.tileGap);
+			tileY = y / (conf.repositoryScaledTileHeight + conf.tileGap);
+		} else {
+			tileX = x / (conf.painterScaledTileWith + conf.tileGap);
+			tileY = y / (conf.painterScaledTileHeight + conf.tileGap);
+		}
 
 		if (oldTileX != tileX || oldTileY != tileY || takePosition) {
 			tileDiffX = tileX - oldTileX;
@@ -247,8 +255,8 @@ public abstract class BaseImagingWidget extends BaseWidget
 			tileChanged = false;
 		}
 
-		tileCursorX = (cursorX - (tileX * conf.tileWidth * conf.zoomFactor));
-		tileCursorY = (cursorY - (tileY * conf.tileHeight * conf.zoomFactor));
+		tileCursorX = (cursorX - (tileX * conf.tileWidth * conf.scaleFactor));
+		tileCursorY = (cursorY - (tileY * conf.tileHeight * conf.scaleFactor));
 		if (oldTileCursorX != tileCursorX || oldTileCursorY != tileCursorY || takePosition) {
 			tileCursorDiffX = tileCursorX - oldTileCursorX;
 			tileCursorDiffX = abs(tileCursorDiffX) > 1 ? tileCursorDiffX : 0;
@@ -261,9 +269,11 @@ public abstract class BaseImagingWidget extends BaseWidget
 		} else {
 			tileCursorChanged = false;
 		}
-		//System.out.printf("x:%s y:%s tx: %d ty:%d tcx:%d tcy:%d width:%d pixelSize:%d zoom:%d gap:%d\n", x, y, tileX,
-		//		tileY, tileCursorX, tileCursorY, conf.tileWidthPixel, conf.pixelPaintWidth, conf.zoomFactor,
-		//		conf.tileGap);
+		// System.out.printf("x:%s y:%s tx: %d ty:%d tcx:%d tcy:%d width:%d pixelSize:%d
+		// zoom:%d gap:%d\n", x, y, tileX,
+		// tileY, tileCursorX, tileCursorY, conf.tileWidthPixel, conf.pixelPaintWidth,
+		// conf.zoomFactor,
+		// conf.tileGap);
 	}
 
 	public void paintControl(PaintEvent e) {

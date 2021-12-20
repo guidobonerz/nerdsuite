@@ -149,9 +149,9 @@ public class ReferenceWidget extends BaseImagingWidget {
 		selectedTileIndexList.forEach(i -> {
 			int y = i / conf.columns;
 			int x = i % conf.columns;
-			gc.fillRectangle(x * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap),
-					y * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap), conf.tileWidthPixel * conf.zoomFactor,
-					conf.tileHeightPixel * conf.zoomFactor);
+			gc.fillRectangle(x * (conf.tileWidthPixel * conf.scaleFactor + conf.tileGap),
+					y * (conf.tileHeightPixel * conf.scaleFactor + conf.tileGap), conf.tileWidthPixel * conf.scaleFactor,
+					conf.tileHeightPixel * conf.scaleFactor);
 			if (i == temporaryIndex) {
 				gc.setLineWidth(3);
 				gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
@@ -165,9 +165,9 @@ public class ReferenceWidget extends BaseImagingWidget {
 		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
 			gc.setLineWidth(3);
 			gc.setBackground(Constants.BRIGHT_ORANGE);
-			gc.fillRectangle(tileX * (conf.tileWidthPixel * conf.zoomFactor + conf.tileGap),
-					tileY * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap),
-					conf.tileWidthPixel * conf.zoomFactor, conf.tileHeightPixel * conf.zoomFactor);
+			gc.fillRectangle(tileX * (conf.tileWidthPixel * conf.scaleFactor + conf.tileGap),
+					tileY * (conf.tileHeightPixel * conf.scaleFactor + conf.tileGap),
+					conf.tileWidthPixel * conf.scaleFactor, conf.tileHeightPixel * conf.scaleFactor);
 		}
 	}
 

@@ -275,8 +275,8 @@ public class PainterWidget extends BaseImagingWidget {
 				/ (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)) {
 
 			int pixelWidth = conf.pixelPaintWidth
-					* (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * conf.getZoomFactor();
-			int pixelHeight = conf.pixelPaintHeight * conf.getZoomFactor();
+					* (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * conf.getScaleFactor();
+			int pixelHeight = conf.pixelPaintHeight * conf.getScaleFactor();
 
 			if (conf.pencilMode == PencilMode.Draw) {
 
@@ -319,7 +319,7 @@ public class PainterWidget extends BaseImagingWidget {
 		gc.setForeground(Constants.BRIGHT_ORANGE);
 		gc.setLineWidth(2);
 		gc.setLineStyle(SWT.LINE_DASH);
-		int zoomFactor = conf.getZoomFactor();
+		int zoomFactor = conf.getScaleFactor();
 		int width = (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1) * zoomFactor;
 
 		int x1 = selectedPixelRangeX;

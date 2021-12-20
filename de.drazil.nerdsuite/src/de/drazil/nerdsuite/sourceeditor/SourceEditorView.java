@@ -228,7 +228,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		ama.setTriggerTimeMillis(500);
 		ama.addMouseListener(new AdvancedMouseListenerAdapter() {
 			@Override
-			public void rightMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+			public void rightMouseButtonClicked(int modifierMask, int x, int y) {
 
 				Display.getDefault().syncExec(new Runnable() {
 					@Override
@@ -297,7 +297,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 				styledText.redraw();
 			}
 		});
-		menuService.registerContextMenu(styledText, "de.drazil.nerdsuite.popupmenu.SourceEditor");
+		//menuService.registerContextMenu(styledText, "de.drazil.nerdsuite.popupmenu.SourceEditor");
 	}
 
 	@Override
@@ -307,6 +307,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		}
 		documentStyler.refreshMultilineComments(styledText.getText());
 		documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
+		styledText.setCaretOffset(styledText.getCaretOffset()+1);
 		styledText.redraw();
 	}
 
