@@ -11,7 +11,7 @@ public class MulticolorToggleService extends AbstractImagingService {
 	@Override
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService,
 			TileAction tileAction) {
-		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
+		int[] content = tile.getActiveLayer().getContent();
 		tile.setMulticolorEnabled(action == 1 ? true : false);
 		for (int i = 0; i < content.length; i += 2) {
 			if (action == MC_ON) {

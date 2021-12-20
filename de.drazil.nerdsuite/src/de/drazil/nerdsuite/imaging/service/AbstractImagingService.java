@@ -4,7 +4,6 @@ import java.util.List;
 
 import de.drazil.nerdsuite.enums.LayerAction;
 import de.drazil.nerdsuite.enums.TileAction;
-import de.drazil.nerdsuite.model.GraphicMetadata;
 import de.drazil.nerdsuite.model.TileLocation;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import de.drazil.nerdsuite.widget.Tile;
@@ -74,7 +73,6 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 		service = ServiceFactory.getService(owner, TileRepositoryService.class);
 		selectedTileIndexList = service.getSelectedTileIndexList();
 		if (needsConfirmation() && isProcessConfirmed(true) || !needsConfirmation()) {
-			GraphicMetadata metadata = service.getMetadata();
 			selectedTileIndexList.forEach(i -> {
 				Tile tile = service.getTile(i);
 				each(action, i, tile, service, null);
@@ -129,7 +127,8 @@ public abstract class AbstractImagingService extends AbstractExecutableService i
 	 */
 	// }
 
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService,
+			TileAction tileAction) {
 
 	}
 

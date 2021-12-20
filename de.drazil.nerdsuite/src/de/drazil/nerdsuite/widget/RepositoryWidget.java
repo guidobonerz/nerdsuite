@@ -369,6 +369,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawCalculatedArea() {
+
 		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile
 				|| redrawMode == RedrawMode.DrawPixel) {
 			drawAll = false;
