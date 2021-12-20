@@ -327,18 +327,18 @@ public class RepositoryWidget extends BaseImagingWidget {
 					.get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
 			int iys = start / maxColumns;
-			int ys = iys * conf.repositoryScaledTileHeight;
+			int ys = iys * (conf.repositoryScaledTileHeight + conf.tileGap);
 
 			int iye = end / maxColumns;
-			int ye = iye * conf.repositoryScaledTileHeight;
+			int ye = iye * (conf.repositoryScaledTileHeight + conf.tileGap);
 
 			start = computeTileIndex(0, iys);
 			end = computeTileIndex(maxColumns, iye);
 			if (end > tileRepositoryService.getSize()) {
 				end = tileRepositoryService.getSize();
 			}
-			int height = (1 + iye - iys) * conf.repositoryScaledTileHeight;
-			redraw(0, ys, conf.repositoryScaledTileWith * maxColumns, height, false);
+			int height = (1 + iye - iys) * (conf.repositoryScaledTileHeight + conf.tileGap);
+			redraw(0, ys, (conf.repositoryScaledTileWith + conf.tileGap) * maxColumns, height, false);
 		} else {
 			drawAll = true;
 			redraw();
