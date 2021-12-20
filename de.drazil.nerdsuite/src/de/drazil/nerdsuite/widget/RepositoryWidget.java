@@ -178,8 +178,8 @@ public class RepositoryWidget extends BaseImagingWidget {
 			boolean paintTelevisionMode) {
 		Rectangle r = getParent().getBounds();
 
-		maxColumns = r.width / (conf.repositoryScaledTileWith + 3);
-		maxRows = r.height / (conf.repositoryScaledTileHeight + 3);
+		maxColumns = r.width / (conf.repositoryScaledTileWith + conf.tileGap);
+		maxRows = r.height / (conf.repositoryScaledTileHeight + conf.tileGap);
 
 		/*
 		 * for (int i = (drawAll ? 0 : start); i < (drawAll ?
@@ -260,15 +260,13 @@ public class RepositoryWidget extends BaseImagingWidget {
 		gc.setLineWidth(1);
 		gc.setLineStyle(SWT.LINE_SOLID);
 		gc.setForeground(Constants.TILE_GRID_COLOR);
-		for (int x = 0; x < maxColumns; x++) {
+		for (int x = 0; x <= maxColumns; x++) {
 
 			gc.drawLine(x * (conf.repositoryScaledTileWith + conf.tileGap) - 1, 0,
-					x * (conf.repositoryScaledTileWith + conf.tileGap) - 1,
-					maxRows * (conf.repositoryScaledTileWith * conf.tileGap));
+					x * (conf.repositoryScaledTileWith + conf.tileGap) - 1, getParent().getBounds().height);
 		}
-		for (int y = 0; y < maxRows; y++) {
-			gc.drawLine(0, y * (conf.repositoryScaledTileHeight + conf.tileGap) - 1,
-					maxColumns * (conf.repositoryScaledTileHeight + conf.tileGap),
+		for (int y = 0; y <= maxRows; y++) {
+			gc.drawLine(0, y * (conf.repositoryScaledTileHeight + conf.tileGap) - 1, getParent().getBounds().width,
 					y * (conf.repositoryScaledTileHeight + conf.tileGap) - 1);
 
 		}

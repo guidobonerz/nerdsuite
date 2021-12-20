@@ -55,7 +55,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	public PixelConfig pixelConfig = PixelConfig.BC1;
 	public PaintMode paintMode = PaintMode.Single;
 	public PencilMode pencilMode = PencilMode.Draw;
-	public GridType gridStyle = GridType.Line;
+	public GridType gridType = GridType.Line;
 	public CursorMode cursorMode = CursorMode.Point;
 	public ViewSetup viewSetup;
 
@@ -65,11 +65,6 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 		tileColumns = metadata.getColumns();
 		tileRows = metadata.getRows();
 		storageSize = metadata.getStorageEntity();
-	}
-
-	public void setViewSetup(ViewSetup vs) {
-		// pixelSize = vs.getPixelSize();
-		scaleFactor = vs.getZoomFactor();
 	}
 
 	public void computeDimensions() {
@@ -94,8 +89,8 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 			fullHeightPixel = tileHeightPixel * rows + (rows * tileGap) - tileGap;
 		}
 		double thumbnailScaleFactor = 1;
-		if (tileWidthPixel >= 80) {
-			thumbnailScaleFactor = (80f / tileWidthPixel);
+		if (tileWidthPixel >= 100) {
+			thumbnailScaleFactor = (100f / tileWidthPixel);
 		} else {
 			if (tileWidthPixel <= 48) {
 				thumbnailScaleFactor = 1;

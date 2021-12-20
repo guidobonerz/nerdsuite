@@ -14,9 +14,11 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.enums.CursorMode;
+import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PencilMode;
 import de.drazil.nerdsuite.enums.RedrawMode;
 import de.drazil.nerdsuite.imaging.service.ImagePainterFactory;
+import de.drazil.nerdsuite.model.GridState;
 
 public class PainterWidget extends BaseImagingWidget {
 
@@ -30,6 +32,7 @@ public class PainterWidget extends BaseImagingWidget {
 	private int oldScrollStep = 0;
 	private int scrollStep = 0;
 	private ScrolledComposite parent;
+	private GridType gridType = GridType.None;
 
 	public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
 			boolean autowrap) {
@@ -234,13 +237,17 @@ public class PainterWidget extends BaseImagingWidget {
 		}
 		imagePainterFactory.drawScaledImage(gc, t, id, 0, 0);
 		t.setDirty(false);
+		boolean forceRepaintGrid = gridType != conf.getGridType();
+		if (forceRepaintGrid) {
+			gridType = conf.getGridType();
+		}
 		if (paintPixelGrid) {
-			gc.drawImage(imagePainterFactory.getGridLayer().getImage(), 0, 0);
+			gc.drawImage(imagePainterFactory.getGridLayer(forceRepaintGrid).getImage(), 0, 0);
 			if (paintSeparator) {
-				// paintSeparator(gc);
+				paintSeparator(gc);
 			}
 			if (paintTileSubGrid) {
-				// paintTileSubGrid(gc);
+				paintTileSubGrid(gc);
 			}
 		}
 
@@ -255,21 +262,24 @@ public class PainterWidget extends BaseImagingWidget {
 		redrawMode = RedrawMode.DrawNothing;
 	}
 
-	/*
-	 * private void paintTileSubGrid(GC gc) {
-	 * gc.setForeground(Constants.TILE_SUB_GRID_COLOR); for (int y = height; y <
-	 * tileHeight; y += height) { gc.drawLine(0, y * pixelHeight,
-	 * conf.scaledTileWidth, y * pixelHeight); }
-	 * gc.setForeground(Constants.TILE_SUB_GRID_COLOR); for (int x = width; x <
-	 * tileWidth; x += width) { gc.drawLine(x * pixelWidth, 0, x * pixelWidth,
-	 * conf.scaledTileHeight); } }
-	 * 
-	 * private void paintSeparator(GC gc) {
-	 * gc.setForeground(Constants.BYTE_SEPARATOR_COLOR); int bc =
-	 * conf.pixelConfig.bitCount; int step = (8 * bc); for (int x = step; x <
-	 * (conf.scaledTileWidth) / bc; x += step) { gc.drawLine(x * pixelWidth, 0, x *
-	 * pixelWidth, conf.scaledTileHeight); } }
-	 */
+	private void paintTileSubGrid(GC gc) {
+		gc.setForeground(Constants.TILE_SUB_GRID_COLOR);
+		for (int i = conf.iconHeight; i < conf.tileHeight; i += conf.iconHeight) {
+			gc.drawLine(0, i * conf.scaleFactor, conf.painterScaledTileWith, i * conf.scaleFactor);
+		}
+		for (int i = conf.iconWidth; i < conf.tileWidth; i += conf.iconWidth) {
+			gc.drawLine(i * conf.scaleFactor, 0, i * conf.scaleFactor, conf.painterScaledTileHeight);
+		}
+	}
+
+	private void paintSeparator(GC gc) {
+		gc.setForeground(Constants.BYTE_SEPARATOR_COLOR);
+
+		for (int x = conf.storageSize; x < (conf.tileWidth); x += conf.storageSize) {
+			gc.drawLine(x * conf.scaleFactor, 0, x * conf.scaleFactor, conf.painterScaledTileHeight);
+		}
+	}
+
 	private void paintPixelCursor(GC gc) {
 		if (computeCursorIndex(cursorX, cursorY) < conf.tileSize
 				/ (tileRepositoryService.getSelectedTile().isMulticolorEnabled() ? 2 : 1)) {
@@ -310,8 +320,6 @@ public class PainterWidget extends BaseImagingWidget {
 			int y = (cursorY * pixelHeight) - 1;
 
 			gc.drawRectangle(x, y, pixelWidth + 1, pixelHeight + 1);
-		} else {
-			System.out.println("outer range");
 		}
 	}
 

@@ -110,23 +110,27 @@ public class ImagePainterFactory {
 		return new Point(w, h);
 	}
 
-	public Image2 getGridLayer() {
-		String name = conf.gridStyle.toString();
+	public Image2 getGridLayer(boolean forceRepaint) {
+		String name = conf.gridType.toString();
 		Image2 imageInternal = imagePool.get(name);
-		if (null == imageInternal) {
-			imageInternal = createLayer();
+		if (null == imageInternal || forceRepaint) {
+			imageInternal = createLayer(conf.painterScaledTileWith, conf.painterScaledTileHeight);
 			GC gc = new GC(imageInternal.getImage());
-			gc.setForeground(conf.gridStyle == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
-			for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x++) {
+			gc.setForeground(conf.gridType == GridType.Line ? Constants.LINE_GRID_COLOR : Constants.PIXEL_GRID_COLOR);
+			if (conf.gridType == GridType.Line) {
+				for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x++) {
+					gc.drawLine(x * conf.pixelPaintWidth * conf.getScaleFactor(), 0,
+							x * conf.pixelPaintWidth * conf.getScaleFactor(),
+							conf.tileHeightPixel * conf.getScaleFactor());
+				}
 				for (int y = 0; y <= conf.iconHeight * conf.tileRows; y++) {
-					if (conf.gridStyle == GridType.Line) {
-						gc.drawLine(x * conf.pixelPaintWidth * conf.getScaleFactor(), 0,
-								x * conf.pixelPaintWidth * conf.getScaleFactor(),
-								conf.tileHeightPixel * conf.getScaleFactor());
-						gc.drawLine(0, y * conf.pixelPaintHeight * conf.getScaleFactor(),
-								conf.tileWidthPixel * conf.getScaleFactor(),
-								y * conf.pixelPaintHeight * conf.getScaleFactor());
-					} else {
+					gc.drawLine(0, y * conf.pixelPaintHeight * conf.getScaleFactor(),
+							conf.tileWidthPixel * conf.getScaleFactor(),
+							y * conf.pixelPaintHeight * conf.getScaleFactor());
+				}
+			} else {
+				for (int x = 0; x <= conf.iconWidth * conf.tileColumns; x++) {
+					for (int y = 0; y <= conf.iconHeight * conf.tileRows; y++) {
 						gc.drawPoint(x * conf.pixelPaintWidth * conf.getScaleFactor(),
 								y * conf.pixelPaintHeight * conf.getScaleFactor());
 					}
@@ -136,6 +140,7 @@ public class ImagePainterFactory {
 			imagePool.put(name, imageInternal);
 		}
 		return imageInternal;
+
 	}
 
 	public Image2 createOrUpdateBaseImage(String name, Color color) {
