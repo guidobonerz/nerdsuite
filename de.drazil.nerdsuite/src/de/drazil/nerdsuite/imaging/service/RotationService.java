@@ -30,7 +30,7 @@ public class RotationService extends AbstractImagingService {
 			TileAction tileAction) {
 		Rectangle selection = service.getSelection();
 		int[] content = tile.getActiveLayer().getContent();
-		int[] brush = tile.getActiveLayer().getContent();
+		int[] brush = tile.getActiveLayer().getBrush();
 		int width = selection.width / (tile.isMulticolorEnabled() ? 2 : 1);
 		int[] sourceContentSelection = new int[width * selection.height];
 		int[] sourceBrushSelection = new int[width * selection.height];

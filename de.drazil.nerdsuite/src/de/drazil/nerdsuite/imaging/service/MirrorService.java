@@ -14,7 +14,7 @@ public class MirrorService extends AbstractImagingService {
 	@Override
 	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
 		int[] content = tile.getActiveLayer().getContent();
-		int[] brush = tile.getActiveLayer().getContent();
+		int[] brush = tile.getActiveLayer().getBrush();
 		Rectangle selection = service.getSelection();
 		int tileWidth = conf.tileWidth;
 		int loops = tile.isMulticolorEnabled() ? 2 : 1;
