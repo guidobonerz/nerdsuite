@@ -18,9 +18,10 @@ public class PurgeService extends AbstractImagingService {
 	}
 
 	@Override
-	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService, TileAction tileAction) {
-		int[] content = repositoryService.getActiveLayerFromSelectedTile().getContent();
-		int[] brush = repositoryService.getActiveLayerFromSelectedTile().getBrush();
+	public void each(int action, int tileIndex, Tile tile, TileRepositoryService repositoryService,
+			TileAction tileAction) {
+		int[] content = tile.getActiveLayer().getContent();
+		int[] brush = tile.getActiveLayer().getBrush();
 		int tileWidth = conf.getTileWidth();
 		Rectangle r = service.getSelection();
 		Integer blankValue = repositoryService.getMetadata().getBlankValue();

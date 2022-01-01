@@ -6,7 +6,15 @@
 	"basicInstructionList": [
 		{
 			"instruction": ":",
-			"token": "01",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "01"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "C",
@@ -15,7 +23,15 @@
 		},
 		{
 			"instruction": "after",
-			"token": "80",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "80"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -24,7 +40,15 @@
 		},
 		{
 			"instruction": "auto",
-			"token": "81",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "81"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -33,7 +57,15 @@
 		},
 		{
 			"instruction": "border",
-			"token": "82",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "82"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -42,7 +74,15 @@
 		},
 		{
 			"instruction": "call",
-			"token": "83",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "83"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -51,7 +91,15 @@
 		},
 		{
 			"instruction": "cat",
-			"token": "84",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "84"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -60,7 +108,15 @@
 		},
 		{
 			"instruction": "chain",
-			"token": "85",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "85"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -69,7 +125,15 @@
 		},
 		{
 			"instruction": "clear",
-			"token": "86",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "86"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -78,7 +142,15 @@
 		},
 		{
 			"instruction": "clg",
-			"token": "87",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "87"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -87,7 +159,15 @@
 		},
 		{
 			"instruction": "closein",
-			"token": "88",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "88"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -96,7 +176,15 @@
 		},
 		{
 			"instruction": "closeout",
-			"token": "89",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "89"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -105,7 +193,15 @@
 		},
 		{
 			"instruction": "cls",
-			"token": "8a",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "8a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -114,7 +210,15 @@
 		},
 		{
 			"instruction": "cont",
-			"token": "8b",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "8b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -123,7 +227,15 @@
 		},
 		{
 			"instruction": "data",
-			"token": "8c",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "8c"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -132,7 +244,15 @@
 		},
 		{
 			"instruction": "def",
-			"token": "8d",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "8d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -141,7 +261,15 @@
 		},
 		{
 			"instruction": "defint",
-			"token": "8e",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "8e"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -150,7 +278,15 @@
 		},
 		{
 			"instruction": "defreal",
-			"token": "8f",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "8f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -159,7 +295,15 @@
 		},
 		{
 			"instruction": "defstr",
-			"token": "90",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "90"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -168,7 +312,15 @@
 		},
 		{
 			"instruction": "deg",
-			"token": "91",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "91"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -177,7 +329,15 @@
 		},
 		{
 			"instruction": "delete",
-			"token": "92",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "92"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -186,7 +346,15 @@
 		},
 		{
 			"instruction": "dim",
-			"token": "93",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "93"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -195,7 +363,15 @@
 		},
 		{
 			"instruction": "draw",
-			"token": "94",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "94"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -204,7 +380,15 @@
 		},
 		{
 			"instruction": "drawr",
-			"token": "95",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "95"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -213,7 +397,15 @@
 		},
 		{
 			"instruction": "edit",
-			"token": "96",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "96"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -222,7 +414,15 @@
 		},
 		{
 			"instruction": "else",
-			"token": "97",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "97"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -231,7 +431,15 @@
 		},
 		{
 			"instruction": "end",
-			"token": "98",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "98"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -240,7 +448,15 @@
 		},
 		{
 			"instruction": "ent",
-			"token": "99",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "99"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -249,7 +465,15 @@
 		},
 		{
 			"instruction": "env",
-			"token": "9a",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "9a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -258,7 +482,15 @@
 		},
 		{
 			"instruction": "erase",
-			"token": "9b",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "9b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -267,7 +499,15 @@
 		},
 		{
 			"instruction": "error",
-			"token": "9c",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "9c"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -276,7 +516,15 @@
 		},
 		{
 			"instruction": "every",
-			"token": "9d",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "9d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -285,7 +533,15 @@
 		},
 		{
 			"instruction": "for",
-			"token": "9e",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "9e"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -294,7 +550,15 @@
 		},
 		{
 			"instruction": "gosub",
-			"token": "9f",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "9f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -303,7 +567,15 @@
 		},
 		{
 			"instruction": "goto",
-			"token": "a0",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -312,7 +584,15 @@
 		},
 		{
 			"instruction": "if",
-			"token": "a1",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -321,7 +601,15 @@
 		},
 		{
 			"instruction": "ink",
-			"token": "a2",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -330,7 +618,15 @@
 		},
 		{
 			"instruction": "input",
-			"token": "a3",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -339,7 +635,15 @@
 		},
 		{
 			"instruction": "key",
-			"token": "a4",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -348,7 +652,15 @@
 		},
 		{
 			"instruction": "let",
-			"token": "a5",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -357,7 +669,15 @@
 		},
 		{
 			"instruction": "line",
-			"token": "a6",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -366,7 +686,15 @@
 		},
 		{
 			"instruction": "list",
-			"token": "a7",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -375,7 +703,15 @@
 		},
 		{
 			"instruction": "load",
-			"token": "a8",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -384,7 +720,15 @@
 		},
 		{
 			"instruction": "locate",
-			"token": "a9",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "a9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -393,7 +737,15 @@
 		},
 		{
 			"instruction": "memory",
-			"token": "aa",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "aa"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -402,7 +754,15 @@
 		},
 		{
 			"instruction": "merge",
-			"token": "ab",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ab"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -411,7 +771,15 @@
 		},
 		{
 			"instruction": "mid$",
-			"token": "ac",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ac"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -420,7 +788,15 @@
 		},
 		{
 			"instruction": "mode",
-			"token": "ad",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ad"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -429,7 +805,15 @@
 		},
 		{
 			"instruction": "move",
-			"token": "ae",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ae"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -438,7 +822,15 @@
 		},
 		{
 			"instruction": "mover",
-			"token": "af",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "af"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -447,7 +839,15 @@
 		},
 		{
 			"instruction": "next",
-			"token": "b0",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -456,7 +856,15 @@
 		},
 		{
 			"instruction": "new",
-			"token": "b1",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -465,7 +873,15 @@
 		},
 		{
 			"instruction": "on",
-			"token": "b2",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -474,7 +890,15 @@
 		},
 		{
 			"instruction": "on break",
-			"token": "b3",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -483,7 +907,15 @@
 		},
 		{
 			"instruction": "on error goto",
-			"token": "b4",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -492,7 +924,15 @@
 		},
 		{
 			"instruction": "sq",
-			"token": "b5",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -501,7 +941,15 @@
 		},
 		{
 			"instruction": "openin",
-			"token": "b6",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -510,7 +958,15 @@
 		},
 		{
 			"instruction": "openout",
-			"token": "b7",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -519,7 +975,15 @@
 		},
 		{
 			"instruction": "origin",
-			"token": "b8",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -528,7 +992,15 @@
 		},
 		{
 			"instruction": "out",
-			"token": "b9",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "b9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -537,7 +1009,15 @@
 		},
 		{
 			"instruction": "paper",
-			"token": "ba",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ba"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -546,7 +1026,15 @@
 		},
 		{
 			"instruction": "pen",
-			"token": "bb",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "bb"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -555,7 +1043,15 @@
 		},
 		{
 			"instruction": "plot",
-			"token": "bc",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "bc"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -564,7 +1060,15 @@
 		},
 		{
 			"instruction": "plotr",
-			"token": "bd",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "bd"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -573,7 +1077,15 @@
 		},
 		{
 			"instruction": "poke",
-			"token": "be",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "be"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -582,7 +1094,15 @@
 		},
 		{
 			"instruction": "print",
-			"token": "bf",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "bf"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -591,7 +1111,15 @@
 		},
 		{
 			"instruction": "'",
-			"token": "c0",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c0"
+				}
+			],
 			"description": "rem",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -600,7 +1128,15 @@
 		},
 		{
 			"instruction": "rad",
-			"token": "c1",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -609,7 +1145,15 @@
 		},
 		{
 			"instruction": "randomize",
-			"token": "c2",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -618,7 +1162,15 @@
 		},
 		{
 			"instruction": "read",
-			"token": "c3",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -627,7 +1179,15 @@
 		},
 		{
 			"instruction": "release",
-			"token": "c4",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -636,7 +1196,15 @@
 		},
 		{
 			"instruction": "rem",
-			"token": "c5",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -645,7 +1213,15 @@
 		},
 		{
 			"instruction": "renum",
-			"token": "c6",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -654,7 +1230,15 @@
 		},
 		{
 			"instruction": "restore",
-			"token": "c7",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -663,7 +1247,15 @@
 		},
 		{
 			"instruction": "resume",
-			"token": "c8",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -672,7 +1264,15 @@
 		},
 		{
 			"instruction": "return",
-			"token": "c9",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "c9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -681,7 +1281,15 @@
 		},
 		{
 			"instruction": "run",
-			"token": "ca",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ca"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -690,7 +1298,15 @@
 		},
 		{
 			"instruction": "save",
-			"token": "cb",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "cb"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -699,7 +1315,15 @@
 		},
 		{
 			"instruction": "sound",
-			"token": "cc",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "cc"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -708,7 +1332,15 @@
 		},
 		{
 			"instruction": "speed",
-			"token": "cd",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "cd"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -717,7 +1349,15 @@
 		},
 		{
 			"instruction": "stop",
-			"token": "ce",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ce"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -726,7 +1366,15 @@
 		},
 		{
 			"instruction": "symbol",
-			"token": "cf",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "cf"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -735,7 +1383,15 @@
 		},
 		{
 			"instruction": "tag",
-			"token": "d0",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -744,7 +1400,15 @@
 		},
 		{
 			"instruction": "tagoff",
-			"token": "d1",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -753,7 +1417,15 @@
 		},
 		{
 			"instruction": "troff",
-			"token": "d2",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -762,7 +1434,15 @@
 		},
 		{
 			"instruction": "tron",
-			"token": "d3",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -771,7 +1451,15 @@
 		},
 		{
 			"instruction": "wait",
-			"token": "d4",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -780,7 +1468,15 @@
 		},
 		{
 			"instruction": "wend",
-			"token": "d5",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -789,7 +1485,15 @@
 		},
 		{
 			"instruction": "while",
-			"token": "d6",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -798,7 +1502,15 @@
 		},
 		{
 			"instruction": "width",
-			"token": "d7",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -807,7 +1519,15 @@
 		},
 		{
 			"instruction": "window",
-			"token": "d8",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -816,7 +1536,15 @@
 		},
 		{
 			"instruction": "write",
-			"token": "d9",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "d9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -825,7 +1553,15 @@
 		},
 		{
 			"instruction": "zone",
-			"token": "da",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "da"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -834,7 +1570,15 @@
 		},
 		{
 			"instruction": "di",
-			"token": "db",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "db"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -843,7 +1587,15 @@
 		},
 		{
 			"instruction": "ei",
-			"token": "dc",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "dc"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -852,57 +1604,95 @@
 		},
 		{
 			"instruction": "fill",
-			"token": "dd",
+			"tokens": [
+				{
+					"version": [
+						11
+					],
+					"token": "dd"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 11
+			"maxParameters": 0
 		},
 		{
 			"instruction": "graphics",
-			"token": "de",
+			"tokens": [
+				{
+					"version": [
+						11
+					],
+					"token": "de"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 11
+			"maxParameters": 0
 		},
 		{
 			"instruction": "mask",
-			"token": "df",
+			"tokens": [
+				{
+					"version": [
+						11
+					],
+					"token": "df"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 11
+			"maxParameters": 0
 		},
 		{
 			"instruction": "frame",
-			"token": "e0",
+			"tokens": [
+				{
+					"version": [
+						11
+					],
+					"token": "e0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 11
+			"maxParameters": 0
 		},
 		{
 			"instruction": "cursor",
-			"token": "e1",
+			"tokens": [
+				{
+					"version": [
+						11
+					],
+					"token": "e1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 11
+			"maxParameters": 0
 		},
 		{
 			"instruction": "erl",
-			"token": "e3",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "e3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -911,7 +1701,15 @@
 		},
 		{
 			"instruction": "fn",
-			"token": "e4",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "e4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -920,7 +1718,15 @@
 		},
 		{
 			"instruction": "spc",
-			"token": "e5",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "e5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -929,7 +1735,15 @@
 		},
 		{
 			"instruction": "step",
-			"token": "e6",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "e6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -938,7 +1752,15 @@
 		},
 		{
 			"instruction": "swap",
-			"token": "e7",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "e7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -947,7 +1769,15 @@
 		},
 		{
 			"instruction": "tab",
-			"token": "ea",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ea"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -956,7 +1786,15 @@
 		},
 		{
 			"instruction": "then",
-			"token": "eb",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "eb"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -965,7 +1803,15 @@
 		},
 		{
 			"instruction": "to",
-			"token": "ec",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ec"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -974,7 +1820,15 @@
 		},
 		{
 			"instruction": "using",
-			"token": "ed",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ed"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -983,7 +1837,15 @@
 		},
 		{
 			"instruction": ">",
-			"token": "ee",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ee"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -992,7 +1854,15 @@
 		},
 		{
 			"instruction": "=",
-			"token": "ef",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "ef"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1001,7 +1871,15 @@
 		},
 		{
 			"instruction": ">=",
-			"token": "f0",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1010,7 +1888,15 @@
 		},
 		{
 			"instruction": "<",
-			"token": "f1",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1019,7 +1905,15 @@
 		},
 		{
 			"instruction": "<>",
-			"token": "f2",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1028,7 +1922,15 @@
 		},
 		{
 			"instruction": "<=",
-			"token": "f3",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1037,7 +1939,15 @@
 		},
 		{
 			"instruction": "+",
-			"token": "f4",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1046,7 +1956,15 @@
 		},
 		{
 			"instruction": "-",
-			"token": "f5",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1055,7 +1973,15 @@
 		},
 		{
 			"instruction": "*",
-			"token": "f6",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1064,7 +1990,15 @@
 		},
 		{
 			"instruction": "/",
-			"token": "f7",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1073,7 +2007,15 @@
 		},
 		{
 			"instruction": "^",
-			"token": "f8",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1082,7 +2024,15 @@
 		},
 		{
 			"instruction": "\\",
-			"token": "f9",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "f9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "?",
@@ -1091,7 +2041,15 @@
 		},
 		{
 			"instruction": "and",
-			"token": "fa",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "fa"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1100,7 +2058,15 @@
 		},
 		{
 			"instruction": "mod",
-			"token": "fb",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "fb"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1109,7 +2075,15 @@
 		},
 		{
 			"instruction": "or",
-			"token": "fc",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "fc"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1118,7 +2092,15 @@
 		},
 		{
 			"instruction": "xor",
-			"token": "fd",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "fd"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1127,7 +2109,15 @@
 		},
 		{
 			"instruction": "not",
-			"token": "fe",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"token": "fe"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -1136,8 +2126,16 @@
 		},
 		{
 			"instruction": "abs",
-			"prefix": "ff",
-			"token": "00",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "00"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1146,8 +2144,16 @@
 		},
 		{
 			"instruction": "asc",
-			"prefix": "ff",
-			"token": "01",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "01"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1156,8 +2162,16 @@
 		},
 		{
 			"instruction": "atn",
-			"prefix": "ff",
-			"token": "02",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "02"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1166,8 +2180,16 @@
 		},
 		{
 			"instruction": "chr$",
-			"prefix": "ff",
-			"token": "03",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "03"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1176,8 +2198,16 @@
 		},
 		{
 			"instruction": "cint",
-			"prefix": "ff",
-			"token": "04",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "04"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1186,8 +2216,16 @@
 		},
 		{
 			"instruction": "cos",
-			"prefix": "ff",
-			"token": "05",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "05"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1196,8 +2234,16 @@
 		},
 		{
 			"instruction": "creal",
-			"prefix": "ff",
-			"token": "06",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "06"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1206,8 +2252,16 @@
 		},
 		{
 			"instruction": "exp",
-			"prefix": "ff",
-			"token": "07",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "07"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1216,8 +2270,16 @@
 		},
 		{
 			"instruction": "fix",
-			"prefix": "ff",
-			"token": "08",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "08"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1226,8 +2288,16 @@
 		},
 		{
 			"instruction": "fre",
-			"prefix": "ff",
-			"token": "09",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "09"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1236,8 +2306,16 @@
 		},
 		{
 			"instruction": "inkey",
-			"prefix": "ff",
-			"token": "0a",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "0a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1246,8 +2324,16 @@
 		},
 		{
 			"instruction": "inp",
-			"prefix": "ff",
-			"token": "0b",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "0b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1256,9 +2342,16 @@
 		},
 		{
 			"instruction": "int",
-			"prefix": "ff",
-			"token": "0c",
-			"description": "",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "0c"
+				}
+			],
 			"includesOpenBrace": false,
 			"purpose": "F",
 			"minParameters": 0,
@@ -1266,8 +2359,16 @@
 		},
 		{
 			"instruction": "joy",
-			"prefix": "ff",
-			"token": "0d",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "0d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1276,8 +2377,16 @@
 		},
 		{
 			"instruction": "len",
-			"prefix": "ff",
-			"token": "0e",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "0e"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1286,8 +2395,16 @@
 		},
 		{
 			"instruction": "log",
-			"prefix": "ff",
-			"token": "0f",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "0f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1296,8 +2413,16 @@
 		},
 		{
 			"instruction": "log10",
-			"prefix": "ff",
-			"token": "10",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "10"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1306,8 +2431,16 @@
 		},
 		{
 			"instruction": "lower$",
-			"prefix": "ff",
-			"token": "11",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "11"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1316,8 +2449,16 @@
 		},
 		{
 			"instruction": "peek",
-			"prefix": "ff",
-			"token": "12",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "12"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1326,8 +2467,16 @@
 		},
 		{
 			"instruction": "remain",
-			"prefix": "ff",
-			"token": "13",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "13"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1336,8 +2485,16 @@
 		},
 		{
 			"instruction": "sgn",
-			"prefix": "ff",
-			"token": "14",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "14"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1346,8 +2503,16 @@
 		},
 		{
 			"instruction": "sin",
-			"prefix": "ff",
-			"token": "15",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "15"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1356,8 +2521,16 @@
 		},
 		{
 			"instruction": "space$",
-			"prefix": "ff",
-			"token": "16",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "16"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1366,8 +2539,16 @@
 		},
 		{
 			"instruction": "sq",
-			"prefix": "ff",
-			"token": "17",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "17"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1376,8 +2557,16 @@
 		},
 		{
 			"instruction": "sqr",
-			"prefix": "ff",
-			"token": "18",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "18"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1386,8 +2575,16 @@
 		},
 		{
 			"instruction": "str$",
-			"prefix": "ff",
-			"token": "19",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "19"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1396,8 +2593,16 @@
 		},
 		{
 			"instruction": "tan",
-			"prefix": "ff",
-			"token": "1a",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "1a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1406,8 +2611,16 @@
 		},
 		{
 			"instruction": "unt",
-			"prefix": "ff",
-			"token": "1b",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "1b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1416,8 +2629,16 @@
 		},
 		{
 			"instruction": "upper$",
-			"prefix": "ff",
-			"token": "1c",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "1c"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1426,8 +2647,16 @@
 		},
 		{
 			"instruction": "val",
-			"prefix": "ff",
-			"token": "1d",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "1d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1436,8 +2665,16 @@
 		},
 		{
 			"instruction": "eof",
-			"prefix": "ff",
-			"token": "40",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "40"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1446,8 +2683,16 @@
 		},
 		{
 			"instruction": "err",
-			"prefix": "ff",
-			"token": "41",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "41"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1456,8 +2701,16 @@
 		},
 		{
 			"instruction": "himem",
-			"prefix": "ff",
-			"token": "42",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "42"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1466,8 +2719,16 @@
 		},
 		{
 			"instruction": "inkey$",
-			"prefix": "ff",
-			"token": "43",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "43"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1477,7 +2738,16 @@
 		{
 			"instruction": "pi",
 			"prefix": "ff",
-			"token": "44",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "44"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1486,8 +2756,16 @@
 		},
 		{
 			"instruction": "rnd",
-			"prefix": "ff",
-			"token": "45",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "45"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1496,8 +2774,16 @@
 		},
 		{
 			"instruction": "time",
-			"prefix": "ff",
-			"token": "45",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "46"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1506,8 +2792,16 @@
 		},
 		{
 			"instruction": "xpos",
-			"prefix": "ff",
-			"token": "47",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "47"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1516,8 +2810,16 @@
 		},
 		{
 			"instruction": "ypos",
-			"prefix": "ff",
-			"token": "48",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "48"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1526,19 +2828,33 @@
 		},
 		{
 			"instruction": "derr",
-			"prefix": "ff",
-			"token": "00",
+			"tokens": [
+				{
+					"version": [
+						11
+					],
+					"prefix": "ff",
+					"token": "49"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 11
+			"maxParameters": 0
 		},
 		{
 			"instruction": "bin$",
-			"prefix": "ff",
-			"token": "71",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "71"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1547,19 +2863,33 @@
 		},
 		{
 			"instruction": "dec$",
-			"prefix": "ff",
-			"token": "72",
+			"tokens": [
+				{
+					"version": [
+						11
+					],
+					"prefix": "ff",
+					"token": "72"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 11
+			"maxParameters": 0
 		},
 		{
 			"instruction": "hex$",
-			"prefix": "ff",
-			"token": "73",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "73"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1568,8 +2898,16 @@
 		},
 		{
 			"instruction": "instr$",
-			"prefix": "ff",
-			"token": "74",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "74"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1578,8 +2916,16 @@
 		},
 		{
 			"instruction": "left$",
-			"prefix": "ff",
-			"token": "75",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "75"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1588,8 +2934,16 @@
 		},
 		{
 			"instruction": "max",
-			"prefix": "ff",
-			"token": "76",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "76"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1598,8 +2952,16 @@
 		},
 		{
 			"instruction": "min",
-			"prefix": "ff",
-			"token": "77",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "77"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1608,8 +2970,16 @@
 		},
 		{
 			"instruction": "pos",
-			"prefix": "ff",
-			"token": "78",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "78"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1618,8 +2988,16 @@
 		},
 		{
 			"instruction": "right$",
-			"prefix": "ff",
-			"token": "79",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "79"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1628,8 +3006,16 @@
 		},
 		{
 			"instruction": "round",
-			"prefix": "ff",
-			"token": "7a",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "7a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1638,8 +3024,16 @@
 		},
 		{
 			"instruction": "string$",
-			"prefix": "ff",
-			"token": "7b",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "7b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1648,8 +3042,16 @@
 		},
 		{
 			"instruction": "test",
-			"prefix": "ff",
-			"token": "7c",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "7c"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1658,8 +3060,16 @@
 		},
 		{
 			"instruction": "testr",
-			"prefix": "ff",
-			"token": "7d",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "7d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1668,8 +3078,16 @@
 		},
 		{
 			"instruction": "copychr$",
-			"prefix": "ff",
-			"token": "7e",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "7e"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -1679,8 +3097,16 @@
 		},
 		{
 			"instruction": "vpos",
-			"prefix": "ff",
-			"token": "7f",
+			"tokens": [
+				{
+					"version": [
+						10,
+						11
+					],
+					"prefix": "ff",
+					"token": "7f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",

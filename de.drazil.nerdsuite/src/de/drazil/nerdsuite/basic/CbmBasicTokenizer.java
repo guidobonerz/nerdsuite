@@ -88,6 +88,7 @@ public class CbmBasicTokenizer {
 					byte[] ba = NumericConverter.getWord(Integer.valueOf(buffer.toString()));
 					result = ArrayUtil.grow(result, new byte[] { 0, 0 });
 					result = ArrayUtil.grow(result, ba);
+					System.out.println(buffer.toString());
 					buffer = new StringBuilder();
 				}
 				while (Character.isWhitespace(ch)) {
@@ -104,20 +105,26 @@ public class CbmBasicTokenizer {
 				if (!doNotScan) {
 					int start = ci.getIndex();
 					for (BasicInstruction instruction : basicInstructions.getBasicInstructionList()) {
-						if (content.indexOf(instruction.getInstruction().toUpperCase(), start) == start) {
+						if (content.indexOf(instruction.getInstruction().toUpperCase(), start) == start
+								&& !instruction.getPurpose().equals("R")) {
 							if (instruction.getInstruction().equalsIgnoreCase("data") && !isInDataLine) {
 								isInDataLine = true;
 							}
 
 							doNotScan = instruction.isComment();
 							result = ArrayUtil.grow(result, buffer.toString().getBytes());
-							byte b = (byte) (Integer.parseInt(instruction.getToken(), 16) & 0xff);
+
+							int index = instruction.getSelectedTokenIndex();
+							String token = instruction.getTokens().get(index).getToken();
+							byte b = (byte) (Integer.parseInt(token, 16) & 0xff);
+
 							if (isInDataLine) {
 								if (instruction.getInstruction().equals("-")) {
 									b = 0x2d;
 								}
 							}
 							result = ArrayUtil.grow(result, b);
+
 							ci.setIndex(start + (instruction.getInstruction().length() - 1));
 							buffer = new StringBuilder();
 							found = true;
@@ -137,7 +144,7 @@ public class CbmBasicTokenizer {
 
 				if (ch == quote) {
 					readMode = Mode.READ_STRING;
-				} else if (ch == '\n' || ci.getIndex() == content.length()-1) {
+				} else if (ch == '\n' || ci.getIndex() == content.length() - 1) {
 					doNotScan = false;
 					result = ArrayUtil.grow(result, buffer.toString().getBytes());
 					result = ArrayUtil.grow(result, (byte) 0);

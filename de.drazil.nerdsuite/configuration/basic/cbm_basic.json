@@ -1,4 +1,38 @@
 {
+	"versions": [
+		{
+			"name": "Basic 2.0",
+			"version": 20
+		},
+		{
+			"name": "Basic 3.5",
+			"version": 35
+		},
+		{
+			"name": "Basic 4.0",
+			"version": 40
+		},
+		{
+			"name": "Basic 7.0",
+			"version": 70
+		},
+		{
+			"name": "Basic 10.0",
+			"version": 100
+		},
+		{
+			"name": "Simons Basic",
+			"version": 1000
+		},
+		{
+			"name": "Simons Basic Extension",
+			"version": 1010
+		},
+		{
+			"name": "Basic 4.5",
+			"version": 45
+		}
+	],
 	"blockComment": [
 		"/*",
 		"*/"
@@ -9,9 +43,145 @@
 	"parameterSeparator": ",",
 	"defaultVersion": 20,
 	"basicInstructionList": [
+		
+		{
+			"instruction": "er",
+			"tokens": [
+				{
+					"version": [
+						45
+					]
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "R",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "el",
+			"tokens": [
+				{
+					"version": [
+						45
+					]
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "R",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "ds$",
+			"tokens": [
+				{
+					"version": [
+						45
+					]
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "R",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "d$",
+			"tokens": [
+				{
+					"version": [
+						45
+					]
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "R",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "st",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100,
+						1000
+					]
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "R",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "ti$",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100,
+						1000
+					]
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "R",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "ti",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100,
+						1000
+					]
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "R",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
 		{
 			"instruction": "end",
-			"token": "80",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "80"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -20,7 +190,19 @@
 		},
 		{
 			"instruction": "for",
-			"token": "81",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "81"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -29,7 +211,19 @@
 		},
 		{
 			"instruction": "next",
-			"token": "82",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "82"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -38,7 +232,19 @@
 		},
 		{
 			"instruction": "data",
-			"token": "83",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "83"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -47,7 +253,19 @@
 		},
 		{
 			"instruction": "input#",
-			"token": "84",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "84"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -56,7 +274,19 @@
 		},
 		{
 			"instruction": "input",
-			"token": "85",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "85"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -65,7 +295,19 @@
 		},
 		{
 			"instruction": "dim",
-			"token": "86",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "86"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -74,7 +316,19 @@
 		},
 		{
 			"instruction": "read",
-			"token": "87",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "87"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -83,7 +337,19 @@
 		},
 		{
 			"instruction": "let",
-			"token": "88",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "88"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -92,7 +358,19 @@
 		},
 		{
 			"instruction": "goto",
-			"token": "89",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "89"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -101,7 +379,19 @@
 		},
 		{
 			"instruction": "run",
-			"token": "8a",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "8a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -110,7 +400,19 @@
 		},
 		{
 			"instruction": "if",
-			"token": "8b",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "8b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -119,7 +421,25 @@
 		},
 		{
 			"instruction": "restore",
-			"token": "8c",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						70,
+						100
+					],
+					"token": "8c"
+				},
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "0f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -128,7 +448,19 @@
 		},
 		{
 			"instruction": "gosub",
-			"token": "8d",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "8d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -137,7 +469,19 @@
 		},
 		{
 			"instruction": "return",
-			"token": "8e",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "8e"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -146,7 +490,19 @@
 		},
 		{
 			"instruction": "rem",
-			"token": "8f",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "8f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"isComment": true,
@@ -156,7 +512,24 @@
 		},
 		{
 			"instruction": "stop",
-			"token": "90",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						70,
+						100
+					],
+					"token": "90"
+				},
+				{
+					"version": [
+						45
+					],
+					"prefix": "08",
+					"token": "90"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -165,7 +538,19 @@
 		},
 		{
 			"instruction": "on",
-			"token": "91",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "91"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -174,7 +559,19 @@
 		},
 		{
 			"instruction": "wait",
-			"token": "92",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "92"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -183,7 +580,19 @@
 		},
 		{
 			"instruction": "load",
-			"token": "93",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "93"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -192,7 +601,19 @@
 		},
 		{
 			"instruction": "save",
-			"token": "94",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "94"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -201,7 +622,19 @@
 		},
 		{
 			"instruction": "verify",
-			"token": "95",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "95"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -210,7 +643,19 @@
 		},
 		{
 			"instruction": "def",
-			"token": "96",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "96"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -219,7 +664,19 @@
 		},
 		{
 			"instruction": "poke",
-			"token": "97",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "97"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -228,7 +685,19 @@
 		},
 		{
 			"instruction": "print#",
-			"token": "98",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "98"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -240,7 +709,19 @@
 		},
 		{
 			"instruction": "print",
-			"token": "99",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "99"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -249,7 +730,19 @@
 		},
 		{
 			"instruction": "cont",
-			"token": "9a",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "9a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -258,7 +751,19 @@
 		},
 		{
 			"instruction": "list",
-			"token": "9b",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "9b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -267,7 +772,19 @@
 		},
 		{
 			"instruction": "clr",
-			"token": "9c",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "9c"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -276,7 +793,19 @@
 		},
 		{
 			"instruction": "cmd",
-			"token": "9d",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "9d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -285,7 +814,19 @@
 		},
 		{
 			"instruction": "sys",
-			"token": "9e",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "9e"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -294,7 +835,19 @@
 		},
 		{
 			"instruction": "open",
-			"token": "9f",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "9f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -303,7 +856,19 @@
 		},
 		{
 			"instruction": "close",
-			"token": "a0",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -312,7 +877,19 @@
 		},
 		{
 			"instruction": "get",
-			"token": "a1",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -321,7 +898,19 @@
 		},
 		{
 			"instruction": "new",
-			"token": "a2",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -330,7 +919,19 @@
 		},
 		{
 			"instruction": "tab(",
-			"token": "a3",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": true,
 			"purpose": "F",
@@ -343,7 +944,19 @@
 		},
 		{
 			"instruction": "to",
-			"token": "a4",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -352,7 +965,19 @@
 		},
 		{
 			"instruction": "fn",
-			"token": "a5",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -361,7 +986,19 @@
 		},
 		{
 			"instruction": "spc(",
-			"token": "a6",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": true,
 			"purpose": "F",
@@ -374,7 +1011,19 @@
 		},
 		{
 			"instruction": "then",
-			"token": "a7",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -383,7 +1032,19 @@
 		},
 		{
 			"instruction": "not",
-			"token": "a8",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -392,7 +1053,19 @@
 		},
 		{
 			"instruction": "step",
-			"token": "a9",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "a9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -401,7 +1074,19 @@
 		},
 		{
 			"instruction": "+",
-			"token": "aa",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "aa"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -410,7 +1095,19 @@
 		},
 		{
 			"instruction": "-",
-			"token": "ab",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "ab"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -419,7 +1116,19 @@
 		},
 		{
 			"instruction": "*",
-			"token": "ac",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "ac"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -428,7 +1137,19 @@
 		},
 		{
 			"instruction": "/",
-			"token": "ad",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "ad"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -437,7 +1158,19 @@
 		},
 		{
 			"instruction": "^",
-			"token": "ae",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "ae"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -446,7 +1179,19 @@
 		},
 		{
 			"instruction": "and",
-			"token": "af",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "af"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -455,7 +1200,19 @@
 		},
 		{
 			"instruction": "or",
-			"token": "b0",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -464,7 +1221,19 @@
 		},
 		{
 			"instruction": ">",
-			"token": "b1",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -473,7 +1242,19 @@
 		},
 		{
 			"instruction": "=",
-			"token": "b2",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -482,7 +1263,19 @@
 		},
 		{
 			"instruction": "<",
-			"token": "b3",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "O",
@@ -491,7 +1284,19 @@
 		},
 		{
 			"instruction": "sgn",
-			"token": "b4",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -504,7 +1309,19 @@
 		},
 		{
 			"instruction": "int",
-			"token": "b5",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -517,7 +1334,19 @@
 		},
 		{
 			"instruction": "abs",
-			"token": "b6",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -530,7 +1359,19 @@
 		},
 		{
 			"instruction": "usr",
-			"token": "b7",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -543,7 +1384,19 @@
 		},
 		{
 			"instruction": "fre",
-			"token": "b8",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -556,7 +1409,19 @@
 		},
 		{
 			"instruction": "pos",
-			"token": "b9",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "b9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -569,7 +1434,19 @@
 		},
 		{
 			"instruction": "sqr",
-			"token": "ba",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "ba"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -582,7 +1459,19 @@
 		},
 		{
 			"instruction": "rnd",
-			"token": "bb",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "bb"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -595,7 +1484,19 @@
 		},
 		{
 			"instruction": "log",
-			"token": "bc",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "bc"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -608,7 +1509,19 @@
 		},
 		{
 			"instruction": "exp",
-			"token": "bd",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "bd"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -621,7 +1534,19 @@
 		},
 		{
 			"instruction": "cos",
-			"token": "be",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "be"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -634,7 +1559,19 @@
 		},
 		{
 			"instruction": "sin",
-			"token": "bf",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "bf"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -647,7 +1584,19 @@
 		},
 		{
 			"instruction": "tan",
-			"token": "c0",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -660,7 +1609,19 @@
 		},
 		{
 			"instruction": "atn",
-			"token": "c1",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -673,7 +1634,19 @@
 		},
 		{
 			"instruction": "peek",
-			"token": "c2",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
@@ -686,7 +1659,19 @@
 		},
 		{
 			"instruction": "len",
-			"token": "c3",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -699,7 +1684,19 @@
 		},
 		{
 			"instruction": "str$",
-			"token": "c4",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -712,7 +1709,19 @@
 		},
 		{
 			"instruction": "val",
-			"token": "c5",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -725,7 +1734,19 @@
 		},
 		{
 			"instruction": "asc",
-			"token": "c6",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -738,7 +1759,19 @@
 		},
 		{
 			"instruction": "chr$",
-			"token": "c7",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -751,7 +1784,19 @@
 		},
 		{
 			"instruction": "left$",
-			"token": "c8",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -765,7 +1810,19 @@
 		},
 		{
 			"instruction": "right$",
-			"token": "c9",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "c9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -779,7 +1836,19 @@
 		},
 		{
 			"instruction": "mid$",
-			"token": "ca",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "ca"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "F",
@@ -794,517 +1863,1148 @@
 		},
 		{
 			"instruction": "go",
-			"token": "cb",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						40,
+						45,
+						70,
+						100
+					],
+					"token": "cb"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 20
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rgr",
-			"token": "cc",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70
+					],
+					"token": "cc"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rclr",
-			"token": "cd",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70
+					],
+					"token": "cd"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rlum",
-			"token": "ce",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "ce"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "joy",
-			"token": "cf",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "cf"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "51"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rdot",
-			"token": "d0",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70
+					],
+					"token": "d0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "dec",
-			"token": "d1",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "HEX$",
-			"token": "d2",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "err$",
-			"token": "d3",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "instr",
-			"token": "d4",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "else",
-			"token": "d5",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d5"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "47",
+					"token": "d5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "resume",
-			"token": "d6",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d6"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "39"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "trap",
-			"token": "d7",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "tron",
-			"token": "d8",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "troff",
-			"token": "d9",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "d9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "sound",
-			"token": "da",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "da"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "60"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "vol",
-			"token": "db",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "db"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "71",
+					"token": "db"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "auto",
-			"token": "dc",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "dc"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "4f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "pudef",
-			"token": "dd",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "dd"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "graphic",
-			"token": "de",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "de"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "paint",
-			"token": "df",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "df"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "75"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "char",
-			"token": "e0",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "e0"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "0b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "box",
-			"token": "e1",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "e1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "circle",
-			"token": "cd",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "e2"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "42"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "gshape",
-			"token": "e3",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70
+					],
+					"token": "e3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "sshape",
-			"token": "e4",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "e4"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "draw",
-			"token": "e5",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70
+					],
+					"token": "e5"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "0a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "locate",
-			"token": "e6",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70
+					],
+					"token": "e6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "color",
-			"token": "e7",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "e7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "scnclr",
-			"token": "e8",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "e8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "scale",
-			"token": "e9",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70
+					],
+					"token": "e9"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "help",
-			"token": "ea",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "ea"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "do",
-			"token": "eb",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "eb"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "loop",
-			"token": "ec",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "ec"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "3a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "exit",
-			"token": "ed",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "ed"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "35"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "directory",
-			"token": "ee",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "da"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "ee"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "dsave",
-			"token": "ef",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d5"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "ef"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "dload",
-			"token": "f0",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d6"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f0"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "header",
-			"token": "f1",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d0"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f1"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "scratch",
-			"token": "f2",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d9"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f2"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "collect",
-			"token": "f3",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d1"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f3"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "copy",
-			"token": "f4",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d3"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f4"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "77"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rename",
-			"token": "f5",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d8"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f5"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "backup",
-			"token": "f6",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d2"
+				},
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f6"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "delete",
-			"token": "f7",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f7"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "renumber",
-			"token": "f8",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f8"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "f8"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "key",
-			"token": "f9",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "f9"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "74"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "monitor",
-			"token": "fa",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "fa"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "using",
-			"token": "fb",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "fb"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "until",
-			"token": "fc",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "fc"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "29"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "while",
-			"token": "fd",
+			"tokens": [
+				{
+					"version": [
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "fd"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 35
+			"maxParameters": 0
 		},
 		{
 			"instruction": "π",
-			"token": "ff",
+			"tokens": [
+				{
+					"version": [
+						20,
+						35,
+						45,
+						70,
+						100
+					],
+					"token": "ff"
+				}
+			],
 			"description": "PI",
 			"includesOpenBrace": false,
 			"purpose": "C",
@@ -1313,487 +3013,3688 @@
 		},
 		{
 			"instruction": "pot",
-			"prefix": "ce",
-			"token": "02",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "ce",
+					"token": "02"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "5c"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "bump",
-			"prefix": "ce",
-			"token": "03",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "ce",
+					"token": "03"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "pen",
-			"prefix": "ce",
-			"token": "04",
+			"tokens": [
+				{
+					"version": [
+						70
+					],
+					"prefix": "ce",
+					"token": "04"
+				},
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "33"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rsppos",
-			"prefix": "ce",
-			"token": "05",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "ce",
+					"token": "05"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rsprite",
-			"prefix": "ce",
-			"token": "06",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "ce",
+					"token": "06"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rspcolor",
-			"prefix": "ce",
-			"token": "07",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "ce",
+					"token": "07"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "xor",
-			"prefix": "ce",
-			"token": "08",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "12"
+				},
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "ce",
+					"token": "08"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rwindow",
-			"prefix": "ce",
-			"token": "09",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "ce",
+					"token": "09"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "pointer",
-			"prefix": "ce",
-			"token": "0a",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "ce",
+					"token": "0a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "bank",
-			"prefix": "fe",
-			"token": "02",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "02"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "filter",
-			"prefix": "fe",
-			"token": "03",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "03"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "play",
-			"prefix": "fe",
-			"token": "04",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "04"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "21"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "tempo",
-			"prefix": "fe",
-			"token": "05",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "05"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "movspr",
-			"prefix": "fe",
-			"token": "06",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "06"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "sprite",
-			"prefix": "fe",
-			"token": "07",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "07"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "sprcolor",
-			"prefix": "fe",
-			"token": "08",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "08"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "rreg",
-			"prefix": "fe",
-			"token": "09",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "09"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "envelope",
-			"prefix": "fe",
-			"token": "0a",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "0a"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "24"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "sleep",
-			"prefix": "fe",
-			"token": "0b",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "0b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "catalog",
-			"prefix": "fe",
-			"token": "0c",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d7"
+				},
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "0c"
+				},
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "06"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "dopen",
-			"prefix": "fe",
-			"token": "0d",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "cd"
+				},
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "0d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "append",
-			"prefix": "fe",
-			"token": "0e",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "d4"
+				},
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "0e"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "dclose",
-			"prefix": "fe",
-			"token": "0f",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "ce"
+				},
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "0f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "bsave",
-			"prefix": "fe",
-			"token": "10",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "10"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "bload",
-			"prefix": "fe",
-			"token": "11",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "11"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "record",
-			"prefix": "fe",
-			"token": "12",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "cf"
+				},
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "12"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "concat",
-			"prefix": "fe",
-			"token": "13",
+			"tokens": [
+				{
+					"version": [
+						40
+					],
+					"token": "cc"
+				},
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "13"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "dverify",
-			"prefix": "fe",
-			"token": "14",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "14"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "dclear",
-			"prefix": "fe",
-			"token": "15",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "15"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "sprsav",
-			"prefix": "fe",
-			"token": "16",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "16"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "collision",
-			"prefix": "fe",
-			"token": "17",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "17"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "begin",
-			"prefix": "fe",
-			"token": "18",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "18"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "bend",
-			"prefix": "fe",
-			"token": "19",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "19"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "window",
-			"prefix": "fe",
-			"token": "1a",
+			"tokens": [
+				{
+					"version": [
+						70
+					],
+					"prefix": "ce",
+					"token": "08"
+				},
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "09"
+				},
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "1a"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "boot",
-			"prefix": "fe",
-			"token": "1b",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "1b"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "width",
-			"prefix": "fe",
-			"token": "1c",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "1c"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "sprdef",
-			"prefix": "fe",
-			"token": "1d",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "1d"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "(quit)",
-			"prefix": "fe",
-			"token": "1e",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "1e"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "stash",
-			"prefix": "fe",
-			"token": "1f",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "1f"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "fetch",
-			"prefix": "fe",
-			"token": "21",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "21"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "27"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "swap",
-			"prefix": "fe",
-			"token": "23",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "23"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
-			"instruction": "(off)",
-			"prefix": "fe",
-			"token": "24",
+			"instruction": "off",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "24"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "69"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "fast",
-			"prefix": "fe",
-			"token": "25",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "25"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
 		},
 		{
 			"instruction": "slow",
-			"prefix": "fe",
-			"token": "26",
+			"tokens": [
+				{
+					"version": [
+						70,
+						100
+					],
+					"prefix": "fe",
+					"token": "26"
+				}
+			],
 			"description": "",
 			"includesOpenBrace": false,
 			"purpose": "I",
 			"minParameters": 0,
-			"maxParameters": 0,
-			"minVersion": 70
+			"maxParameters": 0
+		},
+		{
+			"instruction": "background",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "3b"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "bverify",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "28"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "background",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "26"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cursor",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "41"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "background",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "26"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cut",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"token": "e4"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "dir",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"token": "ee"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "4a"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "disk",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "40"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "72"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "dma",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "1f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "disk",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "40"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "dmode",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "35"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "dpat",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "36"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "edit",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "45"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "edma",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "21"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "ellipse",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "30"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "earse",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "2a"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "fgosub",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "48"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "fgoto",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "47"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "find",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "08"
+				},
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "2b"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "4d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "font",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "46"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "foreground",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "39"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "format",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "37"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "fread#",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "1c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "fwrite#",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "1e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "gcopy",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "32"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "genlock",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "38"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "highlight",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "3d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "line",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"token": "e5"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "03"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "loadiff",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "43"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "log10",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "ce",
+					"token": "08"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "lpen",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "ce",
+					"token": "04"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "mem",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "23"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "7a"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "merge",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"token": "e6"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "78"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "mod",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "ce",
+					"token": "0b"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "52"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "mouse",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "3e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "palette",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "34"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "paste",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"token": "e3"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "pixel",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "ce",
+					"token": "0c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "polygon",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "2f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rcolor",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"token": "cd"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rcursor",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "42"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rgraphic",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"token": "cc"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rmouse",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "3f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rpalette",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "ce",
+					"token": "0d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rpen",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"token": "d0"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rplay",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "ce",
+					"token": "0f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rspeed",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "ce",
+					"token": "0e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "screen",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "2e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "set",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "2d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "speed",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "26"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "type",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "27"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "viewport",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "31"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "border",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "3c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "change",
+			"tokens": [
+				{
+					"version": [
+						100
+					],
+					"prefix": "fe",
+					"token": "2c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "hires",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "01"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "plot",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "02"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "block",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "04"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "fchr",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "05"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "fcol",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "06"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "fill",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "07"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rec",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "08"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rot",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "09"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "block",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "04"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "hi col",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "0c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "inv",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "0d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "frac",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "0e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "move",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "0f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "place",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "10"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "upd",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "11"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "upw",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "12"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "leftw",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "13"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "leftb",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "14"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "downb",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "15"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "downw",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "16"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rightb",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "17"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rightw",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "18"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "multi",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "19"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "colour",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "1a"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "mmob",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "1b"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "bflash",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "1c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "mob set",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "1d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "music",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "1e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "flash",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "1f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "repeat",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "20"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "centre",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "23"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cgoto",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "25"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "wave",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "26"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cgoto",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "25"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "at(",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "28"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": true,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "use",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "2c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "global",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "2e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "reset",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "30"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "proc",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "31"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "call",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "16"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "32"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "exec",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "33"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "end proc",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "34"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "end loop",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "36"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "on key",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "37"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "disable",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "38"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "delay",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "14"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "3b"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "secure",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "40"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "disapa",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "41"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "on error",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "43"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "no error",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "44"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "local",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "45"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rcomp",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "46"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "retrace",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "48"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "trace",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "49"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "page",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "4b"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "dump",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "4c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "option",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "4e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "old",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "50"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "div",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "53"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "dup",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "55"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "inkey",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "56"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "inst",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "57"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "test",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "19"
+				},
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "58"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "lin",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "59"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "exor",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "5a"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "insert",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "5b"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "penx",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "5d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "peny",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "5f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "graphics",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "61"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "design",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "62"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rlocmod",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "63"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cmob",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "64"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "bckgnds",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "65"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "pause",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "66"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "nrm",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "67"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "mob off",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "68"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "angl",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "6a"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "arc",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "6b"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cold",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "6c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "scrsv",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "6d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "scrld",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "6e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "text",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "6f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cset",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "70"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "hrdcpy",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "73"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "low col",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "76"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "detect",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "7b"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "check",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "7c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "err",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "7d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "out",
+			"tokens": [
+				{
+					"version": [
+						1000
+					],
+					"prefix": "64",
+					"token": "7f"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "at",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "01"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "cls",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "02"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "info",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "03"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "version",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "04"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "frame",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "05"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "memory",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "07"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "dlrun",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "0a"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "files",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "0c"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "beginblock",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "0d"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "endblock",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "0e"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "rtrim",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "10"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "ltrim",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "11"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "'",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "13"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "beep",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "15"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "jump",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "17"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "ask",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "18"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		},
+		{
+			"instruction": "ask",
+			"tokens": [
+				{
+					"version": [
+						45
+					],
+					"prefix": "7f",
+					"token": "18"
+				}
+			],
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
 		}
 	]
 }
