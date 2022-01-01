@@ -22,6 +22,7 @@ public class DocumentStyler implements LineStyleListener {
 	private final static String MULTI_LINE_RULE = "MultiLineRule";
 	private final static String SINGLE_LINE_RULE = "SingleLineRule";
 	private final static String WORD_RULE = "WordRule";
+	private final static String CONSTANT_RULE = "ConstantRule";
 	private final static String PATTERN_RULE = "PatternRule";
 
 	private List<StyleRange> styleRangeMultiline;
@@ -116,8 +117,10 @@ public class DocumentStyler implements LineStyleListener {
 			for (StyleRange sr : styleRangeMultiline) {
 				styleRangeList.add(sr);
 			}
-			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
-			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
+			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null,
+					false);
+			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null, false);
+			parseText(ruleMap.get(CONSTANT_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null, true);
 			parseBraces(lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
 
 			styleRangeList.sort(new Comparator<StyleRange>() {
@@ -164,7 +167,7 @@ public class DocumentStyler implements LineStyleListener {
 	}
 
 	private void parseText(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
-			Color backgroundColor) {
+			Color backgroundColor, boolean b) {
 		if (ruleList == null) {
 			return;
 		}
@@ -173,7 +176,9 @@ public class DocumentStyler implements LineStyleListener {
 		int offset = 0;
 		int len = 0;
 		boolean hasMatch = false;
-
+		if (b) {
+			int a = 0;
+		}
 		while (offset < text.length()) {
 			hasMatch = false;
 			for (IRule rule : ruleList) {
@@ -227,7 +232,12 @@ public class DocumentStyler implements LineStyleListener {
 		} else if (rule instanceof SingleLineRule) {
 			_addRule(SINGLE_LINE_RULE, rule);
 		} else if (rule instanceof WordRule) {
-			_addRule(WORD_RULE, rule);
+			WordRule wr = (WordRule) rule;
+			if (rule.getTokenControl() != 4) {
+				_addRule(WORD_RULE, rule);
+			} else {
+				_addRule(CONSTANT_RULE, rule);
+			}
 		} else if (rule instanceof ValueRule) {
 			_addRule(PATTERN_RULE, rule);
 		}
@@ -240,11 +250,13 @@ public class DocumentStyler implements LineStyleListener {
 			ruleMap.put(ruleName, ruleList);
 		}
 		ruleList.add(rule);
+		/*
 		Collections.sort(ruleList, new Comparator<IRule>() {
 			@Override
 			public int compare(IRule o1, IRule o2) {
 				return Integer.compare(o1.getPriority(), o2.getPriority());
 			}
 		});
+		*/
 	}
 }

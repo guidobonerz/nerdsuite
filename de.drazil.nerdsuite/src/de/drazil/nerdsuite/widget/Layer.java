@@ -53,7 +53,7 @@ public class Layer {
 		imagePool = new HashMap<String, Image2>();
 	}
 
-	public Layer(String id, String name, int size, int brushValue) {
+	public Layer(String id, String name, int size, Integer brushValue) {
 		this();
 		this.id = id;
 		this.name = name;
@@ -83,7 +83,7 @@ public class Layer {
 	@JsonIgnore
 	public void removeImage(String id) {
 		imagePool.get(id).dispose();
-		;
+
 		imagePool.remove(id);
 	}
 
@@ -93,15 +93,17 @@ public class Layer {
 	}
 
 	@JsonIgnore
-	public void reset(int size, int brushValue) {
+	public void reset(int size, Integer brushValue) {
 		resetContent(size);
 		resetBrush(size, brushValue);
 	}
 
 	@JsonIgnore
-	public void resetBrush(int size, int blankValue) {
-		brush = new int[size];
-		Arrays.fill(brush, blankValue);
+	public void resetBrush(int size, Integer blankValue) {
+		if (blankValue != null) {
+			brush = new int[size];
+			Arrays.fill(brush, blankValue);
+		}
 	}
 
 	@JsonIgnore

@@ -91,7 +91,8 @@ public class CpcBasicTokenizer {
 						if (content.indexOf(instruction.getInstruction().toUpperCase(), start) == start) {
 							doNotScan = instruction.isComment();
 							result = ArrayUtil.grow(result, buffer.toString().getBytes());
-							byte b = (byte) (Integer.parseInt(instruction.getToken(), 16) & 0xff);
+							int index = instruction.getSelectedTokenIndex();
+							byte b = (byte) (Integer.parseInt(instruction.getTokens().get(index).getToken(), 16) & 0xff);
 							result = ArrayUtil.grow(result, b);
 							ci.setIndex(start + (instruction.getInstruction().length() - 1));
 							buffer = new StringBuilder();

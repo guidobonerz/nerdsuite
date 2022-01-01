@@ -181,12 +181,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 		maxColumns = r.width / (conf.repositoryScaledTileWith + conf.tileGap);
 		maxRows = r.height / (conf.repositoryScaledTileHeight + conf.tileGap);
 
-		/*
-		 * for (int i = (drawAll ? 0 : start); i < (drawAll ?
-		 * tileRepositoryService.getSize() : end); i++) { int index = drawAll ? i :
-		 * tileRepositoryService.getTileIndex(i); paintTile(gc, i, action); }
-		 */
-
 		paintTiles(gc, action, maxColumns, maxRows);
 
 		if (paintTileGrid) {
@@ -194,7 +188,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 		}
 
 		if (tileDragActive) {
-			// paintDragMarker(gc);
+			paintDragMarker(gc);
 		} else {
 
 			paintTileMarker(gc);
@@ -280,20 +274,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 		doRedraw(redrawMode, action);
 	}
 
-	public void paintTile(Composite parent, GC gc, int index, ImagingWidgetConfiguration conf,
-			IColorPaletteProvider colorPaletteProvider, int update) {
-		/*
-		 * Image image = tileRepositoryService.getImagePainterFactory().getImage(
-		 * tileRepositoryService, tileRepositoryService.getTileIndex(index), 0, 0,
-		 * update, conf, colorPaletteProvider, tileRepositoryService.getMetadata()); int
-		 * imageWidth = image.getBounds().width; int imageHeight =
-		 * image.getBounds().height; int columns = conf.getColumns(); int y = (index /
-		 * columns) * imageHeight; int x = (index % columns) * imageWidth;
-		 * gc.drawImage(image, x, y);
-		 */
-
-	}
-
 	private void paintTiles(GC gc, int action, int maxX, int maxY) {
 		int max = maxX * maxY;
 		for (int i = 0; i < max; i++) {
@@ -320,38 +300,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 		}
 	}
 
-	/*
-	 * private void paintTile(GC gc, int index, int action, int columns) { int y =
-	 * (index / columns) * (conf.tileHeightPixel * conf.zoomFactor + conf.tileGap);
-	 * int x = (index % columns) * (conf.tileWidthPixel * conf.zoomFactor +
-	 * conf.tileGap); if (index < tileRepositoryService.getSize()) { Tile tile =
-	 * tileRepositoryService.getTile(index); Layer layer = tile.getActiveLayer();
-	 * String name = String.format("%s_%s", tile.getName(), layer.getName());
-	 * 
-	 * Image2 imageInternal = imageCache.get(name); if (imageInternal == null) {
-	 * imageInternal = imagePainterFactory.createLayer(); imageCache.put(name,
-	 * imageInternal);
-	 * 
-	 * GC gcLayer = new GC(imageInternal.getImage()); int xi = 0; int yi = 0; //
-	 * gc.drawImage(imagePainterFactory.createOrUpdateBaseImage(name, //
-	 * Constants.BLACK).getImage(), x, y); for (int i = 0; i < conf.getTileSize();
-	 * i++) { if (i % conf.tileWidth == 0 && i > 0) { xi = 0; yi++; } boolean black
-	 * = layer.getBrush() == null ? false : layer.getBrush()[i] == 32 ||
-	 * layer.getContent()[i] == 0;
-	 * gcLayer.setForeground(colorPaletteProvider.getColorByIndex(black ? 0 :
-	 * layer.getContent()[i])); gcLayer.drawPoint(xi * conf.pixelPaintWidth, yi *
-	 * conf.pixelPaintHeight); xi++; } gcLayer.dispose(); }
-	 * gc.drawImage(imageInternal.getImage(), x, y); // imageInternal.dispose(); }
-	 * else {
-	 * 
-	 * gc.setForeground(Constants.TILE_GRID_COLOR);
-	 * gc.setFont(Constants.GoogleMaterials); gc.drawLine(x, y, x +
-	 * conf.tileWidthPixel * conf.zoomFactor + conf.tileGap, y +
-	 * conf.tileHeightPixel * conf.zoomFactor + conf.tileGap);
-	 * 
-	 * } }
-	 */
-
 	@Override
 	public void activeLayerChanged(int layer) {
 		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
@@ -369,6 +317,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
 	@Override
 	public void redrawCalculatedArea() {
+
 		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile
 				|| redrawMode == RedrawMode.DrawPixel) {
 			drawAll = false;
@@ -377,19 +326,19 @@ public class RepositoryWidget extends BaseImagingWidget {
 			end = tileRepositoryService.getSelectedTileIndexList()
 					.get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
-			int iys = start / conf.columns;
-			int ys = iys * conf.tileHeightPixel;
+			int iys = start / maxColumns;
+			int ys = iys * (conf.repositoryScaledTileHeight + conf.tileGap);
 
-			int iye = end / conf.columns;
-			int ye = iye * conf.tileHeightPixel;
+			int iye = end / maxColumns;
+			int ye = iye * (conf.repositoryScaledTileHeight + conf.tileGap);
 
 			start = computeTileIndex(0, iys);
-			end = computeTileIndex(conf.columns, iye);
+			end = computeTileIndex(maxColumns, iye);
 			if (end > tileRepositoryService.getSize()) {
 				end = tileRepositoryService.getSize();
 			}
-			int height = (1 + iye - iys) * conf.tileHeightPixel;
-			redraw(0, ys, conf.tileWidthPixel * conf.columns, height, false);
+			int height = (1 + iye - iys) * (conf.repositoryScaledTileHeight + conf.tileGap);
+			redraw(0, ys, (conf.repositoryScaledTileWith + conf.tileGap) * maxColumns, height, false);
 		} else {
 			drawAll = true;
 			redraw();

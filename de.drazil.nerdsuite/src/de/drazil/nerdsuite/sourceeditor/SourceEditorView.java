@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.sourceeditor;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,7 @@ import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
+import de.drazil.nerdsuite.model.BasicToken;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
 import de.drazil.nerdsuite.mouse.AdvancedMouseListenerAdapter;
@@ -115,10 +118,22 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		// documentStyler.addRule(new ValueRule("#$", "h", 2, new
 		// Token(Constants.T_HEXADECIMAL)));
 
-		List<BasicInstruction> list = basicInstructions.getBasicInstructionList().stream()
-				.filter(e -> e.getMinVersion() < version).collect(Collectors.toList());
-
 		for (BasicInstruction bi : basicInstructions.getBasicInstructionList()) {
+			for (BasicToken bt : bi.getTokens()) {
+				for (int v : bt.getVersion()) {
+					if (v == version) {
+						bi.setSelectedVersion(version);
+						bi.setSelectedTokenIndex(bi.getTokens().indexOf(bt));
+						break;
+					}
+				}
+			}
+		}
+
+		List<BasicInstruction> list = basicInstructions.getBasicInstructionList().stream()
+				.filter(e -> e.getSelectedVersion() == version).collect(Collectors.toList());
+
+		for (BasicInstruction bi : list) {
 			if (!bi.isComment()) {
 				documentStyler.addRule(new WordRule(bi, new Token(Constants.T_COMMAND)));
 			}
@@ -194,15 +209,31 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 
 		srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
 		basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
+/*
+		Collections.sort(basicInstructions.getBasicInstructionList(), new Comparator<BasicInstruction>() {
 
+			@Override
+			public int compare(BasicInstruction o1, BasicInstruction o2) {
+				return o1.getDescription().compareTo(o2.getDescription());
+			}
+		});
+
+		Collections.reverse(basicInstructions.getBasicInstructionList());
+*/
 		int version = 20;
 		String variant = srs.getMetadata().getVariant();
 		if (variant.equals("V20")) {
 			version = 20;
 		} else if (variant.equals("V35")) {
 			version = 35;
+		} else if (variant.equals("V40")) {
+			version = 40;
 		} else if (variant.equals("V70")) {
 			version = 70;
+		} else if (variant.equals("V10")) {
+			version = 100;
+		} else if (variant.equals("SB1")) {
+			version = 1000;
 		} else {
 			version = 0;
 		}
@@ -297,7 +328,8 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 				styledText.redraw();
 			}
 		});
-		//menuService.registerContextMenu(styledText, "de.drazil.nerdsuite.popupmenu.SourceEditor");
+		// menuService.registerContextMenu(styledText,
+		// "de.drazil.nerdsuite.popupmenu.SourceEditor");
 	}
 
 	@Override
@@ -307,7 +339,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 		}
 		documentStyler.refreshMultilineComments(styledText.getText());
 		documentStyler.cleanupLines(getLineAtOffset(styledText.getCaretOffset()));
-		styledText.setCaretOffset(styledText.getCaretOffset()+1);
+		styledText.setCaretOffset(styledText.getCaretOffset() + 1);
 		styledText.redraw();
 	}
 

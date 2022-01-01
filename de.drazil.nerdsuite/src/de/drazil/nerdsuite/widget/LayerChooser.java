@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
@@ -29,8 +30,9 @@ public class LayerChooser extends BaseWidget implements PaintListener, ITileUpda
 
 	@Override
 	public void paintControl(PaintEvent e) {
-		e.gc.setBackground(Constants.DARK_GREY);
-		e.gc.fillRectangle(0, 0, WIDTH, HEIGHT);
+		GC gc = e.gc;
+		gc.setBackground(Constants.DARK_GREY);
+		gc.fillRectangle(0, 0, WIDTH, HEIGHT);
 	}
 
 	@Override

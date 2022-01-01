@@ -68,12 +68,12 @@ public class TileContainer {
 	public Tile addTile() {
 		initList();
 		String id = String.format("T%03X", (getTileList().size() + 1));
-		int blankValue = metadata.getBlankValue() == null ? 0 : metadata.getBlankValue();
+		Integer blankValue = metadata.getBlankValue();
 		return addTile(id, id, tileSize, blankValue);
 	}
 
 	@JsonIgnore
-	private Tile addTile(String id, String name, int tileSize, int defaultBrush) {
+	private Tile addTile(String id, String name, int tileSize, Integer defaultBrush) {
 		initList();
 		Tile tile = new Tile(id, name, tileSize);
 		String layerId = String.format("L%03X", (getTileList().size() + 1), (tile.getSize() + 1));
@@ -243,9 +243,11 @@ public class TileContainer {
 	private void fireTileRedraw(List<Integer> selectedTileIndexList, int action, boolean temporary) {
 		if (selectedTileIndexList != null) {
 			if (selectedTileIndexList.size() == 1) {
-				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList, temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, action));
+				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList,
+						temporary ? RedrawMode.DrawTemporarySelectedTile : RedrawMode.DrawSelectedTile, action));
 			} else {
-				tileUpdateListener.forEach(listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, action));
+				tileUpdateListener.forEach(
+						listener -> listener.redrawTiles(selectedTileIndexList, RedrawMode.DrawSelectedTiles, action));
 			}
 		}
 	}

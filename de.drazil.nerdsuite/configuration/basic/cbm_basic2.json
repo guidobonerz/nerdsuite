@@ -1,0 +1,28 @@
+{
+	"blockComment": [
+		"/*",
+		"*/"
+	],
+	"singleLineComment": "rem",
+	"stringQuote": "\"",
+	"instructionSeparator": ":",
+	"parameterSeparator": ",",
+	"defaultVersion": 20,
+	"basicInstructionList": [
+		{
+			"instruction": "end",
+			"tokens": [
+				{
+					"version": 20,
+					"token": "80"
+				}
+			],
+			"token": "80",
+			"description": "",
+			"includesOpenBrace": false,
+			"purpose": "I",
+			"minParameters": 0,
+			"maxParameters": 0
+		}
+	]
+}

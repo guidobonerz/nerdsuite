@@ -378,7 +378,7 @@ public class PainterWidget extends BaseImagingWidget {
 	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
 
 		if (redrawMode == RedrawMode.DrawSelectedTile || redrawMode == RedrawMode.DrawSelectedTiles) {
-			System.out.println("animate redraw");
+
 			Tile tile = tileRepositoryService.getTile(selectedTileIndexList.get(0));
 			if (this.tile != null) {
 				this.tile.removeTileListener(this);
