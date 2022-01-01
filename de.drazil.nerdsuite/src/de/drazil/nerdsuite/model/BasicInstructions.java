@@ -12,5 +12,6 @@ public class BasicInstructions {
 	private String instructionSeparator;
 	private String parameterSeparator;
 	private String defaultVersion;
+	private List<Version> versions;
 	private List<BasicInstruction> basicInstructionList;
 }

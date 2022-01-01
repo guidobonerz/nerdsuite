@@ -2,7 +2,6 @@ package de.drazil.nerdsuite.imaging;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +64,6 @@ import de.drazil.nerdsuite.model.GraphicFormatVariant;
 import de.drazil.nerdsuite.model.GraphicMetadata;
 import de.drazil.nerdsuite.model.GridState;
 import de.drazil.nerdsuite.model.Project;
-import de.drazil.nerdsuite.model.ViewSetup;
 import de.drazil.nerdsuite.util.E4Utils;
 import de.drazil.nerdsuite.widget.ColorChooser;
 import de.drazil.nerdsuite.widget.GraphicFormatFactory;
@@ -141,6 +139,7 @@ public class GfxEditorView implements ITileUpdateListener {
 				return MessageDialog.openQuestion(parent.getShell(), "Image Process Confirmation", confirmationMessage);
 			}
 		};
+		
 
 	}
 

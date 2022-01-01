@@ -107,7 +107,7 @@ public class Tile {
 	}
 
 	@JsonIgnore
-	public Layer addLayer(String id, String name, int size, int brushValue) {
+	public Layer addLayer(String id, String name, int size, Integer brushValue) {
 		Layer layer = new Layer(id, name, size, brushValue);
 		layer.getColorPalette().add(0);
 		layer.getColorPalette().add(1);

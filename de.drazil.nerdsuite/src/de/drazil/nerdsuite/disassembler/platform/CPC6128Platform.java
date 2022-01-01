@@ -49,7 +49,7 @@ public class CPC6128Platform extends AbstractPlatform {
 						new File("/Users/drazil/Documents/workspace/rcp/de.drazil.NerdSuite/config/basic_v2.json"),
 						BasicInstructions.class);
 				for (BasicInstruction bs : basicInstructions.getBasicInstructionList()) {
-					basicTokenMap.put(bs.getToken(), bs);
+					//basicTokenMap.put(bs.getToken(), bs);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
