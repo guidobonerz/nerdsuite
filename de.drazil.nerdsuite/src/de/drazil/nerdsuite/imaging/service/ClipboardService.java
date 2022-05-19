@@ -30,10 +30,17 @@ public class ClipboardService implements IService {
 			for (int i = 0; i < selectionList.size(); i++) {
 				Layer sourceLayer = service.getActiveLayerFromTile(selectionList.get(i));
 				Layer targetLayer = service.getActiveLayerFromTile(targetSelectionList.get(i));
-				int[] targetContent = new int[sourceLayer.getContent().length];
-				for (int j = 0; j < targetContent.length; j++) {
+				
+				//int[] targetBrush = new int[sourceLayer.getBrush().length];
+				for (int j = 0; j < sourceLayer.getContent().length; j++) {
 					targetLayer.getContent()[j] = sourceLayer.getContent()[j];
+
+					String ri = service.getMetadata().getReferenceId();
+					if (ri != null) {
+						targetLayer.getBrush()[j] = sourceLayer.getBrush()[j];
+					}
 				}
+
 				if (initialAction == CUT) {
 					service.getActiveLayerFromTile(selectionList.get(i)).reset(0, 0);
 				}

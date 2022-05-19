@@ -176,7 +176,8 @@ public class ImagePainterFactory {
 		imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
 		imageInternal.dispose();
 		imageInternal.setImage(new Image(Display.getDefault(), imageData));
-		// image.dispose();
+		
+		//image.dispose();
 		return imageInternal;
 	}
 

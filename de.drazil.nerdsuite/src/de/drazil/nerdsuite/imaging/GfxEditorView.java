@@ -244,8 +244,8 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageGridState(@UIEventTopic("GridType") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			GridState gridState = (GridState) brokerObject.getTransferObject();
-			painter.getConf().setGridType(gridState.getGridType());
-			painter.getConf().setPixelGridEnabled(gridState.isEnabled());
+			painter.getConf().setGridType(gridState.gridType());
+			painter.getConf().setPixelGridEnabled(gridState.enabled());
 			// painter.recalc();
 			painter.doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.READ);
 		}

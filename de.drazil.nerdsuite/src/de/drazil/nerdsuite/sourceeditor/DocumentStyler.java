@@ -119,6 +119,7 @@ public class DocumentStyler implements LineStyleListener {
 			}
 			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null,
 					false);
+			//parseLinenumber(lineOffset, event.lineText.toLowerCase(), styleRangeList, null, false);
 			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null, false);
 			parseText(ruleMap.get(CONSTANT_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null, true);
 			parseBraces(lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
@@ -165,6 +166,8 @@ public class DocumentStyler implements LineStyleListener {
 			hasBalancedBraces = (openBracesCount + closedBracesCount) % 2 == 0;
 		}
 	}
+
+	
 
 	private void parseText(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
 			Color backgroundColor, boolean b) {
@@ -251,12 +254,10 @@ public class DocumentStyler implements LineStyleListener {
 		}
 		ruleList.add(rule);
 		/*
-		Collections.sort(ruleList, new Comparator<IRule>() {
-			@Override
-			public int compare(IRule o1, IRule o2) {
-				return Integer.compare(o1.getPriority(), o2.getPriority());
-			}
-		});
-		*/
+		 * Collections.sort(ruleList, new Comparator<IRule>() {
+		 * 
+		 * @Override public int compare(IRule o1, IRule o2) { return
+		 * Integer.compare(o1.getPriority(), o2.getPriority()); } });
+		 */
 	}
 }
