@@ -27,6 +27,10 @@ public class CPUZ80 extends AbstractCPU {
 	public static final int REG_IY = 11;
 	public static final int REG_I = 12;
 	public static final int REG_R = 13;
-	private long[] registers = new long[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	@Override
+	public int execute(int pc, byte[] ram, byte[] rom) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }
