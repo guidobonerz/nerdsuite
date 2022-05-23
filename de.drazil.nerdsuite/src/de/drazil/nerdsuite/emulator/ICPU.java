@@ -11,6 +11,6 @@ public interface ICPU {
 
 	public boolean hasFlag(int flag);
 
-	public int execute(int pc, byte[] ram, byte[] rom);
+	public int execute(int pc, int[] ram, int[] rom);
 
 }

@@ -2,8 +2,8 @@ package de.drazil.nerdsuite.emulator;
 
 public abstract class AbstractPlatform implements IPlatform {
 
-	protected byte[] ram = new byte[0xffff];
-	protected byte[] rom = new byte[0xffff];
+	protected int[] ram = new int[0xffff];
+	protected int[] rom = new int[0xffff];
 
 	protected abstract void powerOn();
 
