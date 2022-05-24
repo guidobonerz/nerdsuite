@@ -5,7 +5,8 @@ import java.util.Stack;
 public abstract class AbstractCPU implements ICPU {
 	protected int pc = 0;
 	protected int[] registers = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	protected Stack<Byte> stack = new Stack<Byte>();
+
+	protected Stack<Integer> stack = new Stack<Integer>();
 
 	@Override
 	public long getProgramCounter() {
@@ -18,8 +19,12 @@ public abstract class AbstractCPU implements ICPU {
 	}
 
 	@Override
-	public void setFlag(int flag) {
-		registers[REG_FLAGS] = registers[REG_FLAGS] | flag;
+	public void setFlag(int flag, boolean set) {
+		if (set) {
+			registers[REG_FLAGS] = registers[REG_FLAGS] | flag;
+		} else {
+			registers[REG_FLAGS] = registers[REG_FLAGS] &= ~flag;
+		}
 	}
 
 	@Override

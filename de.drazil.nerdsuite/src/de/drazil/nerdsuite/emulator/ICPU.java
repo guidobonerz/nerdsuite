@@ -7,7 +7,7 @@ public interface ICPU {
 
 	public long getStatus();
 
-	public void setFlag(int flag);
+	public void setFlag(int flag, boolean set);
 
 	public boolean hasFlag(int flag);
 
