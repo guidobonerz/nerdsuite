@@ -119,14 +119,9 @@ public class CPU6510 extends AbstractCPU {
 		case 0xf: {
 		}
 		case 0x10: {// BPL $hhll
-
-			if ((registers[REG_FLAGS] & FLAG_ZERO) == (byte) 0) {
+			if (!hasFlag(FLAG_NEGATIVE)) {
 				pc += ((ram[pc + 1] & 0x80) == 0x80 ? -(ram[pc + 1] & 0x7f) : (ram[pc + 1] & 0x7f));
 			}
-			if (!hasFlag(FLAG_NEGATIVE)) {
-
-			}
-			pc += 2;
 			break;
 		}
 		case 0x11: {// ORA ($ll),Y
@@ -320,9 +315,8 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x30: {// BMI $hhll
 			if (hasFlag(FLAG_NEGATIVE)) {
-
+				pc += ((ram[pc + 1] & 0x80) == 0x80 ? -(ram[pc + 1] & 0x7f) : (ram[pc + 1] & 0x7f));
 			}
-			pc += 2;
 			break;
 		}
 		case 0x31: {// AND ($ll), Y
@@ -605,12 +599,24 @@ public class CPU6510 extends AbstractCPU {
 		case 0x61: {// ADC ($ll, X)
 			int adr = getAdress(pc + 1, ram, rom, (byte) registers[REG_X]);
 			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_m + lo_a + (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0xff) > 9)
+					lo += 6;
+				int hi = hi_m + hi_a + (lo > 15 ? 1 : 0);
+				if ((hi & 0xff) > 9)
+					hi += 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi > 15));
 
 			} else {
-				registers[REG_A] += ram[adr];
-				if (hasFlag(FLAG_CARRY)) {
-					registers[REG_A] += 1;
-				}
+				registers[REG_A] += ram[adr] + (hasFlag(FLAG_CARRY) ? 1 : 0);
 			}
 			setZeroFlag(registers[REG_A]);
 			setNegativeFlag(registers[REG_A]);
@@ -631,6 +637,32 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x65: {// ADC $ll
 			int adr = getAdress(pc + 1, ram, rom, (byte) 0);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_m + lo_a + (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0xff) > 9)
+					lo += 6;
+				int hi = hi_m + hi_a + (lo > 15 ? 1 : 0);
+				if ((hi & 0xff) > 9)
+					hi += 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi > 15));
+
+			} else {
+				registers[REG_A] += ram[adr] + (hasFlag(FLAG_CARRY) ? 1 : 0);
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 2;
 			break;
 		}
 		case 0x66: {// ROR $ll
@@ -655,6 +687,32 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x69: {// ADC #$nn
 			int v = getValue(pc + 1, ram, rom);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = v & 0b00001111;
+				int hi_m = (v >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_m + lo_a + (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0xff) > 9)
+					lo += 6;
+				int hi = hi_m + hi_a + (lo > 15 ? 1 : 0);
+				if ((hi & 0xff) > 9)
+					hi += 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi > 15));
+
+			} else {
+				registers[REG_A] += v + (hasFlag(FLAG_CARRY) ? 1 : 0);
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 2;
 			break;
 		}
 		case 0x6a: {// ROR
@@ -677,6 +735,32 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x6d: {// ADC $hhll
 			int adr = getAdress(pc + 1, ram, rom, (byte) 0);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_m + lo_a + (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0xff) > 9)
+					lo += 6;
+				int hi = hi_m + hi_a + (lo > 15 ? 1 : 0);
+				if ((hi & 0xff) > 9)
+					hi += 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi > 15));
+
+			} else {
+				registers[REG_A] += ram[adr] + (hasFlag(FLAG_CARRY) ? 1 : 0);
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 3;
 			break;
 		}
 		case 0x6e: {// ROR $hhll
@@ -703,6 +787,32 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x71: {// ADC ($ll), Y
 			int adr = getAdress(pc + 1, ram, rom, (byte) 0);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_m + lo_a + (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0xff) > 9)
+					lo += 6;
+				int hi = hi_m + hi_a + (lo > 15 ? 1 : 0);
+				if ((hi & 0xff) > 9)
+					hi += 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi > 15));
+
+			} else {
+				registers[REG_A] += ram[adr] + (hasFlag(FLAG_CARRY) ? 1 : 0);
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 2;
 			break;
 		}
 		case 0x72: {
@@ -716,6 +826,32 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x75: {// ADC $ll, X
 			int adr = getAdress(pc + 1, ram, rom, (byte) registers[REG_X]);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_m + lo_a + (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0xff) > 9)
+					lo += 6;
+				int hi = hi_m + hi_a + (lo > 15 ? 1 : 0);
+				if ((hi & 0xff) > 9)
+					hi += 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi > 15));
+
+			} else {
+				registers[REG_A] += ram[adr] + (hasFlag(FLAG_CARRY) ? 1 : 0);
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 2;
 			break;
 		}
 		case 0x76: {// ROR $ll, X
@@ -739,6 +875,32 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x79: {// ADC $hhll, Y
 			int adr = getAdress(pc + 1, ram, rom, (byte) registers[REG_Y]);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_m + lo_a + (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0xff) > 9)
+					lo += 6;
+				int hi = hi_m + hi_a + (lo > 15 ? 1 : 0);
+				if ((hi & 0xff) > 9)
+					hi += 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi > 15));
+
+			} else {
+				registers[REG_A] += ram[adr] + (hasFlag(FLAG_CARRY) ? 1 : 0);
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 3;
 			break;
 		}
 		case 0x7a: {
@@ -752,6 +914,32 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x7d: {// ADC $hhll, X
 			int adr = getAdress(pc + 1, ram, rom, (byte) registers[REG_X]);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_m + lo_a + (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0xff) > 9)
+					lo += 6;
+				int hi = hi_m + hi_a + (lo > 15 ? 1 : 0);
+				if ((hi & 0xff) > 9)
+					hi += 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi > 15));
+
+			} else {
+				registers[REG_A] += ram[adr] + (hasFlag(FLAG_CARRY) ? 1 : 0);
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 3;
 			break;
 		}
 		case 0x7e: {// ROR $hhll, X
@@ -847,9 +1035,8 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0x90: {// BCC $hhll
 			if (!hasFlag(FLAG_CARRY)) {
-
+				pc += ((ram[pc + 1] & 0x80) == 0x80 ? -(ram[pc + 1] & 0x7f) : (ram[pc + 1] & 0x7f));
 			}
-			pc += 2;
 			break;
 		}
 		case 0x91: {// STA ($ll), Y
@@ -1030,11 +1217,9 @@ public class CPU6510 extends AbstractCPU {
 			break;
 		}
 		case 0xb0: {// BCS $hhll
-
 			if (hasFlag(FLAG_CARRY)) {
-
+				pc += ((ram[pc + 1] & 0x80) == 0x80 ? -(ram[pc + 1] & 0x7f) : (ram[pc + 1] & 0x7f));
 			}
-			pc += 2;
 			break;
 		}
 		case 0xb1: {// LDA ($ll), Y
@@ -1325,7 +1510,21 @@ public class CPU6510 extends AbstractCPU {
 		case 0xe1: {// SBC ($ll, X)
 			int adr = getAdress(pc + 1, ram, rom, (byte) registers[REG_X]);
 			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
 
+				int lo = lo_a - lo_m - (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0x10) != 0)
+					lo -= 6;
+				int hi = hi_a - hi_m - ((lo & 0x10) != 0 ? 1 : 0);
+				if ((hi & 0x10) != 0)
+					hi -= 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi < 15));
 			} else {
 				registers[REG_A] -= ram[adr];
 				if (hasFlag(FLAG_CARRY)) {
@@ -1355,6 +1554,34 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0xe5: {// SBC $ll
 			int adr = getAdress(pc + 1, ram, rom, (byte) 0);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_a - lo_m - (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0x10) != 0)
+					lo -= 6;
+				int hi = hi_a - hi_m - ((lo & 0x10) != 0 ? 1 : 0);
+				if ((hi & 0x10) != 0)
+					hi -= 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi < 15));
+			} else {
+				registers[REG_A] -= ram[adr];
+				if (hasFlag(FLAG_CARRY)) {
+					registers[REG_A] += 1;
+				}
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 2;
 			break;
 		}
 		case 0xe6: {// INC $ll
@@ -1379,6 +1606,34 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0xe9: {// SBC #$nn
 			int v = getValue(pc + 1, ram, rom);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = v & 0b00001111;
+				int hi_m = (v >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_a - lo_m - (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0x10) != 0)
+					lo -= 6;
+				int hi = hi_a - hi_m - ((lo & 0x10) != 0 ? 1 : 0);
+				if ((hi & 0x10) != 0)
+					hi -= 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi < 15));
+			} else {
+				registers[REG_A] -= v;
+				if (hasFlag(FLAG_CARRY)) {
+					registers[REG_A] += 1;
+				}
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 2;
 			break;
 		}
 		case 0xea: {// NOP
@@ -1396,6 +1651,34 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0xed: {// SBC $hhll
 			int adr = getAdress(pc + 1, ram, rom, (byte) 0);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_a - lo_m - (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0x10) != 0)
+					lo -= 6;
+				int hi = hi_a - hi_m - ((lo & 0x10) != 0 ? 1 : 0);
+				if ((hi & 0x10) != 0)
+					hi -= 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi < 15));
+			} else {
+				registers[REG_A] -= ram[adr];
+				if (hasFlag(FLAG_CARRY)) {
+					registers[REG_A] += 1;
+				}
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 3;
 			break;
 		}
 		case 0xee: {// INC $hhll
@@ -1411,15 +1694,41 @@ public class CPU6510 extends AbstractCPU {
 			break;
 		}
 		case 0xf0: {// BEQ $hhll
-
 			if (hasFlag(FLAG_ZERO)) {
-
+				pc += ((ram[pc + 1] & 0x80) == 0x80 ? -(ram[pc + 1] & 0x7f) : (ram[pc + 1] & 0x7f));
 			}
-			pc += 2;
 			break;
 		}
 		case 0xf1: {// SBC ($ll), Y
 			int adr = getAdress(pc + 1, ram, rom, (byte) 0);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_a - lo_m - (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0x10) != 0)
+					lo -= 6;
+				int hi = hi_a - hi_m - ((lo & 0x10) != 0 ? 1 : 0);
+				if ((hi & 0x10) != 0)
+					hi -= 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi < 15));
+			} else {
+				registers[REG_A] -= ram[adr];
+				if (hasFlag(FLAG_CARRY)) {
+					registers[REG_A] += 1;
+				}
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 2;
 			break;
 		}
 		case 0xf2: {
@@ -1433,6 +1742,34 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0xf5: {// SBC $ll, X
 			int adr = getAdress(pc + 1, ram, rom, (byte) registers[REG_X]);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_a - lo_m - (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0x10) != 0)
+					lo -= 6;
+				int hi = hi_a - hi_m - ((lo & 0x10) != 0 ? 1 : 0);
+				if ((hi & 0x10) != 0)
+					hi -= 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi < 15));
+			} else {
+				registers[REG_A] -= ram[adr];
+				if (hasFlag(FLAG_CARRY)) {
+					registers[REG_A] += 1;
+				}
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 2;
 			break;
 		}
 		case 0xf6: {// INC $ll, X
@@ -1454,6 +1791,34 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0xf9: {// SBC $hhll, Y
 			int adr = getAdress(pc + 1, ram, rom, (byte) registers[REG_Y]);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_a - lo_m - (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0x10) != 0)
+					lo -= 6;
+				int hi = hi_a - hi_m - ((lo & 0x10) != 0 ? 1 : 0);
+				if ((hi & 0x10) != 0)
+					hi -= 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi < 15));
+			} else {
+				registers[REG_A] -= ram[adr];
+				if (hasFlag(FLAG_CARRY)) {
+					registers[REG_A] += 1;
+				}
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 3;
 			break;
 		}
 		case 0xfa: {
@@ -1467,6 +1832,34 @@ public class CPU6510 extends AbstractCPU {
 		}
 		case 0xfd: {// SBC $hhll, X
 			int adr = getAdress(pc + 1, ram, rom, (byte) registers[REG_X]);
+			if (hasFlag(FLAG_DECIMAL)) {
+				int lo_m = ram[adr] & 0b00001111;
+				int hi_m = (ram[adr] >> 4) & 0b00001111;
+				int lo_a = registers[REG_A] & 0b00001111;
+				int hi_a = (registers[REG_A] >> 4) & 0b00001111;
+
+				int lo = lo_a - lo_m - (hasFlag(FLAG_CARRY) ? 1 : 0);
+				if ((lo & 0x10) != 0)
+					lo -= 6;
+				int hi = hi_a - hi_m - ((lo & 0x10) != 0 ? 1 : 0);
+				if ((hi & 0x10) != 0)
+					hi -= 6;
+				int result = (lo & 0x0f) | (hi << 4);
+				result &= 0xff;
+				registers[REG_A] = result;
+				setFlag(FLAG_CARRY, (hi < 15));
+			} else {
+				registers[REG_A] -= ram[adr];
+				if (hasFlag(FLAG_CARRY)) {
+					registers[REG_A] += 1;
+				}
+			}
+			setZeroFlag(registers[REG_A]);
+			setNegativeFlag(registers[REG_A]);
+			setCarryFlag(registers[REG_A]);
+			setOverflowFlag(registers[REG_A]);
+			registers[REG_A] &= 0xff;
+			pc += 3;
 			break;
 		}
 		case 0xfe: {// INC $hhll, X
