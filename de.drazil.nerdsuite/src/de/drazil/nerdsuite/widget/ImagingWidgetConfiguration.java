@@ -1,7 +1,5 @@
 package de.drazil.nerdsuite.widget;
 
-import org.eclipse.swt.graphics.Point;
-
 import de.drazil.nerdsuite.enums.CursorMode;
 import de.drazil.nerdsuite.enums.GridType;
 import de.drazil.nerdsuite.enums.PaintMode;
@@ -68,6 +66,7 @@ public class ImagingWidgetConfiguration implements TileSelectionModes {
 	}
 
 	public void computeDimensions() {
+		
 		pixelPaintWidth = pixelSize;
 		pixelPaintHeight = pixelSize;
 		iconSize = iconHeight * iconWidth;

@@ -8,7 +8,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.internal.DPIUtil;
 import org.eclipse.swt.widgets.Display;
 
 import de.drazil.nerdsuite.Constants;
@@ -94,13 +94,18 @@ public class ImagePainterFactory {
 			i2 = createOrUpdateLayer(imageId, tile.getActiveLayer(), true);
 		}
 		Image i = i2.getImage();
-		double sf = conf.scaleFactor;
+		// double sf = conf.scaleFactor;
 
 		ImageData original = i.getImageData();
 
 		int w = thumbnail ? conf.repositoryScaledTileWith : conf.painterScaledTileWith;
 		int h = thumbnail ? conf.repositoryScaledTileHeight : conf.painterScaledTileHeight;
-
+		int zoom = DPIUtil.getDeviceZoom();
+		if (zoom > 100) {
+			double zf = 100.0 / zoom;
+			h = (int) (h / zf);
+			w = (int) (w / zf);
+		}
 		ImageData scaled = original.scaledTo(w, h);
 		// scaled.transparentPixel =
 		// original.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
@@ -151,6 +156,12 @@ public class ImagePainterFactory {
 		String internalName = String.format("%s_BASEIMAGE", name);
 		Image2 imageInternal = imagePool.get(internalName);
 		if (imageInternal == null) {
+			int zoom = DPIUtil.getDeviceZoom();
+			if (zoom > 100) {
+				double zf = 100.0 / zoom;
+				height = (int) (height / zf);
+				width = (int) (width / zf);
+			}
 			imageInternal = new Image2(new Image(Display.getDefault(), width, height), true);
 			GC gc = new GC(imageInternal.getImage());
 			gc.setBackground(color);
@@ -166,6 +177,12 @@ public class ImagePainterFactory {
 	}
 
 	public Image2 createLayer(int width, int height) {
+		int zoom = DPIUtil.getDeviceZoom();
+		if (zoom > 100) {
+			double zf = 100.0 / zoom;
+			height = (int) (height / zf);
+			width = (int) (width / zf);
+		}
 		Image image = new Image(Display.getDefault(), width, height);
 		Image2 imageInternal = new Image2(image, true);
 		GC gc = new GC(imageInternal.getImage());
@@ -176,8 +193,8 @@ public class ImagePainterFactory {
 		imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
 		imageInternal.dispose();
 		imageInternal.setImage(new Image(Display.getDefault(), imageData));
-		
-		//image.dispose();
+
+		// image.dispose();
 		return imageInternal;
 	}
 
@@ -301,6 +318,7 @@ public class ImagePainterFactory {
 				ImagingWidgetConfiguration conf = ipf.getConfiguration();
 				String pixelId = String.format(IMAGE_ID, String.format("T%03X", bi), layer.getId(), ci);
 				ipf.setForegroundColorIndex(ci);
+				
 				gc.drawImage(ipf.createOrUpdateLayer(pixelId, pixelLayer, false).getImage(), x * conf.tileWidthPixel,
 						y * conf.tileHeightPixel);
 				x++;
@@ -322,6 +340,7 @@ public class ImagePainterFactory {
 					conf.tileHeightPixel * conf.scaleFactor * conf.rows + ((conf.rows - 1) * conf.tileGap)).getImage(),
 					false);
 			GC gc = new GC(mapImageInternal.getImage());
+
 			for (int i = 0; i < repository.getSize(); i++) {
 				Tile tile = repository.getTile(i);
 				Layer layer = tile.getActiveLayer();
@@ -337,6 +356,7 @@ public class ImagePainterFactory {
 					imageInternal.setDirty(isDirty);
 					tile.putImage(id, imageInternal);
 				}
+
 				int y = (i / conf.columns) * (conf.tileHeightPixel * conf.scaleFactor + conf.tileGap);
 				int x = (i % conf.columns) * (conf.tileWidthPixel * conf.scaleFactor + conf.tileGap);
 				ImageData original = imageInternal.getImage().getImageData();
