@@ -209,17 +209,15 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 
 		srs = ServiceFactory.getService(project.getId(), SourceRepositoryService.class);
 		basicInstructions = PlatformFactory.getBasicInstructions(srs.getMetadata().getPlatform());
-/*
-		Collections.sort(basicInstructions.getBasicInstructionList(), new Comparator<BasicInstruction>() {
-
-			@Override
-			public int compare(BasicInstruction o1, BasicInstruction o2) {
-				return o1.getDescription().compareTo(o2.getDescription());
-			}
-		});
-
-		Collections.reverse(basicInstructions.getBasicInstructionList());
-*/
+		/*
+		 * Collections.sort(basicInstructions.getBasicInstructionList(), new
+		 * Comparator<BasicInstruction>() {
+		 * 
+		 * @Override public int compare(BasicInstruction o1, BasicInstruction o2) {
+		 * return o1.getDescription().compareTo(o2.getDescription()); } });
+		 * 
+		 * Collections.reverse(basicInstructions.getBasicInstructionList());
+		 */
 		int version = 20;
 		String variant = srs.getMetadata().getVariant();
 		if (variant.equals("V20")) {

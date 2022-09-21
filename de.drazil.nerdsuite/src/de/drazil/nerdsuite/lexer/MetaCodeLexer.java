@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.lexer;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MetaCodeLexer {
@@ -9,10 +10,10 @@ public class MetaCodeLexer {
 	public MetaCodeLexer() {
 
 	}
-	
+
 	private static String content = "@set _debug=true\n@set x=1\n10 print\"hallo\":a=1\n" + "@if _debug\n"
-			+ "20 poke 53280,1:poke53281,0\n" + "30 print\"das ist ein test\"\n" + "@end\n" + "40 a=1:b=2:c=3\n "
-			+ "@asm name='test'\n" + "lda $#01\n" + "sta $d020\n" + "  @end   ";
+			+ "20 poke 53280,1:poke 53281,0\n" + "30 print\"das ist ein test\"\n" + "@end\n"
+			+ "40 aff_34=1:   b=2:c=3\n " + "@asm name='test'\n" + "lda #$01\n" + "sta$d020\n" + "  @end   ";
 
 	public static String getAtom(String s, int i) {
 		int j = i;
@@ -53,88 +54,125 @@ public class MetaCodeLexer {
 		return s.substring(i, j);
 	}
 
-	public static List<Token> lex(String input, int offset, Token token) {
-		List<Token> result = token.getTokenList();
+	private static void addElement(List<Token> result, String input, int start, int end) {
+		if (end > start) {
+			int length = end - start;
+			String s = input.substring(start, start + length);
+			if (s.matches(LexicalRule.HEX_VALUE_BYTE.getValue())) {
+				result.add(new Token(Type.HEX, start, length));
+			} else if (s.matches(LexicalRule.HEX_ADRESS_WORD.getValue())) {
+				result.add(new Token(Type.HEX, start, length));
+			} else if (s.matches(LexicalRule.HEX_ADRESS_BYTE.getValue())) {
+				result.add(new Token(Type.HEX, start, length));
+			} else if (s.matches(LexicalRule.IDENTIFIER.getValue())) {
+				result.add(new Token(Type.IDENTIFIER, start, length));
+			} else if (s.matches(LexicalRule.INT_VALUE_BYTE.getValue())) {
+				result.add(new Token(Type.INT, start, length));
+			} else if (s.matches(LexicalRule.BIN_VALUE_BYTE.getValue())) {
+				result.add(new Token(Type.BIN, start, length));
+			} else if (s.matches(LexicalRule.INTEGER.getValue())) {
+				result.add(new Token(Type.INT, start, length));
+			}
+		}
+	}
+
+	public static List<Token> lex(String input) {
+		int lastIndex = 0;
+		List<Token> result = new ArrayList<>();
 		CharacterIterator ci = new StringCharacterIterator(input);
 		char ch = ci.first();
 
 		while (ch != CharacterIterator.DONE) {
 			switch (ch) {
 			case '@': {
-				result.add(new Token(Type.EXPRESSION, Character.toString(ch), ci.getIndex(), ci.getIndex()));
-				int start = ci.getIndex() + 1;
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end - 1);
-				result.add(new Token(Type.NAME, s, start, end - 1));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.AT, i, 1));
 				break;
 			}
-			case '_': {
-				result.add(new Token(Type.UNDERSCORE, Character.toString(ch), ci.getIndex(), ci.getIndex()));
-				int start = ci.getIndex() + 1;
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end - 1);
-				result.add(new Token(Type.NAME, s, start, end - 1));
+			case ':': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.COLON, i, 1));
 				break;
 			}
-			case '$': {
-				result.add(new Token(Type.PROPERTY, Character.toString(ch), ci.getIndex(), ci.getIndex()));
-				int start = ci.getIndex() + 1;
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end - 1);
-				result.add(new Token(Type.NAME, s, start, end - 1));
+			case ',': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.COMMA, i, 1));
 				break;
 			}
+			case '.': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.POINT, i, 1));
+				break;
+			}
+			/*
+			 * case '#': { addElement(result, input, lastIndex, ci.getIndex()); int i =
+			 * ci.getIndex(); lastIndex = i + 1; result.add(new Token(Type.HASH, i, 1));
+			 * break; }
+			 */
+			case ' ':
+			case '\t':
+			case '\n':
+			case '\r': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.WHITESPACE, i, 1));
+				break;
+			}
+			/*
+			 * case '$': { addElement(result, input, lastIndex, ci.getIndex()); int i =
+			 * ci.getIndex(); lastIndex = i + 1; result.add(new Token(Type.DOLLAR, i, 1));
+			 * break; }
+			 */
 			case '=': {
-				result.add(new Token(Type.EQUAL, Character.toString(ch), ci.getIndex(), ci.getIndex()));
-				int start = ci.getIndex() + 1;
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end - 1);
-				result.add(new Token(Type.NAME, s, start, end - 1));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.EQUAL, i, 1));
 				break;
 			}
 			case ';': {
-				result.add(new Token(Type.SEMICOLON, Character.toString(ch), ci.getIndex(), ci.getIndex()));
-				int start = ci.getIndex();
-				ci.setIndex(start + 1);
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.SEMICOLON, i, 1));
 				break;
 			}
 			case '\'': {
-				result.add(new Token(Type.SINGLE_QUOTE, Character.toString(ch), ci.getIndex(), ci.getIndex()));
-				int start = ci.getIndex();
-				String s = getQuotedContent(input, start, '\'');
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.SINGLE_QUOTE, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.SINGLE_QUOTE, i, 1));
 				break;
 			}
 			case '\"': {
-				result.add(new Token(Type.DOUBLE_QUOTE, Character.toString(ch), ci.getIndex(), ci.getIndex()));
-				int start = ci.getIndex();
-				String s = getQuotedContent(input, start, '\"');
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.DOUBLE_QUOTE, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.DOUBLE_QUOTE, i, 1));
 				break;
 			}
 
 			case '{': {
-				int start = ci.getIndex();
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.OPEN_BRACE_CURLY, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.OPEN_BRACE_CURLY, i, 1));
 				break;
 			}
 			case '}': {
-				int start = ci.getIndex();
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.CLOSE_BRACE_CURLY, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.CLOSE_BRACE_CURLY, i, 1));
 				break;
 			}
 
@@ -146,9 +184,9 @@ public class MetaCodeLexer {
 	}
 
 	public static void main(String argv[]) {
-		List<Token> tokens = lex(content, 0, new Token(Type.CONTENT_BLOCK, "", 0, content.length()));
+		List<Token> tokens = lex(content);
 		for (Token t : tokens) {
-			System.out.println(t);
+			System.out.println(t + " > " + content.substring(t.getOffset(), t.getOffset() + t.getLength()));
 		}
 	}
 }

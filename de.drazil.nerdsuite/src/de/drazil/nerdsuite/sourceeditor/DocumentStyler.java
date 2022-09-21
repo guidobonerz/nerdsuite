@@ -119,7 +119,8 @@ public class DocumentStyler implements LineStyleListener {
 			}
 			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null,
 					false);
-			//parseLinenumber(lineOffset, event.lineText.toLowerCase(), styleRangeList, null, false);
+			// parseLinenumber(lineOffset, event.lineText.toLowerCase(), styleRangeList,
+			// null, false);
 			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null, false);
 			parseText(ruleMap.get(CONSTANT_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null, true);
 			parseBraces(lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
@@ -167,8 +168,6 @@ public class DocumentStyler implements LineStyleListener {
 		}
 	}
 
-	
-
 	private void parseText(List<IRule> ruleList, int lineOffset, String text, List<StyleRange> styleRangeList,
 			Color backgroundColor, boolean b) {
 		if (ruleList == null) {
@@ -204,10 +203,20 @@ public class DocumentStyler implements LineStyleListener {
 						} else {
 							c = styleMap.get(rule.getToken().getKey()).foreground;
 						}
-						StyleRange styleRange = new StyleRange(lo + partition.getOffset(), len, c, null);
+
+						if (rule.getToken().getKey().equals(Constants.T_C64_BASIC_STRING)) {
+							offset += 1;
+							len -= 2;
+						}
+
+						StyleRange styleRange = new StyleRange(lo + offset, len, c, null);
 						styleRange.font = styleMap.get(rule.getToken().getKey()).font;
 						styleRangeList.add(styleRange);
 						hasMatch = true;
+						if (rule.getToken().getKey().equals(Constants.T_C64_BASIC_STRING)) {
+							offset -= 1;
+							len += 2;
+						}
 					}
 					break;
 				}
