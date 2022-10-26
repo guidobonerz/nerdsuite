@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import de.drazil.nerdsuite.json.IntArrayToStringConverter;
 import de.drazil.nerdsuite.json.StringToIntArrayConverter;
-import de.drazil.nerdsuite.model.Image2;
+import de.drazil.nerdsuite.model.DirtyableImage;
 import lombok.Data;
 
 @Data
@@ -44,13 +44,13 @@ public class Layer {
 	@JsonProperty(value = "colorPalette")
 	private List<Integer> colorPalette = new ArrayList<Integer>();
 	@JsonIgnore
-	private Map<String, Image2> imagePool = null;
+	private Map<String, DirtyableImage> imagePool = null;
 
 	@JsonIgnore
 	private boolean dirty = true;
 
 	public Layer() {
-		imagePool = new HashMap<String, Image2>();
+		imagePool = new HashMap<String, DirtyableImage>();
 	}
 
 	public Layer(String id, String name, int size, Integer brushValue) {
@@ -61,17 +61,17 @@ public class Layer {
 	}
 
 	@JsonIgnore
-	public void putImage(Image2 image) {
+	public void putImage(DirtyableImage image) {
 		putImage(id, image);
 	}
 
 	@JsonIgnore
-	public void putImage(String id, Image2 image) {
+	public void putImage(String id, DirtyableImage image) {
 		imagePool.put(id, image);
 	}
 
 	@JsonIgnore
-	public Image2 getImage(String id) {
+	public DirtyableImage getImage(String id) {
 		return imagePool.get(id);
 	}
 

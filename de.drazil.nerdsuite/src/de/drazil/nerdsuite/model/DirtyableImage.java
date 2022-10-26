@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Image2 {
+public class DirtyableImage {
 	private Image image;
 	private boolean dirty = true;
 

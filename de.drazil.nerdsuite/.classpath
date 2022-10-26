@@ -9,7 +9,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="ext_libs/commons-text-1.8.jar"/>
 	<classpathentry kind="lib" path="ext_libs/commons-lang3-3.10.jar"/>
-	<classpathentry kind="lib" path="ext_libs/guava-23.0.jar"/>
 	<classpathentry kind="lib" path="ext_libs/KickAss.jar"/>
 	<classpathentry kind="lib" path="ext_libs/jackson-annotations-2.9.0.jar"/>
 	<classpathentry kind="lib" path="ext_libs/jackson-core-2.9.9.jar"/>
@@ -24,5 +23,6 @@
 	<classpathentry kind="lib" path="ext_libs/lombok.jar"/>
 	<classpathentry kind="lib" path="ext_libs/commons-io-2.6.jar"/>
 	<classpathentry kind="lib" path="ext_libs/commons-net-3.7.1.jar"/>
+	<classpathentry kind="lib" path="ext_libs/guava-31.1-jre.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

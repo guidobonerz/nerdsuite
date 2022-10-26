@@ -5,73 +5,74 @@ import java.util.List;
 
 public class MeasuringController {
 
-	private List<IMeasuringListener> list;
-	private long[] triggerMillis;
-	private volatile Thread thread;
-	private Measure measure;
-	private volatile boolean running = false;
-	private int timerId = -1;
-	private Object payload;
+    public static enum Trigger {
+        LEFT, MIDDLE, RIGHT
+    }
 
-	public MeasuringController() {
-		list = new ArrayList<>();
-	}
+    private List<IMeasuringListener> list;
+    private long triggerMillis;
+    private volatile Thread thread;
+    private Measure measure;
+    private volatile boolean running = false;
+    private int timerId = -1;
+    private Object payload;
 
-	public void setTriggerMillis(long... triggerMillis) {
-		this.triggerMillis = triggerMillis;
-	}
+    public MeasuringController() {
+        list = new ArrayList<>();
+    }
 
-	public void start(int id, Object payload) {
-		if (triggerMillis != null) {
-			timerId = id;
-			this.payload = payload;
-			running = true;
-			measure = new Measure(System.currentTimeMillis(), triggerMillis);
-			thread = new Thread(measure);
-			thread.start();
-		}
-	}
+    public void setTriggerMillis(long triggerMillis) {
+        this.triggerMillis = triggerMillis;
+    }
 
-	public void stop() {
-		running = false;
-		thread = null;
-	}
+    public void start(int id, Object payload) {
+        if (triggerMillis != -1) {
+            timerId = id;
+            this.payload = payload;
+            running = true;
+            measure = new Measure(System.currentTimeMillis(), triggerMillis);
+            thread = new Thread(measure);
+            thread.start();
+        }
+    }
 
-	public void addMeasuringListener(IMeasuringListener listener) {
-		list.add(listener);
-	}
+    public void stop() {
+        running = false;
+        thread = null;
+    }
 
-	public void removeMeasuringListener(IMeasuringListener listener) {
-		list.remove(listener);
-	}
+    public void addMeasuringListener(IMeasuringListener listener) {
+        list.add(listener);
+    }
 
-	private void fireTimeReached(long triggerMillis) {
-		list.forEach(l -> l.onTriggerTimeReached(triggerMillis, timerId, payload));
-	}
+    public void removeMeasuringListener(IMeasuringListener listener) {
+        list.remove(listener);
+    }
 
-	private class Measure implements Runnable {
-		private long startMillies;
-		private int mc = 0;
-		private long[] triggerMillis;
+    private void fireTimeReached(long triggerMillis) {
+        list.forEach(l -> l.onTriggerTimeReached(triggerMillis, timerId, payload));
+    }
 
-		public Measure(long startMillies, long[] triggerMillis) {
-			mc = 0;
-			this.startMillies = startMillies;
-			this.triggerMillis = triggerMillis;
-		}
+    private class Measure implements Runnable {
+        private long startMillies;
+        private long triggerMillis;
 
-		@Override
-		public synchronized void run() {
-			Thread currentMeasurment = Thread.currentThread();
-			if (running) {
-				while (currentMeasurment == thread) {
-					long diff = System.currentTimeMillis() - startMillies;
-					if (running && mc < triggerMillis.length && diff > triggerMillis[mc]) {
-						fireTimeReached(triggerMillis[mc]);
-						mc++;
-					}
-				}
-			}
-		}
-	}
+        public Measure(long startMillies, long triggerMillis) {
+            this.startMillies = startMillies;
+            this.triggerMillis = triggerMillis;
+        }
+
+        @Override
+        public synchronized void run() {
+            Thread currentMeasurment = Thread.currentThread();
+            if (running) {
+                while (currentMeasurment == thread) {
+                    long diff = System.currentTimeMillis() - startMillies;
+                    if (running && diff > triggerMillis) {
+                        fireTimeReached(triggerMillis);
+                    }
+                }
+            }
+        }
+    }
 }
