@@ -91,15 +91,21 @@ public class ImagePainterFactory {
     public Point drawScaledImage(GC gc, Tile tile, String imageId, int x, int y, boolean thumbnail) {
 
         DirtyableImage scaledImage = tile.getActiveLayer().getImage(imageId + (thumbnail ? 'R' : 'P'));
-        if (scaledImage == null || scaledImage.isDirty()) {
+        if (scaledImage == null || scaledImage.isDirty() || tile.isDirty()) {
 
+            if (scaledImage != null) {
+                scaledImage.dispose();
+            }
             DirtyableImage masterImage = tile.getActiveLayer().getImage(imageId);
-            if (masterImage == null || masterImage.isDirty()) {
+            if (masterImage == null || masterImage.isDirty() || tile.isDirty()) {
+                if (masterImage != null) {
+                    masterImage.dispose();
+                }
                 masterImage = createOrUpdateLayer(imageId, tile.getActiveLayer(), true);
                 masterImage.setDirty(false);
-                System.out.println("create MasterImage");
+                // System.out.println("create MasterImage");
             } else {
-                System.out.println("getMasterImage from Cache");
+                // System.out.println("getMasterImage from Cache");
             }
 
             Image i = masterImage.getImage();
@@ -116,15 +122,16 @@ public class ImagePainterFactory {
             Image scaledImageInternal = new Image(Display.getCurrent(), scaled);
             scaledImage = new DirtyableImage(scaledImageInternal, false);
             tile.getActiveLayer().putImage(imageId + (thumbnail ? 'R' : 'P'), scaledImage);
-            System.out.println("create ScaledImage");
+            // System.out.println("create ScaledImage");
+            tile.setDirty(false);
         }
 
         else {
-            System.out.println("getScaledImage from Cache");
+            // System.out.println("getScaledImage from Cache");
         }
 
         gc.drawImage(scaledImage.getImage(), x, y);
-        // dis.dispose();
+
         return null;
     }
 

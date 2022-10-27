@@ -183,7 +183,7 @@ public class RepositoryWidget extends BaseImagingWidget {
 
         maxColumns = r.width / (conf.repositoryScaledTileWith + conf.tileGap);
         maxRows = r.height / (conf.repositoryScaledTileHeight + conf.tileGap);
-
+        System.out.printf("repo redrawmode: %s\n", redrawMode.toString());
         paintTiles(gc, action, maxColumns, maxRows);
 
         if (paintTileGrid) {
@@ -291,6 +291,10 @@ public class RepositoryWidget extends BaseImagingWidget {
         int x = (index % columns) * (conf.repositoryScaledTileWith + conf.tileGap);
         if (index < tileRepositoryService.getSize()) {
             Tile tile = tileRepositoryService.getTile(index);
+            Tile selectedTile = tileRepositoryService.getSelectedTile();
+            if (tile.equals(selectedTile)) {
+                tile.setDirty(true);
+            }
             Layer layer = tile.getActiveLayer();
             String name = String.format(ImagePainterFactory.IMAGE_ID, tile.getId(), layer.getId(), 0);
             imagePainterFactory.drawScaledImage(gc, tile, name, x, y, true);

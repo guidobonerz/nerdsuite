@@ -225,28 +225,16 @@ public class PainterWidget extends BaseImagingWidget {
 
         Tile t = null;
 
-        // gc.drawImage(imagePainterFactory.createOrUpdateBaseImage("PAINTER",
-        // colorPaletteProvider.getColorByIndex(0)) .getImage(), 0, 0);
-
-        String id = "";
-        if (redrawMode == RedrawMode.DrawPixel) {
-            t = tileRepositoryService.getSelectedTile();
-            id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
-
-        } else if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
+        if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
             t = tileRepositoryService.getTile(temporaryIndex);
-            id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
-
-        } else /* if (redrawMode == RedrawMode.DrawAllTiles) */ {
-            System.out.println(redrawMode.toString()+" "+this.getClass().getName());
+        } else {
             t = tileRepositoryService.getSelectedTile();
-            id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
-            // imagePainterFactory.createOrUpdateLayer(id, t.getActiveLayer(), t.isDirty());
         }
-
+        
+        t.setDirty(redrawMode == RedrawMode.DrawPixel);
+        String id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
         imagePainterFactory.drawScaledImage(gc, t, id, 0, 0);
 
-        t.setDirty(false);
         boolean forceRepaintGrid = gridType != conf.getGridType()
                 || multiColor != tileRepositoryService.getSelectedTile().isMulticolorEnabled();
         if (forceRepaintGrid) {
