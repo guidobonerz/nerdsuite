@@ -1,5 +1,5 @@
 # nerdsuite
-Nerdsuite is an IDE (based on eclipse 4.18.0/2020-12) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
+Nerdsuite is an IDE (based on eclipse 4.25.0/2022-09) to develop for old 8Bit machines (C64, Atari 800XL etc.)  
 
 | System | OS | Works | Performance | Java Version
 | -- | -- | -- | -- | -- |
@@ -32,6 +32,8 @@ Current state: Still buggy and incomplete :-)
 ![screenshot7](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen2.png)
 ## CharSet Double Height
 ![screenshot8](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen4.png)
+## ScreenSet 3x3 PETSCII Font
+![screenshot8](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/3x3ScreenSetFont.png)
 ## Popup menu
 ![screenshot9](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/ns_screen3.png)
 ## Colorchooser
@@ -46,4 +48,5 @@ Current state: Still buggy and incomplete :-)
 ![screenshot14](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_bulk_modification.gif)
 ## Tile Range Modification on 2x2 Char Example
 ![screenshot15](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/tile_range_modification.gif)
+
 
