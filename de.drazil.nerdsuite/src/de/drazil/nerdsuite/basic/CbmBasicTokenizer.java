@@ -23,7 +23,7 @@ public class CbmBasicTokenizer {
 		NUMERIC, ALPHANUMERIC, LETTER, WHITESPACE, NONE;
 	}
 
-	private static Pattern directivePattern = Pattern.compile("(@[a-zA-Z]*)\s*([a-zA-Z]*)?");
+	private static Pattern directivePattern = Pattern.compile("(@[a-zA-Z]*)\\s*([a-zA-Z]*)?");
 	private static CharacterIterator ci;
 	private static boolean isInDataLine = false;
 	private static boolean isInDebugMode = false;
@@ -88,7 +88,6 @@ public class CbmBasicTokenizer {
 					byte[] ba = NumericConverter.getWord(Integer.valueOf(buffer.toString()));
 					result = ArrayUtil.grow(result, new byte[] { 0, 0 });
 					result = ArrayUtil.grow(result, ba);
-					System.out.println(buffer.toString());
 					buffer = new StringBuilder();
 				}
 				while (Character.isWhitespace(ch)) {

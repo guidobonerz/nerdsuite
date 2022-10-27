@@ -119,6 +119,8 @@ public class DocumentStyler implements LineStyleListener {
 			}
 			parseText(ruleMap.get(SINGLE_LINE_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null,
 					false);
+			// parseLinenumber(lineOffset, event.lineText.toLowerCase(), styleRangeList,
+			// null, false);
 			parseText(ruleMap.get(WORD_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null, false);
 			parseText(ruleMap.get(CONSTANT_RULE), lineOffset, event.lineText.toLowerCase(), styleRangeList, null, true);
 			parseBraces(lineOffset, event.lineText.toLowerCase(), styleRangeList, null);
@@ -201,10 +203,20 @@ public class DocumentStyler implements LineStyleListener {
 						} else {
 							c = styleMap.get(rule.getToken().getKey()).foreground;
 						}
-						StyleRange styleRange = new StyleRange(lo + partition.getOffset(), len, c, null);
+
+						if (rule.getToken().getKey().equals(Constants.T_C64_BASIC_STRING)) {
+							offset += 1;
+							len -= 2;
+						}
+
+						StyleRange styleRange = new StyleRange(lo + offset, len, c, null);
 						styleRange.font = styleMap.get(rule.getToken().getKey()).font;
 						styleRangeList.add(styleRange);
 						hasMatch = true;
+						if (rule.getToken().getKey().equals(Constants.T_C64_BASIC_STRING)) {
+							offset -= 1;
+							len += 2;
+						}
 					}
 					break;
 				}
@@ -251,12 +263,10 @@ public class DocumentStyler implements LineStyleListener {
 		}
 		ruleList.add(rule);
 		/*
-		Collections.sort(ruleList, new Comparator<IRule>() {
-			@Override
-			public int compare(IRule o1, IRule o2) {
-				return Integer.compare(o1.getPriority(), o2.getPriority());
-			}
-		});
-		*/
+		 * Collections.sort(ruleList, new Comparator<IRule>() {
+		 * 
+		 * @Override public int compare(IRule o1, IRule o2) { return
+		 * Integer.compare(o1.getPriority(), o2.getPriority()); } });
+		 */
 	}
 }

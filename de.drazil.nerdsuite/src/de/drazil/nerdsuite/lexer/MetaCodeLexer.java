@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.lexer;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MetaCodeLexer {
@@ -10,14 +11,29 @@ public class MetaCodeLexer {
 
 	}
 
-	private static String content = "@set ${x}=1\n@set x=1\n10 print\"hallo\":a=1\n" + "@if ${debug}\n"
-			+ "20 poke 53280,1:poke53281,0\n" + "30 print\"das ist ein test\"\n" + "@end\n" + "40 a=1:b=2:c=3\n "
-			+ "@asm name='test'\n" + "lda $#01\n" + "sta $d020\n" + "  @end   ";
+	private static String content = "@set _debug=true\n@set x=1\n10 print\"hallo\":a=1\n" + "@if _debug\n"
+			+ "20 poke 53280,1:poke 53281,0\n" + "30 print\"das ist ein test\"\n" + "@end\n"
+			+ "40 aff_34=1:   b=2:c=3\n " + "@asm name='test'\n" + "lda #$01\n" + "sta$d020\n" + "  @end   ";
 
 	public static String getAtom(String s, int i) {
 		int j = i;
 		for (; j < s.length();) {
+
 			if (Character.isLetter(s.charAt(j)) || Character.isDigit(s.charAt(j))) {
+				j++;
+			} else {
+				System.out.println(">" + s.substring(i, j) + "<");
+				return s.substring(i, j);
+			}
+		}
+		return s.substring(i, j);
+	}
+
+	public static String getContent(String s, int i) {
+		int j = i;
+		for (; j < s.length();) {
+			if (Character.isLetter(s.charAt(j)) || Character.isDigit(s.charAt(j))
+					|| Character.isWhitespace(s.charAt(j))) {
 				j++;
 			} else {
 				return s.substring(i, j);
@@ -26,118 +42,151 @@ public class MetaCodeLexer {
 		return s.substring(i, j);
 	}
 
-	public static String getPartition(String s, int start, char endMarker) {
-		int j = start;
+	public static String getQuotedContent(String s, int i, char quote) {
+		int j = i;
 		for (; j < s.length();) {
-			if (s.charAt(j) != endMarker) {
+			if (s.charAt(j) != quote) {
 				j++;
 			} else {
-				return s.substring(start, j);
+				return s.substring(i, j);
 			}
 		}
-		return s.substring(start, j);
+		return s.substring(i, j);
 	}
 
-	public static List<Token> lex(String input, int offset, Token token) {
-		List<Token> result = token.getTokenList();
+	private static void addElement(List<Token> result, String input, int start, int end) {
+		if (end > start) {
+			int length = end - start;
+			String s = input.substring(start, start + length);
+			if (s.matches(LexicalRule.HEX_VALUE_BYTE.getValue())) {
+				result.add(new Token(Type.HEX, start, length));
+			} else if (s.matches(LexicalRule.HEX_ADRESS_WORD.getValue())) {
+				result.add(new Token(Type.HEX, start, length));
+			} else if (s.matches(LexicalRule.HEX_ADRESS_BYTE.getValue())) {
+				result.add(new Token(Type.HEX, start, length));
+			} else if (s.matches(LexicalRule.IDENTIFIER.getValue())) {
+				result.add(new Token(Type.IDENTIFIER, start, length));
+			} else if (s.matches(LexicalRule.INT_VALUE_BYTE.getValue())) {
+				result.add(new Token(Type.INT, start, length));
+			} else if (s.matches(LexicalRule.BIN_VALUE_BYTE.getValue())) {
+				result.add(new Token(Type.BIN, start, length));
+			} else if (s.matches(LexicalRule.INTEGER.getValue())) {
+				result.add(new Token(Type.INT, start, length));
+			}
+		}
+	}
+
+	public static List<Token> lex(String input) {
+		int lastIndex = 0;
+		List<Token> result = new ArrayList<>();
 		CharacterIterator ci = new StringCharacterIterator(input);
 		char ch = ci.first();
 
 		while (ch != CharacterIterator.DONE) {
 			switch (ch) {
 			case '@': {
-				int start = ci.getIndex() + 1;
-				String s = getPartition(input, start, '\n');
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.EXPRESSION, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.AT, i, 1));
 				break;
 			}
+			case ':': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.COLON, i, 1));
+				break;
+			}
+			case ',': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.COMMA, i, 1));
+				break;
+			}
+			case '.': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.POINT, i, 1));
+				break;
+			}
+			/*
+			 * case '#': { addElement(result, input, lastIndex, ci.getIndex()); int i =
+			 * ci.getIndex(); lastIndex = i + 1; result.add(new Token(Type.HASH, i, 1));
+			 * break; }
+			 */
+			case ' ':
+			case '\t':
+			case '\n':
+			case '\r': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.WHITESPACE, i, 1));
+				break;
+			}
+			/*
+			 * case '$': { addElement(result, input, lastIndex, ci.getIndex()); int i =
+			 * ci.getIndex(); lastIndex = i + 1; result.add(new Token(Type.DOLLAR, i, 1));
+			 * break; }
+			 */
 			case '=': {
-				int start = ci.getIndex();
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.EQUAL, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.EQUAL, i, 1));
+				break;
+			}
+			case ';': {
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.SEMICOLON, i, 1));
 				break;
 			}
 			case '\'': {
-				int start = ci.getIndex();
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.SINGLE_QUOTE, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.SINGLE_QUOTE, i, 1));
 				break;
 			}
 			case '\"': {
-				int start = ci.getIndex();
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.SINGLE_QUOTE, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.DOUBLE_QUOTE, i, 1));
 				break;
 			}
-			case '$': {
-				int start = ci.getIndex();
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.PROPERTY, s, start, end));
-				break;
-			}
+
 			case '{': {
-				int start = ci.getIndex();
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.OPEN_BRACE_CURLY, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.OPEN_BRACE_CURLY, i, 1));
 				break;
 			}
 			case '}': {
-				int start = ci.getIndex();
-				String s = getAtom(input, start);
-				int end = start + s.length();
-				ci.setIndex(end);
-				result.add(new Token(Type.CLOSE_BRACE_CURLY, s, start, end));
+				addElement(result, input, lastIndex, ci.getIndex());
+				int i = ci.getIndex();
+				lastIndex = i + 1;
+				result.add(new Token(Type.CLOSE_BRACE_CURLY, i, 1));
 				break;
 			}
-			default: {
-				if (token.getType() == Type.EXPRESSION) {
-					if (!Character.isWhitespace(ch)) {
-						int start = ci.getIndex();
-						String s = getAtom(input, start);
-						int end = start + s.length() - 1;
-						ci.setIndex(end);
-						result.add(new Token(Type.IDENTIFIER, s, start, end));
-					}
-				} else if (!Character.isWhitespace(ch)) {
-					int start = ci.getIndex();
-					String s = getPartition(input, start, '@');
-					int end = start + s.length() - 1;
-					ci.setIndex(end);
-					result.add(new Token(Type.CONTENT_BLOCK, s, start, end));
-				}
-				break;
-			}
+
 			}
 			ch = ci.next();
-		}
-
-		// result = result.stream().filter(e -> e.getType() ==
-		// Type.EXPRESSION).collect(Collectors.toList());
-		for (Token t : result) {
-			if (t.getType() == Type.EXPRESSION) {
-				lex(t.getContent(), t.getStart(), t);
-			}
 		}
 
 		return result;
 	}
 
 	public static void main(String argv[]) {
-		List<Token> tokens = lex(content, 0, new Token(Type.CONTENT_BLOCK, "", 0, content.length()));
+		List<Token> tokens = lex(content);
 		for (Token t : tokens) {
-			System.out.println(t);
+			System.out.println(t + " > " + content.substring(t.getOffset(), t.getOffset() + t.getLength()));
 		}
 	}
 }

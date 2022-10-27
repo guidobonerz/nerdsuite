@@ -105,8 +105,8 @@ public class DebuggerView {
 
 		parameters2.add("\\Users\\drazil\\applications\\GTK3VICE-3.5-win64\\bin\\x64sc.exe");
 		parameters2.add("-binarymonitor");
-		//parameters2.add("-binarymonitoraddress");
-		//parameters2.add("localhost");
+		// parameters2.add("-binarymonitoraddress");
+		// parameters2.add("localhost");
 		// parameters2.add("\\Users\\drazil\\.nerdsuiteWorkspace\\teleporter64.prg");
 
 		// toolChain.addToolChainItem(new DefaultToolchainItem("Run", parameters2));
@@ -115,7 +115,7 @@ public class DebuggerView {
 		// TimeUnit.SECONDS.sleep(4);
 		// System.out.println("main done.");
 		th.openSocket();
-		Response response = th.write(th.buildCommand(new byte[] { (byte) 0xbb}));
+		Response response = th.write(th.buildCommand(new byte[] { (byte) 0xbb }));
 		int a = 0;
 
 	}

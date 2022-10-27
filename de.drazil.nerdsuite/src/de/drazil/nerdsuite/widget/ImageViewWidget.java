@@ -79,7 +79,7 @@ public class ImageViewWidget extends Canvas implements PaintListener {
 						scaledHeight = getParent().getSize().y;
 
 						Image image = new Image(getDisplay(), id.getImageData().scaledTo(scaledWidth, scaledHeight));
-
+						
 						e.gc.drawImage(image, 0, 0);
 						image.dispose();
 						buffer.remove(0);
