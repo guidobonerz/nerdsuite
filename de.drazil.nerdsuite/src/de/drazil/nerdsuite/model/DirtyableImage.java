@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class DirtyableImage {
-	private Image image;
-	private boolean dirty = true;
+    private Image image;
+    private boolean dirty = true;
 
-	public void dispose() {
-		if (image != null) {
-			image.dispose();
-			image = null;
-		}
-	}
+    public void dispose() {
+        if (image != null) {
+            image.dispose();
+            image = null;
+        }
+    }
 }

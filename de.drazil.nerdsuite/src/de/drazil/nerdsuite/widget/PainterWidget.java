@@ -224,14 +224,15 @@ public class PainterWidget extends BaseImagingWidget {
             boolean paintTelevisionMode) {
 
         Tile t = null;
-
+        System.out.printf("paint drawmode: %s", redrawMode.toString());
         if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
             t = tileRepositoryService.getTile(temporaryIndex);
         } else {
             t = tileRepositoryService.getSelectedTile();
         }
-        
-        t.setDirty(redrawMode == RedrawMode.DrawPixel);
+
+        t.setDirty(redrawMode == RedrawMode.DrawPixel || redrawMode == RedrawMode.DrawSelectedTile
+                || redrawMode == RedrawMode.DrawSelectedTiles);
         String id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
         imagePainterFactory.drawScaledImage(gc, t, id, 0, 0);
 
@@ -394,8 +395,7 @@ public class PainterWidget extends BaseImagingWidget {
     public void setPixel(int x, int y, ImagingWidgetConfiguration conf) {
         Tile tile = tileRepositoryService.getSelectedTile();
         Layer layer = tile.getActiveLayer();
-        // String id = String.format(ImagePainterFactory.IMAGE_ID, tile.getId(),
-        // layer.getId(), layer.getColorPalette().get(layer.getSelectedColorIndex()));
+
         String id = String.format(ImagePainterFactory.IMAGE_ID, tile.getId(), layer.getId(), 0);
         int x1 = lastCursorX;
         int y1 = lastCursorY;
@@ -452,7 +452,39 @@ public class PainterWidget extends BaseImagingWidget {
         if (x1 == x2 && y1 == y2) {
             x = x1;
             y = y1;
-        } else {
+        } else/*
+               * if (x1 == x2 && y1 != y2) {
+               * if (y1 < y2) {
+               * x = x1;
+               * y = y1;
+               * for (y = y1; y < y2; y += 1) {
+               * setPixel(id, layer, x, y, conf);
+               * }
+               * } else {
+               * x = x1;
+               * y = y2;
+               * for (y = y2; y < y1; y -= 1) {
+               * setPixel(id, layer, x, y, conf);
+               * }
+               * }
+               * 
+               * } else if (y1 == y2 && x1 != x2) {
+               * 
+               * if (x1 < x2) {
+               * x = x1;
+               * y = y1;
+               * for (x = x1; x < x2; x += 1) {
+               * setPixel(id, layer, x, y, conf);
+               * }
+               * } else {
+               * x = x2;
+               * y = y1;
+               * for (x = x2; x < x1; x -= 1) {
+               * setPixel(id, layer, x, y, conf);
+               * }
+               * }
+               * } else
+               */ {
             dx = x2 - x1;
             dy = y2 - y1;
             xstep = 1;

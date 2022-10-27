@@ -84,12 +84,11 @@ public class ImagePainterFactory {
         return backgroundColorIndex;
     }
 
-    public Point drawScaledImage(GC gc, Tile tile, String imageId, int x, int y) {
-        return drawScaledImage(gc, tile, imageId, x, y, false);
+    public void drawScaledImage(GC gc, Tile tile, String imageId, int x, int y) {
+        drawScaledImage(gc, tile, imageId, x, y, false);
     }
 
-    public Point drawScaledImage(GC gc, Tile tile, String imageId, int x, int y, boolean thumbnail) {
-
+    public void drawScaledImage(GC gc, Tile tile, String imageId, int x, int y, boolean thumbnail) {
         DirtyableImage scaledImage = tile.getActiveLayer().getImage(imageId + (thumbnail ? 'R' : 'P'));
         if (scaledImage == null || scaledImage.isDirty() || tile.isDirty()) {
 
@@ -102,10 +101,8 @@ public class ImagePainterFactory {
                     masterImage.dispose();
                 }
                 masterImage = createOrUpdateLayer(imageId, tile.getActiveLayer(), true);
-                masterImage.setDirty(false);
+                //masterImage.setDirty(false);
                 // System.out.println("create MasterImage");
-            } else {
-                // System.out.println("getMasterImage from Cache");
             }
 
             Image i = masterImage.getImage();
@@ -122,17 +119,10 @@ public class ImagePainterFactory {
             Image scaledImageInternal = new Image(Display.getCurrent(), scaled);
             scaledImage = new DirtyableImage(scaledImageInternal, false);
             tile.getActiveLayer().putImage(imageId + (thumbnail ? 'R' : 'P'), scaledImage);
-            // System.out.println("create ScaledImage");
             tile.setDirty(false);
         }
-
-        else {
-            // System.out.println("getScaledImage from Cache");
-        }
-
         gc.drawImage(scaledImage.getImage(), x, y);
 
-        return null;
     }
 
     public DirtyableImage getGridLayer(boolean forceRepaint, Tile tile) {
@@ -204,17 +194,17 @@ public class ImagePainterFactory {
             width = (int) (width / zf);
         }
         Image image = new Image(Display.getDefault(), width, height);
-        DirtyableImage imageInternal = new DirtyableImage(image, true);
-        GC gc = new GC(imageInternal.getImage());
+
+        GC gc = new GC(image);
         gc.setBackground(Constants.TRANSPARENT_COLOR);
         gc.fillRectangle(0, 0, width, height);
         gc.dispose();
-        ImageData imageData = imageInternal.getImage().getImageData();
+        ImageData imageData = image.getImageData();
         imageData.transparentPixel = imageData.palette.getPixel(Constants.TRANSPARENT_COLOR.getRGB());
-        imageInternal.dispose();
-        imageInternal.setImage(new Image(Display.getDefault(), imageData));
+        image.dispose();
+        DirtyableImage imageInternal = new DirtyableImage(new Image(Display.getDefault(), imageData), true);
 
-        // image.dispose();
+        
         return imageInternal;
     }
 
