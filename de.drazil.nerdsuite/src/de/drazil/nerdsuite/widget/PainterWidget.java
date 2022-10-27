@@ -224,7 +224,7 @@ public class PainterWidget extends BaseImagingWidget {
             boolean paintTelevisionMode) {
 
         Tile t = null;
-        System.out.printf("paint drawmode: %s", redrawMode.toString());
+
         if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
             t = tileRepositoryService.getTile(temporaryIndex);
         } else {
