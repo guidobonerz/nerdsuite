@@ -293,7 +293,7 @@ public class GfxEditorView implements ITileUpdateListener {
     @Optional
     public void clipboard(@UIEventTopic("Clipboard") BrokerObject brokerObject, MPart part) {
         if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
-            boolean isListSelection = tileRepositoryService.getSelectedTileIndexList().size() > 1;
+            boolean isListSelection = tileRepositoryService.getSelectedTileIndexList().size() > 0;
             if (((String) brokerObject.getTransferObject()).equalsIgnoreCase("cut")) {
                 ServiceFactory.getService("COMMON", ClipboardService.class).clipboardAction(ClipboardService.CUT,
                         isListSelection ? Selection.List : Selection.Range, owner);

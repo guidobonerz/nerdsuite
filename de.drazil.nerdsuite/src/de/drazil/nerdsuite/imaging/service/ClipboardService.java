@@ -51,13 +51,12 @@ public class ClipboardService implements IService {
                     Layer targetLayer = targetService.getActiveLayerFromTile(targetSelectionList.get(i));
 
                     // int[] targetBrush = new int[sourceLayer.getBrush().length];
+                    /*for (int ci : sourceLayer.getColorPalette()) {
+                        targetLayer.getColorPalette().add(ci);
+                    }*/
+                    targetLayer.setColorPalette(sourceLayer.getColorPalette());
                     for (int j = 0; j < sourceLayer.getContent().length; j++) {
                         targetLayer.getContent()[j] = sourceLayer.getContent()[j];
-                        for (int ci : sourceLayer.getColorPalette()) {
-                            targetLayer.getColorPalette().add(ci);
-                        }
-                        targetLayer.setColorPalette(sourceLayer.getColorPalette());
-
                         String ri = sourceService.getMetadata().getReferenceId();
                         if (ri != null) {
                             targetLayer.getBrush()[j] = sourceLayer.getBrush()[j];
