@@ -121,7 +121,7 @@ public class Ultimate64DebugStreamView extends AbstractStreamView {
 	}
 
 	private void startStream(int streamingMode) {
-		String targetAdress = "10.100.200.205";
+		String targetAdress = "10.100.200.10";
 		if (!running) {
 			startStreamByCommand(DEBUG_STREAM_START_COMMAND, 0, targetAdress);
 			debugThread = new Thread(debugStreamReceiver);
@@ -164,7 +164,7 @@ public class Ultimate64DebugStreamView extends AbstractStreamView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		parent.setLayout(new GridLayout());
-		tcpHandler = new TcpHandler("10.100.200.201", 64);
+		tcpHandler = new TcpHandler("10.100.200.10", 64);
 		imageViewer = createImageViewer(parent);
 		debugStreamReceiver = new DebugStreamReceiver();
 		startStream(DEBUG_STREAM_START_COMMAND);

@@ -14,113 +14,114 @@ import com.google.common.collect.ComparisonChain;
 
 public class FtpMediaContainer implements IMediaContainer {
 
-	private FTPClient client;
-	private MediaEntry root;
-	private File file;
+    private FTPClient client;
+    private MediaEntry root;
+    private File file;
 
-	public FtpMediaContainer(File file) {
-		this.file = file;
-		root = new MediaEntry();
-		root.setName("");
-		root.setFullName("");
-		root.setRoot(true);
-		root.setUserObject(file);
-		root.setDirectory(true);
-	}
+    public FtpMediaContainer(File file) {
+        this.file = file;
+        root = new MediaEntry();
+        root.setName("");
+        root.setFullName("");
+        root.setRoot(true);
+        root.setUserObject(file);
+        root.setDirectory(true);
+    }
 
-	@Override
-	public MediaEntry getRoot() {
-		return root;
-	}
+    @Override
+    public MediaEntry getRoot() {
+        return root;
+    }
 
-	@Override
-	public byte[] read(File file) throws Exception {
-		try {
-			client = new FTPClient();
-			client.connect(file.getName());
-		} catch (SocketException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    @Override
+    public byte[] read(File file) throws Exception {
+        try {
+            client = new FTPClient();
+            client.connect(file.getName());
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	@Override
-	public boolean hasEntries(Object entry) {
-		return true;
-	}
+    @Override
+    public boolean hasEntries(Object entry) {
+        return true;
+    }
 
-	@Override
-	public MediaEntry[] getEntries(Object parentEntry) {
-		MediaEntry[] list = new MediaEntry[] {};
-		MediaEntry mediaEntry = getRoot();
-		if (parentEntry instanceof MediaEntry) {
-			mediaEntry = (MediaEntry) parentEntry;
-		}
-		readEntries(mediaEntry);
-		Collections.sort(mediaEntry.getChildrenList(), new Comparator<MediaEntry>() {
-			@Override
-			public int compare(MediaEntry me1, MediaEntry me2) {
-				return ComparisonChain.start().compareTrueFirst(me1.isDirectory(), me2.isDirectory())
-						.compare(me1.getName(), me2.getName()).compare(me1.getType(), me2.getType()).result();
-			}
-		});
-		list = mediaEntry.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
-		return list;
-	}
+    @Override
+    public MediaEntry[] getEntries(Object parentEntry) {
+        MediaEntry[] list = new MediaEntry[] {};
+        MediaEntry mediaEntry = getRoot();
+        if (parentEntry instanceof MediaEntry) {
+            mediaEntry = (MediaEntry) parentEntry;
+        }
+        readEntries(mediaEntry);
 
-	@Override
-	public void readEntries(MediaEntry parent) {
+        Collections.sort(mediaEntry.getChildrenList(), new Comparator<MediaEntry>() {
+            @Override
+            public int compare(MediaEntry me1, MediaEntry me2) {
+                return ComparisonChain.start().compareTrueFirst(me1.isDirectory(), me2.isDirectory())
+                        .compare(me1.getName(), me2.getName()).compare(me1.getType(), me2.getType()).result();
+            }
+        });
+        list = mediaEntry.getChildrenList().toArray(new MediaEntry[mediaEntry.getChildrenCount()]);
+        return list;
+    }
 
-		try {
-			System.out.println(parent.getName());
-			FTPFile files[] = client.listFiles(parent.getName());
+    @Override
+    public void readEntries(MediaEntry parent) {
 
-			for (FTPFile file : files) {
+        try {
+            System.out.println(parent.getName());
+            FTPFile files[] = client.listFiles(parent.getName());
 
-				MediaEntry entry = new MediaEntry(1, file.getName(), parent.getName() + "/" + file.getName(), "",
-						(int) file.getSize(), 0, 0, null, null);
-				entry.setDirectory(file.getType() == FTPFile.DIRECTORY_TYPE);
-				entry.setUserObject(this.file);
-				MediaFactory.addChildEntry(parent, entry);
-			}
-		} catch (IOException e) {
+            for (FTPFile file : files) {
 
-			e.printStackTrace();
-		}
-	}
+                MediaEntry entry = new MediaEntry(1, file.getName(), parent.getName() + "/" + file.getName(), "",
+                        (int) file.getSize(), 0, 0, null, null);
+                entry.setDirectory(file.getType() == FTPFile.DIRECTORY_TYPE);
+                entry.setUserObject(this.file);
+                MediaFactory.addChildEntry(parent, entry);
+            }
+        } catch (IOException e) {
 
-	@Override
-	public byte[] readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
+            e.printStackTrace();
+        }
+    }
 
-		return null;
-	}
+    @Override
+    public byte[] readContent(MediaEntry entry, IMediaEntryWriter writer) throws Exception {
 
-	@Override
-	public void exportEntry(MediaEntry entry, File file) throws Exception {
-		// TODO Auto-generated method stub
+        return null;
+    }
 
-	}
+    @Override
+    public void exportEntry(MediaEntry entry, File file) throws Exception {
+        // TODO Auto-generated method stub
 
-	public byte[] exportEntry(MediaEntry entry) throws Exception {
-		byte[] data = null;
+    }
 
-		try {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			boolean b = client.retrieveFile(entry.getName(), bos);
-			data = bos.toByteArray();
-			bos.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return data;
-	}
+    public byte[] exportEntry(MediaEntry entry) throws Exception {
+        byte[] data = null;
 
-	@Override
-	public void getAvailabilityMap() {
-		// TODO Auto-generated method stub
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            boolean b = client.retrieveFile(entry.getName(), bos);
+            data = bos.toByteArray();
+            bos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
 
-	}
+    @Override
+    public void getAvailabilityMap() {
+        // TODO Auto-generated method stub
+
+    }
 
 }

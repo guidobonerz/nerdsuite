@@ -118,6 +118,7 @@ public class PainterWidget extends BaseImagingWidget {
                 computeRangeSelection(cursorX, cursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
             }
         } else if (conf.cursorMode == CursorMode.Point) {
+            tileRepositoryService.getSelectedTile().setDirty(true);
             fireDoRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
         }
     }
@@ -223,16 +224,12 @@ public class PainterWidget extends BaseImagingWidget {
             boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
             boolean paintTelevisionMode) {
 
-        Tile t = null;
+        Tile t = tileRepositoryService.getSelectedTile();
 
         if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
             t = tileRepositoryService.getTile(temporaryIndex);
-        } else {
-            t = tileRepositoryService.getSelectedTile();
         }
 
-        t.setDirty(redrawMode == RedrawMode.DrawPixel || redrawMode == RedrawMode.DrawSelectedTile
-                || redrawMode == RedrawMode.DrawSelectedTiles);
         String id = String.format(ImagePainterFactory.IMAGE_ID, t.getId(), t.getActiveLayer().getId(), 0);
         imagePainterFactory.drawScaledImage(gc, t, id, 0, 0);
 

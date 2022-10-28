@@ -225,21 +225,25 @@ public class RepositoryWidget extends BaseImagingWidget {
     }
 
     private void paintSelection(GC gc) {
-        gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
-        gc.setAlpha(90);
+
         selectedTileIndexList.forEach(i -> {
             int y = i / maxColumns;
             int x = i % maxColumns;
+
+            if (i == temporaryIndex) {
+                gc.setLineWidth(3);
+                gc.setAlpha(255);
+                gc.setBackground(Constants.WHITE);
+                gc.fillRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
+                        y * (conf.repositoryScaledTileHeight + conf.tileGap) + conf.repositoryScaledTileHeight,
+                        conf.repositoryScaledTileWith,
+                        4);
+            }
+            gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
+            gc.setAlpha(90);
             gc.fillRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
                     y * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
                     conf.repositoryScaledTileHeight);
-            if (i == temporaryIndex) {
-                gc.setLineWidth(3);
-                gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
-                gc.drawRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
-                        y * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
-                        conf.repositoryScaledTileHeight);
-            }
         });
     }
 
