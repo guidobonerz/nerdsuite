@@ -85,6 +85,9 @@ public class PainterWidget extends BaseImagingWidget {
 
             scrollWorkArea(xoff, yoff);
         } else if (conf.cursorMode == CursorMode.Point && cursorChanged) {
+            if (conf.cursorMode == CursorMode.Point) {
+                tileRepositoryService.getSelectedTile().setDirty(true);
+            }
             setPixel(cursorX, cursorY, conf);
             doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
         }
@@ -105,20 +108,21 @@ public class PainterWidget extends BaseImagingWidget {
             doRedraw(RedrawMode.DrawSelectedTile, ImagePainterFactory.UPDATE);
         } else if (conf.cursorMode == CursorMode.Move || (conf.cursorMode == CursorMode.Point
                 && (this.modifierMask & (SWT.SHIFT + SWT.CTRL)) == SWT.SHIFT + SWT.CTRL)) {
+            if (conf.cursorMode == CursorMode.Point) {
+                tileRepositoryService.getSelectedTile().setDirty(true);
+            }
             startPos = new Point(x, y);
         }
     }
 
     @Override
     protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
-
         if (conf.cursorMode == CursorMode.SelectRectangle) {
             if (rangeSelectionStarted) {
                 rangeSelectionStarted = false;
                 computeRangeSelection(cursorX, cursorY, 2, (modifierMask & SWT.SHIFT) == SWT.SHIFT);
             }
         } else if (conf.cursorMode == CursorMode.Point) {
-            tileRepositoryService.getSelectedTile().setDirty(true);
             fireDoRedraw(RedrawMode.DrawSelectedTile, null, ImagePainterFactory.UPDATE);
         }
     }
