@@ -18,10 +18,10 @@ Bundle-ClassPath: ext_libs/commons-exec-1.2.jar,
  ext_libs/jackson-core-2.9.9.jar,
  ext_libs/jackson-databind-2.9.9.3.jar,
  ext_libs/KickAss.jar,
- ext_libs/guava-23.0.jar,
  ext_libs/commons-lang3-3.10.jar,
  ext_libs/commons-text-1.8.jar,
- ext_libs/commons-net-3.7.1.jar
+ ext_libs/commons-net-3.7.1.jar,
+ ext_libs/guava-31.1-jre.jar
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.15.100",
  org.eclipse.e4.ui.model.workbench;bundle-version="2.1.200",
  org.eclipse.e4.ui.services;bundle-version="1.3.300",

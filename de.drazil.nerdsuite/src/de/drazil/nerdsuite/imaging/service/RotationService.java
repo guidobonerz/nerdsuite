@@ -17,7 +17,7 @@ public class RotationService extends AbstractImagingService {
 	@Override
 	public boolean isProcessConfirmed(boolean confirmAnyProcess) {
 		return confirmable.isConfirmed(
-				"Tile does not have a square base\nDo you really want to rotate this tile?\n\nTo prevent data loss click No");
+				"Tile does not have a square base.\nDo you really want to rotate this tile?\n\nTo prevent data loss click [No]");
 	}
 
 	private boolean checkIfSquareBase() {

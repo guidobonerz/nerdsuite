@@ -48,12 +48,14 @@ public class RepositoryWidget extends BaseImagingWidget {
     protected void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
         tileDragActive = true;
         computeTileSelection(tileX, tileY, 0);
+
         Display.getDefault().asyncExec(new Runnable() {
             @Override
             public void run() {
                 doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
             }
         });
+
     }
 
     @Override
@@ -80,6 +82,12 @@ public class RepositoryWidget extends BaseImagingWidget {
 
     @Override
     protected void mouseDragged(int modifierMask, int x, int y) {
+        computeTileSelection(tileX, tileY, 1);
+        doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+    }
+
+    @Override
+    protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
         if (tileSelectionStarted) {
             disableDelayTrigger(Trigger.LEFT);
         }
@@ -193,7 +201,6 @@ public class RepositoryWidget extends BaseImagingWidget {
         if (tileDragActive) {
             paintDragMarker(gc);
         } else {
-
             paintTileMarker(gc);
             paintSelection(gc);
         }
@@ -206,7 +213,6 @@ public class RepositoryWidget extends BaseImagingWidget {
     private void paintDragMarker(GC gc) {
         int from = tileSelectionRange.getFrom();
         int to = tileSelectionRange.getTo();
-        // System.out.printf("x:%d y:%d", from, to);
         int xfrom = from % maxColumns;
         int yfrom = from / maxColumns;
         int xto = to % maxColumns;
@@ -214,32 +220,39 @@ public class RepositoryWidget extends BaseImagingWidget {
         gc.setLineWidth(1);
         gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
         gc.setAlpha(150);
-        gc.fillRectangle(xfrom * conf.tileWidthPixel, yfrom * conf.tileHeightPixel, conf.tileWidthPixel,
-                conf.tileHeightPixel);
+        gc.fillRectangle(xfrom * (conf.repositoryScaledTileWith + conf.tileGap),
+                yfrom * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
+                conf.repositoryScaledTileHeight);
         gc.setAlpha(255);
         gc.setForeground(Constants.BRIGHT_ORANGE);
         gc.setLineWidth(4);
         if (abs(to - from) > 0)
-            gc.drawLine(xto * conf.tileWidthPixel, yto * conf.tileHeightPixel, xto * conf.tileWidthPixel,
-                    yto * conf.tileHeightPixel + conf.tileHeightPixel);
+            gc.drawLine(xto * (conf.repositoryScaledTileWith + conf.tileGap),
+                    yto * (conf.repositoryScaledTileHeight + conf.tileGap),
+                    xto * (conf.repositoryScaledTileWith + conf.tileGap),
+                    yto * (conf.repositoryScaledTileHeight + conf.tileGap) + conf.repositoryScaledTileHeight);
     }
 
     private void paintSelection(GC gc) {
-        gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
-        gc.setAlpha(90);
+
         selectedTileIndexList.forEach(i -> {
             int y = i / maxColumns;
             int x = i % maxColumns;
+
+            if (i == temporaryIndex) {
+                gc.setLineWidth(3);
+                gc.setAlpha(255);
+                gc.setBackground(Constants.WHITE);
+                gc.fillRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
+                        y * (conf.repositoryScaledTileHeight + conf.tileGap) + conf.repositoryScaledTileHeight,
+                        conf.repositoryScaledTileWith,
+                        4);
+            }
+            gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
+            gc.setAlpha(90);
             gc.fillRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
                     y * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
                     conf.repositoryScaledTileHeight);
-            if (i == temporaryIndex) {
-                gc.setLineWidth(3);
-                gc.setForeground(Constants.TEMPORARY_SELECTION_TILE_MARKER_COLOR);
-                gc.drawRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
-                        y * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
-                        conf.repositoryScaledTileHeight);
-            }
         });
     }
 

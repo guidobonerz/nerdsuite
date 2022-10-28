@@ -101,8 +101,8 @@ public class ImagePainterFactory {
                     masterImage.dispose();
                 }
                 masterImage = createOrUpdateLayer(imageId, tile.getActiveLayer(), true);
-                //masterImage.setDirty(false);
-                // System.out.println("create MasterImage");
+                masterImage.setDirty(false);
+                 System.out.println("create MasterImage");
             }
 
             Image i = masterImage.getImage();
@@ -120,6 +120,7 @@ public class ImagePainterFactory {
             scaledImage = new DirtyableImage(scaledImageInternal, false);
             tile.getActiveLayer().putImage(imageId + (thumbnail ? 'R' : 'P'), scaledImage);
             tile.setDirty(false);
+            System.out.println("create ScaledImage");
         }
         gc.drawImage(scaledImage.getImage(), x, y);
 
@@ -246,7 +247,7 @@ public class ImagePainterFactory {
         Layer pixelLayer = pixelTile.getActiveLayer();
         String pixelId = String.format(IMAGE_ID, String.format("T%03X", bi), layer.getId(), ci);
         ipf.setForegroundColorIndex(ci);
-        Image image = ipf.createOrUpdateLayer(pixelId, pixelLayer, isDirty).getImage();
+        Image image = ipf.createOrUpdateLayer(pixelId, pixelLayer, false).getImage();
         gc.drawImage(image, x * conf.tileWidthPixel, y * conf.tileHeightPixel);
         gc.dispose();
         return imageInternal;

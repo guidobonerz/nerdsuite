@@ -49,7 +49,7 @@ public class MeasuringController {
         list.remove(listener);
     }
 
-    private void fireTimeReached(long triggerMillis) {
+    private void fireTriggerTimeReached(long triggerMillis) {
         list.forEach(l -> l.onTriggerTimeReached(triggerMillis, timerId, payload));
     }
 
@@ -69,7 +69,8 @@ public class MeasuringController {
                 while (currentMeasurment == thread) {
                     long diff = System.currentTimeMillis() - startMillies;
                     if (running && diff > triggerMillis) {
-                        fireTimeReached(triggerMillis);
+                        fireTriggerTimeReached(triggerMillis);
+                        stop();
                     }
                 }
             }

@@ -365,7 +365,7 @@ public class Ultimate64AppStreamView extends AbstractStreamView implements IHitK
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
 
-		tcpHandler = new TcpHandler("10.100.200.201", 64);
+		tcpHandler = new TcpHandler("10.100.200.10", 64);
 		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
 		RGB palette[] = new RGB[colorList.size()];
 		for (int i = 0; i < palette.length; i++) {
