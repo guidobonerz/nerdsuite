@@ -10,7 +10,6 @@ import de.drazil.nerdsuite.widget.Layer;
 
 public class ClipboardService implements IService {
 
-    private String owner;
     public final static int OFF = 0;
     public final static int CUT = 1;
     public final static int COPY = 2;
@@ -23,7 +22,7 @@ public class ClipboardService implements IService {
 
     @Override
     public void setOwner(String owner) {
-        // this.owner = owner;
+
     }
 
     public void clipboardAction(int action, Selection selection, String owner) {
@@ -50,10 +49,6 @@ public class ClipboardService implements IService {
                     Layer sourceLayer = sourceService.getActiveLayerFromTile(selectionList.get(i));
                     Layer targetLayer = targetService.getActiveLayerFromTile(targetSelectionList.get(i));
 
-                    // int[] targetBrush = new int[sourceLayer.getBrush().length];
-                    /*for (int ci : sourceLayer.getColorPalette()) {
-                        targetLayer.getColorPalette().add(ci);
-                    }*/
                     targetLayer.setColorPalette(sourceLayer.getColorPalette());
                     for (int j = 0; j < sourceLayer.getContent().length; j++) {
                         targetLayer.getContent()[j] = sourceLayer.getContent()[j];
