@@ -56,7 +56,9 @@ public class ClipboardService implements IService {
                         if (ri != null) {
                             targetLayer.getBrush()[j] = sourceLayer.getBrush()[j];
                         }
+
                     }
+                    targetLayer.setDirty(true);
 
                     if (initialAction == CUT) {
                         sourceService.getActiveLayerFromTile(selectionList.get(i)).reset(0, 0);

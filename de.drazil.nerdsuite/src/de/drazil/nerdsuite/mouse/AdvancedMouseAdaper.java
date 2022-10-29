@@ -143,7 +143,6 @@ public class AdvancedMouseAdaper implements IMeasuringListener {
             if (isMouseState(SET_LEFT_BUTTON_PRESSED + SET_MOUSE_MOVE, true)) {
                 setMouseState(SET_MOUSE_DRAGGED, true);
                 setMouseState(SET_MOUSE_DROPPED, false);
-
                 fireMouseMove(MouseMove.Drag, modifierMask, e.x, e.y);
             } else {
                 fireMouseMove(MouseMove.Move, modifierMask, e.x, e.y);
@@ -444,8 +443,11 @@ public class AdvancedMouseAdaper implements IMeasuringListener {
                     ml.mouseMove(modifierMask, x, y);
                 } else if (move == MouseMove.Drag) {
                     if (canDragDelayed && !isAlreadyDragging) {
+                        System.out.println("drag delayed");
                         ml.mouseDraggedDelayed(modifierMask, x, y);
                     } else {
+                        disableDelayTrigger(Trigger.LEFT);
+                        System.out.println("drag normal");
                         canDragDelayed = false;
                         isAlreadyDragging = true;
                         ml.mouseDragged(modifierMask, x, y);

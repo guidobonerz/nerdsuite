@@ -58,6 +58,7 @@ public class PainterWidget extends BaseImagingWidget {
     protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
         if (conf.cursorMode == CursorMode.Point) {
             setPixel(cursorX, cursorY, conf);
+            tileRepositoryService.getSelectedTile().setDirty(true);
             doRedraw(RedrawMode.DrawPixel, ImagePainterFactory.PIXEL);
         }
     }
