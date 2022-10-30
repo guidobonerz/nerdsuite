@@ -82,14 +82,16 @@ public class RepositoryWidget extends BaseImagingWidget {
     @Override
     protected void mouseDragged(int modifierMask, int x, int y) {
         tileDragActive=false;
+        stopDelayTrigger(Trigger.LEFT);
         computeTileSelection(tileX, tileY, 1);
         doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
     }
 
     @Override
     protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
+        tileDragActive = true;
         if (tileSelectionStarted) {
-            disableDelayTrigger(Trigger.LEFT);
+            stopDelayTrigger(Trigger.LEFT);
         }
         computeTileSelection(tileX, tileY, 1);
         doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
@@ -110,7 +112,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 
     @Override
     protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-
         computeTileSelection(tileX, tileY, 0);
     }
 

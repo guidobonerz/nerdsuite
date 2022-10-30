@@ -232,27 +232,6 @@ public class AdvancedMouseAdaper implements IMeasuringListener {
         measuringControllerMap = new HashMap<>();
     }
 
-    public void disableDelayTrigger(Trigger trigger) {
-        if (trigger == Trigger.LEFT) {
-            MeasuringController mc = measuringControllerMap.get(Trigger.LEFT.toString());
-            if (mc != null) {
-                mc.stop();
-            }
-        }
-        if (trigger == Trigger.MIDDLE) {
-            MeasuringController mc = measuringControllerMap.get(Trigger.MIDDLE.toString());
-            if (mc != null) {
-                mc.stop();
-            }
-        }
-        if (trigger == Trigger.RIGHT) {
-            MeasuringController mc = measuringControllerMap.get(Trigger.RIGHT.toString());
-            if (mc != null) {
-                mc.stop();
-            }
-        }
-    }
-
     public void enableDelayTrigger(Trigger trigger, long delay) {
         MeasuringController mc = null;
         if (trigger == Trigger.LEFT && delay != -1) {
@@ -272,6 +251,27 @@ public class AdvancedMouseAdaper implements IMeasuringListener {
             mc.setTriggerMillis(delay);
             mc.addMeasuringListener(this);
             measuringControllerMap.put(Trigger.RIGHT.toString(), mc);
+        }
+    }
+
+    public void stopDelayTrigger(Trigger trigger) {
+        if (trigger == Trigger.LEFT) {
+            MeasuringController mc = measuringControllerMap.get(Trigger.LEFT.toString());
+            if (mc != null) {
+                mc.stop();
+            }
+        }
+        if (trigger == Trigger.MIDDLE) {
+            MeasuringController mc = measuringControllerMap.get(Trigger.MIDDLE.toString());
+            if (mc != null) {
+                mc.stop();
+            }
+        }
+        if (trigger == Trigger.RIGHT) {
+            MeasuringController mc = measuringControllerMap.get(Trigger.RIGHT.toString());
+            if (mc != null) {
+                mc.stop();
+            }
         }
     }
 
@@ -446,7 +446,7 @@ public class AdvancedMouseAdaper implements IMeasuringListener {
                         System.out.println("drag delayed");
                         ml.mouseDraggedDelayed(modifierMask, x, y);
                     } else {
-                        disableDelayTrigger(Trigger.LEFT);
+                        stopDelayTrigger(Trigger.LEFT);
                         System.out.println("drag normal");
                         canDragDelayed = false;
                         isAlreadyDragging = true;

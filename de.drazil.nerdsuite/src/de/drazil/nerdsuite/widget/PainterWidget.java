@@ -37,7 +37,7 @@ public class PainterWidget extends BaseImagingWidget {
     public PainterWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
             boolean autowrap) {
         super(parent, style, owner, colorPaletteProvider, autowrap);
-        // setTriggerMillis(1000);
+      
         this.parent = (ScrolledComposite) parent;
         this.parent.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
             @Override

@@ -58,7 +58,7 @@ public class DebuggerView {
 		// IPlatform platform = new CPC6128Platform(new KickAssemblerDialect(), true);
 		// hvw = new HexViewWidget(parent, SWT.V_SCROLL, );
 		hvw = new HexViewWidget(parent, SWT.V_SCROLL, platform);
-		hvw.setContent(content);
+		hvw.setBinaryContent(content);
 		menuService.registerContextMenu(hvw.getDisassemblyView(), "de.drazil.nerdsuite.popupmenu.disassemblyView");
 		menuService.registerContextMenu(hvw.getBinaryView(), "de.drazil.nerdsuite.popupmenu.binaryView");
 
