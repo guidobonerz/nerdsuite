@@ -53,6 +53,7 @@ import de.drazil.nerdsuite.disassembler.HexViewContent;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 
@@ -72,8 +73,8 @@ public class HexViewWidget extends Composite implements DragDetectListener {
     private int visibleRows = 0;
     private IPlatform platform;
     private List<DisassemblingRange> rangeList;
-    private int selStart;
-    private int selLength;
+    private DisassemblingRange selectedRange = null;
+
     private int contentOffset = 0;
     private boolean selectStart = false;
     private int cursorPos = 0;
@@ -83,8 +84,6 @@ public class HexViewWidget extends Composite implements DragDetectListener {
     private boolean addressChecked = false;
     private Value pc;
     private Stack<InstructionLine> jumpStack;
-    private boolean selectionDirection = false;
-    private Point oldSelection;
 
     public HexViewWidget(Composite parent, int style, IPlatform platform) {
         super(parent, style);
@@ -167,8 +166,9 @@ public class HexViewWidget extends Composite implements DragDetectListener {
                     (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
                     (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0 };
         }
+        selectedRange = new DisassemblingRange(0, content.length, RangeType.Unspecified);
         rangeList = new ArrayList<DisassemblingRange>();
-        rangeList.add(new DisassemblingRange(0, content.length, RangeType.Unspecified));
+        rangeList.add(selectedRange);
         prepareContent();
         Display.getDefault().asyncExec(new Runnable() {
             @Override
@@ -206,6 +206,22 @@ public class HexViewWidget extends Composite implements DragDetectListener {
                 }
             }
         });
+    }
+
+    private void disassemble(int start, int length, RangeType rangeType) {
+
+        if (length > 0) {
+            platform.getCPU().clear();
+            handleDataRange(start, length, rangeType);
+            hexArea.redraw();
+            textArea.redraw();
+            if (pc != null) {
+                platform.setProgrammCounter(new Value(pc.getValue()));
+                platform.parseBinary(content,
+                        new DisassemblingRange(start + contentOffset, length, RangeType.Code));
+                tableViewer.setInput(platform.getCPU().getInstructionLineList());
+            }
+        }
     }
 
     private void handleDataRange(int start, int length, RangeType rangeType) {
@@ -638,8 +654,11 @@ public class HexViewWidget extends Composite implements DragDetectListener {
                     if (end % 2 != 0) {
                         end++;
                     }
-                    hexArea.setSelectionRange(start, end - start);
-                    textArea.setSelectionRange((start >> 1), (end - start) >> 1);
+                    int length = end - start;
+                    hexArea.setSelectionRange(start, length);
+                    textArea.setSelectionRange(start >> 1, length >> 1);
+                    selectedRange.setOffset(start >> 1);
+                    selectedRange.setLen(length >> 1);
                 }
             }
         });
@@ -649,25 +668,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
                     selectStart = false;
-
-                    // selStart = hexArea.getSelectionRange().x;
-                    // selLength = hexArea.getSelectionRange().y;
-                    // textArea.setSelectionRange(selStart, selLength);
-                    if (selLength > 0) {
-                        // platform.getCPU().clear();
-                        // handleDataRange(selStart, selLength, selectedRangeType);
-                        // hexArea.redraw();
-                        // textArea.redraw();
-                        /*
-                         * if (pc != null) {
-                         * platform.setProgrammCounter(new Value(pc.getValue()));
-                         * platform.parseBinary(content,
-                         * new DisassemblingRange(selStart + contentOffset, selLength, RangeType.Code));
-                         * tableViewer.setInput(platform.getCPU().getInstructionLineList());
-                         * }
-                         */
-
-                    }
+                    disassemble(selectedRange.getOffset(), selectedRange.getLen(), selectedRangeType);
                 }
             }
 
@@ -723,9 +724,11 @@ public class HexViewWidget extends Composite implements DragDetectListener {
                         end = start;
                         start = x;
                     }
-
-                    hexArea.setSelectionRange(start << 1, (end << 1) - (start << 1));
-                    textArea.setSelectionRange(start, (end - start));
+                    int length = end - start;
+                    hexArea.setSelectionRange(start << 1, length << 1);
+                    textArea.setSelectionRange(start, length);
+                    selectedRange.setOffset(start);
+                    selectedRange.setLen(length);
                 }
             }
         });
@@ -735,25 +738,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
                     selectStart = false;
-
-                    // selStart = hexArea.getSelectionRange().x;
-                    // selLength = hexArea.getSelectionRange().y;
-                    // textArea.setSelectionRange(selStart, selLength);
-                    if (selLength > 0) {
-                        // platform.getCPU().clear();
-                        // handleDataRange(selStart, selLength, selectedRangeType);
-                        // hexArea.redraw();
-                        // textArea.redraw();
-                        /*
-                         * if (pc != null) {
-                         * platform.setProgrammCounter(new Value(pc.getValue()));
-                         * platform.parseBinary(content,
-                         * new DisassemblingRange(selStart + contentOffset, selLength, RangeType.Code));
-                         * tableViewer.setInput(platform.getCPU().getInstructionLineList());
-                         * }
-                         */
-
-                    }
+                    disassemble(selectedRange.getOffset(), selectedRange.getLen(), selectedRangeType);
                 }
             }
 
@@ -766,19 +751,16 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             }
         });
 
-        /*
-         * textArea.addSelectionListener(new SelectionAdapter() {
-         * 
-         * @Override
-         * public void widgetSelected(SelectionEvent e) {
-         * addressArea.setTopIndex(textArea.getTopIndex());
-         * hexArea.setTopIndex(textArea.getTopIndex());
-         * getVerticalBar().setSelection(textArea.getTopIndex());
-         * hexArea.setSelectionRange(textArea.getSelectionRange().x * 2,
-         * textArea.getSelectionRange().y * 2);
-         * }
-         * });
-         */
+        textArea.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                addressArea.setTopIndex(textArea.getTopIndex());
+                textArea.setTopIndex(textArea.getTopIndex());
+                getVerticalBar().setSelection(textArea.getTopIndex());
+            }
+        });
+
     }
 
     private StyleRange[] getStyleRanges(int width, LineStyleEvent event) {
