@@ -50,10 +50,6 @@ public class HexViewContent implements StyledTextContent {
         return result;
     }
 
-    private int getLineLengthAtOffset(int offset) {
-        return 0;
-    }
-
     @Override
     public int getLineCount() {
         return (content.length() / lineWidth) + 1;

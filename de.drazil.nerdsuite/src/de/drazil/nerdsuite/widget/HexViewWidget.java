@@ -153,7 +153,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         content = binaryContent;
         if (binaryContent == null) {
             content = new byte[] { (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+                    (byte) 0x80, (byte) 100, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
                     (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
                     (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
                     (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
@@ -395,7 +395,10 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             public String getText(Object element) {
                 InstructionLine il = (InstructionLine) element;
                 Object[] userObject = (Object[]) il.getUserObject();
-                String s = String.format("%s", userObject[0]);
+                String s = "";
+                if (userObject != null) {
+                    s = String.format("%s", userObject[0]);
+                }
                 return s;
             }
 
@@ -410,7 +413,10 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             public String getText(Object element) {
                 InstructionLine il = (InstructionLine) element;
                 Object[] userObject = (Object[]) il.getUserObject();
-                String s = String.format("%s", userObject[1]);
+                String s = "";
+                if (userObject != null) {
+                    s = String.format("%s", userObject[1]);
+                }
                 return s;
             }
 
@@ -424,8 +430,11 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             public String getText(Object element) {
                 InstructionLine il = (InstructionLine) element;
                 Object[] userObject = (Object[]) il.getUserObject();
-                String s = String.format("%-13s %s %-15s %s", userObject[2], userObject[3], userObject[4],
-                        userObject[5]);
+                String s = "";
+                if (userObject != null) {
+                    s = String.format("%-13s %s %-15s %s", userObject[2], userObject[3], userObject[4],
+                            userObject[5]);
+                }
                 return s;
             }
 
