@@ -10,8 +10,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.enums.RedrawMode;
-import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
 import de.drazil.nerdsuite.model.PlatformColor;
 
 public class ColorChooser extends BaseWidget implements PaintListener, IColorSelectionListener, ITileListener {
@@ -186,7 +184,6 @@ public class ColorChooser extends BaseWidget implements PaintListener, IColorSel
 
     @Override
     public void tileChanged() {
-       
 
     }
 }

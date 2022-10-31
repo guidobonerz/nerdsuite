@@ -120,8 +120,8 @@ public abstract class BaseImagingWidget extends BaseWidget
         return ((getParent().getBounds().width - 30) / conf.tileWidthPixel);
     }
 
-    public void disableDelayTrigger(Trigger trigger) {
-        ama.disableDelayTrigger(trigger);
+    public void stopDelayTrigger(Trigger trigger) {
+        ama.stopDelayTrigger(trigger);
     }
 
     public void enableDelayTrigger(Trigger trigger, long triggerMillis) {

@@ -60,7 +60,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 
     @Override
     protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
-        // mc.stop();
         if (!tileDragActive) {
             selectedTileIndexX = tileX;
             selectedTileIndexY = tileY;
@@ -82,14 +81,17 @@ public class RepositoryWidget extends BaseImagingWidget {
 
     @Override
     protected void mouseDragged(int modifierMask, int x, int y) {
+        tileDragActive=false;
+        stopDelayTrigger(Trigger.LEFT);
         computeTileSelection(tileX, tileY, 1);
         doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
     }
 
     @Override
     protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
+        tileDragActive = true;
         if (tileSelectionStarted) {
-            disableDelayTrigger(Trigger.LEFT);
+            stopDelayTrigger(Trigger.LEFT);
         }
         computeTileSelection(tileX, tileY, 1);
         doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
@@ -97,7 +99,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 
     @Override
     protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
-        // mc.stop();
         if (tileDragActive) {
             tileDragActive = false;
             tileRepositoryService.moveTile(tileSelectionRange.getFrom(), tileSelectionRange.getTo());
@@ -111,7 +112,6 @@ public class RepositoryWidget extends BaseImagingWidget {
 
     @Override
     protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-        // mc.start(-1);
         computeTileSelection(tileX, tileY, 0);
     }
 

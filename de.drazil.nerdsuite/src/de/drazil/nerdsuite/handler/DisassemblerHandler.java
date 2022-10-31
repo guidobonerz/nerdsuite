@@ -13,15 +13,19 @@ import org.eclipse.swt.widgets.Shell;
 import de.drazil.nerdsuite.util.E4Utils;
 
 public class DisassemblerHandler {
-	@Execute
-	public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
-			EPartService partService, EModelService modelService) {
-		MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.DisassemblerView",
-				"bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView", "Disassembler",
-				"Disassembler", null);
+    @Execute
+    public void execute(MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
+            EPartService partService, EModelService modelService) {
 
-		E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.editorStack", part,
-				true);
-	}
+        E4Utils.switchPerspective("de.drazil.nerdsuite.perspective.DisassemblerPerspective", app, modelService,
+                partService);
+
+        MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.DisassemblerView",
+                "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView", "Disassembler",
+                "Disassembler", null);
+
+        E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.disassemblerStack", part,
+                true);
+    }
 
 }

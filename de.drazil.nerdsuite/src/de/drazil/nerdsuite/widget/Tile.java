@@ -47,10 +47,7 @@ public class Tile {
     private List<ITileListener> tileListenerList = null;
     @JsonIgnore
     private int size;
-    @JsonIgnore
-    @Getter
-    @Setter
-    private boolean dirty = true;
+
     @JsonIgnore
     private Map<String, DirtyableImage> imagePool = null;
 
@@ -94,6 +91,16 @@ public class Tile {
     @JsonIgnore
     public DirtyableImage getImage(String id) {
         return imagePool.get(id);
+    }
+
+    @JsonIgnore
+    public boolean isDirty() {
+        return getActiveLayer().isDirty();
+    }
+
+    @JsonIgnore
+    public void setDirty(boolean isDirty) {
+        getActiveLayer().setDirty(isDirty);
     }
 
     @JsonIgnore
