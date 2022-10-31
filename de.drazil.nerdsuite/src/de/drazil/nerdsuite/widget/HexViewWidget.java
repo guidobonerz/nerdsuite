@@ -25,6 +25,7 @@ import org.eclipse.swt.events.DragDetectEvent;
 import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -75,12 +76,15 @@ public class HexViewWidget extends Composite implements DragDetectListener {
     private int selLength;
     private int contentOffset = 0;
     private boolean selectStart = false;
+    private int cursorPos = 0;
     private RangeType selectedRangeType = RangeType.Code;
     private boolean wasShifted = false;
     private TableViewer tableViewer;
     private boolean addressChecked = false;
     private Value pc;
     private Stack<InstructionLine> jumpStack;
+    private boolean selectionDirection = false;
+    private Point oldSelection;
 
     public HexViewWidget(Composite parent, int style, IPlatform platform) {
         super(parent, style);
@@ -614,25 +618,55 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             }
         });
 
+        hexArea.addMouseMoveListener(new MouseMoveListener() {
+            @Override
+            public void mouseMove(MouseEvent e) {
+                if (selectStart) {
+                    int start = cursorPos;
+                    int end = hexArea.getCaretOffset();
+
+                    if (start > end) {
+                        int x = end;
+                        end = start;
+                        start = x;
+                    }
+
+                    if (start % 2 != 0) {
+                        start--;
+                    }
+
+                    if (end % 2 != 0) {
+                        end++;
+                    }
+                    hexArea.setSelectionRange(start, end - start);
+                    textArea.setSelectionRange((start >> 1), (end - start) >> 1);
+                }
+            }
+        });
         hexArea.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
                     selectStart = false;
-                    selStart = hexArea.getSelectionRange().x;
-                    selLength = hexArea.getSelectionRange().y;
-                    textArea.setSelectionRange(selStart, selLength);
+
+                    // selStart = hexArea.getSelectionRange().x;
+                    // selLength = hexArea.getSelectionRange().y;
+                    // textArea.setSelectionRange(selStart, selLength);
                     if (selLength > 0) {
-                        platform.getCPU().clear();
-                        handleDataRange(selStart, selLength, selectedRangeType);
-                        hexArea.redraw();
-                        textArea.redraw();
-                        if (pc != null) {
-                            platform.setProgrammCounter(new Value(pc.getValue()));
-                            platform.parseBinary(content,
-                                    new DisassemblingRange(selStart + contentOffset, selLength, RangeType.Code));
-                            tableViewer.setInput(platform.getCPU().getInstructionLineList());
-                        }
+                        // platform.getCPU().clear();
+                        // handleDataRange(selStart, selLength, selectedRangeType);
+                        // hexArea.redraw();
+                        // textArea.redraw();
+                        /*
+                         * if (pc != null) {
+                         * platform.setProgrammCounter(new Value(pc.getValue()));
+                         * platform.parseBinary(content,
+                         * new DisassemblingRange(selStart + contentOffset, selLength, RangeType.Code));
+                         * tableViewer.setInput(platform.getCPU().getInstructionLineList());
+                         * }
+                         */
+
                     }
                 }
             }
@@ -641,6 +675,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             public void mouseDown(MouseEvent e) {
                 if (e.button == 1) {
                     selectStart = true;
+                    cursorPos = hexArea.getCaretOffset();
                 }
             }
         });
@@ -650,18 +685,6 @@ public class HexViewWidget extends Composite implements DragDetectListener {
                 addressArea.setTopIndex(hexArea.getTopIndex());
                 textArea.setTopIndex(hexArea.getTopIndex());
                 getVerticalBar().setSelection(hexArea.getTopIndex());
-                int caretOffset = hexArea.getCaretOffset();
-                Point range = hexArea.getSelectionRange();
-                boolean alignStart = range.x % 2 != 0;
-                boolean alignLength = range.y % 2 != 0;
-                if (alignStart) {
-                    range.x--;
-                }
-                if (alignLength) {
-                    range.y++;
-                }
-                hexArea.setSelectionRanges(new int[] { range.x, range.y });
-
             }
         });
 
@@ -687,6 +710,62 @@ public class HexViewWidget extends Composite implements DragDetectListener {
 
         });
         textArea.setLayoutData(gd);
+
+        textArea.addMouseMoveListener(new MouseMoveListener() {
+            @Override
+            public void mouseMove(MouseEvent e) {
+                if (selectStart) {
+                    int start = cursorPos;
+                    int end = textArea.getCaretOffset();
+
+                    if (start > end) {
+                        int x = end;
+                        end = start;
+                        start = x;
+                    }
+
+                    hexArea.setSelectionRange(start << 1, (end << 1) - (start << 1));
+                    textArea.setSelectionRange(start, (end - start));
+                }
+            }
+        });
+        textArea.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseUp(MouseEvent e) {
+                if (e.button == 1) {
+                    selectStart = false;
+
+                    // selStart = hexArea.getSelectionRange().x;
+                    // selLength = hexArea.getSelectionRange().y;
+                    // textArea.setSelectionRange(selStart, selLength);
+                    if (selLength > 0) {
+                        // platform.getCPU().clear();
+                        // handleDataRange(selStart, selLength, selectedRangeType);
+                        // hexArea.redraw();
+                        // textArea.redraw();
+                        /*
+                         * if (pc != null) {
+                         * platform.setProgrammCounter(new Value(pc.getValue()));
+                         * platform.parseBinary(content,
+                         * new DisassemblingRange(selStart + contentOffset, selLength, RangeType.Code));
+                         * tableViewer.setInput(platform.getCPU().getInstructionLineList());
+                         * }
+                         */
+
+                    }
+                }
+            }
+
+            @Override
+            public void mouseDown(MouseEvent e) {
+                if (e.button == 1) {
+                    selectStart = true;
+                    cursorPos = textArea.getCaretOffset();
+                }
+            }
+        });
+
         /*
          * textArea.addSelectionListener(new SelectionAdapter() {
          * 
