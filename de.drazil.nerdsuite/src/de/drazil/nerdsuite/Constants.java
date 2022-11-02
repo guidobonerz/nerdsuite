@@ -106,6 +106,10 @@ public class Constants {
 	public final static Color LIGHT_GREEN2 = new Color(Display.getCurrent(), SwtUtil.toRGB("#D0FFD0"));
 	public final static Color DARK_GREY = new Color(Display.getCurrent(), SwtUtil.toRGB("#3f474f"));
 	public final static Color BRIGHT_ORANGE = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF5722"));
+	public final static Color HEXVIEW_ODD_COLUMN_BG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#2980B9"));
+	public final static Color HEXVIEW_EVEN_COLUMN_BG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#1A5276"));
+	public final static Color HEXVIEW_ODD_COLUMN_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A9CCE3"));
+    public final static Color HEXVIEW_EVEN_COLUMN_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#7FB3D5"));
 
 	public final static Color RED = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF0000"));
 	public final static Color GREEN = new Color(Display.getCurrent(), SwtUtil.toRGB("#00FF00"));
@@ -189,7 +193,7 @@ public class Constants {
 	public final static String T_ILLEGAL_OPCODE = "ILLEGAL_OPCODE";
 	public final static String T_UNSTABLE_ILLEGAL_OPCODE = "UNSTABLE_ILLEGAL_OPCODE";
 
-	public final static String PROJECT_FILE_INFO_HEADER = "// Nerdsuite Project by drazil 2017-2020\n"
+	public final static String PROJECT_FILE_INFO_HEADER = "// Nerdsuite Project by drazil 2017-2022\n"
 			+ "// Projectname_____: %s\n" + "// Created on______: %s\n" + "// Changed on______: %s\n";
 
 }

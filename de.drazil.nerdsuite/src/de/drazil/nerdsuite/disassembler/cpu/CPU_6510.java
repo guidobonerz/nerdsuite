@@ -67,7 +67,7 @@ public class CPU_6510 extends AbstractCPU {
                     break;
                 }
 
-                value = getInstructionValue(byteArray, new DisassemblingRange(offset, len, RangeType.Code));
+                value = getInstructionValue(byteArray, new DisassemblingRange(offset, len, false,RangeType.Code));
                 currentLine.setInstructionType(InstructionType.Asm);
 
                 if ("branch".equals(instructionType)) {

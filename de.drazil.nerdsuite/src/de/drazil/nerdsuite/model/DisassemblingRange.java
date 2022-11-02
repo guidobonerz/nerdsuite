@@ -10,7 +10,8 @@ import lombok.ToString;
 @Data
 @ToString
 public class DisassemblingRange {
-	private int offset = 0;
-	private int len = 0;
-	private RangeType rangeType = RangeType.Unspecified;
+    private int offset = 0;
+    private int len = 0;
+    private boolean dirty;
+    private RangeType rangeType = RangeType.Unspecified;
 }

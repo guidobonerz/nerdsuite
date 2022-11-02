@@ -79,7 +79,7 @@ public class C64Platform extends AbstractPlatform {
 
         long start = System.currentTimeMillis();
         getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-                getPlatFormData(), new DisassemblingRange(range.getOffset(), range.getLen(), range.getRangeType()), 2);
+                getPlatFormData(), new DisassemblingRange(range.getOffset(), range.getLen(), false,range.getRangeType()), 2);
         long duration = (System.currentTimeMillis() - start);
         System.out.printf("%d Seconds", duration);
         // System.out.println("stage 3: compress ranges");

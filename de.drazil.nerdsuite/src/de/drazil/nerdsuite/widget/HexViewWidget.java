@@ -1,8 +1,7 @@
 package de.drazil.nerdsuite.widget;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -21,8 +20,11 @@ import org.eclipse.swt.custom.LineStyleListener;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.events.DragDetectEvent;
-import org.eclipse.swt.events.DragDetectListener;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -53,11 +55,11 @@ import de.drazil.nerdsuite.disassembler.HexViewContent;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.model.DisassemblingRange;
-import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
+import de.drazil.nerdsuite.util.BinaryFileHandler;
 
-public class HexViewWidget extends Composite implements DragDetectListener {
+public class HexViewWidget extends Composite {
 
     private byte[] content = null;
     private StyledText addressArea = null;
@@ -69,21 +71,31 @@ public class HexViewWidget extends Composite implements DragDetectListener {
     private Button code;
     private Button binary;
     private Button undefined;
+    private int contentOffset = 0;
 
     private int visibleRows = 0;
     private IPlatform platform;
     private List<DisassemblingRange> rangeList;
     private DisassemblingRange selectedRange = null;
 
-    private int contentOffset = 0;
     private boolean selectStart = false;
     private int cursorPos = 0;
-    private RangeType selectedRangeType = RangeType.Code;
+
     private boolean wasShifted = false;
     private TableViewer tableViewer;
     private boolean addressChecked = false;
     private Value pc;
     private Stack<InstructionLine> jumpStack;
+
+    private static StyleRange[] hexStyleRangeList = new StyleRange[32];
+    static {
+        for (int i = 0; i < 32; i += 2) {
+            hexStyleRangeList[i] = new StyleRange(0, 2, Constants.HEXVIEW_ODD_COLUMN_FG_COLOR,
+                    Constants.HEXVIEW_ODD_COLUMN_BG_COLOR);
+            hexStyleRangeList[i + 1] = new StyleRange(0, 2, Constants.HEXVIEW_EVEN_COLUMN_FG_COLOR,
+                    Constants.HEXVIEW_EVEN_COLUMN_BG_COLOR);
+        }
+    }
 
     public HexViewWidget(Composite parent, int style, IPlatform platform) {
         super(parent, style);
@@ -91,17 +103,19 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         rangeList = new ArrayList<DisassemblingRange>();
         jumpStack = new Stack<InstructionLine>();
         initialize();
-        addDragDetectListener(this);
-    }
-
-    @Override
-    public void dragDetected(DragDetectEvent e) {
-        System.out.println("drad detected");
 
     }
 
     private static boolean isPrintableCharacter(char c) {
         return c >= 32 && c < 127;
+    }
+
+    private byte getContent(int index) {
+        return content[contentOffset + index];
+    }
+
+    private int getContentLength() {
+        return content.length - contentOffset;
     }
 
     public Composite getDisassemblyView() {
@@ -149,27 +163,12 @@ public class HexViewWidget extends Composite implements DragDetectListener {
     }
 
     public void setBinaryContent(byte[] binaryContent) {
-
         content = binaryContent;
-        if (binaryContent == null) {
-            content = new byte[] { (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0x80, (byte) 100, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0 };
-        }
-        selectedRange = new DisassemblingRange(0, content.length, RangeType.Unspecified);
+        selectedRange = new DisassemblingRange(0, 0, false, RangeType.Unspecified);
         rangeList = new ArrayList<DisassemblingRange>();
-        rangeList.add(selectedRange);
+        rangeList.add(new DisassemblingRange(0, content.length, false, RangeType.Unspecified));
         prepareContent();
+        // disassemble(selectedRange);
         Display.getDefault().asyncExec(new Runnable() {
             @Override
             public void run() {
@@ -208,86 +207,65 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         });
     }
 
-    private void disassemble(int start, int length, RangeType rangeType) {
+    private void disassemble(DisassemblingRange selectedRange) {
 
-        if (length > 0) {
+        if (selectedRange.getLen() > 0) {
             platform.getCPU().clear();
-            handleDataRange(start, length, rangeType);
+            handleSelection(selectedRange.getOffset(), selectedRange.getLen(), selectedRange.getRangeType());
             hexArea.redraw();
             textArea.redraw();
-            if (pc != null) {
-                platform.setProgrammCounter(new Value(pc.getValue()));
-                platform.parseBinary(content,
-                        new DisassemblingRange(start + contentOffset, length, RangeType.Code));
-                tableViewer.setInput(platform.getCPU().getInstructionLineList());
-            }
+            /*
+             * if (pc != null) {
+             * platform.setProgrammCounter(new Value(pc.getValue()));
+             * platform.parseBinary(content,
+             * new DisassemblingRange(selectedRange.getOffset() + contentOffset,
+             * selectedRange.getLen(),
+             * false, RangeType.Code));
+             * tableViewer.setInput(platform.getCPU().getInstructionLineList());
+             * }
+             */
         }
     }
 
-    private void handleDataRange(int start, int length, RangeType rangeType) {
-        List<DisassemblingRange> result = findRanges(start, length);
-        for (DisassemblingRange range : result) {
-            splitRange(range, rangeType, start, length);
-        }
-        DisassemblingRange lastRange = null;
-        for (int i = 0; i < rangeList.size(); i++) {
-            DisassemblingRange r = rangeList.get(i);
-            if (lastRange != null && lastRange.getRangeType() == r.getRangeType()) {
-                int l = lastRange.getLen() + r.getLen();
-                lastRange.setLen(l);
-                rangeList.remove(i);
-            }
-            lastRange = r;
-        }
-        if (rangeList.isEmpty()) {
-            rangeList.add(new DisassemblingRange(0, content.length, RangeType.Unspecified));
+    private void handleSelection(int start, int length, RangeType rangeType) {
+        DisassemblingRange embeddingRange = findEmbeddingRange(start, length, rangeType);
+        if (embeddingRange != null) {
+            embeddingRange.setDirty(true);
+            int oldStart = embeddingRange.getOffset();
+            int oldLength = embeddingRange.getLen();
+            int rangeIndex = rangeList.indexOf(embeddingRange);
+            int croppedLength = start - embeddingRange.getOffset();
+            embeddingRange.setLen(croppedLength);
+            rangeList.add(rangeIndex + 1, new DisassemblingRange(start, length, true, rangeType));
+            rangeList.add(rangeIndex + 2, new DisassemblingRange(start + length, oldStart + oldLength - start + length,
+                    true, embeddingRange.getRangeType()));
+
+        } else {
+            List<DisassemblingRange> overlappingRanges = findOverlappingRanges(start, length, rangeType);
+
         }
     }
 
-    private List<DisassemblingRange> findRanges(int start, int length) {
+    private DisassemblingRange findEmbeddingRange(int start, int length, RangeType rangeType) {
+        return rangeList.stream().filter(r -> r.getOffset() < start && r.getOffset() + r.getLen() > start + length)
+                .findFirst().orElse(null);
+    }
 
-        List<DisassemblingRange> resultList = rangeList.stream()
-                .filter(r -> start <= r.getOffset() && start + length >= r.getOffset() + r.getLen() /* OVER ALL */)
+    private List<DisassemblingRange> findOverlappingRanges(int start, int length, RangeType rangeType) {
+        List<DisassemblingRange> partlyOverlappingRanges = rangeList.stream()
+                .filter(r -> start > r.getOffset() && start < r.getOffset() + r.getLen()
+                        || start + length > r.getOffset() && start + length < r.getOffset() + r.getLen())
                 .collect(Collectors.toList());
-        for (DisassemblingRange r : resultList) {
-            rangeList.remove(r);
+
+        List<DisassemblingRange> fullOverlappingRanges = rangeList.stream()
+                .filter(r -> start < r.getOffset() && start + length > r.getOffset() + r.getLen())
+                .collect(Collectors.toList());
+
+        // remove full overlapping ranges
+        for (DisassemblingRange range : fullOverlappingRanges) {
+            rangeList.remove(range);
         }
-
-        resultList = rangeList.stream()
-                .filter(r -> start >= r.getOffset() && start + length <= r.getOffset() + r.getLen() /* IN */
-                        || start > r.getOffset() && start < r.getOffset() + r.getLen()
-                                && start + length >= r.getOffset() + r.getLen() /* OVERLAP START */
-                ).collect(Collectors.toList());
-        Collections.sort(resultList, new Comparator<DisassemblingRange>() {
-            @Override
-            public int compare(DisassemblingRange o1, DisassemblingRange o2) {
-                return Integer.compare(o1.getOffset(), o2.getOffset());
-            }
-        });
-
-        return resultList;
-    }
-
-    private void splitRange(DisassemblingRange r, RangeType rangeType, int start, int length) {
-        int rangeIndex = rangeList.indexOf(r);
-        int oldStart = r.getOffset();
-        int oldEnd = r.getLen();
-        if (start >= r.getOffset() && start + length <= r.getOffset() + r.getLen()
-                && r.getRangeType() != rangeType) /* IN */ {
-            r.setLen(start - oldStart);
-            DisassemblingRange newRange1 = new DisassemblingRange(start, length, rangeType);
-            DisassemblingRange newRange2 = new DisassemblingRange(start + length, oldStart + oldEnd - (start + length),
-                    r.getRangeType());
-            rangeList.add(rangeIndex + 1, newRange1);
-            rangeList.add(rangeIndex + 2, newRange2);
-        } else if (start > r.getOffset() && start < r.getOffset() + r.getLen()
-                && start + length >= r.getOffset() + r.getLen()) /* OVERLAP START */ {
-            r.setLen(start - oldStart);
-            DisassemblingRange nextRange = rangeList.get(rangeIndex + 1);
-            nextRange.setOffset(start + length);
-            nextRange.setLen(nextRange.getOffset() + nextRange.getLen() - ((start + length)));
-            rangeList.add(rangeIndex + 1, new DisassemblingRange(start, length, rangeType));
-        }
+        return partlyOverlappingRanges;
     }
 
     private void shiftRange(int offset) {
@@ -306,7 +284,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             contentOffset = 2;
             memoryOffset = platform.getCPU().getWord(content, 0);
             wasShifted = true;
-            shiftRange(-2);
+            shiftRange(2);
         } else {
             shiftRange(wasShifted ? 2 : 0);
             wasShifted = false;
@@ -320,13 +298,14 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         sbText = new StringBuilder();
         sbAdress = new StringBuilder();
 
-        while (b + contentOffset < content.length) {
+        while (b < getContentLength()) {
             if (b % 16 == 0) {
                 sbAdress.append(String.format("%04x:", memoryOffset + b));
             }
-            sbByte.append(String.format("%02x", content[b + contentOffset]));
+            byte c = getContent(b);
+            sbByte.append(String.format("%02x", c));
             sbText.append(
-                    isPrintableCharacter((char) content[b + contentOffset]) ? (char) content[b + contentOffset] : '_');
+                    isPrintableCharacter((char) c) ? (char) c : '_');
             b++;
         }
 
@@ -368,11 +347,10 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         gd.grabExcessVerticalSpace = true;
         gd.grabExcessHorizontalSpace = true;
         gd.verticalSpan = 2;
-        // gd.widthHint = 400;
         tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.getTable().setLinesVisible(true);
         tableViewer.setCellEditors(new CellEditor[] { new TextCellEditor(tableViewer.getTable()) });
-        tableViewer.setColumnProperties(new String[] { "ADDRESS", "LABEL", "DISASM" });
+        tableViewer.setColumnProperties(new String[] { "ADDRESS", "LABEL", "DISASSEMBLY" });
         /*
          * tableViewer.setCellModifier(new ICellModifier() {
          * 
@@ -460,6 +438,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         final TableEditor editor = new TableEditor(tableViewer.getTable());
         editor.horizontalAlignment = SWT.LEFT;
         editor.grabHorizontal = true;
+
         tableViewer.getTable().addListener(SWT.MouseDown, new Listener() {
             public void handleEvent(Event event) {
                 Rectangle clientArea = tableViewer.getTable().getClientArea();
@@ -512,20 +491,29 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             }
         });
 
+        Transfer[] types = new Transfer[] { FileTransfer.getInstance() };
+
+        tableViewer.addDropSupport(DND.DROP_MOVE | DND.DROP_COPY, types, new DropTargetAdapter() {
+            @Override
+            public void drop(DropTargetEvent event) {
+                String fileName = ((String[]) event.data)[0].toString();
+                byte[] content = null;
+                try {
+                    content = BinaryFileHandler.readFile(new File(fileName), 0);
+                    setBinaryContent(content);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.verticalAlignment = GridData.FILL;
         gd.grabExcessVerticalSpace = false;
         gd.grabExcessHorizontalSpace = false;
-        // gd.minimumWidth = 450;
         gd.horizontalSpan = 3;
 
-        /*
-         * RowLayout layout = new RowLayout(); rowLayout.wrap = false; rowLayout.pack =
-         * false; rowLayout.justify = true; rowLayout.marginLeft = 5;
-         * rowLayout.marginTop = 5; rowLayout.marginRight = 5; rowLayout.marginBottom =
-         * 5; rowLayout.spacing = 0;
-         */
         GridLayout layout2 = new GridLayout(4, false);
 
         Composite c = new Composite(this, SWT.NONE);
@@ -568,7 +556,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                selectedRangeType = RangeType.Code;
+                selectedRange.setRangeType(RangeType.Code);
                 hexArea.setSelectionForeground(Constants.WHITE);
                 textArea.setSelectionForeground(Constants.WHITE);
                 hexArea.setSelectionBackground(Constants.CODE_COLOR);
@@ -584,7 +572,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                selectedRangeType = RangeType.Binary;
+                selectedRange.setRangeType(RangeType.Binary);
                 hexArea.setSelectionForeground(Constants.WHITE);
                 textArea.setSelectionForeground(Constants.WHITE);
                 hexArea.setSelectionBackground(Constants.BINARY_COLOR);
@@ -599,7 +587,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                selectedRangeType = RangeType.Unspecified;
+                selectedRange.setRangeType(RangeType.Unspecified);
                 hexArea.setSelectionForeground(Constants.BLACK);
                 textArea.setSelectionForeground(Constants.BLACK);
                 hexArea.setSelectionBackground(Constants.WHITE);
@@ -616,8 +604,9 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         // ==================
         gd = new GridData();
         gd.horizontalAlignment = GridData.FILL;
-        gd.verticalAlignment = GridData.BEGINNING;
-        gd.grabExcessVerticalSpace = true;
+        gd.verticalAlignment = GridData.FILL;
+        gd.widthHint = 40;
+        gd.grabExcessVerticalSpace = false;
         gd.grabExcessHorizontalSpace = false;
         addressArea = new StyledText(this, SWT.READ_ONLY);
         addressArea.setEditable(false);
@@ -629,8 +618,9 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         // ==================
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
-        gd.verticalAlignment = GridData.BEGINNING;
-        gd.grabExcessVerticalSpace = true;
+        gd.verticalAlignment = GridData.FILL;
+        gd.widthHint = 220;
+        gd.grabExcessVerticalSpace = false;
         gd.grabExcessHorizontalSpace = false;
         hexArea = new StyledText(this, SWT.NONE);
         hexArea.setFont(Constants.EDITOR_FONT);
@@ -664,10 +654,12 @@ public class HexViewWidget extends Composite implements DragDetectListener {
                         end++;
                     }
                     int length = end - start;
+                    int sstart = start >> 1;
+                    int slength = length >> 1;
                     hexArea.setSelectionRange(start, length);
-                    textArea.setSelectionRange(start >> 1, length >> 1);
-                    selectedRange.setOffset(start >> 1);
-                    selectedRange.setLen(length >> 1);
+                    textArea.setSelectionRange(sstart, slength);
+                    selectedRange.setOffset(sstart);
+                    selectedRange.setLen(slength);
                 }
             }
         });
@@ -677,7 +669,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
                     selectStart = false;
-                    disassemble(selectedRange.getOffset(), selectedRange.getLen(), selectedRangeType);
+                    disassemble(selectedRange);
                 }
             }
 
@@ -692,9 +684,9 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         hexArea.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                addressArea.setTopIndex(hexArea.getTopIndex());
-                textArea.setTopIndex(hexArea.getTopIndex());
-                getVerticalBar().setSelection(hexArea.getTopIndex());
+                // addressArea.setTopIndex(hexArea.getTopIndex());
+                // textArea.setTopIndex(hexArea.getTopIndex());
+                // getVerticalBar().setSelection(hexArea.getTopIndex());
             }
         });
 
@@ -704,8 +696,9 @@ public class HexViewWidget extends Composite implements DragDetectListener {
 
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
-        gd.verticalAlignment = GridData.BEGINNING;
-        gd.grabExcessVerticalSpace = true;
+        gd.verticalAlignment = GridData.FILL;
+        gd.widthHint = 110;
+        gd.grabExcessVerticalSpace = false;
         gd.grabExcessHorizontalSpace = false;
         textArea = new StyledText(this, SWT.NONE);
         textArea.setFont(Constants.EDITOR_FONT);
@@ -747,7 +740,7 @@ public class HexViewWidget extends Composite implements DragDetectListener {
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
                     selectStart = false;
-                    disassemble(selectedRange.getOffset(), selectedRange.getLen(), selectedRangeType);
+                    disassemble(selectedRange);
                 }
             }
 
@@ -764,9 +757,9 @@ public class HexViewWidget extends Composite implements DragDetectListener {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                addressArea.setTopIndex(textArea.getTopIndex());
-                textArea.setTopIndex(textArea.getTopIndex());
-                getVerticalBar().setSelection(textArea.getTopIndex());
+                // addressArea.setTopIndex(textArea.getTopIndex());
+                // textArea.setTopIndex(textArea.getTopIndex());
+                // getVerticalBar().setSelection(textArea.getTopIndex());
             }
         });
 
@@ -778,11 +771,11 @@ public class HexViewWidget extends Composite implements DragDetectListener {
         Color fgc = Constants.BLACK;
         Color bgc = null;
         if (width == 2) {
-            bgc = Constants.BINARY_COLOR;
             int lineLength = event.lineText.length();
             for (int x = event.lineOffset; x < event.lineOffset + lineLength; x += 2) {
-                styleRange = new StyleRange(x, 2, fgc, x % 4 == 0 ? Constants.LIGHT_BLUE : Constants.WHITE);
-                list.add(styleRange);
+                StyleRange sr = hexStyleRangeList[(x & 0b11111) >> 1];
+                sr.start = x;
+                list.add(sr);
             }
         }
         for (DisassemblingRange range : rangeList) {

@@ -80,7 +80,7 @@ public class CPC6128Platform extends AbstractPlatform {
 		long start = System.currentTimeMillis();
 		try {
 			getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-					getPlatFormData(), new DisassemblingRange(range.getOffset(), range.getLen(), range.getRangeType()), 2);
+					getPlatFormData(), new DisassemblingRange(range.getOffset(), range.getLen(), false,range.getRangeType()), 2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
