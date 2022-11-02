@@ -619,7 +619,7 @@ public class HexViewWidget extends Composite {
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.verticalAlignment = GridData.FILL;
-        gd.widthHint = 220;
+        gd.widthHint = (int)(6.5f*32);
         gd.grabExcessVerticalSpace = false;
         gd.grabExcessHorizontalSpace = false;
         hexArea = new StyledText(this, SWT.NONE);
@@ -697,7 +697,7 @@ public class HexViewWidget extends Composite {
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.verticalAlignment = GridData.FILL;
-        gd.widthHint = 110;
+        gd.widthHint = (int)(6.5f*16);
         gd.grabExcessVerticalSpace = false;
         gd.grabExcessHorizontalSpace = false;
         textArea = new StyledText(this, SWT.NONE);
