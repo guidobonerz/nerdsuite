@@ -54,6 +54,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.HexViewContent;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
+import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
@@ -78,12 +79,12 @@ public class HexViewWidget extends Composite {
     private List<DisassemblingRange> rangeList;
     private DisassemblingRange selectedRange = null;
 
-    private boolean selectStart = false;
+    private boolean startSelect = false;
+    private boolean selectStarted = false;
     private int cursorPos = 0;
 
-    private boolean wasShifted = false;
     private TableViewer tableViewer;
-    private boolean addressChecked = false;
+
     private Value pc;
     private Stack<InstructionLine> jumpStack;
 
@@ -102,6 +103,7 @@ public class HexViewWidget extends Composite {
         this.platform = platform;
         rangeList = new ArrayList<DisassemblingRange>();
         jumpStack = new Stack<InstructionLine>();
+        selectedRange = new DisassemblingRange(0, 0, false, RangeType.Unspecified);
         initialize();
 
     }
@@ -164,7 +166,6 @@ public class HexViewWidget extends Composite {
 
     public void setBinaryContent(byte[] binaryContent) {
         content = binaryContent;
-        selectedRange = new DisassemblingRange(0, 0, false, RangeType.Unspecified);
         rangeList = new ArrayList<DisassemblingRange>();
         rangeList.add(new DisassemblingRange(0, content.length, false, RangeType.Unspecified));
         prepareContent();
@@ -212,6 +213,14 @@ public class HexViewWidget extends Composite {
         if (selectedRange.getLen() > 0) {
             platform.getCPU().clear();
             handleSelection(selectedRange.getOffset(), selectedRange.getLen(), selectedRange.getRangeType());
+            Console.println("> ----------------------------------------------");
+            Console.printf("> range count :%d\n", rangeList.size());
+            for (int i = 0; i < rangeList.size(); i++) {
+                int offset = pc.getValue() + rangeList.get(i).getOffset();
+                Console.printf("> %04d : %04x - %04x %s\n", i, offset,
+                        offset + rangeList.get(i).getLen(), rangeList.get(i).getRangeType().toString());
+            }
+
             hexArea.redraw();
             textArea.redraw();
             /*
@@ -230,24 +239,36 @@ public class HexViewWidget extends Composite {
     private void handleSelection(int start, int length, RangeType rangeType) {
         DisassemblingRange embeddingRange = findEmbeddingRange(start, length, rangeType);
         if (embeddingRange != null) {
-            embeddingRange.setDirty(true);
-            int oldStart = embeddingRange.getOffset();
-            int oldLength = embeddingRange.getLen();
-            int rangeIndex = rangeList.indexOf(embeddingRange);
-            int croppedLength = start - embeddingRange.getOffset();
-            embeddingRange.setLen(croppedLength);
-            rangeList.add(rangeIndex + 1, new DisassemblingRange(start, length, true, rangeType));
-            rangeList.add(rangeIndex + 2, new DisassemblingRange(start + length, oldStart + oldLength - start + length,
-                    true, embeddingRange.getRangeType()));
-
+            if (rangeType != embeddingRange.getRangeType()) {
+                Console.println("> found embedding range.");
+                embeddingRange.setDirty(true);
+                int oldStart = embeddingRange.getOffset();
+                int oldLength = embeddingRange.getLen();
+                int rangeIndex = rangeList.indexOf(embeddingRange);
+                int croppedLength = start - embeddingRange.getOffset();
+                int indexOffset = 1;
+                if (croppedLength == 0) {
+                    indexOffset = 0;
+                    rangeList.remove(rangeIndex);
+                }
+                embeddingRange.setLen(croppedLength);
+                embeddingRange.setDirty(true);
+                rangeList.add(rangeIndex + (indexOffset++), new DisassemblingRange(start, length, true, rangeType));
+                rangeList.add(rangeIndex + (indexOffset++),
+                        new DisassemblingRange(start + length, (oldStart + oldLength) - (start + length),
+                                true, embeddingRange.getRangeType()));
+            } else {
+                Console.println("> skip setting new range due to equal rangetypes.");
+            }
         } else {
             List<DisassemblingRange> overlappingRanges = findOverlappingRanges(start, length, rangeType);
+            int x = 0;
 
         }
     }
 
     private DisassemblingRange findEmbeddingRange(int start, int length, RangeType rangeType) {
-        return rangeList.stream().filter(r -> r.getOffset() < start && r.getOffset() + r.getLen() > start + length)
+        return rangeList.stream().filter(r -> r.getOffset() <= start && r.getOffset() + r.getLen() >= start + length)
                 .findFirst().orElse(null);
     }
 
@@ -258,7 +279,7 @@ public class HexViewWidget extends Composite {
                 .collect(Collectors.toList());
 
         List<DisassemblingRange> fullOverlappingRanges = rangeList.stream()
-                .filter(r -> start < r.getOffset() && start + length > r.getOffset() + r.getLen())
+                .filter(r -> start <= r.getOffset() && start + length >= r.getOffset() + r.getLen())
                 .collect(Collectors.toList());
 
         // remove full overlapping ranges
@@ -266,13 +287,6 @@ public class HexViewWidget extends Composite {
             rangeList.remove(range);
         }
         return partlyOverlappingRanges;
-    }
-
-    private void shiftRange(int offset) {
-        for (DisassemblingRange r : rangeList) {
-            int start = r.getOffset() + offset;
-            r.setOffset(start);
-        }
     }
 
     private void prepareContent() {
@@ -283,11 +297,7 @@ public class HexViewWidget extends Composite {
             platform.setIgnoreStartAddressBytes(false);
             contentOffset = 2;
             memoryOffset = platform.getCPU().getWord(content, 0);
-            wasShifted = true;
-            shiftRange(2);
         } else {
-            shiftRange(wasShifted ? 2 : 0);
-            wasShifted = false;
             contentOffset = 0;
         }
 
@@ -553,7 +563,6 @@ public class HexViewWidget extends Composite {
         code.setText("Code");
         code.setSelection(true);
         code.addSelectionListener(new SelectionAdapter() {
-
             @Override
             public void widgetSelected(SelectionEvent e) {
                 selectedRange.setRangeType(RangeType.Code);
@@ -599,6 +608,9 @@ public class HexViewWidget extends Composite {
         startDecode.setFont(Constants.FontAwesome5ProSolid);
         startDecode.setText("\ue059");
 
+        selectedRange.setRangeType(code.getSelection() ? RangeType.Code
+                : binary.getSelection() ? RangeType.Binary : RangeType.Unspecified);
+
         c.setLayoutData(gd);
 
         // ==================
@@ -619,7 +631,7 @@ public class HexViewWidget extends Composite {
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.verticalAlignment = GridData.FILL;
-        gd.widthHint = (int)(6.5f*32);
+        gd.widthHint = (int) (6.5f * 32);
         gd.grabExcessVerticalSpace = false;
         gd.grabExcessHorizontalSpace = false;
         hexArea = new StyledText(this, SWT.NONE);
@@ -636,7 +648,8 @@ public class HexViewWidget extends Composite {
         hexArea.addMouseMoveListener(new MouseMoveListener() {
             @Override
             public void mouseMove(MouseEvent e) {
-                if (selectStart) {
+                if (startSelect) {
+                    selectStarted = true;
                     int start = cursorPos;
                     int end = hexArea.getCaretOffset();
 
@@ -668,15 +681,21 @@ public class HexViewWidget extends Composite {
             @Override
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
-                    selectStart = false;
-                    disassemble(selectedRange);
+                    if (startSelect && !selectStarted) {
+                        return;
+                    }
+                    if (selectStarted) {
+                        disassemble(selectedRange);
+                        startSelect = false;
+                        selectStarted = false;
+                    }
                 }
             }
 
             @Override
             public void mouseDown(MouseEvent e) {
                 if (e.button == 1) {
-                    selectStart = true;
+                    startSelect = true;
                     cursorPos = hexArea.getCaretOffset();
                 }
             }
@@ -697,7 +716,7 @@ public class HexViewWidget extends Composite {
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         gd.verticalAlignment = GridData.FILL;
-        gd.widthHint = (int)(6.5f*16);
+        gd.widthHint = (int) (6.5f * 16);
         gd.grabExcessVerticalSpace = false;
         gd.grabExcessHorizontalSpace = false;
         textArea = new StyledText(this, SWT.NONE);
@@ -717,7 +736,8 @@ public class HexViewWidget extends Composite {
         textArea.addMouseMoveListener(new MouseMoveListener() {
             @Override
             public void mouseMove(MouseEvent e) {
-                if (selectStart) {
+                if (startSelect) {
+                    selectStarted = true;
                     int start = cursorPos;
                     int end = textArea.getCaretOffset();
 
@@ -739,15 +759,21 @@ public class HexViewWidget extends Composite {
             @Override
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
-                    selectStart = false;
-                    disassemble(selectedRange);
+                    if (startSelect && !selectStarted) {
+                        return;
+                    }
+                    if (selectStarted) {
+                        disassemble(selectedRange);
+                        startSelect = false;
+                        selectStarted = false;
+                    }
                 }
             }
 
             @Override
             public void mouseDown(MouseEvent e) {
                 if (e.button == 1) {
-                    selectStart = true;
+                    startSelect = true;
                     cursorPos = textArea.getCaretOffset();
                 }
             }
@@ -770,36 +796,40 @@ public class HexViewWidget extends Composite {
         StyleRange styleRange = null;
         Color fgc = Constants.BLACK;
         Color bgc = null;
+        /*
+         * if (width == 2) {
+         * int lineLength = event.lineText.length();
+         * for (int x = event.lineOffset; x < event.lineOffset + lineLength; x += 2) {
+         * StyleRange sr = hexStyleRangeList[(x & 0b11111) >> 1];
+         * sr.start = x;
+         * list.add(sr);
+         * }
+         * }
+         */
         if (width == 2) {
-            int lineLength = event.lineText.length();
-            for (int x = event.lineOffset; x < event.lineOffset + lineLength; x += 2) {
-                StyleRange sr = hexStyleRangeList[(x & 0b11111) >> 1];
-                sr.start = x;
-                list.add(sr);
-            }
-        }
-        for (DisassemblingRange range : rangeList) {
-            switch (range.getRangeType()) {
-                case Code:
-                    bgc = Constants.CODE_COLOR;
-                    styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
-                            width, fgc, bgc);
-                    list.add(styleRange);
-                    break;
-                case Binary:
-                    bgc = Constants.CODE_COLOR;
-                    styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
-                            width, fgc, bgc);
-                    list.add(styleRange);
-                    break;
-                default:
-                    // bgc = Constants.WHITE;
-                    // styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
-                    // width, fgc, bgc);
-                    // list.add(styleRange);
-                    break;
-            }
+            for (DisassemblingRange range : rangeList) {
+                switch (range.getRangeType()) {
+                    case Code:
+                        bgc = Constants.CODE_COLOR;
+                        styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
+                                width, fgc, bgc);
+                        list.add(styleRange);
+                        break;
+                    case Binary:
+                        bgc = Constants.CODE_COLOR;
+                        styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
+                                width, fgc, bgc);
+                        list.add(styleRange);
+                        break;
+                    default:
+                        // bgc = Constants.WHITE;
+                        // styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
+                        // width, fgc, bgc);
+                        // list.add(styleRange);
+                        break;
+                }
 
+            }
         }
         return list.toArray(new StyleRange[list.size()]);
     }
