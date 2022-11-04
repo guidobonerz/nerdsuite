@@ -79,9 +79,9 @@ public class HexViewWidget extends Composite {
     private List<DisassemblingRange> rangeList;
     private DisassemblingRange selectedRange = null;
 
-    private boolean startSelect = false;
-    private boolean selectStarted = false;
-    private int cursorPos = 0;
+    private boolean enableSelect = false;
+    private boolean dragStarted = false;
+    private int selectStartOffset = 0;
 
     private TableViewer tableViewer;
 
@@ -262,13 +262,21 @@ public class HexViewWidget extends Composite {
             }
         } else {
             List<DisassemblingRange> overlappingRanges = findOverlappingRanges(start, length, rangeType);
-            int x = 0;
+            if (overlappingRanges.size() == 0) {
+                DisassemblingRange previousRange = rangeList.stream().filter(r -> (r.getOffset() + r.getLen()) == start)
+                        .findFirst().orElse(null);
+                if (previousRange != null) {
+                    rangeList.add(rangeList.indexOf(previousRange) + 1,
+                            new DisassemblingRange(start, length, true, rangeType));
+                }
 
+            }
+            int x = 0;
         }
     }
 
     private DisassemblingRange findEmbeddingRange(int start, int length, RangeType rangeType) {
-        return rangeList.stream().filter(r -> r.getOffset() <= start && r.getOffset() + r.getLen() >= start + length)
+        return rangeList.stream().filter(r -> r.getOffset() < start && r.getOffset() + r.getLen() > start + length)
                 .findFirst().orElse(null);
     }
 
@@ -648,9 +656,9 @@ public class HexViewWidget extends Composite {
         hexArea.addMouseMoveListener(new MouseMoveListener() {
             @Override
             public void mouseMove(MouseEvent e) {
-                if (startSelect) {
-                    selectStarted = true;
-                    int start = cursorPos;
+                if (enableSelect) {
+                    dragStarted = true;
+                    int start = selectStartOffset;
                     int end = hexArea.getCaretOffset();
 
                     if (start > end) {
@@ -681,19 +689,19 @@ public class HexViewWidget extends Composite {
             @Override
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
-                    if (startSelect && selectStarted) {
+                    if (enableSelect && dragStarted) {
                         disassemble(selectedRange);
                     }
-                    startSelect = false;
-                    selectStarted = false;
+                    enableSelect = false;
+                    dragStarted = false;
                 }
             }
 
             @Override
             public void mouseDown(MouseEvent e) {
                 if (e.button == 1) {
-                    startSelect = true;
-                    cursorPos = hexArea.getCaretOffset();
+                    enableSelect = true;
+                    selectStartOffset = hexArea.getCaretOffset();
                 }
             }
         });
@@ -733,9 +741,9 @@ public class HexViewWidget extends Composite {
         textArea.addMouseMoveListener(new MouseMoveListener() {
             @Override
             public void mouseMove(MouseEvent e) {
-                if (startSelect) {
-                    selectStarted = true;
-                    int start = cursorPos;
+                if (enableSelect) {
+                    dragStarted = true;
+                    int start = selectStartOffset;
                     int end = textArea.getCaretOffset();
 
                     if (start > end) {
@@ -756,19 +764,19 @@ public class HexViewWidget extends Composite {
             @Override
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
-                    if (startSelect && selectStarted) {
+                    if (enableSelect && dragStarted) {
                         disassemble(selectedRange);
                     }
-                    startSelect = false;
-                    selectStarted = false;
+                    enableSelect = false;
+                    dragStarted = false;
                 }
             }
 
             @Override
             public void mouseDown(MouseEvent e) {
                 if (e.button == 1) {
-                    startSelect = true;
-                    cursorPos = textArea.getCaretOffset();
+                    enableSelect = true;
+                    selectStartOffset = textArea.getCaretOffset();
                 }
             }
         });
