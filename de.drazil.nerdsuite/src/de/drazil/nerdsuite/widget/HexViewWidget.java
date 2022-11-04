@@ -681,14 +681,11 @@ public class HexViewWidget extends Composite {
             @Override
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
-                    if (startSelect && !selectStarted) {
-                        return;
-                    }
-                    if (selectStarted) {
+                    if (startSelect && selectStarted) {
                         disassemble(selectedRange);
-                        startSelect = false;
-                        selectStarted = false;
                     }
+                    startSelect = false;
+                    selectStarted = false;
                 }
             }
 
@@ -759,14 +756,11 @@ public class HexViewWidget extends Composite {
             @Override
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
-                    if (startSelect && !selectStarted) {
-                        return;
-                    }
-                    if (selectStarted) {
+                    if (startSelect && selectStarted) {
                         disassemble(selectedRange);
-                        startSelect = false;
-                        selectStarted = false;
                     }
+                    startSelect = false;
+                    selectStarted = false;
                 }
             }
 
