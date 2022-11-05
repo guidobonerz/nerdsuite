@@ -28,8 +28,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -282,21 +280,30 @@ public class HexViewWidget extends Composite {
             DisassemblingRange bottomRange = ranges.get(ranges.size() - 1);
             topRange.setDirty(true);
             bottomRange.setDirty(true);
-            //if (rangeType == topRange.getRangeType()) {
-                //topRange.setLen(length + (start - topRange.getOffset()));
-            //} else {
+            if (topRange.getRangeType() == bottomRange.getRangeType() && topRange.getRangeType() == rangeType) {
+                int newLength = (bottomRange.getOffset() + bottomRange.getLen()) - topRange.getOffset();
+                rangeList.remove(bottomRange);
+                topRange.setLen(newLength);
+            } else if (topRange.getRangeType() == rangeType && topRange.getRangeType() != bottomRange.getRangeType()) {
+                int newBottomLength = (bottomRange.getOffset() + bottomRange.getLen()) - (start + length);
+                bottomRange.setOffset(start + length);
+                bottomRange.setLen(newBottomLength);
+                topRange.setLen((start + length) - topRange.getOffset());
+            } else if (bottomRange.getRangeType() == rangeType
+                    && topRange.getRangeType() != bottomRange.getRangeType()) {
                 topRange.setLen(start - topRange.getOffset());
-            //}
-
-            bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
-            bottomRange.setOffset(start + length);
-
-            if (topRange.getOffset() + topRange.getLen() != bottomRange.getOffset()) {
+                bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - start);
+                bottomRange.setOffset(start);
+            } else if (topRange.getRangeType() == bottomRange.getRangeType() && topRange.getRangeType() != rangeType) {
+                topRange.setLen(start - topRange.getOffset());
+                bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
+                bottomRange.setOffset(start + length);
                 int insertIndex = rangeList.indexOf(topRange) + 1;
                 rangeList.add(insertIndex, new DisassemblingRange(start, length, true, rangeType));
+            } else {
+                Console.println("> should not happen.");
             }
 
-            int x = 0;
         }
     }
 
