@@ -28,6 +28,8 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -237,64 +239,65 @@ public class HexViewWidget extends Composite {
     }
 
     private void handleSelection(int start, int length, RangeType rangeType) {
-        DisassemblingRange embeddingRange = findEmbeddingRange(start, length, rangeType);
-        if (embeddingRange != null) {
-            if (rangeType != embeddingRange.getRangeType()) {
-                Console.println("> found embedding range.");
-                embeddingRange.setDirty(true);
-                int oldStart = embeddingRange.getOffset();
-                int oldLength = embeddingRange.getLen();
-                int rangeIndex = rangeList.indexOf(embeddingRange);
-                int croppedLength = start - embeddingRange.getOffset();
-                int indexOffset = 1;
-                if (croppedLength == 0) {
-                    indexOffset = 0;
-                    rangeList.remove(rangeIndex);
+        DisassemblingRange range = rangeList.stream()
+                .filter(r -> start >= r.getOffset() && start + length <= r.getOffset() + r.getLen())
+                .findFirst().orElse(null);
+        if (range != null) {
+            if (rangeType != range.getRangeType()) {
+                range.setDirty(true);
+                if (start == range.getOffset() && length == range.getLen()) {
+                    range.setRangeType(rangeType);
+                    Console.println("> simply change rangetype.");
+                } else {
+                    int oldStart = range.getOffset();
+                    int oldLength = range.getLen();
+                    int rangeIndex = rangeList.indexOf(range);
+                    int croppedLength = start - range.getOffset();
+                    int indexOffset = 1;
+                    if (croppedLength == 0) {
+                        indexOffset = 0;
+                        rangeList.remove(rangeIndex);
+                    }
+                    range.setLen(croppedLength);
+                    range.setDirty(true);
+                    rangeList.add(rangeIndex + (indexOffset++), new DisassemblingRange(start, length, true, rangeType));
+                    rangeList.add(rangeIndex + (indexOffset++),
+                            new DisassemblingRange(start + length, (oldStart + oldLength) - (start + length),
+                                    true, range.getRangeType()));
                 }
-                embeddingRange.setLen(croppedLength);
-                embeddingRange.setDirty(true);
-                rangeList.add(rangeIndex + (indexOffset++), new DisassemblingRange(start, length, true, rangeType));
-                rangeList.add(rangeIndex + (indexOffset++),
-                        new DisassemblingRange(start + length, (oldStart + oldLength) - (start + length),
-                                true, embeddingRange.getRangeType()));
             } else {
-                Console.println("> skip setting new range due to equal rangetypes.");
+                Console.println("> skip setting new range due to equality.");
             }
         } else {
-            List<DisassemblingRange> overlappingRanges = findOverlappingRanges(start, length, rangeType);
-            if (overlappingRanges.size() == 0) {
-                DisassemblingRange previousRange = rangeList.stream().filter(r -> (r.getOffset() + r.getLen()) == start)
-                        .findFirst().orElse(null);
-                if (previousRange != null) {
-                    rangeList.add(rangeList.indexOf(previousRange) + 1,
-                            new DisassemblingRange(start, length, true, rangeType));
+            List<DisassemblingRange> ranges = rangeList.stream()
+                    .filter(r -> start < r.getOffset() + r.getLen() && start + length > r.getOffset())
+                    .collect(Collectors.toList());
+            for (DisassemblingRange r : ranges) {
+                if (ranges.indexOf(r) > 0 && ranges.indexOf(r) < ranges.size() - 1) {
+                    rangeList.remove(r);
                 }
-
             }
+
+            DisassemblingRange topRange = ranges.get(0);
+            DisassemblingRange bottomRange = ranges.get(ranges.size() - 1);
+            topRange.setDirty(true);
+            bottomRange.setDirty(true);
+            //if (rangeType == topRange.getRangeType()) {
+                //topRange.setLen(length + (start - topRange.getOffset()));
+            //} else {
+                topRange.setLen(start - topRange.getOffset());
+            //}
+
+            bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
+            bottomRange.setOffset(start + length);
+
+            if (topRange.getOffset() + topRange.getLen() != bottomRange.getOffset()) {
+                int insertIndex = rangeList.indexOf(topRange) + 1;
+                rangeList.add(insertIndex, new DisassemblingRange(start, length, true, rangeType));
+            }
+
             int x = 0;
         }
-    }
-
-    private DisassemblingRange findEmbeddingRange(int start, int length, RangeType rangeType) {
-        return rangeList.stream().filter(r -> r.getOffset() < start && r.getOffset() + r.getLen() > start + length)
-                .findFirst().orElse(null);
-    }
-
-    private List<DisassemblingRange> findOverlappingRanges(int start, int length, RangeType rangeType) {
-        List<DisassemblingRange> partlyOverlappingRanges = rangeList.stream()
-                .filter(r -> start > r.getOffset() && start < r.getOffset() + r.getLen()
-                        || start + length > r.getOffset() && start + length < r.getOffset() + r.getLen())
-                .collect(Collectors.toList());
-
-        List<DisassemblingRange> fullOverlappingRanges = rangeList.stream()
-                .filter(r -> start <= r.getOffset() && start + length >= r.getOffset() + r.getLen())
-                .collect(Collectors.toList());
-
-        // remove full overlapping ranges
-        for (DisassemblingRange range : fullOverlappingRanges) {
-            rangeList.remove(range);
-        }
-        return partlyOverlappingRanges;
     }
 
     private void prepareContent() {
@@ -652,6 +655,28 @@ public class HexViewWidget extends Composite {
                 event.styles = getStyleRanges(2, event);
             }
         });
+        hexArea.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseDown(MouseEvent e) {
+                if (e.button == 1) {
+                    enableSelect = true;
+                    dragStarted = false;
+                    selectStartOffset = hexArea.getCaretOffset();
+                }
+            }
+
+            @Override
+            public void mouseUp(MouseEvent e) {
+                if (e.button == 1) {
+                    if (enableSelect && dragStarted) {
+                        disassemble(selectedRange);
+                    }
+                    enableSelect = false;
+                    dragStarted = false;
+                }
+            }
+        });
 
         hexArea.addMouseMoveListener(new MouseMoveListener() {
             @Override
@@ -684,27 +709,7 @@ public class HexViewWidget extends Composite {
                 }
             }
         });
-        hexArea.addMouseListener(new MouseAdapter() {
 
-            @Override
-            public void mouseUp(MouseEvent e) {
-                if (e.button == 1) {
-                    if (enableSelect && dragStarted) {
-                        disassemble(selectedRange);
-                    }
-                    enableSelect = false;
-                    dragStarted = false;
-                }
-            }
-
-            @Override
-            public void mouseDown(MouseEvent e) {
-                if (e.button == 1) {
-                    enableSelect = true;
-                    selectStartOffset = hexArea.getCaretOffset();
-                }
-            }
-        });
         hexArea.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -737,6 +742,28 @@ public class HexViewWidget extends Composite {
 
         });
         textArea.setLayoutData(gd);
+        textArea.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseDown(MouseEvent e) {
+                if (e.button == 1) {
+                    enableSelect = true;
+                    dragStarted = false;
+                    selectStartOffset = textArea.getCaretOffset();
+                }
+            }
+
+            @Override
+            public void mouseUp(MouseEvent e) {
+                if (e.button == 1) {
+                    if (enableSelect && dragStarted) {
+                        disassemble(selectedRange);
+                    }
+                    enableSelect = false;
+                    dragStarted = false;
+                }
+            }
+        });
 
         textArea.addMouseMoveListener(new MouseMoveListener() {
             @Override
@@ -759,30 +786,8 @@ public class HexViewWidget extends Composite {
                 }
             }
         });
-        textArea.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseUp(MouseEvent e) {
-                if (e.button == 1) {
-                    if (enableSelect && dragStarted) {
-                        disassemble(selectedRange);
-                    }
-                    enableSelect = false;
-                    dragStarted = false;
-                }
-            }
-
-            @Override
-            public void mouseDown(MouseEvent e) {
-                if (e.button == 1) {
-                    enableSelect = true;
-                    selectStartOffset = textArea.getCaretOffset();
-                }
-            }
-        });
 
         textArea.addSelectionListener(new SelectionAdapter() {
-
             @Override
             public void widgetSelected(SelectionEvent e) {
                 // addressArea.setTopIndex(textArea.getTopIndex());
