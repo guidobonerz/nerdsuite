@@ -223,13 +223,14 @@ public class HexViewWidget extends Composite {
 
             hexArea.redraw();
             textArea.redraw();
-
-            if (pc != null) {
-                platform.setProgrammCounter(new Value(pc.getValue()));
-                platform.parseBinary(content,
-                        new Range(0, content.length), rangeList);
-                tableViewer.setInput(platform.getCPU().getInstructionLineList());
-            }
+            /*
+             * if (pc != null) {
+             * platform.setProgrammCounter(new Value(pc.getValue()));
+             * platform.parseBinary(content,
+             * new Range(0, content.length), rangeList);
+             * tableViewer.setInput(platform.getCPU().getInstructionLineList());
+             * }
+             */
         }
     }
 
@@ -282,8 +283,8 @@ public class HexViewWidget extends Composite {
                 rangeList.remove(bottomRange);
                 topRange.setLen(newLength);
             } else if (topRange.getRangeType() == rangeType && topRange.getRangeType() != bottomRange.getRangeType()) {
-                bottomRange.setOffset(start + length);
                 bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
+                bottomRange.setOffset(start + length);
                 topRange.setLen((start + length) - topRange.getOffset());
             } else if (bottomRange.getRangeType() == rangeType
                     && topRange.getRangeType() != bottomRange.getRangeType()) {
