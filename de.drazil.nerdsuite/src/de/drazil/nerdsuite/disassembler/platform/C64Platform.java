@@ -15,6 +15,7 @@ import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.InstructionType;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -69,18 +70,21 @@ public class C64Platform extends AbstractPlatform {
     }
 
     @Override
-    public byte[] parseBinary(byte[] byteArray, DisassemblingRange range, List<DisassemblingRange> ranges) {
+    public byte[] parseBinary(byte[] byteArray, Range range, List<DisassemblingRange> ranges) {
 
         System.out.println("init   : build memory map");
         setProgrammCounter(getProgrammCounter().add(range.getOffset() - 2));
-        init(byteArray, range);
+        init(byteArray, range, ranges.get(0).getRangeType());
         // System.out.println("stage 1: parse header information");
         // parseStartSequence(byteArray, pc);
         System.out.println("stage 2: parse instructions");
 
         long start = System.currentTimeMillis();
-        getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0), getPlatFormData(),
-                range, 2);
+        for (DisassemblingRange dr : ranges) {
+            getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
+                    getPlatFormData(),
+                    dr, 2);
+        }
         long duration = (System.currentTimeMillis() - start);
         System.out.printf("%d Seconds", duration);
         // System.out.println("stage 3: compress ranges");

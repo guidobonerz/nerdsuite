@@ -15,6 +15,7 @@ import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.InstructionType;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -69,20 +70,22 @@ public class CPC6128Platform extends AbstractPlatform {
     }
 
     @Override
-    public byte[] parseBinary(byte[] byteArray, List<DisassemblingRange> range) {
+    public byte[] parseBinary(byte[] byteArray, Range range, List<DisassemblingRange> ranges) {
 
         System.out.println("init   : build memory map");
         setProgrammCounter(getProgrammCounter().add(range.getOffset()));
-        init(byteArray, range);
+        init(byteArray, range, ranges.get(0).getRangeType());
         // System.out.println("stage 1: parse header information");
         // parseStartSequence(byteArray, pc);
         System.out.println("stage 2: parse instructions");
 
         long start = System.currentTimeMillis();
         try {
-            getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-                    getPlatFormData(),
-                    new DisassemblingRange(range.getOffset(), range.getLen(), false, range.getRangeType()), 2);
+            for (DisassemblingRange dr : ranges) {
+                getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
+                        getPlatFormData(),
+                        dr, 2);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

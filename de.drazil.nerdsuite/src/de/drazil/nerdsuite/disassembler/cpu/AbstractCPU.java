@@ -6,9 +6,10 @@ import java.util.List;
 import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.model.Address;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -82,17 +83,17 @@ public abstract class AbstractCPU implements ICPU {
     @Override
     public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset,
             RangeType rangeType, ReferenceType referenceType) {
-        DisassemblingRange range = instructionLine.getRange();
-        int oldLen = range.getLen();
+        Range range = instructionLine.getRange();
+        int oldLen = range.getLength();
         int newLen = offset.sub(range.getOffset()).getValue();
         if (oldLen == newLen) {
             return null;
         }
 
-        range.setLen(newLen);
+        range.setLength(newLen);
 
         InstructionLine newInstructionLine = new InstructionLine(basePc.add(range.getOffset() + newLen),
-                new DisassemblingRange(range.getOffset() + newLen, oldLen - newLen, false, rangeType));
+                new Range(range.getOffset() + newLen, oldLen - newLen));
 
         newInstructionLine.setReferenceType(referenceType);
         instructionLineList.add(instructionLineList.indexOf(instructionLine) + 1, newInstructionLine);
@@ -104,7 +105,8 @@ public abstract class AbstractCPU implements ICPU {
         InstructionLine instructionLine = null;
         for (InstructionLine il : instructionLineList) {
             if (programmCounter.getValue() >= il.getProgramCounter().getValue()
-                    && programmCounter.getValue() <= (il.getProgramCounter().getValue() + il.getRange().getLen() - 1)) {
+                    && programmCounter
+                            .getValue() <= (il.getProgramCounter().getValue() + il.getRange().getLength() - 1)) {
                 instructionLine = il;
                 break;
             }
@@ -121,7 +123,7 @@ public abstract class AbstractCPU implements ICPU {
         InstructionLine instructionLine = null;
         for (InstructionLine il : instructionLineList) {
             if (offset.getValue() >= il.getRange().getOffset()
-                    && offset.getValue() <= (il.getRange().getOffset() + il.getRange().getLen() - 1)) {
+                    && offset.getValue() <= (il.getRange().getOffset() + il.getRange().getLength() - 1)) {
                 instructionLine = il;
                 break;
             }
@@ -140,16 +142,16 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public Value getInstructionValue(byte[] byteArray, int offset, int length) {
+    public Value getInstructionValue(byte[] byteArray, Range range) {
         int value = 0;
-        int len = length - 1;
+        int len = range.getLength() - 1;
         switch (len) {
             case 1: {
-                value = getByte(byteArray, offset + 1);
+                value = getByte(byteArray, range.getOffset() + 1);
                 break;
             }
             case 2: {
-                value = getWord(byteArray, offset + 1);
+                value = getWord(byteArray, range.getOffset() + 1);
                 break;
             }
         }
@@ -170,7 +172,7 @@ public abstract class AbstractCPU implements ICPU {
         for (InstructionLine il1 : instructionLineList) {
             if (il1.getProgramCounter().getValue() == programCounter
                     || programCounter >= il1.getProgramCounter().getValue()
-                            && programCounter < il1.getProgramCounter().getValue() + il1.getRange().getLen()) {
+                            && programCounter < il1.getProgramCounter().getValue() + il1.getRange().getLength()) {
                 il = il1;
                 break;
             }
@@ -216,7 +218,7 @@ public abstract class AbstractCPU implements ICPU {
             getInstructionLineList().remove(lineIndex);
             i++;
         }
-        instructionLine.getRange().setLen(len);
+        instructionLine.getRange().setLength(len);
     }
 
     public static String getMnemonicArgument(Opcode opcode, DisassemblingRange range, byte byteArray[]) {

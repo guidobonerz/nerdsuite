@@ -56,6 +56,7 @@ import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.BinaryFileHandler;
@@ -226,7 +227,7 @@ public class HexViewWidget extends Composite {
             if (pc != null) {
                 platform.setProgrammCounter(new Value(pc.getValue()));
                 platform.parseBinary(content,
-                        new DisassemblingRange(0, content.length, false, RangeType.Unspecified), rangeList);
+                        new Range(0, content.length), rangeList);
                 tableViewer.setInput(platform.getCPU().getInstructionLineList());
             }
         }

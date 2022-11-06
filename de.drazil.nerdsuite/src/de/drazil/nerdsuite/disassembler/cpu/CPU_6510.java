@@ -11,6 +11,7 @@ import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Pointer;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
@@ -53,7 +54,7 @@ public class CPU_6510 extends AbstractCPU {
         Value value = null;
         while (currentLine != null) {
             if (!currentLine.isPassed()) {
-                DisassemblingRange range = currentLine.getRange();
+                Range range = currentLine.getRange();
                 int offset = range.getOffset();
                 String so = String.format("%04X", offset);
                 Opcode opcode = getOpcodeByIndex(platformData.getPlatformId(), "", byteArray, offset);
@@ -67,7 +68,7 @@ public class CPU_6510 extends AbstractCPU {
                     break;
                 }
 
-                value = getInstructionValue(byteArray, new DisassemblingRange(offset, len, false, RangeType.Code));
+                value = getInstructionValue(byteArray, new Range(offset, len));
                 currentLine.setInstructionType(InstructionType.Asm);
 
                 if ("branch".equals(instructionType)) {
@@ -121,7 +122,7 @@ public class CPU_6510 extends AbstractCPU {
                     break;
                 }
 
-                if (newLine.getLength() < 0 || newLine.getLength() == 0) {
+                if (newLine.getRange().getLength() < 0 || newLine.getRange().getLength() == 0) {
                     System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");
                 }
                 // detectPointers(byteArray, pc, currentLine, platformData);
@@ -143,7 +144,7 @@ public class CPU_6510 extends AbstractCPU {
         InstructionLine specifiedLine = null;
         int brkCount = 0;
         for (int i = 0; i < 2; i++) {
-            if (byteArray[currentLine.getOffset() + i] == 0) {
+            if (byteArray[currentLine.getRange().getOffset() + i] == 0) {
                 brkCount++;
             }
         }
@@ -159,7 +160,7 @@ public class CPU_6510 extends AbstractCPU {
                     break;
                 }
             }
-            newLine = split(currentLine, pc, new Value(specifiedLine.getOffset()));
+            newLine = split(currentLine, pc, new Value(specifiedLine.getRange().getOffset()));
             currentLine.setInstructionType(InstructionType.Data);
         }
 
@@ -222,10 +223,11 @@ public class CPU_6510 extends AbstractCPU {
         AddressingMode lookupAddressingMode = null;
         while (!matchValue.matches(value)) {
             lowByteLine = getInstructionLineList().get(index);
-            lookupOpcode = getOpcodeByIndex("", "", byteArray, lowByteLine.getOffset());
+            lookupOpcode = getOpcodeByIndex("", "", byteArray, lowByteLine.getRange().getOffset());
             lookupAddressingMode = lookupOpcode.getAddressingMode();
             if (lookupAddressingMode.getId().startsWith("abs") || lookupAddressingMode.getId().startsWith("zp")) {
-                matchValue = getInstructionValue(byteArray, lowByteLine.getOffset(), lowByteLine.getLength());
+                matchValue = getInstructionValue(byteArray, new Range(lowByteLine.getRange().getOffset(),
+                        lowByteLine.getRange().getLength()));
             } else {
                 matchValue.clear();
             }
@@ -247,8 +249,8 @@ public class CPU_6510 extends AbstractCPU {
                     lowAddressLine.getReferenceValue().getValue() - highAddressLine.getReferenceValue().getValue());
 
             for (int i = 0; i < jumpTableSize; i++) {
-                int lowByte = getByte(byteArray, lowTableLine.getOffset() + i);
-                int highByte = getByte(byteArray, highTableLine.getOffset() + i);
+                int lowByte = getByte(byteArray, lowTableLine.getRange().getOffset() + i);
+                int highByte = getByte(byteArray, highTableLine.getRange().getOffset() + i);
                 int jumpMark = (int) (highByte << 8 | lowByte);
 
                 InstructionLine jmpLine = getInstructionLineByPC(jumpMark);
@@ -278,29 +280,31 @@ public class CPU_6510 extends AbstractCPU {
         Value valueA = new Value(0);
         Value valueB = new Value(0);
 
-        Opcode opcodeA = getOpcodeByIndex("C64", "", byteArray, checkLineA.getOffset());
-        valueA = getInstructionValue(byteArray, checkLineA.getOffset(), checkLineA.getLength());
+        Opcode opcodeA = getOpcodeByIndex("C64", "", byteArray, checkLineA.getRange().getOffset());
+        valueA = getInstructionValue(byteArray,
+                new Range(checkLineA.getRange().getOffset(), checkLineA.getRange().getLength()));
 
         if (opcodeA != null && isStoreInstruction(opcodeA.getMnemonic()) && !isDataAddress(valueA, platformData)) {
             InstructionLine checkLineB = getInstructionLineList().get(checkIndex - 2);
-            Opcode opcodeB = getOpcodeByIndex("C64", "", byteArray, checkLineB.getOffset());
+            Opcode opcodeB = getOpcodeByIndex("C64", "", byteArray, checkLineB.getRange().getOffset());
             if (opcodeB != null) {
-                valueB = getInstructionValue(byteArray, checkLineB.getOffset(), checkLineB.getLength());
+                valueB = getInstructionValue(byteArray, new Range(checkLineB.getRange().getOffset(),
+                        checkLineB.getRange().getLength()));
                 if (isStoreInstruction(opcodeB.getMnemonic()) && !isDataAddress(valueA, platformData)) {
                     if (Math.abs(valueB.getValue() - valueA.getValue()) == 1) {
                         InstructionLine pointerA = getInstructionLineList().get(checkIndex - 1);
-                        Opcode pointerAopcode = getOpcodeByIndex("C64", "", byteArray, pointerA.getOffset());
+                        Opcode pointerAopcode = getOpcodeByIndex("C64", "", byteArray, pointerA.getRange().getOffset());
                         InstructionLine pointerB = getInstructionLineList().get(checkIndex - 3);
-                        Opcode pointerBopcode = getOpcodeByIndex("C64", "", byteArray, pointerB.getOffset());
+                        Opcode pointerBopcode = getOpcodeByIndex("C64", "", byteArray, pointerB.getRange().getOffset());
                         if (pointerAopcode.getAddressingMode().getId().equals("imm")
                                 && pointerBopcode.getAddressingMode().getId().equals("imm")) {
-                            int lowByte = getByte(byteArray, pointerB.getOffset() + 1);
-                            int highByte = getByte(byteArray, pointerA.getOffset() + 1);
+                            int lowByte = getByte(byteArray, pointerB.getRange().getOffset() + 1);
+                            int highByte = getByte(byteArray, pointerA.getRange().getOffset() + 1);
                             Value reference = new Value((int) (highByte << 8 | lowByte));
 
                             Boolean checked = pointerTableRemindMap.get(String.valueOf(reference));
                             if (checked != null) {
-                                pointerTableRemindMap.put(String.valueOf(reference), new Boolean(true));
+                                pointerTableRemindMap.put(String.valueOf(reference), Boolean.TRUE);
                                 InstructionLine pointerLine = getInstructionLineByPC(reference);
                                 if (pointerLine == null) {
                                     pointerLine = findInstructionLineByProgrammCounter(reference);
@@ -362,7 +366,7 @@ public class CPU_6510 extends AbstractCPU {
                     if (nextLine.getReferenceType() == ReferenceType.DataReference
                             || nextLine.getInstructionType() == InstructionType.Asm)
                         break;
-                    int length = currentLine.getLength();
+                    int length = currentLine.getRange().getLength();
                     // range.setLen(range.getLen() + nextLine.getLength());
                     getInstructionLineList().remove(nextLine);
                 }
