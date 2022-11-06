@@ -140,17 +140,16 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public Value getInstructionValue(byte[] byteArray, DisassemblingRange range) {
+    public Value getInstructionValue(byte[] byteArray, int offset, int length) {
         int value = 0;
-        int len = range.getLen() - 1;
-        int offset = range.getOffset() + 1;
+        int len = length - 1;
         switch (len) {
             case 1: {
-                value = getByte(byteArray, offset);
+                value = getByte(byteArray, offset + 1);
                 break;
             }
             case 2: {
-                value = getWord(byteArray, offset);
+                value = getWord(byteArray, offset + 1);
                 break;
             }
         }

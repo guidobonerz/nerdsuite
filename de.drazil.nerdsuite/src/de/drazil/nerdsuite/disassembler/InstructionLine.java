@@ -12,49 +12,51 @@ import lombok.Data;
 @Data
 public class InstructionLine {
 
-	private String name;
-	private Value programCounter;
-	private DisassemblingRange range;
-	private Value referenceValue;
-	private InstructionType instructionType;
-	private ReferenceType referenceType;
-	private boolean isPassed;
-	private boolean endOfCode;
-	private Object userObject;
-	private boolean isRenderable;
-	private String labelName="";
-	private List<Value> callerList = null;
+    private String name;
+    private Value programCounter;
+    private int offset;
+    private int length;
+    private Value referenceValue;
+    private InstructionType instructionType;
+    private ReferenceType referenceType;
+    private boolean isPassed;
+    private boolean endOfCode;
+    private Object userObject;
+    private boolean isRenderable;
+    private String labelName = "";
+    private List<Value> callerList = null;
 
-	public InstructionLine() {
-	}
+    public InstructionLine() {
+    }
 
-	public InstructionLine(Value programCounter, DisassemblingRange range) {
-		this(programCounter, range, InstructionType.Asm, ReferenceType.NoReference);
-	}
+    public InstructionLine(Value programCounter, int offset, int length) {
+        this(programCounter, offset, length, InstructionType.Asm, ReferenceType.NoReference);
+    }
 
-	public InstructionLine(Value programCounter, DisassemblingRange range, InstructionType instructionType,
-			ReferenceType referenceType) {
-		this.callerList = new ArrayList<Value>();
-		this.programCounter = programCounter;
-		this.range = range;
-		this.instructionType = instructionType;
-		this.referenceType = referenceType;
-		this.isPassed = false;
-		this.endOfCode = false;
-		this.isRenderable = false;
-	}
+    public InstructionLine(Value programCounter, int offset, int length, InstructionType instructionType,
+            ReferenceType referenceType) {
+        this.callerList = new ArrayList<Value>();
+        this.programCounter = programCounter;
+        this.offset = offset;
+        this.length = length;
+        this.instructionType = instructionType;
+        this.referenceType = referenceType;
+        this.isPassed = false;
+        this.endOfCode = false;
+        this.isRenderable = false;
+    }
 
-	public void addCaller(Value caller) {
-		this.callerList.add(caller);
-	}
+    public void addCaller(Value caller) {
+        this.callerList.add(caller);
+    }
 
-	public boolean hasReferenceValue() {
-		return referenceValue != null;
-	}
+    public boolean hasReferenceValue() {
+        return referenceValue != null;
+    }
 
-	@Override
-	public String toString() {
-		return instructionType + "| pc:" + getProgramCounter() + ", " + range + "  refValue:" + getReferenceValue()
-				+ "    " + getReferenceType();
-	}
+    @Override
+    public String toString() {
+        return instructionType + "| pc:" + getProgramCounter() + ", " + range + "  refValue:" + getReferenceValue()
+                + "    " + getReferenceType();
+    }
 }
