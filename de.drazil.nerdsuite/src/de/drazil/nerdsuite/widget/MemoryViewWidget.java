@@ -5,6 +5,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.internal.DPIUtil;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,9 +27,16 @@ public class MemoryViewWidget extends Canvas implements PaintListener {
     }
 
     private void prepareImageCache() {
+
+        int zoom = DPIUtil.getDeviceZoom();
+        double mul = 1;
+        if (zoom > 100) {
+            double zf = (100.0 / zoom);
+            mul = 1 / zf;
+        }
         for (int i = 0; i < 256; i++) {
-            Image imgGreen = new Image(getDisplay(), 8, 1);
-            Image imgRed = new Image(getDisplay(), 8, 1);
+            Image imgGreen = new Image(getDisplay(), (int) (8 * mul), (int) (1 * mul));
+            Image imgRed = new Image(getDisplay(), (int) (8 * mul), (int) (1 * mul));
 
             GC gcGreen = new GC(imgGreen);
             GC gcRed = new GC(imgRed);
@@ -36,16 +44,33 @@ public class MemoryViewWidget extends Canvas implements PaintListener {
             int v = 1;
             int x = 7;
             while (v < 256) {
-                if ((i & v) == v) {
-                    gcGreen.setForeground(Constants.GREEN);
-                    gcRed.setForeground(Constants.RED);
+                if (mul == 1) {
+                    if ((i & v) == v) {
+                        gcGreen.setForeground(Constants.GREEN);
+                        gcRed.setForeground(Constants.RED);
 
+                    } else {
+                        gcGreen.setForeground(Constants.BLACK);
+                        gcRed.setForeground(Constants.BLACK);
+                    }
                 } else {
-                    gcGreen.setForeground(Constants.BLACK);
-                    gcRed.setForeground(Constants.BLACK);
+                    if ((i & v) == v) {
+                        gcGreen.setBackground(Constants.GREEN);
+                        gcRed.setBackground(Constants.RED);
+
+                    } else {
+                        gcGreen.setBackground(Constants.BLACK);
+                        gcRed.setBackground(Constants.BLACK);
+                    }
+
                 }
-                gcGreen.drawPoint(x, 0);
-                gcRed.drawPoint(x, 0);
+                if (mul == 2) {
+                    gcGreen.fillRectangle(x, 0, 2, 2);
+                    gcRed.fillRectangle(x, 0, 2, 2);
+                } else {
+                    gcGreen.drawPoint(x, 0);
+                    gcRed.drawPoint(x, 0);
+                }
                 v = v << 1;
                 x--;
             }
@@ -78,7 +103,7 @@ public class MemoryViewWidget extends Canvas implements PaintListener {
     }
 
     public void setByte(int address, int value, boolean rw) {
-
+        
         int segmentStartY = ((address / 0x2000) % 4) * 230;
         int segmentStartX = (address / 0x8000) * 330;
         int si = address % 0x2000;

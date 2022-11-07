@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -35,6 +34,9 @@ public class Ultimate64DebugStreamView extends AbstractStreamView {
     private DebugStreamReceiver debugStreamReceiver;
     private boolean running = false;
     // private int streamingMode = DEBUG_STREAM;// VIDEO_STREAM + AUDIO_STREAM;
+
+    private byte[] screen = new byte[1000];
+    private byte[] color = new byte[1000];
 
     public Ultimate64DebugStreamView() {
 
@@ -67,11 +69,17 @@ public class Ultimate64DebugStreamView extends AbstractStreamView {
                                 int adr = ((int) ((buf[i + 1] << 8) | (buf[i + 0] & 0xff)) & 0xffff);
                                 int data = ((int) (buf[i + 2] & 0xff));
                                 int flags = ((int) (buf[i + 3] & 0xff));
+                                if (adr >= 0x0400 && adr <= 0x07e7 && (flags & 1) == 1) {
+                                    screen[adr - 0x400] = (byte) (data & 0xff);
+                                }
+                                if (adr >= 0xd800 && adr <= 0xdbe7) {
+                                    color[adr - 0xd800] = (byte) (data & 0x0f);
+                                }
 
                                 if (mem[adr] != data) {
 
                                     mem[adr] = data;
-                                    imageViewer.setByte(adr, data, (flags & 1) == 1);
+                                    imageViewer.setByte(adr, data, (flags & 1) == 0);
                                 }
                             }
                         }
@@ -104,6 +112,7 @@ public class Ultimate64DebugStreamView extends AbstractStreamView {
         debugStreamReceiver.setRunning(false);
         stopStreamByCommand(DEBUG_STREAM_STOP_COMMAND);
         debugThread = null;
+
     }
 
     @Inject

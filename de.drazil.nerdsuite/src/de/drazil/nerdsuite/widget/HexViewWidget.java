@@ -169,7 +169,7 @@ public class HexViewWidget extends Composite {
         content = binaryContent;
         rangeList = new ArrayList<DisassemblingRange>();
         rangeList.add(new DisassemblingRange(0, content.length, false, RangeType.Binary));
-
+        prepareContent();
         // disassemble(selectedRange);
         Display.getDefault().asyncExec(new Runnable() {
             @Override
@@ -223,14 +223,14 @@ public class HexViewWidget extends Composite {
 
             hexArea.redraw();
             textArea.redraw();
-            /*
-             * if (pc != null) {
-             * platform.setProgrammCounter(new Value(pc.getValue()));
-             * platform.parseBinary(content,
-             * new Range(0, content.length), rangeList);
-             * tableViewer.setInput(platform.getCPU().getInstructionLineList());
-             * }
-             */
+
+            if (pc != null) {
+                platform.setProgrammCounter(new Value(pc.getValue()));
+                platform.parseBinary(content,
+                        new Range(0, content.length), rangeList);
+                tableViewer.setInput(platform.getCPU().getInstructionLineList());
+            }
+
         }
     }
 
@@ -719,9 +719,9 @@ public class HexViewWidget extends Composite {
         hexArea.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // addressArea.setTopIndex(hexArea.getTopIndex());
-                // textArea.setTopIndex(hexArea.getTopIndex());
-                // getVerticalBar().setSelection(hexArea.getTopIndex());
+                addressArea.setTopIndex(hexArea.getTopIndex());
+                textArea.setTopIndex(hexArea.getTopIndex());
+                getVerticalBar().setSelection(hexArea.getTopIndex());
             }
         });
 
@@ -798,9 +798,9 @@ public class HexViewWidget extends Composite {
         textArea.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // addressArea.setTopIndex(textArea.getTopIndex());
-                // textArea.setTopIndex(textArea.getTopIndex());
-                // getVerticalBar().setSelection(textArea.getTopIndex());
+                addressArea.setTopIndex(textArea.getTopIndex());
+                textArea.setTopIndex(textArea.getTopIndex());
+                getVerticalBar().setSelection(textArea.getTopIndex());
             }
         });
 
