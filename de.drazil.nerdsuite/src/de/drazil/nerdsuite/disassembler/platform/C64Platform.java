@@ -19,6 +19,7 @@ import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
+import de.drazil.nerdsuite.widget.IContentProvider;
 
 public class C64Platform extends AbstractPlatform {
 
@@ -70,18 +71,18 @@ public class C64Platform extends AbstractPlatform {
     }
 
     @Override
-    public byte[] parseBinary(byte[] byteArray, Range range, List<DisassemblingRange> ranges) {
+    public void parseBinary(IContentProvider contentProvider, List<DisassemblingRange> ranges) {
 
         System.out.println("init   : build memory map");
-        setProgrammCounter(getProgrammCounter().add(range.getOffset() - 2));
-        init(byteArray, range, ranges.get(0).getRangeType());
+        setProgrammCounter(getProgrammCounter());
+        init(contentProvider, ranges.get(0).getRangeType());
         // System.out.println("stage 1: parse header information");
         // parseStartSequence(byteArray, pc);
         System.out.println("stage 2: parse instructions");
 
         long start = System.currentTimeMillis();
         for (DisassemblingRange dr : ranges) {
-            getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
+            getCPU().decode(contentProvider, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
                     getPlatFormData(),
                     dr, 2);
         }
@@ -90,7 +91,6 @@ public class C64Platform extends AbstractPlatform {
         // System.out.println("stage 3: compress ranges");
         // getCPU().compressRanges();
         System.out.println("ready.");
-        return byteArray;
     }
 
     @Override

@@ -6,9 +6,9 @@ import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.PlatformData;
-import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
+import de.drazil.nerdsuite.widget.IContentProvider;
 
 public interface IPlatform {
     public IDialect getDialect();
@@ -33,9 +33,9 @@ public interface IPlatform {
 
     public void handlePlatformSpecific(byte byteArray[], int offset);
 
-    public void init(byte byteArray[], Range range, RangeType rangeType);
+    public void init(IContentProvider contentProvider, RangeType rangeType);
 
-    public byte[] parseBinary(byte byteArray[], Range range, List<DisassemblingRange> ranges);
+    public void parseBinary(IContentProvider contentProvider, List<DisassemblingRange> ranges);
 
     public PlatformData getPlatFormData();
 

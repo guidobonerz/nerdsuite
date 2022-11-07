@@ -17,6 +17,7 @@ import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.widget.IContentProvider;
 
 public class CPU_6510 extends AbstractCPU {
     private Map<String, Boolean> pointerTableRemindMap = null;
@@ -47,7 +48,7 @@ public class CPU_6510 extends AbstractCPU {
     }
 
     @Override
-    public void decode(byte[] byteArray, Value pc, InstructionLine instructionLine,
+    public void decode(IContentProvider contentProvider, Value pc, InstructionLine instructionLine,
             PlatformData platformData, DisassemblingRange discoverableRange, int stage) {
         InstructionLine currentLine = instructionLine;
         InstructionLine newLine = null;
@@ -57,7 +58,8 @@ public class CPU_6510 extends AbstractCPU {
                 Range range = currentLine.getRange();
                 int offset = range.getOffset();
                 String so = String.format("%04X", offset);
-                Opcode opcode = getOpcodeByIndex(platformData.getPlatformId(), "", byteArray, offset);
+                Opcode opcode = getOpcodeById(platformData.getPlatformId(), "",
+                        contentProvider.getContentAtOffset(offset));
 
                 String addressingMode = opcode.getAddressingMode().getId();
                 String instructionType = opcode.getType();
@@ -68,7 +70,7 @@ public class CPU_6510 extends AbstractCPU {
                     break;
                 }
 
-                value = getInstructionValue(byteArray, new Range(offset, len));
+                value = getInstructionValue(contentProvider.getContentArray(), new Range(offset, len));
                 currentLine.setInstructionType(InstructionType.Asm);
 
                 if ("branch".equals(instructionType)) {
@@ -80,9 +82,9 @@ public class CPU_6510 extends AbstractCPU {
                                         : value.add(2).getValue()));
                     } else if ("ind".equals(addressingMode)) {
                         // detect jump table
-                        if (value.getValue() <= pc.getValue() + byteArray.length - 2) {
+                        // if (value.getValue() <= pc.getValue() + byteArray.length - 2) {
 
-                        }
+                        // }
                     }
 
                 } else if ("abs".equals(addressingMode) || "absx".equals(addressingMode)
@@ -94,7 +96,7 @@ public class CPU_6510 extends AbstractCPU {
                 String byteString = "";
                 for (int i = 0; i < 4; i++) {
                     if (i < opcode.getAddressingMode().getLen()) {
-                        byteString += String.format("%02X ", byteArray[offset + i]);
+                        byteString += String.format("%02X ", contentProvider.getContentAtOffset(offset + i));
                     } else {
                         byteString += "   ";
                     }

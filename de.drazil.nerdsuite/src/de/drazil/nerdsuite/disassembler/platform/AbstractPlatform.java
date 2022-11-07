@@ -20,6 +20,7 @@ import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
+import de.drazil.nerdsuite.widget.IContentProvider;
 
 public abstract class AbstractPlatform implements IPlatform {
     private IDialect dialect;
@@ -60,8 +61,9 @@ public abstract class AbstractPlatform implements IPlatform {
         this.cpu = cpu;
     }
 
-    public void init(byte byteArray[], Range range, RangeType rangeType) {
-        getCPU().addInstructionLine(new InstructionLine(getProgrammCounter(), range,
+    public void init(IContentProvider contentProvider, RangeType rangeType) {
+        getCPU().addInstructionLine(new InstructionLine(getProgrammCounter(),
+                new Range(contentProvider.getContentStart(), contentProvider.getContentLength()),
                 rangeType == RangeType.Code ? InstructionType.Asm : InstructionType.Data,
                 ReferenceType.NoReference));
     }
