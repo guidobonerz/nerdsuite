@@ -16,83 +16,83 @@ import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.PlatformData;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 
 public abstract class AbstractPlatform implements IPlatform {
-	private IDialect dialect;
-	private boolean ignoreStartAddressBytes = false;
-	private ICPU cpu;
-	private PlatformData platformData;
-	private Value pc;
+    private IDialect dialect;
+    private boolean ignoreStartAddressBytes = false;
+    private ICPU cpu;
+    private PlatformData platformData;
+    private Value pc;
 
-	public AbstractPlatform(IDialect dialect, ICPU cpu, boolean ignoreStartAddressBytes, String addressFileName) {
-		setDialect(dialect);
-		setCPU(cpu);
-		setIgnoreStartAddressBytes(ignoreStartAddressBytes);
-		readPlatformData(addressFileName);
+    public AbstractPlatform(IDialect dialect, ICPU cpu, boolean ignoreStartAddressBytes, String addressFileName) {
+        setDialect(dialect);
+        setCPU(cpu);
+        setIgnoreStartAddressBytes(ignoreStartAddressBytes);
+        readPlatformData(addressFileName);
 
-	}
+    }
 
-	public IDialect getDialect() {
-		return dialect;
-	}
+    public IDialect getDialect() {
+        return dialect;
+    }
 
-	public void setDialect(IDialect dialect) {
-		this.dialect = dialect;
-	}
+    public void setDialect(IDialect dialect) {
+        this.dialect = dialect;
+    }
 
-	public boolean isIgnoreStartAddressBytes() {
-		return ignoreStartAddressBytes;
-	}
+    public boolean isIgnoreStartAddressBytes() {
+        return ignoreStartAddressBytes;
+    }
 
-	public void setIgnoreStartAddressBytes(boolean ignoreStartAddressBytes) {
-		this.ignoreStartAddressBytes = ignoreStartAddressBytes;
-	}
+    public void setIgnoreStartAddressBytes(boolean ignoreStartAddressBytes) {
+        this.ignoreStartAddressBytes = ignoreStartAddressBytes;
+    }
 
-	public ICPU getCPU() {
-		return cpu;
-	}
+    public ICPU getCPU() {
+        return cpu;
+    }
 
-	public void setCPU(ICPU cpu) {
-		this.cpu = cpu;
-	}
+    public void setCPU(ICPU cpu) {
+        this.cpu = cpu;
+    }
 
-	public void init(byte byteArray[], DisassemblingRange range) {
-		getCPU().addInstructionLine(new InstructionLine(getProgrammCounter(), range,
-				range.getRangeType() == RangeType.Code ? InstructionType.Asm : InstructionType.Data,
-				ReferenceType.NoReference));
-	}
+    public void init(byte byteArray[], Range range, RangeType rangeType) {
+        getCPU().addInstructionLine(new InstructionLine(getProgrammCounter(), range,
+                rangeType == RangeType.Code ? InstructionType.Asm : InstructionType.Data,
+                ReferenceType.NoReference));
+    }
 
-	@Override
-	public Value getProgrammCounter() {
-		return pc;
-	}
+    @Override
+    public Value getProgrammCounter() {
+        return pc;
+    }
 
-	@Override
-	public void setProgrammCounter(Value pc) {
-		this.pc = pc;
-	}
+    @Override
+    public void setProgrammCounter(Value pc) {
+        this.pc = pc;
+    }
 
-	@Override
-	public PlatformData getPlatFormData() {
-		return platformData;
-	}
+    @Override
+    public PlatformData getPlatFormData() {
+        return platformData;
+    }
 
-	private void readPlatformData(String fileName) {
+    private void readPlatformData(String fileName) {
 
-		try {
-			Bundle bundle = Platform.getBundle(Constants.APP_ID);
-			URL url = bundle.getEntry(fileName);
-			File file = new File(FileLocator.resolve(url).toURI());
-			ObjectMapper mapper = new ObjectMapper();
-			platformData = mapper.readValue(file, PlatformData.class);
-			InstructionSet.init(platformData);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+        try {
+            Bundle bundle = Platform.getBundle(Constants.APP_ID);
+            URL url = bundle.getEntry(fileName);
+            File file = new File(FileLocator.resolve(url).toURI());
+            ObjectMapper mapper = new ObjectMapper();
+            platformData = mapper.readValue(file, PlatformData.class);
+            InstructionSet.init(platformData);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }

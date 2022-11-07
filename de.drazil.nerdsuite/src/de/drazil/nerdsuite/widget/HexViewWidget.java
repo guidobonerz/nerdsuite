@@ -28,8 +28,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -58,6 +56,7 @@ import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.BinaryFileHandler;
@@ -69,11 +68,11 @@ public class HexViewWidget extends Composite {
     private StyledText hexArea = null;
     private StyledText textArea = null;
     private Button autoDiscover;
-    private Button startDecode;
+    // private Button startDecode;
     private Button startAddress;
     private Button code;
     private Button binary;
-    private Button undefined;
+    // private Button undefined;
     private int contentOffset = 0;
 
     private int visibleRows = 0;
@@ -105,7 +104,7 @@ public class HexViewWidget extends Composite {
         this.platform = platform;
         rangeList = new ArrayList<DisassemblingRange>();
         jumpStack = new Stack<InstructionLine>();
-        selectedRange = new DisassemblingRange(0, 0, false, RangeType.Unspecified);
+        selectedRange = new DisassemblingRange(0, 0, false, RangeType.Binary);
         initialize();
 
     }
@@ -169,7 +168,7 @@ public class HexViewWidget extends Composite {
     public void setBinaryContent(byte[] binaryContent) {
         content = binaryContent;
         rangeList = new ArrayList<DisassemblingRange>();
-        rangeList.add(new DisassemblingRange(0, content.length, false, RangeType.Unspecified));
+        rangeList.add(new DisassemblingRange(0, content.length, false, RangeType.Binary));
         prepareContent();
         // disassemble(selectedRange);
         Display.getDefault().asyncExec(new Runnable() {
@@ -203,15 +202,14 @@ public class HexViewWidget extends Composite {
                     if (message.open() == SWT.YES) {
                         startAddress.setSelection(true);
                         platform.setProgrammCounter(new Value(pc.getValue()));
-                        prepareContent();
                     }
                 }
+                prepareContent();
             }
         });
     }
 
-    private void disassemble(DisassemblingRange selectedRange) {
-
+    private void disassemble() {
         if (selectedRange.getLen() > 0) {
             platform.getCPU().clear();
             handleSelection(selectedRange.getOffset(), selectedRange.getLen(), selectedRange.getRangeType());
@@ -225,16 +223,14 @@ public class HexViewWidget extends Composite {
 
             hexArea.redraw();
             textArea.redraw();
-            /*
-             * if (pc != null) {
-             * platform.setProgrammCounter(new Value(pc.getValue()));
-             * platform.parseBinary(content,
-             * new DisassemblingRange(selectedRange.getOffset() + contentOffset,
-             * selectedRange.getLen(),
-             * false, RangeType.Code));
-             * tableViewer.setInput(platform.getCPU().getInstructionLineList());
-             * }
-             */
+
+            if (pc != null) {
+                platform.setProgrammCounter(new Value(pc.getValue()));
+                platform.parseBinary(content,
+                        new Range(0, content.length), rangeList);
+                tableViewer.setInput(platform.getCPU().getInstructionLineList());
+            }
+
         }
     }
 
@@ -282,21 +278,28 @@ public class HexViewWidget extends Composite {
             DisassemblingRange bottomRange = ranges.get(ranges.size() - 1);
             topRange.setDirty(true);
             bottomRange.setDirty(true);
-            //if (rangeType == topRange.getRangeType()) {
-                //topRange.setLen(length + (start - topRange.getOffset()));
-            //} else {
+            if (topRange.getRangeType() == bottomRange.getRangeType() && topRange.getRangeType() == rangeType) {
+                int newLength = (bottomRange.getOffset() + bottomRange.getLen()) - topRange.getOffset();
+                rangeList.remove(bottomRange);
+                topRange.setLen(newLength);
+            } else if (topRange.getRangeType() == rangeType && topRange.getRangeType() != bottomRange.getRangeType()) {
+                bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
+                bottomRange.setOffset(start + length);
+                topRange.setLen((start + length) - topRange.getOffset());
+            } else if (bottomRange.getRangeType() == rangeType
+                    && topRange.getRangeType() != bottomRange.getRangeType()) {
                 topRange.setLen(start - topRange.getOffset());
-            //}
-
-            bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
-            bottomRange.setOffset(start + length);
-
-            if (topRange.getOffset() + topRange.getLen() != bottomRange.getOffset()) {
+                bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - start);
+                bottomRange.setOffset(start);
+            } else if (topRange.getRangeType() == bottomRange.getRangeType() && topRange.getRangeType() != rangeType) {
+                topRange.setLen(start - topRange.getOffset());
+                bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
+                bottomRange.setOffset(start + length);
                 int insertIndex = rangeList.indexOf(topRange) + 1;
                 rangeList.add(insertIndex, new DisassemblingRange(start, length, true, rangeType));
+            } else {
+                Console.println("> should not happen.");
             }
-
-            int x = 0;
         }
     }
 
@@ -557,7 +560,7 @@ public class HexViewWidget extends Composite {
         startAddress.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                prepareContent();
+                // prepareContent();
             }
         });
 
@@ -599,26 +602,27 @@ public class HexViewWidget extends Composite {
                 textArea.setSelectionBackground(Constants.BINARY_COLOR);
             }
         });
-
-        undefined = new Button(group, SWT.RADIO);
-        undefined.setText("Undefined");
-        undefined.setBackground(Constants.WHITE);
-        undefined.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                selectedRange.setRangeType(RangeType.Unspecified);
-                hexArea.setSelectionForeground(Constants.BLACK);
-                textArea.setSelectionForeground(Constants.BLACK);
-                hexArea.setSelectionBackground(Constants.WHITE);
-                textArea.setSelectionBackground(Constants.WHITE);
-            }
-        });
-
-        startDecode = new Button(group, SWT.PUSH);
-        startDecode.setFont(Constants.FontAwesome5ProSolid);
-        startDecode.setText("\ue059");
-
+        /*
+         * undefined = new Button(group, SWT.RADIO);
+         * undefined.setText("Undefined");
+         * undefined.setBackground(Constants.WHITE);
+         * undefined.addSelectionListener(new SelectionAdapter() {
+         * 
+         * @Override
+         * public void widgetSelected(SelectionEvent e) {
+         * selectedRange.setRangeType(RangeType.Unspecified);
+         * hexArea.setSelectionForeground(Constants.BLACK);
+         * textArea.setSelectionForeground(Constants.BLACK);
+         * hexArea.setSelectionBackground(Constants.WHITE);
+         * textArea.setSelectionBackground(Constants.WHITE);
+         * }
+         * });
+         */
+        /*
+         * startDecode = new Button(group, SWT.PUSH);
+         * startDecode.setFont(Constants.FontAwesome5ProSolid);
+         * startDecode.setText("\ue059");
+         */
         selectedRange.setRangeType(code.getSelection() ? RangeType.Code
                 : binary.getSelection() ? RangeType.Binary : RangeType.Unspecified);
 
@@ -670,11 +674,13 @@ public class HexViewWidget extends Composite {
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
                     if (enableSelect && dragStarted) {
-                        disassemble(selectedRange);
+                        disassemble();
                     }
                     enableSelect = false;
                     dragStarted = false;
                 }
+                textArea.setSelection(0, 0);
+                hexArea.setSelection(0, 0);
             }
         });
 
@@ -713,9 +719,9 @@ public class HexViewWidget extends Composite {
         hexArea.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // addressArea.setTopIndex(hexArea.getTopIndex());
-                // textArea.setTopIndex(hexArea.getTopIndex());
-                // getVerticalBar().setSelection(hexArea.getTopIndex());
+                addressArea.setTopIndex(hexArea.getTopIndex());
+                textArea.setTopIndex(hexArea.getTopIndex());
+                getVerticalBar().setSelection(hexArea.getTopIndex());
             }
         });
 
@@ -757,10 +763,12 @@ public class HexViewWidget extends Composite {
             public void mouseUp(MouseEvent e) {
                 if (e.button == 1) {
                     if (enableSelect && dragStarted) {
-                        disassemble(selectedRange);
+                        disassemble();
                     }
                     enableSelect = false;
                     dragStarted = false;
+                    textArea.setSelection(0, 0);
+                    hexArea.setSelection(0, 0);
                 }
             }
         });
@@ -790,9 +798,9 @@ public class HexViewWidget extends Composite {
         textArea.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // addressArea.setTopIndex(textArea.getTopIndex());
-                // textArea.setTopIndex(textArea.getTopIndex());
-                // getVerticalBar().setSelection(textArea.getTopIndex());
+                addressArea.setTopIndex(textArea.getTopIndex());
+                textArea.setTopIndex(textArea.getTopIndex());
+                getVerticalBar().setSelection(textArea.getTopIndex());
             }
         });
 
@@ -818,23 +826,18 @@ public class HexViewWidget extends Composite {
                 switch (range.getRangeType()) {
                     case Code:
                         bgc = Constants.CODE_COLOR;
-                        styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
-                                width, fgc, bgc);
-                        list.add(styleRange);
                         break;
                     case Binary:
-                        bgc = Constants.CODE_COLOR;
-                        styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
-                                width, fgc, bgc);
-                        list.add(styleRange);
+                        bgc = Constants.WHITE;
                         break;
                     default:
-                        // bgc = Constants.WHITE;
-                        // styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
-                        // width, fgc, bgc);
-                        // list.add(styleRange);
+                        bgc = Constants.WHITE;
                         break;
+
                 }
+                styleRange = new StyleRange(range.getOffset() * width, range.getLen() *
+                        width, fgc, bgc);
+                list.add(styleRange);
 
             }
         }

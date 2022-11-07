@@ -20,6 +20,7 @@
           <children xsi:type="basic:PartSashContainer" xmi:id="_cnI3MH7PEeuLApV-ry2DvA" elementId="de.drazil.nerdsuite.partsashcontainer.1" containerData="10000">
             <children xsi:type="basic:PartStack" xmi:id="_g3rAoFzsEeyXG_BAIwudTA" elementId="de.drazil.nerdsuite.partstack.2">
               <children xsi:type="basic:Part" xmi:id="_qkHp4H6XEeurcvP7qc7HFg" elementId="de.drazil.nerdsuite.part.ultimate64applicationstreamingclient" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.imaging.Ultimate64AppStreamView" label="Ultimate64 Application Streaming Client">
+                <handlers xmi:id="_HQ5esF3dEe2SAdkwu4hP9A" elementId="de.drazil.nerdsuite.handler.copyscreen" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.CopyScreenHandler"/>
                 <toolbar xmi:id="_gv0LgH7JEeuRnKF6XvTjkQ" elementId="de.drazil.nerdsuite.toolbar.5">
                   <children xsi:type="menu:HandledToolItem" xmi:id="_3KNOkFzsEeyXG_BAIwudTA" elementId="de.drazil.nerdsuite.handledtoolitem.debug" label="Debug" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/bug.png" type="Check" command="_8_YXsF3oEeyNBbukDTeSkw"/>
                   <children xsi:type="menu:HandledToolItem" xmi:id="__TC5IKhFEeqtvvNU-2tJhQ" elementId="de.drazil.nerdsuite.handledtoolitem.start" label="Start" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/control.png" tooltip="Start Stream" command="_VlskULypEeqwJ_Ky4YAlCA"/>

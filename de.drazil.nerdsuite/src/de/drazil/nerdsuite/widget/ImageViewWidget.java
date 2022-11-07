@@ -20,106 +20,112 @@ import lombok.Data;
 
 public class ImageViewWidget extends Canvas implements PaintListener {
 
-	private List<ID> buffer;
-	private PaletteData paletteData;
-	private int scaledWidth;
-	private int scaledHeight;
-	private boolean showDummy;
+    private List<ID> buffer;
+    private PaletteData paletteData;
+    private int scaledWidth;
+    private int scaledHeight;
+    private boolean showDummy;
 
-	private int skipCount;
+    private int skipCount;
 
-	@Data
-	private class ID {
+    @Data
+    private class ID {
 
-		private boolean processed;
-		private ImageData imageData;
+        private boolean processed;
+        private ImageData imageData;
 
-		public ID(ImageData imageData) {
-			this.imageData = imageData;
-			processed = false;
-		}
-	}
+        public ID(ImageData imageData) {
+            this.imageData = imageData;
+            processed = false;
+        }
+    }
 
-	public ImageViewWidget(Composite parent, int style, PaletteData paletteData) {
-		super(parent, style);
+    public ImageViewWidget(Composite parent, int style, PaletteData paletteData) {
+        super(parent, style);
 
-		showDummy = true;
-		this.paletteData = paletteData;
-		buffer = new ArrayList<ID>();
-		addPaintListener(this);
-		getParent().addListener(SWT.Resize, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
+        showDummy = true;
+        this.paletteData = paletteData;
+        buffer = new ArrayList<ID>();
+        addPaintListener(this);
+        getParent().addListener(SWT.Resize, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
 
-				scaledHeight = getParent().getSize().y;
-				scaledWidth = (int) (getParent().getSize().y * 1.411);
-				getParent().layout(true, true);
-			}
-		});
-	}
+                scaledHeight = getParent().getSize().y;
+                scaledWidth = (int) (getParent().getSize().y * 1.411);
+                getParent().layout(true, true);
+            }
+        });
+    }
 
-	public void paintControl(PaintEvent e) {
-		try {
-			if (!showDummy) {
-				if (skipCount > 0) {
-					skipCount--;
-					buffer.remove(0);
-				}
-				if (!buffer.isEmpty() && buffer.size() > 10 && skipCount == 0) {
-					ID id = buffer.get(0);
-					if (!id.isProcessed()) {
-						ImageData imageData = id.getImageData();
-						for (int i = 0; i < imageData.data.length; i++) {
-							imageData.data[i] = (byte) ((imageData.data[i] & 0x0F) << 4
-									| (imageData.data[i] & 0xF0) >> 4);
-						}
+    public void paintControl(PaintEvent e) {
+        try {
+            if (!showDummy) {
+                if (skipCount > 0) {
+                    skipCount--;
+                    buffer.remove(0);
+                }
+                if (!buffer.isEmpty() && buffer.size() > 10 && skipCount == 0) {
+                    ID id = buffer.get(0);
+                    if (!id.isProcessed()) {
+                        ImageData imageData = id.getImageData();
+                        for (int i = 0; i < imageData.data.length; i++) {
+                            imageData.data[i] = (byte) ((imageData.data[i] & 0x0F) << 4
+                                    | (imageData.data[i] & 0xF0) >> 4);
+                        }
 
-						double ratio = ((double) getParent().getSize().y / (double) id.getImageData().height);
-						scaledWidth = (int) (id.getImageData().width * ratio);
-						scaledHeight = getParent().getSize().y;
+                        if (((double) getParent().getSize().y / (double) getParent().getSize().x) < 0.8f) {
+                            double ratio = ((double) getParent().getSize().y / (double) id.getImageData().height);
+                            scaledWidth = (int) (id.getImageData().width * ratio);
+                            scaledHeight = getParent().getSize().y;
+                        } else {
+                            double ratio = ((double) getParent().getSize().x / (double) id.getImageData().width);
+                            scaledWidth = getParent().getSize().x;
+                            scaledHeight = (int) (id.getImageData().height * ratio);
+                        }
 
-						Image image = new Image(getDisplay(), id.getImageData().scaledTo(scaledWidth, scaledHeight));
-						
-						e.gc.drawImage(image, 0, 0);
-						image.dispose();
-						buffer.remove(0);
-						id.setProcessed(true);
-					}
-				}
-			} else {
-				skipCount = 20;
-				ImageData imageData = ImageFactory.createImage("images/FuBK-Testbild.png").getImageData();
-				double ratio = ((double) getParent().getSize().y / (double) imageData.height);
-				scaledWidth = (int) (imageData.width * ratio);
-				scaledHeight = getParent().getSize().y;
-				Image image = new Image(getDisplay(), imageData.scaledTo(scaledWidth, scaledHeight));
-				e.gc.drawImage(image, 0, 0);
-				image.dispose();
-			}
-		} catch (
+                        Image image = new Image(getDisplay(), id.getImageData().scaledTo(scaledWidth, scaledHeight));
 
-		Exception e1) {
-		}
-	}
+                        e.gc.drawImage(image, 0, 0);
+                        image.dispose();
+                        buffer.remove(0);
+                        id.setProcessed(true);
+                    }
+                }
+            } else {
+                skipCount = 20;
+                ImageData imageData = ImageFactory.createImage("images/FuBK-Testbild.png").getImageData();
+                double ratio = ((double) getParent().getSize().y / (double) imageData.height);
+                scaledWidth = (int) (imageData.width * ratio);
+                scaledHeight = getParent().getSize().y;
+                Image image = new Image(getDisplay(), imageData.scaledTo(scaledWidth, scaledHeight));
+                e.gc.drawImage(image, 0, 0);
+                image.dispose();
+            }
+        } catch (
 
-	public void addImageData(byte[] data) {
-		buffer.add(new ID(new ImageData(384, 272, 4, paletteData, 1, data)));
-	}
+        Exception e1) {
+        }
+    }
 
-	public void drawImage(boolean showDummy) {
-		if (!isDisposed()) {
-			scaledWidth = getClientArea().width;
-			scaledHeight = getClientArea().height;
-			this.showDummy = showDummy;
-			redraw(0, 0, scaledWidth, scaledHeight, false);
-			update();
-		}
+    public void addImageData(byte[] data) {
+        buffer.add(new ID(new ImageData(384, 272, 4, paletteData, 1, data)));
+    }
 
-	}
+    public void drawImage(boolean showDummy) {
+        if (!isDisposed()) {
+            scaledWidth = getClientArea().width;
+            scaledHeight = getClientArea().height;
+            this.showDummy = showDummy;
+            redraw(0, 0, scaledWidth, scaledHeight, false);
+            update();
+        }
 
-	@Override
-	public Point computeSize(int wHint, int hHint, boolean changed) {
-		return new Point(scaledWidth, scaledHeight);
-	}
+    }
+
+    @Override
+    public Point computeSize(int wHint, int hHint, boolean changed) {
+        return new Point(scaledWidth, scaledHeight);
+    }
 
 }

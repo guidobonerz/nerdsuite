@@ -11,6 +11,6 @@ import lombok.ToString;
 @ToString
 public class Range {
 	private int offset = 0;
-	private int len = 0;
+	private int length = 0;
 
 }

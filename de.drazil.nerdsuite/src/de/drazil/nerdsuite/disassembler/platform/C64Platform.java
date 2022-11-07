@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.disassembler.platform;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,8 +13,9 @@ import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
-import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.InstructionType;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -68,18 +70,21 @@ public class C64Platform extends AbstractPlatform {
     }
 
     @Override
-    public byte[] parseBinary(byte[] byteArray, DisassemblingRange range) {
+    public byte[] parseBinary(byte[] byteArray, Range range, List<DisassemblingRange> ranges) {
 
         System.out.println("init   : build memory map");
         setProgrammCounter(getProgrammCounter().add(range.getOffset() - 2));
-        init(byteArray, range);
+        init(byteArray, range, ranges.get(0).getRangeType());
         // System.out.println("stage 1: parse header information");
         // parseStartSequence(byteArray, pc);
         System.out.println("stage 2: parse instructions");
 
         long start = System.currentTimeMillis();
-        getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-                getPlatFormData(), new DisassemblingRange(range.getOffset(), range.getLen(), false,range.getRangeType()), 2);
+        for (DisassemblingRange dr : ranges) {
+            getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
+                    getPlatFormData(),
+                    dr, 2);
+        }
         long duration = (System.currentTimeMillis() - start);
         System.out.printf("%d Seconds", duration);
         // System.out.println("stage 3: compress ranges");
@@ -90,7 +95,7 @@ public class C64Platform extends AbstractPlatform {
 
     @Override
     public int[] getCommonStartAddresses() {
-        return new int[] { 2049, 4096, 8192, 16384, 32768, 49152 };
+        return new int[] { 0x0801, 0x1000, 0x3000, 0x4000, 0x5000, 0x8000, 0xc000 };
     }
 
     @Override
