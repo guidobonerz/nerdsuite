@@ -3,7 +3,7 @@ package de.drazil.nerdsuite.widget;
 public interface IContentProvider {
     public byte[] getContentArray();
 
-    public int getContentStart();
+    public int getContentOffset();
 
     public int getContentLength();
 

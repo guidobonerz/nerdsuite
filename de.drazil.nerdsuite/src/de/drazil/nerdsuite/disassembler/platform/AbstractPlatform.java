@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.disassembler.platform;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -61,10 +62,9 @@ public abstract class AbstractPlatform implements IPlatform {
         this.cpu = cpu;
     }
 
-    public void init(IContentProvider contentProvider, RangeType rangeType) {
+    public void init(IContentProvider contentProvider) {
         getCPU().addInstructionLine(new InstructionLine(getProgrammCounter(),
-                new Range(contentProvider.getContentStart(), contentProvider.getContentLength()),
-                rangeType == RangeType.Code ? InstructionType.Asm : InstructionType.Data,
+                new Range(0, contentProvider.getContentLength()), InstructionType.Undefined,
                 ReferenceType.NoReference));
     }
 
@@ -96,5 +96,20 @@ public abstract class AbstractPlatform implements IPlatform {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public Value checkAdress(byte[] content, int start) {
+        Value value = new Value(0);
+        List<String> commonStartAdress = getPlatFormData().getCommonStartAdresses();
+        if (commonStartAdress != null) {
+            for (String address : commonStartAdress) {
+                int adr = Integer.parseInt(address, 16);
+                if (adr == getCPU().getWord(content, start)) {
+                    value = new Value(adr);
+                    break;
+                }
+            }
+        }
+        return value;
     }
 }

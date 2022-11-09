@@ -120,7 +120,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
         return content[contentOffset + index];
     }
 
-    public int getContentStart() {
+    public int getContentOffset() {
         return contentOffset;
     }
 

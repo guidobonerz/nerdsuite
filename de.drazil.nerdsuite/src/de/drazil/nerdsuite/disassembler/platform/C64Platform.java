@@ -15,7 +15,6 @@ import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.InstructionType;
-import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -75,16 +74,14 @@ public class C64Platform extends AbstractPlatform {
 
         System.out.println("init   : build memory map");
         setProgrammCounter(getProgrammCounter());
-        init(contentProvider, ranges.get(0).getRangeType());
+        init(contentProvider);
         // System.out.println("stage 1: parse header information");
         // parseStartSequence(byteArray, pc);
         System.out.println("stage 2: parse instructions");
 
         long start = System.currentTimeMillis();
         for (DisassemblingRange dr : ranges) {
-            getCPU().decode(contentProvider, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-                    getPlatFormData(),
-                    dr, 2);
+            getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr, 2);
         }
         long duration = (System.currentTimeMillis() - start);
         System.out.printf("%d Seconds", duration);
@@ -93,20 +90,4 @@ public class C64Platform extends AbstractPlatform {
         System.out.println("ready.");
     }
 
-    @Override
-    public int[] getCommonStartAddresses() {
-        return new int[] { 0x0801, 0x1000, 0x3000, 0x4000, 0x5000, 0x8000, 0xc000 };
-    }
-
-    @Override
-    public Value checkAdress(byte[] content, int start) {
-        Value adress = new Value(0);
-        for (int i : getCommonStartAddresses()) {
-            if (i == getCPU().getWord(content, start)) {
-                adress = new Value(i);
-                break;
-            }
-        }
-        return adress;
-    }
 }

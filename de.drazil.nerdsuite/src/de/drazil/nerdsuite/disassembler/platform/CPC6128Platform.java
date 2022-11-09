@@ -74,7 +74,7 @@ public class CPC6128Platform extends AbstractPlatform {
 
         System.out.println("init   : build memory map");
         setProgrammCounter(getProgrammCounter());
-        init(contentProvider, ranges.get(0).getRangeType());
+        init(contentProvider);
         // System.out.println("stage 1: parse header information");
         // parseStartSequence(byteArray, pc);
         System.out.println("stage 2: parse instructions");
@@ -82,9 +82,7 @@ public class CPC6128Platform extends AbstractPlatform {
         long start = System.currentTimeMillis();
         try {
             for (DisassemblingRange dr : ranges) {
-                getCPU().decode(contentProvider, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-                        getPlatFormData(),
-                        dr, 2);
+                getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr, 2);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,22 +94,5 @@ public class CPC6128Platform extends AbstractPlatform {
         // System.out.println("stage 3: compress ranges");
         // getCPU().compressRanges();
 
-    }
-
-    @Override
-    public int[] getCommonStartAddresses() {
-        return new int[] { 0 };
-    }
-
-    @Override
-    public Value checkAdress(byte[] content, int start) {
-        Value adress = new Value(0);
-        for (int i : getCommonStartAddresses()) {
-            if (i == getCPU().getWord(content, start)) {
-                adress = new Value(i);
-                break;
-            }
-        }
-        return adress;
     }
 }

@@ -24,9 +24,9 @@ public class CPU_Z80 extends AbstractCPU {
     }
 
     @Override
-    public void decode(IContentProvider contentProvider, Value pc, InstructionLine instructionLine,
+    public void decode(IContentProvider contentProvider, Value pc,
             PlatformData platformData, DisassemblingRange discoverableRange, int stage) {
-        InstructionLine currentLine = instructionLine;
+        InstructionLine currentLine = null;
         InstructionLine newLine = null;
         Value value = null;
         Opcode opcode = null;
