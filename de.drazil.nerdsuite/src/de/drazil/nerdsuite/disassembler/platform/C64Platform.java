@@ -15,10 +15,10 @@ import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.InstructionType;
-import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
+import de.drazil.nerdsuite.widget.IContentProvider;
 
 public class C64Platform extends AbstractPlatform {
 
@@ -70,43 +70,24 @@ public class C64Platform extends AbstractPlatform {
     }
 
     @Override
-    public byte[] parseBinary(byte[] byteArray, Range range, List<DisassemblingRange> ranges) {
+    public void parseBinary(IContentProvider contentProvider, List<DisassemblingRange> ranges) {
 
         System.out.println("init   : build memory map");
-        setProgrammCounter(getProgrammCounter().add(range.getOffset() - 2));
-        init(byteArray, range, ranges.get(0).getRangeType());
+        setProgrammCounter(getProgrammCounter());
+        init(contentProvider);
         // System.out.println("stage 1: parse header information");
         // parseStartSequence(byteArray, pc);
         System.out.println("stage 2: parse instructions");
 
         long start = System.currentTimeMillis();
         for (DisassemblingRange dr : ranges) {
-            getCPU().decode(byteArray, getProgrammCounter(), getCPU().getInstructionLineList().get(0),
-                    getPlatFormData(),
-                    dr, 2);
+            getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr, 2);
         }
         long duration = (System.currentTimeMillis() - start);
         System.out.printf("%d Seconds", duration);
         // System.out.println("stage 3: compress ranges");
         // getCPU().compressRanges();
         System.out.println("ready.");
-        return byteArray;
     }
 
-    @Override
-    public int[] getCommonStartAddresses() {
-        return new int[] { 0x0801, 0x1000, 0x3000, 0x4000, 0x5000, 0x8000, 0xc000 };
-    }
-
-    @Override
-    public Value checkAdress(byte[] content, int start) {
-        Value adress = new Value(0);
-        for (int i : getCommonStartAddresses()) {
-            if (i == getCPU().getWord(content, start)) {
-                adress = new Value(i);
-                break;
-            }
-        }
-        return adress;
-    }
 }

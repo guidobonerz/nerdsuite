@@ -3,6 +3,7 @@
   "cpuInstructionSource" : "configuration/cpu/z80_instructions.json",
   "basicInstructionSource" : "configuration/basic/locomotive_basic.json",
   "graphicFormatSource" : "configuration/graphicformat/cpc_graphic_formats",
+  "commonStartAdresses":null,
   "colorPalette" : [ {
     "value" : "#000000",
     "name" : "Black"

@@ -56,12 +56,11 @@ import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.platform.IPlatform;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.DisassemblingRange;
-import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.BinaryFileHandler;
 
-public class HexViewWidget extends Composite {
+public class HexViewWidget extends Composite implements IContentProvider {
 
     private byte[] content = null;
     private StyledText addressArea = null;
@@ -113,11 +112,19 @@ public class HexViewWidget extends Composite {
         return c >= 32 && c < 127;
     }
 
-    private byte getContent(int index) {
+    public byte[] getContentArray() {
+        return content;
+    }
+
+    public byte getContentAtOffset(int index) {
         return content[contentOffset + index];
     }
 
-    private int getContentLength() {
+    public int getContentOffset() {
+        return contentOffset;
+    }
+
+    public int getContentLength() {
         return content.length - contentOffset;
     }
 
@@ -226,8 +233,7 @@ public class HexViewWidget extends Composite {
 
             if (pc != null) {
                 platform.setProgrammCounter(new Value(pc.getValue()));
-                platform.parseBinary(content,
-                        new Range(0, content.length), rangeList);
+                platform.parseBinary(this, rangeList);
                 tableViewer.setInput(platform.getCPU().getInstructionLineList());
             }
 
@@ -326,7 +332,7 @@ public class HexViewWidget extends Composite {
             if (b % 16 == 0) {
                 sbAdress.append(String.format("%04x:", memoryOffset + b));
             }
-            byte c = getContent(b);
+            byte c = getContentAtOffset(b);
             sbByte.append(String.format("%02x", c));
             sbText.append(
                     isPrintableCharacter((char) c) ? (char) c : '_');

@@ -17,6 +17,7 @@ import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.widget.IContentProvider;
 
 public class CPU_6510 extends AbstractCPU {
     private Map<String, Boolean> pointerTableRemindMap = null;
@@ -47,95 +48,111 @@ public class CPU_6510 extends AbstractCPU {
     }
 
     @Override
-    public void decode(byte[] byteArray, Value pc, InstructionLine instructionLine,
-            PlatformData platformData, DisassemblingRange discoverableRange, int stage) {
-        InstructionLine currentLine = instructionLine;
-        InstructionLine newLine = null;
-        Value value = null;
-        while (currentLine != null) {
-            if (!currentLine.isPassed()) {
-                Range range = currentLine.getRange();
-                int offset = range.getOffset();
-                String so = String.format("%04X", offset);
-                Opcode opcode = getOpcodeByIndex(platformData.getPlatformId(), "", byteArray, offset);
+    public void decode(IContentProvider contentProvider, Value pc,
+            PlatformData platformData, DisassemblingRange decodableRange, int stage) {
 
-                String addressingMode = opcode.getAddressingMode().getId();
-                String instructionType = opcode.getType();
+        if (decodableRange.getRangeType() == RangeType.Code) {
+            InstructionLine currentLine = findInstructionLineByOffset(new Value(decodableRange.getOffset()));
+            currentLine = split(currentLine, pc, new Value(decodableRange.getOffset()));
 
-                int len = opcode.getAddressingMode().getLen();
+            InstructionLine newLine = null;
+            Value value = null;
+            while (currentLine != null) {
+                if (!currentLine.isPassed()) {
 
-                if (offset + len > discoverableRange.getOffset() + discoverableRange.getLen()) {
-                    break;
-                }
+                    Range range = currentLine.getRange();
+                    int offset = range.getOffset();
+                    String so = String.format("%04X", currentLine.getProgramCounter().getValue());
+                    int index = contentProvider.getContentAtOffset(offset) & 0xff;
+                    Opcode opcode = getOpcodeById(platformData.getPlatformId(), "", index);
 
-                value = getInstructionValue(byteArray, new Range(offset, len));
-                currentLine.setInstructionType(InstructionType.Asm);
+                    String addressingMode = opcode.getAddressingMode().getId();
+                    String instructionType = opcode.getType();
 
-                if ("branch".equals(instructionType)) {
-                    boolean doSplitLine = true;
-                    // branches
-                    if ("rel".equals(addressingMode)) {
-                        value = currentLine.getProgramCounter()
-                                .add(((value.getValue() & 0x80) == 0x80 ? -(((value.getValue() ^ 0xff) & 0xff) - 1)
-                                        : value.add(2).getValue()));
-                    } else if ("ind".equals(addressingMode)) {
-                        // detect jump table
-                        if (value.getValue() <= pc.getValue() + byteArray.length - 2) {
+                    int len = opcode.getAddressingMode().getLen();
 
+                    if (offset + len > decodableRange.getOffset() + decodableRange.getLen()) {
+                        break;
+                    }
+
+                    value = getInstructionValue(contentProvider.getContentArray(),
+                            new Range(contentProvider.getContentOffset() + offset, len));
+                    currentLine.setInstructionType(InstructionType.Asm);
+
+                    if ("branch".equals(instructionType)) {
+                        boolean doSplitLine = true;
+                        // branches
+                        if ("rel".equals(addressingMode)) {
+                            value = currentLine.getProgramCounter()
+                                    .add(((value.getValue() & 0x80) == 0x80 ? -(((value.getValue() ^ 0xff) & 0xff) - 1)
+                                            : value.add(2).getValue()));
+                        } else if ("ind".equals(addressingMode)) {
+                            // detect jump table
+                            // if (value.getValue() <= pc.getValue() + byteArray.length - 2) {
+
+                            // }
+                        }
+
+                    } else if ("abs".equals(addressingMode) || "absx".equals(addressingMode)
+                            || "absy".equals(addressingMode)) {
+                        // direkt pointers
+
+                    }
+
+                    String byteString = "";
+                    for (int i = 0; i < 4; i++) {
+                        if (i < opcode.getAddressingMode().getLen()) {
+                            byteString += String.format("%02X ", contentProvider.getContentAtOffset(offset + i));
+                        } else {
+                            byteString += "   ";
                         }
                     }
 
-                } else if ("abs".equals(addressingMode) || "absx".equals(addressingMode)
-                        || "absy".equals(addressingMode)) {
-                    // direkt pointers
-
-                }
-
-                String byteString = "";
-                for (int i = 0; i < 4; i++) {
-                    if (i < opcode.getAddressingMode().getLen()) {
-                        byteString += String.format("%02X ", byteArray[offset + i]);
-                    } else {
-                        byteString += "   ";
+                    Address address = null;
+                    if ("mod".equals(instructionType)) {
+                        int v = value.getValue();
+                        address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
+                                .findFirst().orElse(null);
                     }
+
+                    // printDisassembly(currentLine, opcode, value, address);
+                    String sv = "";
+                    if (len - 1 > 0) {
+                        sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
+                    }
+                    String addressingModeString = opcode.getAddressingMode().getArgumentTemplate().replace("{value}",
+                            sv);
+
+                    currentLine.setUserObject(
+                            new Object[] { so, "", byteString, opcode.getMnemonic(), addressingModeString,
+                                    address != null ? address.getConstName() : "" });
+
+                    newLine = split(currentLine, pc, new Value(offset + len));
+                    if (newLine == null) {
+                        break;
+                    }
+
+                    if (newLine.getRange().getLength() < 0 || newLine.getRange().getLength() == 0) {
+                        System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");
+                    }
+                    // detectPointers(byteArray, pc, currentLine, platformData);
+
                 }
-
-                Address address = null;
-                if ("mod".equals(instructionType)) {
-                    int v = value.getValue();
-                    address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
-                            .findFirst().orElse(null);
+                currentLine.setReferenceValue(value);
+                currentLine.setPassed(true);
+                // currentLine = markEmptyBlockAsData(byteArray, pc, newLine);
+                currentLine = newLine;
+                if (currentLine.getInstructionType() != InstructionType.Asm) {
+                    currentLine = getNextUnspecifiedLine(currentLine);
                 }
-
-                // printDisassembly(currentLine, opcode, value, address);
-                String sv = "";
-                if (len - 1 > 0) {
-                    sv = NumericConverter.toHexString(value.getValue(), (len - 1) * 2);
-                }
-                String addressingModeString = opcode.getAddressingMode().getArgumentTemplate().replace("{value}", sv);
-
-                currentLine.setUserObject(new Object[] { so, "", byteString, opcode.getMnemonic(), addressingModeString,
-                        address != null ? address.getConstName() : "" });
-
-                newLine = split(currentLine, pc, new Value(offset + len));
-                if (newLine == null) {
-                    break;
-                }
-
-                if (newLine.getRange().getLength() < 0 || newLine.getRange().getLength() == 0) {
-                    System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");
-                }
-                // detectPointers(byteArray, pc, currentLine, platformData);
-
             }
-            currentLine.setReferenceValue(value);
-            currentLine.setPassed(true);
-            // currentLine = markEmptyBlockAsData(byteArray, pc, newLine);
-            currentLine = newLine;
-            if (currentLine.getInstructionType() != InstructionType.Asm) {
-                currentLine = getNextUnspecifiedLine(currentLine);
-            }
+
+        } else if (decodableRange.getRangeType() == RangeType.Binary) {
+
+        } else {
+            // Unspecified Data Block
         }
+
     }
 
     private InstructionLine markEmptyBlockAsData(byte byteArray[], Value pc, InstructionLine currentLine) {
@@ -180,24 +197,6 @@ public class CPU_6510 extends AbstractCPU {
         return nextLine;
     }
 
-    /*
-     * private InstructionLine getNextLine(InstructionLine instructionLine, Value
-     * pc, Value offset, int value) { return getNextLine(instructionLine, pc,
-     * offset, value, instructionLine.getType(),
-     * instructionLine.getReferenceType()); }
-     * 
-     * private InstructionLine getNextLine(InstructionLine instructionLine, Value
-     * pc, Value offset, int value, Type type, ReferenceType referenceType) {
-     * InstructionLine nextLine = null; if (instructionLine.getRange().getOffset() >
-     * offset.getValue()) { InstructionLine refLine = getInstructionLineByPC(value);
-     * if (refLine != null) { refLine.setReferenceType(referenceType); } nextLine =
-     * instructionLine; } else { InstructionLine refLine =
-     * getInstructionLineByPC(value); if (refLine == null) { InstructionLine
-     * matchLine = findInstructionLineByOffset(offset); nextLine = split(matchLine,
-     * pc, offset, type, referenceType); } else { nextLine = refLine.getType() ==
-     * Type.AsmInstruction ? instructionLine : refLine; } } return type == Type.Data
-     * ? instructionLine : nextLine; }
-     */
     private InstructionLine split(InstructionLine instructionLine, Value pc, Value offset) {
 
         InstructionLine newLine = splitInstructionLine(instructionLine, pc, offset);

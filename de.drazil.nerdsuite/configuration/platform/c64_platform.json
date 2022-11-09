@@ -4,6 +4,7 @@
 	"basicInstructionSource": "configuration/basic/cbm_basic.json",
 	"graphicFormatSource": "configuration/graphicformat/c64_graphic_formats",
 	"charMapSource": "configuration/petascii_map.json",
+	"commonStartAdresses":["0801", "1000", "3000", "4000", "5000", "8000", "c000"],
 	"colorPalette": [
 		{
 			"value": "#000000",

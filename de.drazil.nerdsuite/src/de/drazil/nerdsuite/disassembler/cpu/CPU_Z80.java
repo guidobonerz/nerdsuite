@@ -10,6 +10,7 @@ import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;
+import de.drazil.nerdsuite.widget.IContentProvider;
 
 public class CPU_Z80 extends AbstractCPU {
 
@@ -23,9 +24,9 @@ public class CPU_Z80 extends AbstractCPU {
     }
 
     @Override
-    public void decode(byte[] byteArray, Value pc, InstructionLine instructionLine,
+    public void decode(IContentProvider contentProvider, Value pc,
             PlatformData platformData, DisassemblingRange discoverableRange, int stage) {
-        InstructionLine currentLine = instructionLine;
+        InstructionLine currentLine = null;
         InstructionLine newLine = null;
         Value value = null;
         Opcode opcode = null;
@@ -35,20 +36,25 @@ public class CPU_Z80 extends AbstractCPU {
                 Range range = currentLine.getRange();
                 int offset = range.getOffset();
                 String so = String.format("%04X", offset);
-                String prefix1 = String.format("%02X", NumericConverter.toInt(byteArray[(int) offset]));
-                String prefix2 = String.format("%02X", NumericConverter.toInt(byteArray[(int) offset + 1]));
+                String prefix1 = String.format("%02X",
+                        NumericConverter.toInt(contentProvider.getContentAtOffset(offset)));
+                String prefix2 = String.format("%02X",
+                        NumericConverter.toInt(contentProvider.getContentAtOffset(offset + 1)));
                 String prefix = prefix1 + prefix2;
 
                 int addLen = 0;
                 if (prefix.equals("DDCB") || prefix.equals("DCCB")) {
                     addLen = 2;
-                    opcode = getOpcodeByIndex(platformData.getPlatformId(), prefix, byteArray, offset + 2);
+                    opcode = getOpcodeByIndex(platformData.getPlatformId(), prefix, contentProvider.getContentArray(),
+                            offset + 2);
                 } else if (prefix1.equals("CB") || prefix1.equals("ED") || prefix1.equals("DD")
                         || prefix1.equals("FD")) {
                     addLen = 1;
-                    opcode = getOpcodeByIndex(platformData.getPlatformId(), prefix1, byteArray, offset + 1);
+                    opcode = getOpcodeByIndex(platformData.getPlatformId(), prefix1, contentProvider.getContentArray(),
+                            offset + 1);
                 } else {
-                    opcode = getOpcodeByIndex(platformData.getPlatformId(), "", byteArray, offset);
+                    opcode = getOpcodeByIndex(platformData.getPlatformId(), "", contentProvider.getContentArray(),
+                            offset);
                 }
 
                 String addressingMode = opcode.getAddressingMode().getId();
@@ -60,11 +66,12 @@ public class CPU_Z80 extends AbstractCPU {
                 String addressingModeString = addressingModeTemplate;
                 if (addressingModeTemplate.contains("{WORD}")) {
                     isAdress = true;
-                    value = new Value(getWord(byteArray, offset + opcode.getValueStartPos()));
+                    value = new Value(getWord(contentProvider.getContentArray(), offset + opcode.getValueStartPos()));
                     addressingModeString = addressingModeTemplate.replace("{WORD}",
                             String.format("%04X", value.getValue()));
                 } else if (addressingModeTemplate.contains("{BYTE}")) {
-                    value = new Value(getByte(byteArray, offset + opcode.getValueStartPos()), Value.BYTE);
+                    value = new Value(getByte(contentProvider.getContentArray(), offset + opcode.getValueStartPos()),
+                            Value.BYTE);
                     if ("BRANCH_REL".equals(instructionType)) {
                         isAdress = true;
                         value = currentLine.getProgramCounter()
@@ -81,7 +88,7 @@ public class CPU_Z80 extends AbstractCPU {
                 String byteString = "";
                 for (int i = 0; i < 4; i++) {
                     if (i < opcode.getAddressingMode().getLen() + addLen) {
-                        byteString += String.format("%02X ", byteArray[offset + i]);
+                        byteString += String.format("%02X ", contentProvider.getContentAtOffset(offset + i));
                     } else {
                         byteString += "   ";
                     }
