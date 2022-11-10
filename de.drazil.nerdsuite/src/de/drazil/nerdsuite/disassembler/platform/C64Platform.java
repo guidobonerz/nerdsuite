@@ -17,6 +17,7 @@ import de.drazil.nerdsuite.basic.BasicParser;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
+import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.DisassemblingRange;
@@ -41,6 +42,12 @@ public class C64Platform extends AbstractPlatform {
 
     @Override
     public void handlePlatformSpecific(byte[] byteArray, int offset) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void handleAddress(Address address, Value value) {
         // TODO Auto-generated method stub
 
     }

@@ -11,6 +11,7 @@ import de.drazil.nerdsuite.basic.BasicParser;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_Z80;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
+import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.DisassemblingRange;
@@ -40,6 +41,12 @@ public class CPC6128Platform extends AbstractPlatform {
     }
 
     @Override
+    public void handleAddress(Address address, Value value) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     public void parseStartSequence(byte byteArray[], Value programCounter) {
         // is basic start/
         if (programCounter.getValue() == 2049) {
@@ -60,7 +67,7 @@ public class CPC6128Platform extends AbstractPlatform {
             BasicParser basicParser = new BasicParser(programCounter, getCPU(), basicTokenMap);
             String basicCode = basicParser.start(byteArray, programCounter);
             System.out.println(basicCode);
-            Value asmStart = basicParser.getLastBasicLineAddress(byteArray,0).add(2);
+            Value asmStart = basicParser.getLastBasicLineAddress(byteArray, 0).add(2);
             InstructionLine instructionLine = getCPU().getInstructionLineList().get(0);
             instructionLine.setPassed(true);
             instructionLine.setInstructionType(InstructionType.Basic);

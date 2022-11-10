@@ -170,7 +170,41 @@
 		{
 			"address": "d010",
 			"constName": "VIC_SPRITES_X_8TH_BIT",
-			"description": "Bit 8 of X-Coordinate for Sprite 07"
+			"description": "Bit 8 of X-Coordinate for Sprite 07",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Sprite 1 MSB 1=Set"
+				},
+				{
+					"mask": 2,
+					"description": "Sprite 2 MSB 1=Set"
+				},
+				{
+					"mask": 4,
+					"description": "Sprite 3 MSB 1=Set"
+				},
+				{
+					"mask": 8,
+					"description": "Sprite 4 MSB 1=Set"
+				},
+				{
+					"mask": 16,
+					"description": "Sprite 5 MSB 1=Set"
+				},
+				{
+					"mask": 32,
+					"description": "Sprite 6 MSB 1=Set"
+				},
+				{
+					"mask": 64,
+					"description": "Sprite 7 MSB 1=Set"
+				},
+				{
+					"mask": 128,
+					"description": "Sprite 8 MSB 1=Set"
+				}
+			]
 		},
 		{
 			"address": "d011",
@@ -253,7 +287,41 @@
 		{
 			"address": "d017",
 			"constName": "VIC_SPRITES_EXPAND_Y",
-			"description": "SpriteSwitch Expand Y 07"
+			"description": "SpriteSwitch Expand Y 07",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Sprite 1 Y Expand 1=Set"
+				},
+				{
+					"mask": 2,
+					"description": "Sprite 2 Y Expand 1=Set"
+				},
+				{
+					"mask": 4,
+					"description": "Sprite 3 Y Expand 1=Set"
+				},
+				{
+					"mask": 8,
+					"description": "Sprite 4 Y Expand 1=Set"
+				},
+				{
+					"mask": 16,
+					"description": "Sprite 5 Y Expand 1=Set"
+				},
+				{
+					"mask": 32,
+					"description": "Sprite 6 Y Expand 1=Set"
+				},
+				{
+					"mask": 64,
+					"description": "Sprite 7 Y Expand 1=Set"
+				},
+				{
+					"mask": 128,
+					"description": "Sprite 8 Y Expand 1=Set"
+				}
+			]
 		},
 		{
 			"address": "d018",
@@ -309,27 +377,197 @@
 		{
 			"address": "d01b",
 			"constName": "VIC_SPRITES_PRIORITY",
-			"description": "Sprite Priority 07"
+			"description": "Sprite Priority 07",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Sprite 1 X Expand 1=Set"
+				},
+				{
+					"mask": 2,
+					"description": "Sprite 2 X Expand 1=Set"
+				},
+				{
+					"mask": 4,
+					"description": "Sprite 3 X Expand 1=Set"
+				},
+				{
+					"mask": 8,
+					"description": "Sprite 4 X Expand 1=Set"
+				},
+				{
+					"mask": 16,
+					"description": "Sprite 5 X Expand 1=Set"
+				},
+				{
+					"mask": 32,
+					"description": "Sprite 6 X Expand 1=Set"
+				},
+				{
+					"mask": 64,
+					"description": "Sprite 7 X Expand 1=Set"
+				},
+				{
+					"mask": 128,
+					"description": "Sprite 8 X Expand 1=Set"
+				}
+			]
 		},
 		{
 			"address": "d01c",
-			"constName": "VIC_SPRITES_DISPLAY_MODE",
-			"description": "Sprite DisplayMode 07"
+			"constName": "VIC_SPRITES_MULTICOLOR_MODE",
+			"description": "Sprite MultiColor Mode",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Sprite 1 Multicolor 1=Set"
+				},
+				{
+					"mask": 2,
+					"description": "Sprite 2 Multicolor 1=Set"
+				},
+				{
+					"mask": 4,
+					"description": "Sprite 3 Multicolor 1=Set"
+				},
+				{
+					"mask": 8,
+					"description": "Sprite 4 Multicolor 1=Set"
+				},
+				{
+					"mask": 16,
+					"description": "Sprite 5 Multicolor 1=Set"
+				},
+				{
+					"mask": 32,
+					"description": "Sprite 6 Multicolor 1=Set"
+				},
+				{
+					"mask": 64,
+					"description": "Sprite 7 Multicolor 1=Set"
+				},
+				{
+					"mask": 128,
+					"description": "Sprite 8 Multicolor 1=Set"
+				}
+			]
 		},
 		{
 			"address": "d01d",
 			"constName": "VIC_SPRITES_EXPAND_X",
-			"description": "SpriteSwitch Expand X 07"
+			"description": "SpriteSwitch Expand X 07",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Sprite 1 X Expand 1=Set"
+				},
+				{
+					"mask": 2,
+					"description": "Sprite 2 X Expand 1=Set"
+				},
+				{
+					"mask": 4,
+					"description": "Sprite 3 X Expand 1=Set"
+				},
+				{
+					"mask": 8,
+					"description": "Sprite 4 X Expand 1=Set"
+				},
+				{
+					"mask": 16,
+					"description": "Sprite 5 X Expand 1=Set"
+				},
+				{
+					"mask": 32,
+					"description": "Sprite 6 X Expand 1=Set"
+				},
+				{
+					"mask": 64,
+					"description": "Sprite 7 X Expand 1=Set"
+				},
+				{
+					"mask": 128,
+					"description": "Sprite 8 X Expand 1=Set"
+				}
+			]
 		},
 		{
 			"address": "d01e",
 			"constName": "VIC_SPRITE_SPRITE_COLLISION",
-			"description": "SpriteSprite CollisionRegister 07"
+			"description": "SpriteSprite CollisionRegister 07",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Sprite 1 Collision 1=Set"
+				},
+				{
+					"mask": 2,
+					"description": "Sprite 2 Collision 1=Set"
+				},
+				{
+					"mask": 4,
+					"description": "Sprite 3 Collision 1=Set"
+				},
+				{
+					"mask": 8,
+					"description": "Sprite 4 Collision 1=Set"
+				},
+				{
+					"mask": 16,
+					"description": "Sprite 5 Collision 1=Set"
+				},
+				{
+					"mask": 32,
+					"description": "Sprite 6 Collision 1=Set"
+				},
+				{
+					"mask": 64,
+					"description": "Sprite 7 Collision 1=Set"
+				},
+				{
+					"mask": 128,
+					"description": "Sprite 8 Collision 1=Set"
+				}
+			]
 		},
 		{
 			"address": "d01f",
 			"constName": "VIC_SPRITES_BACKGROUND_COLLISION",
-			"description": "SpriteBackground Collisionregister 07"
+			"description": "SpriteBackground Collisionregister 07",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Sprite 1 Background Collision 1=Set"
+				},
+				{
+					"mask": 2,
+					"description": "Sprite 2 Background Collision 1=Set"
+				},
+				{
+					"mask": 4,
+					"description": "Sprite 3 Background Collision 1=Set"
+				},
+				{
+					"mask": 8,
+					"description": "Sprite 4 Background Collision 1=Set"
+				},
+				{
+					"mask": 16,
+					"description": "Sprite 5 Background Collision 1=Set"
+				},
+				{
+					"mask": 32,
+					"description": "Sprite 6 Background Collision 1=Set"
+				},
+				{
+					"mask": 64,
+					"description": "Sprite 7 Background Collision 1=Set"
+				},
+				{
+					"mask": 128,
+					"description": "Sprite 8 Background Collision 1=Set"
+				}
+			]
 		},
 		{
 			"address": "d020",
