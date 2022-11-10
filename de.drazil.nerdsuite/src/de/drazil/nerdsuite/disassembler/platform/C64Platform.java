@@ -1,12 +1,18 @@
 package de.drazil.nerdsuite.disassembler.platform;
 
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.basic.BasicParser;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_6510;
@@ -47,9 +53,10 @@ public class C64Platform extends AbstractPlatform {
             Map<String, BasicInstruction> basicTokenMap = new HashMap<String, BasicInstruction>();
             try {
                 System.out.println("read BasicV2 instructions");
-                basicInstructions = mapper.readValue(
-                        new File("/Users/drazil/Documents/workspace/rcp/de.drazil.NerdSuite/config/basic_v2.json"),
-                        BasicInstructions.class);
+                Bundle bundle = Platform.getBundle(Constants.APP_ID);
+                URL url = bundle.getEntry("/configuration/basic/cbm_basic.json");
+                File file = new File(FileLocator.resolve(url).toURI());
+                basicInstructions = mapper.readValue(file, BasicInstructions.class);
                 for (BasicInstruction bs : basicInstructions.getBasicInstructionList()) {
                     // basicTokenMap.put(bs.getToken(), bs);
                 }
@@ -58,10 +65,13 @@ public class C64Platform extends AbstractPlatform {
             }
 
             BasicParser basicParser = new BasicParser(programCounter, getCPU(), basicTokenMap);
-            String basicCode = basicParser.start(byteArray, programCounter);
-            System.out.println(basicCode);
-            Value asmStart = basicParser.getLastBasicLineAddress(byteArray).add(2);
+            // String basicCode = basicParser.start(byteArray, programCounter);
+            // System.out.println(basicCode);
+            Value asmStart = basicParser.getLastBasicLineAddress(byteArray, 2);
+
             InstructionLine instructionLine = getCPU().getInstructionLineList().get(0);
+            // instructionLine = getCPU().splitInstructionLine(instructionLine,
+            // programCounter, asmStart);
             instructionLine.setPassed(true);
             instructionLine.setInstructionType(InstructionType.Basic);
             getCPU().splitInstructionLine(instructionLine, programCounter, asmStart.sub(programCounter).add(2),
@@ -75,8 +85,8 @@ public class C64Platform extends AbstractPlatform {
         System.out.println("init   : build memory map");
         setProgrammCounter(getProgrammCounter());
         init(contentProvider);
-        // System.out.println("stage 1: parse header information");
-        // parseStartSequence(byteArray, pc);
+        System.out.println("stage 1: parse header information");
+        parseStartSequence(contentProvider.getContentArray(), getProgrammCounter());
         System.out.println("stage 2: parse instructions");
 
         long start = System.currentTimeMillis();

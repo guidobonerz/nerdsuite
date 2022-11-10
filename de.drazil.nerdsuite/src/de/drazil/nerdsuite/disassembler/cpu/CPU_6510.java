@@ -109,7 +109,7 @@ public class CPU_6510 extends AbstractCPU {
                     }
 
                     Address address = null;
-                    if ("mod".equals(instructionType)) {
+                    if ("mod".equals(instructionType) || "branch".equals(instructionType)) {
                         int v = value.getValue();
                         address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
                                 .findFirst().orElse(null);
@@ -235,8 +235,8 @@ public class CPU_6510 extends AbstractCPU {
 
         InstructionLine lowAddressLine = getInstructionLineList().get(index);
         InstructionLine highAddressLine = getInstructionLineList().get(index + 2);
-        InstructionLine lowTableLine = getInstructionLineByPC(lowAddressLine.getReferenceValue());
-        InstructionLine highTableLine = getInstructionLineByPC(highAddressLine.getReferenceValue());
+        InstructionLine lowTableLine = findInstructionLineByPC(lowAddressLine.getReferenceValue());
+        InstructionLine highTableLine = findInstructionLineByPC(highAddressLine.getReferenceValue());
 
         String jumpTableId = lowAddressLine.getReferenceValue() + "|" + highAddressLine.getReferenceValue();
 
@@ -252,7 +252,7 @@ public class CPU_6510 extends AbstractCPU {
                 int highByte = getByte(byteArray, highTableLine.getRange().getOffset() + i);
                 int jumpMark = (int) (highByte << 8 | lowByte);
 
-                InstructionLine jmpLine = getInstructionLineByPC(jumpMark);
+                InstructionLine jmpLine = findInstructionLineByPC(jumpMark);
                 // parseInstructions(byteArray, pc, jmpLine, platformData,
                 // Type.AsmInstruction, ReferenceType.JumpMark, inSubroutine);
 
@@ -304,7 +304,7 @@ public class CPU_6510 extends AbstractCPU {
                             Boolean checked = pointerTableRemindMap.get(String.valueOf(reference));
                             if (checked != null) {
                                 pointerTableRemindMap.put(String.valueOf(reference), Boolean.TRUE);
-                                InstructionLine pointerLine = getInstructionLineByPC(reference);
+                                InstructionLine pointerLine = findInstructionLineByPC(reference);
                                 if (pointerLine == null) {
                                     pointerLine = findInstructionLineByProgrammCounter(reference);
                                     if (pointerLine != null) {

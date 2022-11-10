@@ -102,15 +102,11 @@ public abstract class AbstractCPU implements ICPU {
 
     @Override
     public InstructionLine findInstructionLineByProgrammCounter(Value programmCounter) {
-        InstructionLine instructionLine = null;
-        for (InstructionLine il : instructionLineList) {
-            if (programmCounter.getValue() >= il.getProgramCounter().getValue()
-                    && programmCounter
-                            .getValue() <= (il.getProgramCounter().getValue() + il.getRange().getLength() - 1)) {
-                instructionLine = il;
-                break;
-            }
-        }
+        InstructionLine instructionLine = instructionLineList
+                .stream().filter(il -> programmCounter.getValue() >= il.getProgramCounter().getValue()
+                        && programmCounter
+                                .getValue() <= (il.getProgramCounter().getValue() + il.getRange().getLength() - 1))
+                .findFirst().orElse(null);
         return instructionLine;
     }
 
@@ -120,14 +116,10 @@ public abstract class AbstractCPU implements ICPU {
 
     @Override
     public InstructionLine findInstructionLineByOffset(Value offset) {
-        InstructionLine instructionLine = null;
-        for (InstructionLine il : instructionLineList) {
-            if (offset.getValue() >= il.getRange().getOffset()
-                    && offset.getValue() <= (il.getRange().getOffset() + il.getRange().getLength() - 1)) {
-                instructionLine = il;
-                break;
-            }
-        }
+        InstructionLine instructionLine = instructionLineList.stream()
+                .filter(il -> offset.getValue() >= il.getRange().getOffset()
+                        && offset.getValue() <= (il.getRange().getOffset() + il.getRange().getLength() - 1))
+                .findFirst().orElse(null);
         return instructionLine;
     }
 
@@ -160,29 +152,25 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public InstructionLine getInstructionLineByPC(Value programCounter) {
+    public InstructionLine findInstructionLineByPC(Value programCounter) {
         if (programCounter == null)
             return null;
-        return getInstructionLineByPC(programCounter.getValue());
+        return findInstructionLineByPC(programCounter.getValue());
     }
 
     @Override
-    public InstructionLine getInstructionLineByPC(int programCounter) {
-        InstructionLine il = null;
-        for (InstructionLine il1 : instructionLineList) {
-            if (il1.getProgramCounter().getValue() == programCounter
-                    || programCounter >= il1.getProgramCounter().getValue()
-                            && programCounter < il1.getProgramCounter().getValue() + il1.getRange().getLength()) {
-                il = il1;
-                break;
-            }
-        }
-        return il;
+    public InstructionLine findInstructionLineByPC(int programCounter) {
+        InstructionLine instructionLine = instructionLineList.stream()
+                .filter(il -> il.getProgramCounter().getValue() == programCounter
+                        || programCounter >= il.getProgramCounter().getValue()
+                                && programCounter < il.getProgramCounter().getValue() + il.getRange().getLength())
+                .findFirst().orElse(null);
+        return instructionLine;
     }
 
     @Override
-    public InstructionLine getInstructionLineByRef(Value reference) {
-        return getInstructionLineByRef(reference.getValue());
+    public InstructionLine findInstructionLineByRef(Value reference) {
+        return findInstructionLineByRef(reference.getValue());
     }
 
     protected boolean isPlatFormAddress(PlatformData platformData, int value) {
@@ -197,17 +185,11 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public InstructionLine getInstructionLineByRef(int reference) {
-        InstructionLine il = null;
-        for (InstructionLine il1 : instructionLineList) {
-            if (il1.hasReferenceValue()) {
-                if (il1.getReferenceValue().getValue() == reference) {
-                    il = il1;
-                    break;
-                }
-            }
-        }
-        return il;
+    public InstructionLine findInstructionLineByRef(int reference) {
+        InstructionLine instructionLine = instructionLineList.stream()
+                .filter(il -> il.hasReferenceValue() && il.getReferenceValue().getValue() == reference).findFirst()
+                .orElse(null);
+        return instructionLine;
     }
 
     @Override

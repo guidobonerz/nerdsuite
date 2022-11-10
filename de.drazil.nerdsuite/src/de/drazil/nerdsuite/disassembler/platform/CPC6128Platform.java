@@ -60,7 +60,7 @@ public class CPC6128Platform extends AbstractPlatform {
             BasicParser basicParser = new BasicParser(programCounter, getCPU(), basicTokenMap);
             String basicCode = basicParser.start(byteArray, programCounter);
             System.out.println(basicCode);
-            Value asmStart = basicParser.getLastBasicLineAddress(byteArray).add(2);
+            Value asmStart = basicParser.getLastBasicLineAddress(byteArray,0).add(2);
             InstructionLine instructionLine = getCPU().getInstructionLineList().get(0);
             instructionLine.setPassed(true);
             instructionLine.setInstructionType(InstructionType.Basic);
