@@ -4,7 +4,15 @@
 	"basicInstructionSource": "configuration/basic/cbm_basic.json",
 	"graphicFormatSource": "configuration/graphicformat/c64_graphic_formats",
 	"charMapSource": "configuration/petascii_map.json",
-	"commonStartAdresses":["0801", "1000", "3000", "4000", "5000", "8000", "c000"],
+	"commonStartAdresses": [
+		"0801",
+		"1000",
+		"3000",
+		"4000",
+		"5000",
+		"8000",
+		"c000"
+	],
 	"colorPalette": [
 		{
 			"value": "#000000",
@@ -167,7 +175,33 @@
 		{
 			"address": "d011",
 			"constName": "VIC_CONTROL_1",
-			"description": "VIC ControlRegister"
+			"description": "VIC ControlRegister",
+			"bitmask": [
+				{
+					"mask": 3,
+					"description": "Smooth Scroll to Y Dot-Position (0-7)"
+				},
+				{
+					"mask": 8,
+					"description": "Select 24/25 Row Text Display: 1 = 25 Rows"
+				},
+				{
+					"mask": 16,
+					"description": "Blank Screen to Border Color: 0 = Blank"
+				},
+				{
+					"mask": 32,
+					"description": "Bit Map Mode. 1 = Enable"
+				},
+				{
+					"mask": 64,
+					"description": "Extended Color Text Mode 1 = Enable"
+				},
+				{
+					"mask": 128,
+					"description": "Raster Compare:(Bit 8) See d012"
+				}
+			]
 		},
 		{
 			"address": "d012",
@@ -192,7 +226,29 @@
 		{
 			"address": "d016",
 			"constName": "VIC_CONTROL_REGISTER_2",
-			"description": "VIC ControlRegister"
+			"description": "VIC ControlRegister",
+			"bitmask": [
+				{
+					"mask": 3,
+					"description": "Smooth Scroll to X Pos"
+				},
+				{
+					"mask": 8,
+					"description": "Select 38/40 Column Text Display: 1 = 40 Cols"
+				},
+				{
+					"mask": 16,
+					"description": "Multi-Color Mode: 1 = Enable (Text or Bit-Map)"
+				},
+				{
+					"mask": 32,
+					"description": "ALWAYS SET THIS BIT TO 0 !"
+				},
+				{
+					"mask": 192,
+					"description": "Unused"
+				}
+			]
 		},
 		{
 			"address": "d017",
@@ -202,12 +258,48 @@
 		{
 			"address": "d018",
 			"constName": "VIC_MEMORY_CONTROL",
-			"description": "VIC Memory CrontrolRegister"
+			"description": "VIC Memory CrontrolRegister",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Select upper/lower Character Set"
+				},
+				{
+					"mask": 6,
+					"description": "Character Dot-Data Base Address (inside VIC)"
+				},
+				{
+					"mask": 120,
+					"description": "Video Matrix Base Address (inside VIC)"
+				}
+			]
 		},
 		{
 			"address": "d019",
 			"constName": "VIC_INTERRUPT_REQUEST_1",
-			"description": "Interrupt RequestRegister"
+			"description": "Interrupt RequestRegister",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Raster Compare IRQ Flag"
+				},
+				{
+					"mask": 2,
+					"description": "Sprite to Background Collision IRQ Flag"
+				},
+				{
+					"mask": 4,
+					"description": "Sprite to Sprite Collision IRQ Flag"
+				},
+				{
+					"mask": 8,
+					"description": "Light-Pen Triggered IRQ Flag"
+				},
+				{
+					"mask": 128,
+					"description": "Set on Any Enabled VIC IRQ Condition"
+				}
+			]
 		},
 		{
 			"address": "d01a",
@@ -337,7 +429,41 @@
 		{
 			"address": "d404",
 			"constName": "SID_CHANNEL_1_MODULATION",
-			"description": "Channel 1 Modulation Saw,Tri,Ring"
+			"description": "Channel 1 Modulation Saw,Tri,Ring",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Gate Bit: 1 = Start Att/Dec/Sus, 0 = Start Release"
+				},
+				{
+					"mask": 2,
+					"description": "Synchronize Osc. 1 with Osc. 3 Frequency, 1 = On"
+				},
+				{
+					"mask": 4,
+					"description": "Ring Modulate Osc. 1 with Osc. 3 Output, 1 = On"
+				},
+				{
+					"mask": 8,
+					"description": "Test Bit: 1 = Disable Oscillator 1"
+				},
+				{
+					"mask": 16,
+					"description": "Select Triangle Waveform, 1 = On"
+				},
+				{
+					"mask": 32,
+					"description": "Select Sawtooth Waveform, 1 = On"
+				},
+				{
+					"mask": 64,
+					"description": "Select Pulse Waveform, 1 = On"
+				},
+				{
+					"mask": 128,
+					"description": "Select Random Noise Waveform, 1 = On"
+				}
+			]
 		},
 		{
 			"address": "d405",
@@ -618,6 +744,11 @@
 			"address": "dd0f",
 			"constName": "CIA2_CONTROL_TIMER_B",
 			"description": "Control Timer B"
+		},
+		{
+			"address": "e544",
+			"constName": "CLEAR_SCREEN",
+			"description": "Clear Screen"
 		},
 		{
 			"address": "ff81",

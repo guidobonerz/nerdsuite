@@ -109,7 +109,7 @@ public class CPU_6510 extends AbstractCPU {
                     }
 
                     Address address = null;
-                    if ("mod".equals(instructionType)) {
+                    if ("mod".equals(instructionType) || "branch".equals(instructionType)) {
                         int v = value.getValue();
                         address = platformData.getPlatformAddressList().stream().filter(p -> p.getAddressValue() == v)
                                 .findFirst().orElse(null);
