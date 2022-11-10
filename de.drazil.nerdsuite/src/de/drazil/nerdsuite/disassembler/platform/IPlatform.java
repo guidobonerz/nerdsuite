@@ -17,6 +17,8 @@ public interface IPlatform {
 
     public abstract boolean supportsSpecialStartSequence();
 
+    public abstract boolean supportsBasic();
+
     public abstract void parseStartSequence(byte byteArray[], Value programCounter);
 
     public boolean isIgnoreStartAddressBytes();

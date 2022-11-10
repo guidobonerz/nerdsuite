@@ -7,12 +7,12 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.AddressingMode;
+import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Pointer;
 import de.drazil.nerdsuite.model.Range;
-import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
@@ -124,7 +124,8 @@ public class CPU_6510 extends AbstractCPU {
                             sv);
 
                     currentLine.setUserObject(
-                            new Object[] { so, "", byteString, opcode.getMnemonic(), addressingModeString,
+                            new Object[] { decodableRange.getRangeType().toString(), so, "", byteString,
+                                    opcode.getMnemonic(), addressingModeString,
                                     address != null ? address.getConstName() : "" });
 
                     newLine = split(currentLine, pc, new Value(offset + len));
@@ -148,7 +149,15 @@ public class CPU_6510 extends AbstractCPU {
             }
 
         } else if (decodableRange.getRangeType() == RangeType.Binary) {
+            InstructionLine currentLine = findInstructionLineByOffset(new Value(decodableRange.getOffset()));
+            int from = currentLine.getProgramCounter().getValue() + decodableRange.getOffset();
+            int till = from + decodableRange.getLen();
 
+            String soFrom = String.format("%04X", from);
+            String soTill = String.format("%04X", till);
+            currentLine.setUserObject(
+                    new Object[] { decodableRange.getRangeType().toString(), soFrom, "",
+                            "DATA BLOCK from :" + soFrom + " to " + soTill });
         } else {
             // Unspecified Data Block
         }

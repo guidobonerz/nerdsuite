@@ -405,7 +405,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
                 Object[] userObject = (Object[]) il.getUserObject();
                 String s = "";
                 if (userObject != null) {
-                    s = String.format("%s", userObject[0]);
+                    s = String.format("%s", userObject[1]);
                 }
                 return s;
             }
@@ -423,7 +423,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
                 Object[] userObject = (Object[]) il.getUserObject();
                 String s = "";
                 if (userObject != null) {
-                    s = String.format("%s", userObject[1]);
+                    s = String.format("%s", userObject[2]);
                 }
                 return s;
             }
@@ -440,8 +440,12 @@ public class HexViewWidget extends Composite implements IContentProvider {
                 Object[] userObject = (Object[]) il.getUserObject();
                 String s = "";
                 if (userObject != null) {
-                    s = String.format("%-13s %s %-15s %s", userObject[2], userObject[3], userObject[4],
-                            userObject[5]);
+                    if (userObject[0].equals(RangeType.Code.toString())) {
+                        s = String.format("%-13s %s %-15s %s", userObject[3], userObject[4], userObject[5],
+                                userObject[6]);
+                    } else if (userObject[0].equals(RangeType.Binary.toString())) {
+                        s = String.format("%s", userObject[3]);
+                    }
                 }
                 return s;
             }
