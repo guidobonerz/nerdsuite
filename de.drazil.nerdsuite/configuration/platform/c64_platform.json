@@ -178,7 +178,7 @@
 			"description": "VIC ControlRegister",
 			"bitmask": [
 				{
-					"mask": 3,
+					"mask": 7,
 					"description": "Smooth Scroll to Y Dot-Position (0-7)"
 				},
 				{
@@ -229,7 +229,7 @@
 			"description": "VIC ControlRegister",
 			"bitmask": [
 				{
-					"mask": 3,
+					"mask": 7,
 					"description": "Smooth Scroll to X Pos"
 				},
 				{
@@ -265,7 +265,7 @@
 					"description": "Select upper/lower Character Set"
 				},
 				{
-					"mask": 6,
+					"mask": 14,
 					"description": "Character Dot-Data Base Address (inside VIC)"
 				},
 				{
@@ -468,12 +468,32 @@
 		{
 			"address": "d405",
 			"constName": "SID_CHANNEL_1_ATTACK_DECAY",
-			"description": "Channel 1 Attack, Decay"
+			"description": "Channel 1 Attack, Decay",
+			"bitmask": [
+				{
+					"mask": 15,
+					"description": "Select Decay Cycle Duration: 0-15"
+				},
+				{
+					"mask": 240,
+					"description": "Select Attack Cycle Duration: 0-15"
+				}
+			]
 		},
 		{
 			"address": "d406",
 			"constName": "SID_CHANNEL_1_SUSTAIN_RELEASE",
-			"description": "Channel 1 Sustain, Release"
+			"description": "Channel 1 Sustain, Release",
+			"bitmask": [
+				{
+					"mask": 15,
+					"description": "Select Release Cycle Duration: 0-15"
+				},
+				{
+					"mask": 240,
+					"description": "Select Sustain Cycle Duration: 0-15"
+				}
+			]
 		},
 		{
 			"address": "d407",
@@ -498,17 +518,71 @@
 		{
 			"address": "d40b",
 			"constName": "SID_CHANNEL_2_MODULATION",
-			"description": "Channel 2 Modulation Saw,Tri,Ring"
+			"description": "Channel 2 Modulation Saw,Tri,Ring",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Gate Bit: 1 = Start Att/Dec/Sus, 0 = Start Release"
+				},
+				{
+					"mask": 2,
+					"description": "Synchronize Osc. 2 with Osc. 1 Frequency, 1 = On"
+				},
+				{
+					"mask": 4,
+					"description": "Ring Modulate Osc. 2 with Osc. 1 Output, 1 = On"
+				},
+				{
+					"mask": 8,
+					"description": "Test Bit: 1 = Disable Oscillator 1"
+				},
+				{
+					"mask": 16,
+					"description": "Select Triangle Waveform, 1 = On"
+				},
+				{
+					"mask": 32,
+					"description": "Select Sawtooth Waveform, 1 = On"
+				},
+				{
+					"mask": 64,
+					"description": "Select Pulse Waveform, 1 = On"
+				},
+				{
+					"mask": 128,
+					"description": "Select Random Noise Waveform, 1 = On"
+				}
+			]
 		},
 		{
 			"address": "d40c",
 			"constName": "SID_CHANNEL_2_ATTACK_DECAY",
-			"description": "Channel 2 Attack, Decay"
+			"description": "Channel 2 Attack, Decay",
+			"bitmask": [
+				{
+					"mask": 15,
+					"description": "Select Decay Cycle Duration: 0-15"
+				},
+				{
+					"mask": 240,
+					"description": "Select Attack Cycle Duration: 0-15"
+				}
+			]
 		},
 		{
 			"address": "d40d",
 			"constName": "SID_CHANNEL_2_SUSTAIN_RELEASE",
-			"description": "Channel 2 Sustain, Release"
+			"description": "Channel 2 Sustain, Release",
+			"bitmask": [
+				{
+					"mask": 15,
+					"description": "Select Release Cycle Duration: 0-15"
+				},
+				{
+					"mask": 240,
+					"description": "Select Sustain Cycle Duration: 0-15"
+				}
+			]
 		},
 		{
 			"address": "d40e",
@@ -533,17 +607,71 @@
 		{
 			"address": "d412",
 			"constName": "SID_CHANNEL_3_MODULATION",
-			"description": "Channel 3 Modulation Saw,Tri,Ring"
+			"description": "Channel 3 Modulation Saw,Tri,Ring",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Gate Bit: 1 = Start Att/Dec/Sus, 0 = Start Release"
+				},
+				{
+					"mask": 2,
+					"description": "Synchronize Osc. 3 with Osc. 2 Frequency, 1 = On"
+				},
+				{
+					"mask": 4,
+					"description": "Ring Modulate Osc. 3 with Osc. 2 Output, 1 = On"
+				},
+				{
+					"mask": 8,
+					"description": "Test Bit: 1 = Disable Oscillator 1"
+				},
+				{
+					"mask": 16,
+					"description": "Select Triangle Waveform, 1 = On"
+				},
+				{
+					"mask": 32,
+					"description": "Select Sawtooth Waveform, 1 = On"
+				},
+				{
+					"mask": 64,
+					"description": "Select Pulse Waveform, 1 = On"
+				},
+				{
+					"mask": 128,
+					"description": "Select Random Noise Waveform, 1 = On"
+				}
+			]
 		},
 		{
 			"address": "d413",
 			"constName": "SID_CHANNEL_3_ATTACK_DECAY",
-			"description": "Channel 3 Attack, Decay"
+			"description": "Channel 3 Attack, Decay",
+			"bitmask": [
+				{
+					"mask": 15,
+					"description": "Select Decay Cycle Duration: 0-15"
+				},
+				{
+					"mask": 240,
+					"description": "Select Attack Cycle Duration: 0-15"
+				}
+			]
 		},
 		{
 			"address": "d414",
 			"constName": "SID_CHANNEL_3_SUSTAIN_RELEASE",
-			"description": "Channel 3 Sustain, Release"
+			"description": "Channel 3 Sustain, Release",
+			"bitmask": [
+				{
+					"mask": 15,
+					"description": "Select Release Cycle Duration: 0-15"
+				},
+				{
+					"mask": 240,
+					"description": "Select Sustain Cycle Duration: 0-15"
+				}
+			]
 		},
 		{
 			"address": "d415",
@@ -558,12 +686,56 @@
 		{
 			"address": "d417",
 			"constName": "SID_RESONANCE_FILTER",
-			"description": "Filter Cut off low"
+			"description": "Filter Cut off low",
+			"bitmask": [
+				{
+					"mask": 1,
+					"description": "Filter Voice 1 Output: 1 = Yes, 0 = No"
+				},
+				{
+					"mask": 2,
+					"description": "Filter Voice 2 Output: 1 = Yes, 0 = No"
+				},
+				{
+					"mask": 4,
+					"description": "Filter Voice 3 Output: 1 = Yes, 0 = No"
+				},
+				{
+					"mask": 8,
+					"description": "Filter External Input: 1 = Yes, 0 = No"
+				},
+				{
+					"mask": 240,
+					"description": "Select Filter Resonance: 0-15"
+				}
+			]
 		},
 		{
 			"address": "d418",
 			"constName": "SID_MODE_VOLUME",
-			"description": "Filter Cut off low"
+			"description": "Filter Cut off low",
+			"bitmask": [
+				{
+					"mask": 15,
+					"description": "Select Output Volume: 0-15"
+				},
+				{
+					"mask": 16,
+					"description": "Select Filter Low-Pass Mode: 1 = On"
+				},
+				{
+					"mask": 32,
+					"description": "Select Filter Band-Pass Mode: 1 = On"
+				},
+				{
+					"mask": 64,
+					"description": "Select Filter High-Pass Mode: 1 = On"
+				},
+				{
+					"mask": 128,
+					"description": "Cut-Off Voice 3 Output: 1 = Off, O = On"
+				}
+			]
 		},
 		{
 			"address": "d419",
