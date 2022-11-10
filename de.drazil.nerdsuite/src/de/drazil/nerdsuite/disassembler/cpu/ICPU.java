@@ -41,17 +41,17 @@ public interface ICPU extends IDecoder {
 
     public InstructionLine findInstructionLineByOffset(Value offset);
 
+    public InstructionLine findInstructionLineByPC(Value programCounter);
+
+    public InstructionLine findInstructionLineByRef(Value reference);
+
+    public InstructionLine findInstructionLineByPC(int programCounter);
+
+    public InstructionLine findInstructionLineByRef(int reference);
+
     public List<InstructionLine> getInstructionLineList();
 
     public InstructionLine getLastInstructionLine();
-
-    public InstructionLine getInstructionLineByPC(Value programCounter);
-
-    public InstructionLine getInstructionLineByRef(Value reference);
-
-    public InstructionLine getInstructionLineByPC(int programCounter);
-
-    public InstructionLine getInstructionLineByRef(int reference);
 
     public Value getInstructionValue(byte byteArray[], Range range);
 

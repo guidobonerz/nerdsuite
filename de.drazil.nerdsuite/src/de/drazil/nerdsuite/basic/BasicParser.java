@@ -30,9 +30,9 @@ public class BasicParser
 		return cpu;
 	}
 
-	public Value getLastBasicLineAddress(byte byteArray[])
+	public Value getLastBasicLineAddress(byte byteArray[],int offset)
 	{
-		int arrayIndex = 0;
+		int arrayIndex = offset;
 		Value nextBasicLineAddress = null;
 		while ((nextBasicLineAddress = new Value(getCPU().getWord(byteArray, arrayIndex))).getValue() != 0)
 		{
