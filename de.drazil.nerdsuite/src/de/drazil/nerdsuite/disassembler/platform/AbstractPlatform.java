@@ -2,7 +2,9 @@ package de.drazil.nerdsuite.disassembler.platform;
 
 import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -12,13 +14,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.basic.BasicParser;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
+import de.drazil.nerdsuite.model.BasicInstruction;
+import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Range;
-import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.widget.IContentProvider;
@@ -26,8 +30,11 @@ import de.drazil.nerdsuite.widget.IContentProvider;
 public abstract class AbstractPlatform implements IPlatform {
     private IDialect dialect;
     private boolean ignoreStartAddressBytes = false;
+    private boolean supportsBasic = false;
     private ICPU cpu;
     private PlatformData platformData;
+    private BasicParser basicParser;
+    private BasicInstructions basicInstructions;
     private Value pc;
 
     public AbstractPlatform(IDialect dialect, ICPU cpu, boolean ignoreStartAddressBytes, String addressFileName) {
@@ -35,7 +42,7 @@ public abstract class AbstractPlatform implements IPlatform {
         setCPU(cpu);
         setIgnoreStartAddressBytes(ignoreStartAddressBytes);
         readPlatformData(addressFileName);
-
+        readBasicTokens();
     }
 
     public IDialect getDialect() {
@@ -81,6 +88,28 @@ public abstract class AbstractPlatform implements IPlatform {
     @Override
     public PlatformData getPlatFormData() {
         return platformData;
+    }
+
+    private void readBasicTokens() {
+
+        String basicInstructionSource = platformData.getBasicInstructionSource();
+        if (basicInstructionSource != null && supportsBasic()) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, BasicInstruction> basicTokenMap = new HashMap<String, BasicInstruction>();
+            try {
+                System.out.printf("read basic instructions from : %s", basicInstructionSource);
+                Bundle bundle = Platform.getBundle(Constants.APP_ID);
+                URL url = bundle.getEntry(basicInstructionSource);
+                File file = new File(FileLocator.resolve(url).toURI());
+                basicInstructions = mapper.readValue(file, BasicInstructions.class);
+                for (BasicInstruction bs : basicInstructions.getBasicInstructionList()) {
+                    // basicTokenMap.put(bs.getToken(), bs);
+                }
+                BasicParser basicParser = new BasicParser(getProgrammCounter(), getCPU(), basicTokenMap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void readPlatformData(String fileName) {

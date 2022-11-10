@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.drazil.nerdsuite.disassembler.cpu.ICPU;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
+import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Value;
@@ -15,6 +16,8 @@ public interface IPlatform {
     public void setDialect(IDialect dialect);
 
     public abstract boolean supportsSpecialStartSequence();
+
+    public abstract boolean supportsBasic();
 
     public abstract void parseStartSequence(byte byteArray[], Value programCounter);
 
@@ -39,4 +42,7 @@ public interface IPlatform {
     public PlatformData getPlatFormData();
 
     public Value checkAdress(byte content[], int start);
+
+    public void handleAddress(Address address, Value value);
+
 }

@@ -11,6 +11,7 @@ import de.drazil.nerdsuite.basic.BasicParser;
 import de.drazil.nerdsuite.disassembler.InstructionLine;
 import de.drazil.nerdsuite.disassembler.cpu.CPU_Z80;
 import de.drazil.nerdsuite.disassembler.dialect.IDialect;
+import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.DisassemblingRange;
@@ -34,39 +35,25 @@ public class CPC6128Platform extends AbstractPlatform {
     }
 
     @Override
+    public boolean supportsBasic() {
+        return false;
+    }
+
+    @Override
     public void handlePlatformSpecific(byte[] byteArray, int offset) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void parseStartSequence(byte byteArray[], Value programCounter) {
-        // is basic start/
-        if (programCounter.getValue() == 2049) {
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, BasicInstruction> basicTokenMap = new HashMap<String, BasicInstruction>();
-            try {
-                System.out.println("read BasicV2 instructions");
-                basicInstructions = mapper.readValue(
-                        new File("/Users/drazil/Documents/workspace/rcp/de.drazil.NerdSuite/config/basic_v2.json"),
-                        BasicInstructions.class);
-                for (BasicInstruction bs : basicInstructions.getBasicInstructionList()) {
-                    // basicTokenMap.put(bs.getToken(), bs);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void handleAddress(Address address, Value value) {
+        // TODO Auto-generated method stub
 
-            BasicParser basicParser = new BasicParser(programCounter, getCPU(), basicTokenMap);
-            String basicCode = basicParser.start(byteArray, programCounter);
-            System.out.println(basicCode);
-            Value asmStart = basicParser.getLastBasicLineAddress(byteArray,0).add(2);
-            InstructionLine instructionLine = getCPU().getInstructionLineList().get(0);
-            instructionLine.setPassed(true);
-            instructionLine.setInstructionType(InstructionType.Basic);
-            getCPU().splitInstructionLine(instructionLine, programCounter, asmStart.sub(programCounter).add(2),
-                    RangeType.Unspecified, ReferenceType.NoReference);
-        }
+    }
+
+    @Override
+    public void parseStartSequence(byte byteArray[], Value programCounter) {
+
     }
 
     @Override
