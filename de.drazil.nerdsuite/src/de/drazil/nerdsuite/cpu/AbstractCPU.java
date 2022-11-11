@@ -3,7 +3,6 @@ package de.drazil.nerdsuite.cpu;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.drazil.nerdsuite.assembler.InstructionSet;
 import de.drazil.nerdsuite.cpu.decode.InstructionLine;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.DisassemblingRange;

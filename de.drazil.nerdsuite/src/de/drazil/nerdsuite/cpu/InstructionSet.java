@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.assembler;
+package de.drazil.nerdsuite.cpu;
 
 import java.util.ArrayList;
 import java.util.Collection;
