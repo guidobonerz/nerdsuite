@@ -16,8 +16,10 @@ public class Address {
     private String address;
     private String constName;
     private String description;
-    @JsonProperty(value = "bitmask")
-    private List<BitMask> bitMaskList;
+    @JsonProperty(value = "readBitMask")
+    private List<BitMask> readBitMaskList;
+    @JsonProperty(value = "writeBitMask")
+    private List<BitMask> writeBitMaskList;
 
     public Address(String address, String constName, String description) {
         this.address = address;
@@ -34,7 +36,11 @@ public class Address {
         return getAddressValue() == value;
     }
 
-    public boolean hasBitmaskConfiguration() {
-        return bitMaskList != null && bitMaskList.size() > 0;
+    public boolean hasWriteBitmaskConfiguration() {
+        return writeBitMaskList != null && writeBitMaskList.size() > 0;
+    }
+
+    public boolean hasReadBitmaskConfiguration() {
+        return readBitMaskList != null && readBitMaskList.size() > 0;
     }
 }
