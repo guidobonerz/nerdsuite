@@ -92,7 +92,7 @@ public class CPU_6510 extends AbstractCPU {
 
                             // }
                         }
-
+                        currentLine.setReferenceValue(value);
                     } else if ("abs".equals(addressingMode) || "absx".equals(addressingMode)
                             || "absy".equals(addressingMode)) {
                         // direkt pointers

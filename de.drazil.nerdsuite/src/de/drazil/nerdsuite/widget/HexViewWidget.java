@@ -498,6 +498,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
                                         switch (e.detail) {
                                             case SWT.TRAVERSE_RETURN:
                                                 item.setText(1, text.getText());
+                                                ((InstructionLine) item.getData()).setLabelName(text.getText());
                                                 // FALL THROUGH
                                             case SWT.TRAVERSE_ESCAPE:
                                                 text.dispose();
