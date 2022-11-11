@@ -225,7 +225,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
             for (int i = 0; i < rangeList.size(); i++) {
                 int offset = pc.getValue() + rangeList.get(i).getOffset();
                 Console.printf("> %04d : %04x - %04x %s\n", i, offset,
-                        offset + rangeList.get(i).getLen(), rangeList.get(i).getRangeType().toString());
+                        offset + rangeList.get(i).getLen() - 1, rangeList.get(i).getRangeType().toString());
             }
 
             hexArea.redraw();
