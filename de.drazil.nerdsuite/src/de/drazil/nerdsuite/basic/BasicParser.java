@@ -2,7 +2,7 @@ package de.drazil.nerdsuite.basic;
 
 import java.util.Map;
 
-import de.drazil.nerdsuite.disassembler.cpu.ICPU;
+import de.drazil.nerdsuite.cpu.ICPU;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.NumericConverter;

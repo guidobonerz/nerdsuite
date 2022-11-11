@@ -21,7 +21,7 @@ public class DisassemblerHandler {
                 partService);
 
         MPart part = E4Utils.createPart(partService, "de.drazil.nerdsuite.partdescriptor.DisassemblerView",
-                "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.disassembler.DisassemblerView", "Disassembler",
+                "bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.cpu.decode.DisassemblerView", "Disassembler",
                 "Disassembler", null);
 
         E4Utils.addPart2PartStack(app, modelService, partService, "de.drazil.nerdsuite.partstack.disassemblerStack", part,

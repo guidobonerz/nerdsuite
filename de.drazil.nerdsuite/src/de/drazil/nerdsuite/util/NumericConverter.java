@@ -1,6 +1,6 @@
 package de.drazil.nerdsuite.util;
 
-import de.drazil.nerdsuite.disassembler.cpu.Endianness;
+import de.drazil.nerdsuite.cpu.Endianness;
 
 public class NumericConverter {
 	public static void toDecimalString(byte b, StringBuilder sb) {
