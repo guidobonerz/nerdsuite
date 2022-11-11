@@ -150,8 +150,8 @@ public class CPU_6510 extends AbstractCPU {
 
         } else if (decodableRange.getRangeType() == RangeType.Binary) {
             InstructionLine currentLine = findInstructionLineByOffset(new Value(decodableRange.getOffset()));
-            int from = currentLine.getProgramCounter().getValue() + decodableRange.getOffset();
-            int till = from + decodableRange.getLen();
+            int from = pc.getValue() + decodableRange.getOffset();
+            int till = pc.getValue() + decodableRange.getOffset() + decodableRange.getLen() - 1;
 
             String soFrom = String.format("%04X", from);
             String soTill = String.format("%04X", till);
