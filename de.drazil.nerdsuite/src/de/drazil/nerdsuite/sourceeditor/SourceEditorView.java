@@ -2,8 +2,6 @@ package de.drazil.nerdsuite.sourceeditor;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +49,6 @@ import de.drazil.nerdsuite.model.BasicToken;
 import de.drazil.nerdsuite.model.Project;
 import de.drazil.nerdsuite.mouse.AdvancedMouseAdaper;
 import de.drazil.nerdsuite.mouse.AdvancedMouseListenerAdapter;
-import de.drazil.nerdsuite.mouse.MeasuringController.Trigger;
 import de.drazil.nerdsuite.toolchain.BasicTokenizerStage;
 import de.drazil.nerdsuite.toolchain.ExternalRunnerToolchainStage;
 import de.drazil.nerdsuite.toolchain.Toolchain;
@@ -255,7 +252,7 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
         styledText.setFont(Constants.RobotoMonoBold_FONT);
 
         ama = new AdvancedMouseAdaper(styledText);
-        //ama.setEnableDelayTrigger(Trigger.LEFT, 500);
+        // ama.setEnableDelayTrigger(Trigger.LEFT, 500);
         ama.addMouseListener(new AdvancedMouseListenerAdapter() {
             @Override
             public void rightMouseButtonClicked(int modifierMask, int x, int y) {

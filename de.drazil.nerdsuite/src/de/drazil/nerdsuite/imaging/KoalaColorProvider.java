@@ -2,7 +2,7 @@ package de.drazil.nerdsuite.imaging;
 
 import org.eclipse.swt.graphics.Color;
 
-import de.drazil.nerdsuite.assembler.InstructionSet;
+import de.drazil.nerdsuite.cpu.InstructionSet;
 import de.drazil.nerdsuite.enums.PixelConfig;
 import de.drazil.nerdsuite.widget.IColorProvider;
 

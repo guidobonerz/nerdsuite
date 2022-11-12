@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 import com.google.common.collect.ComparisonChain;
 
-import de.drazil.nerdsuite.disassembler.cpu.Endianness;
+import de.drazil.nerdsuite.cpu.Endianness;
 import de.drazil.nerdsuite.util.BinaryFileHandler;
 import de.drazil.nerdsuite.util.NumericConverter;
 

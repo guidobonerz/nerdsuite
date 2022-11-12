@@ -51,9 +51,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.disassembler.HexViewContent;
-import de.drazil.nerdsuite.disassembler.InstructionLine;
-import de.drazil.nerdsuite.disassembler.platform.IPlatform;
+import de.drazil.nerdsuite.cpu.decode.HexViewContent;
+import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.cpu.platform.IPlatform;
 import de.drazil.nerdsuite.log.Console;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.RangeType;
@@ -498,6 +498,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
                                         switch (e.detail) {
                                             case SWT.TRAVERSE_RETURN:
                                                 item.setText(1, text.getText());
+                                                ((InstructionLine) item.getData()).setLabelName(text.getText());
                                                 // FALL THROUGH
                                             case SWT.TRAVERSE_ESCAPE:
                                                 text.dispose();

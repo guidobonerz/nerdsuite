@@ -11,6 +11,7 @@ import org.osgi.framework.Bundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharMap;
 import de.drazil.nerdsuite.model.CpuInstructions;
@@ -28,7 +29,7 @@ public class PlatformFactory {
 	public static List<TargetPlatform> getTargetPlatFormList() {
 
 		if (targetPlatformList == null) {
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			Bundle bundle = Platform.getBundle(Constants.APP_ID);
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				targetPlatformList = Arrays
@@ -55,7 +56,7 @@ public class PlatformFactory {
 	public static BasicInstructions getBasicInstructions(String id) {
 
 		BasicInstructions basicInstructions = null;
-		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+		Bundle bundle = Platform.getBundle(Constants.APP_ID);
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
@@ -73,7 +74,7 @@ public class PlatformFactory {
 	public static CpuInstructions getCpuInstructions(String id) {
 
 		CpuInstructions cpuInstruction = null;
-		Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+		Bundle bundle = Platform.getBundle(Constants.APP_ID);
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
@@ -92,7 +93,7 @@ public class PlatformFactory {
 
 		CharMap charMap = charMapCache.get(id);
 		if (charMap == null) {
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			Bundle bundle = Platform.getBundle(Constants.APP_ID);
 			ObjectMapper mapper = new ObjectMapper();
 
 			try {
@@ -117,7 +118,7 @@ public class PlatformFactory {
 
 		List<PlatformColor> platformColors = platformColorCache.get(id);
 		if (platformColors == null) {
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			Bundle bundle = Platform.getBundle(Constants.APP_ID);
 			ObjectMapper mapper = new ObjectMapper();
 			PlatformData platformData = null;
 			try {
