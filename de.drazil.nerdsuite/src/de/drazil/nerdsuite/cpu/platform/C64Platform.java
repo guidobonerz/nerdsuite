@@ -2,22 +2,19 @@ package de.drazil.nerdsuite.cpu.platform;
 
 import java.util.List;
 
-import de.drazil.nerdsuite.basic.BasicParser;
 import de.drazil.nerdsuite.cpu.CPU_6510;
 import de.drazil.nerdsuite.cpu.decode.InstructionLine;
 import de.drazil.nerdsuite.cpu.decode.dialect.IDialect;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.InstructionType;
-import de.drazil.nerdsuite.model.RangeType;
-import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.widget.IContentProvider;
 
 public class C64Platform extends AbstractPlatform {
 
     public C64Platform(IDialect dialect, boolean ignoreStartAddressBytes) {
-        super(dialect, new CPU_6510(), ignoreStartAddressBytes, "/configuration/platform/c64_platform.json");
+        super(dialect, new CPU_6510(), ignoreStartAddressBytes, "configuration/platform/c64_platform.json");
     }
 
     @Override

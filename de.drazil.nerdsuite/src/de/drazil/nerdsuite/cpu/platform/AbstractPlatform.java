@@ -116,10 +116,10 @@ public abstract class AbstractPlatform implements IPlatform {
 
         try {
             Bundle bundle = Platform.getBundle(Constants.APP_ID);
-            URL url = bundle.getEntry(fileName);
-            File file = new File(FileLocator.resolve(url).toURI());
+            // URL url = bundle.getEntry(fileName);
+            // File file = new File(FileLocator.resolve(url).toURI());
             ObjectMapper mapper = new ObjectMapper();
-            platformData = mapper.readValue(file, PlatformData.class);
+            platformData = mapper.readValue(bundle.getEntry(fileName), PlatformData.class);
             InstructionSet.init(platformData);
         } catch (Exception e) {
             // TODO Auto-generated catch block

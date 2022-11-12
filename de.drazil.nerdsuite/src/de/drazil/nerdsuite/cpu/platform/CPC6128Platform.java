@@ -26,7 +26,7 @@ public class CPC6128Platform extends AbstractPlatform {
     private BasicInstructions basicInstructions;
 
     public CPC6128Platform(IDialect dialect, boolean ignoreStartAddressBytes) {
-        super(dialect, new CPU_Z80(), ignoreStartAddressBytes, "/configuration/platform/cpc6128_platform.json");
+        super(dialect, new CPU_Z80(), ignoreStartAddressBytes, "configuration/platform/cpc6128_platform.json");
     }
 
     @Override
