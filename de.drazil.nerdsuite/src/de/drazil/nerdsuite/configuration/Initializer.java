@@ -17,7 +17,7 @@ public class Initializer {
 	 */
 	@PostContextCreate
 	void postContextCreate(IEclipseContext workbenchContext) {
-		configuration = new Configuration();
+		configuration = new Configuration(workbenchContext);
 		configuration.initialize();
 	}
 
