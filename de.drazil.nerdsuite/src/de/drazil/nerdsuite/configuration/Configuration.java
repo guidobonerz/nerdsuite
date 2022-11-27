@@ -6,6 +6,8 @@ import java.net.URISyntaxException;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.Bundle;
 
@@ -21,19 +23,27 @@ import de.drazil.nerdsuite.model.Workspace;
 import de.drazil.nerdsuite.util.FileUtil;
 
 public class Configuration {
+
+	private Logger log;
 	public static final File WORKSPACE_PATH = new File(
 			Constants.USER_HOME + Constants.FILE_SEPARATOR + Constants.DEFAULT_WORKSPACE_NAME);
 
 	private Workspace workspace;
+
+	public Configuration(IEclipseContext workbenchContext) {
+		log = (Logger) workbenchContext.get(Logger.class.getName());
+	}
 
 	public final Workspace getWorkspace() {
 		return createOrReadWorkspace();
 	}
 
 	public void initialize() {
+
 		try {
 
 			workspace = getWorkspace();
+
 			Bundle bundle = Platform.getBundle(Constants.APP_ID);
 			try {
 				Display.getCurrent().loadFont(
@@ -60,17 +70,17 @@ public class Configuration {
 	}
 
 	private final Workspace createOrReadWorkspace() {
-
+		System.out.println(WORKSPACE_PATH.getAbsolutePath());
 		try {
 			if (!WORKSPACE_PATH.exists()) {
-				System.out.println("create new workspace folder...");
+				log.debug("create new workspace folder...");
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
 				updateWorkspace(null, false, false);
 			}
 
 			if (workspace == null) {
-				System.out.println("read workspace file...");
+				log.debug("read workspace file...");
 				ObjectMapper mapper = new ObjectMapper();
 				workspace = mapper.readValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects.json"),
 						Workspace.class);
@@ -106,7 +116,9 @@ public class Configuration {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			mapper.writeValue(new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects.json"), workspace);
+			File projectPath = new File(WORKSPACE_PATH + Constants.FILE_SEPARATOR + ".projects.json");
+			log.debug(projectPath.getAbsolutePath());
+			mapper.writeValue(projectPath, workspace);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

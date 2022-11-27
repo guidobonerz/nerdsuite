@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
 
-   <extension id="product"
+   <extension id="Nerdsuite"
          point="org.eclipse.core.runtime.products">
       <product
-            name="de.drazil.nerdsuite"
+            name="Nerdsuite"
             application="org.eclipse.e4.ui.workbench.swt.E4Application">
          <property
                name="appName"
-               value="de.drazil.nerdsuite">
+               value="Nerdsuite">
          </property>
          <property
                name="lifeCycleURI"
@@ -40,6 +40,7 @@
          </property>
       </product>
    </extension>
+  
    
 
 </plugin>
