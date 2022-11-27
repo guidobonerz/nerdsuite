@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.model;
+ package de.drazil.nerdsuite.model;
 
 import java.util.List;
 
