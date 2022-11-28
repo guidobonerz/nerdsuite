@@ -21,8 +21,8 @@ Current state: Still buggy and incomplete :-)
 	```https://github.com/guidobonerz/nerdsuite.git```
 7. Build
 	- via Maven
-		goto folder de.drazil.parent
-		mvn clean install
+		goto folder ```de.drazil.parent```
+		```mvn clean install```
 
 
 ## Screenshots
