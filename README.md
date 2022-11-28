@@ -6,7 +6,7 @@ Nerdsuite is an IDE (based on eclipse 4.25.0/2022-09) to develop software for ol
 
 Current state: Still buggy and incomplete :-)
 
-##Build Prerequisites
+## Build Prerequisites
 1. Download latest java (for example amazon corretto)
 	```https://aws.amazon.com/de/corretto/```
 2. Download latest eclipse RCP IDE
@@ -25,7 +25,7 @@ Current state: Still buggy and incomplete :-)
 		mvn clean install
 
 
-##Screenshots
+## Screenshots
 ### Basic Code Editor
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/basic_editor1.png)
 ![screenshot1](https://github.com/guidobonerz/nerdsuite/blob/develop/docs/basic_editor2.png)
