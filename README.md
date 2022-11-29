@@ -11,7 +11,7 @@ Current state: Still buggy and incomplete :-)
 	```https://aws.amazon.com/de/corretto/```
 2. Download latest eclipse RCP IDE
 	```https://www.eclipse.org/downloads/packages/```
-3. Download latest lombok
+3. Download latest lombok and install it on your eclipse IDE
 	```https://projectlombok.org/```
 4. Download latest Maven
 	```https://maven.apache.org/download.cgi```
@@ -19,10 +19,14 @@ Current state: Still buggy and incomplete :-)
 	```https://github.com/poul-m/tycho-lombokizer```
 6. Clone nerdsuite repo
 	```https://github.com/guidobonerz/nerdsuite.git```
-7. Build
-	- via Maven
-		goto folder ```de.drazil.parent```
-		```mvn clean install```
+7. Build 
+	- Via Maven
+	  goto folder ```de.drazil.nerdsuite.parent``` and execute ```mvn clean install```
+	- via eclipse RCP IDE
+	  goto folder ```de.drazil.nerdsuite``` and open the ```de.drazil.nerdsuite``` file
+	  press the ```Run/Play``` button in the upper left corner of the product view to export the product
+	  for current target platform.
+		
 
 
 ## Screenshots
