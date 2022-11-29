@@ -23,8 +23,8 @@ Current state: Still buggy and incomplete :-)
 	- Via Maven
 	  goto folder ```de.drazil.nerdsuite.parent``` and execute ```mvn clean install```
 	- via eclipse RCP IDE
-	  goto folder ```de.drazil.nerdsuite``` and open the ```de.drazil.nerdsuite``` file
-	  press the ```Run/Play``` button in the upper left corner of the product view to export the product
+	  goto folder ```de.drazil.nerdsuite``` and open the ```de.drazil.nerdsuite.product``` file
+	  press the ```Run/Play``` button in the upper right corner of the product view to export the product
 	  for current target platform.
 		
 
