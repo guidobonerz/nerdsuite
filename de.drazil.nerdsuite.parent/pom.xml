@@ -42,6 +42,7 @@
 					</environments>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 	</build>
 	<repositories>
@@ -54,5 +55,6 @@
 	<modules>
 		<module>../de.drazil.nerdsuite</module>
 		<module>../de.drazil.nerdsuite.product</module>
+		<module>../de.drazil.nerdsuite.deploy</module>
 	</modules>
 </project>
