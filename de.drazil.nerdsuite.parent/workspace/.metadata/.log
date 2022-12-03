@@ -68,3 +68,186 @@ Command-line arguments:  -eclipse.keyring C:\Users\drazil\AppData\Local\Temp\tyc
 !MESSAGE Overall install request is satisfiable
 !SUBENTRY 1 org.eclipse.equinox.p2.director 0 0 2022-11-27 22:35:00.715
 !MESSAGE Add request for Nerdsuite 1.0.0 (Nerdsuite 1.0.0) is satisfiable
+!SESSION 2022-12-03 14:17:58.062 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=17.0.3
+java.vendor=Amazon.com Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Framework arguments:  -eclipse.keyring C:\Users\drazil\AppData\Local\Temp\tycho338142851039997357secure_storage
+Command-line arguments:  -eclipse.keyring C:\Users\drazil\AppData\Local\Temp\tycho338142851039997357secure_storage
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:17:58.063
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:17:59.159
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:00.226
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/content.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:01.011
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:02.309
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/202209081200, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:03.455
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09/202209141001/content.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:06.334
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:07.389
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:08.438
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/artifacts.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:08.723
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:10.558
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/202209081200, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:11.653
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09/202209141001/artifacts.xml.xz, see CVE-2021-41033. Consider using https instead.
+!SESSION 2022-12-03 14:18:44.282 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=17.0.3
+java.vendor=Amazon.com Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Framework arguments:  -eclipse.keyring C:\Users\drazil\AppData\Local\Temp\tycho14627609422008465497secure_storage
+Command-line arguments:  -eclipse.keyring C:\Users\drazil\AppData\Local\Temp\tycho14627609422008465497secure_storage
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:44.282
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:45.360
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:46.459
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/content.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:46.722
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:48.588
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/202209081200, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:49.745
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09/202209141001/content.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:52.149
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:53.210
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:54.281
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/artifacts.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:54.551
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:56.368
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/202209081200, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:18:57.467
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09/202209141001/artifacts.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:19:14.990
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,de.drazil.nerdsuite,1.0.0.202212031318.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:19:18.908
+!MESSAGE No digest algorithm is available to verify download of binary,Nerdsuite.executable.win32.win32.x86_64,1.0.0.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:19:19.962
+!MESSAGE No digest algorithm is available to verify download of binary,Nerdsuite.executable.gtk.linux.x86_64,1.0.0.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 14:19:20.216
+!MESSAGE No digest algorithm is available to verify download of binary,Nerdsuite.executable.cocoa.macosx.x86_64,1.0.0.
+
+!ENTRY org.eclipse.equinox.p2.director 0 0 2022-12-03 14:19:30.387
+!MESSAGE Overall install request is satisfiable
+!SUBENTRY 1 org.eclipse.equinox.p2.director 0 0 2022-12-03 14:19:30.387
+!MESSAGE Add request for Nerdsuite 1.0.0 (Nerdsuite 1.0.0) is satisfiable
+
+!ENTRY org.eclipse.equinox.p2.director 0 0 2022-12-03 14:19:42.226
+!MESSAGE Overall install request is satisfiable
+!SUBENTRY 1 org.eclipse.equinox.p2.director 0 0 2022-12-03 14:19:42.226
+!MESSAGE Add request for Nerdsuite 1.0.0 (Nerdsuite 1.0.0) is satisfiable
+
+!ENTRY org.eclipse.equinox.p2.director 0 0 2022-12-03 14:19:53.218
+!MESSAGE Overall install request is satisfiable
+!SUBENTRY 1 org.eclipse.equinox.p2.director 0 0 2022-12-03 14:19:53.218
+!MESSAGE Add request for Nerdsuite 1.0.0 (Nerdsuite 1.0.0) is satisfiable
+!SESSION 2022-12-03 15:06:48.665 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=17.0.3
+java.vendor=Amazon.com Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Framework arguments:  -eclipse.keyring C:\Users\drazil\AppData\Local\Temp\tycho9736070705979239861secure_storage
+Command-line arguments:  -eclipse.keyring C:\Users\drazil\AppData\Local\Temp\tycho9736070705979239861secure_storage
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:48.665
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:49.721
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:50.748
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/content.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:51.117
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:52.791
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/202209081200, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:53.909
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09/202209141001/content.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:56.370
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:56.882
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:57.895
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/artifacts.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:58.682
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:06:59.951
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/technology/epp/packages/2022-09/202209081200, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:07:00.960
+!MESSAGE Using unsafe http transport to retrieve http://download.eclipse.org/releases/2022-09/202209141001/artifacts.xml.xz, see CVE-2021-41033. Consider using https instead.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:07:18.504
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,de.drazil.nerdsuite,1.0.0.202212031406.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:07:19.939
+!MESSAGE No digest algorithm is available to verify download of binary,Nerdsuite.executable.win32.win32.x86_64,1.0.0.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:07:20.551
+!MESSAGE No digest algorithm is available to verify download of binary,Nerdsuite.executable.gtk.linux.x86_64,1.0.0.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2022-12-03 15:07:20.798
+!MESSAGE No digest algorithm is available to verify download of binary,Nerdsuite.executable.cocoa.macosx.x86_64,1.0.0.
+
+!ENTRY org.eclipse.equinox.p2.director 0 0 2022-12-03 15:07:29.595
+!MESSAGE Overall install request is satisfiable
+!SUBENTRY 1 org.eclipse.equinox.p2.director 0 0 2022-12-03 15:07:29.595
+!MESSAGE Add request for Nerdsuite 1.0.0 (Nerdsuite 1.0.0) is satisfiable
+
+!ENTRY org.eclipse.equinox.p2.director 0 0 2022-12-03 15:07:41.817
+!MESSAGE Overall install request is satisfiable
+!SUBENTRY 1 org.eclipse.equinox.p2.director 0 0 2022-12-03 15:07:41.817
+!MESSAGE Add request for Nerdsuite 1.0.0 (Nerdsuite 1.0.0) is satisfiable
+
+!ENTRY org.eclipse.equinox.p2.director 0 0 2022-12-03 15:07:53.247
+!MESSAGE Overall install request is satisfiable
+!SUBENTRY 1 org.eclipse.equinox.p2.director 0 0 2022-12-03 15:07:53.247
+!MESSAGE Add request for Nerdsuite 1.0.0 (Nerdsuite 1.0.0) is satisfiable

@@ -2,6 +2,7 @@ package de.drazil.nerdsuite.configuration;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -45,22 +46,12 @@ public class Configuration {
 			workspace = getWorkspace();
 
 			Bundle bundle = Platform.getBundle(Constants.APP_ID);
-			try {
-				Display.getCurrent().loadFont(
-						new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/C64_Pro_Mono-STYLE.ttf")).toURI())
-								.toString());
-				Display.getCurrent().loadFont(
-						new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/MaterialIcons-Regular.ttf")).toURI())
-								.toString());
-				Display.getCurrent().loadFont(
-						new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/RobotoMono-Bold.ttf")).toURI())
-								.toString());
-				boolean b = Display.getCurrent()
-						.loadFont(new File(FileLocator.resolve(bundle.getEntry("/fonts/ttf/fa-solid-900.ttf")).toURI())
-								.toString());
 
-			} catch (URISyntaxException e1) {
-				e1.printStackTrace();
+			try {
+				for (String pathFragment : Constants.FONT_LIST) {
+					String s = FileLocator.resolve(bundle.getEntry(pathFragment)).getPath();
+					Display.getCurrent().loadFont(s);
+				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
