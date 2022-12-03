@@ -52,6 +52,40 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>scp-to-remote</id>
+						<phase>install</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<scp localFile="${project.basedir}/target/products/Nerdsuite-win32.win32.x86_64.zip" remoteToFile="${SCP_URL}" verbose="true" password="${SCP_PASSWORD}" trust="true"></scp>
+								<scp localFile="${project.basedir}/target/products/Nerdsuite-linux.gtk.x86_64.tar.gz" remoteToFile="${SCP_URL}" verbose="true" password="${SCP_PASSWORD}" trust="true"></scp>
+								<scp localFile="${project.basedir}/target/products/Nerdsuite-macosx.cocoa.x86_64.tar.gz" remoteToFile="${SCP_URL}" verbose="true" password="${SCP_PASSWORD}" trust="true"></scp>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+
+				<dependencies>
+					<dependency>
+						<groupId>ant</groupId>
+						<artifactId>ant-commons-net</artifactId>
+						<version>1.6.5</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-jsch</artifactId>
+						<version>1.9.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 </project>
