@@ -14,6 +14,9 @@ public class Constants {
 	public final static String PLUGIN_BASE_PATH = String.format("platform:/plugin/%s/", APP_ID);
 	public final static String OWNER = "OWNER";
 
+	public final static String[] FONT_LIST = new String[] { "/fonts/ttf/C64_Pro_Mono-STYLE.ttf",
+			"/fonts/ttf/MaterialIcons-Regular.ttf", "/fonts/ttf/RobotoMono-Bold.ttf", "/fonts/ttf/fa-solid-900.ttf" };
+
 	public final static String PREFERENCES_TEXTCOLOR_OPCODE = "preferences.textcolor.instruction";
 	public final static String PREFERENCES_TEXTCOLOR_ILLEGAL_OPCODE = "preferences.textcolor.illegal_instruction";
 	public final static String PREFERENCES_TEXTCOLOR_UNSTABLE_ILLEGAL_OPCODE = "preferences.textcolor.unstable_illegal_instruction";
@@ -109,7 +112,7 @@ public class Constants {
 	public final static Color HEXVIEW_ODD_COLUMN_BG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#2980B9"));
 	public final static Color HEXVIEW_EVEN_COLUMN_BG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#1A5276"));
 	public final static Color HEXVIEW_ODD_COLUMN_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#A9CCE3"));
-    public final static Color HEXVIEW_EVEN_COLUMN_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#7FB3D5"));
+	public final static Color HEXVIEW_EVEN_COLUMN_FG_COLOR = new Color(Display.getCurrent(), SwtUtil.toRGB("#7FB3D5"));
 
 	public final static Color RED = new Color(Display.getCurrent(), SwtUtil.toRGB("#FF0000"));
 	public final static Color GREEN = new Color(Display.getCurrent(), SwtUtil.toRGB("#00FF00"));

@@ -1,4 +1,5 @@
 target/
+workspace/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
