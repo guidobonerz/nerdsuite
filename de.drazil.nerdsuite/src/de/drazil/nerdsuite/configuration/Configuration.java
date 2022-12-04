@@ -1,9 +1,11 @@
 package de.drazil.nerdsuite.configuration;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -26,8 +28,10 @@ import de.drazil.nerdsuite.util.FileUtil;
 public class Configuration {
 
 	private Logger log;
-	public static final File WORKSPACE_PATH = new File(
-			Constants.USER_HOME + Constants.FILE_SEPARATOR + Constants.DEFAULT_WORKSPACE_NAME);
+	public static final File WORKSPACE_PATH = Path
+			.of(Constants.USER_HOME, Constants.FILE_SEPARATOR, Constants.DEFAULT_WORKSPACE_NAME).toFile();
+	public static final File SETTINGS_FILE = Path.of(Constants.USER_HOME, Constants.FILE_SEPARATOR,
+			Constants.DEFAULT_WORKSPACE_NAME, Constants.FILE_SEPARATOR, Constants.DEFAULT_SETTINGS_NAME).toFile();
 
 	private Workspace workspace;
 
@@ -61,13 +65,28 @@ public class Configuration {
 	}
 
 	private final Workspace createOrReadWorkspace() {
-		System.out.println(WORKSPACE_PATH.getAbsolutePath());
+
 		try {
 			if (!WORKSPACE_PATH.exists()) {
 				log.debug("create new workspace folder...");
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
 				updateWorkspace(null, false, false);
+				SETTINGS_FILE.createNewFile();
+			} else {
+				if (!SETTINGS_FILE.exists()) {
+					FileWriter fw = new FileWriter(SETTINGS_FILE);
+					fw.write("#ultimate64 settings\n" + "u64.ip=\n" + "u64.port=\n" + "client.adress=");
+					fw.flush();
+					fw.close();
+				} else {
+					if (null != System.getProperty("nerdsuitePropertiesRead")) {
+						Properties p = new Properties();
+						p.load(new FileReader(SETTINGS_FILE));
+						System.setProperties(p);
+						System.setProperty("nerdsuitePropertiesRead", "true");
+					}
+				}
 			}
 
 			if (workspace == null) {

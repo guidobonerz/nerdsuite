@@ -28,162 +28,162 @@ import lombok.Setter;
 
 public class Ultimate64DebugStreamView extends AbstractStreamView {
 
-    private MemoryViewWidget imageViewer;
-    // private Socket tcpSocket = null;
-    private Thread debugThread;
-    private DebugStreamReceiver debugStreamReceiver;
-    private boolean running = false;
-    // private int streamingMode = DEBUG_STREAM;// VIDEO_STREAM + AUDIO_STREAM;
+	private MemoryViewWidget imageViewer;
+	// private Socket tcpSocket = null;
+	private Thread debugThread;
+	private DebugStreamReceiver debugStreamReceiver;
+	private boolean running = false;
+	// private int streamingMode = DEBUG_STREAM;// VIDEO_STREAM + AUDIO_STREAM;
 
-    private byte[] screen = new byte[1000];
-    private byte[] color = new byte[1000];
+	private byte[] screen = new byte[1000];
+	private byte[] color = new byte[1000];
 
-    public Ultimate64DebugStreamView() {
+	public Ultimate64DebugStreamView() {
 
-    }
+	}
 
-    public class DebugStreamReceiver implements Runnable {
+	public class DebugStreamReceiver implements Runnable {
 
-        private byte[] buf = new byte[1444];
-        private int[] mem = new int[0x10000];
-        @Setter
-        @Getter
-        private boolean running = false;
-        private DatagramSocket socket;
+		private byte[] buf = new byte[1444];
+		private int[] mem = new int[0x10000];
+		@Setter
+		@Getter
+		private boolean running = false;
+		private DatagramSocket socket;
 
-        public synchronized void run() {
-            try {
-                socket = new DatagramSocket(11002);
-                while (socket != null && running) {
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                    socket.receive(packet);
-                    InetAddress address = packet.getAddress();
-                    int port = packet.getPort();
-                    packet = new DatagramPacket(buf, buf.length, address, port);
+		public synchronized void run() {
+			try {
+				socket = new DatagramSocket(11002);
+				while (socket != null && running) {
+					DatagramPacket packet = new DatagramPacket(buf, buf.length);
+					socket.receive(packet);
+					InetAddress address = packet.getAddress();
+					int port = packet.getPort();
+					packet = new DatagramPacket(buf, buf.length, address, port);
 
-                    Display.getDefault().syncExec(new Runnable() {
-                        @Override
-                        public void run() {
+					Display.getDefault().syncExec(new Runnable() {
+						@Override
+						public void run() {
 
-                            for (int i = 4; i < 1444; i += 4) {
-                                int adr = ((int) ((buf[i + 1] << 8) | (buf[i + 0] & 0xff)) & 0xffff);
-                                int data = ((int) (buf[i + 2] & 0xff));
-                                int flags = ((int) (buf[i + 3] & 0xff));
-                                if (adr >= 0x0400 && adr <= 0x07e7 && (flags & 1) == 1) {
-                                    screen[adr - 0x400] = (byte) (data & 0xff);
-                                }
-                                if (adr >= 0xd800 && adr <= 0xdbe7) {
-                                    color[adr - 0xd800] = (byte) (data & 0x0f);
-                                }
+							for (int i = 4; i < 1444; i += 4) {
+								int adr = ((int) ((buf[i + 1] << 8) | (buf[i + 0] & 0xff)) & 0xffff);
+								int data = ((int) (buf[i + 2] & 0xff));
+								int flags = ((int) (buf[i + 3] & 0xff));
+								if (adr >= 0x0400 && adr <= 0x07e7 && (flags & 1) == 1) {
+									screen[adr - 0x400] = (byte) (data & 0xff);
+								}
+								if (adr >= 0xd800 && adr <= 0xdbe7) {
+									color[adr - 0xd800] = (byte) (data & 0x0f);
+								}
 
-                                if (mem[adr] != data) {
+								if (mem[adr] != data) {
 
-                                    mem[adr] = data;
-                                    imageViewer.setByte(adr, data, (flags & 1) == 0);
-                                }
-                            }
-                        }
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                socket.close();
-                socket = null;
-            }
-        }
-    }
+									mem[adr] = data;
+									imageViewer.setByte(adr, data, (flags & 1) == 0);
+								}
+							}
+						}
+					});
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				socket.close();
+				socket = null;
+			}
+		}
+	}
 
-    @Inject
-    @Optional
-    public void startStream(@UIEventTopic("StartStream") BrokerObject brokerObject) {
-        startStream(0);
+	@Inject
+	@Optional
+	public void startStream(@UIEventTopic("StartStream") BrokerObject brokerObject) {
+		startStream(0);
 
-    }
+	}
 
-    @Inject
-    @Optional
-    public void stopStream(@UIEventTopic("StopStream") BrokerObject brokerObject) {
-        stopStream();
-    }
+	@Inject
+	@Optional
+	public void stopStream(@UIEventTopic("StopStream") BrokerObject brokerObject) {
+		stopStream();
+	}
 
-    private void stopStream() {
+	private void stopStream() {
 
-        debugStreamReceiver.setRunning(false);
-        stopStreamByCommand(DEBUG_STREAM_STOP_COMMAND);
-        debugThread = null;
+		debugStreamReceiver.setRunning(false);
+		stopStreamByCommand(DEBUG_STREAM_STOP_COMMAND);
+		debugThread = null;
 
-    }
+	}
 
-    @Inject
-    @Optional
-    public void reset(@UIEventTopic("Reset") BrokerObject brokerObject) {
-        try {
-            stopStream();
-            TimeUnit.MILLISECONDS.sleep(100);
-            reset();
-            TimeUnit.MILLISECONDS.sleep(100);
-            startStream(0);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+	@Inject
+	@Optional
+	public void reset(@UIEventTopic("Reset") BrokerObject brokerObject) {
+		try {
+			stopStream();
+			TimeUnit.MILLISECONDS.sleep(100);
+			reset();
+			TimeUnit.MILLISECONDS.sleep(100);
+			startStream(0);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
-    private void startStream(int streamingMode) {
-        String targetAdress = "10.100.200.205";
-        if (!running) {
-            startStreamByCommand(DEBUG_STREAM_START_COMMAND, 0, targetAdress);
-            debugThread = new Thread(debugStreamReceiver);
-            debugThread.start();
-            debugStreamReceiver.setRunning(true);
-        }
+	private void startStream(int streamingMode) {
+		String targetAdress = System.getProperty("client.adress");
+		if (!running) {
+			startStreamByCommand(DEBUG_STREAM_START_COMMAND, 0, targetAdress);
+			debugThread = new Thread(debugStreamReceiver);
+			debugThread.start();
+			debugStreamReceiver.setRunning(true);
+		}
 
-    }
+	}
 
-    private void stopStream(int streamingMode) {
+	private void stopStream(int streamingMode) {
 
-        if ((streamingMode & DEBUG_STREAM) == DEBUG_STREAM && debugStreamReceiver.isRunning()) {
-            debugStreamReceiver.setRunning(false);
-            stopStreamByCommand(DEBUG_STREAM_STOP_COMMAND);
-            debugThread = null;
-        }
-    }
+		if ((streamingMode & DEBUG_STREAM) == DEBUG_STREAM && debugStreamReceiver.isRunning()) {
+			debugStreamReceiver.setRunning(false);
+			stopStreamByCommand(DEBUG_STREAM_STOP_COMMAND);
+			debugThread = null;
+		}
+	}
 
-    @Inject
-    @Optional
-    public void loadAndRunObject(@UIEventTopic("LoadAndRun") BrokerObject brokerObject) {
-        try {
-            stopStream(DEBUG_STREAM_STOP_COMMAND);
-            TimeUnit.MILLISECONDS.sleep(100);
-            RunObject runObject = (RunObject) brokerObject.getTransferObject();
-            handleObject(runObject);
-            TimeUnit.MILLISECONDS.sleep(2000);
-            startStream(DEBUG_STREAM_START_COMMAND);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	@Inject
+	@Optional
+	public void loadAndRunObject(@UIEventTopic("LoadAndRun") BrokerObject brokerObject) {
+		try {
+			stopStream(DEBUG_STREAM_STOP_COMMAND);
+			TimeUnit.MILLISECONDS.sleep(100);
+			RunObject runObject = (RunObject) brokerObject.getTransferObject();
+			handleObject(runObject);
+			TimeUnit.MILLISECONDS.sleep(2000);
+			startStream(DEBUG_STREAM_START_COMMAND);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    @PreDestroy
-    public void preDestroy(MPart part) {
-        stopStream();
-        tcpHandler.closeSocket();
-    }
+	@PreDestroy
+	public void preDestroy(MPart part) {
+		stopStream();
+		tcpHandler.closeSocket();
+	}
 
-    @PostConstruct
-    public void postConstruct(Composite parent) {
-        parent.setLayout(new GridLayout());
-        tcpHandler = new TcpHandler("10.100.200.10", 64);
-        imageViewer = createImageViewer(parent);
-        debugStreamReceiver = new DebugStreamReceiver();
-        startStream(DEBUG_STREAM_START_COMMAND);
+	@PostConstruct
+	public void postConstruct(Composite parent) {
+		parent.setLayout(new GridLayout());
+		tcpHandler = new TcpHandler(System.getProperty("u64.ip"), Integer.valueOf(System.getProperty("u64.port")));
+		imageViewer = createImageViewer(parent);
+		debugStreamReceiver = new DebugStreamReceiver();
+		startStream(DEBUG_STREAM_START_COMMAND);
 
-    }
+	}
 
-    public MemoryViewWidget createImageViewer(Composite parent) {
-        imageViewer = new MemoryViewWidget(parent, SWT.DOUBLE_BUFFERED);
-        imageViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        return imageViewer;
-    }
+	public MemoryViewWidget createImageViewer(Composite parent) {
+		imageViewer = new MemoryViewWidget(parent, SWT.DOUBLE_BUFFERED);
+		imageViewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		return imageViewer;
+	}
 
 }
