@@ -1,41 +1,24 @@
-package de.drazil.nerdsuite.basic;
+package de.drazil.nerdsuite.basic.encode;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import de.drazil.nerdsuite.log.Console;
+import de.drazil.nerdsuite.basic.encode.AbstractTokenEncoder.LastRead;
+import de.drazil.nerdsuite.basic.encode.AbstractTokenEncoder.Mode;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharObject;
 import de.drazil.nerdsuite.util.ArrayUtil;
 import de.drazil.nerdsuite.util.NumericConverter;
 
-public class CbmBasicTokenizer {
+public class CbmBasicEncoder extends AbstractTokenEncoder {
 
-	enum Mode {
-		READ_LINENUMBER, READ_INSTRUCTIONS, READ_STRING, READ_BLOCK_COMMENT, READ_LINE_COMMENT, READ_DEBUG_BLOCK;
-	};
-
-	enum LastRead {
-		NUMERIC, ALPHANUMERIC, LETTER, WHITESPACE, NONE;
-	}
-
-	private static Pattern directivePattern = Pattern.compile("(@[a-zA-Z]*)\\s*([a-zA-Z]*)?");
-	private static CharacterIterator ci;
-	private static boolean isInDataLine = false;
-	private static boolean isInDebugMode = false;
-	private static boolean isInIfBlock = false;
-	private static boolean isInElseBlock = false;
-
-	public CbmBasicTokenizer() {
+	public CbmBasicEncoder() {
 
 	}
 
-	public static byte[] tokenize(String content, BasicInstructions basicInstructions, List<CharObject> charMap,
-			boolean debug) {
+	public byte[] encode(String content, BasicInstructions basicInstructions, List<CharObject> charMap, boolean debug) {
 		isInDebugMode = debug;
 		boolean doNotScan = false;
 		byte[] result = new byte[] {};
@@ -62,7 +45,7 @@ public class CbmBasicTokenizer {
 				readMode = Mode.READ_LINE_COMMENT;
 			}
 
-			processDirective(content, ci.getIndex(), true);
+			processMetaDirective(content, ci.getIndex(), true);
 			ch = ci.current();
 
 			switch (readMode) {
@@ -175,73 +158,4 @@ public class CbmBasicTokenizer {
 		return result;
 	}
 
-	private static byte[] mapUniCodeCharacters(StringBuilder sb, List<CharObject> charMap) {
-
-		byte[] ba = new byte[sb.length()];
-		CharacterIterator ci = new StringCharacterIterator(sb.toString());
-		for (char ch = ci.first(); ch != CharacterIterator.DONE; ch = ci.next()) {
-			boolean found = false;
-			for (CharObject cm : charMap) {
-				int i = Character.getType(ch);
-				if (ch == cm.getUnicode() && i == Character.PRIVATE_USE) {
-					ba[ci.getIndex()] = (byte) cm.getId();
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				ba[ci.getIndex()] = (byte) ch;
-			}
-		}
-		return ba;
-	}
-
-	private static void processDirective(String content, int startIndex, boolean lineOnly) {
-
-		Matcher matcher = directivePattern.matcher(content);
-		if (lineOnly) {
-			int end = content.indexOf('\r', startIndex);
-			matcher.region(startIndex, end != -1 ? end : content.length() - 1);
-		} else {
-			matcher.region(startIndex, content.length());
-		}
-		if (matcher.find()) {
-			int count = matcher.groupCount();
-			String m1 = matcher.group(1);
-			String m2 = matcher.group(2);
-			if (count == 2 && m2.equals("")) {
-				if (matcher.group(1).equalsIgnoreCase("@end")) {
-					ci.setIndex(matcher.start() + matcher.group(1).length() + 1);
-					if (!isInIfBlock) {
-						Console.println("@END without @IF");
-						return;
-					} else {
-						isInIfBlock = false;
-						isInElseBlock = false;
-					}
-				}
-				if (matcher.group(1).equalsIgnoreCase("@else")) {
-					ci.setIndex(matcher.start() + matcher.group(1).length() + 1);
-					if (!isInIfBlock) {
-						Console.println("@ELSE without @IF");
-						return;
-					} else {
-						isInElseBlock = true;
-						if (isInDebugMode) {
-							processDirective(content, ci.getIndex(), false);
-						}
-					}
-				}
-			} else if (count == 2 && !m1.equals(matcher) && !m2.equals(matcher)) {
-				if (matcher.group(1).equalsIgnoreCase("@if") && matcher.group(2).equalsIgnoreCase("debug")) {
-					isInIfBlock = true;
-					ci.setIndex(startIndex + matcher.group().length() + 1);
-					if (!isInDebugMode) {
-						processDirective(content, ci.getIndex(), false);
-					}
-				}
-			}
-		}
-
-	}
 }

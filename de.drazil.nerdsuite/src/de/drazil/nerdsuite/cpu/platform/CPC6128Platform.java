@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.drazil.nerdsuite.basic.BasicParser;
+import de.drazil.nerdsuite.basic.decode.BasicParser;
 import de.drazil.nerdsuite.cpu.CPU_Z80;
 import de.drazil.nerdsuite.cpu.decode.InstructionLine;
 import de.drazil.nerdsuite.cpu.decode.dialect.IDialect;

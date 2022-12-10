@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.basic;
+package de.drazil.nerdsuite.basic.encode;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -10,7 +10,7 @@ import de.drazil.nerdsuite.model.CharObject;
 import de.drazil.nerdsuite.util.ArrayUtil;
 import de.drazil.nerdsuite.util.NumericConverter;
 
-public class CpcBasicTokenizer {
+public class CpcBasicEncoder {
 
 	enum Mode {
 		READ_LINENUMBER, READ_INSTRUCTIONS, READ_STRING, READ_BLOCK_COMMENT, READ_LINE_COMMENT;
@@ -24,7 +24,7 @@ public class CpcBasicTokenizer {
 	private static Mode lastReadMode = readMode;
 	private static LastRead lastRead = LastRead.NONE;
 
-	public CpcBasicTokenizer() {
+	public CpcBasicEncoder() {
 
 	}
 
