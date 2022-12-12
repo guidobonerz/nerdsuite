@@ -89,7 +89,7 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 		}
 		e.gc.setForeground(Constants.DARK_GREY);
 		e.gc.fillRectangle(0, height, width, 20);
-		e.gc.setFont(Constants.RobotoMonoBold_FONT);
+		e.gc.setFont(Constants.SourceCodePro_Mono);
 		e.gc.setForeground(Constants.WHITE);
 		if (charIndex != -1) {
 			CharObject cm = charList.get(charMap.getUpperIndexOrderList().get(charIndex));
@@ -103,7 +103,7 @@ public class SymbolPaletteChooser extends BaseWidget implements PaintListener {
 		} else {
 			e.gc.setFont(Constants.GoogleMaterials_12);
 			e.gc.drawString("\ueaa7", 30, height);
-			e.gc.setFont(Constants.RobotoMonoBold_FONT);
+			e.gc.setFont(Constants.SourceCodePro_Mono);
 			String s = String.format("%02d", repeatitionCount);
 			Point p = e.gc.textExtent(s);
 			e.gc.drawString(s, width / 2 - p.x / 2, height);

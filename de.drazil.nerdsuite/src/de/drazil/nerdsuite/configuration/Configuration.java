@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -50,15 +52,31 @@ public class Configuration {
 			workspace = getWorkspace();
 
 			Bundle bundle = Platform.getBundle(Constants.APP_ID);
-
-			try {
-				for (String pathFragment : Constants.FONT_LIST) {
-					String s = FileLocator.resolve(bundle.getEntry(pathFragment)).getPath();
-					Display.getCurrent().loadFont(s);
+			for (String pathFragment : Constants.FONT_LIST) {
+				org.eclipse.core.runtime.Path path = new org.eclipse.core.runtime.Path(pathFragment);
+				URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+				URL fileUrl = null;
+				try {
+					fileUrl = FileLocator.toFileURL(url);
+				} catch (IOException e) {
+					// Will happen if the file cannot be read for some reason
+					e.printStackTrace();
 				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
+				File file = new File(fileUrl.getPath());
+				boolean fontLoaded = Display.getCurrent().loadFont(file.toString());
+				System.out.printf("font [ %s ] %s loaded\n", pathFragment, (fontLoaded ? "" : " not "));
 			}
+
+			/*
+			 * try { for (String pathFragment : Constants.FONT_LIST) { String s =
+			 * FileLocator.resolve(bundle.getEntry(pathFragment)).getPath();
+			 * 
+			 * boolean fontLoaded =Display.getCurrent().loadFont(
+			 * "c:\\Users\\drazil\\git\\nerdsuite\\de.drazil.nerdsuite\\"+pathFragment);
+			 * System.out.printf("font [ %s ] %s loaded\n", s,(fontLoaded?"":" not "));
+			 * 
+			 * } } catch (IOException e1) { e1.printStackTrace(); }
+			 */
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
