@@ -60,17 +60,6 @@
 				<version>3.1.0</version>
 				<executions>
 					<execution>
-						<phase>process-resources</phase>
-						<configuration>
-							<tasks>
-								<copy file="${project.basedir}/target/products/version.txt" toFile="version.txt" overwrite="true" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>scp-to-remote</id>
 						<phase>install</phase>
 						<goals>
