@@ -1,5 +1,7 @@
 # nerdsuite
 Nerdsuite is an IDE (based on eclipse 4.25.0/2022-09) to develop software for old 8Bit machines (C64, Atari 800XL etc.)  
+Current state: Still buggy and incomplete :-)
+
 [![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)[![macOS](https://svgshare.com/i/ZjP.svg)](https://svgshare.com/i/ZjP.svg)[![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg)
 
 Download prebuilt alpha version for...\
@@ -7,7 +9,7 @@ Download prebuilt alpha version for...\
 [Linux](https://drazil.de/nerdsuite/Nerdsuite-linux.gtk.x86_64.tar.gz)\
 [Mac](https://drazil.de/nerdsuite/Nerdsuite-macosx.cocoa.x86_64.tar.gz)
 
-Current state: Still buggy and incomplete :-)
+or build on your own...\
 
 ## Build Prerequisites
 1. Download latest java (for example amazon corretto)
