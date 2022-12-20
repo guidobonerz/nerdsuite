@@ -9,7 +9,7 @@ Download prebuilt alpha version for...\
 [Linux](https://drazil.de/nerdsuite/Nerdsuite-linux.gtk.x86_64.tar.gz)\
 [Mac](https://drazil.de/nerdsuite/Nerdsuite-macosx.cocoa.x86_64.tar.gz)
 
-or build on your own...\
+or build on your own...
 
 ## Build Prerequisites
 1. Download latest java (for example amazon corretto)
