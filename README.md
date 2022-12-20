@@ -5,7 +5,7 @@ Nerdsuite is an IDE (based on eclipse 4.25.0/2022-09) to develop software for ol
 Download prebuilt version for...\
 [Windows](https://drazil.de/nerdsuite/Nerdsuite-win32.win32.x86_64.zip)\
 [Linux](https://drazil.de/nerdsuite/Nerdsuite-linux.gtk.x86_64.tar.gz)\
-[Mac](http://drazil.de/nerdsuite/Nerdsuite-macosx.cocoa.x86_64.tar.gz)
+[Mac](https://drazil.de/nerdsuite/Nerdsuite-macosx.cocoa.x86_64.tar.gz)
 
 Current state: Still buggy and incomplete :-)
 
