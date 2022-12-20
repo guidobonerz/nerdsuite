@@ -1,5 +1,6 @@
 # nerdsuite
 Nerdsuite is an IDE (based on eclipse 4.25.0/2022-09) to develop software for old 8Bit machines (C64, Atari 800XL etc.)  
+[![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)[![macOS](https://svgshare.com/i/ZjP.svg)](https://svgshare.com/i/ZjP.svg)[![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg)
 
 | System | OS | Works | Performance | Java Version
 | -- | -- | -- | -- | -- |
