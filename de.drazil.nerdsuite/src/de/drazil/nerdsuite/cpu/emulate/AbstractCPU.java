@@ -45,8 +45,12 @@ public abstract class AbstractCPU implements ICPU {
 		return (registers[REG_FLAGS] & flag) == flag;
 	}
 
-	private String _getPC(int pc) {
+	public String getPcAsString(int pc) {
 		return Integer.toString(pc, 16);
+	}
+
+	public Breakpoint getBreakpoint(int pc) {
+		return breakpoints.get(getPcAsString(pc));
 	}
 
 	@Override
@@ -56,7 +60,7 @@ public abstract class AbstractCPU implements ICPU {
 
 	@Override
 	public void addBreakpoint(int pc, boolean enabled) {
-		String _pc = _getPC(pc);
+		String _pc = getPcAsString(pc);
 		Breakpoint bp = new Breakpoint(pc, enabled);
 		breakpoints.put(_pc, bp);
 		fireBreakpointAdded(bp);
@@ -69,7 +73,7 @@ public abstract class AbstractCPU implements ICPU {
 
 	@Override
 	public void removeBreakpoint(int pc) {
-		String _pc = _getPC(pc);
+		String _pc = getPcAsString(pc);
 		Breakpoint bp = breakpoints.get(_pc);
 		if (null != bp) {
 			breakpoints.remove(_pc);
@@ -79,7 +83,7 @@ public abstract class AbstractCPU implements ICPU {
 
 	@Override
 	public void setBreakpointEnabled(int pc, boolean enabled) {
-		String _pc = _getPC(pc);
+		String _pc = getPcAsString(pc);
 		Breakpoint bp = breakpoints.get(_pc);
 		if (null != bp) {
 			bp.setEnabled(enabled);
@@ -89,7 +93,7 @@ public abstract class AbstractCPU implements ICPU {
 
 	@Override
 	public void toggleBreakpoint(int pc) {
-		String _pc = _getPC(pc);
+		String _pc = getPcAsString(pc);
 		Breakpoint bp = breakpoints.get(_pc);
 		if (null != bp) {
 			bp.setEnabled(!bp.isEnabled());

@@ -13,6 +13,10 @@ public interface ICPU {
 
 	public boolean hasFlag(int flag);
 
+	public String getPcAsString(int pc);
+
+	public Breakpoint getBreakpoint(int pc);
+
 	public int execute(int pc, int[] ram, int[] rom);
 
 	public void addBreakpoint(int pc);

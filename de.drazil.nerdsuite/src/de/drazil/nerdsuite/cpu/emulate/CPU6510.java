@@ -1876,7 +1876,7 @@ public class CPU6510 extends AbstractCPU {
 		}
 
 		}
-		return 0;
+		return pc;
 	}
 
 	private int getAdress(int pc, int[] ram, int[] rom, int offset) {

@@ -29,7 +29,9 @@ public abstract class AbstractPlatform implements IPlatform {
 	public void runAt(int startAdress, ICPU cpu) {
 		int pc = startAdress;
 		for (;;) {
-			pc = cpu.execute(pc, ram, rom);
+			if (!cpu.getBreakpoint(pc).isEnabled()) {
+				pc = cpu.execute(pc, ram, rom);
+			}
 		}
 	}
 }
