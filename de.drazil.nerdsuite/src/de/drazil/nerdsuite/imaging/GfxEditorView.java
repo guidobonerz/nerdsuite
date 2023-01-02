@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -31,6 +30,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -79,8 +79,6 @@ import de.drazil.nerdsuite.widget.Tile;
 
 public class GfxEditorView implements ITileUpdateListener {
 
-	@Inject
-	private Logger logger;
 	private Composite parent;
 	private PainterWidget painter;
 	private RepositoryWidget repository;
@@ -313,6 +311,12 @@ public class GfxEditorView implements ITileUpdateListener {
 		}
 	}
 
+	@Inject
+	@Optional
+	public void export(@UIEventTopic("Export") BrokerObject brokerObject, MPart part) {
+		System.out.printf("Export GFX %s\n", (String) brokerObject.getTransferObject());
+	}
+
 	@PreDestroy
 	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService, MPart part) {
 		if (part.isDirty()) {
@@ -347,7 +351,19 @@ public class GfxEditorView implements ITileUpdateListener {
 		Map<String, Object> pm = (Map<String, Object>) part.getObject();
 		project = (Project) pm.get("project");
 		owner = (String) pm.get("repositoryOwner");
+/*
+		Button button = new Button(parent, SWT.NONE);
+		button.setText("Press me");
+		button.addListener(SWT.Selection, new Listener() {
 
+			@Override
+			public void handleEvent(Event event) {
+				if (event.type == SWT.Selection) {
+					eventBroker.send("Export", new BrokerObject("", "tiles"));
+				}
+			}
+		});
+*/
 		tileRepositoryService = ServiceFactory.getService(project.getId(), TileRepositoryService.class);
 		tileRepositoryReferenceService = tileRepositoryService.getReferenceRepository();
 

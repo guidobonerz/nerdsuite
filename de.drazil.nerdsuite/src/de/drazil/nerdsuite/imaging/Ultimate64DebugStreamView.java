@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.model.RunObject;
 import de.drazil.nerdsuite.network.TcpHandler;
@@ -130,7 +131,7 @@ public class Ultimate64DebugStreamView extends AbstractStreamView {
 	}
 
 	private void startStream(int streamingMode) {
-		String targetAdress = System.getProperty("client.adress");
+		String targetAdress = System.getProperty(Constants.U64_CLIENT_ADDRESS);
 		if (!running) {
 			startStreamByCommand(DEBUG_STREAM_START_COMMAND, 0, targetAdress);
 			debugThread = new Thread(debugStreamReceiver);
@@ -173,7 +174,7 @@ public class Ultimate64DebugStreamView extends AbstractStreamView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		parent.setLayout(new GridLayout());
-		tcpHandler = new TcpHandler(System.getProperty("u64.ip"), Integer.valueOf(System.getProperty("u64.port")));
+		tcpHandler = new TcpHandler(System.getProperty(Constants.U64_HOST_ADDRESS), Integer.valueOf(System.getProperty(Constants.U64_HOST_PORT)));
 		imageViewer = createImageViewer(parent);
 		debugStreamReceiver = new DebugStreamReceiver();
 		startStream(DEBUG_STREAM_START_COMMAND);

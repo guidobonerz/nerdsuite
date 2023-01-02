@@ -102,7 +102,7 @@ public class Ultimate64AppStreamView extends AbstractStreamView implements IHitK
 					// int linesPerPacket = NumericConverter.getByteAsInt(buf, 8);
 					// int bitsPerPixel = NumericConverter.getByteAsInt(buf, 9);
 					// int encodingType = NumericConverter.getWordAsInt(buf, 10);
-
+					
 					if (offset < data.length) {
 						// System.out.printf(" line: %04x\n", line);
 						System.arraycopy(dataBuffer, 12, data, offset, dataBuffer.length - 12);
@@ -221,7 +221,7 @@ public class Ultimate64AppStreamView extends AbstractStreamView implements IHitK
 	}
 
 	private void startStream(int streamingMode) {
-		String targetAdress = System.getProperty("client.adress");
+		String targetAdress = System.getProperty(Constants.U64_CLIENT_ADDRESS);
 		if ((streamingMode & VIDEO_STREAM) == VIDEO_STREAM && !videoStreamReceiver.isRunning()) {
 			startStreamByCommand(VIC_STREAM_START_COMMAND, 0, targetAdress);
 			imageViewer.drawImage(false);
@@ -366,7 +366,7 @@ public class Ultimate64AppStreamView extends AbstractStreamView implements IHitK
 	public void postConstruct(Composite parent) {
 		this.parent = parent;
 
-		tcpHandler = new TcpHandler(System.getProperty("u64.ip"), Integer.valueOf(System.getProperty("u64.port")));
+		tcpHandler = new TcpHandler(System.getProperty(Constants.U64_HOST_ADDRESS), Integer.valueOf(System.getProperty(Constants.U64_HOST_PORT)));
 		List<PlatformColor> colorList = PlatformFactory.getPlatformColors("C64");
 		RGB palette[] = new RGB[colorList.size()];
 		for (int i = 0; i < palette.length; i++) {

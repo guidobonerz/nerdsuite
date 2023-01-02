@@ -54,6 +54,7 @@ import de.drazil.nerdsuite.toolchain.BasicTokenizerStage;
 import de.drazil.nerdsuite.toolchain.ExternalRunnerToolchainStage;
 import de.drazil.nerdsuite.toolchain.Toolchain;
 import de.drazil.nerdsuite.widget.CustomPopupDialog;
+import de.drazil.nerdsuite.widget.CustomShell;
 import de.drazil.nerdsuite.widget.ICharSelectionListener;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.SymbolPaletteChooser;
@@ -201,6 +202,9 @@ public class SourceEditorView implements IDocument, ICharSelectionListener {
 	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void postConstruct(Composite parent, MApplication app, MTrimmedWindow window, EMenuService menuService) {
+
+		//CustomShell newShell = new CustomShell();
+		//newShell.open(parent);
 
 		Map<String, Object> pm = (Map<String, Object>) part.getObject();
 		project = (Project) pm.get("project");

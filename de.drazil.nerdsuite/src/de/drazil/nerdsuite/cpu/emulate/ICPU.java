@@ -1,5 +1,7 @@
 package de.drazil.nerdsuite.cpu.emulate;
 
+import java.util.Collection;
+
 public interface ICPU {
 	public static final int REG_FLAGS = 0;
 
@@ -12,5 +14,25 @@ public interface ICPU {
 	public boolean hasFlag(int flag);
 
 	public int execute(int pc, int[] ram, int[] rom);
+
+	public void addBreakpoint(int pc);
+
+	public void addBreakpoint(int pc, boolean enabled);
+
+	public void removeBreakpoint(int pc);
+
+	public void toggleBreakpoint(int pc);
+
+	public void setBreakpointEnabled(int pc, boolean enabled);
+
+	public void disableAllBreakpoints();
+
+	public void enableAllBreakpoints();
+
+	public Collection<Breakpoint> getBreakpoints();
+
+	public void addBreakpointListener(IBreakpointListener listener);
+
+	public void removeBreakpointListener(IBreakpointListener listener);
 
 }

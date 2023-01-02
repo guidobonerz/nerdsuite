@@ -11,11 +11,15 @@ import de.drazil.nerdsuite.util.SwtUtil;
 
 public class Constants {
 	public final static String APP_ID = "de.drazil.nerdsuite";
+	public final static String U64_CLIENT_ADDRESS = "u64.client.address";
+	public final static String U64_HOST_ADDRESS = "u64.host.address";
+	public final static String U64_HOST_PORT = "u64.host.port";
 	public final static String PLUGIN_BASE_PATH = String.format("platform:/plugin/%s/", APP_ID);
 	public final static String OWNER = "OWNER";
 
-	public final static String[] FONT_LIST = new String[] { "/fonts/ttf/C64_Pro_Mono-STYLE.ttf",
-			"/fonts/ttf/MaterialIcons-Regular.ttf", "/fonts/ttf/SourceCodePro-Regular.ttf", "/fonts/ttf/FontAwesome5Pro-Solid-900.otf" };
+	public final static String[] FONT_LIST = new String[] { "/fonts/ttf/MaterialIcons-Regular.ttf",
+			"/fonts/ttf/SourceCodePro-Regular.ttf", "/fonts/ttf/FontAwesome5Pro-Solid-900.otf",
+			"/fonts/ttf/C64_Pro_Mono-STYLE.ttf" };
 
 	public final static String PREFERENCES_TEXTCOLOR_OPCODE = "preferences.textcolor.instruction";
 	public final static String PREFERENCES_TEXTCOLOR_ILLEGAL_OPCODE = "preferences.textcolor.illegal_instruction";

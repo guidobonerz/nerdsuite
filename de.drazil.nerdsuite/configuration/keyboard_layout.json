@@ -418,7 +418,7 @@
 					"id": 0,
 					"type": "KEY",
 					"size": 1,
-					"text": "\ue05f",
+					"text": "\uee1f",
 					"codeOptions": [
 						"95",
 						"95",
@@ -427,22 +427,22 @@
 					],
 					"displayOptions": [
 						[
-							"\ue05f",
-							"\ue15f",
-							"\ue25f",
-							"\ue35f"
+							"\uee1f",
+							"\uef1f",
+							"\uee9f",
+							"\uef9f"
 						],
 						[
-							"\ue05f",
-							"\ue15f",
-							"\ue25f",
-							"\ue35f"
+							"\uee1f",
+							"\uef1f",
+							"\uee9f",
+							"\uef9f"
 						],
 						[
-							"\ue05f",
-							"\ue15f",
-							"\ue25f",
-							"\ue35f"
+							"\uee1f",
+							"\uef1f",
+							"\uee9f",
+							"\uef9f"
 						]
 					]
 				},
@@ -459,22 +459,22 @@
 					],
 					"displayOptions": [
 						[
-							"\ue031",
-							"\ue131",
-							"\ue231",
-							"\ue331"
+							"\uee31",
+							"\uef31",
+							"\ueeb1",
+							"\uefb1"
 						],
 						[
-							"\ue021",
-							"\ue121",
-							"\ue221",
-							"\ue321"
+							"\uee31",
+							"\uef31",
+							"\ueeb1",
+							"\uefb1"
 						],
 						[
-							"\ue021",
-							"\ue121",
-							"\ue221",
-							"\ue321"
+							"\uee31",
+							"\uef31",
+							"\ueeb1",
+							"\uefb1"
 						]
 					]
 				},
@@ -491,7 +491,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue032",
+							"\uee32",
 							"\ue132",
 							"\ue232",
 							"\ue332"
@@ -523,7 +523,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue033",
+							"\uee33",
 							"\ue133",
 							"\ue233",
 							"\ue333"
@@ -555,7 +555,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue034",
+							"\uee34",
 							"\ue134",
 							"\ue234",
 							"\ue334"
@@ -587,7 +587,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue035",
+							"\uee35",
 							"\ue135",
 							"\ue235",
 							"\ue335"
@@ -619,7 +619,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue036",
+							"\uee36",
 							"\ue136",
 							"\ue236",
 							"\ue336"
@@ -651,7 +651,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue037",
+							"\uee37",
 							"\ue137",
 							"\ue237",
 							"\ue337"
@@ -683,7 +683,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue038",
+							"\uee38",
 							"\ue138",
 							"\ue238",
 							"\ue338"
@@ -715,7 +715,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue039",
+							"\uee39",
 							"\ue139",
 							"\ue239",
 							"\ue339"
@@ -747,7 +747,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue030",
+							"\uee30",
 							"\ue130",
 							"\ue230",
 							"\ue330"
@@ -779,7 +779,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue02b",
+							"\uee2b",
 							"\ue12b",
 							"\ue22b",
 							"\ue32b"
@@ -811,7 +811,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue02d",
+							"\uee2d",
 							"\ue12d",
 							"\ue22d",
 							"\ue32d"
@@ -834,7 +834,7 @@
 					"id": 0,
 					"type": "KEY",
 					"size": 1,
-					"text": "\ue05c",
+					"text": "\uee1c",
 					"codeOptions": [
 						"92",
 						"168",
@@ -843,7 +843,7 @@
 					],
 					"displayOptions": [
 						[
-							"\ue05c",
+							"\uee1c",
 							"\ue15c",
 							"\ue25c",
 							"\ue35c"
@@ -1349,7 +1349,14 @@
 				{
 					"id": 0,
 					"type": "FILLER",
-					"size": 1.5
+					"size": 5.8
+				},
+				{
+					"id": 0,
+					"type": "FUNCTION",
+					"name": "LOAD *",
+					"size": 4,
+					"text": "LOAD *"
 				}
 			]
 		},
