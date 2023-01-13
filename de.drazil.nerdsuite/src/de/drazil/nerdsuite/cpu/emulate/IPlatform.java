@@ -7,5 +7,9 @@ public interface IPlatform {
 
 	public void load();
 
-	public void runAt(int startAdress, ICPU cpu);
+	public void run(int startAdress, ICPU cpu);
+
+	public void run(int startAdress, ICPU cpu, boolean debug);
+
+	public void terminate();
 }

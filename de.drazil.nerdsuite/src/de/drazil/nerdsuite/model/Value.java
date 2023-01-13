@@ -1,40 +1,32 @@
 package de.drazil.nerdsuite.model;
 
+import de.drazil.nerdsuite.enums.ValueType;
 import de.drazil.nerdsuite.util.NumericConverter;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Value {
-	public final static int DWORD = 1;
-	public final static int WORD = 2;
-	public final static int HIGHWORD = 21;
-	public final static int LOWWORD = 22;
-	public final static int BYTE = 3;
-	public final static int HIGHBYTE = 31;
-	public final static int LOWBYTE = 32;
-	public final static int HIGHNIBBLE = 33;
-	public final static int LOWNIBBLE = 34;
 
 	@Getter
 	@Setter
 	private int value;
-	private int mode;
+	private ValueType valueType;
 
 	public Value(String hexValue) {
-		this(hexValue, WORD);
+		this(hexValue, ValueType.WORD);
 	}
 
-	public Value(String hexValue, int mode) {
+	public Value(String hexValue, ValueType valueType) {
 		this(Integer.parseInt(hexValue, 16));
 	}
 
 	public Value(int value) {
-		this(value, WORD);
+		this(value, ValueType.WORD);
 	}
 
-	public Value(int value, int mode) {
+	public Value(int value, ValueType valueType) {
 		setValue(value);
-		setMode(mode);
+		setValueType(valueType);
 	}
 
 	public Value add(int x) {
@@ -61,12 +53,12 @@ public class Value {
 		value = 0;
 	}
 
-	public int getMode() {
-		return mode;
+	public ValueType getValueType() {
+		return valueType;
 	}
 
-	public void setMode(int mode) {
-		this.mode = mode;
+	public void setValueType(ValueType valueType) {
+		this.valueType = valueType;
 	}
 
 	public int getLowByte() {
@@ -96,22 +88,36 @@ public class Value {
 	@Override
 	public String toString() {
 		String value = "";
-		switch (mode) {
+
+		switch (valueType) {
 		case DWORD:
 			value = NumericConverter.toHexString(this.value, 8);
+			break;
+		case HIGHWORD:
+			value = NumericConverter.toHexString(getHighWord(), 4);
+			break;
+		case LOWWORD:
+			value = NumericConverter.toHexString(getLowWord(), 4);
 			break;
 		case WORD:
 			value = NumericConverter.toHexString(this.value, 4);
 			break;
+		case HIGHBYTE:
+			value = NumericConverter.toHexString(getHighByte(), 2);
+			break;
+		case LOWBYTE:
+			value = NumericConverter.toHexString(getLowByte(), 2);
+			break;
 		case BYTE:
 			value = NumericConverter.toHexString(this.value, 2);
 			break;
-		case HIGHBYTE:
-			value = "HighByte of " + NumericConverter.toHexString(this.value, 4);
+		case HIGHNIBBLE:
+			value = NumericConverter.toHexString(getHighNibble(), 2);
 			break;
-		case LOWBYTE:
-			value = "LowByte of " + NumericConverter.toHexString(this.value, 4);
+		case LOWNIBBLE:
+			value = NumericConverter.toHexString(getLowNibble(), 2);
 			break;
+
 		}
 		return value;
 	}

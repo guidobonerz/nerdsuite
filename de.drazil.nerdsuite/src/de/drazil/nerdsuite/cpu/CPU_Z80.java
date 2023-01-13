@@ -1,6 +1,7 @@
 package de.drazil.nerdsuite.cpu;
 
 import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.enums.ValueType;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.DisassemblingRange;
 import de.drazil.nerdsuite.model.InstructionType;
@@ -71,7 +72,7 @@ public class CPU_Z80 extends AbstractCPU {
                             String.format("%04X", value.getValue()));
                 } else if (addressingModeTemplate.contains("{BYTE}")) {
                     value = new Value(getByte(contentProvider.getContentArray(), offset + opcode.getValueStartPos()),
-                            Value.BYTE);
+                            ValueType.BYTE);
                     if ("BRANCH_REL".equals(instructionType)) {
                         isAdress = true;
                         value = currentLine.getProgramCounter()

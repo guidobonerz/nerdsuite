@@ -5,6 +5,7 @@ import java.util.Map;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.enums.ValueType;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.AddressingMode;
 import de.drazil.nerdsuite.model.DisassemblingRange;
@@ -265,11 +266,11 @@ public class CPU_6510 extends AbstractCPU {
                 // parseInstructions(byteArray, pc, jmpLine, platformData,
                 // Type.AsmInstruction, ReferenceType.JumpMark, inSubroutine);
 
-                lowTableLine.setReferenceValue(new Value(jumpMark, Value.LOWBYTE));
+                lowTableLine.setReferenceValue(new Value(jumpMark, ValueType.LOWBYTE));
                 lowTableLine.setInstructionType(InstructionType.Data);
                 lowTableLine.setReferenceType(ReferenceType.DataReference);
 
-                highTableLine.setReferenceValue(new Value(jumpMark, Value.HIGHBYTE));
+                highTableLine.setReferenceValue(new Value(jumpMark, ValueType.HIGHBYTE));
                 highTableLine.setInstructionType(InstructionType.Data);
                 highTableLine.setReferenceType(ReferenceType.DataReference);
             }
@@ -336,8 +337,8 @@ public class CPU_6510 extends AbstractCPU {
                                         }
                                         pointerLine.setReferenceValue(resultPointer.getAddress());
 
-                                        pointerA.setReferenceValue(new Value(reference.getValue(), Value.LOWBYTE));
-                                        pointerB.setReferenceValue(new Value(reference.getValue(), Value.HIGHBYTE));
+                                        pointerA.setReferenceValue(new Value(reference.getValue(), ValueType.LOWBYTE));
+                                        pointerB.setReferenceValue(new Value(reference.getValue(), ValueType.HIGHBYTE));
                                     }
                                 }
                             }
