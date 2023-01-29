@@ -28,8 +28,12 @@ public class CPUZ80 extends AbstractCPU {
 	public static final int REG_I = 12;
 	public static final int REG_R = 13;
 
+	public CPUZ80(IPlatform platform) {
+		super(platform);
+	}
+
 	@Override
-	public int execute(int pc, int[] ram, int[] rom) {
+	public int execute(int pc, boolean debug) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

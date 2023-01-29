@@ -6,16 +6,17 @@ import lombok.Setter;
 
 @NoArgsConstructor
 public class Breakpoint {
-	@Getter
-	@Setter
+
 	private int pc;
 
+	@Getter
+	@Setter
 	private boolean enabled;
+
 	@Getter
 	@Setter
-	private int enabledAfterCount;
-	@Getter
-	@Setter
+	private int cycleCount;
+
 	private int count;
 
 	public Breakpoint(int pc) {
@@ -27,16 +28,14 @@ public class Breakpoint {
 		this.enabled = enabled;
 	}
 
-	public boolean isEnabled() {
-		if (enabledAfterCount == 0 || (enabledAfterCount > 0 && count > enabledAfterCount)) {
-			return enabled;
-		} else {
-			return false;
-		}
+	public Breakpoint(int pc, boolean enabled, int cycleCount) {
+		this.pc = pc;
+		this.enabled = enabled;
+		this.cycleCount = cycleCount;
 	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public boolean checkBreakpoint(int pc) {
+		return (this.pc == pc && enabled && (count > cycleCount || cycleCount == 0));
 	}
 
 	public void reset() {

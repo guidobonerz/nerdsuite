@@ -4,7 +4,12 @@ public class C64 extends AbstractPlatform {
 
 	@Override
 	protected void powerOn() {
-		ram[0] = 0b00101111;
-		ram[1] = 0b00110111;
+		getRAM()[0] = 0b00101111;
+		getRAM()[1] = 0b00110111;
+	}
+
+	@Override
+	public int getMemorySize() {
+		return 0xffff;
 	}
 }

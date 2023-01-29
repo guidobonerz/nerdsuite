@@ -2,13 +2,31 @@ package de.drazil.nerdsuite.cpu.emulate;
 
 public abstract class AbstractPlatform implements IPlatform {
 
-	protected int[] ram = new int[0xffff];
-	protected int[] rom = new int[0xffff];
+	private int pc = 0;
+	private int[] ram;
+	private int[] rom;
+	protected ICPU cpu;
+	private Thread lifeCycleThread = null;
 
-	private boolean debug = false;
-	private boolean terminate = false;
+	public AbstractPlatform() {
+		ram = new int[getMemorySize()];
+		rom = new int[getMemorySize()];
+	}
 
-	protected abstract void powerOn();
+	public abstract int getMemorySize();
+
+	public int[] getRAM() {
+		return ram;
+	}
+
+	public int[] getROM() {
+		return rom;
+	}
+
+	protected void powerOn() {
+		lifeCycleThread = new Thread(this);
+		lifeCycleThread.start();
+	}
 
 	@Override
 	public void resetCold() {
@@ -29,22 +47,13 @@ public abstract class AbstractPlatform implements IPlatform {
 	}
 
 	@Override
-	public void run(int startAdress, ICPU cpu) {
-		run(startAdress, cpu, false);
-	}
+	public void run() {
+		while (cpu.getExecutionState() != ExecutionState.TERMINATE) {
+			if (cpu.getExecutionState() == ExecutionState.RUN) {
+				pc = cpu.execute(pc, false);
+			} else {
 
-	@Override
-	public void run(int startAdress, ICPU cpu, boolean debug) {
-		int pc = startAdress;
-		while (!terminate) {
-			if (!cpu.getBreakpoint(pc).isEnabled()) {
-				pc = cpu.execute(pc, ram, rom);
 			}
 		}
-	}
-
-	@Override
-	public void terminate() {
-		terminate = true;
 	}
 }

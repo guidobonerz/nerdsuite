@@ -1,15 +1,16 @@
 package de.drazil.nerdsuite.cpu.emulate;
 
-public interface IPlatform {
+public interface IPlatform extends Runnable {
 	public void resetCold();
 
 	public void resetWarm();
 
 	public void load();
 
-	public void run(int startAdress, ICPU cpu);
+	public int getMemorySize();
 
-	public void run(int startAdress, ICPU cpu, boolean debug);
+	public int[] getRAM();
 
-	public void terminate();
+	public int[] getROM();
+
 }

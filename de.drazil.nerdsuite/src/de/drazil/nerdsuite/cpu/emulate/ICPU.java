@@ -2,6 +2,8 @@ package de.drazil.nerdsuite.cpu.emulate;
 
 import java.util.Collection;
 
+import de.drazil.nerdsuite.enums.ValueType;
+
 public interface ICPU {
 	public static final int REG_FLAGS = 0;
 
@@ -13,21 +15,25 @@ public interface ICPU {
 
 	public boolean hasFlag(int flag);
 
-	public String getPcAsString(int pc);
+	public Breakpoint getBreakpoint(int address);
 
-	public Breakpoint getBreakpoint(int pc);
+	public int execute(int pc, boolean debug);
 
-	public int execute(int pc, int[] ram, int[] rom);
+	public void setExecutionState(ExecutionState executionState);
 
-	public void addBreakpoint(int pc);
+	public ExecutionState getExecutionState();
 
-	public void addBreakpoint(int pc, boolean enabled);
+	public void addBreakpoint(int address);
 
-	public void removeBreakpoint(int pc);
+	public void addBreakpoint(int address, boolean enabled);
 
-	public void toggleBreakpoint(int pc);
+	public void addBreakpoint(int address, boolean enabled, int cycles);
 
-	public void setBreakpointEnabled(int pc, boolean enabled);
+	public void removeBreakpoint(int address);
+
+	public void toggleBreakpoint(int address);
+
+	public void setBreakpointEnabled(int address, boolean enabled);
 
 	public void disableAllBreakpoints();
 
@@ -38,5 +44,19 @@ public interface ICPU {
 	public void addBreakpointListener(IBreakpointListener listener);
 
 	public void removeBreakpointListener(IBreakpointListener listener);
+
+	public void addWatchpoint(int address);
+
+	public void addWatchpoint(int address, ValueType valueType);
+
+	public void addWatchpoint(String label, ValueType valueType);
+
+	public void removeWatchpoint(int address);
+
+	public void removeWatchpoint(String label);
+
+	public void addLabel(String label, int address);
+
+	public void removeLabel(String label);
 
 }
