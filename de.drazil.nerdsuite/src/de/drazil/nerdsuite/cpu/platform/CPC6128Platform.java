@@ -1,23 +1,12 @@
 package de.drazil.nerdsuite.cpu.platform;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import de.drazil.nerdsuite.basic.decode.BasicParser;
 import de.drazil.nerdsuite.cpu.CPU_Z80;
-import de.drazil.nerdsuite.cpu.decode.InstructionLine;
 import de.drazil.nerdsuite.cpu.decode.dialect.IDialect;
 import de.drazil.nerdsuite.model.Address;
-import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.DisassemblingRange;
-import de.drazil.nerdsuite.model.InstructionType;
-import de.drazil.nerdsuite.model.RangeType;
-import de.drazil.nerdsuite.model.ReferenceType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.widget.IContentProvider;
 

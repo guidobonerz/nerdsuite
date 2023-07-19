@@ -2,13 +2,16 @@ package de.drazil.nerdsuite.cpu.emulate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.TimerTask;
 
 import de.drazil.nerdsuite.enums.ValueType;
 import de.drazil.nerdsuite.util.NumericConverter;
+
 
 public abstract class AbstractCPU implements ICPU {
 	protected int pc = 0;
@@ -23,6 +26,16 @@ public abstract class AbstractCPU implements ICPU {
 	protected Stack<Integer> stack;
 	private ExecutionState executionState = ExecutionState.RUN;
 
+	protected class Task extends TimerTask {
+		   private String name;
+		   public Task(String name) {
+		       this.name = name;
+		   }
+		   public void run() {
+		      System.out.println("[" + new Date() + "] " + name + ": task executed!");
+		   }
+		}
+	
 	protected AbstractCPU(IPlatform platform) {
 		this.platform = platform;
 		((AbstractPlatform) this.platform).cpu = this;

@@ -7,6 +7,7 @@ public abstract class AbstractPlatform implements IPlatform {
 	private int[] rom;
 	protected ICPU cpu;
 	private Thread lifeCycleThread = null;
+	private long lastCycle = 0;
 
 	public AbstractPlatform() {
 		ram = new int[getMemorySize()];
@@ -23,9 +24,14 @@ public abstract class AbstractPlatform implements IPlatform {
 		return rom;
 	}
 
-	protected void powerOn() {
+	protected abstract void init();
+
+	public void powerOn() {
+		init();
 		lifeCycleThread = new Thread(this);
 		lifeCycleThread.start();
+		lastCycle = System.nanoTime();
+
 	}
 
 	@Override
@@ -48,11 +54,12 @@ public abstract class AbstractPlatform implements IPlatform {
 
 	@Override
 	public void run() {
-		while (cpu.getExecutionState() != ExecutionState.TERMINATE) {
-			if (cpu.getExecutionState() == ExecutionState.RUN) {
-				pc = cpu.execute(pc, false);
-			} else {
-
+		for (;;) {
+			long ct = System.nanoTime();
+			if (lastCycle + 1024444 > System.nanoTime()) {
+				lastCycle = System.nanoTime();
+				System.out.println(System.currentTimeMillis());
+				// pc = cpu.execute(pc, false);
 			}
 		}
 	}

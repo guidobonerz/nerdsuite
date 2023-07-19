@@ -4,8 +4,6 @@ import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.List;
 
-import de.drazil.nerdsuite.basic.encode.AbstractTokenEncoder.LastRead;
-import de.drazil.nerdsuite.basic.encode.AbstractTokenEncoder.Mode;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
 import de.drazil.nerdsuite.model.CharObject;

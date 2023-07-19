@@ -216,7 +216,7 @@ public class DSK_MediaContainer extends AbstractBaseMediaContainer {
 			if (v == 0) {
 				break;
 			}
-			offsetList.add(new Integer(v));
+			offsetList.add(v);
 		}
 	}
 

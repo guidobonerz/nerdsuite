@@ -12,5 +12,7 @@ public interface IPlatform extends Runnable {
 	public int[] getRAM();
 
 	public int[] getROM();
+	
+	public void powerOn();
 
 }

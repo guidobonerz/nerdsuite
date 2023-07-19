@@ -1,7 +1,6 @@
 
 package de.drazil.nerdsuite.handler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +10,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.graphics.Point;
 
-import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.imaging.service.ServiceFactory;
-import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
-import de.drazil.nerdsuite.model.GraphicMetadata;
 import de.drazil.nerdsuite.widget.ImagingWidgetConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;

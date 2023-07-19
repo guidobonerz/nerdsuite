@@ -20,6 +20,7 @@ public class CPU6510 extends AbstractCPU {
 
 	public CPU6510(IPlatform platform) {
 		super(platform);
+
 	}
 
 	@Override

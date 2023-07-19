@@ -538,6 +538,8 @@
     <handlers xmi:id="_fWufgFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.4" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.JumpToAddressHandler" command="_V20PgFY2Eeu6p9lPyfXaSg"/>
     <handlers xmi:id="_vQIBIFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.returnToOrigin" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ReturnToOriginHandler" command="_xfrB4FY2Eeu6p9lPyfXaSg"/>
     <handlers xmi:id="_8WSmIFY2Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handler.setLabel" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.SetLabelHandler" command="_5v1hQFY2Eeu6p9lPyfXaSg"/>
+    <handlers xmi:id="_NZPmQCZtEe6fjMBqAqLImg" elementId="de.drazil.nerdsuite.handler.ClearRanges" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.ClearAllRangesHandler" command="_z6NAECZsEe6fjMBqAqLImg"/>
+    <handlers xmi:id="_Wv4lgCZtEe6fjMBqAqLImg" elementId="de.drazil.nerdsuite.handler.5" contributionURI="bundleclass://de.drazil.nerdsuite/de.drazil.nerdsuite.handler.RangeTagHandler" command="_BCcBoCZtEe6fjMBqAqLImg"/>
     <menus xsi:type="menu:PopupMenu" xmi:id="_MKymcFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.popupmenu.disassemblyView">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_NUrmsFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.renameLabel" label="Set label" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/selection-input.png" command="_5v1hQFY2Eeu6p9lPyfXaSg"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_Npk4oFWDEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.jumpToAddress" label="Jump to address" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/arrow-curve-270.png" command="_V20PgFY2Eeu6p9lPyfXaSg"/>
@@ -559,6 +561,8 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_kvaN8FWSEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledmenuitem.bitmap" label="Bitmap"/>
       </children>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_Jjlt4FY3Eeu6p9lPyfXaSg" elementId="de.drazil.nerdsuite.handledmenuitem.discover" label="Discover"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_shQckCZsEe6fjMBqAqLImg" elementId="de.drazil.nerdsuite.handledmenuitem.clearallranges" label="Clear all ranges" command="_z6NAECZsEe6fjMBqAqLImg"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_9CD8cCZsEe6fjMBqAqLImg" elementId="de.drazil.nerdsuite.handledmenuitem.RangeTag" label="Range tag" command="_BCcBoCZtEe6fjMBqAqLImg"/>
     </menus>
     <toolbar xmi:id="_6QgV4FWoEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.toolbar.3">
       <children xsi:type="menu:HandledToolItem" xmi:id="_6sr7kFWoEeuHQcuyH3nuvg" elementId="de.drazil.nerdsuite.handledtoolitem.code2" label="Code" iconURI="platform:/plugin/de.drazil.nerdsuite/icons/disasm.png" command="_jAOccNWOEemb1pFqqqXNXQ"/>
@@ -656,6 +660,8 @@
     <parameters xmi:id="_0TjZIF5uEeyUX9bjr0AfxA" elementId="de.drazil.nerdsuite.commandparameter.options" name="Options"/>
   </commands>
   <commands xmi:id="_B2Hs0FeiEe2F2tElkw3aVg" elementId="de.drazil.nerdsuite.command.properties" commandName="Properties"/>
+  <commands xmi:id="_z6NAECZsEe6fjMBqAqLImg" elementId="de.drazil.nerdsuite.command.clearRanges" commandName="Clear all Ranges"/>
+  <commands xmi:id="_BCcBoCZtEe6fjMBqAqLImg" elementId="de.drazil.nerdsuite.command.RangeTag" commandName="Range tag"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_POaA06F9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

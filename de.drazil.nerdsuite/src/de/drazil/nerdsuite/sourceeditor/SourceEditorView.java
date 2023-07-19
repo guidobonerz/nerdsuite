@@ -54,7 +54,6 @@ import de.drazil.nerdsuite.toolchain.BasicTokenizerStage;
 import de.drazil.nerdsuite.toolchain.ExternalRunnerToolchainStage;
 import de.drazil.nerdsuite.toolchain.Toolchain;
 import de.drazil.nerdsuite.widget.CustomPopupDialog;
-import de.drazil.nerdsuite.widget.CustomShell;
 import de.drazil.nerdsuite.widget.ICharSelectionListener;
 import de.drazil.nerdsuite.widget.PlatformFactory;
 import de.drazil.nerdsuite.widget.SymbolPaletteChooser;

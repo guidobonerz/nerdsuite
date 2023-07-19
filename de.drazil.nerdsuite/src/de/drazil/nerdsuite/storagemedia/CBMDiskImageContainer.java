@@ -10,6 +10,7 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.model.AsciiMap;
 
 public abstract class CBMDiskImageContainer extends AbstractBaseMediaContainer {
@@ -176,7 +177,7 @@ public abstract class CBMDiskImageContainer extends AbstractBaseMediaContainer {
 		try {
 
 			if (list == null) {
-				Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+				Bundle bundle = Platform.getBundle(Constants.APP_ID);
 				ObjectMapper mapper = new ObjectMapper();
 				JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, AsciiMap.class);
 				list = mapper.readValue(bundle.getEntry("configuration/petascii_map.json"), listType);
