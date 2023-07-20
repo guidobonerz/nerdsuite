@@ -282,14 +282,16 @@ public class HexViewWidget extends Composite implements IContentProvider {
 				Console.println("> skip setting new range due to equality.");
 			}
 		} else {
-			/*
-			 * List<DisassemblingRange> ranges = rangeList.stream() .filter(r -> start <
-			 * r.getOffset() + r.getLen() && start + length > r.getOffset())
-			 * .collect(Collectors.toList());
-			 */
-			List<DisassemblingRange> ranges = rangeList.stream()
-					.filter(r -> start <= r.getOffset() && start + length > r.getOffset()).collect(Collectors.toList());
 
+			List<DisassemblingRange> ranges = rangeList.stream()
+					.filter(r -> start <= r.getOffset() + r.getLen() && start + length > r.getOffset())
+					.collect(Collectors.toList());
+
+			/*
+			 * List<DisassemblingRange> ranges = rangeList.stream() .filter(r -> start <=
+			 * r.getOffset() && start + length >
+			 * r.getOffset()).collect(Collectors.toList());
+			 */
 			while (ranges.size() > 2) {
 				DisassemblingRange dr = ranges.get(1);
 				ranges.remove(dr);
