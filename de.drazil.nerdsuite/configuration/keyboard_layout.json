@@ -1,2279 +1,749 @@
 {
-	"maxOptions": 4,
-	"keyRows": [
-		{
-			"keys": [
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 0.3
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 2,
-					"text": "F1",
-					"codeOptions": [
-						"133",
-						"133",
-						"133",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 2,
-					"text": "F2",
-					"codeOptions": [
-						"137",
-						"137",
-						"137",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 2,
-					"text": "F3",
-					"codeOptions": [
-						"134",
-						"134",
-						"134",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 2,
-					"text": "F4",
-					"codeOptions": [
-						"138",
-						"138",
-						"138",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 2,
-					"text": "F5",
-					"codeOptions": [
-						"135",
-						"135",
-						"135",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 2,
-					"text": "F6",
-					"codeOptions": [
-						"139",
-						"139",
-						"139",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 2,
-					"text": "F7",
-					"codeOptions": [
-						"136",
-						"136",
-						"136",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"size": 2,
-					"text": "F8",
-					"codeOptions": [
-						"140",
-						"140",
-						"140",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "OPTION",
-					"name": "REVERSE",
-					"symbol": true,
-					"toggleButton": true,
-					"size": 2,
-					"index": 8,
-					"text": "\ue891",
-					"codeOptions": [
-						"146",
-						"18",
-						null,
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "OPTION",
-					"name": "UPPER_LOWER",
-					"symbol": true,
-					"toggleButton": true,
-					"size": 2,
-					"index": 4,
-					"text": "\ue5d7",
-					"codeOptions": [
-						"142",
-						"14",
-						null,
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 0.3
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "RUN",
-					"size": 3,
-					"text": "RUN"
-				}
-			]
-		},
-		{
-			"keys": [
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 0.3
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 0,
-					"text": "BLACK",
-					"codeOptions": [
-						"144",
-						"144",
-						"144",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 1,
-					"text": "WHITE",
-					"codeOptions": [
-						"5",
-						"5",
-						"5",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 2,
-					"text": "RED",
-					"codeOptions": [
-						"28",
-						"28",
-						"28",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 3,
-					"text": "CYAN",
-					"codeOptions": [
-						"159",
-						"159",
-						"159",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 4,
-					"text": "PURPLE",
-					"codeOptions": [
-						"156",
-						"156",
-						"156",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 5,
-					"text": "GREEN",
-					"codeOptions": [
-						"30",
-						"30",
-						"30",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 6,
-					"text": "BLUE",
-					"codeOptions": [
-						"31",
-						"31",
-						"31",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 7,
-					"text": "YELLOW",
-					"codeOptions": [
-						"158",
-						"158",
-						"158",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 8,
-					"text": "ORANGE",
-					"codeOptions": [
-						"129",
-						"129",
-						"129",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 9,
-					"text": "BROWN",
-					"codeOptions": [
-						"149",
-						"149",
-						"149",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 10,
-					"text": "LIGHT RED",
-					"codeOptions": [
-						"150",
-						"150",
-						"150",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 11,
-					"text": "DARK GRAY",
-					"codeOptions": [
-						"151",
-						"151",
-						"151",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 12,
-					"text": "GRAY",
-					"codeOptions": [
-						"152",
-						"152",
-						"152",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 13,
-					"text": "LIGHT GREEN",
-					"codeOptions": [
-						"153",
-						"153",
-						"153",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 14,
-					"text": "LIGHT BLUE",
-					"codeOptions": [
-						"154",
-						"154",
-						"154",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "COLOR",
-					"size": 1,
-					"index": 15,
-					"text": "LIGHT GRAY",
-					"codeOptions": [
-						"155",
-						"155",
-						"155",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"symbol": true,
-					"name": "CLEAR",
-					"size": 2,
-					"text": "\ue3c1",
-					"codeOptions": [
-						"147",
-						"147",
-						"147",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"symbol": true,
-					"name": "HOME",
-					"size": 2,
-					"text": "\ue88a",
-					"codeOptions": [
-						"19",
-						"19",
-						"19",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 0.3
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "LIST",
-					"size": 3,
-					"text": "LIST"
-				}
-			]
-		},
-		{
-			"keys": [
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 0.3
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "\ue05f",
-					"codeOptions": [
-						"95",
-						"95",
-						"95",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue05f",
-							"\ue15f",
-							"\ue25f",
-							"\ue35f"
-						],
-						[
-							"\ue05f",
-							"\ue15f",
-							"\ue25f",
-							"\ue35f"
-						],
-						[
-							"\ue05f",
-							"\ue15f",
-							"\ue25f",
-							"\ue35f"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "1",
-					"codeOptions": [
-						"49",
-						"33",
-						"33",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue031",
-							"\ue131",
-							"\ue231",
-							"\ue331"
-						],
-						[
-							"\ue021",
-							"\ue121",
-							"\ue221",
-							"\ue321"
-						],
-						[
-							"\ue021",
-							"\ue121",
-							"\ue221",
-							"\ue321"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "2",
-					"codeOptions": [
-						"50",
-						"34",
-						"34",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue032",
-							"\ue132",
-							"\ue232",
-							"\ue332"
-						],
-						[
-							"\ue022",
-							"\ue122",
-							"\ue222",
-							"\ue322"
-						],
-						[
-							"\ue022",
-							"\ue122",
-							"\ue222",
-							"\ue322"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "3",
-					"codeOptions": [
-						"51",
-						"35",
-						"35",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue033",
-							"\ue133",
-							"\ue233",
-							"\ue333"
-						],
-						[
-							"\ue023",
-							"\ue123",
-							"\ue223",
-							"\ue323"
-						],
-						[
-							"\ue023",
-							"\ue123",
-							"\ue223",
-							"\ue323"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "4",
-					"codeOptions": [
-						"52",
-						"36",
-						"36",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue034",
-							"\ue134",
-							"\ue234",
-							"\ue334"
-						],
-						[
-							"\ue024",
-							"\ue124",
-							"\ue224",
-							"\ue324"
-						],
-						[
-							"\ue024",
-							"\ue124",
-							"\ue224",
-							"\ue324"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "5",
-					"codeOptions": [
-						"53",
-						"37",
-						"37",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue035",
-							"\ue135",
-							"\ue235",
-							"\ue335"
-						],
-						[
-							"\ue025",
-							"\ue125",
-							"\ue225",
-							"\ue325"
-						],
-						[
-							"\ue025",
-							"\ue125",
-							"\ue225",
-							"\ue325"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "6",
-					"codeOptions": [
-						"54",
-						"38",
-						"38",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue036",
-							"\ue136",
-							"\ue236",
-							"\ue336"
-						],
-						[
-							"\ue026",
-							"\ue126",
-							"\ue226",
-							"\ue326"
-						],
-						[
-							"\ue026",
-							"\ue126",
-							"\ue226",
-							"\ue326"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "7",
-					"codeOptions": [
-						"55",
-						"39",
-						"39",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue037",
-							"\ue137",
-							"\ue237",
-							"\ue337"
-						],
-						[
-							"\ue027",
-							"\ue127",
-							"\ue227",
-							"\ue327"
-						],
-						[
-							"\ue027",
-							"\ue127",
-							"\ue227",
-							"\ue327"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "8",
-					"codeOptions": [
-						"56",
-						"40",
-						"40",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue038",
-							"\ue138",
-							"\ue238",
-							"\ue338"
-						],
-						[
-							"\ue028",
-							"\ue128",
-							"\ue228",
-							"\ue328"
-						],
-						[
-							"\ue028",
-							"\ue128",
-							"\ue228",
-							"\ue328"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "9",
-					"codeOptions": [
-						"57",
-						"41",
-						"41",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue039",
-							"\ue139",
-							"\ue239",
-							"\ue339"
-						],
-						[
-							"\ue029",
-							"\ue129",
-							"\ue229",
-							"\ue329"
-						],
-						[
-							"\ue029",
-							"\ue129",
-							"\ue229",
-							"\ue329"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "0",
-					"codeOptions": [
-						"48",
-						"48",
-						"48",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue030",
-							"\ue130",
-							"\ue230",
-							"\ue330"
-						],
-						[
-							"\ue030",
-							"\ue130",
-							"\ue230",
-							"\ue330"
-						],
-						[
-							"\ue030",
-							"\ue130",
-							"\ue230",
-							"\ue330"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "+",
-					"codeOptions": [
-						"43",
-						"123",
-						"166",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue02b",
-							"\ue12b",
-							"\ue22b",
-							"\ue32b"
-						],
-						[
-							"\ue07b",
-							"\ue17b",
-							"\ue27b",
-							"\ue37b"
-						],
-						[
-							"\ue0a6",
-							"\ue1a6",
-							"\ue2a6",
-							"\ue3a6"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "-",
-					"codeOptions": [
-						"45",
-						"180",
-						"124",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue02d",
-							"\ue12d",
-							"\ue22d",
-							"\ue32d"
-						],
-						[
-							"\ue067",
-							"\ue167",
-							"\ue267",
-							"\ue367"
-						],
-						[
-							"\ue07c",
-							"\ue17c",
-							"\ue27c",
-							"\ue37c"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "\ue05c",
-					"codeOptions": [
-						"92",
-						"168",
-						"169",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue05c",
-							"\ue15c",
-							"\ue25c",
-							"\ue35c"
-						],
-						[
-							"\ue0a9",
-							"\ue1a9",
-							"\ue2a9",
-							"\ue3a9"
-						],
-						[
-							"\ue0a8",
-							"\ue1a8",
-							"\ue2a8",
-							"\ue3a8"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 2
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "INSERT",
-					"size": 2,
-					"symbol": true,
-					"text": "\ue93f",
-					"codeOptions": [
-						"148",
-						"148",
-						"148",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "DELETE",
-					"symbol": true,
-					"size": 2,
-					"text": "\ue317",
-					"codeOptions": [
-						"20",
-						"20",
-						"20",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 0.3
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "DIR",
-					"size": 3,
-					"text": "DIR"
-				}
-			]
-		},
-		{
-			"keys": [
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 0.3
-				},
-				{
-					"id": 0,
-					"type": "OPTION",
-					"index": 16,
-					"toggleButton": true,
-					"size": 1.5,
-					"text": "CT",
-					"codeOptions": [
-						null,
-						null,
-						null,
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "Q",
-					"codeOptions": [
-						"81",
-						"113",
-						"171",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue051",
-							"\ue151",
-							"\ue251",
-							"\ue351"
-						],
-						[
-							"\ue071",
-							"\ue171",
-							"\ue271",
-							"\ue371"
-						],
-						[
-							"\ue0ab",
-							"\ue1ab",
-							"\ue2ab",
-							"\ue3ab"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "W",
-					"codeOptions": [
-						"87",
-						"215",
-						"179",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue057",
-							"\ue157",
-							"\ue257",
-							"\ue357"
-						],
-						[
-							"\ue077",
-							"\ue177",
-							"\ue277",
-							"\ue377"
-						],
-						[
-							"\ue0f3",
-							"\ue1f3",
-							"\ue2f3",
-							"\ue3f3"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "E",
-					"codeOptions": [
-						"69",
-						"197",
-						"177",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue045",
-							"\ue145",
-							"\ue245",
-							"\ue345"
-						],
-						[
-							"\ue065",
-							"\ue165",
-							"\ue265",
-							"\ue365"
-						],
-						[
-							"\ue0f1",
-							"\ue1f1",
-							"\ue2f1",
-							"\ue3f1"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "R",
-					"codeOptions": [
-						"82",
-						"210",
-						"178",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue052",
-							"\ue152",
-							"\ue252",
-							"\ue352"
-						],
-						[
-							"\ue072",
-							"\ue172",
-							"\ue272",
-							"\ue372"
-						],
-						[
-							"\ue0f2",
-							"\ue1f2",
-							"\ue2f2",
-							"\ue3f2"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "T",
-					"codeOptions": [
-						"84",
-						"212",
-						"163",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue054",
-							"\ue154",
-							"\ue254",
-							"\ue354"
-						],
-						[
-							"\ue067",
-							"\ue167",
-							"\ue267",
-							"\ue367"
-						],
-						[
-							"\ue0a3",
-							"\ue1a3",
-							"\ue2a3",
-							"\ue3a3"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "Y",
-					"codeOptions": [
-						"89",
-						"217",
-						"183",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue059",
-							"\ue159",
-							"\ue259",
-							"\ue359"
-						],
-						[
-							"\ue079",
-							"\ue179",
-							"\ue279",
-							"\ue379"
-						],
-						[
-							"\ue0f7",
-							"\ue1f7",
-							"\ue2f7",
-							"\ue3f7"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "U",
-					"codeOptions": [
-						"85",
-						"213",
-						"184",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue055",
-							"\ue155",
-							"\ue255",
-							"\ue355"
-						],
-						[
-							"\ue075",
-							"\ue175",
-							"\ue275",
-							"\ue375"
-						],
-						[
-							"\ue0f8",
-							"\ue1f8",
-							"\ue2f8",
-							"\ue3f8"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "I",
-					"codeOptions": [
-						"73",
-						"201",
-						"162",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue049",
-							"\ue149",
-							"\ue249",
-							"\ue349"
-						],
-						[
-							"\ue069",
-							"\ue169",
-							"\ue269",
-							"\ue369"
-						],
-						[
-							"\ue0e2",
-							"\ue1e2",
-							"\ue2e2",
-							"\ue3e2"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "O",
-					"codeOptions": [
-						"79",
-						"207",
-						"185",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue04f",
-							"\ue14f",
-							"\ue24f",
-							"\ue34f"
-						],
-						[
-							"\ue06f",
-							"\ue16f",
-							"\ue26f",
-							"\ue36f"
-						],
-						[
-							"\ue0f9",
-							"\ue1f9",
-							"\ue2f9",
-							"\ue3f9"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "P",
-					"codeOptions": [
-						"80",
-						"208",
-						"175",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue050",
-							"\ue150",
-							"\ue250",
-							"\ue350"
-						],
-						[
-							"\ue070",
-							"\ue170",
-							"\ue270",
-							"\ue370"
-						],
-						[
-							"\ue0af",
-							"\ue1af",
-							"\ue2af",
-							"\ue3af"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "@",
-					"codeOptions": [
-						"64",
-						"186",
-						"164",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue040",
-							"\ue140",
-							"\ue240",
-							"\ue340"
-						],
-						[
-							"\ue0fa",
-							"\ue1fa",
-							"\ue2fa",
-							"\ue3fa"
-						],
-						[
-							"\ue0a4",
-							"\ue1a4",
-							"\ue2a4",
-							"\ue3a4"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "*",
-					"codeOptions": [
-						"42",
-						"192",
-						"223",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue02a",
-							"\ue12a",
-							"\ue22a",
-							"\ue32a"
-						],
-						[
-							"\ue060",
-							"\ue160",
-							"\ue260",
-							"\ue360"
-						],
-						[
-							"\ue07f",
-							"\ue17f",
-							"\ue27f",
-							"\ue37f"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "\ue05e",
-					"codeOptions": [
-						"94",
-						"222",
-						"222",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue05e",
-							"\ue15e",
-							"\ue25e",
-							"\ue35e"
-						],
-						[
-							"\ue07e",
-							"\ue17e",
-							"\ue27e",
-							"\ue37e"
-						],
-						[
-							"\ue07e",
-							"\ue17e",
-							"\ue27e",
-							"\ue37e"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 1.5
-				}
-			]
-		},
-		{
-			"keys": [
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 2
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "A",
-					"codeOptions": [
-						"65",
-						"193",
-						"176",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue041",
-							"\ue141",
-							"\ue241",
-							"\ue341"
-						],
-						[
-							"\ue061",
-							"\ue161",
-							"\ue261",
-							"\ue361"
-						],
-						[
-							"\ue0b0",
-							"\ue1b0",
-							"\ue2b0",
-							"\ue3b0"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "S",
-					"codeOptions": [
-						"83",
-						"211",
-						"174",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue053",
-							"\ue153",
-							"\ue253",
-							"\ue353"
-						],
-						[
-							"\ue073",
-							"\ue173",
-							"\ue273",
-							"\ue373"
-						],
-						[
-							"\ue0ae",
-							"\ue1ae",
-							"\ue2ae",
-							"\ue3ae"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "D",
-					"codeOptions": [
-						"68",
-						"196",
-						"172",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue044",
-							"\ue144",
-							"\ue244",
-							"\ue344"
-						],
-						[
-							"\ue0c5",
-							"\ue1c5",
-							"\ue2c5",
-							"\ue3c5"
-						],
-						[
-							"\ue0ec",
-							"\ue1ec",
-							"\ue2ec",
-							"\ue3ec"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "F",
-					"codeOptions": [
-						"70",
-						"198",
-						"187",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue046",
-							"\ue146",
-							"\ue246",
-							"\ue346"
-						],
-						[
-							"\ue066",
-							"\ue166",
-							"\ue266",
-							"\ue366"
-						],
-						[
-							"\ue0fb",
-							"\ue1fb",
-							"\ue2fb",
-							"\ue3fb"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "G",
-					"codeOptions": [
-						"71",
-						"199",
-						"165",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue047",
-							"\ue147",
-							"\ue247",
-							"\ue347"
-						],
-						[
-							"\ue067",
-							"\ue167",
-							"\ue267",
-							"\ue367"
-						],
-						[
-							"\ue0a5",
-							"\ue1a5",
-							"\ue2a5",
-							"\ue3a5"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "H",
-					"codeOptions": [
-						"72",
-						"200",
-						"180",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue048",
-							"\ue148",
-							"\ue248",
-							"\ue348"
-						],
-						[
-							"\ue068",
-							"\ue168",
-							"\ue268",
-							"\ue368"
-						],
-						[
-							"\ue0b5",
-							"\ue1b5",
-							"\ue2b5",
-							"\ue3b5"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "J",
-					"codeOptions": [
-						"74",
-						"202",
-						"181",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue04a",
-							"\ue14a",
-							"\ue24a",
-							"\ue34a"
-						],
-						[
-							"\ue06a",
-							"\ue16a",
-							"\ue26a",
-							"\ue36a"
-						],
-						[
-							"\ue0b5",
-							"\ue1b5",
-							"\ue2b5",
-							"\ue3b5"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "K",
-					"codeOptions": [
-						"75",
-						"203",
-						"161",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue04b",
-							"\ue14b",
-							"\ue24b",
-							"\ue34b"
-						],
-						[
-							"\ue06b",
-							"\ue16b",
-							"\ue26b",
-							"\ue36b"
-						],
-						[
-							"\ue0a1",
-							"\ue1a1",
-							"\ue2a1",
-							"\ue3a1"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "L",
-					"codeOptions": [
-						"76",
-						"204",
-						"182",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue04c",
-							"\ue14c",
-							"\ue24c",
-							"\ue34c"
-						],
-						[
-							"\ue06c",
-							"\ue16c",
-							"\ue26c",
-							"\ue36c"
-						],
-						[
-							"\ue0b6",
-							"\ue1b6",
-							"\ue2b6",
-							"\ue3b6"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": ":",
-					"codeOptions": [
-						"58",
-						"91",
-						"91",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue03a",
-							"\ue13a",
-							"\ue23a",
-							"\ue33a"
-						],
-						[
-							"\ue05b",
-							"\ue15b",
-							"\ue25b",
-							"\ue35b"
-						],
-						[
-							"\ue05b",
-							"\ue15b",
-							"\ue25b",
-							"\ue35b"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": ";",
-					"codeOptions": [
-						"59",
-						"93",
-						"93",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue03b",
-							"\ue13b",
-							"\ue23b",
-							"\ue33b"
-						],
-						[
-							"\ue05d",
-							"\ue15d",
-							"\ue25d",
-							"\ue35d"
-						],
-						[
-							"\ue05d",
-							"\ue15d",
-							"\ue25d",
-							"\ue35d"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "=",
-					"codeOptions": [
-						"61",
-						"61",
-						"61",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue03d",
-							"\ue13d",
-							"\ue23d",
-							"\ue33d"
-						],
-						[
-							"\ue03d",
-							"\ue13d",
-							"\ue23d",
-							"\ue33d"
-						],
-						[
-							"\ue03d",
-							"\ue13d",
-							"\ue23d",
-							"\ue33d"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"symbol": true,
-					"name": "RETURN",
-					"size": 2.3,
-					"text": "\ue31b",
-					"codeOptions": [
-						"13",
-						"141",
-						"141",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue31b",
-							"\ue31b",
-							"\ue31b",
-							"\ue31b"
-						],
-						[
-							"\ue31b",
-							"\ue31b",
-							"\ue31b",
-							"\ue31b"
-						],
-						[
-							"\ue31b",
-							"\ue31b",
-							"\ue31b",
-							"\ue31b"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "OPTION",
-					"toggleButton": true,
-					"name": "FRAME_COLOR",
-					"size": 2,
-					"index": 32,
-					"text": "FC"
-				},
-				{
-					"id": 0,
-					"type": "OPTION",
-					"toggleButton": true,
-					"name": "FRAME_COLOR",
-					"size": 2,
-					"index": 64,
-					"text": "BC"
-				}
-			]
-		},
-		{
-			"keys": [
-				{
-					"id": 0,
-					"type": "OPTION",
-					"symbol": true,
-					"name": "COMMODORE",
-					"index": 2,
-					"toggleButton": true,
-					"size": 1,
-					"text": "\ue7f2",
-					"codeOptions": [
-						null,
-						null,
-						null,
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "OPTION",
-					"index": 1,
-					"symbol": true,
-					"name": "SHIFT",
-					"toggleButton": true,
-					"size": 1.5,
-					"text": "\ue5d8",
-					"codeOptions": [
-						null,
-						null,
-						null,
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "Z",
-					"codeOptions": [
-						"90",
-						"218",
-						"173",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue05a",
-							"\ue15a",
-							"\ue25a",
-							"\ue35a"
-						],
-						[
-							"\ue07a",
-							"\ue17a",
-							"\ue27a",
-							"\ue37a"
-						],
-						[
-							"\ue0ad",
-							"\ue1ad",
-							"\ue2ad",
-							"\ue3ad"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "X",
-					"codeOptions": [
-						"88",
-						"216",
-						"189",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue058",
-							"\ue158",
-							"\ue258",
-							"\ue358"
-						],
-						[
-							"\ue078",
-							"\ue178",
-							"\ue278",
-							"\ue378"
-						],
-						[
-							"\ue0bd",
-							"\ue1bd",
-							"\ue2bd",
-							"\ue3bd"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "C",
-					"codeOptions": [
-						"67",
-						"195",
-						"188",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue043",
-							"\ue143",
-							"\ue243",
-							"\ue343"
-						],
-						[
-							"\ue064",
-							"\ue164",
-							"\ue264",
-							"\ue364"
-						],
-						[
-							"\ue0bc",
-							"\ue1bc",
-							"\ue2bc",
-							"\ue3bc"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "V",
-					"codeOptions": [
-						"86",
-						"214",
-						"190",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue056",
-							"\ue156",
-							"\ue256",
-							"\ue356"
-						],
-						[
-							"\ue076",
-							"\ue176",
-							"\ue276",
-							"\ue376"
-						],
-						[
-							"\ue0be",
-							"\ue1be",
-							"\ue2be",
-							"\ue3be"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "B",
-					"codeOptions": [
-						"66",
-						"194",
-						"191",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue042",
-							"\ue142",
-							"\ue242",
-							"\ue342"
-						],
-						[
-							"\ue067",
-							"\ue167",
-							"\ue267",
-							"\ue367"
-						],
-						[
-							"\ue0bf",
-							"\ue1bf",
-							"\ue2bf",
-							"\ue3bf"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "N",
-					"codeOptions": [
-						"78",
-						"206",
-						"170",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue04e",
-							"\ue14e",
-							"\ue24e",
-							"\ue34e"
-						],
-						[
-							"\ue06e",
-							"\ue16e",
-							"\ue26e",
-							"\ue36e"
-						],
-						[
-							"\ue0f6",
-							"\ue1f6",
-							"\ue2f6",
-							"\ue3f6"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "M",
-					"codeOptions": [
-						"77",
-						"205",
-						"167",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue04d",
-							"\ue14d",
-							"\ue24d",
-							"\ue34d"
-						],
-						[
-							"\ue06d",
-							"\ue16d",
-							"\ue26d",
-							"\ue36d"
-						],
-						[
-							"\ue0aa",
-							"\ue1aa",
-							"\ue2aa",
-							"\ue3aa"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": ",",
-					"codeOptions": [
-						"44",
-						"60",
-						"60",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue02c",
-							"\ue12c",
-							"\ue22c",
-							"\ue32c"
-						],
-						[
-							"\ue03c",
-							"\ue13c",
-							"\ue23c",
-							"\ue33c"
-						],
-						[
-							"\ue03c",
-							"\ue13c",
-							"\ue23c",
-							"\ue33c"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": ".",
-					"codeOptions": [
-						"46",
-						"62",
-						"62",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue02e",
-							"\ue12e",
-							"\ue22e",
-							"\ue32e"
-						],
-						[
-							"\ue03e",
-							"\ue13e",
-							"\ue23e",
-							"\ue33e"
-						],
-						[
-							"\ue03e",
-							"\ue13e",
-							"\ue23e",
-							"\ue33e"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 1,
-					"text": "/",
-					"codeOptions": [
-						"47",
-						"63",
-						"63",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue02f",
-							"\ue12f",
-							"\ue22f",
-							"\ue32f"
-						],
-						[
-							"\ue03f",
-							"\ue13f",
-							"\ue23f",
-							"\ue33f"
-						],
-						[
-							"\ue03f",
-							"\ue13f",
-							"\ue23f",
-							"\ue33f"
-						]
-					]
-				},
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 1.75
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "UP",
-					"symbol": true,
-					"size": 1,
-					"text": "\ue316",
-					"codeOptions": [
-						"145",
-						"145",
-						"145",
-						null
-					]
-				}
-			]
-		},
-		{
-			"keys": [
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 2.66
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"size": 9,
-					"text": "SPACE",
-					"codeOptions": [
-						"32",
-						"160",
-						"160",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FILLER",
-					"size": 1.6
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "LEFT",
-					"symbol": true,
-					"size": 1,
-					"text": "\ue314",
-					"codeOptions": [
-						"157",
-						"157",
-						"157",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "DOWN",
-					"symbol": true,
-					"size": 1,
-					"text": "\ue313",
-					"codeOptions": [
-						"17",
-						"17",
-						"17",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "FUNCTION",
-					"name": "RIGHT",
-					"symbol": true,
-					"size": 1,
-					"text": "\ue315",
-					"codeOptions": [
-						"29",
-						"29",
-						"29",
-						null
-					]
-				},
-				{
-					"id": 0,
-					"type": "KEY",
-					"symbol": true,
-					"size": 4,
-					"name": "RUN/STOP",
-					"text": "\ue566",
-					"codeOptions": [
-						"3",
-						"131",
-						"131 ",
-						null
-					],
-					"displayOptions": [
-						[
-							"\ue047",
-							"\ue047",
-							"\ue047",
-							"\ue047"
-						],
-						[
-							"\ue566",
-							"\ue566",
-							"\ue566",
-							"\ue566"
-						],
-						[
-							"\ue047",
-							"\ue047",
-							"\ue047",
-							"\ue047"
-						]
-					]
-				}
-			]
-		}
-	]
+  "maxOptions" : 4,
+  "keyRows" : [ {
+    "keys" : [ {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 0.3
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "size" : 2,
+      "text" : "F1",
+      "codeOptions" : [ "133", "133", "133", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "size" : 2,
+      "text" : "F2",
+      "codeOptions" : [ "137", "137", "137", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "size" : 2,
+      "text" : "F3",
+      "codeOptions" : [ "134", "134", "134", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "size" : 2,
+      "text" : "F4",
+      "codeOptions" : [ "138", "138", "138", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "size" : 2,
+      "text" : "F5",
+      "codeOptions" : [ "135", "135", "135", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "size" : 2,
+      "text" : "F6",
+      "codeOptions" : [ "139", "139", "139", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "size" : 2,
+      "text" : "F7",
+      "codeOptions" : [ "136", "136", "136", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "size" : 2,
+      "text" : "F8",
+      "codeOptions" : [ "140", "140", "140", null ]
+    }, {
+      "id" : 0,
+      "type" : "OPTION",
+      "name" : "REVERSE",
+      "symbol" : true,
+      "toggleButton" : true,
+      "size" : 2,
+      "index" : 8,
+      "text" : "",
+      "codeOptions" : [ "146", "18", null, null ]
+    }, {
+      "id" : 0,
+      "type" : "OPTION",
+      "name" : "UPPER_LOWER",
+      "symbol" : true,
+      "toggleButton" : true,
+      "size" : 2,
+      "index" : 4,
+      "text" : "",
+      "codeOptions" : [ "142", "14", null, null ]
+    }, {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 0.3
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "RUN",
+      "size" : 3,
+      "text" : "RUN"
+    } ]
+  }, {
+    "keys" : [ {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 0.3
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 0,
+      "text" : "BLACK",
+      "codeOptions" : [ "144", "144", "144", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 1,
+      "text" : "WHITE",
+      "codeOptions" : [ "5", "5", "5", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 2,
+      "text" : "RED",
+      "codeOptions" : [ "28", "28", "28", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 3,
+      "text" : "CYAN",
+      "codeOptions" : [ "159", "159", "159", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 4,
+      "text" : "PURPLE",
+      "codeOptions" : [ "156", "156", "156", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 5,
+      "text" : "GREEN",
+      "codeOptions" : [ "30", "30", "30", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 6,
+      "text" : "BLUE",
+      "codeOptions" : [ "31", "31", "31", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 7,
+      "text" : "YELLOW",
+      "codeOptions" : [ "158", "158", "158", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 8,
+      "text" : "ORANGE",
+      "codeOptions" : [ "129", "129", "129", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 9,
+      "text" : "BROWN",
+      "codeOptions" : [ "149", "149", "149", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 10,
+      "text" : "LIGHT RED",
+      "codeOptions" : [ "150", "150", "150", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 11,
+      "text" : "DARK GRAY",
+      "codeOptions" : [ "151", "151", "151", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 12,
+      "text" : "GRAY",
+      "codeOptions" : [ "152", "152", "152", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 13,
+      "text" : "LIGHT GREEN",
+      "codeOptions" : [ "153", "153", "153", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 14,
+      "text" : "LIGHT BLUE",
+      "codeOptions" : [ "154", "154", "154", null ]
+    }, {
+      "id" : 0,
+      "type" : "COLOR",
+      "size" : 1,
+      "index" : 15,
+      "text" : "LIGHT GRAY",
+      "codeOptions" : [ "155", "155", "155", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "symbol" : true,
+      "name" : "CLEAR",
+      "size" : 2,
+      "text" : "",
+      "codeOptions" : [ "147", "147", "147", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "symbol" : true,
+      "name" : "HOME",
+      "size" : 2,
+      "text" : "",
+      "codeOptions" : [ "19", "19", "19", null ]
+    }, {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 0.3
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "LIST",
+      "size" : 3,
+      "text" : "LIST"
+    } ]
+  }, {
+    "keys" : [ {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 0.3
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "",
+      "codeOptions" : [ "95", "95", "95", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "1",
+      "codeOptions" : [ "49", "33", "33", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "2",
+      "codeOptions" : [ "50", "34", "34", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "3",
+      "codeOptions" : [ "51", "35", "35", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "4",
+      "codeOptions" : [ "52", "36", "36", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "5",
+      "codeOptions" : [ "53", "37", "37", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "6",
+      "codeOptions" : [ "54", "38", "38", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "7",
+      "codeOptions" : [ "55", "39", "39", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "8",
+      "codeOptions" : [ "56", "40", "40", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "9",
+      "codeOptions" : [ "57", "41", "41", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "0",
+      "codeOptions" : [ "48", "48", "48", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "+",
+      "codeOptions" : [ "43", "123", "166", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "-",
+      "codeOptions" : [ "45", "180", "124", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "",
+      "codeOptions" : [ "92", "168", "169", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 2
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "INSERT",
+      "size" : 2,
+      "symbol" : true,
+      "text" : "",
+      "codeOptions" : [ "148", "148", "148", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "DELETE",
+      "symbol" : true,
+      "size" : 2,
+      "text" : "",
+      "codeOptions" : [ "20", "20", "20", null ]
+    }, {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 0.3
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "DIR",
+      "size" : 3,
+      "text" : "DIR"
+    } ]
+  }, {
+    "keys" : [ {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 0.3
+    }, {
+      "id" : 0,
+      "type" : "OPTION",
+      "index" : 16,
+      "toggleButton" : true,
+      "size" : 1.5,
+      "text" : "CT",
+      "codeOptions" : [ null, null, null, null ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "Q",
+      "codeOptions" : [ "81", "113", "171", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "W",
+      "codeOptions" : [ "87", "215", "179", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "E",
+      "codeOptions" : [ "69", "197", "177", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "R",
+      "codeOptions" : [ "82", "210", "178", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "T",
+      "codeOptions" : [ "84", "212", "163", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "Y",
+      "codeOptions" : [ "89", "217", "183", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "U",
+      "codeOptions" : [ "85", "213", "184", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "I",
+      "codeOptions" : [ "73", "201", "162", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "O",
+      "codeOptions" : [ "79", "207", "185", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "P",
+      "codeOptions" : [ "80", "208", "175", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "@",
+      "codeOptions" : [ "64", "186", "164", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "*",
+      "codeOptions" : [ "42", "192", "223", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "",
+      "codeOptions" : [ "94", "222", "222", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 5.8
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "LOAD *",
+      "size" : 4,
+      "text" : "LOAD *"
+    } ]
+  }, {
+    "keys" : [ {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 2
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "A",
+      "codeOptions" : [ "65", "193", "176", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "S",
+      "codeOptions" : [ "83", "211", "174", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "D",
+      "codeOptions" : [ "68", "196", "172", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "F",
+      "codeOptions" : [ "70", "198", "187", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "G",
+      "codeOptions" : [ "71", "199", "165", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "H",
+      "codeOptions" : [ "72", "200", "180", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "J",
+      "codeOptions" : [ "74", "202", "181", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "K",
+      "codeOptions" : [ "75", "203", "161", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "L",
+      "codeOptions" : [ "76", "204", "182", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : ":",
+      "codeOptions" : [ "58", "91", "91", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : ";",
+      "codeOptions" : [ "59", "93", "93", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "=",
+      "codeOptions" : [ "61", "61", "61", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "symbol" : true,
+      "name" : "RETURN",
+      "size" : 2.3,
+      "text" : "",
+      "codeOptions" : [ "13", "141", "141", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "OPTION",
+      "toggleButton" : true,
+      "name" : "FRAME_COLOR",
+      "size" : 2,
+      "index" : 32,
+      "text" : "FC"
+    }, {
+      "id" : 0,
+      "type" : "OPTION",
+      "toggleButton" : true,
+      "name" : "FRAME_COLOR",
+      "size" : 2,
+      "index" : 64,
+      "text" : "BC"
+    } ]
+  }, {
+    "keys" : [ {
+      "id" : 0,
+      "type" : "OPTION",
+      "symbol" : true,
+      "name" : "COMMODORE",
+      "index" : 2,
+      "toggleButton" : true,
+      "size" : 1,
+      "text" : "",
+      "codeOptions" : [ null, null, null, null ]
+    }, {
+      "id" : 0,
+      "type" : "OPTION",
+      "index" : 1,
+      "symbol" : true,
+      "name" : "SHIFT",
+      "toggleButton" : true,
+      "size" : 1.5,
+      "text" : "",
+      "codeOptions" : [ null, null, null, null ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "Z",
+      "codeOptions" : [ "90", "218", "173", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "X",
+      "codeOptions" : [ "88", "216", "189", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "C",
+      "codeOptions" : [ "67", "195", "188", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "V",
+      "codeOptions" : [ "86", "214", "190", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "B",
+      "codeOptions" : [ "66", "194", "191", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "N",
+      "codeOptions" : [ "78", "206", "170", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "M",
+      "codeOptions" : [ "77", "205", "167", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : ",",
+      "codeOptions" : [ "44", "60", "60", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : ".",
+      "codeOptions" : [ "46", "62", "62", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 1,
+      "text" : "/",
+      "codeOptions" : [ "47", "63", "63", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    }, {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 1.75
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "UP",
+      "symbol" : true,
+      "size" : 1,
+      "text" : "",
+      "codeOptions" : [ "145", "145", "145", null ]
+    } ]
+  }, {
+    "keys" : [ {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 2.66
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "size" : 9,
+      "text" : "SPACE",
+      "codeOptions" : [ "32", "160", "160", null ]
+    }, {
+      "id" : 0,
+      "type" : "FILLER",
+      "size" : 1.6
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "LEFT",
+      "symbol" : true,
+      "size" : 1,
+      "text" : "",
+      "codeOptions" : [ "157", "157", "157", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "DOWN",
+      "symbol" : true,
+      "size" : 1,
+      "text" : "",
+      "codeOptions" : [ "17", "17", "17", null ]
+    }, {
+      "id" : 0,
+      "type" : "FUNCTION",
+      "name" : "RIGHT",
+      "symbol" : true,
+      "size" : 1,
+      "text" : "",
+      "codeOptions" : [ "29", "29", "29", null ]
+    }, {
+      "id" : 0,
+      "type" : "KEY",
+      "symbol" : true,
+      "size" : 4,
+      "name" : "RUN/STOP",
+      "text" : "",
+      "codeOptions" : [ "3", "131", "131 ", null ],
+      "displayOptions" : [ [ "", "", "", "" ], [ "", "", "", "" ], [ "", "", "", "" ] ]
+    } ]
+  } ]
 }

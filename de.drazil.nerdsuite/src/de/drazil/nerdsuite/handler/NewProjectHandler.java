@@ -20,7 +20,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.basic.SourceRepositoryService;
+import de.drazil.nerdsuite.basic.encode.SourceRepositoryService;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.enums.ProjectType;

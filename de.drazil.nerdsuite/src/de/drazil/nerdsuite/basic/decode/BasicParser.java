@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.basic;
+package de.drazil.nerdsuite.basic.decode;
 
 import java.util.Map;
 

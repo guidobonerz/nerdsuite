@@ -3,11 +3,11 @@ package de.drazil.nerdsuite.imaging.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.internal.DPIUtil;
 import org.eclipse.swt.widgets.Display;
 
@@ -55,6 +55,7 @@ public class ImagePainterFactory {
 
     public final static ImagePainterFactory getImageFactory(String name) {
         return cache.get(name);
+       
     }
 
     public void resetCache() {
@@ -102,7 +103,7 @@ public class ImagePainterFactory {
                 }
                 masterImage = createOrUpdateLayer(imageId, tile.getActiveLayer(), true);
                 masterImage.setDirty(false);
-                 System.out.println("create MasterImage");
+                 //System.out.println("create MasterImage");
             }
 
             Image i = masterImage.getImage();
@@ -120,7 +121,7 @@ public class ImagePainterFactory {
             scaledImage = new DirtyableImage(scaledImageInternal, false);
             tile.getActiveLayer().putImage(imageId + (thumbnail ? 'R' : 'P'), scaledImage);
             tile.setDirty(false);
-            System.out.println("create ScaledImage");
+            //System.out.println("create ScaledImage");
         }
         gc.drawImage(scaledImage.getImage(), x, y);
 

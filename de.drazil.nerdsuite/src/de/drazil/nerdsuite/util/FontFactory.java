@@ -14,6 +14,8 @@ import org.osgi.framework.Bundle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.drazil.nerdsuite.Constants;
+
 public class FontFactory {
 	private static Map<String, String> fontSource = new HashMap<String, String>();
 	private static Map<String, Font> fontCache = new HashMap<>();
@@ -21,7 +23,7 @@ public class FontFactory {
 	public static Font getFont(String fontName) {
 		Font font = fontCache.get(fontName);
 		if (font == null) {
-			Bundle bundle = Platform.getBundle("de.drazil.nerdsuite");
+			Bundle bundle = Platform.getBundle(Constants.APP_ID);
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				String[] s = fontName.split("\\|");

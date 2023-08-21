@@ -13,72 +13,72 @@ import de.drazil.nerdsuite.widget.IContentProvider;
 
 public class C64Platform extends AbstractPlatform {
 
-    public C64Platform(IDialect dialect, boolean ignoreStartAddressBytes) {
-        super(dialect, new CPU_6510(), ignoreStartAddressBytes, "configuration/platform/c64_platform.json");
-    }
+	public C64Platform(IDialect dialect, boolean ignoreStartAddressBytes) {
+		super(dialect, new CPU_6510(), ignoreStartAddressBytes, "configuration/platform/c64_platform.json");
+	}
 
-    @Override
-    public boolean supportsBasic() {
-        return true;
-    }
+	@Override
+	public boolean supportsBasic() {
+		return true;
+	}
 
-    @Override
-    public boolean supportsSpecialStartSequence() {
-        return true;
-    }
+	@Override
+	public boolean supportsSpecialStartSequence() {
+		return true;
+	}
 
-    @Override
-    public void handlePlatformSpecific(byte[] byteArray, int offset) {
-        // TODO Auto-generated method stub
+	@Override
+	public void handlePlatformSpecific(byte[] byteArray, int offset) {
+		// TODO Auto-generated method stub
 
-    }
+	}
 
-    @Override
-    public void handleAddress(Address address, Value value) {
-        // TODO Auto-generated method stub
+	@Override
+	public void handleAddress(Address address, Value value) {
+		// TODO Auto-generated method stub
 
-    }
+	}
 
-    @Override
-    public void parseStartSequence(byte byteArray[], Value programCounter) {
-        // is basic start/
-        if (programCounter.getValue() == 2049) {
+	@Override
+	public void parseStartSequence(byte byteArray[], Value programCounter) {
+		// is basic start/
+		if (programCounter.getValue() == 2049) {
 
-            
-            // String basicCode = basicParser.start(byteArray, programCounter);
-            // System.out.println(basicCode);
-            //Value asmStart = basicParser.getLastBasicLineAddress(byteArray, 2);
+			// String basicCode = basicParser.start(byteArray, programCounter);
+			// System.out.println(basicCode);
+			// Value asmStart = basicParser.getLastBasicLineAddress(byteArray, 2);
 
-            InstructionLine instructionLine = getCPU().getInstructionLineList().get(0);
-            // instructionLine = getCPU().splitInstructionLine(instructionLine,
-            // programCounter, asmStart);
-            instructionLine.setPassed(true);
-            instructionLine.setInstructionType(InstructionType.Basic);
-            // getCPU().splitInstructionLine(instructionLine, programCounter,
-            // asmStart.sub(programCounter).add(2), RangeType.Unspecified,
-            // ReferenceType.NoReference);
-        }
-    }
+			InstructionLine instructionLine = getCPU().getInstructionLineList().get(0);
+			// instructionLine = getCPU().splitInstructionLine(instructionLine,
+			// programCounter, asmStart);
+			instructionLine.setPassed(true);
+			instructionLine.setInstructionType(InstructionType.Basic);
+			// getCPU().splitInstructionLine(instructionLine, programCounter,
+			// asmStart.sub(programCounter).add(2), RangeType.Unspecified,
+			// ReferenceType.NoReference);
+		}
+	}
 
-    @Override
-    public void parseBinary(IContentProvider contentProvider, List<DisassemblingRange> ranges) {
+	@Override
+	public void parseBinary(IContentProvider contentProvider, List<DisassemblingRange> ranges) {
 
-        System.out.println("init   : build memory map");
-        setProgrammCounter(getProgrammCounter());
-        init(contentProvider);
-        System.out.println("stage 1: parse header information");
-        parseStartSequence(contentProvider.getContentArray(), getProgrammCounter());
-        System.out.println("stage 2: parse instructions");
+		System.out.println("init   : build memory map");
+		setProgrammCounter(getProgrammCounter());
+		init(contentProvider);
+		System.out.println("stage 1: parse header information");
+		parseStartSequence(contentProvider.getContentArray(), getProgrammCounter());
+		System.out.println("stage 2: parse instructions");
 
-        long start = System.currentTimeMillis();
-        for (DisassemblingRange dr : ranges) {
-            getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr, 2);
-        }
-        long duration = (System.currentTimeMillis() - start);
-        System.out.printf("%d Seconds", duration);
-        // System.out.println("stage 3: compress ranges");
-        // getCPU().compressRanges();
-        System.out.println("ready.");
-    }
+		long start = System.currentTimeMillis();
+		for (DisassemblingRange dr : ranges) {
+			System.out.println(dr.toString());
+			getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr, 2);
+		}
+		long duration = (System.currentTimeMillis() - start);
+		System.out.printf("%d Seconds", duration);
+		// System.out.println("stage 3: compress ranges");
+		// getCPU().compressRanges();
+		System.out.println("ready.");
+	}
 
 }

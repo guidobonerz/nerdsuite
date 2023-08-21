@@ -1,277 +1,194 @@
 {
-	"sourceRules": 
-	[
-		{
-			"prefix": "/*",
-			"suffix": "*/",
-			"type": "multiline",
-			"token": "comment"
-		},
-
-		{
-			"prefix": "//",
-			"type": "singleline",
-			"token": "comment"
-		},
-
-		{
-			"prefix": "\"",
-			"suffix": "\"",
-			"type": "singleline",
-			"token": "string"
-		},
-
-		{
-			"prefix": "#",
-			"type": "singleline",
-			"token": "decimal",
-			"content": "decimal"
-		},
-
-		{
-			"prefix": "#$",
-			"type": "singleline",
-			"token": "hexadecimal",
-			"content": "hexadecimal"
-		},
-
-		{
-			"prefix": "#%",
-			"type": "singleline",
-			"token": "binary",
-			"content": "binary"
-		},
-
-		{
-			"prefix": "$",
-			"type": "singleline",
-			"token": "adress",
-			"content": "hexadecimal"
-		},
-
-		{
-			"suffix": ":",
-			"type": "singleline",
-			"token": "label"
-		}
-	],
-
-	"directives": 
-	[
-		{
-			"id": ".align",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".assert",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".asserterror",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".byte",
-			"param": null,
-			"description": "a definition for byte sequence\n\nExample: .byte $12,$23,$34,$45,$00"
-		},
-
-		{
-			"id": ".const",
-			"nodename": "Constants",
-			"param": null,
-			"description": "",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".define",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".dword",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".enum",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".error",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".eval",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".filenamespace",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".filemodify",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".fill",
-			"param": null,
-			"description": ".fill 5, 0 // Generates byte 0,0,0,0,0\n.fill 5, i // Generates byte 0,1,2,3,4\n.fill 256, 127.5 + 127.5*sin(toRadians(i*360/256)) // Generates a sine curve"
-		},
-
-		{
-			"id": ".function",
-			"nodename": "Functions",
-			"param": null,
-			"description": "",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".for",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".if",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".import",
-			"nodename": "Imports",
-			"param": null,
-			"pattern": "(source|binary|c64|text)(\\s*\"([a-zA-Z0-9\\.]+)\")?",
-			"matcher": "1,3",
-			"description": "Import external files into your source\nParameters are:\nsource: import Standard asm source\nbinary: import the bytes from a binary file\nc64: the same a binary, but skips the frist two address bytes",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".importance",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".label",
-			"nodename": "Labels",
-			"param": null,
-			"description": "",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".macro",
-			"nodename": "Macros",
-			"param": null,
-			"description": "",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".modify",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".namespace",
-			"nodename": "Namespaces",
-			"param": null,
-			"description": "",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".pc",
-			"nodename": "ProgrammCounters",
-			"param": null,
-			"pattern": "(\\$[0-9]{4})(\\s*\"([a-zA-Z0-9 ]+)\")?",
-			"matcher": "1,3",
-			"description": "start of a memory block\n\nExample: .pc $8000 \"Optional Name\"",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".plugin",
-			"nodename": "Plugins",
-			"param": null,
-			"description": "",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".print",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".printnow",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".pseudoid",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".pseudocommand",
-			"nodename": "PseudoCommands",
-			"param": null,
-			"description": "",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".struct",
-			"nodename": "Structs",
-			"param": null,
-			"description": "",
-			"hasOutline": true
-		},
-
-		{
-			"id": ".text",
-			"param": null,
-			"description": "a definition for strings\n\nExample: .text \"Greetings fly to ......\""
-		},
-
-		{
-			"id": ".var",
-			"param": null,
-			"description": ""
-		},
-
-		{
-			"id": ".word",
-			"param": null,
-			"description": ""
-		}
-	]
+  "sourceRules" : [ {
+    "prefix" : "/*",
+    "suffix" : "*/",
+    "type" : "multiline",
+    "token" : "comment"
+  }, {
+    "prefix" : "//",
+    "type" : "singleline",
+    "token" : "comment"
+  }, {
+    "prefix" : "\"",
+    "suffix" : "\"",
+    "type" : "singleline",
+    "token" : "string"
+  }, {
+    "prefix" : "#",
+    "type" : "singleline",
+    "token" : "decimal",
+    "content" : "decimal"
+  }, {
+    "prefix" : "#$",
+    "type" : "singleline",
+    "token" : "hexadecimal",
+    "content" : "hexadecimal"
+  }, {
+    "prefix" : "#%",
+    "type" : "singleline",
+    "token" : "binary",
+    "content" : "binary"
+  }, {
+    "prefix" : "$",
+    "type" : "singleline",
+    "token" : "adress",
+    "content" : "hexadecimal"
+  }, {
+    "suffix" : ":",
+    "type" : "singleline",
+    "token" : "label"
+  } ],
+  "directives" : [ {
+    "id" : ".align",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".assert",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".asserterror",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".byte",
+    "param" : null,
+    "description" : "a definition for byte sequence\n\nExample: .byte $12,$23,$34,$45,$00"
+  }, {
+    "id" : ".const",
+    "nodename" : "Constants",
+    "param" : null,
+    "description" : "",
+    "hasOutline" : true
+  }, {
+    "id" : ".define",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".dword",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".enum",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".error",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".eval",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".filenamespace",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".filemodify",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".fill",
+    "param" : null,
+    "description" : ".fill 5, 0 // Generates byte 0,0,0,0,0\n.fill 5, i // Generates byte 0,1,2,3,4\n.fill 256, 127.5 + 127.5*sin(toRadians(i*360/256)) // Generates a sine curve"
+  }, {
+    "id" : ".function",
+    "nodename" : "Functions",
+    "param" : null,
+    "description" : "",
+    "hasOutline" : true
+  }, {
+    "id" : ".for",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".if",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".import",
+    "nodename" : "Imports",
+    "param" : null,
+    "pattern" : "(source|binary|c64|text)(\\s*\"([a-zA-Z0-9\\.]+)\")?",
+    "matcher" : "1,3",
+    "description" : "Import external files into your source\nParameters are:\nsource: import Standard asm source\nbinary: import the bytes from a binary file\nc64: the same a binary, but skips the frist two address bytes",
+    "hasOutline" : true
+  }, {
+    "id" : ".importance",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".label",
+    "nodename" : "Labels",
+    "param" : null,
+    "description" : "",
+    "hasOutline" : true
+  }, {
+    "id" : ".macro",
+    "nodename" : "Macros",
+    "param" : null,
+    "description" : "",
+    "hasOutline" : true
+  }, {
+    "id" : ".modify",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".namespace",
+    "nodename" : "Namespaces",
+    "param" : null,
+    "description" : "",
+    "hasOutline" : true
+  }, {
+    "id" : ".pc",
+    "nodename" : "ProgrammCounters",
+    "param" : null,
+    "pattern" : "(\\$[0-9]{4})(\\s*\"([a-zA-Z0-9 ]+)\")?",
+    "matcher" : "1,3",
+    "description" : "start of a memory block\n\nExample: .pc $8000 \"Optional Name\"",
+    "hasOutline" : true
+  }, {
+    "id" : ".plugin",
+    "nodename" : "Plugins",
+    "param" : null,
+    "description" : "",
+    "hasOutline" : true
+  }, {
+    "id" : ".print",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".printnow",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".pseudoid",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".pseudocommand",
+    "nodename" : "PseudoCommands",
+    "param" : null,
+    "description" : "",
+    "hasOutline" : true
+  }, {
+    "id" : ".struct",
+    "nodename" : "Structs",
+    "param" : null,
+    "description" : "",
+    "hasOutline" : true
+  }, {
+    "id" : ".text",
+    "param" : null,
+    "description" : "a definition for strings\n\nExample: .text \"Greetings fly to ......\""
+  }, {
+    "id" : ".var",
+    "param" : null,
+    "description" : ""
+  }, {
+    "id" : ".word",
+    "param" : null,
+    "description" : ""
+  } ]
 }

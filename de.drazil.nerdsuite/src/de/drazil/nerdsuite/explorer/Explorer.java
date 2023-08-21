@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
-import de.drazil.nerdsuite.basic.SourceRepositoryService;
+import de.drazil.nerdsuite.basic.encode.SourceRepositoryService;
 import de.drazil.nerdsuite.configuration.Configuration;
 import de.drazil.nerdsuite.configuration.Initializer;
 import de.drazil.nerdsuite.handler.BrokerObject;

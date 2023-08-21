@@ -12,7 +12,7 @@ public class AnimationService extends AbstractImagingService {
 	public final static int SET_DELAY = 4;
 	private Animator animator = null;
 	@Setter
-	private int delay = 100;
+	private int delay = 140;
 	private int pos = 0;
 	private boolean animationIsRunning = false;
 	private Composite composite;
@@ -95,29 +95,33 @@ public class AnimationService extends AbstractImagingService {
 		service = ServiceFactory.getService(owner, TileRepositoryService.class);
 		selectedTileIndexList = service.getSelectedTileIndexList();
 		if (animationMode == AnimationMode.Forward) {
-			delay = 100;
+
 			forward = true;
 			stopAnimation();
 			startAnimation();
-		} else if (animationMode == AnimationMode.ForwardFast) {
-			delay = 50;
-			forward = true;
+		} else if (animationMode == AnimationMode.Slower) {
+			if (delay < 400) {
+				delay += 20;
+			}
+			
 			stopAnimation();
 			startAnimation();
 		} else if (animationMode == AnimationMode.Stop) {
 			pos = 0;
 			stopAnimation();
 		} else if (animationMode == AnimationMode.Backward) {
-			delay = 100;
 			forward = false;
 			stopAnimation();
 			startAnimation();
-		} else if (animationMode == AnimationMode.BackwardFast) {
-			delay = 50;
-			forward = false;
+		} else if (animationMode == AnimationMode.Faster) {
+			if (delay > 40) {
+				delay -= 20;
+			}
+			
 			stopAnimation();
 			startAnimation();
 		}
+		System.out.printf("delay:%d\n",delay);
 	}
 
 	public void setComposite(Composite composite) {

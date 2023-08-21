@@ -51,6 +51,18 @@ public class DisassemblerView {
     public void setLabel(@UIEventTopic("SetLabel") String name) {
         hvw.setLabel(name);
     }
+    
+    @Inject
+    @Optional
+    public void setRangeTag(@UIEventTopic("SetRangeTag") String name) {
+        hvw.setRangeTag();
+    }
+    
+    @Inject
+    @Optional
+    public void clarAllRanges(@UIEventTopic("ClearAllRanges") String name) {
+        hvw.clearAllRanges();
+    }
 
     @PreDestroy
     public void preDestroy() {

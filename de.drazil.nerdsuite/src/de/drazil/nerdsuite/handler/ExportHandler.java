@@ -20,11 +20,11 @@ public class ExportHandler {
 	@Execute
 	public void execute(MPart part, MPerspective activePerspective, MApplication app, IWorkbench workbench, Shell shell,
 			EPartService partService, EModelService modelService, IEventBroker broker,
-			@Named("de.drazil.nerdsuite.commandparameter.Export") String command) {
+			@Named("de.drazil.nerdsuite.commandparameter.export") String command) {
 
 		String owner = (String) part.getTransientData().get(Constants.OWNER);
-
-		broker.send(command, new BrokerObject("", command));
+		System.out.printf("Export %s\n", command);
+		 broker.send(command, new BrokerObject("", command));
 
 		/*
 		 * Map<String, Object> userData = new HashMap<>();

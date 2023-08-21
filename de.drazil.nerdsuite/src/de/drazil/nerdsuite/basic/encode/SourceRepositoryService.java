@@ -1,4 +1,4 @@
-package de.drazil.nerdsuite.basic;
+package de.drazil.nerdsuite.basic.encode;
 
 import java.io.File;
 import java.io.FileWriter;

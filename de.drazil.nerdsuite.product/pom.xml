@@ -8,6 +8,7 @@
 		<groupId>de.drazil.nerdsuite</groupId>
 		<artifactId>de.drazil.nerdsuite.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
+
 		<relativePath>../de.drazil.nerdsuite.parent</relativePath>
 	</parent>
 	<build>
@@ -52,6 +53,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>

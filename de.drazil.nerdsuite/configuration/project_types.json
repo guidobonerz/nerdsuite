@@ -1,10 +1,7 @@
-[
-	{
-		"id": "CODING_PROJECT",
-		"name": "Coding Project"
-	},
-	{
-		"id": "GRAPHIC_PROJECT",
-		"name": "Graphic Project"
-	}
-]
+[ {
+  "id" : "CODING_PROJECT",
+  "name" : "Coding Project"
+}, {
+  "id" : "GRAPHIC_PROJECT",
+  "name" : "Graphic Project"
+} ]

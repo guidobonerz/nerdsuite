@@ -84,7 +84,7 @@ public class ImportFormatWizardPage extends AbstractBoundWizardPage {
 
 	private void setData(int value) {
 		userData.put(ProjectWizard.IMPORT_FORMAT, "BINARY");
-		userData.put(ProjectWizard.BYTES_TO_SKIP, new Integer(value));
+		userData.put(ProjectWizard.BYTES_TO_SKIP, value);
 		setPageComplete(true);
 	}
 

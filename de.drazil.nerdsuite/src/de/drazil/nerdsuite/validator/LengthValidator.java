@@ -54,21 +54,21 @@ public class LengthValidator extends BaseValidator
 			{
 				if (s.length() > lengthA)
 				{
-					validationStatus = ValidationStatus.error(MessageFormat.format("{0} has to be a maximum length of {1}", getFieldName(), new Integer(lengthA)));
+					validationStatus = ValidationStatus.error(MessageFormat.format("{0} has to be a maximum length of {1}", getFieldName(), lengthA));
 				}
 			}
 			else if (checkType == CheckType.Min)
 			{
 				if (s.length() < lengthA)
 				{
-					validationStatus = ValidationStatus.error(MessageFormat.format("{0} has to be a minimum length of {1}", getFieldName(), new Integer(lengthA)));
+					validationStatus = ValidationStatus.error(MessageFormat.format("{0} has to be a minimum length of {1}", getFieldName(), lengthA));
 				}
 			}
 			else if (checkType == CheckType.Both)
 			{
 				if (s.length() < lengthA || s.length() > lengthB)
 				{
-					validationStatus = ValidationStatus.error(MessageFormat.format("{0} has to be a length between {1} and {2}", getFieldName(), new Integer(lengthA), new Integer(lengthB)));
+					validationStatus = ValidationStatus.error(MessageFormat.format("{0} has to be a length between {1} and {2}", getFieldName(), lengthA, lengthB));
 				}
 			}
 		}

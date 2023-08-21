@@ -4,7 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.net.http.HttpRequest;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -50,15 +56,31 @@ public class Configuration {
 			workspace = getWorkspace();
 
 			Bundle bundle = Platform.getBundle(Constants.APP_ID);
-
-			try {
-				for (String pathFragment : Constants.FONT_LIST) {
-					String s = FileLocator.resolve(bundle.getEntry(pathFragment)).getPath();
-					Display.getCurrent().loadFont(s);
+			for (String pathFragment : Constants.FONT_LIST) {
+				org.eclipse.core.runtime.Path path = new org.eclipse.core.runtime.Path(pathFragment);
+				URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+				URL fileUrl = null;
+				try {
+					fileUrl = FileLocator.toFileURL(url);
+				} catch (IOException e) {
+					// Will happen if the file cannot be read for some reason
+					e.printStackTrace();
 				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
+				File file = new File(fileUrl.getPath());
+				boolean fontLoaded = Display.getCurrent().loadFont(file.toString());
+				System.out.printf("font [ %s ] %s loaded\n", pathFragment, (fontLoaded ? "" : " not "));
 			}
+
+			/*
+			 * try { for (String pathFragment : Constants.FONT_LIST) { String s =
+			 * FileLocator.resolve(bundle.getEntry(pathFragment)).getPath();
+			 * 
+			 * boolean fontLoaded =Display.getCurrent().loadFont(
+			 * "c:\\Users\\drazil\\git\\nerdsuite\\de.drazil.nerdsuite\\"+pathFragment);
+			 * System.out.printf("font [ %s ] %s loaded\n", s,(fontLoaded?"":" not "));
+			 * 
+			 * } } catch (IOException e1) { e1.printStackTrace(); }
+			 */
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -72,22 +94,25 @@ public class Configuration {
 				WORKSPACE_PATH.mkdir();
 				workspace = new Workspace();
 				updateWorkspace(null, false, false);
-				SETTINGS_FILE.createNewFile();
-			} else {
-				if (!SETTINGS_FILE.exists()) {
-					FileWriter fw = new FileWriter(SETTINGS_FILE);
-					fw.write("#ultimate64 settings\n" + "u64.ip=\n" + "u64.port=\n" + "client.adress=");
-					fw.flush();
-					fw.close();
-				} else {
-					if (null != System.getProperty("nerdsuitePropertiesRead")) {
-						Properties p = new Properties();
-						p.load(new FileReader(SETTINGS_FILE));
-						System.setProperties(p);
-						System.setProperty("nerdsuitePropertiesRead", "true");
-					}
-				}
 			}
+			if (!SETTINGS_FILE.exists()) {
+				SETTINGS_FILE.createNewFile();
+				FileWriter fw = new FileWriter(SETTINGS_FILE);
+				fw.write("#ultimate64 settings\n" + "u64.host.address=\n" + "u64.host.port=\n");
+				fw.flush();
+				fw.close();
+			}
+			if (!System.getProperties().contains("nerdsuitePropertiesRead")) {
+				Properties p = new Properties();
+				p.load(new FileReader(SETTINGS_FILE));
+				// System.setProperties(p);
+				for (Enumeration<Object> e = p.keys(); e.hasMoreElements();) {
+					String key = (String) e.nextElement();
+					System.setProperty(key, p.getProperty(key));
+				}
+				System.setProperty("nerdsuitePropertiesRead", "true");
+			}
+			System.getProperties().setProperty("u64.client.address", Inet4Address.getLocalHost().getHostAddress());
 
 			if (workspace == null) {
 				log.debug("read workspace file...");
@@ -96,7 +121,9 @@ public class Configuration {
 						Workspace.class);
 			}
 
-		} catch (JsonParseException e) {
+		} catch (
+
+		JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {

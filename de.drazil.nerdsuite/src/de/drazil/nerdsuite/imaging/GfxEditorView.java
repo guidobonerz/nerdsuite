@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -60,6 +59,7 @@ import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
+import de.drazil.nerdsuite.imaging.service.SwapService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
@@ -79,8 +79,6 @@ import de.drazil.nerdsuite.widget.Tile;
 
 public class GfxEditorView implements ITileUpdateListener {
 
-	@Inject
-	private Logger logger;
 	private Composite parent;
 	private PainterWidget painter;
 	private RepositoryWidget repository;
@@ -181,6 +179,17 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageInvert(@UIEventTopic("Invert") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			InvertService service = ServiceFactory.getService(owner, InvertService.class);
+			service.setConf(painter.getConf());
+			service.execute(0, modificationConfirmation);
+			part.setDirty(true);
+		}
+	}
+	
+	@Inject
+	@Optional
+	public void manageSwap(@UIEventTopic("Swap") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			SwapService service = ServiceFactory.getService(owner, SwapService.class);
 			service.setConf(painter.getConf());
 			service.execute(0, modificationConfirmation);
 			part.setDirty(true);
@@ -313,6 +322,12 @@ public class GfxEditorView implements ITileUpdateListener {
 		}
 	}
 
+	@Inject
+	@Optional
+	public void export(@UIEventTopic("Export") BrokerObject brokerObject, MPart part) {
+		System.out.printf("Export GFX %s\n", (String) brokerObject.getTransferObject());
+	}
+
 	@PreDestroy
 	public void preDestroy(MApplication app, MTrimmedWindow window, EModelService modelService, MPart part) {
 		if (part.isDirty()) {
@@ -347,7 +362,19 @@ public class GfxEditorView implements ITileUpdateListener {
 		Map<String, Object> pm = (Map<String, Object>) part.getObject();
 		project = (Project) pm.get("project");
 		owner = (String) pm.get("repositoryOwner");
+/*
+		Button button = new Button(parent, SWT.NONE);
+		button.setText("Press me");
+		button.addListener(SWT.Selection, new Listener() {
 
+			@Override
+			public void handleEvent(Event event) {
+				if (event.type == SWT.Selection) {
+					eventBroker.send("Export", new BrokerObject("", "tiles"));
+				}
+			}
+		});
+*/
 		tileRepositoryService = ServiceFactory.getService(project.getId(), TileRepositoryService.class);
 		tileRepositoryReferenceService = tileRepositoryService.getReferenceRepository();
 

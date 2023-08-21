@@ -13,7 +13,7 @@ import org.osgi.framework.Bundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.basic.BasicParser;
+import de.drazil.nerdsuite.basic.decode.BasicParser;
 import de.drazil.nerdsuite.cpu.ICPU;
 import de.drazil.nerdsuite.cpu.InstructionSet;
 import de.drazil.nerdsuite.cpu.decode.InstructionLine;

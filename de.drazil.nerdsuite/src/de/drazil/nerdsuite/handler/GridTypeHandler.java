@@ -18,6 +18,6 @@ public class GridTypeHandler {
 			@Named("de.drazil.nerdsuite.commandparameter.GridType") String gridType,
 			@Named("de.drazil.nerdsuite.commandparameter.GridVisible") String visible, IEventBroker broker) {
 		broker.send("GridType", new BrokerObject((String) part.getTransientData().get(Constants.OWNER),
-				new GridState(new Boolean(visible), GridType.values()[Integer.valueOf(gridType)])));
+				new GridState(Boolean.getBoolean(visible), GridType.values()[Integer.valueOf(gridType)])));
 	}
 }
