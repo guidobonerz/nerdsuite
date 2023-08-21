@@ -109,6 +109,7 @@ public class Constants {
 	public final static Color DEFAULT_COLOR_DEBUG = new Color(Display.getCurrent(), SwtUtil.toRGB("#D4AC0D"));
 	public final static Color WHITE = new Color(Display.getCurrent(), SwtUtil.toRGB("#FFFFFF"));
 	public final static Color BLACK = new Color(Display.getCurrent(), SwtUtil.toRGB("#000000"));
+	public final static Color LIGHT_GREY = new Color(Display.getCurrent(), SwtUtil.toRGB("#a0a0a0"));
 	public final static Color LIGHT_BLUE = new Color(Display.getCurrent(), SwtUtil.toRGB("#EFEFFF"));
 	public final static Color LIGHT_GREEN = new Color(Display.getCurrent(), SwtUtil.toRGB("#EFFFEF"));
 	public final static Color LIGHT_GREEN2 = new Color(Display.getCurrent(), SwtUtil.toRGB("#D0FFD0"));

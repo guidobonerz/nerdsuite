@@ -23,350 +23,350 @@ import de.drazil.nerdsuite.mouse.MeasuringController.Trigger;
 
 public class RepositoryWidget extends BaseImagingWidget {
 
-    private boolean tileDragActive = false;
-    private boolean tileSelectionStarted = false;
-    private SelectionRange tileSelectionRange = null;
-    private List<Integer> selectedTileIndexList = null;
-    private boolean drawAll = true;
-    private int start;
-    private int end;
-    private Map<String, DirtyableImage> imageCache;
-    private int maxColumns;
-    private int maxRows;
+	private boolean tileDragActive = false;
+	private boolean tileSelectionStarted = false;
+	private SelectionRange tileSelectionRange = null;
+	private List<Integer> selectedTileIndexList = null;
+	private boolean drawAll = true;
+	private int start;
+	private int end;
+	private Map<String, DirtyableImage> imageCache;
+	private int maxColumns;
+	private int maxRows;
 
-    public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
-            boolean autowrap) {
-        super(parent, style, owner, colorPaletteProvider, autowrap);
-        tileSelectionRange = new SelectionRange();
-        selectedTileIndexList = new ArrayList<>();
-        enableDelayTrigger(Trigger.LEFT, 1000);
-        setBackground(Constants.BLACK);
-        imageCache = new HashMap<String, DirtyableImage>();
-    }
+	public RepositoryWidget(Composite parent, int style, String owner, IColorPaletteProvider colorPaletteProvider,
+			boolean autowrap) {
+		super(parent, style, owner, colorPaletteProvider, autowrap);
+		tileSelectionRange = new SelectionRange();
+		selectedTileIndexList = new ArrayList<>();
+		enableDelayTrigger(Trigger.LEFT, 1000);
+		setBackground(Constants.BLACK);
+		imageCache = new HashMap<String, DirtyableImage>();
+	}
 
-    @Override
-    protected void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
-        tileDragActive = true;
-        computeTileSelection(tileX, tileY, 0);
+	@Override
+	protected void leftMouseButtonPressedDelayed(int modifierMask, int x, int y) {
+		tileDragActive = true;
+		computeTileSelection(tileX, tileY, 0);
+		System.out.println("drag item mode enabled");
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+			}
+		});
 
-        Display.getDefault().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-            }
-        });
+	}
 
-    }
+	@Override
+	protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
+		if (!tileDragActive) {
+			selectedTileIndexX = tileX;
+			selectedTileIndexY = tileY;
+			selectedTileIndex = computeTileIndex(tileX, tileY);
+			computeTileSelection(tileX, tileY, 1);
+			if (selectedTileIndex < tileRepositoryService.getSize()) {
+				tileRepositoryService.setSelectedTileIndex(selectedTileIndex);
+			} else {
+				System.out.println("tile selection outside range...");
+				tileRepositoryService.setSelectedTileIndex(-1);
+			}
+			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+		} else {
+			selectedTileIndexX = tileX;
+			selectedTileIndexY = tileY;
+			selectedTileIndex = computeTileIndex(tileX, tileY);
+		}
+	}
 
-    @Override
-    protected void leftMouseButtonClicked(int modifierMask, int x, int y) {
-        if (!tileDragActive) {
-            selectedTileIndexX = tileX;
-            selectedTileIndexY = tileY;
-            selectedTileIndex = computeTileIndex(tileX, tileY);
-            computeTileSelection(tileX, tileY, 1);
-            if (selectedTileIndex < tileRepositoryService.getSize()) {
-                tileRepositoryService.setSelectedTileIndex(selectedTileIndex);
-            } else {
-                System.out.println("tile selection outside range...");
-                tileRepositoryService.setSelectedTileIndex(-1);
-            }
-            doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-        } else {
-            selectedTileIndexX = tileX;
-            selectedTileIndexY = tileY;
-            selectedTileIndex = computeTileIndex(tileX, tileY);
-        }
-    }
+	@Override
+	protected void mouseDragged(int modifierMask, int x, int y) {
+		if (!tileDragActive) {
+			stopDelayTrigger(Trigger.LEFT);
+			computeTileSelection(tileX, tileY, 1);
+			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+		}
+	}
 
-    @Override
-    protected void mouseDragged(int modifierMask, int x, int y) {
-        tileDragActive=false;
-        stopDelayTrigger(Trigger.LEFT);
-        computeTileSelection(tileX, tileY, 1);
-        doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-    }
+	@Override
+	protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
+		System.out.println("mouseDraggedDelayed");
+		tileDragActive = true;
+		if (tileSelectionStarted) {
+			stopDelayTrigger(Trigger.LEFT);
+		}
+		computeTileSelection(tileX, tileY, 1);
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+	}
 
-    @Override
-    protected void mouseDraggedDelayed(int modifierMask, int x, int y) {
-        tileDragActive = true;
-        if (tileSelectionStarted) {
-            stopDelayTrigger(Trigger.LEFT);
-        }
-        computeTileSelection(tileX, tileY, 1);
-        doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-    }
+	@Override
+	protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
+		if (tileDragActive) {
+			tileDragActive = false;
+			tileRepositoryService.moveTile(tileSelectionRange.getFrom(), tileSelectionRange.getTo());
+		}
+		if (selectedTileIndexList.size() > 1) {
+			tileSelectionStarted = false;
+			tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
+		}
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+	}
 
-    @Override
-    protected void leftMouseButtonReleased(int modifierMask, int x, int y) {
-        if (tileDragActive) {
-            tileDragActive = false;
-            tileRepositoryService.moveTile(tileSelectionRange.getFrom(), tileSelectionRange.getTo());
-        }
-        if (selectedTileIndexList.size() > 1) {
-            tileSelectionStarted = false;
-            tileRepositoryService.setSelectedTileIndexList(selectedTileIndexList);
-        }
-        doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-    }
+	@Override
+	protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
+		computeTileSelection(tileX, tileY, 0);
+	}
 
-    @Override
-    protected void leftMouseButtonPressed(int modifierMask, int x, int y) {
-        computeTileSelection(tileX, tileY, 0);
-    }
+	@Override
+	protected void mouseMove(int modifierMask, int x, int y) {
+		if (tileChanged) {
+			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+		}
+	}
 
-    @Override
-    protected void mouseMove(int modifierMask, int x, int y) {
-        if (tileChanged) {
-            doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-        }
-    }
+	@Override
+	protected void mouseEnter(int modifierMask, int x, int y) {
+		// doDrawAllTiles();
+	}
 
-    @Override
-    protected void mouseEnter(int modifierMask, int x, int y) {
-        // doDrawAllTiles();
-    }
+	@Override
+	protected void mouseExit(int modifierMask, int x, int y) {
+		// doDrawAllTiles();
+	}
 
-    @Override
-    protected void mouseExit(int modifierMask, int x, int y) {
-        // doDrawAllTiles();
-    }
+	private int computeTileIndex(int x, int y) {
+		return (x + (y * maxColumns));
+	}
 
-    private int computeTileIndex(int x, int y) {
-        return (x + (y * maxColumns));
-    }
+	private void computeTileSelection(int tileX, int tileY, int mode) {
+		int index = computeTileIndex(tileX, tileY);
 
-    private void computeTileSelection(int tileX, int tileY, int mode) {
-        int index = computeTileIndex(tileX, tileY);
+		if (mode == 0) {
+			tileSelectionStarted = false;
+			tileSelectionRange.setFrom(index);
+			tileSelectionRange.setTo(index);
+		} else if (mode == 1) {
+			if (!tileSelectionStarted) {
+				tileSelectionRange.setFrom(index);
+				tileSelectionStarted = true;
+			}
+			tileSelectionRange.setTo(index);
 
-        if (mode == 0) {
-            tileSelectionStarted = false;
-            tileSelectionRange.setFrom(index);
-            tileSelectionRange.setTo(index);
-        } else if (mode == 1) {
-            if (!tileSelectionStarted) {
-                tileSelectionRange.setFrom(index);
-                tileSelectionStarted = true;
-            }
-            tileSelectionRange.setTo(index);
+			int from = tileSelectionRange.getFrom();
+			int to = tileSelectionRange.getTo();
+			if (from > to) {
+				int d = from;
+				from = to;
+				to = d;
+			}
+			if (!tileDragActive) {
+				selectedTileIndexList.clear();
+				for (int i = from; i <= to; i++) {
+					if (i < tileRepositoryService.getSize()) {
+						selectedTileIndexList.add(i);
+					}
+				}
+			}
+		}
+	}
 
-            int from = tileSelectionRange.getFrom();
-            int to = tileSelectionRange.getTo();
-            if (from > to) {
-                int d = from;
-                from = to;
-                to = d;
-            }
-            if (!tileDragActive) {
-                selectedTileIndexList.clear();
-                for (int i = from; i <= to; i++) {
-                    if (i < tileRepositoryService.getSize()) {
-                        selectedTileIndexList.add(i);
-                    }
-                }
-            }
-        }
-    }
+	private void resetSelectionList() {
+		selectedTileIndexList = new ArrayList<>();
+	}
 
-    private void resetSelectionList() {
-        selectedTileIndexList = new ArrayList<>();
-    }
+	public void selectAll() {
+		if (supportsMultiSelection()) {
+			// resetSelectionList();
+			doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+		}
+	}
 
-    public void selectAll() {
-        if (supportsMultiSelection()) {
-            // resetSelectionList();
-            doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-        }
-    }
+	public void paintControl(PaintEvent e) {
+		paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled,
+				conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
+	}
 
-    public void paintControl(PaintEvent e) {
-        paintControl(e.gc, redrawMode, conf.pixelGridEnabled, conf.separatorEnabled, conf.tileGridEnabled,
-                conf.tileSubGridEnabled, true, conf.tileCursorEnabled, true);
-    }
+	protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
+			boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
+			boolean paintTelevisionMode) {
+		Rectangle r = getParent().getBounds();
 
-    protected void paintControl(GC gc, RedrawMode redrawMode, boolean paintPixelGrid, boolean paintSeparator,
-            boolean paintTileGrid, boolean paintTileSubGrid, boolean paintSelection, boolean paintTileCursor,
-            boolean paintTelevisionMode) {
-        Rectangle r = getParent().getBounds();
+		maxColumns = r.width / (conf.repositoryScaledTileWith + conf.tileGap);
+		maxRows = r.height / (conf.repositoryScaledTileHeight + conf.tileGap);
+		System.out.printf("repo redrawmode: %s\n", redrawMode.toString());
+		paintTiles(gc, action, maxColumns, maxRows);
 
-        maxColumns = r.width / (conf.repositoryScaledTileWith + conf.tileGap);
-        maxRows = r.height / (conf.repositoryScaledTileHeight + conf.tileGap);
-        System.out.printf("repo redrawmode: %s\n", redrawMode.toString());
-        paintTiles(gc, action, maxColumns, maxRows);
+		if (paintTileGrid) {
+			// paintTileGrid(gc, maxColumns, maxRows);
+		}
 
-        if (paintTileGrid) {
-            // paintTileGrid(gc, maxColumns, maxRows);
-        }
+		if (tileDragActive) {
+			paintDragMarker(gc);
+		} else {
+			paintTileMarker(gc);
+			paintSelection(gc);
+		}
 
-        if (tileDragActive) {
-            paintDragMarker(gc);
-        } else {
-            paintTileMarker(gc);
-            paintSelection(gc);
-        }
+		action = ImagePainterFactory.NONE;
+		drawAll = true;
+		redrawMode = RedrawMode.DrawNothing;
+	}
 
-        action = ImagePainterFactory.NONE;
-        drawAll = true;
-        redrawMode = RedrawMode.DrawNothing;
-    }
+	private void paintDragMarker(GC gc) {
+		int from = tileSelectionRange.getFrom();
+		int to = tileSelectionRange.getTo();
+		int xfrom = from % maxColumns;
+		int yfrom = from / maxColumns;
+		int xto = to % maxColumns;
+		int yto = to / maxColumns;
+		gc.setLineWidth(1);
+		gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
+		gc.setAlpha(150);
+		gc.fillRectangle(xfrom * (conf.repositoryScaledTileWith + conf.tileGap),
+				yfrom * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
+				conf.repositoryScaledTileHeight);
+		gc.setAlpha(255);
+		gc.setForeground(Constants.BRIGHT_ORANGE);
+		gc.setLineWidth(4);
+		if (abs(to - from) > 0)
+			gc.drawLine(xto * (conf.repositoryScaledTileWith + conf.tileGap),
+					yto * (conf.repositoryScaledTileHeight + conf.tileGap),
+					xto * (conf.repositoryScaledTileWith + conf.tileGap),
+					yto * (conf.repositoryScaledTileHeight + conf.tileGap) + conf.repositoryScaledTileHeight);
+	}
 
-    private void paintDragMarker(GC gc) {
-        int from = tileSelectionRange.getFrom();
-        int to = tileSelectionRange.getTo();
-        int xfrom = from % maxColumns;
-        int yfrom = from / maxColumns;
-        int xto = to % maxColumns;
-        int yto = to / maxColumns;
-        gc.setLineWidth(1);
-        gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
-        gc.setAlpha(150);
-        gc.fillRectangle(xfrom * (conf.repositoryScaledTileWith + conf.tileGap),
-                yfrom * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
-                conf.repositoryScaledTileHeight);
-        gc.setAlpha(255);
-        gc.setForeground(Constants.BRIGHT_ORANGE);
-        gc.setLineWidth(4);
-        if (abs(to - from) > 0)
-            gc.drawLine(xto * (conf.repositoryScaledTileWith + conf.tileGap),
-                    yto * (conf.repositoryScaledTileHeight + conf.tileGap),
-                    xto * (conf.repositoryScaledTileWith + conf.tileGap),
-                    yto * (conf.repositoryScaledTileHeight + conf.tileGap) + conf.repositoryScaledTileHeight);
-    }
+	private void paintSelection(GC gc) {
 
-    private void paintSelection(GC gc) {
+		selectedTileIndexList.forEach(i -> {
+			int y = i / maxColumns;
+			int x = i % maxColumns;
 
-        selectedTileIndexList.forEach(i -> {
-            int y = i / maxColumns;
-            int x = i % maxColumns;
+			if (i == temporaryIndex) {
+				gc.setLineWidth(3);
+				gc.setAlpha(255);
+				gc.setBackground(Constants.WHITE);
+				gc.fillRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
+						y * (conf.repositoryScaledTileHeight + conf.tileGap) + conf.repositoryScaledTileHeight,
+						conf.repositoryScaledTileWith, 4);
+			}
+			gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
+			gc.setAlpha(90);
+			gc.fillRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
+					y * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
+					conf.repositoryScaledTileHeight);
+		});
+	}
 
-            if (i == temporaryIndex) {
-                gc.setLineWidth(3);
-                gc.setAlpha(255);
-                gc.setBackground(Constants.WHITE);
-                gc.fillRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
-                        y * (conf.repositoryScaledTileHeight + conf.tileGap) + conf.repositoryScaledTileHeight,
-                        conf.repositoryScaledTileWith,
-                        4);
-            }
-            gc.setBackground(Constants.SELECTION_TILE_MARKER_COLOR);
-            gc.setAlpha(90);
-            gc.fillRectangle(x * (conf.repositoryScaledTileWith + conf.tileGap),
-                    y * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
-                    conf.repositoryScaledTileHeight);
-        });
-    }
+	private void paintTileMarker(GC gc) {
+		if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
+			gc.setLineWidth(3);
+			gc.setBackground(Constants.BRIGHT_ORANGE);
+			gc.setAlpha(90);
+			gc.fillRectangle(tileX * (conf.repositoryScaledTileWith + conf.tileGap),
+					tileY * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
+					conf.repositoryScaledTileHeight);
+		}
+	}
 
-    private void paintTileMarker(GC gc) {
-        if (mouseIn && computeTileIndex(tileX, tileY) < tileRepositoryService.getSize()) {
-            gc.setLineWidth(3);
-            gc.setBackground(Constants.BRIGHT_ORANGE);
-            gc.setAlpha(90);
-            gc.fillRectangle(tileX * (conf.repositoryScaledTileWith + conf.tileGap),
-                    tileY * (conf.repositoryScaledTileHeight + conf.tileGap), conf.repositoryScaledTileWith,
-                    conf.repositoryScaledTileHeight);
-        }
-    }
+	private void paintTileGrid(GC gc, int maxColumns, int maxRows) {
+		gc.setLineWidth(1);
+		gc.setLineStyle(SWT.LINE_SOLID);
+		gc.setForeground(Constants.TILE_GRID_COLOR);
+		for (int x = 0; x <= maxColumns; x++) {
 
-    private void paintTileGrid(GC gc, int maxColumns, int maxRows) {
-        gc.setLineWidth(1);
-        gc.setLineStyle(SWT.LINE_SOLID);
-        gc.setForeground(Constants.TILE_GRID_COLOR);
-        for (int x = 0; x <= maxColumns; x++) {
+			gc.drawLine(x * (conf.repositoryScaledTileWith + conf.tileGap) - 1, 0,
+					x * (conf.repositoryScaledTileWith + conf.tileGap) - 1, getParent().getBounds().height);
+		}
+		for (int y = 0; y <= maxRows; y++) {
+			gc.drawLine(0, y * (conf.repositoryScaledTileHeight + conf.tileGap) - 1, getParent().getBounds().width,
+					y * (conf.repositoryScaledTileHeight + conf.tileGap) - 1);
 
-            gc.drawLine(x * (conf.repositoryScaledTileWith + conf.tileGap) - 1, 0,
-                    x * (conf.repositoryScaledTileWith + conf.tileGap) - 1, getParent().getBounds().height);
-        }
-        for (int y = 0; y <= maxRows; y++) {
-            gc.drawLine(0, y * (conf.repositoryScaledTileHeight + conf.tileGap) - 1, getParent().getBounds().width,
-                    y * (conf.repositoryScaledTileHeight + conf.tileGap) - 1);
+		}
+	}
 
-        }
-    }
+	@Override
+	public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
+		if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
+			temporaryIndex = selectedTileIndexList.get(0);
+		}
+		doRedraw(redrawMode, action);
+	}
 
-    @Override
-    public void redrawTiles(List<Integer> selectedTileIndexList, RedrawMode redrawMode, int action) {
-        if (redrawMode == RedrawMode.DrawTemporarySelectedTile) {
-            temporaryIndex = selectedTileIndexList.get(0);
-        }
-        doRedraw(redrawMode, action);
-    }
+	private void paintTiles(GC gc, int action, int maxX, int maxY) {
+		int max = maxX * maxY;
+		for (int i = 0; i < max; i++) {
+			paintTile(gc, i, action, maxX);
+		}
+	}
 
-    private void paintTiles(GC gc, int action, int maxX, int maxY) {
-        int max = maxX * maxY;
-        for (int i = 0; i < max; i++) {
-            paintTile(gc, i, action, maxX);
-        }
-    }
+	private void paintTile(GC gc, int index, int action, int columns) {
 
-    private void paintTile(GC gc, int index, int action, int columns) {
+		int y = (index / columns) * (conf.repositoryScaledTileHeight + conf.tileGap);
+		int x = (index % columns) * (conf.repositoryScaledTileWith + conf.tileGap);
+		if (index < tileRepositoryService.getSize()) {
+			Tile tile = tileRepositoryService.getTile(index);
+			Tile selectedTile = tileRepositoryService.getSelectedTile();
+			if (tile.equals(selectedTile)) {
+				tile.setDirty(true);
+			}
+			Layer layer = tile.getActiveLayer();
+			String name = String.format(ImagePainterFactory.IMAGE_ID, tile.getId(), layer.getId(), 0);
+			imagePainterFactory.drawScaledImage(gc, tile, name, x, y, true);
+			gc.setForeground(Constants.DEFAULT_COLOR_DEBUG);
+			gc.drawRectangle(x, y, conf.repositoryScaledTileWith, conf.repositoryScaledTileHeight);
+		} else {
+			/*
+			 * gc.setForeground(Constants.TILE_GRID_COLOR);
+			 * gc.setFont(Constants.GoogleMaterials); gc.drawLine(x, y, x +
+			 * conf.repositoryScaledTileHeight + conf.tileGap, y +
+			 * conf.repositoryScaledTileHeight + conf.tileGap);
+			 */
+		}
+	}
 
-        int y = (index / columns) * (conf.repositoryScaledTileHeight + conf.tileGap);
-        int x = (index % columns) * (conf.repositoryScaledTileWith + conf.tileGap);
-        if (index < tileRepositoryService.getSize()) {
-            Tile tile = tileRepositoryService.getTile(index);
-            Tile selectedTile = tileRepositoryService.getSelectedTile();
-            if (tile.equals(selectedTile)) {
-                tile.setDirty(true);
-            }
-            Layer layer = tile.getActiveLayer();
-            String name = String.format(ImagePainterFactory.IMAGE_ID, tile.getId(), layer.getId(), 0);
-            imagePainterFactory.drawScaledImage(gc, tile, name, x, y, true);
-            gc.setForeground(Constants.DEFAULT_COLOR_DEBUG);
-            gc.drawRectangle(x, y, conf.repositoryScaledTileWith,
-                    conf.repositoryScaledTileHeight);
-        } else {
-            /*
-             * gc.setForeground(Constants.TILE_GRID_COLOR);
-             * gc.setFont(Constants.GoogleMaterials); gc.drawLine(x, y, x +
-             * conf.repositoryScaledTileHeight + conf.tileGap, y +
-             * conf.repositoryScaledTileHeight + conf.tileGap);
-             */
-        }
-    }
+	@Override
+	public void activeLayerChanged(int layer) {
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+	}
 
-    @Override
-    public void activeLayerChanged(int layer) {
-        doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-    }
+	@Override
+	public void colorSelected(int colorNo, int colorIndex) {
+		tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
+	}
 
-    @Override
-    public void colorSelected(int colorNo, int colorIndex) {
-        tileRepositoryService.getSelectedTile().setActiveLayerColorIndex(colorNo, colorIndex, true);
-    }
+	@Override
+	public void tileReordered() {
+		doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
+	}
 
-    @Override
-    public void tileReordered() {
-        doRedraw(RedrawMode.DrawAllTiles, ImagePainterFactory.READ);
-    }
+	@Override
+	public void redrawCalculatedArea() {
 
-    @Override
-    public void redrawCalculatedArea() {
+		if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile
+				|| redrawMode == RedrawMode.DrawPixel) {
+			drawAll = false;
 
-        if (redrawMode == RedrawMode.DrawSelectedTiles || redrawMode == RedrawMode.DrawSelectedTile
-                || redrawMode == RedrawMode.DrawPixel) {
-            drawAll = false;
+			start = tileRepositoryService.getSelectedTileIndexList().get(0);
+			end = tileRepositoryService.getSelectedTileIndexList()
+					.get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
 
-            start = tileRepositoryService.getSelectedTileIndexList().get(0);
-            end = tileRepositoryService.getSelectedTileIndexList()
-                    .get(tileRepositoryService.getSelectedTileIndexList().size() - 1);
+			int iys = start / maxColumns;
+			int ys = iys * (conf.repositoryScaledTileHeight + conf.tileGap);
 
-            int iys = start / maxColumns;
-            int ys = iys * (conf.repositoryScaledTileHeight + conf.tileGap);
+			int iye = end / maxColumns;
+			int ye = iye * (conf.repositoryScaledTileHeight + conf.tileGap);
 
-            int iye = end / maxColumns;
-            int ye = iye * (conf.repositoryScaledTileHeight + conf.tileGap);
-
-            start = computeTileIndex(0, iys);
-            end = computeTileIndex(maxColumns, iye);
-            if (end > tileRepositoryService.getSize()) {
-                end = tileRepositoryService.getSize();
-            }
-            int height = (1 + iye - iys) * (conf.repositoryScaledTileHeight + conf.tileGap);
-            redraw(0, ys, (conf.repositoryScaledTileWith + conf.tileGap) * maxColumns, height, false);
-        } else {
-            drawAll = true;
-            redraw();
-        }
-    }
+			start = computeTileIndex(0, iys);
+			end = computeTileIndex(maxColumns, iye);
+			if (end > tileRepositoryService.getSize()) {
+				end = tileRepositoryService.getSize();
+			}
+			int height = (1 + iye - iys) * (conf.repositoryScaledTileHeight + conf.tileGap);
+			redraw(0, ys, (conf.repositoryScaledTileWith + conf.tileGap) * maxColumns, height, false);
+		} else {
+			drawAll = true;
+			redraw();
+		}
+	}
 
 }

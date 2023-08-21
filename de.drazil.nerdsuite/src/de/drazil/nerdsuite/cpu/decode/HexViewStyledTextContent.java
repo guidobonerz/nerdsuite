@@ -7,13 +7,13 @@ import org.eclipse.swt.custom.StyledTextContent;
 import org.eclipse.swt.custom.TextChangeListener;
 import org.eclipse.swt.custom.TextChangedEvent;
 
-public class HexViewContent implements StyledTextContent {
+public class HexViewStyledTextContent implements StyledTextContent {
 
     private List<TextChangeListener> listenerList;
     private StringBuilder content;
     private int lineWidth;
 
-    public HexViewContent(int lineWidth) {
+    public HexViewStyledTextContent(int lineWidth) {
         listenerList = new ArrayList<TextChangeListener>();
         content = new StringBuilder();
 

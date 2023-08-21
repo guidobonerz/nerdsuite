@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -17,6 +18,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
+import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.TableEditor;
@@ -28,6 +30,8 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -51,7 +55,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.cpu.decode.HexViewContent;
+import de.drazil.nerdsuite.cpu.decode.HexViewStyledTextContent;
 import de.drazil.nerdsuite.cpu.decode.InstructionLine;
 import de.drazil.nerdsuite.cpu.platform.IPlatform;
 import de.drazil.nerdsuite.log.Console;
@@ -103,9 +107,9 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		this.platform = platform;
 		rangeList = new ArrayList<DisassemblingRange>();
 		jumpStack = new Stack<InstructionLine>();
-		selectedRange = new DisassemblingRange(0, 0, false, RangeType.Binary);
+		selectedRange = new DisassemblingRange(0, 0, RangeType.Binary);
 		initialize();
-
+		
 	}
 
 	private static boolean isPrintableCharacter(char c) {
@@ -164,7 +168,8 @@ public class HexViewWidget extends Composite implements IContentProvider {
 
 	public void clearAllRanges() {
 		rangeList.clear();
-		rangeList.add(new DisassemblingRange(0, content.length, false, RangeType.Binary));
+		rangeList.add(new DisassemblingRange(0, content.length, RangeType.Binary));
+		// disassemble();
 		addressArea.redraw();
 		hexArea.redraw();
 		textArea.redraw();
@@ -187,7 +192,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 	public void setBinaryContent(byte[] binaryContent) {
 		content = binaryContent;
 		rangeList = new ArrayList<DisassemblingRange>();
-		rangeList.add(new DisassemblingRange(0, content.length, false, RangeType.Binary));
+		rangeList.add(new DisassemblingRange(0, content.length, RangeType.Binary));
 		prepareContent();
 		// disassemble(selectedRange);
 		Display.getDefault().asyncExec(new Runnable() {
@@ -245,7 +250,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 
 			if (pc != null) {
 				platform.setProgrammCounter(new Value(pc.getValue()));
-				platform.parseBinary(this, rangeList);
+				// platform.parseBinary(this, rangeList);
 				tableViewer.setInput(platform.getCPU().getInstructionLineList());
 			}
 
@@ -274,9 +279,9 @@ public class HexViewWidget extends Composite implements IContentProvider {
 					}
 					range.setLen(croppedLength);
 					range.setDirty(true);
-					rangeList.add(rangeIndex + (indexOffset++), new DisassemblingRange(start, length, true, rangeType));
+					rangeList.add(rangeIndex + (indexOffset++), new DisassemblingRange(start, length, rangeType));
 					rangeList.add(rangeIndex + (indexOffset++), new DisassemblingRange(start + length,
-							(oldStart + oldLength) - (start + length), true, range.getRangeType()));
+							(oldStart + oldLength) - (start + length), range.getRangeType()));
 				}
 			} else {
 				Console.println("> skip setting new range due to equality.");
@@ -287,21 +292,11 @@ public class HexViewWidget extends Composite implements IContentProvider {
 					.filter(r -> start <= r.getOffset() + r.getLen() && start + length > r.getOffset())
 					.collect(Collectors.toList());
 
-			/*
-			 * List<DisassemblingRange> ranges = rangeList.stream() .filter(r -> start <=
-			 * r.getOffset() && start + length >
-			 * r.getOffset()).collect(Collectors.toList());
-			 */
 			while (ranges.size() > 2) {
 				DisassemblingRange dr = ranges.get(1);
 				ranges.remove(dr);
 				rangeList.remove(dr);
 			}
-
-			/*
-			 * for (DisassemblingRange r : ranges) { if (ranges.indexOf(r) > 0 &&
-			 * ranges.indexOf(r) < ranges.size() - 1) { rangeList.remove(r); } }
-			 */
 
 			DisassemblingRange topRange = ranges.get(0);
 			DisassemblingRange bottomRange = ranges.get(ranges.size() - 1);
@@ -325,7 +320,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 				bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
 				bottomRange.setOffset(start + length);
 				int insertIndex = rangeList.indexOf(topRange) + 1;
-				rangeList.add(insertIndex, new DisassemblingRange(start, length, true, rangeType));
+				rangeList.add(insertIndex, new DisassemblingRange(start, length, rangeType));
 				if (topRange.getLen() == 0) {
 					rangeList.remove(topRange);
 				}
@@ -670,7 +665,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		addressArea = new StyledText(this, SWT.READ_ONLY);
 		addressArea.setEditable(false);
 		addressArea.setEnabled(false);
-		addressArea.setContent(new HexViewContent(5));
+		addressArea.setContent(new HexViewStyledTextContent(5));
 		addressArea.setFont(Constants.EDITOR_FONT);
 		addressArea.setLayoutData(gd);
 
@@ -683,8 +678,23 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		gd.grabExcessHorizontalSpace = false;
 		hexArea = new StyledText(this, SWT.NONE);
 		hexArea.setFont(Constants.EDITOR_FONT);
+		hexArea.invokeAction(ST.TOGGLE_OVERWRITE);
 		hexArea.setSelectionBackground(Constants.CODE_COLOR);
-		hexArea.setContent(new HexViewContent(32));
+		hexArea.setContent(new HexViewStyledTextContent(32));
+		hexArea.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				int h = getBounds().height;
+				GC gc = e.gc;
+				gc.setAlpha(50);
+				gc.setBackground(Constants.LIGHT_RED);
+				for (int i = 13; i < 208; i += 26) {
+					gc.fillRectangle(i, 0, 13, h);
+				}
+
+			}
+		});
 		hexArea.addLineStyleListener(new LineStyleListener() {
 			@Override
 			public void lineGetStyle(LineStyleEvent event) {
@@ -770,7 +780,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		textArea = new StyledText(this, SWT.NONE);
 		textArea.setFont(Constants.EDITOR_FONT);
 		textArea.setSelectionBackground(Constants.CODE_COLOR);
-		textArea.setContent(new HexViewContent(16));
+		textArea.setContent(new HexViewStyledTextContent(16));
 		textArea.addLineStyleListener(new LineStyleListener() {
 
 			@Override
@@ -778,6 +788,17 @@ public class HexViewWidget extends Composite implements IContentProvider {
 				event.styles = getStyleRanges(1, event);
 			}
 
+		});
+		textArea.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				/*
+				 * int h = getParent().getBounds().height; GC gc = e.gc; gc.setAlpha(50);
+				 * gc.setBackground(Constants.LIGHT_RED); for (int i = 13; i < 208; i += 26) {
+				 * gc.fillRectangle(i, 0, 13, h); // gc.drawLine(i, 0, i, h); }
+				 */
+			}
 		});
 		textArea.setLayoutData(gd);
 		textArea.addMouseListener(new MouseAdapter() {
@@ -843,11 +864,16 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		StyleRange styleRange = null;
 		Color fgc = Constants.BLACK;
 		Color bgc = null;
-		/*
-		 * if (width == 2) { int lineLength = event.lineText.length(); for (int x =
-		 * event.lineOffset; x < event.lineOffset + lineLength; x += 2) { StyleRange sr
-		 * = hexStyleRangeList[(x & 0b11111) >> 1]; sr.start = x; list.add(sr); } }
-		 */
+
+		if (width == 2) {
+			int lineLength = event.lineText.length();
+			for (int x = event.lineOffset; x < event.lineOffset + lineLength; x += 2) {
+				StyleRange sr = hexStyleRangeList[(x & 0b11111) >> 1];
+				sr.start = x;
+				list.add(sr);
+			}
+		}
+
 		if (width == 2) {
 			for (DisassemblingRange range : rangeList) {
 				switch (range.getRangeType()) {

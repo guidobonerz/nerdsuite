@@ -1,56 +1,46 @@
-[
-	{
-		"id": "C64",
-		"name": "C64",
-		"source": "configuration/platform/c64_platform.json",
-		"enabled": true
-	},
-	{
-		"id": "C128",
-		"name": "C128",
-		"source": "configuration/platform/unkown.json",
-		"enabled": false
-	},
-	{
-		"id": "C16",
-		"name": "C16",
-		"source": "configuration/platform/unkown.json",
-		"enabled": false
-	},
-	{
-		"id": "C116",
-		"name": "C116",
-		"source": "configuration/platform/unkown.json",
-		"enabled": false
-	},
-	{
-		"id": "VC20",
-		"name": "VC20",
-		"source": "configuration/platform/unkown.json",
-		"enabled": false
-	},
-	{
-		"id": "PLUS4",
-		"name": "Plus/4",
-		"source": "configuration/platform/unkown.json",
-		"enabled": false
-	},
-	{
-		"id": "ATARI800XL",
-		"name": "Atari 800 XL",
-		"source": "configuration/platform/unkown.json",
-		"enabled": false
-	},
-	{
-		"id": "ATARI2600",
-		"name": "Atari 2600",
-		"source": "configuration/platform/unkown.json",
-		"enabled": false
-	},
-	{
-		"id": "CPC6128",
-		"name": "Schneider/Amstrad CPC 6128",
-		"source": "configuration/platform/unkown.json",
-		"enabled": false
-	}
-]
+[ {
+  "id" : "C64",
+  "name" : "C64",
+  "source" : "configuration/platform/c64_platform.json",
+  "enabled" : true
+}, {
+  "id" : "C128",
+  "name" : "C128",
+  "source" : "configuration/platform/unkown.json",
+  "enabled" : false
+}, {
+  "id" : "C16",
+  "name" : "C16",
+  "source" : "configuration/platform/unkown.json",
+  "enabled" : false
+}, {
+  "id" : "C116",
+  "name" : "C116",
+  "source" : "configuration/platform/unkown.json",
+  "enabled" : false
+}, {
+  "id" : "VC20",
+  "name" : "VC20",
+  "source" : "configuration/platform/unkown.json",
+  "enabled" : false
+}, {
+  "id" : "PLUS4",
+  "name" : "Plus/4",
+  "source" : "configuration/platform/unkown.json",
+  "enabled" : false
+}, {
+  "id" : "ATARI800XL",
+  "name" : "Atari 800 XL",
+  "source" : "configuration/platform/unkown.json",
+  "enabled" : false
+}, {
+  "id" : "ATARI2600",
+  "name" : "Atari 2600",
+  "source" : "configuration/platform/unkown.json",
+  "enabled" : false
+}, {
+  "id" : "CPC6128",
+  "name" : "Schneider/Amstrad CPC 6128",
+  "source" : "configuration/platform/unkown.json",
+  "enabled" : false
+} ]

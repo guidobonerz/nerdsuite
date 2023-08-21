@@ -59,6 +59,7 @@ import de.drazil.nerdsuite.imaging.service.PurgeService;
 import de.drazil.nerdsuite.imaging.service.RotationService;
 import de.drazil.nerdsuite.imaging.service.ServiceFactory;
 import de.drazil.nerdsuite.imaging.service.ShiftService;
+import de.drazil.nerdsuite.imaging.service.SwapService;
 import de.drazil.nerdsuite.imaging.service.TileRepositoryService;
 import de.drazil.nerdsuite.model.GraphicFormat;
 import de.drazil.nerdsuite.model.GraphicFormatVariant;
@@ -178,6 +179,17 @@ public class GfxEditorView implements ITileUpdateListener {
 	public void manageInvert(@UIEventTopic("Invert") BrokerObject brokerObject) {
 		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
 			InvertService service = ServiceFactory.getService(owner, InvertService.class);
+			service.setConf(painter.getConf());
+			service.execute(0, modificationConfirmation);
+			part.setDirty(true);
+		}
+	}
+	
+	@Inject
+	@Optional
+	public void manageSwap(@UIEventTopic("Swap") BrokerObject brokerObject) {
+		if (brokerObject.getOwner().equalsIgnoreCase(owner)) {
+			SwapService service = ServiceFactory.getService(owner, SwapService.class);
 			service.setConf(painter.getConf());
 			service.execute(0, modificationConfirmation);
 			part.setDirty(true);

@@ -1,118 +1,93 @@
-[
-	{
-		"id": "C64_BASIC_V20",
-		"name": "Basic V2.0",
-		"version": 20,
-		"supportsExampleFile": true
-	},
-	{
-		"id": "C64_BASIC_SIMONSBASIC",
-		"name": "Simons Basic",
-		"version": 1,
-		"supportsExampleFile": true
-	},
-	{
-		"id": "C64_ASSEMBLER",
-		"name": "Assembler",
-		"version": 0,
-		"builder": [
-			{
-				"id": "BUILTIN",
-				"name": "NerdAss (Builtin)"
-			},
-			{
-				"id": "KICKASS",
-				"name": "KickAssembler"
-			},
-			{
-				"id": "ACME",
-				"name": "Acme"
-			}
-		]
-	},
-	{
-		"id": "C16_BASIC_V35",
-		"name": "Basic V3.5",
-		"version": 35
-	},
-	{
-		"id": "C16_ASSEMBLER",
-		"name": "Assembler",
-		"version": 0
-	},
-	{
-		"id": "C116_BASIC_V35",
-		"name": "Basic V3.5",
-		"version": 35
-	},
-	{
-		"id": "C116_ASSEMBLER",
-		"name": "Assembler",
-		"version": 0
-	},
-	{
-		"id": "PLUS4_BASIC_V35",
-		"name": "Basic V3.5",
-		"version": 35
-	},
-	{
-		"id": "PLUS4_ASSEMBLER",
-		"name": "Assembler",
-		"version": 0
-	},
-	{
-		"id": "C128_BASIC_V70",
-		"name": "Basic V7.0",
-		"version": 70
-	},
-	{
-		"id": "C128_ASSEMBLER",
-		"name": "8502 Assembler",
-		"version": 0
-	},
-	{
-		"id": "C128_ASSEMBLER",
-		"name": "Z80A Assembler",
-		"version": 0
-	},
-	{
-		"id": "VC20_BASIC_V20",
-		"name": "Basic V2.0",
-		"version": 20
-	},
-	{
-		"id": "VC20_ASSEMBLER",
-		"name": "6502 Assembler",
-		"version": 0
-	},
-	{
-		"id": "MEGA65_BASIC_V10",
-		"name": "Basic V10.0",
-		"version": 100
-	},
-	{
-		"id": "ATARI800XL_BASIC",
-		"name": "Atari Basic",
-		"version": 1
-	},
-	{
-		"id": "ATARI800XL_ASSEMBLER",
-		"name": "Assembler",
-		"version": 0
-	},
-	{
-		"id": "ATARI2600_ASSEMBLER",
-		"name": "Assembler",
-		"version": 0
-	},
-	{
-		"id": "CPC6128_BASIC",
-		"name": "Locomotive Basic V1.0",
-		"version": 10
-	},
-	{
-		"id": "CPC6128_ASSEMBLER",
-		"name": "Assembler",
-		"version": 0
-	}
-]
+[ {
+  "id" : "C64_BASIC_V20",
+  "name" : "Basic V2.0",
+  "version" : 20,
+  "supportsExampleFile" : true
+}, {
+  "id" : "C64_BASIC_SIMONSBASIC",
+  "name" : "Simons Basic",
+  "version" : 1,
+  "supportsExampleFile" : true
+}, {
+  "id" : "C64_ASSEMBLER",
+  "name" : "Assembler",
+  "version" : 0,
+  "builder" : [ {
+    "id" : "BUILTIN",
+    "name" : "NerdAss (Builtin)"
+  }, {
+    "id" : "KICKASS",
+    "name" : "KickAssembler"
+  }, {
+    "id" : "ACME",
+    "name" : "Acme"
+  } ]
+}, {
+  "id" : "C16_BASIC_V35",
+  "name" : "Basic V3.5",
+  "version" : 35
+}, {
+  "id" : "C16_ASSEMBLER",
+  "name" : "Assembler",
+  "version" : 0
+}, {
+  "id" : "C116_BASIC_V35",
+  "name" : "Basic V3.5",
+  "version" : 35
+}, {
+  "id" : "C116_ASSEMBLER",
+  "name" : "Assembler",
+  "version" : 0
+}, {
+  "id" : "PLUS4_BASIC_V35",
+  "name" : "Basic V3.5",
+  "version" : 35
+}, {
+  "id" : "PLUS4_ASSEMBLER",
+  "name" : "Assembler",
+  "version" : 0
+}, {
+  "id" : "C128_BASIC_V70",
+  "name" : "Basic V7.0",
+  "version" : 70
+}, {
+  "id" : "C128_ASSEMBLER",
+  "name" : "8502 Assembler",
+  "version" : 0
+}, {
+  "id" : "C128_ASSEMBLER",
+  "name" : "Z80A Assembler",
+  "version" : 0
+}, {
+  "id" : "VC20_BASIC_V20",
+  "name" : "Basic V2.0",
+  "version" : 20
+}, {
+  "id" : "VC20_ASSEMBLER",
+  "name" : "6502 Assembler",
+  "version" : 0
+}, {
+  "id" : "MEGA65_BASIC_V10",
+  "name" : "Basic V10.0",
+  "version" : 100
+}, {
+  "id" : "ATARI800XL_BASIC",
+  "name" : "Atari Basic",
+  "version" : 1
+}, {
+  "id" : "ATARI800XL_ASSEMBLER",
+  "name" : "Assembler",
+  "version" : 0
+}, {
+  "id" : "ATARI2600_ASSEMBLER",
+  "name" : "Assembler",
+  "version" : 0
+}, {
+  "id" : "CPC6128_BASIC",
+  "name" : "Locomotive Basic V1.0",
+  "version" : 10
+}, {
+  "id" : "CPC6128_ASSEMBLER",
+  "name" : "Assembler",
+  "version" : 0
+} ]

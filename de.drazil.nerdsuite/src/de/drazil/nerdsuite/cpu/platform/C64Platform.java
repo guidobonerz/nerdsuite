@@ -72,8 +72,7 @@ public class C64Platform extends AbstractPlatform {
 		long start = System.currentTimeMillis();
 		for (DisassemblingRange dr : ranges) {
 			System.out.println(dr.toString());
-			// getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr,
-			// 2);
+			getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr, 2);
 		}
 		long duration = (System.currentTimeMillis() - start);
 		System.out.printf("%d Seconds", duration);
