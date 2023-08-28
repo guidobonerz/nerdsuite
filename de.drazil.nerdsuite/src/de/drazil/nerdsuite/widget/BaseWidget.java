@@ -13,6 +13,7 @@ public abstract class BaseWidget extends Canvas {
 
 	protected AdvancedMouseAdaper ama = null;
 	protected int modifierMask = 0;
+	protected boolean isDragging = false;
 
 	public BaseWidget(Composite parent, int style) {
 		super(parent, style);
@@ -116,24 +117,28 @@ public abstract class BaseWidget extends Canvas {
 			@Override
 			public void mouseMove(int modifierMask, int x, int y) {
 				BaseWidget.this.modifierMask = modifierMask;
+				isDragging=false;
 				mouseMoveInternal(modifierMask, x, y);
 			}
 
 			@Override
 			public void mouseDropped(int modifierMask, int x, int y) {
 				BaseWidget.this.modifierMask = modifierMask;
+				isDragging=false;
 				mouseDraggedInternal(modifierMask, x, y);
 			}
 
 			@Override
 			public void mouseDragged(int modifierMask, int x, int y) {
 				BaseWidget.this.modifierMask = modifierMask;
+				isDragging=true;
 				mouseDraggedInternal(modifierMask, x, y);
 			}
 
 			@Override
 			public void mouseDraggedDelayed(int modifierMask, int x, int y) {
 				BaseWidget.this.modifierMask = modifierMask;
+				isDragging=true;
 				mouseDraggedDelayedInternal(modifierMask, x, y);
 			}
 		});

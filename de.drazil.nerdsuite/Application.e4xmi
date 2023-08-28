@@ -663,7 +663,6 @@
   <commands xmi:id="_B2Hs0FeiEe2F2tElkw3aVg" elementId="de.drazil.nerdsuite.command.properties" commandName="Properties"/>
   <commands xmi:id="_z6NAECZsEe6fjMBqAqLImg" elementId="de.drazil.nerdsuite.command.clearRanges" commandName="Clear all Ranges"/>
   <commands xmi:id="_BCcBoCZtEe6fjMBqAqLImg" elementId="de.drazil.nerdsuite.command.RangeTag" commandName="Range tag"/>
-  <commands xmi:id="_hJKXQEBoEe67rOPmxe7ALg" elementId="de.drazil.nerdsuite.command.0"/>
   <commands xmi:id="_kp1BoEBoEe67rOPmxe7ALg" elementId="de.drazil.nerdsuite.command.SwapTile" commandName="SwapTile"/>
   <addons xmi:id="_POaA0aF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_POaA0qF9EeOMYoHAic2wfQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
