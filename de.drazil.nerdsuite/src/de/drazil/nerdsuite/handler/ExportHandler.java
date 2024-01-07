@@ -24,7 +24,7 @@ public class ExportHandler {
 
 		String owner = (String) part.getTransientData().get(Constants.OWNER);
 		System.out.printf("Export %s\n", command);
-		 broker.send(command, new BrokerObject("", command));
+		 broker.send("Export", new BrokerObject("", command));
 
 		/*
 		 * Map<String, Object> userData = new HashMap<>();

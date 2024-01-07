@@ -286,7 +286,7 @@
     <bindings xmi:id="_2VHwcNdCEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.12" keySequence="M1+R" command="_Xm69wNdCEemIEoLjroS7Zw">
       <tags>type:user</tags>
     </bindings>
-    <bindings xmi:id="_Bn-S0NdFEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.13" keySequence="M1+C" command="_jAOccNWOEemb1pFqqqXNXQ">
+    <bindings xmi:id="_Bn-S0NdFEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.13" keySequence="M1+P" command="_jAOccNWOEemb1pFqqqXNXQ">
       <tags>type:user</tags>
     </bindings>
     <bindings xmi:id="_yxfxUNdFEemIEoLjroS7Zw" elementId="de.drazil.nerdsuite.keybinding.14" keySequence="M2+M3++" command="_C9g6EBbBEemiVvU0vymBxA">

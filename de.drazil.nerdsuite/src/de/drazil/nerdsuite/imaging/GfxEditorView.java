@@ -3,6 +3,7 @@ package de.drazil.nerdsuite.imaging;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ import de.drazil.nerdsuite.enums.TileSelectionModes;
 import de.drazil.nerdsuite.handler.BrokerObject;
 import de.drazil.nerdsuite.imaging.service.AnimationService;
 import de.drazil.nerdsuite.imaging.service.ClipboardService;
+import de.drazil.nerdsuite.imaging.service.ExportService;
 import de.drazil.nerdsuite.imaging.service.FlipService;
 import de.drazil.nerdsuite.imaging.service.IConfirmable;
 import de.drazil.nerdsuite.imaging.service.ITileUpdateListener;
@@ -184,7 +186,7 @@ public class GfxEditorView implements ITileUpdateListener {
 			part.setDirty(true);
 		}
 	}
-	
+
 	@Inject
 	@Optional
 	public void manageSwap(@UIEventTopic("Swap") BrokerObject brokerObject) {
@@ -326,6 +328,11 @@ public class GfxEditorView implements ITileUpdateListener {
 	@Optional
 	public void export(@UIEventTopic("Export") BrokerObject brokerObject, MPart part) {
 		System.out.printf("Export GFX %s\n", (String) brokerObject.getTransferObject());
+		ExportService service = ServiceFactory.getService(owner, ExportService.class);
+		Map<String, Object> config = new HashMap<String, Object>();
+		config.put("fileName", "c:\\Users\\drazil\\Downloads\\");
+		config.put("repository", tileRepositoryService);
+		service.doExportGraphic(config);
 	}
 
 	@PreDestroy
@@ -362,19 +369,14 @@ public class GfxEditorView implements ITileUpdateListener {
 		Map<String, Object> pm = (Map<String, Object>) part.getObject();
 		project = (Project) pm.get("project");
 		owner = (String) pm.get("repositoryOwner");
-/*
-		Button button = new Button(parent, SWT.NONE);
-		button.setText("Press me");
-		button.addListener(SWT.Selection, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				if (event.type == SWT.Selection) {
-					eventBroker.send("Export", new BrokerObject("", "tiles"));
-				}
-			}
-		});
-*/
+		/*
+		 * Button button = new Button(parent, SWT.NONE); button.setText("Press me");
+		 * button.addListener(SWT.Selection, new Listener() {
+		 * 
+		 * @Override public void handleEvent(Event event) { if (event.type ==
+		 * SWT.Selection) { eventBroker.send("Export", new BrokerObject("", "tiles")); }
+		 * } });
+		 */
 		tileRepositoryService = ServiceFactory.getService(project.getId(), TileRepositoryService.class);
 		tileRepositoryReferenceService = tileRepositoryService.getReferenceRepository();
 
