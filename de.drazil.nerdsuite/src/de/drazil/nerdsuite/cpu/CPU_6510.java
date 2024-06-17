@@ -54,7 +54,7 @@ public class CPU_6510 extends AbstractCPU {
 
 		if (decodableRange.getRangeType() == RangeType.Code) {
 			InstructionLine currentLine = findInstructionLineByOffset(new Value(decodableRange.getOffset()));
-			currentLine = split(currentLine, pc, new Value(decodableRange.getOffset()));
+			split(currentLine, pc, new Value(decodableRange.getOffset() + decodableRange.getLen()));
 
 			InstructionLine newLine = null;
 			Value value = null;
@@ -140,24 +140,31 @@ public class CPU_6510 extends AbstractCPU {
 						currentLine.setUserObject(new Object[] { decodableRange.getRangeType().toString(), so, "",
 								byteString, opcode.getMnemonic(), addressingModeString,
 								address != null ? address.getConstName() : "" });
+						currentLine.setReferenceValue(value);
+						currentLine.setPassed(true);
 
-						newLine = split(currentLine, pc, new Value(offset + len));
-						if (newLine == null) {
+						long currentEnd = currentLine.getRange().getOffset() + currentLine.getRange().getLength();
+						long decodeEnd = decodableRange.getOffset() + decodableRange.getLen();
+
+						if (currentEnd < decodeEnd) {
+							newLine = split(currentLine, pc, new Value(offset + len));
+
+							if (newLine.getRange().getLength() < 0 || newLine.getRange().getLength() == 0) {
+								System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");
+							}
+							currentLine = newLine;
+						} else {
 							break;
 						}
 
-						if (newLine.getRange().getLength() < 0 || newLine.getRange().getLength() == 0) {
-							System.out.println(newLine.getProgramCounter() + ": negative length or zero ..");
-						}
 						// detectPointers(byteArray, pc, currentLine, platformData);
 
-						currentLine.setReferenceValue(value);
-						currentLine.setPassed(true);
 						// currentLine = markEmptyBlockAsData(byteArray, pc, newLine);
-						currentLine = newLine;
-						if (currentLine.getInstructionType() != InstructionType.Asm) {
-							currentLine = getNextUnspecifiedLine(currentLine);
-						}
+
+						/*
+						 * if (currentLine.getInstructionType() != InstructionType.Asm) { currentLine =
+						 * getNextUnspecifiedLine(currentLine); }
+						 */
 					}
 				}
 			}
@@ -184,6 +191,7 @@ public class CPU_6510 extends AbstractCPU {
 			currentLine.setUserObject(new Object[] { range.getRangeType().toString(), soFrom, "",
 					"DATA BLOCK from :" + soFrom + " to " + soTill });
 		}
+		split(currentLine, pc, new Value(range.getOffset() + range.getLen()));
 	}
 
 	private InstructionLine markEmptyBlockAsData(byte byteArray[], Value pc, InstructionLine currentLine) {

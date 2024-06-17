@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -108,8 +107,8 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		rangeList = new ArrayList<DisassemblingRange>();
 		jumpStack = new Stack<InstructionLine>();
 		selectedRange = new DisassemblingRange(0, 0, RangeType.Binary);
-		initialize();
-		
+		initUI();
+
 	}
 
 	private static boolean isPrintableCharacter(char c) {
@@ -167,9 +166,12 @@ public class HexViewWidget extends Composite implements IContentProvider {
 	}
 
 	public void clearAllRanges() {
-		rangeList.clear();
-		rangeList.add(new DisassemblingRange(0, content.length, RangeType.Binary));
-		// disassemble();
+		rangeList = new ArrayList<DisassemblingRange>();
+		rangeList.add(new DisassemblingRange(0, getContentLength(), RangeType.Binary));
+		selectedRange = new DisassemblingRange(0, 0, RangeType.Binary);
+		selectedRange.setRangeType(code.getSelection() ? RangeType.Code
+				: binary.getSelection() ? RangeType.Binary : RangeType.Unspecified);
+		disassemble();
 		addressArea.redraw();
 		hexArea.redraw();
 		textArea.redraw();
@@ -191,32 +193,12 @@ public class HexViewWidget extends Composite implements IContentProvider {
 
 	public void setBinaryContent(byte[] binaryContent) {
 		content = binaryContent;
-		rangeList = new ArrayList<DisassemblingRange>();
-		rangeList.add(new DisassemblingRange(0, content.length, RangeType.Binary));
-		prepareContent();
+
+		// prepareContent();
 		// disassemble(selectedRange);
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				GC fontGC = new GC(Display.getCurrent());
-				int fontHeight = 0;
-				try {
-
-					fontGC.setFont(Constants.EDITOR_FONT);
-					FontMetrics fm = fontGC.getFontMetrics();
-					fontHeight = fm.getHeight();
-				} finally {
-					fontGC.dispose();
-				}
-				visibleRows = getClientArea().height / fontHeight;
-				getVerticalBar().setMinimum(0);
-				getVerticalBar().setMaximum(hexArea.getLineCount());
-				getVerticalBar().setSelection(0);
-				getVerticalBar().setThumb(visibleRows);
-				getVerticalBar().setPageIncrement(visibleRows);
-				addressArea.redraw();
-				hexArea.redraw();
-				textArea.redraw();
 
 				pc = platform.checkAdress(content, 0);
 				if (pc != null && pc.getValue() > 0) {
@@ -229,6 +211,32 @@ public class HexViewWidget extends Composite implements IContentProvider {
 					}
 				}
 				prepareContent();
+
+				GC fontGC = new GC(Display.getCurrent());
+				int fontHeight = 0;
+				try {
+
+					fontGC.setFont(Constants.EDITOR_FONT);
+					FontMetrics fm = fontGC.getFontMetrics();
+					fontHeight = fm.getHeight();
+				} finally {
+					fontGC.dispose();
+				}
+				visibleRows = textArea.getBounds().height / fontHeight;
+
+				textArea.getVerticalBar().setMinimum(0);
+				textArea.getVerticalBar().setMaximum(textArea.getLineCount());
+				textArea.getVerticalBar().setSelection(0);
+				textArea.getVerticalBar().setThumb(visibleRows);
+				textArea.getVerticalBar().setIncrement(1);
+				textArea.getVerticalBar().setPageIncrement(visibleRows);
+
+				addressArea.redraw();
+				hexArea.redraw();
+				textArea.redraw();
+
+				rangeList = new ArrayList<DisassemblingRange>();
+				rangeList.add(new DisassemblingRange(0, getContentLength(), RangeType.Binary));
 			}
 		});
 	}
@@ -237,31 +245,33 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		if (selectedRange.getLen() > 0) {
 			platform.getCPU().clear();
 			handleSelection(selectedRange.getOffset(), selectedRange.getLen(), selectedRange.getRangeType());
-			Console.println("> ----------------------------------------------");
-			Console.printf("> range count :%d\n", rangeList.size());
-			for (int i = 0; i < rangeList.size(); i++) {
-				int offset = pc.getValue() + rangeList.get(i).getOffset();
-				Console.printf("> %04d : %04x - %04x %s\n", i, offset, offset + rangeList.get(i).getLen() - 1,
-						rangeList.get(i).getRangeType().toString());
-			}
-
-			hexArea.redraw();
-			textArea.redraw();
-
-			if (pc != null) {
-				platform.setProgrammCounter(new Value(pc.getValue()));
-				// platform.parseBinary(this, rangeList);
-				tableViewer.setInput(platform.getCPU().getInstructionLineList());
-			}
-
 		}
+		Console.println("> ----------------------------------------------");
+		Console.printf("> range count :%d\n", rangeList.size());
+		for (int i = 0; i < rangeList.size(); i++) {
+			int offset = pc.getValue() + rangeList.get(i).getOffset();
+			Console.printf("> %04d : %04x - %04x %s\n", i, offset, offset + rangeList.get(i).getLen() - 1,
+					rangeList.get(i).getRangeType().toString());
+		}
+
+		if (pc != null) {
+			platform.setProgrammCounter(new Value(pc.getValue()));
+			// platform.parseBinary(this, rangeList);
+			tableViewer.setInput(platform.getCPU().getInstructionLineList());
+		}
+		hexArea.redraw();
+		textArea.redraw();
+
 	}
 
 	private void handleSelection(int start, int length, RangeType rangeType) {
+		// check if selected range is inside or equals an existing range
+
 		DisassemblingRange range = rangeList.stream()
 				.filter(r -> start >= r.getOffset() && start + length <= r.getOffset() + r.getLen()).findFirst()
 				.orElse(null);
 		if (range != null) {
+			// if intersection has been found, split it up
 			if (rangeType != range.getRangeType()) {
 				range.setDirty(true);
 				if (start == range.getOffset() && length == range.getLen()) {
@@ -284,13 +294,17 @@ public class HexViewWidget extends Composite implements IContentProvider {
 							(oldStart + oldLength) - (start + length), range.getRangeType()));
 				}
 			} else {
+				// if intersection equals an existing section , leave it as it is
 				Console.println("> skip setting new range due to equality.");
 			}
 		} else {
+			// check if selected range overlaps two or more ranges
 
 			List<DisassemblingRange> ranges = rangeList.stream()
 					.filter(r -> start <= r.getOffset() + r.getLen() && start + length > r.getOffset())
 					.collect(Collectors.toList());
+
+			// remove all overlappings except first and last match
 
 			while (ranges.size() > 2) {
 				DisassemblingRange dr = ranges.get(1);
@@ -302,20 +316,9 @@ public class HexViewWidget extends Composite implements IContentProvider {
 			DisassemblingRange bottomRange = ranges.get(ranges.size() - 1);
 			topRange.setDirty(true);
 			bottomRange.setDirty(true);
-			if (topRange.getRangeType() == bottomRange.getRangeType() && topRange.getRangeType() == rangeType) {
-				int newLength = (bottomRange.getOffset() + bottomRange.getLen()) - topRange.getOffset();
-				rangeList.remove(bottomRange);
-				topRange.setLen(newLength);
-			} else if (topRange.getRangeType() == rangeType && topRange.getRangeType() != bottomRange.getRangeType()) {
-				bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
-				bottomRange.setOffset(start + length);
-				topRange.setLen((start + length) - topRange.getOffset());
-			} else if (bottomRange.getRangeType() == rangeType
-					&& topRange.getRangeType() != bottomRange.getRangeType()) {
-				topRange.setLen(start - topRange.getOffset());
-				bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - start);
-				bottomRange.setOffset(start);
-			} else if (topRange.getRangeType() == bottomRange.getRangeType() && topRange.getRangeType() != rangeType) {
+
+			if (topRange.getRangeType() == bottomRange.getRangeType() && bottomRange.getRangeType() != rangeType) {
+				// none equals
 				topRange.setLen(start - topRange.getOffset());
 				bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
 				bottomRange.setOffset(start + length);
@@ -324,6 +327,38 @@ public class HexViewWidget extends Composite implements IContentProvider {
 				if (topRange.getLen() == 0) {
 					rangeList.remove(topRange);
 				}
+				if (bottomRange.getLen() == 0) {
+					rangeList.remove(bottomRange);
+				}
+			} else if (topRange.getRangeType() == rangeType && bottomRange.getRangeType() != rangeType) {
+				// top equals
+				int newBottomOffset = start + length;
+				int newBottomLength = bottomRange.getOffset() + bottomRange.getLen() - newBottomOffset;
+				bottomRange.setOffset(newBottomOffset);
+				bottomRange.setLen(newBottomLength);
+				int newTopLength = newBottomOffset - topRange.getOffset();
+				topRange.setLen(newTopLength);
+				if (bottomRange.getLen() == 0) {
+					rangeList.remove(bottomRange);
+				}
+			} else if (bottomRange.getRangeType() == rangeType && topRange.getRangeType() != rangeType) {
+
+				// bottom equals
+				int newBottomOffset = start;
+				int newBottomLength = (bottomRange.getOffset() + bottomRange.getLen()) - newBottomOffset;
+				bottomRange.setOffset(newBottomOffset);
+				bottomRange.setLen(newBottomLength);
+				int newTopLength = newBottomOffset - topRange.getOffset();
+				topRange.setLen(newTopLength);
+				if (topRange.getLen() == 0) {
+					rangeList.remove(topRange);
+				}
+			} else if (topRange.getRangeType() == bottomRange.getRangeType()
+					&& bottomRange.getRangeType() == rangeType) {
+				// all equals
+				int newLength = (bottomRange.getOffset() + bottomRange.getLen()) - topRange.getOffset();
+				rangeList.remove(bottomRange);
+				topRange.setLen(newLength);
 			} else {
 				Console.println("> should not happen.");
 			}
@@ -364,6 +399,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		addressArea.getContent().setText(sbAdress.toString());
 		hexArea.redraw();
 		textArea.redraw();
+
 	}
 
 	private void updateArea(int offset) {
@@ -377,15 +413,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		});
 	}
 
-	private void initialize() {
-		getVerticalBar().addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				e.doit = false;
-				int offset = getVerticalBar().getSelection();
-				updateArea(offset);
-			}
-		});
+	private void initUI() {
 
 		GridLayout layout = new GridLayout(4, false);
 		setLayout(layout);
@@ -763,7 +791,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 			public void widgetSelected(SelectionEvent e) {
 				addressArea.setTopIndex(hexArea.getTopIndex());
 				textArea.setTopIndex(hexArea.getTopIndex());
-				getVerticalBar().setSelection(hexArea.getTopIndex());
+				textArea.getVerticalBar().setSelection(hexArea.getTopIndex());
 			}
 		});
 
@@ -777,10 +805,18 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		gd.widthHint = (int) (6.5f * 16);
 		gd.grabExcessVerticalSpace = false;
 		gd.grabExcessHorizontalSpace = false;
-		textArea = new StyledText(this, SWT.NONE);
+		textArea = new StyledText(this, SWT.V_SCROLL);
 		textArea.setFont(Constants.EDITOR_FONT);
 		textArea.setSelectionBackground(Constants.CODE_COLOR);
 		textArea.setContent(new HexViewStyledTextContent(16));
+		textArea.getVerticalBar().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				e.doit = false;
+				int offset = textArea.getVerticalBar().getSelection();
+				updateArea(offset);
+			}
+		});
 		textArea.addLineStyleListener(new LineStyleListener() {
 
 			@Override
@@ -872,9 +908,6 @@ public class HexViewWidget extends Composite implements IContentProvider {
 				sr.start = x;
 				list.add(sr);
 			}
-		}
-
-		if (width == 2) {
 			for (DisassemblingRange range : rangeList) {
 				switch (range.getRangeType()) {
 				case Code:
@@ -886,11 +919,9 @@ public class HexViewWidget extends Composite implements IContentProvider {
 				default:
 					bgc = Constants.WHITE;
 					break;
-
 				}
 				styleRange = new StyleRange(range.getOffset() * width, range.getLen() * width, fgc, bgc);
 				list.add(styleRange);
-
 			}
 		}
 		return list.toArray(new StyleRange[list.size()]);
