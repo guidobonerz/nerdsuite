@@ -24,6 +24,7 @@ import de.drazil.nerdsuite.network.TcpHandler.Response;
 import de.drazil.nerdsuite.toolchain.Toolchain;
 import de.drazil.nerdsuite.widget.HexViewWidget;
 
+
 public class DebuggerView {
 
     @Inject

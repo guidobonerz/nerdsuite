@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.TableColumn;
@@ -55,10 +56,11 @@ import org.eclipse.swt.widgets.Text;
 
 import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.cpu.decode.HexViewStyledTextContent;
-import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.cpu.decode.MemorySnippet;
 import de.drazil.nerdsuite.cpu.platform.IPlatform;
 import de.drazil.nerdsuite.log.Console;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.MemoryBlock;
+import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.util.BinaryFileHandler;
@@ -74,13 +76,18 @@ public class HexViewWidget extends Composite implements IContentProvider {
 	private Button startAddress;
 	private Button code;
 	private Button binary;
+
+	private Label offsetHeader;
+	private Label binaryHeader;
+	private Label textHeader;
+
 	// private Button undefined;
 	private int contentOffset = 0;
 
 	private int visibleRows = 0;
 	private IPlatform platform;
-	private List<DisassemblingRange> rangeList;
-	private DisassemblingRange selectedRange = null;
+	private List<MemoryBlock> memoryBlockList;
+	private MemoryBlock selectedMemoryBlock = null;
 
 	private boolean enableSelect = false;
 	private boolean dragStarted = false;
@@ -89,7 +96,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 	private TableViewer tableViewer;
 
 	private Value pc;
-	private Stack<InstructionLine> jumpStack;
+	private Stack<MemorySnippet> jumpStack;
 
 	private static StyleRange[] hexStyleRangeList = new StyleRange[32];
 	static {
@@ -104,9 +111,9 @@ public class HexViewWidget extends Composite implements IContentProvider {
 	public HexViewWidget(Composite parent, int style, IPlatform platform) {
 		super(parent, style);
 		this.platform = platform;
-		rangeList = new ArrayList<DisassemblingRange>();
-		jumpStack = new Stack<InstructionLine>();
-		selectedRange = new DisassemblingRange(0, 0, RangeType.Binary);
+		memoryBlockList = new ArrayList<MemoryBlock>();
+		jumpStack = new Stack<MemorySnippet>();
+		selectedMemoryBlock = new MemoryBlock(platform.getProgrammCounter(), new Range(0, 0), RangeType.Binary);
 		initUI();
 
 	}
@@ -141,8 +148,8 @@ public class HexViewWidget extends Composite implements IContentProvider {
 
 	public void jumpToAddress() {
 		IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-		InstructionLine line = (InstructionLine) selection.getFirstElement();
-		InstructionLine refLine = platform.getCPU().findInstructionLineByProgrammCounter(line.getReferenceValue());
+		MemorySnippet line = (MemorySnippet) selection.getFirstElement();
+		MemorySnippet refLine = platform.getCPU().findInstructionLineByProgrammCounter(line.getReferenceValue());
 		if (refLine == null) {
 			MessageBox message = new MessageBox(getParent().getShell(), SWT.OK | SWT.ICON_WARNING);
 			message.setMessage(String.format("0x%04x is currently unreachable!", line.getReferenceValue().getValue()));
@@ -166,10 +173,11 @@ public class HexViewWidget extends Composite implements IContentProvider {
 	}
 
 	public void clearAllRanges() {
-		rangeList = new ArrayList<DisassemblingRange>();
-		rangeList.add(new DisassemblingRange(0, getContentLength(), RangeType.Binary));
-		selectedRange = new DisassemblingRange(0, 0, RangeType.Binary);
-		selectedRange.setRangeType(code.getSelection() ? RangeType.Code
+		memoryBlockList = new ArrayList<MemoryBlock>();
+		memoryBlockList.add(
+				new MemoryBlock(platform.getProgrammCounter(), new Range(0, getContentLength()), RangeType.Binary));
+		selectedMemoryBlock = new MemoryBlock(platform.getProgrammCounter(), new Range(0, 0), RangeType.Binary);
+		selectedMemoryBlock.setRangeType(code.getSelection() ? RangeType.Code
 				: binary.getSelection() ? RangeType.Binary : RangeType.Unspecified);
 		disassemble();
 		addressArea.redraw();
@@ -181,7 +189,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 
 	}
 
-	private void selectInstruction(InstructionLine line) {
+	private void selectInstruction(MemorySnippet line) {
 		int index = platform.getCPU().getIndexOf(line);
 		tableViewer.setSelection(new StructuredSelection(tableViewer.getElementAt(index)), true);
 		tableViewer.getTable().showSelection(); // setTopIndex(index);
@@ -228,35 +236,38 @@ public class HexViewWidget extends Composite implements IContentProvider {
 				textArea.getVerticalBar().setMaximum(textArea.getLineCount());
 				textArea.getVerticalBar().setSelection(0);
 				textArea.getVerticalBar().setThumb(visibleRows);
-				textArea.getVerticalBar().setIncrement(1);
+				textArea.getVerticalBar().setIncrement(14);
 				textArea.getVerticalBar().setPageIncrement(visibleRows);
 
 				addressArea.redraw();
 				hexArea.redraw();
 				textArea.redraw();
 
-				rangeList = new ArrayList<DisassemblingRange>();
-				rangeList.add(new DisassemblingRange(0, getContentLength(), RangeType.Binary));
+				memoryBlockList = new ArrayList<MemoryBlock>();
+				memoryBlockList.add(new MemoryBlock(platform.getProgrammCounter(), new Range(0, getContentLength()),
+						RangeType.Binary));
 			}
 		});
 	}
 
 	private void disassemble() {
-		if (selectedRange.getLen() > 0) {
+		if (selectedMemoryBlock.getRange().getLength() > 0) {
 			platform.getCPU().clear();
-			handleSelection(selectedRange.getOffset(), selectedRange.getLen(), selectedRange.getRangeType());
+			handleSelection(selectedMemoryBlock.getRange().getOffset(), selectedMemoryBlock.getRange().getLength(),
+					selectedMemoryBlock.getRangeType());
 		}
 		Console.println("> ----------------------------------------------");
-		Console.printf("> range count :%d\n", rangeList.size());
-		for (int i = 0; i < rangeList.size(); i++) {
-			int offset = pc.getValue() + rangeList.get(i).getOffset();
-			Console.printf("> %04d : %04x - %04x %s\n", i, offset, offset + rangeList.get(i).getLen() - 1,
-					rangeList.get(i).getRangeType().toString());
+		Console.printf("> range count :%d\n", memoryBlockList.size());
+		for (int i = 0; i < memoryBlockList.size(); i++) {
+			int offset = pc.getValue() + memoryBlockList.get(i).getRange().getOffset();
+			Console.printf("> %04d : %04x - %04x %s\n", i, offset,
+					offset + memoryBlockList.get(i).getRange().getLength() - 1,
+					memoryBlockList.get(i).getRangeType().toString());
 		}
 
 		if (pc != null) {
 			platform.setProgrammCounter(new Value(pc.getValue()));
-			// platform.parseBinary(this, rangeList);
+			platform.parseBinary(this, memoryBlockList);
 			tableViewer.setInput(platform.getCPU().getInstructionLineList());
 		}
 		hexArea.redraw();
@@ -267,31 +278,35 @@ public class HexViewWidget extends Composite implements IContentProvider {
 	private void handleSelection(int start, int length, RangeType rangeType) {
 		// check if selected range is inside or equals an existing range
 
-		DisassemblingRange range = rangeList.stream()
-				.filter(r -> start >= r.getOffset() && start + length <= r.getOffset() + r.getLen()).findFirst()
-				.orElse(null);
+		MemoryBlock range = memoryBlockList.stream()
+				.filter(r -> start >= r.getRange().getOffset()
+						&& start + length <= r.getRange().getOffset() + r.getRange().getLength())
+				.findFirst().orElse(null);
 		if (range != null) {
 			// if intersection has been found, split it up
 			if (rangeType != range.getRangeType()) {
 				range.setDirty(true);
-				if (start == range.getOffset() && length == range.getLen()) {
+				if (start == range.getRange().getOffset() && length == range.getRange().getLength()) {
 					range.setRangeType(rangeType);
 					Console.println("> simply change rangetype.");
 				} else {
-					int oldStart = range.getOffset();
-					int oldLength = range.getLen();
-					int rangeIndex = rangeList.indexOf(range);
-					int croppedLength = start - range.getOffset();
+					int oldStart = range.getRange().getOffset();
+					int oldLength = range.getRange().getLength();
+					int rangeIndex = memoryBlockList.indexOf(range);
+					int croppedLength = start - range.getRange().getOffset();
 					int indexOffset = 1;
 					if (croppedLength == 0) {
 						indexOffset = 0;
-						rangeList.remove(rangeIndex);
+						memoryBlockList.remove(rangeIndex);
 					}
-					range.setLen(croppedLength);
+					range.getRange().setLength(croppedLength);
 					range.setDirty(true);
-					rangeList.add(rangeIndex + (indexOffset++), new DisassemblingRange(start, length, rangeType));
-					rangeList.add(rangeIndex + (indexOffset++), new DisassemblingRange(start + length,
-							(oldStart + oldLength) - (start + length), range.getRangeType()));
+					memoryBlockList.add(rangeIndex + (indexOffset++),
+							new MemoryBlock(platform.getProgrammCounter(), new Range(start, length), rangeType));
+					memoryBlockList.add(rangeIndex + (indexOffset++),
+							new MemoryBlock(platform.getProgrammCounter(),
+									new Range(start + length, (oldStart + oldLength) - (start + length)),
+									range.getRangeType()));
 				}
 			} else {
 				// if intersection equals an existing section , leave it as it is
@@ -300,65 +315,71 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		} else {
 			// check if selected range overlaps two or more ranges
 
-			List<DisassemblingRange> ranges = rangeList.stream()
-					.filter(r -> start <= r.getOffset() + r.getLen() && start + length > r.getOffset())
+			List<MemoryBlock> memoryBlocks = memoryBlockList.stream()
+					.filter(mb -> start <= mb.getRange().getOffset() + mb.getRange().getLength()
+							&& start + length > mb.getRange().getOffset())
 					.collect(Collectors.toList());
 
 			// remove all overlappings except first and last match
 
-			while (ranges.size() > 2) {
-				DisassemblingRange dr = ranges.get(1);
-				ranges.remove(dr);
-				rangeList.remove(dr);
+			while (memoryBlocks.size() > 2) {
+				MemoryBlock dr = memoryBlocks.get(1);
+				memoryBlocks.remove(dr);
+				memoryBlockList.remove(dr);
 			}
 
-			DisassemblingRange topRange = ranges.get(0);
-			DisassemblingRange bottomRange = ranges.get(ranges.size() - 1);
+			MemoryBlock topRange = memoryBlocks.get(0);
+			MemoryBlock bottomRange = memoryBlocks.get(memoryBlocks.size() - 1);
 			topRange.setDirty(true);
 			bottomRange.setDirty(true);
 
 			if (topRange.getRangeType() == bottomRange.getRangeType() && bottomRange.getRangeType() != rangeType) {
 				// none equals
-				topRange.setLen(start - topRange.getOffset());
-				bottomRange.setLen((bottomRange.getOffset() + bottomRange.getLen()) - (start + length));
-				bottomRange.setOffset(start + length);
-				int insertIndex = rangeList.indexOf(topRange) + 1;
-				rangeList.add(insertIndex, new DisassemblingRange(start, length, rangeType));
-				if (topRange.getLen() == 0) {
-					rangeList.remove(topRange);
+				topRange.getRange().setLength(start - topRange.getRange().getOffset());
+				bottomRange.getRange().setLength(
+						(bottomRange.getRange().getOffset() + bottomRange.getRange().getLength()) - (start + length));
+				bottomRange.getRange().setOffset(start + length);
+				int insertIndex = memoryBlockList.indexOf(topRange) + 1;
+				memoryBlockList.add(insertIndex,
+						new MemoryBlock(platform.getProgrammCounter(), new Range(start, length), rangeType));
+				if (topRange.getRange().getLength() == 0) {
+					memoryBlockList.remove(topRange);
 				}
-				if (bottomRange.getLen() == 0) {
-					rangeList.remove(bottomRange);
+				if (bottomRange.getRange().getLength() == 0) {
+					memoryBlockList.remove(bottomRange);
 				}
 			} else if (topRange.getRangeType() == rangeType && bottomRange.getRangeType() != rangeType) {
 				// top equals
 				int newBottomOffset = start + length;
-				int newBottomLength = bottomRange.getOffset() + bottomRange.getLen() - newBottomOffset;
-				bottomRange.setOffset(newBottomOffset);
-				bottomRange.setLen(newBottomLength);
-				int newTopLength = newBottomOffset - topRange.getOffset();
-				topRange.setLen(newTopLength);
-				if (bottomRange.getLen() == 0) {
-					rangeList.remove(bottomRange);
+				int newBottomLength = bottomRange.getRange().getOffset() + bottomRange.getRange().getLength()
+						- newBottomOffset;
+				bottomRange.getRange().setOffset(newBottomOffset);
+				bottomRange.getRange().setLength(newBottomLength);
+				int newTopLength = newBottomOffset - topRange.getRange().getOffset();
+				topRange.getRange().setLength(newTopLength);
+				if (bottomRange.getRange().getLength() == 0) {
+					memoryBlockList.remove(bottomRange);
 				}
 			} else if (bottomRange.getRangeType() == rangeType && topRange.getRangeType() != rangeType) {
 
 				// bottom equals
 				int newBottomOffset = start;
-				int newBottomLength = (bottomRange.getOffset() + bottomRange.getLen()) - newBottomOffset;
-				bottomRange.setOffset(newBottomOffset);
-				bottomRange.setLen(newBottomLength);
-				int newTopLength = newBottomOffset - topRange.getOffset();
-				topRange.setLen(newTopLength);
-				if (topRange.getLen() == 0) {
-					rangeList.remove(topRange);
+				int newBottomLength = (bottomRange.getRange().getOffset() + bottomRange.getRange().getLength())
+						- newBottomOffset;
+				bottomRange.getRange().setOffset(newBottomOffset);
+				bottomRange.getRange().setLength(newBottomLength);
+				int newTopLength = newBottomOffset - topRange.getRange().getOffset();
+				topRange.getRange().setLength(newTopLength);
+				if (topRange.getRange().getLength() == 0) {
+					memoryBlockList.remove(topRange);
 				}
 			} else if (topRange.getRangeType() == bottomRange.getRangeType()
 					&& bottomRange.getRangeType() == rangeType) {
 				// all equals
-				int newLength = (bottomRange.getOffset() + bottomRange.getLen()) - topRange.getOffset();
-				rangeList.remove(bottomRange);
-				topRange.setLen(newLength);
+				int newLength = (bottomRange.getRange().getOffset() + bottomRange.getRange().getLength())
+						- topRange.getRange().getOffset();
+				memoryBlockList.remove(bottomRange);
+				topRange.getRange().setLength(newLength);
 			} else {
 				Console.println("> should not happen.");
 			}
@@ -390,6 +411,9 @@ public class HexViewWidget extends Composite implements IContentProvider {
 			}
 			byte c = getContentAtOffset(b);
 			sbByte.append(String.format("%02x", c));
+			if (c >= 1 && c <= 26) {
+				c += 64;
+			}
 			sbText.append(isPrintableCharacter((char) c) ? (char) c : '_');
 			b++;
 		}
@@ -397,8 +421,8 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		hexArea.getContent().setText(sbByte.toString());
 		textArea.getContent().setText(sbText.toString());
 		addressArea.getContent().setText(sbAdress.toString());
-		hexArea.redraw();
-		textArea.redraw();
+		// hexArea.redraw();
+		// textArea.redraw();
 
 	}
 
@@ -449,7 +473,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		ColumnLabelProvider labelProviderAddress = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				InstructionLine il = (InstructionLine) element;
+				MemorySnippet il = (MemorySnippet) element;
 				Object[] userObject = (Object[]) il.getUserObject();
 				String s = "";
 				if (userObject != null) {
@@ -467,7 +491,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		ColumnLabelProvider labelProviderLabel = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				InstructionLine il = (InstructionLine) element;
+				MemorySnippet il = (MemorySnippet) element;
 				Object[] userObject = (Object[]) il.getUserObject();
 				String s = "";
 				if (userObject != null) {
@@ -484,7 +508,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		ColumnLabelProvider labelProviderCode = new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				InstructionLine il = (InstructionLine) element;
+				MemorySnippet il = (MemorySnippet) element;
 				Object[] userObject = (Object[]) il.getUserObject();
 				String s = "";
 				if (userObject != null) {
@@ -546,7 +570,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 									switch (e.detail) {
 									case SWT.TRAVERSE_RETURN:
 										item.setText(1, text.getText());
-										((InstructionLine) item.getData()).setLabelName(text.getText());
+										((MemorySnippet) item.getData()).setLabelName(text.getText());
 										// FALL THROUGH
 									case SWT.TRAVERSE_ESCAPE:
 										text.dispose();
@@ -638,7 +662,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		code.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				selectedRange.setRangeType(RangeType.Code);
+				selectedMemoryBlock.setRangeType(RangeType.Code);
 				hexArea.setSelectionForeground(Constants.WHITE);
 				textArea.setSelectionForeground(Constants.WHITE);
 				hexArea.setSelectionBackground(Constants.CODE_COLOR);
@@ -654,7 +678,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				selectedRange.setRangeType(RangeType.Binary);
+				selectedMemoryBlock.setRangeType(RangeType.Binary);
 				hexArea.setSelectionForeground(Constants.WHITE);
 				textArea.setSelectionForeground(Constants.WHITE);
 				hexArea.setSelectionBackground(Constants.BINARY_COLOR);
@@ -678,7 +702,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 		 * startDecode.setFont(Constants.FontAwesome5ProSolid);
 		 * startDecode.setText("\ue059");
 		 */
-		selectedRange.setRangeType(code.getSelection() ? RangeType.Code
+		selectedMemoryBlock.setRangeType(code.getSelection() ? RangeType.Code
 				: binary.getSelection() ? RangeType.Binary : RangeType.Unspecified);
 
 		c.setLayoutData(gd);
@@ -780,8 +804,8 @@ public class HexViewWidget extends Composite implements IContentProvider {
 					int slength = length >> 1;
 					hexArea.setSelectionRange(start, length);
 					textArea.setSelectionRange(sstart, slength);
-					selectedRange.setOffset(sstart);
-					selectedRange.setLen(slength);
+					selectedMemoryBlock.getRange().setOffset(sstart);
+					selectedMemoryBlock.getRange().setLength(slength);
 				}
 			}
 		});
@@ -878,8 +902,8 @@ public class HexViewWidget extends Composite implements IContentProvider {
 					int length = end - start;
 					hexArea.setSelectionRange(start << 1, length << 1);
 					textArea.setSelectionRange(start, length);
-					selectedRange.setOffset(start);
-					selectedRange.setLen(length);
+					selectedMemoryBlock.getRange().setOffset(start);
+					selectedMemoryBlock.getRange().setLength(length);
 				}
 			}
 		});
@@ -908,8 +932,8 @@ public class HexViewWidget extends Composite implements IContentProvider {
 				sr.start = x;
 				list.add(sr);
 			}
-			for (DisassemblingRange range : rangeList) {
-				switch (range.getRangeType()) {
+			for (MemoryBlock mb : memoryBlockList) {
+				switch (mb.getRangeType()) {
 				case Code:
 					bgc = Constants.CODE_COLOR;
 					break;
@@ -920,7 +944,7 @@ public class HexViewWidget extends Composite implements IContentProvider {
 					bgc = Constants.WHITE;
 					break;
 				}
-				styleRange = new StyleRange(range.getOffset() * width, range.getLen() * width, fgc, bgc);
+				styleRange = new StyleRange(mb.getRange().getOffset() * width, mb.getRange().getLength() * width, fgc, bgc);
 				list.add(styleRange);
 			}
 		}

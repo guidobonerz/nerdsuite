@@ -201,14 +201,16 @@ public class GraphicsProjectWizardPage extends AbstractBoundWizardPage {
 				StructuredSelection selection = (StructuredSelection) event.getSelection();
 				gfv = (GraphicFormatVariant) selection.getFirstElement();
 				userData.put(ProjectWizard.PROJECT_VARIANT, gfv.getId());
+				
 				boolean enable = gfv.getId().equals("CUSTOM");
-				boolean isASCII = gf.getId().matches("^(.*PETSCII|.*SCREENSET)$");
-				widthLabel.setEnabled(enable && isASCII);
-				heightLabel.setEnabled(enable && isASCII);
+				//boolean isASCII = gf.getId().matches("^(.*PETSCII|.*SCREENSET)$");
+				boolean supportCustomBaseSize = gfv.isSupportCustomBaseSize();
+				widthLabel.setEnabled(enable && supportCustomBaseSize);
+				heightLabel.setEnabled(enable && supportCustomBaseSize);
 				rowsLabel.setEnabled(enable);
 				columnsLabel.setEnabled(enable);
-				tileWidthSpinner.setEnabled(enable && isASCII);
-				tileHeightSpinner.setEnabled(enable && isASCII);
+				tileWidthSpinner.setEnabled(enable && supportCustomBaseSize);
+				tileHeightSpinner.setEnabled(enable && supportCustomBaseSize);
 				tileColumnsSpinner.setEnabled(enable);
 				tileRowsSpinner.setEnabled(enable);
 				setSpinnerValues();

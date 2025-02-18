@@ -3,9 +3,9 @@ package de.drazil.nerdsuite.cpu;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.cpu.decode.MemorySnippet;
 import de.drazil.nerdsuite.model.Address;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.MemoryBlock;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Range;
@@ -19,11 +19,11 @@ public abstract class AbstractCPU implements ICPU {
     protected int line;
     private static ICPU cpu = null;
     private static byte byteArray0[] = null;
-    private List<InstructionLine> instructionLineList = null;
+    private List<MemorySnippet> instructionLineList = null;
 
     public AbstractCPU() {
         cpu = this;
-        instructionLineList = new ArrayList<InstructionLine>();
+        instructionLineList = new ArrayList<MemorySnippet>();
     }
 
     public static ICPU getCPU() {
@@ -66,21 +66,21 @@ public abstract class AbstractCPU implements ICPU {
 
     @Override
     public void clear() {
-        instructionLineList = new ArrayList<InstructionLine>();
+        instructionLineList = new ArrayList<MemorySnippet>();
     }
 
     @Override
-    public void addInstructionLine(InstructionLine instructionLine) {
+    public void addInstructionLine(MemorySnippet instructionLine) {
         instructionLineList.add(instructionLine);
     }
 
     @Override
-    public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value len) {
+    public MemorySnippet splitInstructionLine(MemorySnippet instructionLine, Value basePc, Value len) {
         return splitInstructionLine(instructionLine, basePc, len, RangeType.Unspecified, ReferenceType.NoReference);
     }
 
     @Override
-    public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset,
+    public MemorySnippet splitInstructionLine(MemorySnippet instructionLine, Value basePc, Value offset,
             RangeType rangeType, ReferenceType referenceType) {
         Range range = instructionLine.getRange();
         int oldLen = range.getLength();
@@ -91,7 +91,7 @@ public abstract class AbstractCPU implements ICPU {
 
         range.setLength(newLen);
 
-        InstructionLine newInstructionLine = new InstructionLine(basePc.add(range.getOffset() + newLen),
+        MemorySnippet newInstructionLine = new MemorySnippet(basePc.add(range.getOffset() + newLen),
                 new Range(range.getOffset() + newLen, oldLen - newLen));
 
         newInstructionLine.setReferenceType(referenceType);
@@ -100,8 +100,8 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public InstructionLine findInstructionLineByProgrammCounter(Value programmCounter) {
-        InstructionLine instructionLine = instructionLineList
+    public MemorySnippet findInstructionLineByProgrammCounter(Value programmCounter) {
+        MemorySnippet instructionLine = instructionLineList
                 .stream().filter(il -> programmCounter.getValue() >= il.getProgramCounter().getValue()
                         && programmCounter
                                 .getValue() <= (il.getProgramCounter().getValue() + il.getRange().getLength() - 1))
@@ -109,13 +109,13 @@ public abstract class AbstractCPU implements ICPU {
         return instructionLine;
     }
 
-    public int getIndexOf(InstructionLine line) {
+    public int getIndexOf(MemorySnippet line) {
         return instructionLineList.indexOf(line);
     }
 
     @Override
-    public InstructionLine findInstructionLineByOffset(Value offset) {
-        InstructionLine instructionLine = instructionLineList.stream()
+    public MemorySnippet findInstructionLineByOffset(Value offset) {
+        MemorySnippet instructionLine = instructionLineList.stream()
                 .filter(il -> offset.getValue() >= il.getRange().getOffset()
                         && offset.getValue() <= (il.getRange().getOffset() + il.getRange().getLength() - 1))
                 .findFirst().orElse(null);
@@ -123,12 +123,12 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public InstructionLine getLastInstructionLine() {
+    public MemorySnippet getLastInstructionLine() {
         return instructionLineList.get(instructionLineList.size() - 1);
     }
 
     @Override
-    public List<InstructionLine> getInstructionLineList() {
+    public List<MemorySnippet> getInstructionLineList() {
         return instructionLineList;
     }
 
@@ -151,15 +151,15 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public InstructionLine findInstructionLineByPC(Value programCounter) {
+    public MemorySnippet findInstructionLineByPC(Value programCounter) {
         if (programCounter == null)
             return null;
         return findInstructionLineByPC(programCounter.getValue());
     }
 
     @Override
-    public InstructionLine findInstructionLineByPC(int programCounter) {
-        InstructionLine instructionLine = instructionLineList.stream()
+    public MemorySnippet findInstructionLineByPC(int programCounter) {
+        MemorySnippet instructionLine = instructionLineList.stream()
                 .filter(il -> il.getProgramCounter().getValue() == programCounter
                         || programCounter >= il.getProgramCounter().getValue()
                                 && programCounter < il.getProgramCounter().getValue() + il.getRange().getLength())
@@ -168,7 +168,7 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public InstructionLine findInstructionLineByRef(Value reference) {
+    public MemorySnippet findInstructionLineByRef(Value reference) {
         return findInstructionLineByRef(reference.getValue());
     }
 
@@ -184,15 +184,15 @@ public abstract class AbstractCPU implements ICPU {
     }
 
     @Override
-    public InstructionLine findInstructionLineByRef(int reference) {
-        InstructionLine instructionLine = instructionLineList.stream()
+    public MemorySnippet findInstructionLineByRef(int reference) {
+        MemorySnippet instructionLine = instructionLineList.stream()
                 .filter(il -> il.hasReferenceValue() && il.getReferenceValue().getValue() == reference).findFirst()
                 .orElse(null);
         return instructionLine;
     }
 
     @Override
-    public void packInstructionLines(InstructionLine instructionLine, int len) {
+    public void packInstructionLines(MemorySnippet instructionLine, int len) {
         int lineIndex = getInstructionLineList().indexOf(instructionLine) + 1;
         int i = 0;
         while (i < len - 1) {
@@ -202,9 +202,9 @@ public abstract class AbstractCPU implements ICPU {
         instructionLine.getRange().setLength(len);
     }
 
-    public static String getMnemonicArgument(Opcode opcode, DisassemblingRange range, byte byteArray[]) {
-        int len = range.getLen() - 1;
-        int offset = range.getOffset() + 1;
+    public static String getMnemonicArgument(Opcode opcode, MemoryBlock range, byte byteArray[]) {
+        int len = range.getRange().getLength() - 1;
+        int offset = range.getRange().getOffset() + 1;
         int value = 0;
 
         String argument = opcode.getAddressingMode().getArgumentTemplate();

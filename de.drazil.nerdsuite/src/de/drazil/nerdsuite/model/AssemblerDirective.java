@@ -2,18 +2,16 @@ package de.drazil.nerdsuite.model;
 
 import java.util.List;
 
+import de.drazil.nerdsuite.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import de.drazil.nerdsuite.Constants;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class AssemblerDirective extends AbstractInstruction
-{
+
+public class AssemblerDirective extends AbstractInstruction {
 	private List<String> alias;
 	private String nodename;
 	private String param;
@@ -22,8 +20,7 @@ public class AssemblerDirective extends AbstractInstruction
 	private String matcher;
 
 	@Override
-	public int getIconIndex()
-	{
+	public int getIconIndex() {
 		return Constants.DIRECTIVE;
 	}
 }

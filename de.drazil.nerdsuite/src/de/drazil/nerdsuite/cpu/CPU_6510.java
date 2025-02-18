@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.drazil.nerdsuite.Constants;
-import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.cpu.decode.MemorySnippet;
 import de.drazil.nerdsuite.enums.ValueType;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.AddressingMode;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.MemoryBlock;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
@@ -34,7 +34,7 @@ public class CPU_6510 extends AbstractCPU {
 		return NumericConverter.getWordAsInt(byteArray, offset, Endianness.LittleEndian);
 	}
 
-	private void printDisassembly(InstructionLine instructionLine, Opcode opcode, Value value, Address address) {
+	private void printDisassembly(MemorySnippet instructionLine, Opcode opcode, Value value, Address address) {
 		if (instructionLine.getInstructionType() == InstructionType.Asm) {
 			int len = opcode.getAddressingMode().getLen();
 			String sv = "";
@@ -50,13 +50,13 @@ public class CPU_6510 extends AbstractCPU {
 
 	@Override
 	public void decode(IContentProvider contentProvider, Value pc, PlatformData platformData,
-			DisassemblingRange decodableRange, int stage) {
+			MemoryBlock decodableRange, int stage) {
 
 		if (decodableRange.getRangeType() == RangeType.Code) {
-			InstructionLine currentLine = findInstructionLineByOffset(new Value(decodableRange.getOffset()));
-			split(currentLine, pc, new Value(decodableRange.getOffset() + decodableRange.getLen()));
+			MemorySnippet currentLine = findInstructionLineByOffset(new Value(decodableRange.getRange().getOffset()));
+			split(currentLine, pc, new Value(decodableRange.getRange().getOffset() + decodableRange.getRange().getLength()));
 
-			InstructionLine newLine = null;
+			MemorySnippet newLine = null;
 			Value value = null;
 			while (currentLine != null) {
 				if (!currentLine.isPassed()) {
@@ -80,10 +80,10 @@ public class CPU_6510 extends AbstractCPU {
 						break;
 					}
 
-					if (len > decodableRange.getLen()) {
+					if (len > decodableRange.getRange().getLength()) {
 						currentLine.setInstructionType(InstructionType.Data);
 						setDataRangeInformation(pc, decodableRange, true);
-						newLine = split(currentLine, pc, new Value(offset + decodableRange.getLen()));
+						newLine = split(currentLine, pc, new Value(offset + decodableRange.getRange().getLength()));
 						currentLine = newLine;
 						break;
 					} else {
@@ -137,14 +137,19 @@ public class CPU_6510 extends AbstractCPU {
 						String addressingModeString = opcode.getAddressingMode().getArgumentTemplate()
 								.replace("{value}", sv);
 
+						if(currentLine.getRange().getOffset()==0x132a)
+						{
+							int f=0;
+						}
+						
 						currentLine.setUserObject(new Object[] { decodableRange.getRangeType().toString(), so, "",
 								byteString, opcode.getMnemonic(), addressingModeString,
 								address != null ? address.getConstName() : "" });
 						currentLine.setReferenceValue(value);
 						currentLine.setPassed(true);
 
-						long currentEnd = currentLine.getRange().getOffset() + currentLine.getRange().getLength();
-						long decodeEnd = decodableRange.getOffset() + decodableRange.getLen();
+						long currentEnd = currentLine.getRange().getOffset() + len;
+						long decodeEnd = decodableRange.getRange().getOffset() + decodableRange.getRange().getLength();
 
 						if (currentEnd < decodeEnd) {
 							newLine = split(currentLine, pc, new Value(offset + len));
@@ -177,10 +182,10 @@ public class CPU_6510 extends AbstractCPU {
 
 	}
 
-	private void setDataRangeInformation(Value pc, DisassemblingRange range, boolean isIncomplete) {
-		InstructionLine currentLine = findInstructionLineByOffset(new Value(range.getOffset()));
-		int from = pc.getValue() + range.getOffset();
-		int till = pc.getValue() + range.getOffset() + range.getLen() - 1;
+	private void setDataRangeInformation(Value pc, MemoryBlock range, boolean isIncomplete) {
+		MemorySnippet currentLine = findInstructionLineByOffset(new Value(range.getRange().getOffset()));
+		int from = pc.getValue() + range.getRange().getOffset();
+		int till = pc.getValue() + range.getRange().getOffset() + range.getRange().getLength() - 1;
 
 		String soFrom = String.format("%04X", from);
 		String soTill = String.format("%04X", till);
@@ -191,13 +196,13 @@ public class CPU_6510 extends AbstractCPU {
 			currentLine.setUserObject(new Object[] { range.getRangeType().toString(), soFrom, "",
 					"DATA BLOCK from :" + soFrom + " to " + soTill });
 		}
-		split(currentLine, pc, new Value(range.getOffset() + range.getLen()));
+		split(currentLine, pc, new Value(range.getRange().getOffset() + range.getRange().getLength()));
 	}
 
-	private InstructionLine markEmptyBlockAsData(byte byteArray[], Value pc, InstructionLine currentLine) {
+	private MemorySnippet markEmptyBlockAsData(byte byteArray[], Value pc, MemorySnippet currentLine) {
 		int rowIndex = 0;
-		InstructionLine newLine = null;
-		InstructionLine specifiedLine = null;
+		MemorySnippet newLine = null;
+		MemorySnippet specifiedLine = null;
 		int brkCount = 0;
 		for (int i = 0; i < 2; i++) {
 			if (byteArray[currentLine.getRange().getOffset() + i] == 0) {
@@ -223,8 +228,8 @@ public class CPU_6510 extends AbstractCPU {
 		return newLine;
 	}
 
-	private InstructionLine getNextUnspecifiedLine(InstructionLine currentLine) {
-		InstructionLine nextLine = currentLine;
+	private MemorySnippet getNextUnspecifiedLine(MemorySnippet currentLine) {
+		MemorySnippet nextLine = currentLine;
 		if (currentLine != null && currentLine.getInstructionType() != InstructionType.Data) {
 			int nextIndex = getInstructionLineList().indexOf(currentLine) + 1;
 			if (nextIndex < getInstructionLineList().size()) {
@@ -236,9 +241,9 @@ public class CPU_6510 extends AbstractCPU {
 		return nextLine;
 	}
 
-	private InstructionLine split(InstructionLine instructionLine, Value pc, Value offset) {
+	private MemorySnippet split(MemorySnippet instructionLine, Value pc, Value offset) {
 
-		InstructionLine newLine = splitInstructionLine(instructionLine, pc, offset);
+		MemorySnippet newLine = splitInstructionLine(instructionLine, pc, offset);
 		if (newLine == null) {
 			int index = getInstructionLineList().indexOf(instructionLine) + 1;
 			if (index < getInstructionLineList().size()) {
@@ -248,10 +253,10 @@ public class CPU_6510 extends AbstractCPU {
 		return newLine;
 	}
 
-	private void detectIndirectJumpTable(byte byteArray[], Value pc, InstructionLine instructionLine, Opcode opcode,
+	private void detectIndirectJumpTable(byte byteArray[], Value pc, MemorySnippet instructionLine, Opcode opcode,
 			Value value, PlatformData platformData) {
 		System.out.println("jumptable detection");
-		InstructionLine lowByteLine = null;
+		MemorySnippet lowByteLine = null;
 		Value matchValue = new Value(0);
 		int index = getInstructionLineList().indexOf(instructionLine) - 1;
 		// if (index == -1)
@@ -272,10 +277,10 @@ public class CPU_6510 extends AbstractCPU {
 			index--;
 		}
 
-		InstructionLine lowAddressLine = getInstructionLineList().get(index);
-		InstructionLine highAddressLine = getInstructionLineList().get(index + 2);
-		InstructionLine lowTableLine = findInstructionLineByPC(lowAddressLine.getReferenceValue());
-		InstructionLine highTableLine = findInstructionLineByPC(highAddressLine.getReferenceValue());
+		MemorySnippet lowAddressLine = getInstructionLineList().get(index);
+		MemorySnippet highAddressLine = getInstructionLineList().get(index + 2);
+		MemorySnippet lowTableLine = findInstructionLineByPC(lowAddressLine.getReferenceValue());
+		MemorySnippet highTableLine = findInstructionLineByPC(highAddressLine.getReferenceValue());
 
 		String jumpTableId = lowAddressLine.getReferenceValue() + "|" + highAddressLine.getReferenceValue();
 
@@ -291,7 +296,7 @@ public class CPU_6510 extends AbstractCPU {
 				int highByte = getByte(byteArray, highTableLine.getRange().getOffset() + i);
 				int jumpMark = (int) (highByte << 8 | lowByte);
 
-				InstructionLine jmpLine = findInstructionLineByPC(jumpMark);
+				MemorySnippet jmpLine = findInstructionLineByPC(jumpMark);
 				// parseInstructions(byteArray, pc, jmpLine, platformData,
 				// Type.AsmInstruction, ReferenceType.JumpMark, inSubroutine);
 
@@ -310,10 +315,10 @@ public class CPU_6510 extends AbstractCPU {
 		// getInstructionLineList().indexOf(getNextInstructionLine(instructionLine));
 	}
 
-	private void detectPointers(byte byteArray[], Value pc, InstructionLine instructionLine,
+	private void detectPointers(byte byteArray[], Value pc, MemorySnippet instructionLine,
 			PlatformData platformData) {
 		int checkIndex = getInstructionLineList().indexOf(instructionLine);
-		InstructionLine checkLineA = getInstructionLineList().get(checkIndex);
+		MemorySnippet checkLineA = getInstructionLineList().get(checkIndex);
 		Pointer resultPointer = null;
 		Value valueA = new Value(0);
 		Value valueB = new Value(0);
@@ -323,16 +328,16 @@ public class CPU_6510 extends AbstractCPU {
 				new Range(checkLineA.getRange().getOffset(), checkLineA.getRange().getLength()));
 
 		if (opcodeA != null && isStoreInstruction(opcodeA.getMnemonic()) && !isDataAddress(valueA, platformData)) {
-			InstructionLine checkLineB = getInstructionLineList().get(checkIndex - 2);
+			MemorySnippet checkLineB = getInstructionLineList().get(checkIndex - 2);
 			Opcode opcodeB = getOpcodeByIndex("C64", "", byteArray, checkLineB.getRange().getOffset());
 			if (opcodeB != null) {
 				valueB = getInstructionValue(byteArray,
 						new Range(checkLineB.getRange().getOffset(), checkLineB.getRange().getLength()));
 				if (isStoreInstruction(opcodeB.getMnemonic()) && !isDataAddress(valueA, platformData)) {
 					if (Math.abs(valueB.getValue() - valueA.getValue()) == 1) {
-						InstructionLine pointerA = getInstructionLineList().get(checkIndex - 1);
+						MemorySnippet pointerA = getInstructionLineList().get(checkIndex - 1);
 						Opcode pointerAopcode = getOpcodeByIndex("C64", "", byteArray, pointerA.getRange().getOffset());
-						InstructionLine pointerB = getInstructionLineList().get(checkIndex - 3);
+						MemorySnippet pointerB = getInstructionLineList().get(checkIndex - 3);
 						Opcode pointerBopcode = getOpcodeByIndex("C64", "", byteArray, pointerB.getRange().getOffset());
 						if (pointerAopcode.getAddressingMode().getId().equals("imm")
 								&& pointerBopcode.getAddressingMode().getId().equals("imm")) {
@@ -343,7 +348,7 @@ public class CPU_6510 extends AbstractCPU {
 							Boolean checked = pointerTableRemindMap.get(String.valueOf(reference));
 							if (checked != null) {
 								pointerTableRemindMap.put(String.valueOf(reference), Boolean.TRUE);
-								InstructionLine pointerLine = findInstructionLineByPC(reference);
+								MemorySnippet pointerLine = findInstructionLineByPC(reference);
 								if (pointerLine == null) {
 									pointerLine = findInstructionLineByProgrammCounter(reference);
 									if (pointerLine != null) {
@@ -391,7 +396,7 @@ public class CPU_6510 extends AbstractCPU {
 	@Override
 	public void compressRanges() {
 		int index = 0;
-		InstructionLine currentLine = null;
+		MemorySnippet currentLine = null;
 
 		while (index < getInstructionLineList().size() - 1) {
 			currentLine = getInstructionLineList().get(index);
@@ -400,7 +405,7 @@ public class CPU_6510 extends AbstractCPU {
 				for (;;) {
 					if (nextIndex > getInstructionLineList().size() - 1)
 						break;
-					InstructionLine nextLine = getInstructionLineList().get(nextIndex);
+					MemorySnippet nextLine = getInstructionLineList().get(nextIndex);
 					if (nextLine.getReferenceType() == ReferenceType.DataReference
 							|| nextLine.getInstructionType() == InstructionType.Asm)
 						break;

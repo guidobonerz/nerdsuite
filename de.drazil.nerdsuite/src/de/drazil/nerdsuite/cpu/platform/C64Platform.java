@@ -3,10 +3,10 @@ package de.drazil.nerdsuite.cpu.platform;
 import java.util.List;
 
 import de.drazil.nerdsuite.cpu.CPU_6510;
-import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.cpu.decode.MemorySnippet;
 import de.drazil.nerdsuite.cpu.decode.dialect.IDialect;
 import de.drazil.nerdsuite.model.Address;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.MemoryBlock;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.widget.IContentProvider;
@@ -48,7 +48,7 @@ public class C64Platform extends AbstractPlatform {
 			// System.out.println(basicCode);
 			// Value asmStart = basicParser.getLastBasicLineAddress(byteArray, 2);
 
-			InstructionLine instructionLine = getCPU().getInstructionLineList().get(0);
+			MemorySnippet instructionLine = getCPU().getInstructionLineList().get(0);
 			// instructionLine = getCPU().splitInstructionLine(instructionLine,
 			// programCounter, asmStart);
 			instructionLine.setPassed(true);
@@ -60,7 +60,7 @@ public class C64Platform extends AbstractPlatform {
 	}
 
 	@Override
-	public void parseBinary(IContentProvider contentProvider, List<DisassemblingRange> ranges) {
+	public void parseBinary(IContentProvider contentProvider, List<MemoryBlock> ranges) {
 
 		System.out.println("init   : build memory map");
 		setProgrammCounter(getProgrammCounter());
@@ -70,7 +70,7 @@ public class C64Platform extends AbstractPlatform {
 		System.out.println("stage 2: parse instructions");
 
 		long start = System.currentTimeMillis();
-		for (DisassemblingRange dr : ranges) {
+		for (MemoryBlock dr : ranges) {
 			System.out.println(dr.toString());
 			getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr, 2);
 		}

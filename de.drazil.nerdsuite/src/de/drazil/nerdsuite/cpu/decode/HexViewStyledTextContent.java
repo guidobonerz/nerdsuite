@@ -53,7 +53,6 @@ public class HexViewStyledTextContent implements StyledTextContent {
 
 	@Override
 	public int getLineCount() {
-		System.out.println(lineCount);
 		return lineCount;
 	}
 

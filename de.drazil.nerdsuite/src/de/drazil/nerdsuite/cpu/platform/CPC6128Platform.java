@@ -6,7 +6,7 @@ import de.drazil.nerdsuite.cpu.CPU_Z80;
 import de.drazil.nerdsuite.cpu.decode.dialect.IDialect;
 import de.drazil.nerdsuite.model.Address;
 import de.drazil.nerdsuite.model.BasicInstructions;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.MemoryBlock;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.widget.IContentProvider;
 
@@ -46,7 +46,7 @@ public class CPC6128Platform extends AbstractPlatform {
     }
 
     @Override
-    public void parseBinary(IContentProvider contentProvider, List<DisassemblingRange> ranges) {
+    public void parseBinary(IContentProvider contentProvider, List<MemoryBlock> ranges) {
 
         System.out.println("init   : build memory map");
         setProgrammCounter(getProgrammCounter());
@@ -57,7 +57,7 @@ public class CPC6128Platform extends AbstractPlatform {
 
         long start = System.currentTimeMillis();
         try {
-            for (DisassemblingRange dr : ranges) {
+            for (MemoryBlock dr : ranges) {
                 getCPU().decode(contentProvider, getProgrammCounter(), getPlatFormData(), dr, 2);
             }
         } catch (Exception e) {

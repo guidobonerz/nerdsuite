@@ -2,7 +2,7 @@ package de.drazil.nerdsuite.cpu;
 
 import java.util.List;
 
-import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.cpu.decode.MemorySnippet;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.Range;
 import de.drazil.nerdsuite.model.RangeType;
@@ -28,30 +28,30 @@ public interface ICPU extends IDecoder {
 
     public int getLine();
 
-    public int getIndexOf(InstructionLine line);
+    public int getIndexOf(MemorySnippet line);
 
-    public void addInstructionLine(InstructionLine instructionLine);
+    public void addInstructionLine(MemorySnippet instructionLine);
 
-    public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset);
+    public MemorySnippet splitInstructionLine(MemorySnippet instructionLine, Value basePc, Value offset);
 
-    public InstructionLine splitInstructionLine(InstructionLine instructionLine, Value basePc, Value offset,
+    public MemorySnippet splitInstructionLine(MemorySnippet instructionLine, Value basePc, Value offset,
             RangeType type, ReferenceType referenceType);
 
-    public InstructionLine findInstructionLineByProgrammCounter(Value value);
+    public MemorySnippet findInstructionLineByProgrammCounter(Value value);
 
-    public InstructionLine findInstructionLineByOffset(Value offset);
+    public MemorySnippet findInstructionLineByOffset(Value offset);
 
-    public InstructionLine findInstructionLineByPC(Value programCounter);
+    public MemorySnippet findInstructionLineByPC(Value programCounter);
 
-    public InstructionLine findInstructionLineByRef(Value reference);
+    public MemorySnippet findInstructionLineByRef(Value reference);
 
-    public InstructionLine findInstructionLineByPC(int programCounter);
+    public MemorySnippet findInstructionLineByPC(int programCounter);
 
-    public InstructionLine findInstructionLineByRef(int reference);
+    public MemorySnippet findInstructionLineByRef(int reference);
 
-    public List<InstructionLine> getInstructionLineList();
+    public List<MemorySnippet> getInstructionLineList();
 
-    public InstructionLine getLastInstructionLine();
+    public MemorySnippet getLastInstructionLine();
 
     public Value getInstructionValue(byte byteArray[], Range range);
 
@@ -59,5 +59,5 @@ public interface ICPU extends IDecoder {
 
     public void compressRanges();
 
-    public void packInstructionLines(InstructionLine instructionLine, int len);
+    public void packInstructionLines(MemorySnippet instructionLine, int len);
 }

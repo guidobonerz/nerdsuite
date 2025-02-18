@@ -95,7 +95,7 @@
     "tileColumns" : 1,
     "pixelSize" : 1,
     "scaleFactor" : 16,
-    "supportCustomBaseSize" : false
+    "supportCustomBaseSize" : true
   } ]
 }, {
   "id" : "C64_SCREENSET",

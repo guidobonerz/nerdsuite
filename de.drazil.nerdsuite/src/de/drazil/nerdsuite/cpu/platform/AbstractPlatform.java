@@ -16,7 +16,7 @@ import de.drazil.nerdsuite.Constants;
 import de.drazil.nerdsuite.basic.decode.BasicParser;
 import de.drazil.nerdsuite.cpu.ICPU;
 import de.drazil.nerdsuite.cpu.InstructionSet;
-import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.cpu.decode.MemorySnippet;
 import de.drazil.nerdsuite.cpu.decode.dialect.IDialect;
 import de.drazil.nerdsuite.model.BasicInstruction;
 import de.drazil.nerdsuite.model.BasicInstructions;
@@ -70,7 +70,7 @@ public abstract class AbstractPlatform implements IPlatform {
     }
 
     public void init(IContentProvider contentProvider) {
-        getCPU().addInstructionLine(new InstructionLine(getProgrammCounter(),
+        getCPU().addInstructionLine(new MemorySnippet(getProgrammCounter(),
                 new Range(0, contentProvider.getContentLength()), InstructionType.Undefined,
                 ReferenceType.NoReference));
     }

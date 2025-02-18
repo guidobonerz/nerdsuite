@@ -1,9 +1,9 @@
 package de.drazil.nerdsuite.cpu;
 
-import de.drazil.nerdsuite.cpu.decode.InstructionLine;
+import de.drazil.nerdsuite.cpu.decode.MemorySnippet;
 import de.drazil.nerdsuite.enums.ValueType;
 import de.drazil.nerdsuite.model.Address;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.MemoryBlock;
 import de.drazil.nerdsuite.model.InstructionType;
 import de.drazil.nerdsuite.model.Opcode;
 import de.drazil.nerdsuite.model.PlatformData;
@@ -26,9 +26,9 @@ public class CPU_Z80 extends AbstractCPU {
 
     @Override
     public void decode(IContentProvider contentProvider, Value pc,
-            PlatformData platformData, DisassemblingRange discoverableRange, int stage) {
-        InstructionLine currentLine = null;
-        InstructionLine newLine = null;
+            PlatformData platformData, MemoryBlock discoverableRange, int stage) {
+        MemorySnippet currentLine = null;
+        MemorySnippet newLine = null;
         Value value = null;
         Opcode opcode = null;
         line = 1;
@@ -100,7 +100,7 @@ public class CPU_Z80 extends AbstractCPU {
 
                 System.out.printf(instruction);
 
-                if (offset + len > discoverableRange.getOffset() + discoverableRange.getLen()) {
+                if (offset + len > discoverableRange.getRange().getOffset() + discoverableRange.getRange().getLength()) {
                     break;
                 }
 
@@ -147,10 +147,10 @@ public class CPU_Z80 extends AbstractCPU {
 
     }
 
-    private InstructionLine markEmptyBlockAsData(byte byteArray[], Value pc, InstructionLine currentLine) {
+    private MemorySnippet markEmptyBlockAsData(byte byteArray[], Value pc, MemorySnippet currentLine) {
         int rowIndex = 0;
-        InstructionLine newLine = null;
-        InstructionLine specifiedLine = null;
+        MemorySnippet newLine = null;
+        MemorySnippet specifiedLine = null;
         int brkCount = 0;
         for (int i = 0; i < 2; i++) {
             if (byteArray[currentLine.getRange().getOffset() + i] == 0) {
@@ -176,8 +176,8 @@ public class CPU_Z80 extends AbstractCPU {
         return newLine;
     }
 
-    private InstructionLine getNextUnspecifiedLine(InstructionLine currentLine) {
-        InstructionLine nextLine = currentLine;
+    private MemorySnippet getNextUnspecifiedLine(MemorySnippet currentLine) {
+        MemorySnippet nextLine = currentLine;
         if (currentLine != null && currentLine.getInstructionType() != InstructionType.Data) {
             int nextIndex = getInstructionLineList().indexOf(currentLine) + 1;
             if (nextIndex < getInstructionLineList().size()) {
@@ -189,8 +189,8 @@ public class CPU_Z80 extends AbstractCPU {
         return nextLine;
     }
 
-    private InstructionLine split(InstructionLine instructionLine, Value pc, Value offset) {
-        InstructionLine newLine = splitInstructionLine(instructionLine, pc, offset);
+    private MemorySnippet split(MemorySnippet instructionLine, Value pc, Value offset) {
+        MemorySnippet newLine = splitInstructionLine(instructionLine, pc, offset);
         if (newLine == null) {
             int index = getInstructionLineList().indexOf(instructionLine) + 1;
             if (index < getInstructionLineList().size()) {
@@ -203,7 +203,7 @@ public class CPU_Z80 extends AbstractCPU {
     @Override
     public void compressRanges() {
         int index = 0;
-        InstructionLine currentLine = null;
+        MemorySnippet currentLine = null;
 
         while (index < getInstructionLineList().size() - 1) {
             currentLine = getInstructionLineList().get(index);
@@ -212,7 +212,7 @@ public class CPU_Z80 extends AbstractCPU {
                 for (;;) {
                     if (nextIndex > getInstructionLineList().size() - 1)
                         break;
-                    InstructionLine nextLine = getInstructionLineList().get(nextIndex);
+                    MemorySnippet nextLine = getInstructionLineList().get(nextIndex);
                     if (nextLine.getReferenceType() == ReferenceType.DataReference
                             || nextLine.getInstructionType() == InstructionType.Asm)
                         break;

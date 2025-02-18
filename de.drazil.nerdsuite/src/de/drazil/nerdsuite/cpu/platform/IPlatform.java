@@ -5,7 +5,7 @@ import java.util.List;
 import de.drazil.nerdsuite.cpu.ICPU;
 import de.drazil.nerdsuite.cpu.decode.dialect.IDialect;
 import de.drazil.nerdsuite.model.Address;
-import de.drazil.nerdsuite.model.DisassemblingRange;
+import de.drazil.nerdsuite.model.MemoryBlock;
 import de.drazil.nerdsuite.model.PlatformData;
 import de.drazil.nerdsuite.model.Value;
 import de.drazil.nerdsuite.widget.IContentProvider;
@@ -37,7 +37,7 @@ public interface IPlatform {
 
     public void init(IContentProvider contentProvider);
 
-    public void parseBinary(IContentProvider contentProvider, List<DisassemblingRange> ranges);
+    public void parseBinary(IContentProvider contentProvider, List<MemoryBlock> ranges);
 
     public PlatformData getPlatFormData();
 

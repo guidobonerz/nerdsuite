@@ -10,7 +10,7 @@ import de.drazil.nerdsuite.Constants;
 
 @AllArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = false)
+
 public class CpuInstruction extends AbstractInstruction
 {
 	private List<String> alias;
